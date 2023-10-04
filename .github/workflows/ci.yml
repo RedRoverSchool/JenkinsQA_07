@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-test:
+    name: 'Run tests'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Prepare Jenkins data
+        run: |
+          cat ${{ github.workspace }}/jenkins_data/jenkins_backup0* > ${{ github.workspace }}/jenkins_backup.tar
+          md5sum ${{ github.workspace }}/jenkins_backup.tar
+
+      - name: Extract Jenkins data and set permission
+        run: |
+          tar -xvf ./jenkins_backup.tar
+          chmod -R 777 ./jenkins_backup/var/jenkins_home
+
+      - name: Docker login
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Docker start
+        run: docker run --rm --detach -p 8080:8080 -v ${{ github.workspace }}/jenkins_backup/var/jenkins_home:/var/jenkins_home jenkins/jenkins:2.414.2-lts-jdk17
+
+      - name: Wait for the Jenkins
+        run: ./.github/wait-for-jenkins.sh
+
+#      - name: Maven test
+#        run: mvn test
+#        env:
+#          CHROME_OPTIONS: --disable-gpu;--no-sandbox;--disable-dev-shm-usage;--headless=new;--window-size=1920,1080
+#          APP_OPTIONS: host=localhost;port=8080;admin.username=${{ secrets.ADMIN_USERNAME }};admin.password=${{ secrets.ADMIN_PASSWORD }}
+#          CI_RUN: true
