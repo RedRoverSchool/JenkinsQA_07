@@ -18,4 +18,15 @@ public class GroupUnicornsTest {
         assertEquals("Welcome | USPS", title);
         driver.quit();
     }
+
+    @Test
+    public void usPsSendMailPackageTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.usps.com/");
+        WebElement send = driver.findElement(By.xpath("//a[@id='mail-ship-width']"));
+        send.click();
+        String sendTitle = driver.getTitle();
+        assertEquals("Send Mail & Packages | USPS", sendTitle);
+        driver.quit();
+    }
 }
