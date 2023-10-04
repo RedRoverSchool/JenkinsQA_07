@@ -22,7 +22,7 @@ public class FirstTest {
             WebElement textBox = driver.findElement(By.className("gLFyf"));
             textBox.sendKeys("Selenium");
 
-            Thread.sleep(800);
+            Thread.sleep(1000);
 
             WebElement searchButton = driver.findElement(By.className("gNO89b"));
             searchButton.click();
