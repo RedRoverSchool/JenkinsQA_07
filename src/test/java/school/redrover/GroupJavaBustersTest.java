@@ -4,14 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class GroupJavaBusters {
+import static org.testng.Assert.assertEquals;
+
+public class GroupJavaBustersTest {
 
     @Test
     public void testMovieSearch() {
@@ -56,6 +56,41 @@ public class GroupJavaBusters {
         WebElement message = driver.findElement(By.xpath("//div[@class='errormessage']//p"));
         String value = message.getText();
         Assert.assertEquals("Your credentials don’t match. It’s probably attributable to human error.", value);
+
+        driver.quit();
+    }
+
+    @Test
+    public void fillUserName() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
+
+        WebElement fieldUsername = driver.findElement(By.name("username"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@value='submit']"));
+
+        fieldUsername.sendKeys("Evgeniia");
+        submitButton.click();
+
+        WebElement message = driver.findElement(By.id("_valueusername"));
+        String value = message.getText();
+        assertEquals("Evgeniia", value);
+
+        driver.quit();
+    }
+
+    @Test
+    public void cancelFillingUserName() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
+
+        WebElement fieldUsername = driver.findElement(By.name("username"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@value='cancel']"));
+
+        fieldUsername.sendKeys("Evgeniia");
+        submitButton.click();
+
+        String value = fieldUsername.getText();
+        assertEquals("", value);
 
         driver.quit();
     }
