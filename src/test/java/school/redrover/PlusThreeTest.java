@@ -7,17 +7,37 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 public class PlusThreeTest {
 
     public static final String USERNAME = "TestUser1";
-
+    public static final String URL = "https://parabank.parasoft.com/parabank/register.htm";
     public static final String PASSWORD = "qwert12345";
     public static final String FULL_NAME = "Akiko";
     public static final String EMAIL = "Akiko@gmail.com";
     public static final String CURRENT_ADDRESS = "USA";
     public static final String PERMANENT_ADDRESS = "USA1";
+    ChromeDriver driver;
+    @BeforeTest
+    public void setup() {
+        this.driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    public void cleanDataBase() {
+        driver.get(URL);
+
+        WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
+        adminPanel.click();
+
+        WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
+        cleanButton.click();
+        Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p> b")).getText());
+    }
 
     @Test
     public void testSearch() {
@@ -62,10 +82,7 @@ public class PlusThreeTest {
 
     @Test(description = "Создание/регистрация пользователя в банке")
     public void createUser() {
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://parabank.parasoft.com/parabank/register.htm");
+        driver.get(URL);
 
         WebElement firstName = driver.findElement(By.id("customer.firstName"));
         firstName.sendKeys("Test");
@@ -108,7 +125,11 @@ public class PlusThreeTest {
         WebElement result = driver.findElement(By.xpath("//div[@id='rightPanel']/p"));
         String resText = result.getText();
         Assert.assertEquals(resText, "Your account was created successfully. You are now logged in.");
+    }
 
+    @AfterTest
+    public void cleanDataBaseAndCloseBrowser() {
+        cleanDataBase();
         driver.quit();
     }
 }

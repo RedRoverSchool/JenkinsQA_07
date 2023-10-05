@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -39,5 +40,39 @@ public class GroupQaClimbersTest {
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testTextBox1(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+
+        WebElement elements = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
+        elements.click();
+
+        WebElement textBox = driver.findElement(By.xpath("//li[@id=\"item-0\"]/span[text()='Text Box']"));
+        textBox.click();
+
+        WebElement fullNameField = driver.findElement(By.xpath("//input[@placeholder=\"Full Name\"]"));
+        fullNameField.sendKeys("Arailym");
+
+        WebElement emailField = driver.findElement(By.xpath("//input[@placeholder=\"name@example.com\"]"));
+        emailField.sendKeys("test@test.com");
+
+        WebElement currentAddressField = driver.findElement(By.xpath("//textarea[@placeholder=\"Current Address\"]"));
+        currentAddressField.sendKeys("050000, Almaty");
+
+        WebElement permanentAddressField = driver.findElement(By.xpath("//textarea[@id=\"permanentAddress\"]"));
+        permanentAddressField.sendKeys("050000, Astana");
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[@id=\"submit\"]"));
+        submitButton.click();
+
+        WebElement output = driver.findElement(By.xpath("//div[@id='output']/div/p"));
+
+        Assert.assertEquals(output.getText(), "Name:Arailym");
+
+        driver.quit();
     }
 }
