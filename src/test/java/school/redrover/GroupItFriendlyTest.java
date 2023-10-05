@@ -90,7 +90,7 @@ public class GroupItFriendlyTest {
     }
     @Test
     public void DemoQATextBoxTest() {
-         WebDriver driver = new ChromeDriver();
+          WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().window().maximize();
