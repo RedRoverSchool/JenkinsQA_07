@@ -73,7 +73,7 @@ public class GroupJavaBustersTest {
 
         WebElement message = driver.findElement(By.id("_valueusername"));
         String value = message.getText();
-        assertEquals("Evgeniia", value);
+        assertEquals(value,"Evgeniia");
 
         driver.quit();
     }
@@ -90,7 +90,7 @@ public class GroupJavaBustersTest {
         cancelButton.click();
 
         String value = fieldUsername.getText();
-        assertEquals("", value);
+        assertEquals(value,"");
 
         driver.quit();
     }
