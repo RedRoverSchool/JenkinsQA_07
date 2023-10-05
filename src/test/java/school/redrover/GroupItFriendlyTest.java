@@ -128,5 +128,59 @@ public class GroupItFriendlyTest {
         }
     }
 
+    @Test
+    public void DemoQACheckBoxTest() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/");
+            driver.manage().window().maximize();
+            JavascriptExecutor jsx = (JavascriptExecutor)driver;
+            jsx.executeScript("window.scrollBy(0,450)", "");
+
+            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
+            elements.click();
+
+            WebElement checkBoxElement = driver.findElement(By.xpath("//span[normalize-space()='Check Box']"));
+            checkBoxElement.click();
+
+            WebElement checkBox = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
+            checkBox.click();
+
+            assertEquals(driver.findElement(By.xpath("//div[@id=\"result\"]/span[1]")).getText(), "You have selected :");
+
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void DemoQARadioButtonTest() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/");
+            driver.manage().window().maximize();
+            JavascriptExecutor jsx = (JavascriptExecutor)driver;
+            jsx.executeScript("window.scrollBy(0,450)", "");
+
+            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
+            elements.click();
+
+            WebElement radioButtonElement = driver.findElement(By.xpath("//span[normalize-space()='Radio Button']"));
+            radioButtonElement.click();
+
+            WebElement yesButton = driver.findElement(By.xpath("//div[@class=\"custom-control custom-radio custom-control-inline\"]/label[@for=\"yesRadio\"]"));
+            yesButton.click();
+
+            assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Yes");
+
+            WebElement impressiveButton = driver.findElement(By.xpath("//div[@class=\"custom-control custom-radio custom-control-inline\"]/label[@for=\"impressiveRadio\"]"));
+            impressiveButton.click();
+
+            assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Impressive");
+
+        } finally {
+            driver.quit();
+        }
+    }
 
 }
