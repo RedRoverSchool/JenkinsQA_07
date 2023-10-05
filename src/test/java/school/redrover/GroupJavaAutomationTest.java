@@ -61,4 +61,13 @@ public class GroupJavaAutomationTest {
 
 
     }
+    @Test
+    public void herokuAppGroupTest() throws InterruptedException {
+        try {
+            driver.getCurrentUrl();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
