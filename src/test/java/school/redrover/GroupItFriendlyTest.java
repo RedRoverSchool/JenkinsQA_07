@@ -61,6 +61,7 @@ public class GroupItFriendlyTest {
         String randomEmail = "test" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
 
 
+
         Thread.sleep(1000);
         WebElement usernameInput = driver.findElement(By.name("username"));
         usernameInput.click();
