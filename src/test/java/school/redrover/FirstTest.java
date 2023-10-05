@@ -22,8 +22,8 @@ public class FirstTest {
             WebElement textBox = driver.findElement(By.className("gLFyf"));
             textBox.sendKeys("Selenium");
 
-
              Thread.sleep(850);
+
              WebElement searchButton = driver.findElement(By.className("gNO89b"));
              searchButton.click();
 
