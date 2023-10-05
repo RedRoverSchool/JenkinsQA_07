@@ -9,6 +9,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 public class PlusThreeTest {
@@ -25,6 +26,18 @@ public class PlusThreeTest {
     public void setup() {
         this.driver = new ChromeDriver();
         driver.manage().window().maximize();
+    }
+
+    public void cleanDataBase() {
+
+        driver.get(URL);
+
+        WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
+        adminPanel.click();
+
+        WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
+        cleanButton.click();
+        Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p> b")).getText());
     }
 
     @Test
@@ -71,8 +84,6 @@ public class PlusThreeTest {
     @Test(description = "Создание/регистрация пользователя в банке")
     public void createUser() {
 
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
         driver.get(URL);
 
         WebElement firstName = driver.findElement(By.id("customer.firstName"));
@@ -116,21 +127,6 @@ public class PlusThreeTest {
         WebElement result = driver.findElement(By.xpath("//div[@id='rightPanel']/p"));
         String resText = result.getText();
         Assert.assertEquals(resText, "Your account was created successfully. You are now logged in.");
-    }
-
-    @Test(description = "Чистка базы данных")
-    public void cleanDataBase() {
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(URL);
-
-        WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
-        adminPanel.click();
-
-        WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
-        cleanButton.click();
-        Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p> b")).getText());
     }
 
     @AfterTest
