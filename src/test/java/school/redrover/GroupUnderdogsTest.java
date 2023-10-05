@@ -37,21 +37,29 @@ public class GroupUnderdogsTest {
     }
 
     @Test
-    public void tereshenkov99BottlesLastMenuLinkTest() {
+    public void tereshenkov99BottlesLastMenuLinkTestGetAttribute() {
     driver = new ChromeDriver();
         driver.get("http://www.99-bottles-of-beer.net/");
 
         WebElement lastMenuLink = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
 
-//        if you want to compare the value inside the tag regardless of the case - use this code
         String lastMenuLinkValue = lastMenuLink.getAttribute("textContent");
         Assert.assertEquals(lastMenuLinkValue, "Submit new Language");
 
-//        if you want to check the value that is displayed on the site (all CAPS) - use this code
-//         String lastMenuLinkValue = lastMenuLink.getText();
-//         Assert.assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
+    }
+
+    @Test
+    public void tereshenkov99BottlesLastMenuLinkTestGetText() {
+        driver = new ChromeDriver();
+        driver.get("http://www.99-bottles-of-beer.net/");
+
+        WebElement lastMenuLink = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
+
+         String lastMenuLinkValue = lastMenuLink.getText();
+         Assert.assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
 
     }
+
 
     //TC_11_07 что надпись об исключении красным цветом и с маленькой буквы
     @Test
@@ -64,5 +72,8 @@ public class GroupUnderdogsTest {
         Assert.assertEquals(header.getText(), header.getText().toLowerCase());     //одинаковые
         Assert.assertEquals(header.getCssValue("color"), "rgb(255, 0, 0)");
     }
+
+
+
 
 }
