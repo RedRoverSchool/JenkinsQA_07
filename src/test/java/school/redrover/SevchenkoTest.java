@@ -1,18 +1,13 @@
 package school.redrover;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
 
-public class StackOverflowTest {
+public class SevchenkoTest {
     //Search elements //*[@id='mainbar']//a[@href='/questions/tagged/slf4j']
     //Show elements//div[@class='s-pagination site1 themed page-sizer float-right']//a[.='15']
 
