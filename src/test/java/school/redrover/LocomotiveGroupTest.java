@@ -43,4 +43,37 @@ public class LocomotiveGroupTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testLink() throws InterruptedException{
+        WebDriver driver = new ChromeDriver();
+        try {
+            String linkExpected = "https://demoqa.com/";
+
+            driver.get("https://demoqa.com/links");
+            String originalWindow = driver.getWindowHandle();
+            WebElement link = driver.findElement(By.xpath("//*[@id=\"simpleLink\"]"));
+            String linkActual = link.getAttribute("href");
+
+            Assert.assertEquals(linkActual, linkExpected);
+
+            link.click();
+
+            Thread.sleep(1000);
+
+            for (String windowHandle : driver.getWindowHandles()) {
+                if(!originalWindow.contentEquals(windowHandle)) {
+                    driver.switchTo().window(windowHandle);
+                    break;
+                }
+            }
+
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
+
+            } finally {
+                driver.quit();
+            }
+    }
+
 }
