@@ -49,7 +49,7 @@ public class GroupJavaExplorersTest {
                 xpath("//header/div[1]/div/ul/li[2]/a"));
         loginIn.click();
 
-        WebElement textBoxEmail = driver.findElement(By.xpath("//*[@id='email']"));
+        WebElement textBoxEmail = driver.findElement(By.id("email"));
         textBoxEmail.sendKeys(email);
 
         WebElement textBoxPassword = driver.findElement(By.xpath("//*[@id='pass'][1]"));
