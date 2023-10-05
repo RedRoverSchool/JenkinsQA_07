@@ -29,7 +29,6 @@ public class PlusThreeTest {
     }
 
     public void cleanDataBase() {
-
         driver.get(URL);
 
         WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
@@ -83,7 +82,6 @@ public class PlusThreeTest {
 
     @Test(description = "Создание/регистрация пользователя в банке")
     public void createUser() {
-
         driver.get(URL);
 
         WebElement firstName = driver.findElement(By.id("customer.firstName"));
