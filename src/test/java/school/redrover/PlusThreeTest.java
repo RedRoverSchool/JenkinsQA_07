@@ -198,4 +198,30 @@ public class PlusThreeTest {
         driver.quit();
     }
 
+    @Test(description = "Swag labs login")
+    public void loginSwagLabs() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.saucedemo.com/");
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Swag Labs");
+
+        WebElement loginField = driver.findElement(By.xpath(".//div/input[@id='user-name']"));
+        WebElement passwordField = driver.findElement(By.xpath(".//div/input[@id='password']"));
+        WebElement loginButton = driver.findElement(By.xpath("//*[@id='login-button']"));
+
+        loginField.sendKeys("standard_user");
+        passwordField.sendKeys("secret_sauce");
+        loginButton.click();
+        Thread.sleep(1000);
+
+        WebElement marketLogo = driver.findElement(By.xpath(".//div[text()='Swag Labs']"));
+
+        String name = marketLogo.getText();
+        Assert.assertEquals(name, "Swag Labs");
+
+        driver.quit();
+
+    }
+
 }
