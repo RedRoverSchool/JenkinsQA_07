@@ -40,4 +40,22 @@ public class GroupQaClimbersTest {
             driver.quit();
         }
     }
+    @Test
+    public void widgetPageTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com");
+        driver.manage().window().maximize();
+        try {
+            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[1]")).click();
+            driver.findElement(By.xpath("//*[@class='header-text'][1]")).click();
+            Thread.sleep(200);
+            driver.findElement(By.xpath("//*[@id=\"item-2\"]")).click();
+            driver.findElement(By.xpath("//label[@class=\"custom-control-label\"][1]")).click();
+            String title = driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText();
+            assertEquals(title, "Yes");
+        }finally {
+            driver.quit();
+        }
+
+    }
 }
