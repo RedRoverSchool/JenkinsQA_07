@@ -61,7 +61,7 @@ public class GroupJavaBustersTest {
     }
 
     @Test
-    public void fillUserName() {
+    public void testFillUserName() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
 
@@ -79,7 +79,7 @@ public class GroupJavaBustersTest {
     }
 
     @Test
-    public void cancelFillingUserName() {
+    public void testCancelFillingUserName() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
 
