@@ -53,15 +53,14 @@ public class GroupUnderdogsTest {
 
     }
 
-    //TC_11_07 что надпись об исключении красным цветом и с маленькой буквы
+    // надпись об исключении красным цветом и с маленькой буквы
     @Test
     public void maksinTestInactive() {
         driver = new FirefoxDriver();
         driver.get("http://www.99-bottles-of-beer.net/team.html");
         WebElement header = driver.findElement(By.xpath
                 ("/html/body/div/div[3]/p[7]/font/b"));
-        //Assert.assertTrue(header.getText().toLowerCase().equals(header.getText())); //одинаковые
-        Assert.assertEquals(header.getText(), header.getText().toLowerCase());     //одинаковые
+        Assert.assertEquals(header.getText(), header.getText().toLowerCase());
         Assert.assertEquals(header.getCssValue("color"), "rgb(255, 0, 0)");
     }
 
