@@ -27,6 +27,8 @@ public class FirstTest {
              WebElement searchButton = driver.findElement(By.className("gNO89b"));
              searchButton.click();
 
+            System.out.println("Hello");
+
             WebElement title = driver.findElement(By.className("yKMVIe"));
             String value = title.getText();
             Assert.assertEquals(value, "Selenium");
