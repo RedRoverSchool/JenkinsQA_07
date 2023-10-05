@@ -84,10 +84,10 @@ public class GroupJavaBustersTest {
         driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
 
         WebElement fieldUsername = driver.findElement(By.name("username"));
-        WebElement submitButton = driver.findElement(By.xpath("//*[@value='cancel']"));
+        WebElement cancelButton = driver.findElement(By.xpath("//*[@value='cancel']"));
 
         fieldUsername.sendKeys("Evgeniia");
-        submitButton.click();
+        cancelButton.click();
 
         String value = fieldUsername.getText();
         assertEquals("", value);
