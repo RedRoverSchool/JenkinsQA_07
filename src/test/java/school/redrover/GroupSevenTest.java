@@ -14,7 +14,6 @@ public class GroupSevenTest {
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://kyliecosmetics.com/");
-
         String title = driver.getTitle();
         Assert.assertEquals(title, "Kylie Cosmetics by Kylie Jenner | Kylie Skin | Kylie Baby");
 
@@ -46,5 +45,4 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
-
 }
