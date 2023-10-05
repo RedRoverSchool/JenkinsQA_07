@@ -22,22 +22,6 @@ public class PlusThreeTest {
     public static final String PERMANENT_ADDRESS = "USA1";
     public static final String CITY= "LOS ANGELES";
     public static final String STATE ="California";
-    ChromeDriver driver;
-
-    public void cleanDataBaseAndCloseBrow() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(URL);
-
-        WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
-        adminPanel.click();
-
-        WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
-        cleanButton.click();
-        Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p > b")).getText());
-
-        driver.quit();
-    }
 
     @Test
     public void testSearch() {
@@ -170,32 +154,4 @@ public class PlusThreeTest {
 
         driver.quit();
     }
-
-    @Test
-    public static void testSearchDuck() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://duckduckgo.com/");
-
-        driver.findElement(By.xpath("//input[@id='searchbox_input']"))
-                .sendKeys("Selenium");
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        driver.findElement(By.xpath("//button[@aria-label = 'Search']"))
-                .click();
-
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
-
-        try {
-            WebElement title = driver.findElement(By.xpath("//span[@class ='module__title__link']"));
-            String value = title.getText();
-            assertEquals(value, "Selenium");
-        } catch (NoSuchFrameException e) {
-            System.out.println("My_Frame not found: " + e.getMessage());
-        }
-
-        driver.quit();
-    }
-
 }
