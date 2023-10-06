@@ -105,4 +105,50 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+
+    @Test
+
+    public void testSearchAB() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://duckduckgo.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "DuckDuckGo — Privacy, simplified.");
+
+        WebElement textBox = driver.findElement(By.name("q"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@aria-label='Search']"));
+
+        textBox.sendKeys("Wikipedia");
+        submitButton.click();
+
+        WebElement wikiName = driver.findElement(By.xpath("(//*[@data-testid='result-title-a'])[1]"));
+        String wikiName2 = wikiName.getText();
+        Assert.assertEquals(wikiName2, "Wikipedia");
+
+        driver.quit();
+
+    }
+
+    @Test
+
+    public void testLinks() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://duckduckgo.com/");
+
+        WebElement textBox = driver.findElement(By.name("q"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@aria-label='Search']"));
+
+        textBox.sendKeys("Wikipedia");
+        submitButton.click();
+
+        Thread.sleep(5000);
+
+        int linkCount = driver.findElements(By.xpath("//*[@data-testid='result-extras-url-link']")).size();
+
+        Assert.assertEquals(linkCount, 10);
+
+        driver.quit();
+    }
 }
