@@ -8,8 +8,8 @@ import org.testng.annotations.Test;
 
 
 public class GroupCoffeeCodersTest {
-    public static final String username = "admin";
-    public static final String password = "admin";
+    public static final String USERNAME = "admin";
+    public static final String PASSWORD = "admin";
 
     @Test
     public void testUserRegistration() throws InterruptedException {
@@ -22,10 +22,10 @@ public class GroupCoffeeCodersTest {
             Thread.sleep(2000);
 
             WebElement usernameField = driver.findElement(By.xpath("//input[@id='sign-username']"));
-            usernameField.sendKeys(username);
+            usernameField.sendKeys(USERNAME);
 
             WebElement passwordField = driver.findElement(By.xpath("//input[@id='sign-password']"));
-            passwordField.sendKeys(password);
+            passwordField.sendKeys(PASSWORD);
 
             WebElement signUpButton = driver.findElement(By.xpath("//button[contains(text(), 'Sign up')]"));
             signUpButton.click();
@@ -45,10 +45,10 @@ public class GroupCoffeeCodersTest {
             submitButton.click();
             Thread.sleep(2000);
             WebElement usernameField = driver.findElement(By.xpath("//input[@id='loginusername']"));
-            usernameField.sendKeys(username);
+            usernameField.sendKeys(USERNAME);
 
             WebElement passwordField = driver.findElement(By.xpath("//input[@id='loginpassword']"));
-            passwordField.sendKeys(password);
+            passwordField.sendKeys(PASSWORD);
 
             WebElement loginButton = driver.findElement(By.xpath("//button[contains(text(), 'Log in')]"));
             loginButton.click();
@@ -56,7 +56,7 @@ public class GroupCoffeeCodersTest {
 
             WebElement message = driver.findElement(By.xpath("//a[@id='nameofuser']"));
             String actualText = message.getText();
-            String expectedText = "Welcome " + username;
+            String expectedText = "Welcome " + USERNAME;
             Assert.assertEquals(actualText, expectedText);
 
 
