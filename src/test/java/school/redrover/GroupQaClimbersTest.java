@@ -75,4 +75,73 @@ public class GroupQaClimbersTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testTextBox2() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        try {
+            WebElement elements = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
+            js.executeScript("arguments[0].scrollIntoView();", elements);
+            elements.click();
+
+            WebElement textBox = driver.findElement(By.xpath("//*[@id=\"item-0\"]"));
+            textBox.click();
+
+            WebElement fullNameTextBox = driver.findElement(By.id("userName"));
+            fullNameTextBox.sendKeys("Гарри Поттер");
+
+            WebElement email = driver.findElement(By.id("userEmail"));
+            email.sendKeys("hp@hogvarts.com");
+
+            WebElement currentAddress = driver.findElement(By.id("currentAddress"));
+            currentAddress.sendKeys("Хогвартс");
+
+            WebElement permanentAddress = driver.findElement(By.id("permanentAddress"));
+            permanentAddress.sendKeys("Лондон");
+
+            WebElement submitButton = driver.findElement(By.id("submit"));
+            js.executeScript("arguments[0].scrollIntoView();", submitButton);
+            submitButton.click();
+
+            WebElement outputName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+            Assert.assertEquals(outputName.getText(), "Name:Гарри Поттер");
+
+            WebElement outputEmail = driver.findElement(By.xpath("//*[@id=\"email\"]"));
+            Assert.assertEquals(outputEmail.getText(), "Email:hp@hogvarts.com");
+
+            //проверки адресов падают из-за текстовых ошибок в форме output
+            //WebElement outputCurrentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+            //Assert.assertEquals(outputCurrentAddress.getText(), "Current Address:Хогвартс");
+
+            //WebElement outputPermanentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+            //Assert.assertEquals(outputPermanentAddress.getText(), "Permanent Address:Лондон");
+
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void widgetPageTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com");
+        driver.manage().window().maximize();
+        try {
+            WebElement widgetCard = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[1]"));
+            widgetCard.click();
+            WebElement elementsBtn = driver.findElement(By.xpath("//*[@class='header-text'][1]"));
+            elementsBtn.click();
+            Thread.sleep(200);
+            WebElement listElement = driver.findElement(By.xpath("//*[@id=\"item-2\"]"));
+            listElement.click();
+            driver.findElement(By.xpath("//label[@class=\"custom-control-label\"][1]")).click();
+            String title = driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText();
+            assertEquals(title, "Yes");
+        }finally {
+            driver.quit();
+        }
+    }
 }

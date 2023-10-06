@@ -8,6 +8,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
+
 public class GroupSevenTest {
     @Test
     public void kylieTitleTest() {
@@ -41,6 +43,24 @@ public class GroupSevenTest {
             String value = title.getText();
             Assert.assertEquals(value, "SEARCH");
 
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void TestBddSearch() {
+        WebDriver driver = new ChromeDriver();
+        try{
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+            driver.get("https://duckduckgo.com/");
+            WebElement searchBox = driver.findElement(By.xpath("//input[@class = 'searchbox_input__bEGm3']"));
+            searchBox.sendKeys("bdd");
+            WebElement searchButton = driver.findElement(By.xpath("//button[@class = 'searchbox_searchButton__F5Bwq iconButton_button__6x_9C']"));
+            searchButton.click();
+            WebElement searchResult = driver.findElement(By.xpath("//h2[@class = 'Ee2e63EzQ9F3xq9wsGDY']"));
+            String resultText = searchResult.getText();
+            Assert.assertTrue(resultText.contains("Behavior-driven development"));
         } finally {
             driver.quit();
         }

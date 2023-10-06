@@ -1,16 +1,15 @@
-
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import java.time.Duration;
+import static org.testng.Assert.assertEquals;
 
 public class PlusThreeTest {
 
@@ -23,6 +22,7 @@ public class PlusThreeTest {
     public static final String PERMANENT_ADDRESS = "USA1";
     public static final String CITY= "LOS ANGELES";
     public static final String STATE ="California";
+    public static final String URL_PARABANK = "https://parabank.parasoft.com/";
     ChromeDriver driver;
 
     public void cleanDataBaseAndCloseBrow() {
@@ -48,7 +48,6 @@ public class PlusThreeTest {
         WebElement fullName = driver.findElement(By.id("userName"));
         fullName.sendKeys(FULL_NAME);
 
-
         WebElement email = driver.findElement(By.id("userEmail"));
         email.sendKeys(EMAIL);
 
@@ -60,7 +59,6 @@ public class PlusThreeTest {
 
         WebElement submitButton = driver.findElement(By.id("submit"));
         submitButton.click();
-
 
         WebElement nameR = driver.findElement(By.id("name"));
         String value = nameR.getText();
@@ -120,7 +118,6 @@ public class PlusThreeTest {
         WebElement register = driver.findElement(By.cssSelector("[value='Register']"));
         register.submit();
 
-
         WebElement title = driver.findElement(By.xpath("//div[@id='rightPanel']/h1"));
         String resTitle = title.getText();
         Assert.assertEquals(resTitle, "Welcome " + USERNAME);
@@ -174,4 +171,87 @@ public class PlusThreeTest {
 
         driver.quit();
     }
+
+    @Test
+    public static void testSearchDuck() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://duckduckgo.com/");
+
+        driver.findElement(By.xpath("//input[@id='searchbox_input']"))
+                .sendKeys("Selenium");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        driver.findElement(By.xpath("//button[@aria-label = 'Search']"))
+                .click();
+
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
+
+        try {
+            WebElement title = driver.findElement(By.xpath("//span[@class ='module__title__link']"));
+            String value = title.getText();
+            assertEquals(value, "Selenium");
+        } catch (NoSuchFrameException e) {
+            System.out.println("My_Frame not found: " + e.getMessage());
+        }
+
+        driver.quit();
+    }
+
+    @Test(description = "Swag labs login")
+    public void loginSwagLabs() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.saucedemo.com/");
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Swag Labs");
+
+        WebElement loginField = driver.findElement(By.xpath(".//div/input[@id='user-name']"));
+        WebElement passwordField = driver.findElement(By.xpath(".//div/input[@id='password']"));
+        WebElement loginButton = driver.findElement(By.xpath("//*[@id='login-button']"));
+
+        loginField.sendKeys("standard_user");
+        passwordField.sendKeys("secret_sauce");
+        loginButton.click();
+        Thread.sleep(1000);
+
+        WebElement marketLogo = driver.findElement(By.xpath(".//div[text()='Swag Labs']"));
+
+        String name = marketLogo.getText();
+        Assert.assertEquals(name, "Swag Labs");
+
+        driver.quit();
+    }
+
+    @Test
+    public  void contactUs() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(URL_PARABANK);
+
+        WebElement contactUs = driver.findElement(By.xpath("//a[contains(text(), 'contact')]"));
+        contactUs.click();
+        WebElement title = driver.findElement(By.xpath("//*[@class='title']"));
+        String resTitle = title.getText();
+        Assert.assertEquals(resTitle, "Customer Care");
+
+        WebElement nameField = driver.findElement(By.name("name"));
+        WebElement emailField = driver.findElement(By.name("email"));
+        WebElement phoneField = driver.findElement(By.name("phone"));
+        WebElement messageField = driver.findElement(By.name("message"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id='contactForm']//descendant::input[@class='button']"));
+
+        nameField.sendKeys(USERNAME);
+        emailField.sendKeys("example@example.com");
+        phoneField.sendKeys("111111111");
+        messageField.sendKeys("Text");
+
+        submitButton.click();
+
+        WebElement confirmationMessage = driver.findElement(By.xpath("//*[@id='rightPanel']/p[contains(text(),'Thank you')]"));
+        Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
+        driver.quit();
+    }
+
 }
