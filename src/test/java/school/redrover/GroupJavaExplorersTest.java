@@ -79,7 +79,7 @@ public class GroupJavaExplorersTest {
         String failText = field.getText();
         Assert.assertEquals(failText, "This is a required field.");
         WebElement email = driver.findElement(By.xpath("//*[@id='email']"));
-        email.sendKeys("kseniorra@gmail.com");
+        email.sendKeys("abcd@gmail.com");
         WebElement password = driver.findElement(By.xpath("//*[@id='pass']"));
         password.sendKeys("1234");
         signInto.click();
