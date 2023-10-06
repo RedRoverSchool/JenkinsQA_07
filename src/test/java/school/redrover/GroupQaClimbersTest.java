@@ -144,4 +144,34 @@ public class GroupQaClimbersTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void TestCheckBoxMenuSubmitWindow(){
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement elements = driver.findElement(By.xpath("//div[@class='card-up'][1]"));
+        js.executeScript("arguments[0].scrollIntoView();", elements);
+        elements.click();
+
+        WebElement checkBoxMenu = driver.findElement
+                (By.xpath("//span[@class='text' ][text() = 'Check Box']"));
+        checkBoxMenu.click();
+
+        WebElement submitWindow = driver.findElement
+                (By.xpath("//span[@class = 'rct-checkbox']"));
+        submitWindow.click();
+
+        WebElement text = driver.findElement(By.xpath("//span[text() = 'You have selected :']"));
+
+        String actualResult = text.getText();
+
+        Assert.assertEquals(actualResult,"You have selected :");
+
+        driver.quit();
+    }
+
 }
