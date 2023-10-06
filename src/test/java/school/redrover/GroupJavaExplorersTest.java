@@ -71,7 +71,7 @@ public class GroupJavaExplorersTest {
         driver.quit();
     }
     @Test
-    public void testSignInNegative() {
+    public void testSignInNegative() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://magento.softwaretestingboard.com/");
         String title = driver.getTitle();
