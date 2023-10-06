@@ -7,17 +7,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.Random;
 
 public class GroupIntroVertsQaTest {
     static Random random = new Random();
+    static String URL = "https://parabank.parasoft.com/parabank/index.htm";
     static int n = random.nextInt(1000);
     public static final String USER_NAME = String.valueOf(n);
     public static final String PASSWORD = "54321";
     @Test
     public void registrTest(){
         WebDriver driver = new ChromeDriver();
-        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+        driver.get(URL);
 
         WebElement register = driver.findElement(By.xpath("//*[@id='loginPanel']/p[2]/a"));
         register.click();
@@ -64,5 +66,17 @@ public class GroupIntroVertsQaTest {
         Assert.assertEquals(welcome.getText(),"Welcome " + USER_NAME);
 
         driver.quit();
+    }
+
+    @Test
+    public void aboutUsTest(){
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+        WebElement usernameInput = driver.findElement(By.xpath(" //a[@href=contains(text(), \"About Us\")]"));
+        usernameInput.click();
+
+        WebElement greetings = driver.findElement(By.xpath("//h1[@class=\"title\"]"));
+        Assert.assertEquals(greetings.getText(), "ParaSoft Demo Website");
     }
 }
