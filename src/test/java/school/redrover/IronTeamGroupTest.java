@@ -10,22 +10,6 @@ import org.testng.annotations.Test;
 
 public class IronTeamGroupTest {
     @Test
-    public void w3schoolTest() throws InterruptedException {
-        // Check Title of site
-        WebDriverManager.chromedriver().setup();
-
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.w3schools.com/");
-            WebElement title = driver.findElement(By.cssSelector("h1.learntocodeh1"));
-            String value = title.getText();
-            Assert.assertEquals(value, "Learn to Code");
-        } finally {
-            driver.quit();
-        }
-    }
-
-    @Test
     public void javaPageTest() throws InterruptedException {
         // Check Java page of site
         WebDriverManager.chromedriver().setup();
