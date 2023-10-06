@@ -36,7 +36,7 @@ public class GroupJavaExplorersTest {
     }
 
     @Test
-    public void testLoginWithIncorrectData() {
+    public void testLoginWithIncorrectData() throws InterruptedException {
         String email = "asdfg@mail.ru";
         String password = "12345";
         String message = "The account sign-in was incorrect or your account is disabled temporarily." +
@@ -45,6 +45,8 @@ public class GroupJavaExplorersTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://magento.softwaretestingboard.com/");
 
+        Thread.sleep(1000);
+
         WebElement loginIn = driver.findElement(By.
                 xpath("//header/div[1]/div/ul/li[2]/a"));
         loginIn.click();
@@ -52,14 +54,18 @@ public class GroupJavaExplorersTest {
         WebElement textBoxEmail = driver.findElement(By.id("email"));
         textBoxEmail.sendKeys(email);
 
-        WebElement textBoxPassword = driver.findElement(By.xpath("//*[@id='pass'][1]"));
+        WebElement textBoxPassword = driver.findElement(By.id("pass"));
         textBoxPassword.sendKeys(password);
 
-        WebElement submitButton = driver.findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
+        WebElement submitButton = driver.
+                findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
         submitButton.click();
 
-        String value = driver.findElement(By.
-                xpath("//*[@id='maincontent']/div[2]/div[2]/div/div/div")).getText();
+        Thread.sleep(1000);
+
+        String value = driver.
+                findElement(By.xpath("//div[contains(text(), 'The account sign-in')]")).
+                getText();
 
         Assert.assertTrue(value.contains(message));
 
