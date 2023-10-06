@@ -15,16 +15,15 @@ public class GroupJavaExplorersTest {
 
         Thread.sleep(1000);
 
-        WebElement gear = driver.findElement(By.
-                xpath("//a[@id='ui-id-6']/span[2]"));
+        WebElement gear = driver.findElement(By.xpath("//a[@id='ui-id-6']/span[2]"));
         gear.click();
 
-        WebElement watches = driver.findElement(By.
-                xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
+        WebElement watches = driver.
+                findElement(By.xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
         watches.click();
 
-        WebElement clamberWatch = driver.findElement(By.
-                xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
+        WebElement clamberWatch = driver.
+                findElement(By.xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
         clamberWatch.click();
 
         WebElement text = driver.findElement(By.xpath("//*[@class='base']"));
@@ -47,8 +46,8 @@ public class GroupJavaExplorersTest {
 
         Thread.sleep(1000);
 
-        WebElement loginIn = driver.findElement(By.
-                xpath("//header/div[1]/div/ul/li[2]/a"));
+        WebElement loginIn = driver.
+                findElement(By.xpath("//header/div[1]/div/ul/li[2]/a"));
         loginIn.click();
 
         WebElement textBoxEmail = driver.findElement(By.id("email"));
