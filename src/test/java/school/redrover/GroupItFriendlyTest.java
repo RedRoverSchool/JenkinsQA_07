@@ -26,6 +26,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
+
     @Test
     public void testDemoQaChangePage() {
         WebDriver driver = new ChromeDriver();
@@ -42,6 +43,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
+
     @Test
     public void testDemoQaTextBox() {
         WebDriver driver = new ChromeDriver();
@@ -56,13 +58,13 @@ public class GroupItFriendlyTest {
           driver.quit();
         }
     }
+
     @Test
     public void testSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://so-yummi-qa.netlify.app/register");
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
         String randomEmail = "test" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
-
 
 
         Thread.sleep(1000);
@@ -88,6 +90,7 @@ public class GroupItFriendlyTest {
 
         driver.quit();
     }
+
     @Test
     public void DemoQATextBoxTest() {
           WebDriver driver = new ChromeDriver();
