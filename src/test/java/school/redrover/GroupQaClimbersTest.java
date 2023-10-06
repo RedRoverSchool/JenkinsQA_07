@@ -203,5 +203,36 @@ public class GroupQaClimbersTest {
             driver.quit();
         }
     }
+    @Test
+    public void testClickOnHomeCheckBox() {
+        WebDriver driver = new ChromeDriver();
+        try {
+        driver.get("https://demoqa.com/");
 
+        WebElement elementOnPage = driver.findElement(By.xpath("(//div[@class='card-up'])[1]"));
+        elementOnPage.click();
+
+        driver.findElement(By.xpath("//span[ contains(text(), 'Check Box')]")).click();
+
+        WebElement checkboxHome = driver.findElement(By.xpath("//span[@class='rct-checkbox']"));
+        checkboxHome.click();
+
+        List<WebElement> listOfActualElementsTagsOnScreen = driver.findElements(By
+                .xpath("//span[@class='text-success']"));
+
+        List<String> listOfActualTagsNameOnScreen = new ArrayList<>();
+
+        for (WebElement el : listOfActualElementsTagsOnScreen) {
+            listOfActualTagsNameOnScreen.add(el.getText());
+        }
+
+        List<String> expectedResultNames = List.of("home", "desktop", "notes", "commands", "documents",
+                "workspace", "react", "angular", "veu", "office", "public", "private", "classified", "general",
+                "downloads", "wordFile", "excelFile");
+
+        assertEquals(listOfActualTagsNameOnScreen, expectedResultNames);
+    } finally {
+            driver.quit();
+        }
+    }
 }
