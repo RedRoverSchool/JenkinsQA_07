@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-public class FirstTest {
+public class  FirstTest {
 
     @Test
     public void  testSearch() throws InterruptedException {
@@ -22,10 +22,12 @@ public class FirstTest {
             WebElement textBox = driver.findElement(By.className("gLFyf"));
             textBox.sendKeys("Selenium");
 
-            Thread.sleep(800);
+             Thread.sleep(900);
 
-            WebElement searchButton = driver.findElement(By.className("gNO89b"));
-            searchButton.click();
+             WebElement searchButton = driver.findElement(By.className("gNO89b"));
+             searchButton.click();
+
+            System.out.println("Hello");
 
             WebElement title = driver.findElement(By.className("yKMVIe"));
             String value = title.getText();

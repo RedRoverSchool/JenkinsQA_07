@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -16,8 +17,24 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class SauceDemoTest {
-
+public class GroupUnitedByJavaTest {
+    @Test
+    public void demoqaElementsRedirection() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/");
+            String title = driver.getTitle();
+            Assert.assertEquals(title, "DEMOQA");
+            WebElement elementsButton = driver.findElement(By.cssSelector(".top-card:nth-child(1)"));
+            elementsButton.click();
+            String currentUrl = driver.getCurrentUrl();
+            String elementsUrl = "https://demoqa.com/elements";
+            Assert.assertEquals(currentUrl, elementsUrl);
+            Thread.sleep(2000);
+        } finally {
+            driver.quit();
+        }
+    }
     public static class DataProviders {
         @DataProvider(name = "validPasswordAndName")
         public static String[][] validPasswordAndName(){
@@ -54,7 +71,7 @@ public class SauceDemoTest {
         driver.quit();
     }
 
-    @Test(dataProvider = "validPasswordAndName", dataProviderClass = DataProviders.class)
+    @Test(dataProvider = "validPasswordAndName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with correct username and password")
     public void testLoginWithCorrectData(String username, String password) {
 
@@ -72,7 +89,7 @@ public class SauceDemoTest {
         assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
     }
 
-    @Test(dataProvider = "inValidPasswordOrName", dataProviderClass = DataProviders.class)
+    @Test(dataProvider = "inValidPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with incorrect username and password")
     public void TestLoginWithIncorrectData(String username, String password) {
 
@@ -92,7 +109,7 @@ public class SauceDemoTest {
         assertEquals(errorMessage, driver.findElement(By.xpath("//h3[@data-test=\"error\"]")).getText());
     }
 
-    @Test(dataProvider = "EmptyPasswordOrName", dataProviderClass = DataProviders.class)
+    @Test(dataProvider = "EmptyPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with empty username or password")
     public void testLoginWithEmptyFields(String username, String password, String flag) {
 
@@ -159,5 +176,26 @@ public class SauceDemoTest {
         double priceMin = Double.parseDouble(listOfItems.get(5).findElement(By.xpath(".//div[@class=\"inventory_item_price\"]")).getText().replace("$", ""));
 
         assertTrue(priceMax > priceMin);
+    }
+
+
+
+
+    @Test
+    public void demoqaFormsRedirection() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/");
+            String title = driver.getTitle();
+            Assert.assertEquals(title, "DEMOQA");
+            WebElement elementsButton = driver.findElement(By.cssSelector(".top-card:nth-child(2)"));
+            elementsButton.click();
+            String currentUrl = driver.getCurrentUrl();
+            String elementsUrl = "https://demoqa.com/forms";
+            Assert.assertEquals(currentUrl, elementsUrl);
+            Thread.sleep(2000);
+        } finally {
+            driver.quit();
+        }
     }
 }
