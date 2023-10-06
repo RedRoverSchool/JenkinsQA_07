@@ -24,4 +24,19 @@ public class GroupCarlTheFogTest {
         driver.quit();
 
     }
+
+    @Test
+    public void registerNowDisplayTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.hireright.com");
+        String expectedText = "Register Now";
+        String registerNow= "//a[@class = 'btn btn--primary btn--hover-red-dark btn-active-red-darker'][contains(text(),'Register Now')]";
+        WebElement registerNowBTN = driver.findElement(By.xpath(registerNow));
+        registerNowBTN.getText();
+
+        Assert.assertEquals(registerNowBTN.getText(), expectedText);
+
+        driver.quit();
+
+    }
 }
