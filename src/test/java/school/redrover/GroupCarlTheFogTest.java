@@ -46,7 +46,7 @@ public class GroupCarlTheFogTest {
     }
 
     @Test
-    public void GoogleFinanceTest() {
+    public void testGoogleFinance() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.google.com/finance/");
 
