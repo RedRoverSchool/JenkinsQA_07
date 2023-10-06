@@ -102,39 +102,42 @@ public class GroupUnicornsTest {
         }
     }
 
-        @Test
-        public void demoWebShopTest() {
-            WebDriver driver = new ChromeDriver();
+    @Test
+    public void demoWebShopTest() {
+        WebDriver driver = new ChromeDriver();
 
-            String pageTitlePath = "//div[@class='page-title' ]//h1";
+        String pageTitlePath = "//div[@class='page-title' ]//h1";
 
-            String basePath = "//ul[@class='top-menu']//a[@href='/";
+        String basePath = "//ul[@class='top-menu']//a[@href='/";
 
-            HashMap<String, String> pages = new HashMap<>();
-            pages.put("Books",             basePath + "books']");
-            pages.put("Computers",         basePath + "computers']");
-            pages.put("Electronics",       basePath + "electronics']");
-            pages.put("Apparel & Shoes",   basePath + "apparel-shoes']");
-            pages.put("Digital downloads", basePath + "digital-downloads']");
-            pages.put("Jewelry",           basePath + "jewelry']");
-            pages.put("Gift Cards",        basePath + "gift-cards']");
+        HashMap<String, String> pages = new HashMap<>();
+        pages.put("Books", basePath + "books']");
+        pages.put("Computers", basePath + "computers']");
+        pages.put("Electronics", basePath + "electronics']");
+        pages.put("Apparel & Shoes", basePath + "apparel-shoes']");
+        pages.put("Digital downloads", basePath + "digital-downloads']");
+        pages.put("Jewelry", basePath + "jewelry']");
+        pages.put("Gift Cards", basePath + "gift-cards']");
 
-            String pageTitle;
+        String pageTitle;
 
-            try {
-                driver.get("https://demowebshop.tricentis.com/");
+        try {
+            driver.get("https://demowebshop.tricentis.com/");
 
-                for (String key : pages.keySet()) {
-                    driver.findElement(By.xpath(pages.get(key))).click();
-                    pageTitle = driver.findElement(By.xpath(pageTitlePath)).getText();
-                    Assert.assertEquals(pageTitle, key);
-                }
-
-            } finally {
-                driver.quit();
+            for (String key : pages.keySet()) {
+                driver.findElement(By.xpath(pages.get(key))).click();
+                pageTitle = driver.findElement(By.xpath(pageTitlePath)).getText();
+                Assert.assertEquals(pageTitle, key);
             }
+
+        } finally {
+            driver.quit();
         }
-
-
-
     }
+
+
+
+
+
+
+}
