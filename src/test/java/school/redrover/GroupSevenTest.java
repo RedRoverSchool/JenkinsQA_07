@@ -23,7 +23,7 @@ public class GroupSevenTest {
     }
 
     @Test
-    public void searchTest() throws InterruptedException{
+    public void searchTest() throws InterruptedException {
         WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://kyliecosmetics.com/collections/kylie-cosmetics");
@@ -51,7 +51,7 @@ public class GroupSevenTest {
     @Test
     public void TestBddSearch() {
         WebDriver driver = new ChromeDriver();
-        try{
+        try {
             driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
             driver.get("https://duckduckgo.com/");
             WebElement searchBox = driver.findElement(By.xpath("//input[@class = 'searchbox_input__bEGm3']"));
@@ -65,8 +65,9 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+
     @Test
-    public void testSearch(){
+    public void testSearch() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://elitetransit.com/");
@@ -79,10 +80,11 @@ public class GroupSevenTest {
             String title = driver.getTitle();
 
             Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
-        }finally {
+        } finally {
             driver.quit();
         }
     }
+
     @Test
     public void testTextInput() {
 
@@ -104,5 +106,22 @@ public class GroupSevenTest {
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testPage() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://megagroup.by/");
+        driver.manage().window().maximize();
+        Thread.sleep(1500);
+
+        WebElement price = driver.findElement(
+                By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+        price.click();
+
+        Thread.sleep(1500);
+        WebElement header = driver.findElement(By.xpath("//h1"));
+        Assert.assertEquals(header.getText(), "Стоимость сайтов");
+        driver.quit();
     }
 }
