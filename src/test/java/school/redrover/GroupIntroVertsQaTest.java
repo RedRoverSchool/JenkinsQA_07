@@ -102,5 +102,6 @@ public class GroupIntroVertsQaTest {
 
         WebElement greetings = driver.findElement(By.xpath("//h1[@class=\"title\"]"));
         Assert.assertEquals(greetings.getText(), "ParaSoft Demo Website");
+        driver.quit();
     }
 }
