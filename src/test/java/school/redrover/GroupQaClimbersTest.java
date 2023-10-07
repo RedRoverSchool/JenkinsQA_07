@@ -8,6 +8,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 public class GroupQaClimbersTest {
@@ -20,7 +24,7 @@ public class GroupQaClimbersTest {
             driver.get("https://demoqa.com");
             driver.manage().window().maximize();
 
-            driver.findElement(By.xpath("//div[@class='card-up'][1]")).click();
+            driver.findElement(By.xpath("(//div[@class='card-up'])[1]")).click();
             driver.findElement(By.xpath("//span[ contains(text(), 'Text Box')]")).click();
 
             WebElement inputName = driver.findElement(By.id("userName"));
@@ -125,7 +129,7 @@ public class GroupQaClimbersTest {
         }
     }
     @Test
-    public void widgetPageTest() throws InterruptedException {
+    public void widgetPageTest1() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com");
         driver.manage().window().maximize();
@@ -141,6 +145,125 @@ public class GroupQaClimbersTest {
             String title = driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText();
             assertEquals(title, "Yes");
         }finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void TestCheckBoxMenuSubmitWindow(){
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement elements = driver.findElement(By.xpath("//div[@class='card-up'][1]"));
+        js.executeScript("arguments[0].scrollIntoView();", elements);
+        elements.click();
+
+        WebElement checkBoxMenu = driver.findElement
+                (By.xpath("//span[@class='text' ][text() = 'Check Box']"));
+        checkBoxMenu.click();
+
+        WebElement submitWindow = driver.findElement
+                (By.xpath("//span[@class = 'rct-checkbox']"));
+        submitWindow.click();
+
+        WebElement text = driver.findElement(By.xpath("//span[text() = 'You have selected :']"));
+
+        String actualResult = text.getText();
+
+        Assert.assertEquals(actualResult,"You have selected :");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testAllElementsOnFirstPage() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/");
+
+            List<WebElement> listOfWebElements = driver
+                    .findElements(By.xpath("//div[@class='card mt-4 top-card']"));
+
+            List<String> actualListOfElementsNames = new ArrayList<>();
+
+            for (WebElement el : listOfWebElements) {
+                actualListOfElementsNames.add(el.getText());
+            }
+
+            List<String> expectedListElementsNames = Arrays.asList(
+                    "Elements", "Forms", "Alerts, Frame & Windows",
+                    "Widgets", "Interactions", "Book Store Application"
+            );
+            assertEquals(actualListOfElementsNames, expectedListElementsNames);
+
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testClickOnHomeCheckBox() {
+        WebDriver driver = new ChromeDriver();
+        try {
+        driver.get("https://demoqa.com/");
+
+        WebElement elementOnPage = driver.findElement(By.xpath("(//div[@class='card-up'])[1]"));
+        elementOnPage.click();
+
+        driver.findElement(By.xpath("//span[ contains(text(), 'Check Box')]")).click();
+
+        WebElement checkboxHome = driver.findElement(By.xpath("//span[@class='rct-checkbox']"));
+        checkboxHome.click();
+
+        List<WebElement> listOfActualElementsTagsOnScreen = driver.findElements(By
+                .xpath("//span[@class='text-success']"));
+
+        List<String> listOfActualTagsNameOnScreen = new ArrayList<>();
+
+        for (WebElement el : listOfActualElementsTagsOnScreen) {
+            listOfActualTagsNameOnScreen.add(el.getText());
+        }
+
+        List<String> expectedResultNames = List.of("home", "desktop", "notes", "commands", "documents",
+                "workspace", "react", "angular", "veu", "office", "public", "private", "classified", "general",
+                "downloads", "wordFile", "excelFile");
+
+        assertEquals(listOfActualTagsNameOnScreen, expectedResultNames);
+    } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void trainingPage() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        try {
+            WebElement ElementsCard = driver.findElement(By.xpath("//div[@class='card mt-4 top-card'][1]"));
+            ElementsCard.click();
+
+            WebElement TextBox = driver.findElement((By.xpath("//li[@id='item-0'][1]")));
+            TextBox.click();
+
+            WebElement inputFullName = driver.findElement(By.xpath("//input[@class=' mr-sm-2 form-control'][1]"));
+            inputFullName.sendKeys("Barak Obama");
+
+            WebElement inputEmail = driver.findElement(By.xpath("//input[@class='mr-sm-2 form-control']"));
+            inputEmail.sendKeys("barak1961@gmail.com");
+
+            WebElement SubmitButton = driver.findElement(By.xpath("//button[@id='submit']"));
+            js.executeScript("arguments[0].scrollIntoView();", SubmitButton);
+            SubmitButton.click();
+
+            WebElement message = driver.findElement(By.xpath("//div[@class='border col-md-12 col-sm-12']"));
+            String value = message.getText();//берем текст элемента
+            Assert.assertEquals(value, "Name:Barak Obama\nEmail:barak1961@gmail.com");//ожидаем что текст "
+        } finally {
+
             driver.quit();
         }
     }

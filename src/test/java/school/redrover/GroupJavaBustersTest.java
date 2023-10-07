@@ -4,6 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -94,5 +97,73 @@ public class GroupJavaBustersTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testAllFields() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        String mainLink = "https://www.selenium.dev/selenium/web/web-form.html";
+        String indexLink = "https://www.selenium.dev/selenium/web/index.html";
+
+        driver.get(mainLink);
+        WebElement textInput = driver.findElement(By.xpath("//input[@id='my-text-id']"));
+        WebElement passwordInput = driver.findElement(By.xpath("//label[2]/input[1]"));
+        WebElement textArea = driver.findElement(By.xpath("//label[3]/textarea[1]"));
+        WebElement  disableInput = driver.findElement(By.xpath("//label[4]/input[1]"));
+        WebElement  readOnlyField = driver.findElement(By.xpath("//label[5]/input[1]"));
+        WebElement linkReturnToIndex = driver.findElement(By.xpath("//a[contains(text(),'Return to index')]"));
+
+        textInput.sendKeys("test");
+        passwordInput.sendKeys("12345678");
+        textArea.sendKeys("This is a test text for text area");
+        Assert.assertFalse(disableInput.isEnabled());
+        Assert.assertTrue(true, readOnlyField.getAttribute("true"));
+
+        linkReturnToIndex.click();
+        Thread.sleep(2000);
+        String currentLink = driver.getCurrentUrl();
+        Assert.assertEquals(currentLink, indexLink);
+
+        driver.get(mainLink);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement dropdownSelect = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name='my-select']")));
+        Select dropDownSelectedValue = new Select(dropdownSelect);
+        dropDownSelectedValue.selectByValue("1");
+        dropDownSelectedValue.selectByValue("2");
+        dropDownSelectedValue.selectByValue("3");
+
+        driver.quit();
+    }
+
+    @Test
+    public void fillInFormTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://automationintesting.online/");
+
+        WebElement nameField = driver.findElement(By.xpath("//input[@id='name']"));
+        WebElement emailField = driver.findElement(By.xpath("//input[@id='email']"));
+        WebElement phoneField = driver.findElement(By.xpath("//input[@id='phone']"));
+        WebElement subjectField = driver.findElement(By.xpath("//input[@id='subject']"));
+        WebElement messageField = driver.findElement(By.xpath("//textarea[@id='description']"));
+
+        nameField.sendKeys("Marta");
+        emailField.sendKeys("fake@fakeemail.com");
+        phoneField.sendKeys(" 012345678901");
+        subjectField.sendKeys("Subject must be between 5 and 100 characters.");
+        messageField.sendKeys("The Old Farmhouse, Shady Street, Newfordburyshire, NE1 410S");
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[@id='submitContact']"));
+        submitButton.click();
+        Thread.sleep(5000);
+
+        WebElement message = driver.findElement(By.xpath("//h2[normalize-space()='Thanks for getting in touch Marta!']"));
+        String value = message.getText();
+        assertEquals(value, "Thanks for getting in touch Marta!");
+        driver.quit();
+
+
+
+    }
+
 
 }

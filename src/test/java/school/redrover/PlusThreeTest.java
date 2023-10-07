@@ -253,5 +253,29 @@ public class PlusThreeTest {
         Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
         driver.quit();
     }
+    @Test
+    public void testTemperatureInFahrenheit() {
 
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        String url = "https://openweathermap.org/";
+        String fTempSymbol = "°F";
+
+        driver.get(url);
+
+        WebElement menuImperial = driver.findElement(
+                By.xpath("//div[@class = 'switch-container']/div[@class='option']/following-sibling::div")
+        );
+        menuImperial.click();
+
+        WebElement tempF = driver.findElement(
+                By.xpath("//div[@class='current-temp']/span")
+        );
+        String tempInF = tempF.getText();
+
+        Assert.assertTrue(tempInF.contains(fTempSymbol));
+
+        driver.quit();
+    }
 }
