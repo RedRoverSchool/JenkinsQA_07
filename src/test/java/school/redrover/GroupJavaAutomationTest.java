@@ -11,9 +11,13 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.time.Duration;
+
 import org.testng.asserts.SoftAssert;
+
 import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 public class GroupJavaAutomationTest {
@@ -26,6 +30,7 @@ public class GroupJavaAutomationTest {
         assertEquals(title, "The Internet");
         driver.quit();
     }
+
     @Test
     public void herokuAppAddRemoveTest() throws InterruptedException {
         WebDriver driver = new FirefoxDriver();
@@ -45,8 +50,7 @@ public class GroupJavaAutomationTest {
             //clicking on the button, this action will only happen when the button element is visible on the page
             driver.findElement(By.xpath("//*[@id=\"elements\"]/button[1]")).click();
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         driver.quit();
@@ -55,14 +59,14 @@ public class GroupJavaAutomationTest {
 
     @Test
     public void testTextEditor() {
-        final String  expectedText = "My text\nsecond row";
+        final String expectedText = "My text\nsecond row";
         WebDriver driver = new ChromeDriver();
         Wait<WebDriver> wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.get("https://the-internet.herokuapp.com/tinymce");
 
         wait5.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(driver.findElement(By.xpath("//iframe[contains(@title, 'Text Area')]"))));
 
-        WebElement editor =  wait5.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//body[@id = 'tinymce']"))));
+        WebElement editor = wait5.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//body[@id = 'tinymce']"))));
         wait5.until(ExpectedConditions.textToBe(By.xpath("//body[@id = 'tinymce']"), "Your content goes here."));
         editor.clear();
         editor.sendKeys(expectedText);
@@ -73,6 +77,7 @@ public class GroupJavaAutomationTest {
         driver.quit();
 
     }
+
     @Test
     public void herokuappABTest() {
         WebDriver driver = new ChromeDriver();
@@ -98,6 +103,28 @@ public class GroupJavaAutomationTest {
         List<WebElement> listCheckbox = driver.findElements(By.xpath("//input[@type='checkbox']"));
         softAssert.assertEquals(listCheckbox.size(), 2);
         softAssert.assertAll();
+        driver.quit();
+    }
+
+    @Test
+    public void testEntryAd() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://the-internet.herokuapp.com/");
+
+        WebElement entryAd = driver.findElement(By.xpath("//a[@href='/entry_ad']"));
+        entryAd.click();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+
+        WebElement pClose = driver.findElement(By.xpath("//*[@id=\"modal\"]/div[2]/div[3]"));
+        pClose.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.invisibilityOf(pClose));
+
+        Assert.assertFalse(pClose.isDisplayed());
+
         driver.quit();
     }
 
