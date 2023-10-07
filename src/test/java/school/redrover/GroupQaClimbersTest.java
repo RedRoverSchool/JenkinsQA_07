@@ -5,9 +5,12 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -267,4 +270,40 @@ public class GroupQaClimbersTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void testProgressBarInWidgets(){
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement widgetsMenu = driver.findElement
+                (By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[1]"));
+        js.executeScript("arguments[0].scrollIntoView();", widgetsMenu);
+        widgetsMenu.click();
+
+        driver.findElement(By.xpath("//span[@class = 'text'][text() = 'Progress Bar']")).click();
+
+        WebElement startButton = driver.findElement(By.xpath("//button[@id = 'startStopButton']"));
+        startButton.click();
+
+        WebElement progressBar = driver.findElement
+                (By.xpath("//div[@id = 'progressBar'][@class = 'progress']"));
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.textToBePresentInElement(progressBar, "100%"));
+
+        WebElement resetButton = driver.findElement(By.xpath("//button[@id = 'resetButton']"));
+
+        String progressBarResult = progressBar.getText();
+        String resetButtonResult = resetButton.getText();
+
+        Assert.assertEquals(progressBarResult, "100%");
+        Assert.assertEquals(resetButtonResult,"Reset");
+
+        driver.quit();
+    }
+
 }

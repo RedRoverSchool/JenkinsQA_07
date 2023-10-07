@@ -17,7 +17,7 @@ public class GroupIntroVertsQaTest {
     public static final String USER_NAME = String.valueOf(n);
     public static final String PASSWORD = "54321";
     @Test
-    public void registrTest(){
+    public void testRegistr(){
         WebDriver driver = new ChromeDriver();
         driver.get(URL);
 
@@ -57,13 +57,37 @@ public class GroupIntroVertsQaTest {
         WebElement confirm = driver.findElement(By.id("repeatedPassword"));
         confirm.sendKeys(PASSWORD);
 
-        WebElement buttonRegister = driver.
-                findElement(By.xpath("//*[@id='customerForm']/table/tbody/tr[13]/td[2]/input"));
+        WebElement buttonRegister = driver
+                .findElement(By.xpath("//*[@id='customerForm']/table/tbody/tr[13]/td[2]/input"));
         buttonRegister.click();
 
         WebElement welcome = driver.findElement(By.xpath("//*[@id='rightPanel']/h1"));
 
         Assert.assertEquals(welcome.getText(),"Welcome " + USER_NAME);
+
+        driver.quit();
+    }
+
+    @Test
+    public void testCorrectLogin() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+
+        WebElement login = driver.findElement(By.name("username"));
+        login.sendKeys(USER_NAME);
+
+        WebElement password = driver.findElement(By.name("password"));
+        password.sendKeys(PASSWORD);
+
+        Thread.sleep(3000);
+
+        WebElement button = driver.findElement(By.xpath("//*[@id='loginPanel']/form/div[3]/input"));
+        button.click();
+
+        WebElement page = driver.findElement(By.className("title"));
+        String value = page.getText();
+
+        Assert.assertEquals(value, "Accounts Overview");
 
         driver.quit();
     }

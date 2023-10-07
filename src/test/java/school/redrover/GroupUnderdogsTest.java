@@ -3,29 +3,33 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class GroupUnderdogsTest {
-
     WebDriver driver;
 
+    private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
     String userName = "academic198405@gmail.com";
     String password = "BikeTrekMarlyn4!";
     String wrongPassword = "Sbbhbhbln2";
     String baseUrl = "https://www.trekbikes.com/us/en_US/";
 
-//    @BeforeMethod
-//    public void before() {
-//        driver = new FirefoxDriver();
-//    }
+    public void openMainPage() {
+        driver.get(mainPageUrl);
+    }
 
     @AfterMethod
     public void after() {
         driver.quit();
+    }
+
+    @Test
+    public void MainPageTitleTest() {
+        openMainPage();
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "99 Bottles of Beer | Start");
     }
 
     @Test
@@ -63,7 +67,12 @@ public class GroupUnderdogsTest {
         Assert.assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
 
     }
-
+    @Test
+    public void firstMenuTabTextTest(){
+        driver.get("http://www.99-bottles-of-beer.net/abc.html");
+        String elementName = driver.findElement(By.xpath("//ul[@id='submenu']/li[1]/a")).getText();
+        Assert.assertEquals(elementName, "0-9");
+    }
 
     //text written in lower case and color red
     @Test
