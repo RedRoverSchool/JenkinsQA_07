@@ -123,5 +123,6 @@ public class GroupSevenTest {
         WebElement header = driver.findElement(By.xpath("//h1"));
         Assert.assertEquals(header.getText(), "Стоимость сайтов");
         driver.quit();
+
     }
 }
