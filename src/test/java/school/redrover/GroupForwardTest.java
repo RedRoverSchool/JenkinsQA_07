@@ -85,7 +85,6 @@ public class GroupForwardTest {
             wordOfTheDay.click();
 
             Assert.assertEquals(driver.getCurrentUrl(), (urlOfDictionaryOfWordOfDay + wordOfDay));
-
         } finally {
             driver.quit();
         }
