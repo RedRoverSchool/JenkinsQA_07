@@ -5,9 +5,12 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -129,7 +132,7 @@ public class GroupQaClimbersTest {
         }
     }
     @Test
-    public void widgetPageTest() throws InterruptedException {
+    public void widgetPageTest1() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com");
         driver.manage().window().maximize();
@@ -235,4 +238,72 @@ public class GroupQaClimbersTest {
             driver.quit();
         }
     }
+    @Test
+    public void trainingPage() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://demoqa.com");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        try {
+            WebElement ElementsCard = driver.findElement(By.xpath("//div[@class='card mt-4 top-card'][1]"));
+            ElementsCard.click();
+
+            WebElement TextBox = driver.findElement((By.xpath("//li[@id='item-0'][1]")));
+            TextBox.click();
+
+            WebElement inputFullName = driver.findElement(By.xpath("//input[@class=' mr-sm-2 form-control'][1]"));
+            inputFullName.sendKeys("Barak Obama");
+
+            WebElement inputEmail = driver.findElement(By.xpath("//input[@class='mr-sm-2 form-control']"));
+            inputEmail.sendKeys("barak1961@gmail.com");
+
+            WebElement SubmitButton = driver.findElement(By.xpath("//button[@id='submit']"));
+            js.executeScript("arguments[0].scrollIntoView();", SubmitButton);
+            SubmitButton.click();
+
+            WebElement message = driver.findElement(By.xpath("//div[@class='border col-md-12 col-sm-12']"));
+            String value = message.getText();//берем текст элемента
+            Assert.assertEquals(value, "Name:Barak Obama\nEmail:barak1961@gmail.com");//ожидаем что текст "
+        } finally {
+
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testProgressBarInWidgets(){
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement widgetsMenu = driver.findElement
+                (By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[1]"));
+        js.executeScript("arguments[0].scrollIntoView();", widgetsMenu);
+        widgetsMenu.click();
+
+        driver.findElement(By.xpath("//span[@class = 'text'][text() = 'Progress Bar']")).click();
+
+        WebElement startButton = driver.findElement(By.xpath("//button[@id = 'startStopButton']"));
+        startButton.click();
+
+        WebElement progressBar = driver.findElement
+                (By.xpath("//div[@id = 'progressBar'][@class = 'progress']"));
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.textToBePresentInElement(progressBar, "100%"));
+
+        WebElement resetButton = driver.findElement(By.xpath("//button[@id = 'resetButton']"));
+
+        String progressBarResult = progressBar.getText();
+        String resetButtonResult = resetButton.getText();
+
+        Assert.assertEquals(progressBarResult, "100%");
+        Assert.assertEquals(resetButtonResult,"Reset");
+
+        driver.quit();
+    }
+
 }

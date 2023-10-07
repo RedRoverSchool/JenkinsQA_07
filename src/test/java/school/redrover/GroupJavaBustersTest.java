@@ -135,4 +135,35 @@ public class GroupJavaBustersTest {
         driver.quit();
     }
 
+    @Test
+    public void fillInFormTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://automationintesting.online/");
+
+        WebElement nameField = driver.findElement(By.xpath("//input[@id='name']"));
+        WebElement emailField = driver.findElement(By.xpath("//input[@id='email']"));
+        WebElement phoneField = driver.findElement(By.xpath("//input[@id='phone']"));
+        WebElement subjectField = driver.findElement(By.xpath("//input[@id='subject']"));
+        WebElement messageField = driver.findElement(By.xpath("//textarea[@id='description']"));
+
+        nameField.sendKeys("Marta");
+        emailField.sendKeys("fake@fakeemail.com");
+        phoneField.sendKeys(" 012345678901");
+        subjectField.sendKeys("Subject must be between 5 and 100 characters.");
+        messageField.sendKeys("The Old Farmhouse, Shady Street, Newfordburyshire, NE1 410S");
+
+        WebElement submitButton = driver.findElement(By.xpath("//button[@id='submitContact']"));
+        submitButton.click();
+        Thread.sleep(5000);
+
+        WebElement message = driver.findElement(By.xpath("//h2[normalize-space()='Thanks for getting in touch Marta!']"));
+        String value = message.getText();
+        assertEquals(value, "Thanks for getting in touch Marta!");
+        driver.quit();
+
+
+
+    }
+
+
 }
