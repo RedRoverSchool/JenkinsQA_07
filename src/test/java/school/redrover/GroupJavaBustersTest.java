@@ -168,10 +168,6 @@ public class GroupJavaBustersTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.euronics.lv/");
 
-//        String title = driver.getTitle();
-//        Assert.assertEquals(title, "Euronics.lv | Sadzīves tehnika | Virtuves tehnika \n | TV | Viedtālruņi | Euronics");
-
-        //  driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         WebElement cookieButton = driver.findElement(By.id("cookie-accept-all-button"));
         cookieButton.click();
 
