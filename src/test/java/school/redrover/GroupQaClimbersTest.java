@@ -306,4 +306,69 @@ public class GroupQaClimbersTest {
         driver.quit();
     }
 
+    @Test
+    public void LocatorXPath() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+
+        try {
+            WebElement elementsBtn = driver.findElement(By.xpath("//h5[1]"));
+            String value = elementsBtn.getText();
+            Assert.assertEquals("Elements", value);
+            elementsBtn.click();
+
+            WebElement mainHeaderElements = driver.findElement(By.xpath("//*[@class ='main-header']"));
+            String valueMainHeader = mainHeaderElements.getText();
+            Assert.assertEquals("Elements", valueMainHeader);
+
+            WebElement textBoxTab = driver.findElement(By.xpath("//span[text()='Text Box']"));
+            String valueTextBoxTab = textBoxTab.getText();
+            Assert.assertEquals("Text Box", valueTextBoxTab);
+            textBoxTab.click();
+
+            WebElement mainHeaderTextBox = driver.findElement(By.xpath("//*[@class ='main-header']"));
+            String valueMainHeader1 = mainHeaderTextBox.getText();
+            Assert.assertEquals("Text Box", valueMainHeader1 );
+
+            WebElement fullName = driver.findElement(By.xpath("//*[@placeholder='Full Name']"));
+            fullName.sendKeys("Nat");
+
+            WebElement email = driver.findElement(By.xpath("//input[@id='userEmail']"));
+            email.sendKeys("new@new.new");
+
+            WebElement country = driver.findElement(By.xpath("//*[@id='currentAddress']"));
+            country.sendKeys("USA");
+
+            WebElement countryPermanent = driver.findElement(By.xpath("//*[@id='permanentAddress']"));
+            countryPermanent.sendKeys("NY");
+
+            WebElement submit = driver.findElement(By.xpath("//*[@id='submit']"));
+            submit.click();
+
+            WebElement displayedName = driver.findElement(By.xpath("//*[@id='name']"));
+            String nameValue = displayedName.getText();
+
+            Assert.assertEquals("Name:Nat", nameValue);
+
+            WebElement displayedEmail = driver.findElement(By.xpath("//*[@id='email']"));
+            String emailValue = displayedEmail.getText();
+
+            Assert.assertEquals("Email:new@new.new", emailValue);
+
+            WebElement displayedCurrentAddress = driver.findElement(By.xpath("//p[@id='currentAddress']"));
+            String currAddressValue = displayedCurrentAddress.getText();
+
+            Assert.assertEquals("Current Address :USA", currAddressValue);
+
+            WebElement displayedPermAddress = driver.findElement(By.xpath("//p[@id='permanentAddress']"));
+            String permAddressValue = displayedPermAddress.getText();
+
+            Assert.assertEquals("Permananet Address :NY", permAddressValue);
+        }finally {
+            driver.quit();
+        }
+    }
+
 }
