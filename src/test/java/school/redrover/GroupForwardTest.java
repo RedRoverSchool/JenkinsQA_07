@@ -27,5 +27,24 @@ public class GroupForwardTest {
         driver.quit();
 
     }
+
+    @Test
+    public void testToSpanish() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.ldoceonline.com/");
+
+        WebElement languageButton = driver.findElement(By.xpath("//span[@class='text']"));
+        languageButton.click();
+        WebElement spanishButton = driver.findElement(By.xpath("//a[@class='item' and text()='Español latino']"));
+        spanishButton.click();
+
+        WebElement title = driver.findElement(By.xpath("//h1[contains(text(),'Bienvenido')]"));
+        String value = title.getText();
+
+        Assert.assertEquals(value, "Bienvenido al Longman Dictionary of Contemporary English Online");
+
+        driver.quit();
+
+    }
 }
 
