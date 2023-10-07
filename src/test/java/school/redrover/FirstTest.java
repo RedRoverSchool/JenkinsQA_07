@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,28 +13,35 @@ import org.testng.annotations.Test;
 public class FirstTest {
 
     @Test
-    public void  testSearch() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();
+    public void eightComponents() {
 
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.google.com/");
+        WebDriver driver = new FirefoxDriver();
+        driver.get("https://ymcacapecod.org/");
 
-            WebElement textBox = driver.findElement(By.className("gLFyf"));
-            textBox.sendKeys("Selenium");
+//        String title = driver.getTitle();
+//        Assert.assertEquals( title,"Свежие сборники песен в формате и MP3 и FLAC торрентом");
 
-             Thread.sleep(850);
+        //driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-             WebElement searchButton = driver.findElement(By.className("gNO89b"));
-             searchButton.click();
+        WebElement textBox = driver.findElement(By.className("field"));
+        WebElement SearchButton = driver.findElement(By.className("submit"));
 
-            System.out.println("Hello");
+        textBox.sendKeys("pool");
+        SearchButton.click();
 
-            WebElement title = driver.findElement(By.className("yKMVIe"));
-            String value = title.getText();
-            Assert.assertEquals(value, "Selenium");
-        } finally {
-            driver.quit();
-        }
+        WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
+        findelement.click();
+//        WebElement element = driver.findElement(By.className("button"));
+//        element.click();
+//
+//        WebElement text = driver.findElement(By.className("chooseMembership__membership-col"));
+        WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
+        text.click();
+
+        String value = text.getText();
+        Assert.assertEquals( value,"CLICK HERE TO REGISTER ONLINE!");
+
+        driver.quit();
     }
+
 }
