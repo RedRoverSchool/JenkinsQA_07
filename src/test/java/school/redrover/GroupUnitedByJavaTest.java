@@ -178,9 +178,6 @@ public class GroupUnitedByJavaTest {
         assertTrue(priceMax > priceMin);
     }
 
-
-
-
     @Test
     public void demoqaFormsRedirection() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -197,5 +194,23 @@ public class GroupUnitedByJavaTest {
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testDemoqa(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        String title = driver.getTitle();
+        assertEquals (title, "DEMOQA");
+
+        WebElement testBloc = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[6]"));
+        testBloc.click();
+
+        WebElement message = driver.findElement(By.className("main-header"));
+        String value = message.getText();
+        assertEquals( value, "Book Store");
+
+        driver.quit();
     }
 }
