@@ -201,6 +201,7 @@ public class GroupItFriendlyTest {
             WebElement checkboxIsSelected = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
             checkboxIsSelected.click();
 
+
             assertEquals(driver.findElement(By.xpath("//*[@id=\"result\"]")).getText(), "You have selected :\n" +
                     "home\n" +
                     "desktop\n" +
