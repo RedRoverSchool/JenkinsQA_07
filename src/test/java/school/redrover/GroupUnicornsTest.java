@@ -134,10 +134,4 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
-
-
-
-
-
 }
