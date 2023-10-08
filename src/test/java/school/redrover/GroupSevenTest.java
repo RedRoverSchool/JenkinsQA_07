@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 public class GroupSevenTest {
     @Test
@@ -23,7 +24,7 @@ public class GroupSevenTest {
     }
 
     @Test
-    public void searchTest() throws InterruptedException{
+    public void searchTest() throws InterruptedException {
         WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://kyliecosmetics.com/collections/kylie-cosmetics");
@@ -51,7 +52,7 @@ public class GroupSevenTest {
     @Test
     public void TestBddSearch() {
         WebDriver driver = new ChromeDriver();
-        try{
+        try {
             driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
             driver.get("https://duckduckgo.com/");
             WebElement searchBox = driver.findElement(By.xpath("//input[@class = 'searchbox_input__bEGm3']"));
@@ -65,8 +66,9 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+
     @Test
-    public void testSearch(){
+    public void testSearch() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://elitetransit.com/");
@@ -79,10 +81,11 @@ public class GroupSevenTest {
             String title = driver.getTitle();
 
             Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
-        }finally {
+        } finally {
             driver.quit();
         }
     }
+
     @Test
     public void testTextInput() {
 
@@ -101,6 +104,47 @@ public class GroupSevenTest {
             submit.submit();
             WebElement message = driver.findElement(By.id("message"));
             Assert.assertEquals(message.getText(), "Received!");
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testPage() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://megagroup.by/");
+        driver.manage().window().maximize();
+        Thread.sleep(1500);
+
+        WebElement price = driver.findElement(
+                By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+        price.click();
+
+        Thread.sleep(1500);
+        WebElement header = driver.findElement(By.xpath("//h1"));
+        Assert.assertEquals(header.getText(), "Стоимость сайтов");
+        driver.quit();
+    }
+    @Test
+    public void testHPSearch() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.wizardingworld.com/");
+            WebElement hamBurgerMenu = driver.findElement(By.xpath("//*[@id='hamBurgerMenu']"));
+            hamBurgerMenu.click();
+            WebElement searchActivation = driver.findElement(By.xpath("//button[@data-testid='navSearchButton']"));
+            searchActivation.click();
+            WebElement searchField = driver.findElement(By.xpath("//input[@name='Search']"));
+            searchField.sendKeys("Harry Potter");
+            WebElement searchButton = driver.findElement(By.xpath(" //button[@name='Search button']"));
+            searchButton.click();
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(8000));
+            WebElement searchResults = driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/div/div[6]/div/div[3]/div[2]/div[2]/ul/li[4]/article/a/div[2]"));
+            searchResults.click();
+            ArrayList<String> wid = new ArrayList<>(driver.getWindowHandles());
+            driver.switchTo().window(wid.get(1));
+            WebElement resultHeader = driver.findElement(By.xpath("//h1"));
+            Assert.assertEquals(resultHeader.getText(),"Harry Potter");
         } finally {
             driver.quit();
         }

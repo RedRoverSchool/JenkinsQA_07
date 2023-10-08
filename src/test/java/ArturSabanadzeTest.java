@@ -9,7 +9,7 @@ public class ArturSabanadzeTest {
 
     //Check if Title of the Website is correct.
     @Test
-    public void titeleCheck()
+    public void titleCheck()
     {
 
         WebDriver driver = new ChromeDriver();
@@ -63,6 +63,31 @@ public class ArturSabanadzeTest {
             Assert.assertEquals(placeholderText, "Disabled input");
 
         } finally {
+            driver.quit();
+        }
+    }
+
+
+    @Test
+    public void colorCheck() {
+        WebDriver driver = new ChromeDriver();
+        try {
+
+            driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+
+            WebElement colorInputElement = driver.findElement(By.name("my-colors"));
+
+
+            String actualColor = colorInputElement.getAttribute("value");
+
+
+            String expectedColor = "#563d7c";
+
+
+            Assert.assertEquals(actualColor, expectedColor, "Element color is not as expected");
+        }
+        finally {
             driver.quit();
         }
     }

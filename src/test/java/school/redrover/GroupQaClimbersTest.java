@@ -5,9 +5,12 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 public class GroupQaClimbersTest {
+
+    final static String URL = "https://demoqa.com/";
 
     @Test
     public void testTextBox() {
@@ -266,5 +271,187 @@ public class GroupQaClimbersTest {
 
             driver.quit();
         }
+    }
+
+    @Test
+    public void testProgressBarInWidgets(){
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement widgetsMenu = driver.findElement
+                (By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[1]"));
+        js.executeScript("arguments[0].scrollIntoView();", widgetsMenu);
+        widgetsMenu.click();
+
+        driver.findElement(By.xpath("//span[@class = 'text'][text() = 'Progress Bar']")).click();
+
+        WebElement startButton = driver.findElement(By.xpath("//button[@id = 'startStopButton']"));
+        startButton.click();
+
+        WebElement progressBar = driver.findElement
+                (By.xpath("//div[@id = 'progressBar'][@class = 'progress']"));
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.textToBePresentInElement(progressBar, "100%"));
+
+        WebElement resetButton = driver.findElement(By.xpath("//button[@id = 'resetButton']"));
+
+        String progressBarResult = progressBar.getText();
+        String resetButtonResult = resetButton.getText();
+
+        Assert.assertEquals(progressBarResult, "100%");
+        Assert.assertEquals(resetButtonResult,"Reset");
+
+        driver.quit();
+    }
+
+    @Test
+    public void LocatorXPath() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+        driver.manage().window().maximize();
+
+        try {
+            WebElement elementsBtn = driver.findElement(By.xpath("//h5[1]"));
+            String value = elementsBtn.getText();
+            Assert.assertEquals("Elements", value);
+            elementsBtn.click();
+
+            WebElement mainHeaderElements = driver.findElement(By.xpath("//*[@class ='main-header']"));
+            String valueMainHeader = mainHeaderElements.getText();
+            Assert.assertEquals("Elements", valueMainHeader);
+
+            WebElement textBoxTab = driver.findElement(By.xpath("//span[text()='Text Box']"));
+            String valueTextBoxTab = textBoxTab.getText();
+            Assert.assertEquals("Text Box", valueTextBoxTab);
+            textBoxTab.click();
+
+            WebElement mainHeaderTextBox = driver.findElement(By.xpath("//*[@class ='main-header']"));
+            String valueMainHeader1 = mainHeaderTextBox.getText();
+            Assert.assertEquals("Text Box", valueMainHeader1 );
+
+            WebElement fullName = driver.findElement(By.xpath("//*[@placeholder='Full Name']"));
+            fullName.sendKeys("Nat");
+
+            WebElement email = driver.findElement(By.xpath("//input[@id='userEmail']"));
+            email.sendKeys("new@new.new");
+
+            WebElement country = driver.findElement(By.xpath("//*[@id='currentAddress']"));
+            country.sendKeys("USA");
+
+            WebElement countryPermanent = driver.findElement(By.xpath("//*[@id='permanentAddress']"));
+            countryPermanent.sendKeys("NY");
+
+            WebElement submit = driver.findElement(By.xpath("//*[@id='submit']"));
+            submit.click();
+
+            WebElement displayedName = driver.findElement(By.xpath("//*[@id='name']"));
+            String nameValue = displayedName.getText();
+
+            Assert.assertEquals("Name:Nat", nameValue);
+
+            WebElement displayedEmail = driver.findElement(By.xpath("//*[@id='email']"));
+            String emailValue = displayedEmail.getText();
+
+            Assert.assertEquals("Email:new@new.new", emailValue);
+
+            WebElement displayedCurrentAddress = driver.findElement(By.xpath("//p[@id='currentAddress']"));
+            String currAddressValue = displayedCurrentAddress.getText();
+
+            Assert.assertEquals("Current Address :USA", currAddressValue);
+
+            WebElement displayedPermAddress = driver.findElement(By.xpath("//p[@id='permanentAddress']"));
+            String permAddressValue = displayedPermAddress.getText();
+
+            Assert.assertEquals("Permananet Address :NY", permAddressValue);
+        }finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testElementsCheckBox() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(URL);
+        Thread.sleep(500);
+
+        driver.findElement(
+                By.xpath("//div[@class='category-cards']/div[2]/div/div[@class='card-up']"))
+                .click();
+        Thread.sleep(200);
+
+        driver.findElement(
+                By.xpath("(//div[@class='body-height']/div/div[2]/div/div/div/div/span/div)[1]"))
+                .click();
+        Thread.sleep(500);
+
+        driver.findElement(
+                By.xpath("//span[ contains(text(), 'Check Box')]"))
+                .click();
+        Thread.sleep(200);
+
+        driver.findElement(
+                By.xpath("//span[@class='rct-checkbox']/*[name()='svg']"))
+                .click();
+
+        WebElement message = driver.findElement(
+                By.xpath("//div[@class='display-result mt-4']"));
+        String messageText = message.getText();
+
+        Assert.assertEquals(messageText,
+                """
+                        You have selected :
+                        home
+                        desktop
+                        notes
+                        commands
+                        documents
+                        workspace
+                        react
+                        angular
+                        veu
+                        office
+                        public
+                        private
+                        classified
+                        general
+                        downloads
+                        wordFile
+                        excelFile""");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testListOfAlertsFrameAndWindows() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(URL);
+        Thread.sleep(200);
+
+        driver.findElement(
+                By.xpath("(//div[@class='card mt-4 top-card'])[3]"))
+                .click();
+
+        List<WebElement> listofAlertsFrameAndWindows = driver.findElements(
+                By.xpath("//div[@class='left-pannel']/div/div[3]/div/ul[@class='menu-list']/li"));
+
+        List<String> actualListofAlertsFrameAndWindows = new ArrayList<>();
+        for (WebElement element: listofAlertsFrameAndWindows) {
+            actualListofAlertsFrameAndWindows.add(element.getText());
+        }
+
+        List<String> expectedListofAlertsFrameAndWindows = List.of(
+                "Browser Windows", "Alerts", "Frames", "Nested Frames", "Modal Dialogs");
+
+        Assert.assertEquals(actualListofAlertsFrameAndWindows, expectedListofAlertsFrameAndWindows);
+
+        driver.quit();
     }
 }

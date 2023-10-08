@@ -16,13 +16,13 @@ public class  FirstTest {
         WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
-        try {
+
             driver.get("https://www.google.com/");
 
             WebElement textBox = driver.findElement(By.className("gLFyf"));
             textBox.sendKeys("Selenium");
 
-             Thread.sleep(900);
+              Thread.sleep(600);
 
              WebElement searchButton = driver.findElement(By.className("gNO89b"));
              searchButton.click();
@@ -32,8 +32,8 @@ public class  FirstTest {
             WebElement title = driver.findElement(By.className("yKMVIe"));
             String value = title.getText();
             Assert.assertEquals(value, "Selenium");
-        } finally {
+
             driver.quit();
         }
     }
-}
+
