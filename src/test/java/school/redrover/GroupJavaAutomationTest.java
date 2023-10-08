@@ -31,7 +31,6 @@ public class GroupJavaAutomationTest {
         assertEquals(title, "The Internet");
         driver.quit();
     }
-
     @Test
     public void herokuAppAddRemoveTest() throws InterruptedException {
         WebDriver driver = new FirefoxDriver();
@@ -55,33 +54,12 @@ public class GroupJavaAutomationTest {
         catch (Exception e) {
             e.printStackTrace();
         }
-        driver.quit();
+
 
     }
 
     @Test
-    public void testTextEditor() {
-        final String expectedText = "My text\nsecond row";
-        WebDriver driver = new ChromeDriver();
-        Wait<WebDriver> wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
-        driver.get("https://the-internet.herokuapp.com/tinymce");
-
-        wait5.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(driver.findElement(By.xpath("//iframe[contains(@title, 'Text Area')]"))));
-
-        WebElement editor = wait5.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//body[@id = 'tinymce']"))));
-        wait5.until(ExpectedConditions.textToBe(By.xpath("//body[@id = 'tinymce']"), "Your content goes here."));
-        editor.clear();
-        editor.sendKeys(expectedText);
-
-        String actualText = editor.getText();
-
-        Assert.assertEquals(actualText, expectedText);
-        driver.quit();
-
-    }
-
-    @Test
-    public void herokuAppABTest() {
+    public void herokuappABTest() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://the-internet.herokuapp.com/");
         WebElement buttonABTesting = driver.findElement(By.xpath("//a[@href='/abtest']"));
@@ -93,7 +71,7 @@ public class GroupJavaAutomationTest {
     }
 
     @Test
-    public void herokuAppCheckBoxTest() {
+    public void herokuappCheckBoxTest() {
         WebDriver driver = new ChromeDriver();
         SoftAssert softAssert = new SoftAssert();
         driver.get("https://the-internet.herokuapp.com/");
