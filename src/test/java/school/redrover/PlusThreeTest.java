@@ -278,4 +278,32 @@ public class PlusThreeTest {
 
         driver.quit();
     }
+
+    @Test
+    public void TestDemoqa() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/automation-practice-form");
+
+        WebElement textBox = driver.findElement(By.id("firstName"));
+        textBox.sendKeys("Vova");
+
+        WebElement textBox2 = driver.findElement(By.id("lastName"));
+        textBox2.sendKeys("Petrov");
+
+        WebElement tel = driver.findElement(By.id("userNumber"));
+        tel.sendKeys("8800222552");
+
+        WebElement pol = driver.findElement(By.className("custom-control-label"));
+        pol.click();
+
+        WebElement submitButton = driver.findElement(By.id("submit"));
+        submitButton.click();
+
+        WebElement proverka = driver.findElement(By.id("example-modal-sizes-title-lg"));
+        String value = proverka.getText();
+        Assert.assertEquals(value, "Thanks for submitting the form");
+
+        driver.quit();
+    }
 }
+
