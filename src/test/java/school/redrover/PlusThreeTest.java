@@ -22,6 +22,7 @@ public class PlusThreeTest {
     public static final String PERMANENT_ADDRESS = "USA1";
     public static final String CITY= "LOS ANGELES";
     public static final String STATE ="California";
+    public static final String URL_PARABANK = "https://parabank.parasoft.com/";
     ChromeDriver driver;
 
     public void cleanDataBaseAndCloseBrow() {
@@ -198,4 +199,83 @@ public class PlusThreeTest {
         driver.quit();
     }
 
+    @Test(description = "Swag labs login")
+    public void loginSwagLabs() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.saucedemo.com/");
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Swag Labs");
+
+        WebElement loginField = driver.findElement(By.xpath(".//div/input[@id='user-name']"));
+        WebElement passwordField = driver.findElement(By.xpath(".//div/input[@id='password']"));
+        WebElement loginButton = driver.findElement(By.xpath("//*[@id='login-button']"));
+
+        loginField.sendKeys("standard_user");
+        passwordField.sendKeys("secret_sauce");
+        loginButton.click();
+        Thread.sleep(1000);
+
+        WebElement marketLogo = driver.findElement(By.xpath(".//div[text()='Swag Labs']"));
+
+        String name = marketLogo.getText();
+        Assert.assertEquals(name, "Swag Labs");
+
+        driver.quit();
+    }
+
+    @Test
+    public  void contactUs() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(URL_PARABANK);
+
+        WebElement contactUs = driver.findElement(By.xpath("//a[contains(text(), 'contact')]"));
+        contactUs.click();
+        WebElement title = driver.findElement(By.xpath("//*[@class='title']"));
+        String resTitle = title.getText();
+        Assert.assertEquals(resTitle, "Customer Care");
+
+        WebElement nameField = driver.findElement(By.name("name"));
+        WebElement emailField = driver.findElement(By.name("email"));
+        WebElement phoneField = driver.findElement(By.name("phone"));
+        WebElement messageField = driver.findElement(By.name("message"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id='contactForm']//descendant::input[@class='button']"));
+
+        nameField.sendKeys(USERNAME);
+        emailField.sendKeys("example@example.com");
+        phoneField.sendKeys("111111111");
+        messageField.sendKeys("Text");
+
+        submitButton.click();
+
+        WebElement confirmationMessage = driver.findElement(By.xpath("//*[@id='rightPanel']/p[contains(text(),'Thank you')]"));
+        Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
+        driver.quit();
+    }
+    @Test
+    public void testTemperatureInFahrenheit() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        String url = "https://openweathermap.org/";
+        String fTempSymbol = "°F";
+
+        driver.get(url);
+
+        WebElement menuImperial = driver.findElement(
+                By.xpath("//div[@class = 'switch-container']/div[@class='option']/following-sibling::div")
+        );
+        menuImperial.click();
+
+        WebElement tempF = driver.findElement(
+                By.xpath("//div[@class='current-temp']/span")
+        );
+        String tempInF = tempF.getText();
+
+        Assert.assertTrue(tempInF.contains(fTempSymbol));
+
+        driver.quit();
+    }
 }

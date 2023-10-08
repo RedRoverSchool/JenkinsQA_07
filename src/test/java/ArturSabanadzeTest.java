@@ -67,6 +67,7 @@ public class ArturSabanadzeTest {
         }
     }
 
+
     @Test
     public void colorCheck() {
         WebDriver driver = new ChromeDriver();

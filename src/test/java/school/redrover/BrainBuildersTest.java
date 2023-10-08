@@ -4,8 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
+
+import static org.testng.Assert.assertEquals;
 
 public class BrainBuildersTest {
 
@@ -52,6 +57,33 @@ public class BrainBuildersTest {
 
             Thread.sleep(5000);
             Assert.assertTrue(driver.getPageSource().contains("Double"));
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testAlcobendasSearch() {
+        WebDriver driver = new FirefoxDriver();
+        try {
+            driver.get("https://www.alcobendas.org/es");
+
+            String title = driver.getTitle();
+            assertEquals(title, "Página Web del Ayuntamiento de Alcobendas");
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+            WebElement lupaButton = driver.findElement(By.xpath("//*[@id='block-views-block-ayto-vista-lupa-header-block-1']/div/div"));
+            WebElement buscarButton = driver.findElement(By.xpath("//*[@id='edit-submit-ayto-resultados-de-busqueda-bloque']"));
+            WebElement searchInput = driver.findElement(By.xpath("//*[@id='edit-buscar']"));
+
+            lupaButton.click();
+            searchInput.sendKeys("yoga");
+            buscarButton.click();
+
+            WebElement resultOfSearch = driver.findElement(By.cssSelector("h2:nth-child(2)"));
+
+            String value = resultOfSearch.getText();
+            Assert.assertEquals(value, "/2 resultados");
         } finally {
             driver.quit();
         }
