@@ -123,7 +123,7 @@ public class GroupJavaExplorersTest {
     }
 
     @Test
-    public static void toAddToCartTest() throws InterruptedException {
+    public static void toAddToCartTest() {
 
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
