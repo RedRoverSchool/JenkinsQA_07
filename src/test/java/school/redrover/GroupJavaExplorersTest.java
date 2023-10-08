@@ -123,7 +123,7 @@ public class GroupJavaExplorersTest {
     }
 
     @Test
-    public static void toAddToCartTest() {
+    public static void testAddToCart() {
 
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -166,6 +166,26 @@ public class GroupJavaExplorersTest {
 
         int actualResult = Integer.parseInt(itemInCart.getText());
         Assert.assertEquals(actualResult, 2);
+        driver.quit();
+    }
+
+    @Test
+    public static void testImages() {
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.manage().window().maximize();
+
+        driver.get("https://magento.softwaretestingboard.com/");
+        wait.until(ExpectedConditions.elementToBeClickable(By.
+                xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]")));
+
+        WebElement whatsNew = driver.findElement(By.
+                xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]"));
+        whatsNew.click();
+        List<WebElement> images = driver.findElements(By.
+                xpath("//div//img[@class='product-image-photo']"));
+        Assert.assertEquals(images.size(), 4);
+
         driver.quit();
     }
 }
