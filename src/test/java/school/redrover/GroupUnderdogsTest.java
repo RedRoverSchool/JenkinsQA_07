@@ -278,7 +278,7 @@ public class GroupUnderdogsTest {
 
     @Test
     public void testNamesOfCreatorsOfSite() {
-        final List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
+        List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
 
         driver = new ChromeDriver();
         driver.get(mainPageUrl);
