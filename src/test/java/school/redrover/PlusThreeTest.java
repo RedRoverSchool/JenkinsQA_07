@@ -280,7 +280,7 @@ public class PlusThreeTest {
     }
 
     @Test
-    public void TestDemoqa() {
+    public void DemoqaTest() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/automation-practice-form");
 
