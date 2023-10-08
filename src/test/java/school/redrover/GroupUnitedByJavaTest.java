@@ -225,17 +225,16 @@ public class GroupUnitedByJavaTest {
         String title = driver.getTitle();
         Assert.assertEquals (title, "DEMOQA");
 
-        WebElement cardBookStore = driver.findElement(By.xpath("(//div[contains(@class, \"card mt-4 top-card\")])[last()]"));
+        WebElement cardBookStore = driver.findElement(By.xpath("(//div[contains(@class, 'card mt-4 top-card')])[last()]"));
         cardBookStore.click();
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books");
 
-        WebElement cardBook = driver.findElement(By.xpath("//*[@id=\"see-book-Git Pocket Guide\"]/a"));
+        WebElement cardBook = driver.findElement(By.xpath("//*[@id='see-book-Git Pocket Guide']/a"));
         cardBook.click();
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books?book=9781449325862");
 
         driver.quit();
-
     }
 }
