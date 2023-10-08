@@ -216,7 +216,7 @@ public class GroupJavaAutomationTest {
         webDriver.manage().window().maximize();
         WebElement elementCheckBoxes = webDriver.findElement(By.xpath("//a[@href='/checkboxes']"));
         elementCheckBoxes.click();
-        List<WebElement> elementFormCheckBoxes = null;
+        List<WebElement> elementFormCheckBoxes;
         WebElement checkBox1 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[1]"));
         WebElement checkBox2 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[2]"));
         elementFormCheckBoxes = List.of(checkBox1, checkBox2);
