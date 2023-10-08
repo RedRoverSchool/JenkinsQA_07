@@ -16,7 +16,7 @@ public class  FirstTest {
         WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
-        try {
+
             driver.get("https://www.google.com/");
 
             WebElement textBox = driver.findElement(By.className("gLFyf"));
@@ -32,8 +32,8 @@ public class  FirstTest {
             WebElement title = driver.findElement(By.className("yKMVIe"));
             String value = title.getText();
             Assert.assertEquals(value, "Selenium");
-        } finally {
+
             driver.quit();
         }
     }
-}
+
