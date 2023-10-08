@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -178,9 +179,6 @@ public class GroupUnitedByJavaTest {
         assertTrue(priceMax > priceMin);
     }
 
-
-
-
     @Test
     public void demoqaFormsRedirection() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -197,5 +195,46 @@ public class GroupUnitedByJavaTest {
         } finally {
             driver.quit();
         }
+    }
+
+
+    @Test
+    public void testDemoqa(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        String title = driver.getTitle();
+        assertEquals (title, "DEMOQA");
+
+        WebElement testBloc = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[6]"));
+        testBloc.click();
+
+        WebElement message = driver.findElement(By.className("main-header"));
+        String value = message.getText();
+        assertEquals( value, "Book Store");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testDemoqaEdgeBookFlow(){
+        WebDriver driver = new EdgeDriver();
+
+        driver.get("https://demoqa.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals (title, "DEMOQA");
+
+        WebElement cardBookStore = driver.findElement(By.xpath("(//div[contains(@class, 'card mt-4 top-card')])[last()]"));
+        cardBookStore.click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books");
+
+        WebElement cardBook = driver.findElement(By.xpath("//*[@id='see-book-Git Pocket Guide']/a"));
+        cardBook.click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books?book=9781449325862");
+
+        driver.quit();
     }
 }

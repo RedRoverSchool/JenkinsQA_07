@@ -45,4 +45,42 @@ public class IronTeamGroupTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void testCustomerLogin() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+            Thread.sleep(1000);
+            WebElement loginButton = driver.findElement(By.cssSelector("[ng-click='customer()']"));
+            loginButton.click();
+            Thread.sleep(1000);
+            driver.findElement(By.id("userSelect")).click();
+            driver.findElement(By.cssSelector("[value='2']")).click();
+            driver.findElement(By.cssSelector("[type='submit']")).click();
+            Thread.sleep(1000);
+
+            WebElement result = driver.findElement(By.xpath("//span[@class='fontBig ng-binding']/parent::strong"));
+            Assert.assertEquals(result.getText(), "Welcome Harry Potter !!");
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void ferosorSearch() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://ferosor.cl");
+            Thread.sleep(1000);
+            WebElement textBox = driver.findElement(By.name("s"));
+            textBox.sendKeys("alimento");
+            driver.findElement(By.cssSelector("[type='submit']")).click();
+            Thread.sleep(1000);
+
+        } finally {
+            driver.quit();
+        }
+    }
 }

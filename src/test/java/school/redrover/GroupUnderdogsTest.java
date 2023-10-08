@@ -3,29 +3,33 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class GroupUnderdogsTest {
-
     WebDriver driver;
 
+    private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
     String userName = "academic198405@gmail.com";
     String password = "BikeTrekMarlyn4!";
     String wrongPassword = "Sbbhbhbln2";
     String baseUrl = "https://www.trekbikes.com/us/en_US/";
 
-//    @BeforeMethod
-//    public void before() {
-//        driver = new FirefoxDriver();
-//    }
+    public void openMainPage() {
+        driver.get(mainPageUrl);
+    }
 
     @AfterMethod
     public void after() {
         driver.quit();
+    }
+
+    @Test
+    public void MainPageTitleTest() {
+        openMainPage();
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "99 Bottles of Beer | Start");
     }
 
     @Test
@@ -63,18 +67,22 @@ public class GroupUnderdogsTest {
         Assert.assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
 
     }
+    @Test
+    public void firstMenuTabTextTest(){
+        driver.get("http://www.99-bottles-of-beer.net/abc.html");
+        String elementName = driver.findElement(By.xpath("//ul[@id='submenu']/li[1]/a")).getText();
+        Assert.assertEquals(elementName, "0-9");
+    }
 
-
-    //TC_11_07 что надпись об исключении красным цветом и с маленькой буквы
+    //text written in lower case and color red
     @Test
     public void maksinTestInactive() {
         driver = new FirefoxDriver();
         driver.get("http://www.99-bottles-of-beer.net/team.html");
-        WebElement header = driver.findElement(By.xpath
+        WebElement text = driver.findElement(By.xpath
                 ("/html/body/div/div[3]/p[7]/font/b"));
-        //Assert.assertTrue(header.getText().toLowerCase().equals(header.getText())); //одинаковые
-        Assert.assertEquals(header.getText(), header.getText().toLowerCase());     //одинаковые
-        Assert.assertEquals(header.getCssValue("color"), "rgb(255, 0, 0)");
+        Assert.assertTrue(text.getText().toLowerCase().equals(text.getText()));
+        Assert.assertEquals(text.getCssValue("color"), "rgb(255, 0, 0)");
     }
 
     @Test
@@ -179,5 +187,43 @@ public class GroupUnderdogsTest {
 
         String bikeName =  marlin4.getText();
         Assert.assertEquals(bikeName, "Marlin 4 Gen 2");
+    }
+
+    @Test
+    public void kristinaNameAuthorSite(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.99-bottles-of-beer.net/");
+
+        WebElement button = driver.findElement(By.xpath("//*[@id=\"main\"]/p[4]/a[2]"));
+        button.click();
+
+        WebElement nameOliver = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[1]"));
+        String name1 = nameOliver.getText();
+        Assert.assertEquals(name1, "Oliver Schade");
+
+        WebElement nameGregor = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[2]"));
+        String name2 = nameGregor.getText();
+        Assert.assertEquals(name2, "Gregor Scheithauer");
+
+        WebElement nameStefan = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[3]"));
+        String name3 = nameStefan.getText();
+        Assert.assertEquals(name3, "Stefan Scheler");
+
+        driver.quit();
+    }
+
+    @Test
+    public void kristinaTopLists(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.99-bottles-of-beer.net/");
+
+        WebElement title = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[4]/a[@href=\"/toplist.html\"]"));
+        title.click();
+
+        WebElement language = driver.findElement(By.xpath("//*[@id=\"category\"]/tbody/tr[2]/td[2]/a"));
+        String title1 = language.getText();
+        Assert.assertEquals(title1, "Malbolge (real loop version)");
+
+        driver.quit();
     }
 }
