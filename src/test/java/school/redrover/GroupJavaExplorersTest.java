@@ -134,9 +134,9 @@ public class GroupJavaExplorersTest {
 
         WebElement notificationMessage = driver.findElement(By.xpath("//div[@role='alert']"));
         Thread.sleep(1000);
-        String text = notificationMessage.getText();
+        String notificationMessageText = notificationMessage.getText();
 
-        Assert.assertEquals("The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.", text);
+        Assert.assertEquals("The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.", notificationMessageText);
         driver.quit();
     }
 }
