@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.net.URI;
 import java.time.Duration;
 
@@ -235,6 +236,28 @@ public class GroupJavaAutomationTest {
             }
         }
         Assert.assertEquals(List.of(checkBox1.isSelected(),checkBox2.isSelected()), List.of(true,true));
+        webDriver.quit();
+    }
+    @Test
+    public void downloadFile(){
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.get("https://the-internet.herokuapp.com/");
+        webDriver.manage().window().maximize();
+        String pathToSave = "C:\\Users\\48573\\Downloads\\";
+
+        WebElement elementFileDownload = webDriver.findElement(By.xpath("//a[@href='/download']"));
+        elementFileDownload.click();
+
+        WebElement firstFile = webDriver.findElement(By.xpath("//div[@id='content']/div/a[1]"));
+        firstFile.click();
+
+        String nameFile = firstFile.getText();
+
+        File file = new File(pathToSave + nameFile);
+
+        boolean downloadPass =  file.exists() && !file.isDirectory();
+        Assert.assertTrue(downloadPass);
+
         webDriver.quit();
     }
 }
