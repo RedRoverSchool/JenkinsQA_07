@@ -6,6 +6,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import org.testng.collections.Lists;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GroupUnderdogsTest {
     WebDriver driver;
@@ -35,7 +40,7 @@ public class GroupUnderdogsTest {
     @Test
     public void tereshenkov99BottlesTitleTest() {
         driver = new ChromeDriver();
-        driver.get("http://www.99-bottles-of-beer.net/");
+            driver.get("http://www.99-bottles-of-beer.net/");
 
         WebElement title = driver.findElement(By.xpath("//*[@id=\"header\"]/h1"));
         String titleValue = title.getText();
@@ -225,5 +230,68 @@ public class GroupUnderdogsTest {
         Assert.assertEquals(title1, "Malbolge (real loop version)");
 
         driver.quit();
+    }
+
+    @Test
+    public void testBrowseLanguagesKotlin() {
+        driver = new ChromeDriver();
+        driver.get(mainPageUrl);
+
+        WebElement browseLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Browse Languages']"));
+        browseLanguagesBtn.click();
+
+        WebElement letterLink = driver.findElement(By.xpath("//li/a[text()='K']"));
+        letterLink.click();
+
+        WebElement languageLink = driver.findElement(By.xpath("//a[contains(@href, 2901)]"));
+        languageLink.click();
+
+        WebElement languagePageHeader = driver.findElement(By.xpath("//div[@id='main']/h2"));
+        String pageHeader = languagePageHeader.getText();
+
+        Assert.assertEquals(pageHeader, "Language Kotlin");
+    }
+
+    @Test
+    public void testSearchLanguages() {
+        final String partOfWordToSearch = "kot";
+
+        driver = new ChromeDriver();
+        driver.get(mainPageUrl);
+
+        WebElement searchLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Search Languages']"));
+        searchLanguagesBtn.click();
+
+        WebElement searchField = driver.findElement(By.xpath("//input[@name='search']"));
+        searchField.sendKeys(partOfWordToSearch);
+
+        WebElement goBtn = driver.findElement(By.xpath("//input[@name='submitsearch']"));
+        goBtn.click();
+
+        List<WebElement> searchResult = driver.findElements(By.xpath("//td/a[contains(@href,'language')]"));
+
+        for (WebElement element : searchResult) {
+            Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
+            Assert.assertEquals(element.getTagName(), "a");
+        }
+    }
+
+    @Test
+    public void testNamesOfCreatorsOfSite() {
+        List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
+
+        driver = new ChromeDriver();
+        driver.get(mainPageUrl);
+
+        WebElement teamLink = driver.findElement(By.xpath("//a[text()='Team']"));
+        teamLink.click();
+
+        List<WebElement> creators = driver.findElements(By.xpath("//h3"));
+        List<String> namesOfCreators = new ArrayList<>();
+        for (WebElement element : creators) {
+            namesOfCreators.add(element.getText());
+        }
+
+        Assert.assertEquals(namesOfCreators, teamMembers);
     }
 }

@@ -1,15 +1,17 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -192,7 +194,6 @@ public class GroupUnicornsTest {
             int expectedSize = 10;
             int actualSize = listOfResults.size();
             Assert.assertEquals(actualSize, expectedSize);
-            driver.quit();
         } finally {
             driver.quit();
         }
@@ -215,6 +216,29 @@ public class GroupUnicornsTest {
             Thread.sleep(500);
             WebElement newTickerNameActual = driver.findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
             Assert.assertEquals(newTickerNameActual.getText(), "SPX");
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void verificationSocialIconsGitHub() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+            driver.manage().window().maximize();
+            driver.get("https://github.com");
+            JavascriptExecutor jsExec=(JavascriptExecutor) driver;
+            WebElement twitterIcon= driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
+            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
+            String mainWindow= driver.getWindowHandle();
+            twitterIcon.click();
+            String url = driver.getCurrentUrl();
+            WebElement closeButton=driver.findElement(By.xpath("//*[@aria-label='Close']"));
+            WebDriverWait wait=new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(closeButton));
+            closeButton.click();
+            Assert.assertTrue(url.contains("twitter"));
         } finally {
             driver.quit();
         }

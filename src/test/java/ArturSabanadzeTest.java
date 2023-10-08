@@ -66,4 +66,29 @@ public class ArturSabanadzeTest {
             driver.quit();
         }
     }
+
+
+    @Test
+    public void colorCheck() {
+        WebDriver driver = new ChromeDriver();
+        try {
+
+            driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+
+            WebElement colorInputElement = driver.findElement(By.name("my-colors"));
+
+
+            String actualColor = colorInputElement.getAttribute("value");
+
+
+            String expectedColor = "#563d7c";
+
+
+            Assert.assertEquals(actualColor, expectedColor, "Element color is not as expected");
+        }
+        finally {
+            driver.quit();
+        }
+    }
 }
