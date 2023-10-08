@@ -375,6 +375,7 @@ public class GroupQaClimbersTest {
 
     @Test
     public void testElementsCheckBox() throws InterruptedException {
+
         WebDriver driver = new ChromeDriver();
 
         driver.get(URL);
