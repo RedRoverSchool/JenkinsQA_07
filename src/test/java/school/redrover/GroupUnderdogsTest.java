@@ -226,4 +226,24 @@ public class GroupUnderdogsTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testBrowseLanguagesKotlin() {
+        driver = new ChromeDriver();
+        driver.get(mainPageUrl);
+
+        WebElement browseLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Browse Languages']"));
+        browseLanguagesBtn.click();
+
+        WebElement letterLink = driver.findElement(By.xpath("//li/a[text()='K']"));
+        letterLink.click();
+
+        WebElement languageLink = driver.findElement(By.xpath("//a[contains(@href, 2901)]"));
+        languageLink.click();
+
+        WebElement languagePageHeader = driver.findElement(By.xpath("//div[@id='main']/h2"));
+        String pageHeader = languagePageHeader.getText();
+
+        Assert.assertEquals(pageHeader, "Language Kotlin");
+    }
 }
