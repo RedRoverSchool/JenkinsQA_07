@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
+
 
 public class GroupSurvivorsTest {
 
@@ -33,5 +35,24 @@ public class GroupSurvivorsTest {
         } finally {
             driver.quit();
         }
+    }
+    @Test
+
+    public void sabinaFirstTest() throws InterruptedException{
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("http://baskino.me/index.php?do=stoptime&id=23027&action=count");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+            WebElement textBox = driver.findElement(By.id("story"));
+            WebElement loginButton = driver.findElement(By.className("find-button"));
+            textBox.sendKeys("Avengers");
+            loginButton.click();
+            WebElement text = driver.findElement(By.className("logo"));
+            String value = text.getText();
+            Assert.assertEquals(value,"Baskino.me" );
+        } finally {
+            driver.quit();
+        }
+
     }
 }
