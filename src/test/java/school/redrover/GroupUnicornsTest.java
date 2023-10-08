@@ -219,4 +219,31 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+    @Test
+    public void testComputers() {
+        WebDriver driver = new ChromeDriver();
+
+        String pageTitlePath = "//div[@class='page-title' ]//h1";
+
+        String[] computers = new String[]{"Desktops", "Notebooks", "Accessories"};
+
+        try {
+            driver.get("https://demowebshop.tricentis.com/");
+            driver.findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
+            List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
+
+
+            boolean actual = true;
+            for(int i = 0; i < elements.size(); i++){
+                if (!computers[i].equals(elements.get(i).getText())) {
+                    actual = false;
+                    break;
+                }
+            }
+            assertTrue(actual);
+
+        } finally {
+            driver.quit();
+        }
+    }
 }
