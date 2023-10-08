@@ -30,7 +30,6 @@ public class GroupTestscriptCollaboratoriumTest {
 
         driver.quit();
     }
-
     @Test
     public void testSubscription(){
 
@@ -70,8 +69,7 @@ public class GroupTestscriptCollaboratoriumTest {
             String valueBasket = inBasket.getText();
             Assert.assertEquals(valueBasket, "1");
 
-        } finally {
-
+        }finally {
             driver.quit();
         }
     }
