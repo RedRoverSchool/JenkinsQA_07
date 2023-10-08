@@ -14,12 +14,12 @@ public class MaklerTEST {
             WebDriver driver = new ChromeDriver();
             driver.get("https://makler.md/");
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(9000));
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
             WebElement textBox = driver.findElement(By.className("disable-border"));
             textBox.sendKeys("Handmade");
 
-            Thread.sleep(9000);
+            Thread.sleep(5000);
 
             WebElement searchButton = driver.findElement(By.id("header_searchButton"));
             searchButton.click();
