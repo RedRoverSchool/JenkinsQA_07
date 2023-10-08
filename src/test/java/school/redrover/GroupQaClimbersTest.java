@@ -536,6 +536,69 @@ public class GroupQaClimbersTest {
         Assert.assertEquals("You are successfully logged in.", successLoginTextVal);
 
         driver.quit();
+
+    }
+
+    @Test
+    public void badSignUpBookStoreTest() throws InterruptedException {     // register without recaptcha
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement bookStoreApplicationButton = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[6]"));
+        js.executeScript("arguments[0].scrollIntoView();", bookStoreApplicationButton);
+        Thread.sleep(1000);
+        bookStoreApplicationButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement logIntoButton = driver.findElement(By.xpath("//button[@id='login']"));
+        logIntoButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement NewUserButton = driver.findElement(By.xpath("//button[@id='newUser']"));
+        NewUserButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement textFirstName = driver.findElement(By.xpath("//input[@id='firstname']"));
+        textFirstName.sendKeys("firstName");
+
+        Thread.sleep(3000);
+
+        WebElement textLastName = driver.findElement(By.xpath("//input[@id='lastname']"));
+        textLastName.sendKeys("LastName");
+
+        Thread.sleep(3000);
+
+        WebElement textUserName = driver.findElement(By.xpath("//input[@id='userName']"));
+        textUserName.sendKeys("username");
+
+        Thread.sleep(3000);
+
+        WebElement textPassword = driver.findElement(By.xpath("//input[@id='password']"));
+        textPassword.sendKeys("qwerty1111");
+
+        Thread.sleep(1000);
+
+        WebElement registrationButton = driver.findElement(By.xpath("//button[@id='register']"));
+        js.executeScript("arguments[0].scrollIntoView();", registrationButton);
+        Thread.sleep(1000);
+        registrationButton.click();
+
+        WebElement needRecaptcha = driver.findElement(By.xpath("//p[@style]"));
+        String needRecaptchaText = needRecaptcha.getText();
+        Assert.assertEquals(needRecaptchaText,"Please verify reCaptcha to register!");
+
+        driver.quit();
+
+        /* WebElement findReCaptcha = driver.findElement(By.xpath("////*[@id=\"recaptcha-anchor\"]/div[1]"));
+        js.executeScript("arguments[0].scrollIntoView();", findReCaptcha);
+        Thread.sleep(1000);
+        findReCaptcha.click(); */
+
     }
 
 }
