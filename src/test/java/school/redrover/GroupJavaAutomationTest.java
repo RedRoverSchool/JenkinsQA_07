@@ -208,5 +208,14 @@ public class GroupJavaAutomationTest {
                 "Your username is invalid!");
         webDriver.quit();
     }
+    @Test
+    public void testBasicAuthWithoutAlert() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
+        String authMessage = driver.findElement(By.xpath("//h3/following-sibling::p")).getText();
+        Assert.assertTrue(authMessage.contains("Congratulations"));
+        driver.quit();
+    }
+
 }
 
