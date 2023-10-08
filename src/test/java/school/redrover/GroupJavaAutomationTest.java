@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.net.URI;
 import java.time.Duration;
 
@@ -217,5 +218,66 @@ public class GroupJavaAutomationTest {
         driver.quit();
     }
 
+
+    @Test
+    public void checkBoxTest(){
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.get("https://the-internet.herokuapp.com/");
+        webDriver.manage().window().maximize();
+        WebElement elementCheckBoxes = webDriver.findElement(By.xpath("//a[@href='/checkboxes']"));
+        elementCheckBoxes.click();
+        List<WebElement> elementFormCheckBoxes;
+        WebElement checkBox1 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[1]"));
+        WebElement checkBox2 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[2]"));
+        elementFormCheckBoxes = List.of(checkBox1, checkBox2);
+        for (WebElement item: elementFormCheckBoxes){
+            if (!item.isSelected()){
+                item.click();
+            }
+        }
+        Assert.assertEquals(List.of(checkBox1.isSelected(),checkBox2.isSelected()), List.of(true,true));
+        webDriver.quit();
+    }
+    @Test
+    public void downloadFile(){
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.get("https://the-internet.herokuapp.com/");
+        webDriver.manage().window().maximize();
+        String pathToSave = "C:\\Users\\48573\\Downloads\\";
+
+        WebElement elementFileDownload = webDriver.findElement(By.xpath("//a[@href='/download']"));
+        elementFileDownload.click();
+
+        WebElement firstFile = webDriver.findElement(By.xpath("//div[@id='content']/div/a[1]"));
+        firstFile.click();
+
+        String nameFile = firstFile.getText();
+
+        File file = new File(pathToSave + nameFile);
+
+        boolean downloadPass =  file.exists() && !file.isDirectory();
+        Assert.assertTrue(downloadPass);
+
+        webDriver.quit();
+    }
+
+    @Test
+    public void testBrokenImage() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/broken_images");
+        Wait<WebDriver> wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait5.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//img")));
+
+        List<WebElement> images = driver.findElements(By.xpath("//img"));
+        List<String> brokenImages = new ArrayList<>();
+        for(WebElement image : images) {
+            if (image.getAttribute("naturalWidth").equals("0")) {
+                brokenImages.add(image.getAttribute("src"));
+            }
+        }
+
+        Assert.assertTrue(brokenImages.size()==0, "List of broken images:" + brokenImages);
+        driver.quit();
+    }
 }
 
