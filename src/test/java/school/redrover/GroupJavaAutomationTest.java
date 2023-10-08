@@ -208,5 +208,25 @@ public class GroupJavaAutomationTest {
                 "Your username is invalid!");
         webDriver.quit();
     }
+
+    @Test
+    public void checkBoxTest(){
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.get("https://the-internet.herokuapp.com/");
+        webDriver.manage().window().maximize();
+        WebElement elementCheckBoxes = webDriver.findElement(By.xpath("//a[@href='/checkboxes']"));
+        elementCheckBoxes.click();
+        List<WebElement> elementFormCheckBoxes = null;
+        WebElement checkBox1 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[1]"));
+        WebElement checkBox2 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[2]"));
+        elementFormCheckBoxes = List.of(checkBox1, checkBox2);
+        for (WebElement item: elementFormCheckBoxes){
+            if (!item.isSelected()){
+                item.click();
+            }
+        }
+        Assert.assertEquals(List.of(checkBox1.isSelected(),checkBox2.isSelected()), List.of(true,true));
+        webDriver.quit();
+    }
 }
 
