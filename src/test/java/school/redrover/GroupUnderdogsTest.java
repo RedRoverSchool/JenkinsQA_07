@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 public class GroupUnderdogsTest {
     WebDriver driver;
 
@@ -245,5 +247,29 @@ public class GroupUnderdogsTest {
         String pageHeader = languagePageHeader.getText();
 
         Assert.assertEquals(pageHeader, "Language Kotlin");
+    }
+
+    @Test
+    public void testSearchLanguages() {
+        final String partOfWordToSearch = "kot";
+
+        driver = new ChromeDriver();
+        driver.get(mainPageUrl);
+
+        WebElement searchLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Search Languages']"));
+        searchLanguagesBtn.click();
+
+        WebElement searchField = driver.findElement(By.xpath("//input[@name='search']"));
+        searchField.sendKeys(partOfWordToSearch);
+
+        WebElement goBtn = driver.findElement(By.xpath("//input[@name='submitsearch']"));
+        goBtn.click();
+
+        List<WebElement> searchResult = driver.findElements(By.xpath("//td/a[contains(@href,'language')]"));
+
+        for (WebElement element : searchResult) {
+            Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
+            Assert.assertEquals(element.getTagName(), "a");
+        }
     }
 }
