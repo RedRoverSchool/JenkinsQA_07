@@ -144,6 +144,48 @@ public class GroupJavaAutomationTest {
 
         driver.quit();
     }
+
+    @Test
+    public void loginSuccessfulTest() {
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.get("https://the-internet.herokuapp.com/");
+        webDriver.manage().window().maximize();
+        WebElement elementLogin = webDriver.findElement(By.xpath("//a[@href='/login']"));
+        elementLogin.click();
+        WebElement inputName = webDriver.findElement(By.xpath("//input[@name='username']"));
+        WebElement inputPassword = webDriver.findElement(By.xpath("//input[@name='password']"));
+        inputName.sendKeys("tomsmith");
+        inputPassword.sendKeys("SuperSecretPassword!");
+        WebElement buttonSubmit = webDriver.findElement(By.xpath("//button[@type='submit']"));
+        buttonSubmit.click();
+        WebElement messageTitle = webDriver.findElement(By.xpath("//div[@class='flash success']"));
+        Assert.assertEquals(messageTitle
+                        .getText()
+                        .replaceAll("[×\n]", ""),
+                "You logged into a secure area!");
+        WebElement logout = webDriver.findElement(By.xpath("//*[@href='/logout']"));
+        logout.click();
+        webDriver.quit();
+    }
+
+    @Test
+    public void loginEmptyNameTest() {
+        WebDriver webDriver = new ChromeDriver();
+        webDriver.get("https://the-internet.herokuapp.com/");
+        webDriver.manage().window().maximize();
+        WebElement elementLogin = webDriver.findElement(By.xpath("//a[@href='/login']"));
+        elementLogin.click();
+        WebElement inputPassword = webDriver.findElement(By.xpath("//input[@name='password']"));
+        inputPassword.sendKeys("SuperSecretPassword!");
+        WebElement buttonSubmit = webDriver.findElement(By.xpath("//button[@type='submit']"));
+        buttonSubmit.click();
+        WebElement messageTitle = webDriver.findElement(By.xpath("//div[@class='flash error']"));
+        Assert.assertEquals(messageTitle
+                        .getText()
+                        .replaceAll("[×\n]", ""),
+                "Your username is invalid!");
+        webDriver.quit();
+    }
     @Test
     public void testBasicAuthWithoutAlert() {
         WebDriver driver = new ChromeDriver();
