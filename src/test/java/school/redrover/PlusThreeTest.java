@@ -305,5 +305,23 @@ public class PlusThreeTest {
 
         driver.quit();
     }
+    @Test
+    public void Trivio () {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://login.trivio.ru/");
+
+        WebElement textBox1 = driver.findElement(By.xpath("//input[contains(@id,'login')]"));
+        textBox1.sendKeys("demo");
+
+        WebElement textBox2 = driver.findElement(By.xpath("//*[@id=\"password\"]"));
+        textBox2.sendKeys("demo1");
+
+        WebElement signInButton = driver.findElement(By.xpath("//*[@id=\"loginForm\"]/button"));
+        signInButton.click();
+
+        //Thread.sleep(6000);
+
+        driver.quit();
+    }
 }
 
