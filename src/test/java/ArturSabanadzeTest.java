@@ -9,7 +9,7 @@ public class ArturSabanadzeTest {
 
     //Check if Title of the Website is correct.
     @Test
-    public void titeleCheck()
+    public void titleCheck()
     {
 
         WebDriver driver = new ChromeDriver();
@@ -24,6 +24,7 @@ public class ArturSabanadzeTest {
            driver.quit();
        }
     }
+
     //Check if the form "Text Input" is working, try to input some text, check the input text.
     @Test
     public void textInputTest() {
@@ -67,6 +68,8 @@ public class ArturSabanadzeTest {
         }
     }
 
+
+    //Check element "my-colors" for proper color.
     @Test
     public void colorCheck() {
         WebDriver driver = new ChromeDriver();
