@@ -214,7 +214,7 @@ public class GroupJavaAutomationTest {
         WebDriver driver = new ChromeDriver();
         driver.get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
         String authMessage = driver.findElement(By.xpath("//h3/following-sibling::p")).getText();
-        Assert.assertTrue(authMessage.contains("Congratulations!"));
+        Assert.assertTrue(authMessage.contains("Congratulations"));
         driver.quit();
     }
 }
