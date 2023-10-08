@@ -1,6 +1,5 @@
 package school.redrover;
 
-import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -310,7 +309,7 @@ public class GroupQaClimbersTest {
     }
 
     @Test
-    public void LocatorXPath() throws InterruptedException {
+    public void LocatorXPath() {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
