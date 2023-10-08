@@ -15,10 +15,13 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 public class GroupJavaExplorersTest {
+
+    private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
+
     @Test
     public void testSearchWatches() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        driver.get("https://magento.softwaretestingboard.com/");
+        driver.get(BASE_URL);
 
         Thread.sleep(1000);
 
@@ -49,7 +52,7 @@ public class GroupJavaExplorersTest {
                 " Please wait and try again later.";
 
         WebDriver driver = new ChromeDriver();
-        driver.get("https://magento.softwaretestingboard.com/");
+        driver.get(BASE_URL);
 
         Thread.sleep(1000);
 
@@ -80,7 +83,7 @@ public class GroupJavaExplorersTest {
     @Test
     public void testSignInNegative() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        driver.get("https://magento.softwaretestingboard.com/");
+        driver.get(BASE_URL);
         String title = driver.getTitle();
         Assert.assertEquals(title, "Home Page");
         WebElement signIn = driver.findElement(By.xpath("/html/body/div[2]/header/div[1]/div/ul/li[2]/a"));
@@ -105,7 +108,7 @@ public class GroupJavaExplorersTest {
     @Test
     public void testSearchOlivia() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        driver.get("https://magento.softwaretestingboard.com");
+        driver.get(BASE_URL);
 
         WebElement textBox = driver.findElement(By.xpath("//input[@id='search']"));
         textBox.sendKeys("Olivia");
@@ -129,7 +132,7 @@ public class GroupJavaExplorersTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
-        driver.get("https://magento.softwaretestingboard.com/");
+        driver.get(BASE_URL);
         wait.until(ExpectedConditions.elementToBeClickable(By.
                 xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]")));
         WebElement catalogueItem = driver.findElement(By.
@@ -175,7 +178,7 @@ public class GroupJavaExplorersTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
 
-        driver.get("https://magento.softwaretestingboard.com/");
+        driver.get(BASE_URL);
         wait.until(ExpectedConditions.elementToBeClickable(By.
                 xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]")));
 

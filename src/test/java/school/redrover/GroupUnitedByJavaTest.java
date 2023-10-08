@@ -2,6 +2,7 @@ package school.redrover;
 
 import jdk.jfr.Description;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -234,6 +235,29 @@ public class GroupUnitedByJavaTest {
         cardBook.click();
 
         Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books?book=9781449325862");
+
+        driver.quit();
+    }
+    @Test
+    public void testSearch () throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "DEMOQA");
+        WebElement widgets = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", widgets);
+        Thread.sleep(500);
+        widgets.click();
+        Thread.sleep(2000);
+        String url = driver.getCurrentUrl();
+        String url1 = "https://demoqa.com/widgets";
+        Assert.assertEquals(url, url1);
+        WebElement appellation = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[1]/div"));
+        String value = appellation.getText();
+        Assert.assertEquals(value, "Widgets");
+        Thread.sleep(2000);
+
 
         driver.quit();
     }

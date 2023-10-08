@@ -260,5 +260,24 @@ public class GroupJavaAutomationTest {
 
         webDriver.quit();
     }
+
+    @Test
+    public void testBrokenImage() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/broken_images");
+        Wait<WebDriver> wait5 = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait5.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//img")));
+
+        List<WebElement> images = driver.findElements(By.xpath("//img"));
+        List<String> brokenImages = new ArrayList<>();
+        for(WebElement image : images) {
+            if (image.getAttribute("naturalWidth").equals("0")) {
+                brokenImages.add(image.getAttribute("src"));
+            }
+        }
+
+        Assert.assertTrue(brokenImages.size()==0, "List of broken images:" + brokenImages);
+        driver.quit();
+    }
 }
 
