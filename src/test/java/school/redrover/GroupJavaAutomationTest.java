@@ -208,6 +208,7 @@ public class GroupJavaAutomationTest {
                 "Your username is invalid!");
         webDriver.quit();
     }
+
     @Test
     public void testBasicAuthWithoutAlert() {
         WebDriver driver = new ChromeDriver();
