@@ -1,5 +1,6 @@
 package school.redrover;
 
+import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,8 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 public class GroupQaClimbersTest {
+
+    final static String URL = "https://demoqa.com/";
 
     @Test
     public void testTextBox() {
@@ -266,5 +269,86 @@ public class GroupQaClimbersTest {
 
             driver.quit();
         }
+    }
+
+    @Test
+    public void testElementsCheckBox() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(URL);
+        Thread.sleep(500);
+
+        driver.findElement(
+                By.xpath("//div[@class='category-cards']/div[2]/div/div[@class='card-up']"))
+                .click();
+        Thread.sleep(200);
+
+        driver.findElement(
+                By.xpath("(//div[@class='body-height']/div/div[2]/div/div/div/div/span/div)[1]"))
+                .click();
+        Thread.sleep(500);
+
+        driver.findElement(
+                By.xpath("//span[ contains(text(), 'Check Box')]"))
+                .click();
+        Thread.sleep(200);
+
+        driver.findElement(
+                By.xpath("//span[@class='rct-checkbox']/*[name()='svg']"))
+                .click();
+
+        WebElement message = driver.findElement(
+                By.xpath("//div[@class='display-result mt-4']"));
+        String messageText = message.getText();
+
+        Assert.assertEquals(messageText,
+                """
+                        You have selected :
+                        home
+                        desktop
+                        notes
+                        commands
+                        documents
+                        workspace
+                        react
+                        angular
+                        veu
+                        office
+                        public
+                        private
+                        classified
+                        general
+                        downloads
+                        wordFile
+                        excelFile""");
+
+        driver.quit();
+    }
+
+    @Test
+    public void testListOfAlertsFrameAndWindows() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(URL);
+        Thread.sleep(200);
+
+        driver.findElement(
+                By.xpath("(//div[@class='card mt-4 top-card'])[3]"))
+                .click();
+
+        List<WebElement> listofAlertsFrameAndWindows = driver.findElements(
+                By.xpath("//div[@class='left-pannel']/div/div[3]/div/ul[@class='menu-list']/li"));
+
+        List<String> actualListofAlertsFrameAndWindows = new ArrayList<>();
+        for (WebElement element: listofAlertsFrameAndWindows) {
+            actualListofAlertsFrameAndWindows.add(element.getText());
+        }
+
+        List<String> expectedListofAlertsFrameAndWindows = List.of(
+                "Browser Windows", "Alerts", "Frames", "Nested Frames", "Modal Dialogs");
+
+        Assert.assertEquals(actualListofAlertsFrameAndWindows, expectedListofAlertsFrameAndWindows);
+
+        driver.quit();
     }
 }
