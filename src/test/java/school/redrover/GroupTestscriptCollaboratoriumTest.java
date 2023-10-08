@@ -71,9 +71,8 @@ public class GroupTestscriptCollaboratoriumTest {
             Assert.assertEquals(valueBasket, "1");
 
         } finally {
-            
+
             driver.quit();
         }
     }
-
 }
