@@ -6,13 +6,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.util.List;
 
 public class filipRahuliaDraftTest {
 
-        @Test
-        public void textBox() {
-            WebDriver driver = new ChromeDriver();
+    @Test
+    public void textBox() {
+
+
+        WebDriver driver = new ChromeDriver();
+        try {
             driver.get("https://demoqa.com/elements");
             WebElement textBoxMenu = driver.findElement(By.id("item-0"));
             textBoxMenu.click();
@@ -24,13 +28,17 @@ public class filipRahuliaDraftTest {
             inputCurrentAddress.sendKeys("Current Address");
             WebElement inputPermanentAddress = driver.findElement(By.id("permanentAddress"));
             inputPermanentAddress.sendKeys("Permanent Address");
+        } finally {
             driver.quit();
-
         }
 
-        @Test
-        public void checkBox() {
-            WebDriver driver = new ChromeDriver();
+    }
+
+    @Test
+    public void checkBox() {
+        WebDriver driver = new ChromeDriver();
+
+        try {
             driver.get("https://demoqa.com/checkbox");
 
             Assert.assertFalse(driver.findElement(By.id("tree-node-home")).isSelected(),
@@ -95,18 +103,13 @@ public class filipRahuliaDraftTest {
             expandAllButton.click();
             homeToggleClassName = driver.findElement(By.xpath("//*[@id='tree-node']/ol/li")).getAttribute("class");
             Assert.assertTrue(homeToggleClassName.contains("rct-node-expanded"));
-
-
             List<WebElement> actualList = driver.findElements(By.cssSelector(".text-success"));
-
             List<WebElement> expectedList = driver.findElements(By.cssSelector(".rct-title"));
             Boolean resultsMatched = actualList.equals(expectedList);
             System.out.println(resultsMatched);
-
+        } finally {
             driver.quit();
-
         }
-
-
     }
+}
 
