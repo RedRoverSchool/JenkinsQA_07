@@ -6,7 +6,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import org.testng.collections.Lists;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GroupUnderdogsTest {
@@ -271,5 +274,24 @@ public class GroupUnderdogsTest {
             Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
             Assert.assertEquals(element.getTagName(), "a");
         }
+    }
+
+    @Test
+    public void testNamesOfCreatorsOfSite() {
+        final List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
+
+        driver = new ChromeDriver();
+        driver.get(mainPageUrl);
+
+        WebElement teamLink = driver.findElement(By.xpath("//a[text()='Team']"));
+        teamLink.click();
+
+        List<WebElement> creators = driver.findElements(By.xpath("//h3"));
+        List<String> namesOfCreators = new ArrayList<>();
+        for (WebElement element : creators) {
+            namesOfCreators.add(element.getText());
+        }
+
+        Assert.assertEquals(namesOfCreators, teamMembers);
     }
 }
