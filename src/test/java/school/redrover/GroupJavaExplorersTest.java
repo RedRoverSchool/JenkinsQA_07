@@ -117,7 +117,7 @@ public class GroupJavaExplorersTest {
         driver.quit();
     }
     @Test
-    public void invalidLoginTestWithUnExistedUser() throws InterruptedException {
+    public void testInvalidLoginWithNonExistedUser() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://magento.softwaretestingboard.com/");
