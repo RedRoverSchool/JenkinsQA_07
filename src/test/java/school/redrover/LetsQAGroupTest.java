@@ -21,7 +21,6 @@ public class LetsQAGroupTest {
     @Test
     public void testChrome(){
 
-        WebDriver driver = new ChromeDriver();
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
         String title = driver.getTitle();
@@ -170,5 +169,15 @@ public class LetsQAGroupTest {
         driver.quit();
     }
 
+    @Test
+    public void verifyTextTest() {
+        driver.get("http://www.uitestingplayground.com/verifytext");
 
+        WebElement textBlock = driver.findElement(By.xpath("//html/body/section/div/div[4]/span"));
+        String text = textBlock.getText();
+
+        Assert.assertEquals(text, "Welcome UserName!");
+
+        driver.quit();
+    }
 }
