@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -368,4 +369,25 @@ public class GroupUnitedByJavaTest {
         button2.click();
 
     }
+
+    @Test
+    public void testDemoqaEdgeExperiment(){
+        WebDriver driver = new EdgeDriver();
+
+        driver.get("http://restful-booker.herokuapp.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals (title, "Welcome to Restful-Booker");
+
+        WebElement cardBookStore = driver.findElement(By.xpath("//img[@src='/images/motpro.png']"));
+        cardBookStore.click();
+
+        driver.getWindowHandles().forEach(tab->driver.switchTo().window(tab));
+
+        String title2 = driver.getTitle();
+        Assert.assertEquals (title2, "Ninja training for software testers | Ministry of Testing");
+
+        driver.quit();
+    }
+
 }
