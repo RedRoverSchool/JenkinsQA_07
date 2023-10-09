@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -139,6 +140,19 @@ public class LetsQAGroupTest {
 
         String title_k = driver.getTitle();
         Assert.assertEquals("Конференция iXBT.com", title_k);
+
+        driver.quit();
+    }
+
+    @Test
+    public void clickTest() {
+       WebDriver driver = new SafariDriver();
+        driver.get("http://www.uitestingplayground.com/click");
+
+        WebElement badButton = driver.findElement(By.id("badButton"));
+        badButton.click();
+
+        Assert.assertFalse("rgba(0, 123, 255, 1)".equals(badButton.getCssValue("background-color")));
 
         driver.quit();
     }
