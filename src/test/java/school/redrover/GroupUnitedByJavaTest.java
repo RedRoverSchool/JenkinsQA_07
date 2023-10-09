@@ -348,4 +348,24 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+
+    @Test
+    @Description("testing a book search on a store website")
+    public void testSearch(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.belavrana.com/");
+
+        String title = driver.getTitle();
+        assertEquals(title, "Купить книги на русском в Сербии - Bela Vrana (Белая Ворона)");
+
+        WebElement button = driver.findElement(By.name("s"));
+        button.click();
+
+        WebElement search = driver.findElement(By.name("q"));
+        search.sendKeys("Толстой");
+
+        WebElement button2 = driver.findElement(By.name("s"));
+        button2.click();
+
+    }
 }
