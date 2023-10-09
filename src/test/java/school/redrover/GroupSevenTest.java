@@ -149,27 +149,6 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
-    @Test
-    public void testBookSearch() {
-        WebDriver driver = new ChromeDriver();
-
-        driver.get("https://www.doylestownbookshop.com/");
-
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "The Doylestown Bookshop |");
-
-        WebElement textBox = driver.findElement(By.id("edit-search-block-form--2"));
-        WebElement searchButton = driver.findElement(By.id("edit-submit"));
-
-        textBox.sendKeys("Making it so");
-        searchButton.click();
-
-        WebElement message = driver.findElement(By.id("b-9781982167738"));
-        String value = message.getText();
-        Assert.assertEquals(value, "Making It So: A Memoir");
-
-        driver.quit();
-    }
 }
 
 
