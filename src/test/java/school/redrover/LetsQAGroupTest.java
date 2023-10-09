@@ -5,6 +5,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
@@ -68,6 +71,36 @@ public class LetsQAGroupTest {
     @AfterTest
     public void quitBrowser() {
         driver.quit();
+    }
+
+
+
+    @Test
+    public void testLOadDelays(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.uitestingplayground.com/loaddelay");
+        Wait<WebDriver> wait = new WebDriverWait(driver,Duration.ofSeconds(2));
+        try {
+
+            driver.manage().window().maximize();
+
+            WebElement homrPageLink = driver.findElement(By.cssSelector(".nav-link[href='/home']"));
+            homrPageLink.click();
+
+            WebElement laodDelaysLink = driver.findElement(By.xpath("//a[@href='/loaddelay']"));
+            laodDelaysLink.click();
+            WebElement buttonAppearigAfterDelay = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-primary")));
+
+            try {
+                buttonAppearigAfterDelay.click();
+                Assert.assertTrue(true);
+            } catch (Exception e) {
+                Assert.fail("The button Appearig After Delay is not clickable.");
+            }
+        }finally {
+
+            driver.quit();
+        }
     }
 
 }

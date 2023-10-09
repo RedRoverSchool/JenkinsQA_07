@@ -5,13 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class GroupSevenTest {
+public class  GroupSevenTest {
     @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
@@ -148,5 +149,81 @@ public class GroupSevenTest {
         } finally {
             driver.quit();
         }
+    }
+    @Test
+    public void testBestBrainsSearch() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://bestbrains.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Best Brains: Be Your Best!");
+
+        // driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement textBox = driver.findElement(By.xpath("//input[@placeholder='Enter Your Zip/Postal Code']"));
+        WebElement submitButton = driver.findElement(By.xpath("//button[@class = 'btn btn-white']"));
+        textBox.sendKeys("29707");
+        submitButton.click();
+
+        Thread.sleep(5000);
+        WebElement message = driver.findElement(By.xpath("//p[@class = 'address']"));
+        String value = message.getText();
+        Assert.assertEquals(value, "17206 Lancaster Hwy, STE 504, Charlotte, NC-28277");
+
+
+        String title1 = driver.getTitle();
+        Assert.assertEquals(title1, "Best Brains Center Locations");
+
+
+        WebElement location = driver.findElement(By.xpath("//h1[@class = 'text-center']"));
+        Thread.sleep(1000);
+        String value1 = location.getText();
+        Assert.assertEquals(value1, "Find your nearest center to schedule a FREE placement test and orientation.");
+
+
+        WebElement ballantyneLink = driver.findElement(By.xpath("//a[@href = '/ballantyne']"));
+        ballantyneLink.click();
+        WebElement ballantyneText = driver.findElement(By.xpath("//span[@class = 'd-inline-block']"));
+        String valueBallantyneText = ballantyneText.getText();
+        Assert.assertEquals(valueBallantyneText, "Ballantyne");
+
+
+        WebElement registration = driver.findElement(By.xpath("//a[@href = '/new-registration']"));
+        Thread.sleep(1000);
+        registration.click();
+
+
+        String titleRegistration = driver.getTitle();
+        Assert.assertEquals(titleRegistration, "Student Registration | Best Brains");
+        Thread.sleep(1000);
+
+        WebElement zipCode = driver.findElement(By.xpath("//input[@id = 'zipcode' ]"));
+        zipCode.sendKeys("29707");
+
+
+        Select drpCenters = new Select(driver.findElement(By.name("locationId")));
+
+
+        boolean isMultiple = drpCenters.isMultiple();
+        Thread.sleep(5000);
+
+        if (isMultiple) {
+            System.out.println("The dropdown allows multiple selections.");
+        } else {
+            System.out.println("The dropdown allows only single selection.");
+        }
+        Thread.sleep(1000);
+
+        WebElement lastNameField = driver.findElement(By.name("lastName"));
+        Thread.sleep(1000);
+        String nameAttributeValue = lastNameField.getAttribute("name");
+
+        if (nameAttributeValue.equals("lastName")) {
+            System.out.println("Элемент представляет поле 'last name'.");
+        } else {
+            System.out.println("Элемент не представляет поле 'last name'.");
+        }
+
+        driver.quit();
     }
 }

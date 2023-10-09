@@ -293,4 +293,28 @@ public class GroupUnitedByJavaTest {
             driver.quit();
         }
     }
+
+    @Test
+    @Description("WebTables: Test open the window Registration form")
+    public void demoqaTestAddNewRecordButton() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/webtables");
+            String title = driver.getTitle();
+            Assert.assertEquals(title, "DEMOQA");
+
+            WebElement main_header = driver.findElement(By.className("main-header"));
+            String value = main_header.getText();
+            Assert.assertEquals(value, "Web Tables");
+
+            WebElement button_add = driver.findElement(By.xpath("//*[@id=\"addNewRecordButton\"]"));
+            button_add.click();
+            WebElement window_add = driver.findElement(By.xpath("//*[@id=\"registration-form-modal\"]"));
+            String title_add_form = window_add.getText();
+            Assert.assertEquals(title_add_form, "Registration Form");
+            Thread.sleep(2000);
+        } finally {
+            driver.quit();
+        }
+    }
 }

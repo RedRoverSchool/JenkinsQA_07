@@ -27,7 +27,7 @@ public class  FirstTest {
              WebElement searchButton = driver.findElement(By.className("gNO89b"));
              searchButton.click();
 
-            System.out.println("Good Luck");
+            System.out.println("Hello, and Good Luck");
 
             WebElement title = driver.findElement(By.className("yKMVIe"));
             String value = title.getText();
