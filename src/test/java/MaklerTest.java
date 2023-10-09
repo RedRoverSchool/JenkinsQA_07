@@ -14,7 +14,7 @@ public class MaklerTest {
             WebDriver driver = new ChromeDriver();
             driver.get("https://makler.md/");
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(7000));
 
             WebElement textBox = driver.findElement(By.className("disable-border"));
             textBox.sendKeys("Handmade");
