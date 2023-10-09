@@ -21,8 +21,8 @@ public class MyFirstTest {
         driver.manage().window().maximize();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-        WebElement button_contact = driver.findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
-        button_contact.click();
+        WebElement buttonContact = driver.findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
+        buttonContact.click();
         String title = driver.getTitle();
 
         Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
