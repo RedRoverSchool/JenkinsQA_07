@@ -165,7 +165,7 @@ public class  GroupSevenTest {
         textBox.sendKeys("29707");
         submitButton.click();
 
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         WebElement message = driver.findElement(By.xpath("//p[@class = 'address']"));
         String value = message.getText();
         Assert.assertEquals(value, "17206 Lancaster Hwy, STE 504, Charlotte, NC-28277");
@@ -205,7 +205,7 @@ public class  GroupSevenTest {
 
 
         boolean isMultiple = drpCenters.isMultiple();
-        Thread.sleep(1000);
+        Thread.sleep(5000);
 
         if (isMultiple) {
             System.out.println("The dropdown allows multiple selections.");
