@@ -76,7 +76,7 @@ public class GroupJavaBustersTest {
 
         WebElement message = driver.findElement(By.id("_valueusername"));
         String value = message.getText();
-        assertEquals(value,"Evgeniia");
+        assertEquals(value, "Evgeniia");
 
         driver.quit();
     }
@@ -93,7 +93,7 @@ public class GroupJavaBustersTest {
         cancelButton.click();
 
         String value = fieldUsername.getText();
-        assertEquals(value,"");
+        assertEquals(value, "");
 
         driver.quit();
     }
@@ -109,8 +109,8 @@ public class GroupJavaBustersTest {
         WebElement textInput = driver.findElement(By.xpath("//input[@id='my-text-id']"));
         WebElement passwordInput = driver.findElement(By.xpath("//label[2]/input[1]"));
         WebElement textArea = driver.findElement(By.xpath("//label[3]/textarea[1]"));
-        WebElement  disableInput = driver.findElement(By.xpath("//label[4]/input[1]"));
-        WebElement  readOnlyField = driver.findElement(By.xpath("//label[5]/input[1]"));
+        WebElement disableInput = driver.findElement(By.xpath("//label[4]/input[1]"));
+        WebElement readOnlyField = driver.findElement(By.xpath("//label[5]/input[1]"));
         WebElement linkReturnToIndex = driver.findElement(By.xpath("//a[contains(text(),'Return to index')]"));
 
         textInput.sendKeys("test");
@@ -160,10 +160,35 @@ public class GroupJavaBustersTest {
         String value = message.getText();
         assertEquals(value, "Thanks for getting in touch Marta!");
         driver.quit();
-
-
-
     }
 
+    @Test
+    public void testSearch() throws InterruptedException {
 
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.euronics.lv/");
+
+        WebElement cookieButton = driver.findElement(By.id("cookie-accept-all-button"));
+        cookieButton.click();
+
+        WebElement searchWrapper = driver.findElement(By.xpath("//div[@class = 'search']"));
+        searchWrapper.click();
+
+        WebElement textBox = driver.findElement(By.className("autocomplete__input"));
+        textBox.sendKeys("macbook");
+
+        Thread.sleep(1000);
+
+        WebElement searchButton = driver.findElement(By.className("autocomplete__search-button"));
+        searchButton.click();
+
+        driver.manage().window().maximize();
+        Thread.sleep(1000);
+
+        WebElement message = driver.findElement(By.xpath("//h1[@class = 'category__header']"));
+        String value = message.getText();
+        Assert.assertEquals(value, "macbook");
+
+        driver.quit();
+    }
 }

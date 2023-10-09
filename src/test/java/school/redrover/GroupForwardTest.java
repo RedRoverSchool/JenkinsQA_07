@@ -7,15 +7,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.sql.SQLOutput;
+
 public class GroupForwardTest {
 
-    private final String pageUrl = "https://www.ldoceonline.com/";
+    private final String PAGE_URL = "https://www.ldoceonline.com/";
 
     @Test
     public void testSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         try {
-            driver.get(pageUrl);
+            driver.get(PAGE_URL);
 
             WebElement textBox = driver.findElement(By.className("search_input"));
             WebElement searchButton = driver.findElement(By.xpath("//*[@type='submit']"));
@@ -37,7 +39,7 @@ public class GroupForwardTest {
     public void testToSpanish() {
         WebDriver driver = new ChromeDriver();
         try {
-            driver.get(pageUrl);
+            driver.get(PAGE_URL);
 
             WebElement languageButton = driver.findElement(By.xpath("//span[@class='text']"));
             languageButton.click();
@@ -61,9 +63,28 @@ public class GroupForwardTest {
     public void logoIsDisplayed() {
         WebDriver driver = new ChromeDriver();
         try {
-            driver.get(pageUrl);
+            driver.get(PAGE_URL);
             WebElement logo = driver.findElement(By.xpath("//img[@class = 'logo responsive_hide_on_smartphone']"));
             Assert.assertTrue(logo.isDisplayed());
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void getDictionaryOfWordOfTheDayTest(){
+        String urlOfDictionaryOfWordOfDay = "https://www.ldoceonline.com/dictionary/";
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get(PAGE_URL);
+            WebElement closeCookieWindow = driver.findElement(By.xpath("//button[@aria-label = 'Close']"));
+            closeCookieWindow.click();
+
+            WebElement wordOfTheDay = driver.findElement(By.xpath("//span[@class = 'title_entry']/a"));
+            String wordOfDay = wordOfTheDay.getText();
+            wordOfTheDay.click();
+
+            Assert.assertEquals(driver.getCurrentUrl(), (urlOfDictionaryOfWordOfDay + wordOfDay));
         } finally {
             driver.quit();
         }

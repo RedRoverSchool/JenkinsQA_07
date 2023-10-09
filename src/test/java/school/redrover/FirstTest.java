@@ -22,12 +22,12 @@ public class  FirstTest {
             WebElement textBox = driver.findElement(By.className("gLFyf"));
             textBox.sendKeys("Selenium");
 
-              Thread.sleep(600);
+              Thread.sleep(2100);
 
              WebElement searchButton = driver.findElement(By.className("gNO89b"));
              searchButton.click();
 
-            System.out.println("Hello");
+            System.out.println("Hello, and Good Luck");
 
             WebElement title = driver.findElement(By.className("yKMVIe"));
             String value = title.getText();

@@ -10,7 +10,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupCarlTheFogTest {
     @Test
@@ -60,5 +66,46 @@ public class GroupCarlTheFogTest {
 
         Assert.assertNotNull(previousClosingPrice);
         driver.quit();
+    }
+
+    @Test
+    public void testDeadlinkPrinter() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+        String pageToCheck = "https://stackoverflow.com/";
+        driver.get(pageToCheck);
+        Thread.sleep(5000);
+
+        List<String> deadlinkList = new ArrayList<>();
+        List<WebElement> deadlinks = driver.findElements(By.tagName("a"));
+
+        for (int i = 0; i < deadlinks.size(); i++) {
+            String link = deadlinks.get(i).getAttribute("href");
+            if (link != null && link.startsWith(pageToCheck)) {
+                String result = testDeadLink(link);
+                if (result != null) {
+                    deadlinkList.add(result);
+                }
+            }
+        }
+
+        deadlinkList.forEach(link -> System.out.println(link));
+        driver.quit();
+    }
+
+    private String testDeadLink(String link) {
+        try {
+            URL url = new URL(link);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setConnectTimeout(5000);
+            httpURLConnection.setRequestMethod("HEAD");
+            httpURLConnection.connect();
+
+            if (httpURLConnection.getResponseCode() >= 400) {
+                return String.format("%s, response code - %d", link, httpURLConnection.getResponseCode());
+            }
+        } catch (Exception ignore) {}
+        return null;
     }
 }
