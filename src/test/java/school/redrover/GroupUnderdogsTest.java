@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GroupUnderdogsTest {
-    WebDriver driver;
+    WebDriver driver = new ChromeDriver();
 
     private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
     String userName = "academic198405@gmail.com";
@@ -72,11 +72,25 @@ public class GroupUnderdogsTest {
         Assert.assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
 
     }
+
     @Test
-    public void firstMenuTabTextTest(){
+    public void firstMenuTabTextTest() {
         driver.get("http://www.99-bottles-of-beer.net/abc.html");
         String elementName = driver.findElement(By.xpath("//ul[@id='submenu']/li[1]/a")).getText();
         Assert.assertEquals(elementName, "0-9");
+    }
+
+    @Test
+    public void authorNamesTest() {
+        List<String> expectedAuthorNames = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
+        openMainPage();
+        driver.findElement(By.xpath("//a[@href='team.html']")).click();
+        List<WebElement> elements = driver.findElements(By.xpath("//h3"));
+        List<String> authorNames = new ArrayList<>();
+        for (WebElement i : elements) {
+            authorNames.add(i.getText());
+        }
+        Assert.assertEquals(authorNames, expectedAuthorNames);
     }
 
     //text written in lower case and color red
@@ -155,13 +169,14 @@ public class GroupUnderdogsTest {
         Thread.sleep(1000);
 
 
-        WebElement incorrectUser= driver.findElement(By.xpath("//*[text()='Incorrect username or password']"));
+        WebElement incorrectUser = driver.findElement(By.xpath("//*[text()='Incorrect username or password']"));
 
         String text = incorrectUser.getText();
         Assert.assertEquals(text, "Incorrect username or password");
 
 
     }
+
     @Test
     public void artuomMarlin4Test() throws InterruptedException {
         driver = new ChromeDriver();
@@ -190,12 +205,12 @@ public class GroupUnderdogsTest {
         js.executeScript("arguments[0].scrollIntoView();", marlin4);
         Thread.sleep(2000);
 
-        String bikeName =  marlin4.getText();
+        String bikeName = marlin4.getText();
         Assert.assertEquals(bikeName, "Marlin 4 Gen 2");
     }
 
     @Test
-    public void kristinaNameAuthorSite(){
+    public void kristinaNameAuthorSite() {
         WebDriver driver = new ChromeDriver();
         driver.get("http://www.99-bottles-of-beer.net/");
 
@@ -218,7 +233,7 @@ public class GroupUnderdogsTest {
     }
 
     @Test
-    public void kristinaTopLists(){
+    public void kristinaTopLists() {
         WebDriver driver = new ChromeDriver();
         driver.get("http://www.99-bottles-of-beer.net/");
 
