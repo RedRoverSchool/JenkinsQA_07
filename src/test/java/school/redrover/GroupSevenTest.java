@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class  GroupSevenTest {
+public class GroupSevenTest {
     @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
@@ -126,6 +126,7 @@ public class  GroupSevenTest {
         Assert.assertEquals(header.getText(), "Стоимость сайтов");
         driver.quit();
     }
+
     @Test
     public void testHPSearch() {
         WebDriver driver = new ChromeDriver();
@@ -145,11 +146,12 @@ public class  GroupSevenTest {
             ArrayList<String> wid = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(wid.get(1));
             WebElement resultHeader = driver.findElement(By.xpath("//h1"));
-            Assert.assertEquals(resultHeader.getText(),"Harry Potter");
+            Assert.assertEquals(resultHeader.getText(), "Harry Potter");
         } finally {
             driver.quit();
         }
     }
+
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -226,4 +228,27 @@ public class  GroupSevenTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testBookSearch() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.doylestownbookshop.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "The Doylestown Bookshop |");
+
+        WebElement textBox = driver.findElement(By.id("edit-search-block-form--2"));
+        WebElement searchButton = driver.findElement(By.id("edit-submit"));
+
+        textBox.sendKeys("Making it so");
+        searchButton.click();
+
+        WebElement message = driver.findElement(By.id("b-9781982167738"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Making It So: A Memoir");
+
+        driver.quit();
+    }
 }
+
