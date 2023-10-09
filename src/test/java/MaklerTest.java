@@ -26,6 +26,7 @@ public class MaklerTest {
             WebElement title = driver.findElement(By.id("header_searchField"));
             String value = title.getText();
             Assert.assertEquals(value,"Handmade");
+
             driver.quit();
         }
 }
