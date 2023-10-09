@@ -103,4 +103,27 @@ public class LetsQAGroupTest {
         }
     }
 
+    @Test
+    public void testTextInput() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.uitestingplayground.com/textinput");
+        try {
+
+            WebElement newButtonNameField = driver.findElement(By.cssSelector("#newButtonName"));
+            String newButtonName = "Changed Button Name";
+            newButtonNameField.sendKeys(newButtonName);
+
+            WebElement updatingButton = driver.findElement(By.cssSelector("#updatingButton"));
+            updatingButton.click();
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+            String value = updatingButton.getText();
+            Assert.assertEquals(newButtonName, value);
+
+        } finally {
+
+            driver.quit();
+        }
+    }
 }
