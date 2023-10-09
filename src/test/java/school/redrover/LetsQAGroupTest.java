@@ -154,6 +154,7 @@ public class LetsQAGroupTest {
 
         Assert.assertFalse("rgba(0, 123, 255, 1)".equals(badButton.getCssValue("background-color")));
 
+
         driver.quit();
     }
 
