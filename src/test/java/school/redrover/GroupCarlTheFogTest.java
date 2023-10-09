@@ -16,7 +16,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GroupCarlTheFogTest {
     @Test
@@ -107,5 +109,42 @@ public class GroupCarlTheFogTest {
             }
         } catch (Exception ignore) {}
         return null;
+    }
+
+    @Test
+    public void menuItemsTest1() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.hireright.com");
+        List<String> menuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
+
+        List<WebElement> foundMenuItems = driver.findElements(By.cssSelector("ul.hidden > li > button, ul.hidden > li > a"));
+
+        List<String> foundTexts = new ArrayList<>();
+        for (WebElement menuItem : foundMenuItems) {
+            foundTexts.add(menuItem.getText());
+        }
+
+        Assert.assertEquals(foundTexts, menuItems);
+
+        driver.quit();
+    }
+
+
+    @Test
+    public void menuItemsTest2() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.hireright.com");
+        List<String> expectedMenuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
+        List<WebElement> foundMenuItems = driver.findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
+
+        List<String> foundMenuTexts = foundMenuItems.stream().map(WebElement::getText).collect(Collectors.toList());
+
+        for (String expectedItem : expectedMenuItems) {
+            Assert.assertTrue(foundMenuTexts.contains(expectedItem), "Expected menu item '" + expectedItem + "' not found!");
+
+        }
+
+        driver.quit();
+
     }
 }
