@@ -351,7 +351,7 @@ public class GroupUnitedByJavaTest {
 
     @Test
     @Description("testing a book search on a store website")
-    public void testSearch(){
+    public void testBookSearch(){
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.belavrana.com/");
 
