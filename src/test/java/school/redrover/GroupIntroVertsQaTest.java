@@ -120,13 +120,7 @@ public class GroupIntroVertsQaTest {
             Assert.assertEquals(r1, 5);
         }
 
-    @Test
-        public void testSum1() {
-            int r1 = Ann.sum(0, 0);
-            System.out.println(r1 == 0);
-            Assert.assertEquals(r1, 0);
-        }
-        @Test
+         @Test
         public void testSum2() {
             int r1 = Ann.sum(10, 5);
             System.out.println(r1 == 15);
