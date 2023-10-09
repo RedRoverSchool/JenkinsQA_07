@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class GroupQaClimbersTest {
 
@@ -439,18 +440,18 @@ public class GroupQaClimbersTest {
                 By.xpath("(//div[@class='card mt-4 top-card'])[3]"))
                 .click();
 
-        List<WebElement> listofAlertsFrameAndWindows = driver.findElements(
+        List<WebElement> listOfAlertsFrameAndWindows = driver.findElements(
                 By.xpath("//div[@class='left-pannel']/div/div[3]/div/ul[@class='menu-list']/li"));
 
-        List<String> actualListofAlertsFrameAndWindows = new ArrayList<>();
-        for (WebElement element: listofAlertsFrameAndWindows) {
-            actualListofAlertsFrameAndWindows.add(element.getText());
+        List<String> actualListOfAlertsFrameAndWindows = new ArrayList<>();
+        for (WebElement element: listOfAlertsFrameAndWindows) {
+            actualListOfAlertsFrameAndWindows.add(element.getText());
         }
 
-        List<String> expectedListofAlertsFrameAndWindows = List.of(
+        List<String> expectedListOfAlertsFrameAndWindows = List.of(
                 "Browser Windows", "Alerts", "Frames", "Nested Frames", "Modal Dialogs");
 
-        Assert.assertEquals(actualListofAlertsFrameAndWindows, expectedListofAlertsFrameAndWindows);
+        Assert.assertEquals(actualListOfAlertsFrameAndWindows, expectedListOfAlertsFrameAndWindows);
 
         driver.quit();
     }
@@ -601,4 +602,46 @@ public class GroupQaClimbersTest {
 
     }
 
+    @Test
+    public void testBookStoreApplication() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        Thread.sleep(500);
+
+        WebElement bookStoreApplicationButton = driver.findElement(
+                By.xpath("//div[@class='card mt-4 top-card'][6]"));
+        bookStoreApplicationButton.click();
+
+        WebElement searchArea = driver.findElement(
+                By.xpath("//div[@class='mb-3 input-group']/input[@class='form-control']"));
+        searchArea.click();
+        searchArea.sendKeys("java");
+
+        List<WebElement> elements = driver.findElements(
+                By.xpath("//div[@class='rt-tr-group']//div[@class='rt-td'][2]"));
+        List<WebElement> elementsList = new ArrayList<>();
+        for (WebElement element : elements) {
+            if (element.getText().length() > 1) {
+                elementsList.add(element);
+            }
+        }
+        int actualSize = elementsList.size();
+        int expectedSize = 4;
+
+        Assert.assertEquals(actualSize, expectedSize);
+
+        searchArea.clear();
+        elementsList.clear();
+        searchArea.sendKeys("123");
+        elements = driver.findElements(
+                By.xpath("//div[@class='rt-tr-group']//div[@class='rt-td'][2]"));
+        for (WebElement element : elements) {
+            if (element.getText().length() > 1) {
+                elementsList.add(element);
+            }
+        }
+        actualSize = elementsList.size();
+
+        assertEquals(actualSize, 0);
+    }
 }
