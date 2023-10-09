@@ -126,4 +126,20 @@ public class LetsQAGroupTest {
             driver.quit();
         }
     }
+    @Test
+    public void confIXBT(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.ixbt.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals("Новости технологий, обзоры гаджетов, смартфонов, бытовой техники и автомобилей", title);
+
+        WebElement conference = driver.findElement(By.linkText("Конференция"));
+        conference.click();
+
+        String title_k = driver.getTitle();
+        Assert.assertEquals("Конференция iXBT.com", title_k);
+
+        driver.quit();
+    }
 }
