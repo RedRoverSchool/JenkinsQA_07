@@ -142,4 +142,16 @@ public class LetsQAGroupTest {
 
         driver.quit();
     }
+
+    @Test
+    public void clickTest() {
+        driver.get("http://www.uitestingplayground.com/click");
+
+        WebElement badButton = driver.findElement(By.id("badButton"));
+        badButton.click();
+
+        Assert.assertFalse("rgba(0, 123, 255, 1)".equals(badButton.getCssValue("background-color")));
+
+        driver.quit();
+    }
 }
