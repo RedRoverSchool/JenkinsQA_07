@@ -317,4 +317,35 @@ public class GroupUnitedByJavaTest {
             driver.quit();
         }
     }
+
+    @Test
+    @Description("Testing a site with non-working search")
+    public void testSomesing () throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.mybirds.ru/");
+
+        // Test title
+        WebElement textBox = driver.findElement(By.className("slogan"));
+        String text = textBox.getText();
+        Assert.assertEquals(text,"Энциклопедия владельца птицы");
+
+        // Test search
+        WebElement inputTxt = driver.findElement(By.className("input_txt"));
+        inputTxt.sendKeys("Parrots");
+
+        WebElement searchButton = driver.findElement(By.name("submit"));
+        searchButton.click();
+
+        WebElement noText = driver.findElement(By.className("notetext"));
+        String value = noText.getText();
+        Assert.assertEquals(value, "К сожалению, на ваш поисковый запрос ничего не найдено.");
+
+        // Test link
+        WebElement linkButton = driver.findElement(By.xpath("//a[@href='/nature/' and text()='Птицы в природе']"));
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", linkButton);
+
+        driver.quit();
+    }
 }
