@@ -191,5 +191,20 @@ public class GroupJavaExplorersTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testTitle() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(BASE_URL);
+        Thread.sleep(2000);
+        WebElement whatsNew = driver
+                .findElement(By.xpath("//span[text()=\"What's New\"]"));
+        whatsNew.click();
+        String header = driver.findElement(By.xpath("//h1")).getText();
+        assertEquals(header, "What's New");
+
+        driver.quit();
+    }
+
 }
 
