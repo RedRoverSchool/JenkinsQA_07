@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GroupAqaLearnTest{
+public class GroupAqaLearnTest {
     protected WebDriver getDriver() {
 
         return new ChromeDriver();
@@ -48,6 +48,27 @@ public class GroupAqaLearnTest{
         Thread.sleep(3000);
         String actualResult = h2CityNameHeader.getText();
 
-        Assert.assertEquals(actualResult,expectedResult);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testNameOfTitle() {
+
+        String url = "https://openweathermap.org/";
+        String expectedResult = "OpenWeather";
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(url);
+
+        WebElement searchTitle = driver.findElement
+                (
+                        By.xpath("//div/h1")
+                );
+        String actualResult = searchTitle.getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
+
+        driver.quit();
     }
 }
