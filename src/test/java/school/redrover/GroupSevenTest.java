@@ -154,24 +154,27 @@ public class GroupSevenTest {
     public void YMCATest() {
 
         WebDriver driver = new FirefoxDriver();
-        driver.get("https://ymcacapecod.org/");
+        try {
+            driver.get("https://ymcacapecod.org/");
 
-        WebElement textBox = driver.findElement(By.className("field"));
-        WebElement SearchButton = driver.findElement(By.className("submit"));
+            WebElement textBox = driver.findElement(By.className("field"));
+            WebElement SearchButton = driver.findElement(By.className("submit"));
 
-        textBox.sendKeys("pool");
-        SearchButton.click();
+            textBox.sendKeys("pool");
+            SearchButton.click();
 
-        WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
-        findelement.click();
+            WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
+            findelement.click();
 
-        WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
-        text.click();
+            WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
+            text.click();
 
-        String value = text.getText();
-        Assert.assertEquals( value,"CLICK HERE TO REGISTER ONLINE!");
+            String value = text.getText();
+            Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
+        }finally {
+            driver.quit();
+        }
 
-        driver.quit();
     }
 
 
