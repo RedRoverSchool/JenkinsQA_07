@@ -7,11 +7,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -221,7 +219,7 @@ public class GroupUnicornsTest {
         }
     }
     @Test
-    public void verificationSocialIconsGitHub() throws InterruptedException {
+    public void verificationSocialIconsGitHub(){
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -231,7 +229,6 @@ public class GroupUnicornsTest {
             JavascriptExecutor jsExec=(JavascriptExecutor) driver;
             WebElement twitterIcon= driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
             jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            String mainWindow= driver.getWindowHandle();
             twitterIcon.click();
             String url = driver.getCurrentUrl();
             WebElement closeButton=driver.findElement(By.xpath("//*[@aria-label='Close']"));
@@ -239,6 +236,29 @@ public class GroupUnicornsTest {
             wait.until(ExpectedConditions.elementToBeClickable(closeButton));
             closeButton.click();
             Assert.assertTrue(url.contains("twitter"));
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testComputersMenu() {
+        WebDriver driver = new ChromeDriver();
+        String[] computers = new String[]{"Desktops", "Notebooks", "Accessories"};
+
+        try {
+            driver.get("https://demowebshop.tricentis.com/");
+            driver.findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
+            List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
+
+            boolean actual = true;
+            for(int i = 0; i < elements.size(); i++){
+                if (!computers[i].equals(elements.get(i).getText())) {
+                    actual = false;
+                    break;
+                }
+            }
+            assertTrue(actual);
+
         } finally {
             driver.quit();
         }

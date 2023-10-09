@@ -104,6 +104,29 @@ public class GroupIntroVertsQaTest {
         driver.quit();
     }
 
+    static class Ann {
+        public static void main(String[] args) {
+        }
+        public static int mylti(int a, int b) {
+            return a + b;
+        }
+    }
+    @Test
+        public void testSum() {
+            int r1 = Ann.mylti(10, -5);
+            Assert.assertEquals(r1, -50);
+        }
+    @Test
+        public void testSum1() {
+            int r1 = Ann.mylti(0, 0);
+            Assert.assertEquals(r1, 0);
+        }
+        @Test
+        public void testSum2() {
+            int r1 = Ann.mylti(10, 5);
+            Assert.assertEquals(r1, 50);
+        }
+
     @Test
     public void aboutUsTest(){
         WebDriver driver = new ChromeDriver();

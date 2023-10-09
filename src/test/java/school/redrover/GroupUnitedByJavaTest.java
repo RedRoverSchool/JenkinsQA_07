@@ -293,4 +293,79 @@ public class GroupUnitedByJavaTest {
             driver.quit();
         }
     }
+
+    @Test
+    @Description("WebTables: Test open the window Registration form")
+    public void demoqaTestAddNewRecordButton() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/webtables");
+            String title = driver.getTitle();
+            Assert.assertEquals(title, "DEMOQA");
+
+            WebElement main_header = driver.findElement(By.className("main-header"));
+            String value = main_header.getText();
+            Assert.assertEquals(value, "Web Tables");
+
+            WebElement button_add = driver.findElement(By.xpath("//*[@id=\"addNewRecordButton\"]"));
+            button_add.click();
+            WebElement window_add = driver.findElement(By.xpath("//*[@id=\"registration-form-modal\"]"));
+            String title_add_form = window_add.getText();
+            Assert.assertEquals(title_add_form, "Registration Form");
+            Thread.sleep(2000);
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    @Description("Testing a site with non-working search")
+    public void testSomesing () throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.mybirds.ru/");
+
+        // Test title
+        WebElement textBox = driver.findElement(By.className("slogan"));
+        String text = textBox.getText();
+        Assert.assertEquals(text,"Энциклопедия владельца птицы");
+
+        // Test search
+        WebElement inputTxt = driver.findElement(By.className("input_txt"));
+        inputTxt.sendKeys("Parrots");
+
+        WebElement searchButton = driver.findElement(By.name("submit"));
+        searchButton.click();
+
+        WebElement noText = driver.findElement(By.className("notetext"));
+        String value = noText.getText();
+        Assert.assertEquals(value, "К сожалению, на ваш поисковый запрос ничего не найдено.");
+
+        // Test link
+        WebElement linkButton = driver.findElement(By.xpath("//a[@href='/nature/' and text()='Птицы в природе']"));
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", linkButton);
+
+        driver.quit();
+    }
+
+    @Test
+    @Description("testing a book search on a store website")
+    public void testBookSearch(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.belavrana.com/");
+
+        String title = driver.getTitle();
+        assertEquals(title, "Купить книги на русском в Сербии - Bela Vrana (Белая Ворона)");
+
+        WebElement button = driver.findElement(By.name("s"));
+        button.click();
+
+        WebElement search = driver.findElement(By.name("q"));
+        search.sendKeys("Толстой");
+
+        WebElement button2 = driver.findElement(By.name("s"));
+        button2.click();
+
+    }
 }

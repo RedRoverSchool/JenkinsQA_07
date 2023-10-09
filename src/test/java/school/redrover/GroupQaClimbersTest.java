@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class GroupQaClimbersTest {
 
@@ -439,18 +440,18 @@ public class GroupQaClimbersTest {
                 By.xpath("(//div[@class='card mt-4 top-card'])[3]"))
                 .click();
 
-        List<WebElement> listofAlertsFrameAndWindows = driver.findElements(
+        List<WebElement> listOfAlertsFrameAndWindows = driver.findElements(
                 By.xpath("//div[@class='left-pannel']/div/div[3]/div/ul[@class='menu-list']/li"));
 
-        List<String> actualListofAlertsFrameAndWindows = new ArrayList<>();
-        for (WebElement element: listofAlertsFrameAndWindows) {
-            actualListofAlertsFrameAndWindows.add(element.getText());
+        List<String> actualListOfAlertsFrameAndWindows = new ArrayList<>();
+        for (WebElement element: listOfAlertsFrameAndWindows) {
+            actualListOfAlertsFrameAndWindows.add(element.getText());
         }
 
-        List<String> expectedListofAlertsFrameAndWindows = List.of(
+        List<String> expectedListOfAlertsFrameAndWindows = List.of(
                 "Browser Windows", "Alerts", "Frames", "Nested Frames", "Modal Dialogs");
 
-        Assert.assertEquals(actualListofAlertsFrameAndWindows, expectedListofAlertsFrameAndWindows);
+        Assert.assertEquals(actualListOfAlertsFrameAndWindows, expectedListOfAlertsFrameAndWindows);
 
         driver.quit();
     }
@@ -536,6 +537,130 @@ public class GroupQaClimbersTest {
         Assert.assertEquals("You are successfully logged in.", successLoginTextVal);
 
         driver.quit();
+
     }
 
+    @Test
+    public void badSignUpBookStoreTest() throws InterruptedException {     // register without recaptcha
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebElement bookStoreApplicationButton = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[6]"));
+        js.executeScript("arguments[0].scrollIntoView();", bookStoreApplicationButton);
+        Thread.sleep(1000);
+        bookStoreApplicationButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement logIntoButton = driver.findElement(By.xpath("//button[@id='login']"));
+        logIntoButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement NewUserButton = driver.findElement(By.xpath("//button[@id='newUser']"));
+        NewUserButton.click();
+
+        Thread.sleep(1000);
+
+        WebElement textFirstName = driver.findElement(By.xpath("//input[@id='firstname']"));
+        textFirstName.sendKeys("firstName");
+
+        Thread.sleep(3000);
+
+        WebElement textLastName = driver.findElement(By.xpath("//input[@id='lastname']"));
+        textLastName.sendKeys("LastName");
+
+        Thread.sleep(3000);
+
+        WebElement textUserName = driver.findElement(By.xpath("//input[@id='userName']"));
+        textUserName.sendKeys("username");
+
+        Thread.sleep(3000);
+
+        WebElement textPassword = driver.findElement(By.xpath("//input[@id='password']"));
+        textPassword.sendKeys("qwerty1111");
+
+        Thread.sleep(1000);
+
+        WebElement registrationButton = driver.findElement(By.xpath("//button[@id='register']"));
+        js.executeScript("arguments[0].scrollIntoView();", registrationButton);
+        Thread.sleep(1000);
+        registrationButton.click();
+
+        WebElement needRecaptcha = driver.findElement(By.xpath("//p[@style]"));
+        String needRecaptchaText = needRecaptcha.getText();
+        Assert.assertEquals(needRecaptchaText,"Please verify reCaptcha to register!");
+
+        driver.quit();
+
+        /* WebElement findReCaptcha = driver.findElement(By.xpath("////*[@id=\"recaptcha-anchor\"]/div[1]"));
+        js.executeScript("arguments[0].scrollIntoView();", findReCaptcha);
+        Thread.sleep(1000);
+        findReCaptcha.click(); */
+
+    }
+
+    @Test
+    public void testBookStoreApplication() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        Thread.sleep(500);
+
+        WebElement bookStoreApplicationButton = driver.findElement(
+                By.xpath("//div[@class='card mt-4 top-card'][6]"));
+        bookStoreApplicationButton.click();
+
+        WebElement searchArea = driver.findElement(
+                By.xpath("//div[@class='mb-3 input-group']/input[@class='form-control']"));
+        searchArea.click();
+        searchArea.sendKeys("java");
+
+        List<WebElement> elements = driver.findElements(
+                By.xpath("//div[@class='rt-tr-group']//div[@class='rt-td'][2]"));
+        List<WebElement> elementsList = new ArrayList<>();
+        for (WebElement element : elements) {
+            if (element.getText().length() > 1) {
+                elementsList.add(element);
+            }
+        }
+        int actualSize = elementsList.size();
+        int expectedSize = 4;
+
+        Assert.assertEquals(actualSize, expectedSize);
+
+        searchArea.clear();
+        elementsList.clear();
+        searchArea.sendKeys("123");
+        elements = driver.findElements(
+                By.xpath("//div[@class='rt-tr-group']//div[@class='rt-td'][2]"));
+        for (WebElement element : elements) {
+            if (element.getText().length() > 1) {
+                elementsList.add(element);
+            }
+        }
+        actualSize = elementsList.size();
+
+        assertEquals(actualSize, 0);
+    }
+    @Test
+    public void testElementsRadioButton() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        driver.manage().window().maximize();
+        try {
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/div//*[@id=\"item-2\"]")).click();
+            Thread.sleep(1000);
+            WebElement buttonYes = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/div[2]/label"));
+            buttonYes.click();
+            String haveSelected = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/p/span")).getText();
+            assertEquals(haveSelected, "Yes");
+        } finally {
+            driver.quit();
+        }
+        }
 }

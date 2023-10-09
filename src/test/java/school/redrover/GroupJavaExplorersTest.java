@@ -124,6 +124,29 @@ public class GroupJavaExplorersTest {
 
         driver.quit();
     }
+    @Test
+    public void testInvalidLoginWithNonExistedUser() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://magento.softwaretestingboard.com/");
+        WebElement signInElement = driver.findElement(By.className("authorization-link"));
+        signInElement.click();
+
+        WebElement emailInputField = driver.findElement(By.xpath("//input[@name='login[username]']"));
+        emailInputField.sendKeys("asd@gmail.com");
+        WebElement passwordInputField = driver.findElement(By.xpath("//input[@name='login[password]']"));
+        passwordInputField.sendKeys("TestRandomPassword");
+
+        WebElement signInButton = driver.findElement(By.id("send2"));
+        signInButton.click();
+
+        WebElement notificationMessage = driver.findElement(By.xpath("//div[@role='alert']"));
+        Thread.sleep(1000);
+        String notificationMessageText = notificationMessage.getText();
+
+        Assert.assertEquals("The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.", notificationMessageText);
+        driver.quit();
+    }
 
     @Test
     public static void testAddToCart() {
@@ -191,5 +214,20 @@ public class GroupJavaExplorersTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testTitle() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(BASE_URL);
+        Thread.sleep(2000);
+        WebElement whatsNew = driver
+                .findElement(By.xpath("//span[text()=\"What's New\"]"));
+        whatsNew.click();
+        String header = driver.findElement(By.xpath("//h1")).getText();
+        assertEquals(header, "What's New");
+
+        driver.quit();
+    }
+
 }
 
