@@ -1,3 +1,5 @@
+package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -63,5 +65,29 @@ public class GroupCoffeeCodersTest {
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testApteka() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://apteka.ru/");
+
+        WebElement button = driver.findElement(By
+                .xpath("//*[@href ='/svg/sprite.3442412f5a404aaae343385556021881.svg#close' ]"));
+        button.click();
+        WebElement textBox = driver.findElement(By.xpath("//input[@type='search']"));
+        textBox.sendKeys("анальгин");
+
+        WebElement buttonSearch = driver.findElement(By.xpath("//*[text()='Искать']"));
+        buttonSearch.click();
+
+        Thread.sleep(2000);
+
+        WebElement title = driver.findElement(By.xpath("//span[@class='SearchResultTitle__found']"));
+        String value = title.getText();
+        Assert.assertEquals(value,"Результаты по запросу «анальгин» 15 товаров");
+
+        driver.quit();
+
     }
 }
