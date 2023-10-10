@@ -322,4 +322,29 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void testHW(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://fancy-floor.ru/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals( title,"Главная");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement textBox = driver.findElement(By.className("bx-form-control"));
+
+        textBox.sendKeys("Ковролин");
+        textBox.submit();
+
+        WebElement iconConfirm = driver.findElement(By.xpath("//div[@class='catalogItemMaker' and contains(text(), 'Артикул: Satino Royale 98')]"));
+
+        System.out.println(iconConfirm.getText());
+        Assert.assertEquals(iconConfirm.getText(),"Артикул: Satino Royale 98");
+
+        driver.quit();
+    }
+
+
 }
