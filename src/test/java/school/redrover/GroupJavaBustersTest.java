@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class GroupJavaBustersTest {
 
@@ -188,6 +189,40 @@ public class GroupJavaBustersTest {
         WebElement message = driver.findElement(By.xpath("//h1[@class = 'category__header']"));
         String value = message.getText();
         Assert.assertEquals(value, "macbook");
+
+        driver.quit();
+    }
+    @Test
+    public void testSearchCorrectProduct() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://shop.studiob3.pl/");
+
+        driver.findElement(By.className("search-open")).click();
+        Thread.sleep(1000);
+
+        WebElement typeSearch = driver.findElement(By.className("search-field"));
+        typeSearch.sendKeys("dress");
+        typeSearch.submit();
+        Thread.sleep(5000);
+
+        WebElement foundElement = driver.findElement(By.className("post-10807"));
+
+        assertTrue(foundElement.getText().contains("dress"));
+
+        driver.quit();
+    }
+
+    @Test
+    public void testNavigateToExpectedUrl() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://shop.studiob3.pl/");
+
+        driver.findElement(By.className("hamburger")).click();
+        Thread.sleep(1000);
+
+        driver.findElement(By.linkText("End of Series")).click();
+
+        assertEquals(driver.getCurrentUrl(), "https://shop.studiob3.pl/product-category/end-of-series/");
 
         driver.quit();
     }

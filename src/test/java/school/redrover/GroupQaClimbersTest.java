@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -642,6 +641,26 @@ public class GroupQaClimbersTest {
         actualSize = elementsList.size();
 
         assertEquals(actualSize, 0);
+    }
+
+    @Test
+    public void testElementsRadioButton() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        driver.manage().window().maximize();
+        try {
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/div//*[@id=\"item-2\"]")).click();
+            Thread.sleep(1000);
+            WebElement buttonYes = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/div[2]/label"));
+            buttonYes.click();
+            String haveSelected = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/p/span")).getText();
+            assertEquals(haveSelected, "Yes");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test

@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -348,4 +349,45 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+
+    @Test
+    @Description("testing a book search on a store website")
+    public void testBookSearch(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.belavrana.com/");
+
+        String title = driver.getTitle();
+        assertEquals(title, "Купить книги на русском в Сербии - Bela Vrana (Белая Ворона)");
+
+        WebElement button = driver.findElement(By.name("s"));
+        button.click();
+
+        WebElement search = driver.findElement(By.name("q"));
+        search.sendKeys("Толстой");
+
+        WebElement button2 = driver.findElement(By.name("s"));
+        button2.click();
+
+    }
+
+    @Test
+    public void testDemoqaEdgeExperiment(){
+        WebDriver driver = new EdgeDriver();
+
+        driver.get("http://restful-booker.herokuapp.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals (title, "Welcome to Restful-Booker");
+
+        WebElement cardBookStore = driver.findElement(By.xpath("//img[@src='/images/motpro.png']"));
+        cardBookStore.click();
+
+        driver.getWindowHandles().forEach(tab->driver.switchTo().window(tab));
+
+        String title2 = driver.getTitle();
+        Assert.assertEquals (title2, "Ninja training for software testers | Ministry of Testing");
+
+        driver.quit();
+    }
+
 }
