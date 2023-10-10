@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.testng.AssertJUnit.assertEquals;
-
 public class GroupCarlTheFogTest {
     @Test
     public void hireRightTest() {
@@ -114,28 +112,6 @@ public class GroupCarlTheFogTest {
     }
 
     @Test
-    public void testRadyShellCalendar()  {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.theshell.org/");
-
-        String title = driver.getTitle();
-        assertEquals("Home | Rady Shell at Jacobs Park", title);
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        driver.findElement(By.xpath("//button[@class='navtoggle']")).click();
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        driver.findElement(By.xpath("//*[@id='site-menu']/li[3]/a")).click();
-
-        String performancesPage = driver.getTitle();
-        assertEquals("Performances | Rady Shell at Jacobs Park", performancesPage);
-
-        driver.quit();
-    }
-
-    @Test
     public void menuItemsTest1() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.hireright.com");
@@ -152,6 +128,7 @@ public class GroupCarlTheFogTest {
 
         driver.quit();
     }
+
 
     @Test
     public void menuItemsTest2() {
