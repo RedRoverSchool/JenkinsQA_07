@@ -322,4 +322,48 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+    @Test
+    public void testKumon() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.kumon.com/");
+
+
+        WebElement locationButton = driver.findElement(By.xpath("//*[@href = '/locations']"));
+        locationButton.click();
+        Thread.sleep(1000);
+
+        String titleLocation = driver.getTitle();
+        Thread.sleep(1000);
+        Assert.assertEquals(titleLocation, "Find Kids' Learning Centers - Kumon Locations");
+
+
+        WebElement inputButton = driver.findElement(By.xpath("//input[@type = 'text']"));
+        inputButton.click();
+        Thread.sleep(1000);
+
+
+        WebElement locationText = driver.findElement(By.xpath("//h4[text()='INDIAN LAND']"));
+        String getText  = locationText.getText();
+        Assert.assertEquals(getText, "INDIAN LAND");
+
+        WebElement schedulerButton = driver.findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
+        Thread.sleep(1000);
+        schedulerButton.click();
+        Thread.sleep(5000);
+        String parentWindowHandle = driver.getWindowHandle(); //это метод в библиотеке Selenium WebDriver,
+        // который используется для получения идентификатора (handle) текущего окна или вкладки браузера.
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(parentWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                return; // Завершить метод и вернуться
+            }
+        }
+
+        String schedulerTitle = driver.getTitle();
+
+        Assert.assertEquals(schedulerTitle, "Book Appointment | Kumon of  INDIAN LAND");
+
+        driver.quit();
+
+    }
 }
