@@ -22,8 +22,8 @@ public class PlusThreeTest {
     public static final String EMAIL = "Akiko@gmail.com";
     public static final String CURRENT_ADDRESS = "USA";
     public static final String PERMANENT_ADDRESS = "USA1";
-    public static final String CITY= "LOS ANGELES";
-    public static final String STATE ="California";
+    public static final String CITY = "LOS ANGELES";
+    public static final String STATE = "California";
     public static final String URL_PARABANK = "https://parabank.parasoft.com/";
     ChromeDriver driver;
 
@@ -132,7 +132,7 @@ public class PlusThreeTest {
     }
 
     @Test
-    public static void forgotLoginTest () {
+    public static void forgotLoginTest() {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://parabank.parasoft.com/parabank/index.htm");
@@ -155,13 +155,13 @@ public class PlusThreeTest {
         WebElement cityForgotLogin = driver.findElement(By.id("address.city"));
         cityForgotLogin.sendKeys(CITY);
 
-        WebElement stateForgotLogin= driver.findElement(By.id("address.state"));
+        WebElement stateForgotLogin = driver.findElement(By.id("address.state"));
         stateForgotLogin.sendKeys(STATE);
 
         WebElement zipCodeForgotLogin = driver.findElement(By.id("address.zipCode"));
         zipCodeForgotLogin.sendKeys("123456");
 
-        WebElement ssnForgotLogin = driver.findElement(By.id("ssn"))  ;
+        WebElement ssnForgotLogin = driver.findElement(By.id("ssn"));
         ssnForgotLogin.sendKeys("123fff");
 
         WebElement submitForgotLogin = driver.findElement(By.xpath("//input[contains(@value,\"Find My Login Info\")]"));
@@ -227,7 +227,7 @@ public class PlusThreeTest {
     }
 
     @Test
-    public  void contactUs() {
+    public void contactUs() {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get(URL_PARABANK);
@@ -255,6 +255,7 @@ public class PlusThreeTest {
         Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
         driver.quit();
     }
+
     @Test
     public void testTemperatureInFahrenheit() {
 
@@ -307,8 +308,9 @@ public class PlusThreeTest {
 
         driver.quit();
     }
+
     @Test
-    public void Trivio () {
+    public void Trivio() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://login.trivio.ru/");
 
@@ -322,8 +324,9 @@ public class PlusThreeTest {
         signInButton.click();
         driver.quit();
     }
+
     @Test
-    public void signUpButtonTest(){
+    public void signUpButtonTest() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://bandcamp.com/");
@@ -335,7 +338,5 @@ public class PlusThreeTest {
             driver.quit();
         }
     }
-
-
 }
 
