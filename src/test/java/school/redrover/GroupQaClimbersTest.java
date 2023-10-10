@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -14,6 +11,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -21,6 +19,8 @@ import static org.testng.Assert.assertTrue;
 public class GroupQaClimbersTest {
 
     final static String URL = "https://demoqa.com/";
+
+    private final static WebDriver CHROME_DRIVER = new ChromeDriver();
 
     @Test
     public void testTextBox() {
@@ -643,5 +643,32 @@ public class GroupQaClimbersTest {
         actualSize = elementsList.size();
 
         assertEquals(actualSize, 0);
+    }
+
+    @Test
+    public void certificationTrainingSearchForJavaTest() throws InterruptedException {
+        try{
+            CHROME_DRIVER.get(URL);
+            WebElement certificationTraining = CHROME_DRIVER.findElement(By.xpath("//img[@class=\"banner-image\"]"));
+            certificationTraining.click();//opens another window
+            Set<String> windowIDs = CHROME_DRIVER.getWindowHandles();
+
+            List<String> listOfWindowIDs = new ArrayList<>(windowIDs);
+            String secondWindowID = listOfWindowIDs.get(1);
+            CHROME_DRIVER.switchTo().window(secondWindowID);
+
+            WebElement inputSearch = CHROME_DRIVER.findElement(By.xpath("//input[@class=\"navbar__search--input\"]"));
+            inputSearch.click();
+            inputSearch.sendKeys("java");
+            inputSearch.sendKeys(Keys.ENTER);
+            listOfWindowIDs.add(CHROME_DRIVER.getWindowHandle());
+            CHROME_DRIVER.switchTo().window(listOfWindowIDs.get(2));
+            WebElement message = CHROME_DRIVER.findElement(By.xpath("//h1"));
+            String actualMessage = message.getText();
+            Assert.assertEquals(actualMessage, "Search - \"java\"");
+
+        }finally {
+            CHROME_DRIVER.quit();
+        }
     }
 }
