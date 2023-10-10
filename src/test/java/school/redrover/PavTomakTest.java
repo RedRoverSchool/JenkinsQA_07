@@ -13,7 +13,7 @@ public class PavTomakTest {
 
 
     @Test
-    public void typeIn() throws InterruptedException {
+    public void testTypeIn() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
 
@@ -37,7 +37,7 @@ public class PavTomakTest {
     }
 
     @Test
-    public void MacsShack() {
+    public void testMacsShack() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://macsseafood.com/restaurant/macs-shack-wellfleet/");
 
