@@ -323,7 +323,7 @@ public class PlusThreeTest {
         driver.quit();
     }
     @Test
-    public void signUpButtonTest2(){
+    public void signUpButtonTest(){
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://bandcamp.com/");
