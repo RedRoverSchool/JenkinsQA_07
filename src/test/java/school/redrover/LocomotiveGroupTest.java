@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -104,4 +105,21 @@ public class LocomotiveGroupTest {
         WebElement RadioButton = driver.findElement(By.xpath("//label[normalize-space()='" + value + "']"));
         RadioButton.click();
     }
+    @Test
+
+    public void DashboardButtonTest() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://refero.design/");
+            WebElement bentoBox = driver.findElement(By.xpath("//div[@class='xK9VF'][contains(text(),'Dashboard')]"));
+            Actions actions = new Actions(driver);
+            actions.moveToElement(bentoBox);
+            bentoBox.click();
+
+            Assert.assertEquals(driver.getCurrentUrl(), "https://refero.design/search?page_types[id][]=28&order=popular");
+        } finally {
+            driver.quit();
+        }
+      }
 }
+

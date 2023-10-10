@@ -219,6 +219,21 @@ public class GroupItFriendlyTest {
                     "downloads\n" +
                     "wordFile\n" +
                     "excelFile");
+          } finally {
+            driver.quit();
+        }
+    }
+
+  @Test
+  public void BadRequestButtonTest() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/links");
+            driver.manage().window().maximize();
+
+            WebElement badRequestButton = driver.findElement(By.id("bad-request"));
+
+            assertEquals(badRequestButton.getText(), "Bad Request");
 
         } finally {
             driver.quit();

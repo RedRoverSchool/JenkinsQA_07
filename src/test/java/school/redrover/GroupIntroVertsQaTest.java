@@ -155,4 +155,27 @@ public class GroupIntroVertsQaTest {
     }
     // endregion
 
+    // region AkiMiraTest
+    @Test (description = "Test of Text-Box 'Name'")
+    public void TextBoxTest () {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/text-box");
+
+        String title = driver.getTitle();
+        Assert.assertEquals("DEMOQA", title);
+
+//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+
+        textBox.sendKeys("Oleg");
+        submitButton.click();
+
+        WebElement message = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        String value = message.getText();
+        Assert.assertEquals("Name:Oleg", value);
+
+        driver.quit();
+    }
 }

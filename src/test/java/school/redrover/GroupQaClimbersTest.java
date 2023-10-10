@@ -1,25 +1,37 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 
 public class GroupQaClimbersTest {
 
     final static String URL = "https://demoqa.com/";
+    private WebDriver driver;
+
+
+    @BeforeMethod
+    public void before() {
+        this.driver = new ChromeDriver();
+    }
+
+    @AfterMethod
+    public void after() {
+        driver.quit();
+    }
 
     @Test
     public void testTextBox() {
@@ -56,8 +68,10 @@ public class GroupQaClimbersTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
         WebElement elements = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
+        js.executeScript("arguments[0].scrollIntoView();", elements);
         elements.click();
 
         WebElement textBox = driver.findElement(By.xpath("//li[@id=\"item-0\"]/span[text()='Text Box']"));
@@ -76,6 +90,7 @@ public class GroupQaClimbersTest {
         permanentAddressField.sendKeys("050000, Astana");
 
         WebElement submitButton = driver.findElement(By.xpath("//button[@id=\"submit\"]"));
+        js.executeScript("arguments[0].scrollIntoView();", submitButton);
         submitButton.click();
 
         WebElement output = driver.findElement(By.xpath("//div[@id='output']/div/p"));
@@ -314,9 +329,11 @@ public class GroupQaClimbersTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
         try {
             WebElement elementsBtn = driver.findElement(By.xpath("//h5[1]"));
+            js.executeScript("arguments[0].scrollIntoView();", elementsBtn);
             String value = elementsBtn.getText();
             Assert.assertEquals("Elements", value);
             elementsBtn.click();
@@ -347,6 +364,7 @@ public class GroupQaClimbersTest {
             countryPermanent.sendKeys("NY");
 
             WebElement submit = driver.findElement(By.xpath("//*[@id='submit']"));
+            js.executeScript("arguments[0].scrollIntoView();", submit);
             submit.click();
 
             WebElement displayedName = driver.findElement(By.xpath("//*[@id='name']"));
@@ -375,9 +393,6 @@ public class GroupQaClimbersTest {
 
     @Test
     public void testElementsCheckBox() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-
         driver.get(URL);
         Thread.sleep(500);
 
@@ -424,14 +439,10 @@ public class GroupQaClimbersTest {
                         downloads
                         wordFile
                         excelFile""");
-
-        driver.quit();
     }
 
     @Test
     public void testListOfAlertsFrameAndWindows() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-
         driver.get(URL);
         Thread.sleep(200);
 
@@ -439,20 +450,18 @@ public class GroupQaClimbersTest {
                 By.xpath("(//div[@class='card mt-4 top-card'])[3]"))
                 .click();
 
-        List<WebElement> listofAlertsFrameAndWindows = driver.findElements(
+        List<WebElement> listOfAlertsFrameAndWindows = driver.findElements(
                 By.xpath("//div[@class='left-pannel']/div/div[3]/div/ul[@class='menu-list']/li"));
 
-        List<String> actualListofAlertsFrameAndWindows = new ArrayList<>();
-        for (WebElement element: listofAlertsFrameAndWindows) {
-            actualListofAlertsFrameAndWindows.add(element.getText());
+        List<String> actualListOfAlertsFrameAndWindows = new ArrayList<>();
+        for (WebElement element: listOfAlertsFrameAndWindows) {
+            actualListOfAlertsFrameAndWindows.add(element.getText());
         }
 
-        List<String> expectedListofAlertsFrameAndWindows = List.of(
+        List<String> expectedListOfAlertsFrameAndWindows = List.of(
                 "Browser Windows", "Alerts", "Frames", "Nested Frames", "Modal Dialogs");
 
-        Assert.assertEquals(actualListofAlertsFrameAndWindows, expectedListofAlertsFrameAndWindows);
-
-        driver.quit();
+        Assert.assertEquals(actualListOfAlertsFrameAndWindows, expectedListOfAlertsFrameAndWindows);
     }
 
     @Test
@@ -600,5 +609,95 @@ public class GroupQaClimbersTest {
         findReCaptcha.click(); */
 
     }
+
+    @Test
+    public void testBookStoreApplication() throws InterruptedException {
+        driver.get(URL);
+        Thread.sleep(500);
+
+        WebElement bookStoreApplicationButton = driver.findElement(
+                By.xpath("//div[@class='card mt-4 top-card'][6]"));
+        bookStoreApplicationButton.click();
+
+        WebElement searchArea = driver.findElement(
+                By.xpath("//div[@class='mb-3 input-group']/input[@class='form-control']"));
+        searchArea.click();
+        searchArea.sendKeys("java");
+
+        List<WebElement> elements = driver.findElements(
+                By.xpath("//div[@class='rt-tr-group']//div[@class='rt-td'][2]"));
+        List<WebElement> elementsList = new ArrayList<>();
+        for (WebElement element : elements) {
+            if (element.getText().length() > 1) {
+                elementsList.add(element);
+            }
+        }
+        int actualSize = elementsList.size();
+        int expectedSize = 4;
+
+        Assert.assertEquals(actualSize, expectedSize);
+
+        searchArea.clear();
+        elementsList.clear();
+        searchArea.sendKeys("123");
+        elements = driver.findElements(
+                By.xpath("//div[@class='rt-tr-group']//div[@class='rt-td'][2]"));
+        for (WebElement element : elements) {
+            if (element.getText().length() > 1) {
+                elementsList.add(element);
+            }
+        }
+        actualSize = elementsList.size();
+
+        assertEquals(actualSize, 0);
+    }
+
+    @Test
+    public void testElementsRadioButton() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get(URL);
+        driver.manage().window().maximize();
+        try {
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/div//*[@id=\"item-2\"]")).click();
+            Thread.sleep(1000);
+            WebElement buttonYes = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/div[2]/label"));
+            buttonYes.click();
+            String haveSelected = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/p/span")).getText();
+            assertEquals(haveSelected, "Yes");
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void certificationTrainingSearchForJavaTest() throws InterruptedException {
+        try{
+            driver.get(URL);
+            WebElement certificationTraining = driver.findElement(By.xpath("//img[@class=\"banner-image\"]"));
+            certificationTraining.click();//opens another window
+            Set<String> windowIDs = driver.getWindowHandles();
+
+            List<String> listOfWindowIDs = new ArrayList<>(windowIDs);
+            String secondWindowID = listOfWindowIDs.get(1);
+            driver.switchTo().window(secondWindowID);
+
+            WebElement inputSearch = driver.findElement(By.xpath("//input[@class=\"navbar__search--input\"]"));
+            inputSearch.click();
+            inputSearch.sendKeys("java");
+            inputSearch.sendKeys(Keys.ENTER);
+            listOfWindowIDs.add(driver.getWindowHandle());
+            driver.switchTo().window(listOfWindowIDs.get(2));
+            WebElement message = driver.findElement(By.xpath("//h1"));
+            String actualMessage = message.getText();
+            Assert.assertEquals(actualMessage, "Search - \"java\"");
+
+        }finally {
+            driver.quit();
+        }
+    }
+
 
 }

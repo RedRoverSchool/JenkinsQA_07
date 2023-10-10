@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class  GroupSevenTest {
+public class GroupSevenTest {
     @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
@@ -111,21 +111,68 @@ public class  GroupSevenTest {
     }
 
     @Test
-    public void testPage() throws InterruptedException {
+
+    public void testSearchAB() {
+
         WebDriver driver = new ChromeDriver();
-        driver.get("https://megagroup.by/");
-        driver.manage().window().maximize();
-        Thread.sleep(1500);
+        driver.get("https://duckduckgo.com/");
 
-        WebElement price = driver.findElement(
-                By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
-        price.click();
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "DuckDuckGo — Privacy, simplified.");
 
-        Thread.sleep(1500);
-        WebElement header = driver.findElement(By.xpath("//h1"));
-        Assert.assertEquals(header.getText(), "Стоимость сайтов");
+        WebElement textBox = driver.findElement(By.name("q"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@aria-label='Search']"));
+
+        textBox.sendKeys("Wikipedia");
+        submitButton.click();
+
+        WebElement wikiName = driver.findElement(By.xpath("(//*[@data-testid='result-title-a'])[1]"));
+        String wikiName2 = wikiName.getText();
+        Assert.assertEquals(wikiName2, "Wikipedia");
+
         driver.quit();
     }
+
+    @Test
+    public void testLinks() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://duckduckgo.com/");
+
+        WebElement textBox = driver.findElement(By.name("q"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@aria-label='Search']"));
+
+        textBox.sendKeys("Wikipedia");
+        submitButton.click();
+
+        Thread.sleep(5000);
+
+        int linkCount = driver.findElements(By.xpath("//*[@data-testid='result-extras-url-link']")).size();
+
+        Assert.assertEquals(linkCount, 10);
+
+        driver.quit();
+    }
+
+    @Test
+    public void testPricePageHeader() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://megagroup.by/");
+            driver.manage().window().maximize();
+            Thread.sleep(1500);
+
+            WebElement price = driver.findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+            price.click();
+
+            Thread.sleep(1500);
+            WebElement header = driver.findElement(By.xpath("//h1"));
+            Assert.assertEquals(header.getText(), "Стоимость сайтов");
+        } finally {
+            driver.quit();
+        }
+    }
+
     @Test
     public void testHPSearch() {
         WebDriver driver = new ChromeDriver();
@@ -145,11 +192,12 @@ public class  GroupSevenTest {
             ArrayList<String> wid = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(wid.get(1));
             WebElement resultHeader = driver.findElement(By.xpath("//h1"));
-            Assert.assertEquals(resultHeader.getText(),"Harry Potter");
+            Assert.assertEquals(resultHeader.getText(), "Harry Potter");
         } finally {
             driver.quit();
         }
     }
+
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -225,5 +273,53 @@ public class  GroupSevenTest {
         }
 
         driver.quit();
+    }
+
+    @Test
+    public void testBookSearch() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.doylestownbookshop.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "The Doylestown Bookshop |");
+
+        WebElement textBox = driver.findElement(By.id("edit-search-block-form--2"));
+        WebElement searchButton = driver.findElement(By.id("edit-submit"));
+
+        textBox.sendKeys("Making it so");
+        searchButton.click();
+
+        WebElement message = driver.findElement(By.id("b-9781982167738"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Making It So: A Memoir");
+
+        driver.quit();
+    }
+
+    @Test
+    public void YMCATest() {
+
+        WebDriver driver = new FirefoxDriver();
+        try {
+            driver.get("https://ymcacapecod.org/");
+
+            WebElement textBox = driver.findElement(By.className("field"));
+            WebElement SearchButton = driver.findElement(By.className("submit"));
+
+            textBox.sendKeys("pool");
+            SearchButton.click();
+
+            WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
+            findelement.click();
+
+            WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
+            text.click();
+
+            String value = text.getText();
+            Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
+        } finally {
+            driver.quit();
+        }
     }
 }
