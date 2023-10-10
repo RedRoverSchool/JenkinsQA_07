@@ -131,11 +131,9 @@ public class GroupSevenTest {
         Assert.assertEquals(wikiName2, "Wikipedia");
 
         driver.quit();
-
     }
 
     @Test
-
     public void testLinks() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
@@ -157,20 +155,23 @@ public class GroupSevenTest {
     }
 
     @Test
-    public void testPage() throws InterruptedException {
+    public void testPricePageHeader() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
-        driver.get("https://megagroup.by/");
-        driver.manage().window().maximize();
-        Thread.sleep(1500);
+        try {
+            driver.get("https://megagroup.by/");
+            driver.manage().window().maximize();
+            Thread.sleep(1500);
 
-        WebElement price = driver.findElement(
-                By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
-        price.click();
+            WebElement price = driver.findElement(
+                    By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+            price.click();
 
-        Thread.sleep(1500);
-        WebElement header = driver.findElement(By.xpath("//h1"));
-        Assert.assertEquals(header.getText(), "Стоимость сайтов");
-        driver.quit();
+            Thread.sleep(1500);
+            WebElement header = driver.findElement(By.xpath("//h1"));
+            Assert.assertEquals(header.getText(), "Стоимость сайтов");
+        } finally {
+            driver.quit();
+        }
     }
 
     @Test
@@ -196,7 +197,6 @@ public class GroupSevenTest {
         } finally {
             driver.quit();
         }
-
     }
 
     @Test
@@ -297,11 +297,6 @@ public class GroupSevenTest {
 
         driver.quit();
     }
-}
-
-
-
-
 
     @Test
     public void YMCATest() {
@@ -324,13 +319,8 @@ public class GroupSevenTest {
 
             String value = text.getText();
             Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
-        }finally {
+        } finally {
             driver.quit();
         }
-
     }
-
-
-
-
-    }
+}
