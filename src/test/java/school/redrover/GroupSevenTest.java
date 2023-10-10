@@ -296,7 +296,16 @@ public class GroupSevenTest {
 
         driver.quit();
     }
+    public void SYTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
+        driver.get("https://www.cartier.com/en-us/home");
+        driver.quit();
+
+    }
 }
+
 
 
 
