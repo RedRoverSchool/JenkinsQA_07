@@ -5,6 +5,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -14,12 +16,23 @@ import java.util.List;
 import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class GroupQaClimbersTest {
 
     final static String URL = "https://demoqa.com/";
-    private final static WebDriver CHROME_DRIVER = new ChromeDriver();
+    private WebDriver driver;
+
+
+    @BeforeMethod
+    public void before() {
+        this.driver = new ChromeDriver();
+    }
+
+    @AfterMethod
+    public void after() {
+        driver.quit();
+    }
+
     @Test
     public void testTextBox() {
         WebDriver driver = new ChromeDriver();
@@ -55,8 +68,10 @@ public class GroupQaClimbersTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
         WebElement elements = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
+        js.executeScript("arguments[0].scrollIntoView();", elements);
         elements.click();
 
         WebElement textBox = driver.findElement(By.xpath("//li[@id=\"item-0\"]/span[text()='Text Box']"));
@@ -75,6 +90,7 @@ public class GroupQaClimbersTest {
         permanentAddressField.sendKeys("050000, Astana");
 
         WebElement submitButton = driver.findElement(By.xpath("//button[@id=\"submit\"]"));
+        js.executeScript("arguments[0].scrollIntoView();", submitButton);
         submitButton.click();
 
         WebElement output = driver.findElement(By.xpath("//div[@id='output']/div/p"));
@@ -313,9 +329,11 @@ public class GroupQaClimbersTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
         try {
             WebElement elementsBtn = driver.findElement(By.xpath("//h5[1]"));
+            js.executeScript("arguments[0].scrollIntoView();", elementsBtn);
             String value = elementsBtn.getText();
             Assert.assertEquals("Elements", value);
             elementsBtn.click();
@@ -346,6 +364,7 @@ public class GroupQaClimbersTest {
             countryPermanent.sendKeys("NY");
 
             WebElement submit = driver.findElement(By.xpath("//*[@id='submit']"));
+            js.executeScript("arguments[0].scrollIntoView();", submit);
             submit.click();
 
             WebElement displayedName = driver.findElement(By.xpath("//*[@id='name']"));
@@ -374,9 +393,6 @@ public class GroupQaClimbersTest {
 
     @Test
     public void testElementsCheckBox() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-
         driver.get(URL);
         Thread.sleep(500);
 
@@ -423,14 +439,10 @@ public class GroupQaClimbersTest {
                         downloads
                         wordFile
                         excelFile""");
-
-        driver.quit();
     }
 
     @Test
     public void testListOfAlertsFrameAndWindows() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-
         driver.get(URL);
         Thread.sleep(200);
 
@@ -450,8 +462,6 @@ public class GroupQaClimbersTest {
                 "Browser Windows", "Alerts", "Frames", "Nested Frames", "Modal Dialogs");
 
         Assert.assertEquals(actualListOfAlertsFrameAndWindows, expectedListOfAlertsFrameAndWindows);
-
-        driver.quit();
     }
 
     @Test
@@ -602,7 +612,6 @@ public class GroupQaClimbersTest {
 
     @Test
     public void testBookStoreApplication() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
         driver.get(URL);
         Thread.sleep(500);
 
@@ -666,27 +675,29 @@ public class GroupQaClimbersTest {
     @Test
     public void certificationTrainingSearchForJavaTest() throws InterruptedException {
         try{
-            CHROME_DRIVER.get(URL);
-            WebElement certificationTraining = CHROME_DRIVER.findElement(By.xpath("//img[@class=\"banner-image\"]"));
+            driver.get(URL);
+            WebElement certificationTraining = driver.findElement(By.xpath("//img[@class=\"banner-image\"]"));
             certificationTraining.click();//opens another window
-            Set<String> windowIDs = CHROME_DRIVER.getWindowHandles();
+            Set<String> windowIDs = driver.getWindowHandles();
 
             List<String> listOfWindowIDs = new ArrayList<>(windowIDs);
             String secondWindowID = listOfWindowIDs.get(1);
-            CHROME_DRIVER.switchTo().window(secondWindowID);
+            driver.switchTo().window(secondWindowID);
 
-            WebElement inputSearch = CHROME_DRIVER.findElement(By.xpath("//input[@class=\"navbar__search--input\"]"));
+            WebElement inputSearch = driver.findElement(By.xpath("//input[@class=\"navbar__search--input\"]"));
             inputSearch.click();
             inputSearch.sendKeys("java");
             inputSearch.sendKeys(Keys.ENTER);
-            listOfWindowIDs.add(CHROME_DRIVER.getWindowHandle());
-            CHROME_DRIVER.switchTo().window(listOfWindowIDs.get(2));
-            WebElement message = CHROME_DRIVER.findElement(By.xpath("//h1"));
+            listOfWindowIDs.add(driver.getWindowHandle());
+            driver.switchTo().window(listOfWindowIDs.get(2));
+            WebElement message = driver.findElement(By.xpath("//h1"));
             String actualMessage = message.getText();
             Assert.assertEquals(actualMessage, "Search - \"java\"");
 
         }finally {
-            CHROME_DRIVER.quit();
+            driver.quit();
         }
     }
+
+
 }

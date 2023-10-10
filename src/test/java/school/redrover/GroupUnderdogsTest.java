@@ -23,6 +23,7 @@ public class GroupUnderdogsTest {
     String password = "BikeTrekMarlyn4!";
     String wrongPassword = "Sbbhbhbln2";
     String baseUrl = "https://www.trekbikes.com/us/en_US/";
+    String baseUrlArt = "https://www.maytag.ca/";
 
     public void openMainPage() {
         driver.get(mainPageUrl);
@@ -213,6 +214,80 @@ public class GroupUnderdogsTest {
     }
 
     @Test
+    public void artuomEnd_to_EndTest() throws InterruptedException {
+        driver.manage().window().maximize();
+        driver.get(baseUrlArt);
+
+        WebElement modWind = driver.findElement(By.xpath("//*[@viewBox=\"0 0 22 13\"]"));
+        Thread.sleep(1000);
+        modWind.click();
+        Thread.sleep(1000);
+
+        WebElement fRlocal = driver.findElement(By.xpath("(//*[@class=\"utility-nav__link\"])[5]"));
+        fRlocal.click();
+        Thread.sleep(3000);
+
+        WebElement modWind2 = driver.findElement(By.xpath("//*[@class=\"promo-drawer__heading\"]"));
+        System.out.println(modWind2.getText());
+        modWind2.click();
+
+
+        WebElement address = driver.findElement(By.xpath("//*[@class='location-data']"));
+        address.click();
+        Thread.sleep(2000);
+
+
+        WebElement fieldSearch = driver.findElement(By.xpath("//input[@placeholder='Tout rechercher']"));
+        fieldSearch.clear();
+        fieldSearch.sendKeys("FILTRE À EAU");
+        fieldSearch.sendKeys(Keys.ENTER);
+
+
+        WebElement sortPrice = driver.findElement(By.xpath("//*[@aria-label=\"sort by\"]/option[2]"));
+        sortPrice.click();
+        Thread.sleep(1000);
+
+        WebElement fullfilter = driver.findElement(By.xpath("(//*[@href=\"/fr_ca/accessories/kitchen-accessories/refrigerator/p.freshflow-refrigerator-air-filter-air1.w10311524.html?originVariantsOrder=NC\"])[1]"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        int yOffset = fullfilter.getLocation().getY();
+        for (int i = 0; i < yOffset; i += 20) {
+            js.executeScript("window.scrollTo(0, " + i + ")");
+            Thread.sleep(50);
+        }
+        fullfilter.click();
+
+        JavascriptExecutor js1 = (JavascriptExecutor) driver;
+        WebElement trash = driver.findElement(By.xpath("(//*[@class=\"button checking-availability-btn trigger-modal\"])[2]"));
+        js1.executeScript("arguments[0].scrollIntoView();", trash);
+        Thread.sleep(1000);
+        trash.click();
+        Thread.sleep(1000);
+
+        WebElement zipCode = driver.findElement(By.xpath("//*[@class=\"signin-account-field form-input mm-zipcode-location-v2\"]"));
+        zipCode.click();
+        Thread.sleep(1000);
+
+        WebElement fieldZip = driver.findElement(By.xpath("//*[@placeholder=\"Tapez le code postal ici...\"]"));
+        fieldZip.click();
+        fieldZip.sendKeys("A1A 1A1");
+
+
+        WebElement submit = driver.findElement(By.xpath("//*[@id=\"update-location-btn\"]"));
+        submit.click();
+        Thread.sleep(2000);
+        System.out.println("Проверка");
+
+
+        JavascriptExecutor js2 = (JavascriptExecutor) driver;
+        WebElement bins = driver.findElement(By.xpath("(//span[@class=\"button__text\"])[2]"));
+        js2.executeScript("arguments[0].scrollIntoView();", bins);
+
+        Thread.sleep(2000);
+        bins.click();
+
+    }
+
+    @Test
     public void kristinaNameAuthorSite() {
         WebDriver driver = new ChromeDriver();
         driver.get("http://www.99-bottles-of-beer.net/");
@@ -304,7 +379,7 @@ public class GroupUnderdogsTest {
         List<WebElement> listItems = driver.findElements(By.xpath("//*[@id=\"main\"]/ul/li/span"));
         Assert.assertFalse(listItems.isEmpty(), "We should have at least one list item with bold text");
 
-        for (WebElement el :listItems) {
+        for (WebElement el : listItems) {
             String notificationText = el.getText();
             if (notificationText.equalsIgnoreCase("important:")) {
                 String backgroundColor = el.getCssValue("background-color");

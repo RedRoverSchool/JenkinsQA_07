@@ -389,5 +389,38 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+    @Test
+    public void testAddItemFromCatalogueToCart() throws InterruptedException {
+        driver.get("https://www.saucedemo.com/");
+        try {
+            WebElement usernameField = driver.findElement(By.id("user-name"));
+            usernameField.sendKeys("standard_user");
 
+            WebElement passwordField = driver.findElement(By.id("password"));
+            passwordField.sendKeys("secret_sauce");
+
+            WebElement login_button = driver.findElement(By.className("submit-button"));
+            login_button.click();
+
+            String item_name = "Sauce Labs Fleece Jacket";
+            String quantity = "1";
+
+            WebElement fleece_jacket_to_cart_button = driver.findElement(By.id(
+                    "add-to-cart-sauce-labs-fleece-jacket"));
+            fleece_jacket_to_cart_button.click();
+
+            WebElement shopping_cart_button = driver.findElement(By.className("shopping_cart_container"));
+            shopping_cart_button.click();
+            Thread.sleep(2000);
+
+            String cart_item_name = driver.findElement(By.cssSelector(".cart_item_label .inventory_item_name"))
+                    .getText();
+            String cart_item_quantity = driver.findElement(By.xpath("//div[3]/*[contains(@class, " +
+                    "'cart_quantity')]")).getText();
+            Assert.assertEquals(cart_item_name, item_name, "The cart does not have " + item_name);
+            Assert.assertEquals(cart_item_quantity, quantity, "The cart quantity is not " + quantity);
+        } finally {
+            driver.quit();
+        }
+    }
 }
