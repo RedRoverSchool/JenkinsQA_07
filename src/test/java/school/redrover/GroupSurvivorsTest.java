@@ -38,7 +38,7 @@ public class GroupSurvivorsTest {
     }
     @Test
 
-    public void sabinaFirstTest() throws InterruptedException{
+    public void sabinaFirstTest() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("http://baskino.me/index.php?do=stoptime&id=23027&action=count");
