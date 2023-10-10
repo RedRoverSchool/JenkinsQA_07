@@ -264,7 +264,7 @@ public class GroupUnicornsTest {
         }
     }
     @Test
-    public void raiffeisenBank() {
+    public void testRaiffeisenBank() {
         WebDriver driver = new ChromeDriver();
         List<String> currnecyExpected = List.of("USD", "EUR", "GBP", "CHF", "JPY", "CNY");
 
