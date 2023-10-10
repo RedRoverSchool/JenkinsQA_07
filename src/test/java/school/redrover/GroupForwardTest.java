@@ -7,8 +7,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.sql.SQLOutput;
-
 public class GroupForwardTest {
 
     private final String PAGE_URL = "https://www.ldoceonline.com/";
@@ -85,6 +83,42 @@ public class GroupForwardTest {
             wordOfTheDay.click();
 
             Assert.assertEquals(driver.getCurrentUrl(), (urlOfDictionaryOfWordOfDay + wordOfDay));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testStoreSearch() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get("https://www.nobullproject.com/");
+
+            WebElement closeCookies = driver.findElement(By.id("onetrust-close-btn-container"));
+            closeCookies.click();
+
+            WebElement searchButton = driver.findElement(By.xpath("//*[@data-target = 'search-button']"));
+            searchButton.click();
+
+            WebElement searchField = driver.findElement(By.xpath("//input[@name = 'q']"));
+            searchField.sendKeys("Tank");
+
+            WebElement searchButtonOnBar = driver.findElement(By.xpath("//button[@class = 'text-black'][1]"));
+            searchButtonOnBar.click();
+
+            Thread.sleep(8000);
+
+            driver.switchTo().frame("attentive_creative");
+            WebElement discountPopUp = driver.findElement(By.id("closeIconContainer"));
+            discountPopUp.click();
+
+            driver.switchTo().defaultContent();
+
+            WebElement searchResult = driver.findElement(By.xpath("//span[@class = 'ss__query']"));
+            String value = searchResult.getText();
+            Assert.assertEquals(value, "TANK");
         } finally {
             driver.quit();
         }
