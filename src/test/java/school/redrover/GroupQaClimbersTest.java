@@ -36,37 +36,31 @@ public class GroupQaClimbersTest {
 
     @Test
     public void testTextBox() {
-        WebDriver driver = new ChromeDriver();
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        try {
-            driver.get("https://demoqa.com");
-            driver.manage().window().maximize();
+        driver.get("https://demoqa.com");
+        driver.manage().window().maximize();
 
-            driver.findElement(By.xpath("(//div[@class='card-up'])[1]")).click();
-            driver.findElement(By.xpath("//span[ contains(text(), 'Text Box')]")).click();
+        driver.findElement(By.xpath("(//div[@class='card-up'])[1]")).click();
+        driver.findElement(By.xpath("//span[ contains(text(), 'Text Box')]")).click();
 
-            WebElement inputName = driver.findElement(By.id("userName"));
-            WebElement inputEmail = driver.findElement(By.id("userEmail"));
-            WebElement submitButton = driver.findElement(By.id("submit"));
+        WebElement inputName = driver.findElement(By.id("userName"));
+        WebElement inputEmail = driver.findElement(By.id("userEmail"));
+        WebElement submitButton = driver.findElement(By.id("submit"));
 
-            inputName.sendKeys("Jane Dou");
-            inputEmail.sendKeys("example@example.com");
-            js.executeScript("arguments[0].scrollIntoView();", submitButton);
-            submitButton.click();
+        inputName.sendKeys("Jane Dou");
+        inputEmail.sendKeys("example@example.com");
+        js.executeScript("arguments[0].scrollIntoView();", submitButton);
+        submitButton.click();
 
-            String actualStringName = driver.findElement(By.id("name")).getText();
-            String actualEmail = driver.findElement(By.id("email")).getText();
+        String actualStringName = driver.findElement(By.id("name")).getText();
+        String actualEmail = driver.findElement(By.id("email")).getText();
 
-            assertEquals(actualStringName, "Name:Jane Dou");
-            assertEquals(actualEmail, "Email:example@example.com");
-        } finally {
-            driver.quit();
-        }
+        assertEquals(actualStringName, "Name:Jane Dou");
+        assertEquals(actualEmail, "Email:example@example.com");
     }
 
     @Test
-    public void testTextBox1(){
-        WebDriver driver = new ChromeDriver();
+    public void testTextBox1() {
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -97,83 +91,69 @@ public class GroupQaClimbersTest {
         WebElement output = driver.findElement(By.xpath("//div[@id='output']/div/p"));
 
         Assert.assertEquals(output.getText(), "Name:Arailym");
-
-        driver.quit();
     }
 
     @Test
     public void testTextBox2() {
-        WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        try {
-            WebElement elements = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
-            js.executeScript("arguments[0].scrollIntoView();", elements);
-            elements.click();
+        WebElement elements = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
+        js.executeScript("arguments[0].scrollIntoView();", elements);
+        elements.click();
 
-            WebElement textBox = driver.findElement(By.xpath("//*[@id=\"item-0\"]"));
-            textBox.click();
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"item-0\"]"));
+        textBox.click();
 
-            WebElement fullNameTextBox = driver.findElement(By.id("userName"));
-            fullNameTextBox.sendKeys("Гарри Поттер");
+        WebElement fullNameTextBox = driver.findElement(By.id("userName"));
+        fullNameTextBox.sendKeys("Гарри Поттер");
 
-            WebElement email = driver.findElement(By.id("userEmail"));
-            email.sendKeys("hp@hogvarts.com");
+        WebElement email = driver.findElement(By.id("userEmail"));
+        email.sendKeys("hp@hogvarts.com");
 
-            WebElement currentAddress = driver.findElement(By.id("currentAddress"));
-            currentAddress.sendKeys("Хогвартс");
+        WebElement currentAddress = driver.findElement(By.id("currentAddress"));
+        currentAddress.sendKeys("Хогвартс");
 
-            WebElement permanentAddress = driver.findElement(By.id("permanentAddress"));
-            permanentAddress.sendKeys("Лондон");
+        WebElement permanentAddress = driver.findElement(By.id("permanentAddress"));
+        permanentAddress.sendKeys("Лондон");
 
-            WebElement submitButton = driver.findElement(By.id("submit"));
-            js.executeScript("arguments[0].scrollIntoView();", submitButton);
-            submitButton.click();
+        WebElement submitButton = driver.findElement(By.id("submit"));
+        js.executeScript("arguments[0].scrollIntoView();", submitButton);
+        submitButton.click();
 
-            WebElement outputName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
-            Assert.assertEquals(outputName.getText(), "Name:Гарри Поттер");
+        WebElement outputName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        Assert.assertEquals(outputName.getText(), "Name:Гарри Поттер");
 
-            WebElement outputEmail = driver.findElement(By.xpath("//*[@id=\"email\"]"));
-            Assert.assertEquals(outputEmail.getText(), "Email:hp@hogvarts.com");
+        WebElement outputEmail = driver.findElement(By.xpath("//*[@id=\"email\"]"));
+        Assert.assertEquals(outputEmail.getText(), "Email:hp@hogvarts.com");
 
-            //проверки адресов падают из-за текстовых ошибок в форме output
-            //WebElement outputCurrentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
-            //Assert.assertEquals(outputCurrentAddress.getText(), "Current Address:Хогвартс");
+        //проверки адресов падают из-за текстовых ошибок в форме output
+        //WebElement outputCurrentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        //Assert.assertEquals(outputCurrentAddress.getText(), "Current Address:Хогвартс");
 
-            //WebElement outputPermanentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
-            //Assert.assertEquals(outputPermanentAddress.getText(), "Permanent Address:Лондон");
-
-        } finally {
-            driver.quit();
-        }
+        //WebElement outputPermanentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        //Assert.assertEquals(outputPermanentAddress.getText(), "Permanent Address:Лондон");
     }
+
     @Test
     public void widgetPageTest1() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com");
         driver.manage().window().maximize();
-        try {
-            WebElement widgetCard = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[1]"));
-            widgetCard.click();
-            WebElement elementsBtn = driver.findElement(By.xpath("//*[@class='header-text'][1]"));
-            elementsBtn.click();
-            Thread.sleep(200);
-            WebElement listElement = driver.findElement(By.xpath("//*[@id=\"item-2\"]"));
-            listElement.click();
-            driver.findElement(By.xpath("//label[@class=\"custom-control-label\"][1]")).click();
-            String title = driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText();
-            assertEquals(title, "Yes");
-        }finally {
-            driver.quit();
-        }
+        WebElement widgetCard = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]/div/div[1]"));
+        widgetCard.click();
+        WebElement elementsBtn = driver.findElement(By.xpath("//*[@class='header-text'][1]"));
+        elementsBtn.click();
+        Thread.sleep(200);
+        WebElement listElement = driver.findElement(By.xpath("//*[@id=\"item-2\"]"));
+        listElement.click();
+        driver.findElement(By.xpath("//label[@class=\"custom-control-label\"][1]")).click();
+        String title = driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText();
+        assertEquals(title, "Yes");
     }
 
     @Test
-    public void TestCheckBoxMenuSubmitWindow(){
-
-        WebDriver driver = new ChromeDriver();
+    public void TestCheckBoxMenuSubmitWindow() {
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -194,40 +174,31 @@ public class GroupQaClimbersTest {
 
         String actualResult = text.getText();
 
-        Assert.assertEquals(actualResult,"You have selected :");
-
-        driver.quit();
+        Assert.assertEquals(actualResult, "You have selected :");
     }
 
     @Test
     public void testAllElementsOnFirstPage() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
+        driver.get("https://demoqa.com/");
 
-            List<WebElement> listOfWebElements = driver
-                    .findElements(By.xpath("//div[@class='card mt-4 top-card']"));
+        List<WebElement> listOfWebElements = driver
+                .findElements(By.xpath("//div[@class='card mt-4 top-card']"));
 
-            List<String> actualListOfElementsNames = new ArrayList<>();
+        List<String> actualListOfElementsNames = new ArrayList<>();
 
-            for (WebElement el : listOfWebElements) {
-                actualListOfElementsNames.add(el.getText());
-            }
-
-            List<String> expectedListElementsNames = Arrays.asList(
-                    "Elements", "Forms", "Alerts, Frame & Windows",
-                    "Widgets", "Interactions", "Book Store Application"
-            );
-            assertEquals(actualListOfElementsNames, expectedListElementsNames);
-
-        } finally {
-            driver.quit();
+        for (WebElement el : listOfWebElements) {
+            actualListOfElementsNames.add(el.getText());
         }
+
+        List<String> expectedListElementsNames = Arrays.asList(
+                "Elements", "Forms", "Alerts, Frame & Windows",
+                "Widgets", "Interactions", "Book Store Application"
+        );
+        assertEquals(actualListOfElementsNames, expectedListElementsNames);
     }
+
     @Test
     public void testClickOnHomeCheckBox() {
-        WebDriver driver = new ChromeDriver();
-        try {
         driver.get("https://demoqa.com/");
 
         WebElement elementOnPage = driver.findElement(By.xpath("(//div[@class='card-up'])[1]"));
@@ -252,47 +223,37 @@ public class GroupQaClimbersTest {
                 "downloads", "wordFile", "excelFile");
 
         assertEquals(listOfActualTagsNameOnScreen, expectedResultNames);
-    } finally {
-            driver.quit();
-        }
     }
+
     @Test
     public void trainingPage() {
-        WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://demoqa.com");
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        try {
-            WebElement ElementsCard = driver.findElement(By.xpath("//div[@class='card mt-4 top-card'][1]"));
-            ElementsCard.click();
+        WebElement ElementsCard = driver.findElement(By.xpath("//div[@class='card mt-4 top-card'][1]"));
+        ElementsCard.click();
 
-            WebElement TextBox = driver.findElement((By.xpath("//li[@id='item-0'][1]")));
-            TextBox.click();
+        WebElement TextBox = driver.findElement((By.xpath("//li[@id='item-0'][1]")));
+        TextBox.click();
 
-            WebElement inputFullName = driver.findElement(By.xpath("//input[@class=' mr-sm-2 form-control'][1]"));
-            inputFullName.sendKeys("Barak Obama");
+        WebElement inputFullName = driver.findElement(By.xpath("//input[@class=' mr-sm-2 form-control'][1]"));
+        inputFullName.sendKeys("Barak Obama");
 
-            WebElement inputEmail = driver.findElement(By.xpath("//input[@class='mr-sm-2 form-control']"));
-            inputEmail.sendKeys("barak1961@gmail.com");
+        WebElement inputEmail = driver.findElement(By.xpath("//input[@class='mr-sm-2 form-control']"));
+        inputEmail.sendKeys("barak1961@gmail.com");
 
-            WebElement SubmitButton = driver.findElement(By.xpath("//button[@id='submit']"));
-            js.executeScript("arguments[0].scrollIntoView();", SubmitButton);
-            SubmitButton.click();
+        WebElement SubmitButton = driver.findElement(By.xpath("//button[@id='submit']"));
+        js.executeScript("arguments[0].scrollIntoView();", SubmitButton);
+        SubmitButton.click();
 
-            WebElement message = driver.findElement(By.xpath("//div[@class='border col-md-12 col-sm-12']"));
-            String value = message.getText();//берем текст элемента
-            Assert.assertEquals(value, "Name:Barak Obama\nEmail:barak1961@gmail.com");//ожидаем что текст "
-        } finally {
-
-            driver.quit();
-        }
+        WebElement message = driver.findElement(By.xpath("//div[@class='border col-md-12 col-sm-12']"));
+        String value = message.getText();//берем текст элемента
+        Assert.assertEquals(value, "Name:Barak Obama\nEmail:barak1961@gmail.com");//ожидаем что текст "
     }
 
     @Test
-    public void testProgressBarInWidgets(){
-
-        WebDriver driver = new ChromeDriver();
+    public void testProgressBarInWidgets() {
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -319,77 +280,70 @@ public class GroupQaClimbersTest {
         String resetButtonResult = resetButton.getText();
 
         Assert.assertEquals(progressBarResult, "100%");
-        Assert.assertEquals(resetButtonResult,"Reset");
-
-        driver.quit();
+        Assert.assertEquals(resetButtonResult, "Reset");
     }
 
     @Test
     public void LocatorXPath() {
 
-        WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/");
         driver.manage().window().maximize();
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        try {
-            WebElement elementsBtn = driver.findElement(By.xpath("//h5[1]"));
-            js.executeScript("arguments[0].scrollIntoView();", elementsBtn);
-            String value = elementsBtn.getText();
-            Assert.assertEquals("Elements", value);
-            elementsBtn.click();
+        WebElement elementsBtn = driver.findElement(By.xpath("//h5[1]"));
+        js.executeScript("arguments[0].scrollIntoView();", elementsBtn);
+        String value = elementsBtn.getText();
+        Assert.assertEquals("Elements", value);
+        elementsBtn.click();
 
-            WebElement mainHeaderElements = driver.findElement(By.xpath("//*[@class ='main-header']"));
-            String valueMainHeader = mainHeaderElements.getText();
-            Assert.assertEquals("Elements", valueMainHeader);
+        WebElement mainHeaderElements = driver.findElement(By.xpath("//*[@class ='main-header']"));
+        String valueMainHeader = mainHeaderElements.getText();
+        Assert.assertEquals("Elements", valueMainHeader);
 
-            WebElement textBoxTab = driver.findElement(By.xpath("//span[text()='Text Box']"));
-            String valueTextBoxTab = textBoxTab.getText();
-            Assert.assertEquals("Text Box", valueTextBoxTab);
-            textBoxTab.click();
+        WebElement textBoxTab = driver.findElement(By.xpath("//span[text()='Text Box']"));
+        String valueTextBoxTab = textBoxTab.getText();
+        Assert.assertEquals("Text Box", valueTextBoxTab);
+        textBoxTab.click();
 
-            WebElement mainHeaderTextBox = driver.findElement(By.xpath("//*[@class ='main-header']"));
-            String valueMainHeader1 = mainHeaderTextBox.getText();
-            Assert.assertEquals("Text Box", valueMainHeader1 );
+        WebElement mainHeaderTextBox = driver.findElement(By.xpath("//*[@class ='main-header']"));
+        String valueMainHeader1 = mainHeaderTextBox.getText();
+        Assert.assertEquals("Text Box", valueMainHeader1);
 
-            WebElement fullName = driver.findElement(By.xpath("//*[@placeholder='Full Name']"));
-            fullName.sendKeys("Nat");
+        WebElement fullName = driver.findElement(By.xpath("//*[@placeholder='Full Name']"));
+        fullName.sendKeys("Nat");
 
-            WebElement email = driver.findElement(By.xpath("//input[@id='userEmail']"));
-            email.sendKeys("new@new.new");
+        WebElement email = driver.findElement(By.xpath("//input[@id='userEmail']"));
+        email.sendKeys("new@new.new");
 
-            WebElement country = driver.findElement(By.xpath("//*[@id='currentAddress']"));
-            country.sendKeys("USA");
+        WebElement country = driver.findElement(By.xpath("//*[@id='currentAddress']"));
+        country.sendKeys("USA");
 
-            WebElement countryPermanent = driver.findElement(By.xpath("//*[@id='permanentAddress']"));
-            countryPermanent.sendKeys("NY");
+        WebElement countryPermanent = driver.findElement(By.xpath("//*[@id='permanentAddress']"));
+        countryPermanent.sendKeys("NY");
 
-            WebElement submit = driver.findElement(By.xpath("//*[@id='submit']"));
-            js.executeScript("arguments[0].scrollIntoView();", submit);
-            submit.click();
+        WebElement submit = driver.findElement(By.xpath("//*[@id='submit']"));
+        js.executeScript("arguments[0].scrollIntoView();", submit);
+        submit.click();
 
-            WebElement displayedName = driver.findElement(By.xpath("//*[@id='name']"));
-            String nameValue = displayedName.getText();
+        WebElement displayedName = driver.findElement(By.xpath("//*[@id='name']"));
+        String nameValue = displayedName.getText();
 
-            Assert.assertEquals("Name:Nat", nameValue);
+        Assert.assertEquals("Name:Nat", nameValue);
 
-            WebElement displayedEmail = driver.findElement(By.xpath("//*[@id='email']"));
-            String emailValue = displayedEmail.getText();
+        WebElement displayedEmail = driver.findElement(By.xpath("//*[@id='email']"));
+        String emailValue = displayedEmail.getText();
 
-            Assert.assertEquals("Email:new@new.new", emailValue);
+        Assert.assertEquals("Email:new@new.new", emailValue);
 
-            WebElement displayedCurrentAddress = driver.findElement(By.xpath("//p[@id='currentAddress']"));
-            String currAddressValue = displayedCurrentAddress.getText();
+        WebElement displayedCurrentAddress = driver.findElement(By.xpath("//p[@id='currentAddress']"));
+        String currAddressValue = displayedCurrentAddress.getText();
 
-            Assert.assertEquals("Current Address :USA", currAddressValue);
+        Assert.assertEquals("Current Address :USA", currAddressValue);
 
-            WebElement displayedPermAddress = driver.findElement(By.xpath("//p[@id='permanentAddress']"));
-            String permAddressValue = displayedPermAddress.getText();
+        WebElement displayedPermAddress = driver.findElement(By.xpath("//p[@id='permanentAddress']"));
+        String permAddressValue = displayedPermAddress.getText();
 
-            Assert.assertEquals("Permananet Address :NY", permAddressValue);
-        }finally {
-            driver.quit();
-        }
+        Assert.assertEquals("Permananet Address :NY", permAddressValue);
     }
 
     @Test
@@ -398,22 +352,22 @@ public class GroupQaClimbersTest {
         Thread.sleep(500);
 
         driver.findElement(
-                By.xpath("//div[@class='category-cards']/div[2]/div/div[@class='card-up']"))
+                        By.xpath("//div[@class='category-cards']/div[2]/div/div[@class='card-up']"))
                 .click();
         Thread.sleep(200);
 
         driver.findElement(
-                By.xpath("(//div[@class='body-height']/div/div[2]/div/div/div/div/span/div)[1]"))
+                        By.xpath("(//div[@class='body-height']/div/div[2]/div/div/div/div/span/div)[1]"))
                 .click();
         Thread.sleep(500);
 
         driver.findElement(
-                By.xpath("//span[ contains(text(), 'Check Box')]"))
+                        By.xpath("//span[ contains(text(), 'Check Box')]"))
                 .click();
         Thread.sleep(200);
 
         driver.findElement(
-                By.xpath("//span[@class='rct-checkbox']/*[name()='svg']"))
+                        By.xpath("//span[@class='rct-checkbox']/*[name()='svg']"))
                 .click();
 
         WebElement message = driver.findElement(
@@ -448,14 +402,14 @@ public class GroupQaClimbersTest {
         Thread.sleep(200);
 
         driver.findElement(
-                By.xpath("(//div[@class='card mt-4 top-card'])[3]"))
+                        By.xpath("(//div[@class='card mt-4 top-card'])[3]"))
                 .click();
 
         List<WebElement> listOfAlertsFrameAndWindows = driver.findElements(
                 By.xpath("//div[@class='left-pannel']/div/div[3]/div/ul[@class='menu-list']/li"));
 
         List<String> actualListOfAlertsFrameAndWindows = new ArrayList<>();
-        for (WebElement element: listOfAlertsFrameAndWindows) {
+        for (WebElement element : listOfAlertsFrameAndWindows) {
             actualListOfAlertsFrameAndWindows.add(element.getText());
         }
 
@@ -467,64 +421,57 @@ public class GroupQaClimbersTest {
 
     @Test
     public void useDiffSeleniumLocators() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://rahulshettyacademy.com/locatorspractice/");
         driver.manage().window().maximize();
-        try {
-            WebElement h1Text = driver.findElement(By.cssSelector("form h1"));
-            String h1TextValue = h1Text.getText();
-            Assert.assertEquals("Sign in", h1TextValue);
+        WebElement h1Text = driver.findElement(By.cssSelector("form h1"));
+        String h1TextValue = h1Text.getText();
+        Assert.assertEquals("Sign in", h1TextValue);
 
-            WebElement nameInput = driver.findElement(By.id("inputUsername"));
-            nameInput.sendKeys("rahulshetty");
+        WebElement nameInput = driver.findElement(By.id("inputUsername"));
+        nameInput.sendKeys("rahulshetty");
 
-            WebElement password = driver.findElement(By.name("inputPassword"));
-            password.sendKeys("hello123");
+        WebElement password = driver.findElement(By.name("inputPassword"));
+        password.sendKeys("hello123");
 
-            WebElement submitButton = driver.findElement(By.className("signInBtn"));
-            submitButton.click();
-            Thread.sleep(1000);
-            WebElement errorMsg = driver.findElement(By.cssSelector("p.error"));
-            String errorMessageText = errorMsg.getText();
-            Assert.assertEquals("* Incorrect username or password", errorMessageText);
+        WebElement submitButton = driver.findElement(By.className("signInBtn"));
+        submitButton.click();
+        Thread.sleep(1000);
+        WebElement errorMsg = driver.findElement(By.cssSelector("p.error"));
+        String errorMessageText = errorMsg.getText();
+        Assert.assertEquals("* Incorrect username or password", errorMessageText);
 
-            WebElement forgotPasswordLink = driver.findElement(By.linkText("Forgot your password?"));
-            forgotPasswordLink.click();
-            Thread.sleep(1000);
-            WebElement h2Text = driver.findElement(By.cssSelector("h2"));
-            String h2TextValue = h2Text.getText();
+        WebElement forgotPasswordLink = driver.findElement(By.linkText("Forgot your password?"));
+        forgotPasswordLink.click();
+        Thread.sleep(1000);
+        WebElement h2Text = driver.findElement(By.cssSelector("h2"));
+        String h2TextValue = h2Text.getText();
 
-            Assert.assertEquals("Forgot password", h2TextValue);
-            WebElement nameNew = driver.findElement(By.xpath("//input[@placeholder='Name']"));
-            nameNew.sendKeys("John");
-            WebElement email = driver.findElement(By.xpath("//input[@type='text'][2]")); //By.cssSelector("input[type='text']:nth-child(4)")
-            email.sendKeys("123123");
-            email.clear();
-            email.sendKeys("new@new.new");
+        Assert.assertEquals("Forgot password", h2TextValue);
+        WebElement nameNew = driver.findElement(By.xpath("//input[@placeholder='Name']"));
+        nameNew.sendKeys("John");
+        WebElement email = driver.findElement(By.xpath("//input[@type='text'][2]")); //By.cssSelector("input[type='text']:nth-child(4)")
+        email.sendKeys("123123");
+        email.clear();
+        email.sendKeys("new@new.new");
 
 
-            WebElement phoneNumber = driver.findElement(By.xpath("//input[@placeholder='Phone Number']"));
-            phoneNumber.sendKeys("1234654654646");
+        WebElement phoneNumber = driver.findElement(By.xpath("//input[@placeholder='Phone Number']"));
+        phoneNumber.sendKeys("1234654654646");
 
-            WebElement resetLogin = driver.findElement(By.xpath("//button[@class='reset-pwd-btn']"));
-            resetLogin.click();
+        WebElement resetLogin = driver.findElement(By.xpath("//button[@class='reset-pwd-btn']"));
+        resetLogin.click();
 
-            Thread.sleep(500);
-            WebElement infoMsg = driver.findElement(By.xpath("//p[@class='infoMsg']"));
-            String infoMsgValue = infoMsg.getText();
+        Thread.sleep(500);
+        WebElement infoMsg = driver.findElement(By.xpath("//p[@class='infoMsg']"));
+        String infoMsgValue = infoMsg.getText();
 
-            Assert.assertEquals("Please use temporary password 'rahulshettyacademy' to Login.", infoMsgValue);
-
-        } finally {
-            driver.quit();
-        }
+        Assert.assertEquals("Please use temporary password 'rahulshettyacademy' to Login.", infoMsgValue);
     }
 
     @Test
     public void locatorsPart2() throws InterruptedException {
         //Generating Css selectors based on regular expressions
-        WebDriver driver = new ChromeDriver();
 
         driver.get("https://rahulshettyacademy.com/locatorspractice/");
         driver.manage().window().maximize();
@@ -544,14 +491,10 @@ public class GroupQaClimbersTest {
         WebElement successLoginText = driver.findElement(By.xpath("//p[@style]"));
         String successLoginTextVal = successLoginText.getText();
         Assert.assertEquals("You are successfully logged in.", successLoginTextVal);
-
-        driver.quit();
-
     }
 
     @Test
     public void badSignUpBookStoreTest() throws InterruptedException {     // register without recaptcha
-        WebDriver driver = new ChromeDriver();
         driver.get(URL);
         driver.manage().window().maximize();
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -600,9 +543,7 @@ public class GroupQaClimbersTest {
 
         WebElement needRecaptcha = driver.findElement(By.xpath("//p[@style]"));
         String needRecaptchaText = needRecaptcha.getText();
-        Assert.assertEquals(needRecaptchaText,"Please verify reCaptcha to register!");
-
-        driver.quit();
+        Assert.assertEquals(needRecaptchaText, "Please verify reCaptcha to register!");
 
         /* WebElement findReCaptcha = driver.findElement(By.xpath("////*[@id=\"recaptcha-anchor\"]/div[1]"));
         js.executeScript("arguments[0].scrollIntoView();", findReCaptcha);
@@ -652,23 +593,19 @@ public class GroupQaClimbersTest {
 
         assertEquals(actualSize, 0);
     }
+
     @Test
     public void testElementsRadioButton() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
         driver.get(URL);
         driver.manage().window().maximize();
-        try {
-            Thread.sleep(1000);
-            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
-            Thread.sleep(1000);
-            driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/div//*[@id=\"item-2\"]")).click();
-            Thread.sleep(1000);
-            WebElement buttonYes = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/div[2]/label"));
-            buttonYes.click();
-            String haveSelected = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/p/span")).getText();
-            assertEquals(haveSelected, "Yes");
-        } finally {
-            driver.quit();
-        }
-        }
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/div//*[@id=\"item-2\"]")).click();
+        Thread.sleep(1000);
+        WebElement buttonYes = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/div[2]/label"));
+        buttonYes.click();
+        String haveSelected = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[2]/div[2]/p/span")).getText();
+        assertEquals(haveSelected, "Yes");
+    }
 }
