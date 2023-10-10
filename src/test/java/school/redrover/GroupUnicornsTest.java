@@ -263,4 +263,21 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+
+
+    @Test
+    public void testSearch2()  {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://habr.com/ru/companies/simbirsoft/articles/412677/");
+
+        WebElement title = driver.findElement(By.xpath("(//span[text() = 'Матрица трассабилити'])"));
+
+        String value = title.getText();
+
+        Assert.assertEquals(value, "Матрица трассабилити");
+
+        driver.quit();
+    }
 }
