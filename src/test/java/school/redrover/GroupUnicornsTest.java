@@ -266,7 +266,7 @@ public class GroupUnicornsTest {
         }
     }
     @Test
-    public void verificationSocialIconsGitHub2() throws InterruptedException {
+    public void verificationSocialIconsGitHub2()  {
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -279,8 +279,19 @@ public class GroupUnicornsTest {
             List<WebElement> listOfIcons = driver.findElements(By.xpath("(//footer[@role='contentinfo']//ul)[5]//a"));
             listOfIcons.get(1).click();
             String url = driver.getCurrentUrl();
-            driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
+            driver.findElements(By.cssSelector("[aria-label='Close']"));
             Assert.assertTrue(url.contains("face"));
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void checkUSDEUR() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.banki.ru/");
+            driver.findElements(By.cssSelector("[data-test='trades-informer__item--usd']"));
+            driver.findElements(By.cssSelector("[data-test='trades-informer__item--eur']"));
         } finally {
             driver.quit();
         }
