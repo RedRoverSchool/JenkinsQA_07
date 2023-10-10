@@ -9,7 +9,6 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
