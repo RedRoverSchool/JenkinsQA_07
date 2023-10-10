@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -19,9 +20,7 @@ import static org.testng.Assert.assertTrue;
 public class GroupQaClimbersTest {
 
     final static String URL = "https://demoqa.com/";
-
     private final static WebDriver CHROME_DRIVER = new ChromeDriver();
-
     @Test
     public void testTextBox() {
         WebDriver driver = new ChromeDriver();
