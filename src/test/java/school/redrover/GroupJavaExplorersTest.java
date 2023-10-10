@@ -226,5 +226,18 @@ public class GroupJavaExplorersTest {
         driver.quit();
     }
 
+    @Test
+    public void testTitlee (){
+        WebDriver driver = new ChromeDriver();
+        driver.get(BASE_URL);
+        WebElement whatsNew = driver
+                .findElement(By.xpath("//span[text()=\"Women\"]"));
+        whatsNew.click();
+        String header = driver.findElement(By.xpath("//h1")).getText();
+        assertEquals(header, "Women");
+
+        driver.quit();
+    }
+
 }
 
