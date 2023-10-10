@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static org.openqa.selenium.By.className;
+
 public class IronTeamGroupTest {
     @Test
     public void w3schoolTest() throws InterruptedException {
@@ -64,6 +66,38 @@ public class IronTeamGroupTest {
             WebElement result = driver.findElement(By.xpath("//span[@class='fontBig ng-binding']/parent::strong"));
             Assert.assertEquals(result.getText(), "Welcome Harry Potter !!");
         } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testFerosorSearch() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://ferosor.cl");
+            Thread.sleep(1000);
+            WebElement textBox = driver.findElement(By.name("s"));
+            textBox.sendKeys("alimento");
+            driver.findElement(By.cssSelector("[type='submit']")).click();
+            Thread.sleep(1000);
+
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testFerosorLogin() throws InterruptedException{
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        try{
+            driver.get("https://ferosor.cl");
+            driver.findElement(className("login")).click();
+            WebElement email = driver.findElement(className("form-control"));
+            email.sendKeys("test@test.com");
+            WebElement password = driver.findElement(className("js-child-focus"));
+            password.sendKeys("12345");
+            driver.findElement(By.id("submit-login")).click();
+        }finally{
             driver.quit();
         }
     }

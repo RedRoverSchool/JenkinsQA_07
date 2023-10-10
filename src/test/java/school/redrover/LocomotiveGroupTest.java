@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class LocomotiveGroupTest {
     @Test
     public void demoqaTextBoxTest() {
@@ -27,7 +29,7 @@ public class LocomotiveGroupTest {
         emailTextBox.sendKeys(email);
 
         WebElement submitButton = driver.findElement(By.id("submit"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton );
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitButton);
         submitButton.click();
 
         String actualFullName = driver
@@ -36,7 +38,7 @@ public class LocomotiveGroupTest {
         Assert.assertEquals(actualFullName, "Name:" + fullName);
 
         String actualEmail = driver
-                .findElement( By.xpath("//*[@id=\"email\"]"))
+                .findElement(By.xpath("//*[@id=\"email\"]"))
                 .getText();
 
         Assert.assertEquals(actualEmail, "Email:" + email);
@@ -45,7 +47,7 @@ public class LocomotiveGroupTest {
     }
 
     @Test
-    public void testLink() throws InterruptedException{
+    public void testLink() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         try {
             String linkExpected = "https://demoqa.com/";
@@ -62,7 +64,7 @@ public class LocomotiveGroupTest {
             Thread.sleep(1000);
 
             for (String windowHandle : driver.getWindowHandles()) {
-                if(!originalWindow.contentEquals(windowHandle)) {
+                if (!originalWindow.contentEquals(windowHandle)) {
                     driver.switchTo().window(windowHandle);
                     break;
                 }
@@ -71,9 +73,35 @@ public class LocomotiveGroupTest {
             Thread.sleep(1000);
             driver.findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
 
-            } finally {
-                driver.quit();
-            }
+        } finally {
+            driver.quit();
+        }
     }
 
+    @Test
+    public void checkRadioButton() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("https://demoqa.com/radio-button");
+
+
+        selectRadioButton(driver, "Yes");
+        WebElement textRadioButton = driver.findElement(By.xpath("//p[@class='mt-3']"));
+        Assert.assertEquals(textRadioButton.getText(), "You have selected Yes");
+
+        Thread.sleep(3000);
+
+        selectRadioButton(driver, "Impressive");
+        Assert.assertEquals(textRadioButton.getText(), "You have selected Impressive");
+
+        Thread.sleep(3000);
+
+        driver.close();
+    }
+    public static void selectRadioButton(WebDriver driver, String value) {
+        WebElement RadioButton = driver.findElement(By.xpath("//label[normalize-space()='" + value + "']"));
+        RadioButton.click();
+    }
 }
