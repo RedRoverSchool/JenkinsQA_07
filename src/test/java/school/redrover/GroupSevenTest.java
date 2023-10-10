@@ -162,8 +162,7 @@ public class GroupSevenTest {
             driver.manage().window().maximize();
             Thread.sleep(1500);
 
-            WebElement price = driver.findElement(
-                    By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+            WebElement price = driver.findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
             price.click();
 
             Thread.sleep(1500);
