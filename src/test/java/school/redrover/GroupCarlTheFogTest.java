@@ -147,4 +147,22 @@ public class GroupCarlTheFogTest {
         driver.quit();
 
     }
+
+    @Test
+    public void menuItemsTest3() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.hireright.com");
+        List<String> expectedMenuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
+        List<WebElement> foundMenuItems = driver.findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
+
+        List<String> foundMenuTexts = foundMenuItems.stream().map(WebElement::getText).toList();
+
+        for (String expectedItem : expectedMenuItems) {
+            Assert.assertTrue(foundMenuTexts.contains(expectedItem), "Expected menu item '" + expectedItem + "' not found!");
+
+        }
+
+        driver.quit();
+
+    }
 }
