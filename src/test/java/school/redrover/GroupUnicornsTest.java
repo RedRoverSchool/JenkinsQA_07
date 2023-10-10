@@ -273,7 +273,6 @@ public class GroupUnicornsTest {
             for (int i =1; i < 7; i++ ) {
                 WebElement currencyActual = driver.findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])["+ i+"]"));
                 Assert.assertEquals(currencyActual.getText(),currnecyExpected.get(i-1));
-                System.out.println(currencyActual.getText());
             }
         }finally {
             driver.quit();
