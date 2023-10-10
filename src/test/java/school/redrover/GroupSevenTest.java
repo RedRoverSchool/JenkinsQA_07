@@ -296,7 +296,8 @@ public class GroupSevenTest {
 
         driver.quit();
     }
-    public void SYTest() {
+    @Test
+        public void SYTest() {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
