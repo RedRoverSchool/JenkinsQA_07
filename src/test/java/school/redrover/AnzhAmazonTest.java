@@ -9,10 +9,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class AnzhAmazonTest {
-    private final String PAGE_URL = "https://www.amazon.com/";
-
     @Test
     public void testSearch() throws InterruptedException {
+        String PAGE_URL = "https://www.amazon.com/";
+
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
