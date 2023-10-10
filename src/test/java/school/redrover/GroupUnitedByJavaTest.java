@@ -423,4 +423,39 @@ public class GroupUnitedByJavaTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void testClickElementsLinkText() throws InterruptedException {
+
+        driver.get("https://demoqa.com/elements");
+
+        WebElement elementsButton = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/span/div/div[1]"));
+        elementsButton.click();
+
+        String url = driver.getCurrentUrl();
+        String url1 = "https://demoqa.com/elements";
+        Assert.assertEquals(url, url1);
+
+        driver.get("https://demoqa.com/links");
+
+        WebElement search_Text = driver.findElement(By.xpath("//*[@id='linkWrapper']/h5[2]/strong"));
+        String searchTextExpected = search_Text.getText();
+        Assert.assertEquals(searchTextExpected, "Following links will send an api call");
+
+        WebElement createdButtonClick = driver.findElement(By.xpath("//*[@id='created']"));
+        createdButtonClick.click();
+        Thread.sleep(2000);
+
+        WebElement searchStatus = driver.findElement(By.xpath("//*[@id='linkResponse']/b[1]"));
+        String searchStatusExpected = searchStatus.getText();
+
+        WebElement searchStatusText = driver.findElement(By.xpath("//*[@id='linkResponse']/b[2]"));
+        String searchStatusTextExpected = searchStatusText.getText();
+
+        Assert.assertEquals(searchStatusExpected, "201");
+        Assert.assertEquals(searchStatusTextExpected, "Created");
+
+        driver.quit();
+
+    }
 }
