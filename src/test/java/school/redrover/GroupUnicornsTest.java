@@ -275,10 +275,8 @@ public class GroupUnicornsTest {
                 Assert.assertEquals(currencyActual.getText(),currnecyExpected.get(i-1));
                 System.out.println(currencyActual.getText());
             }
-
         }finally {
             driver.quit();
         }
-
     }
 }
