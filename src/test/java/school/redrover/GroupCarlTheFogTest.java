@@ -149,18 +149,15 @@ public class GroupCarlTheFogTest {
     }
 
     @Test
-    public void menuItemsTest3() {
+    public void registerDisplayTest() {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.hireright.com");
-        List<String> expectedMenuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
-        List<WebElement> foundMenuItems = driver.findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
+        String expectedText = "Register Now";
+        String registerNow= "//a[@class = 'btn btn--primary btn--hover-red-dark btn-active-red-darker'][contains(text(),'Register Now')]";
+        WebElement registerNowBTN = driver.findElement(By.xpath(registerNow));
+        registerNowBTN.getText();
 
-        List<String> foundMenuTexts = foundMenuItems.stream().map(WebElement::getText).toList();
-
-        for (String expectedItem : expectedMenuItems) {
-            Assert.assertTrue(foundMenuTexts.contains(expectedItem), "Expected menu item '" + expectedItem + "' not found!");
-
-        }
+        Assert.assertEquals(registerNowBTN.getText(), expectedText);
 
         driver.quit();
 
