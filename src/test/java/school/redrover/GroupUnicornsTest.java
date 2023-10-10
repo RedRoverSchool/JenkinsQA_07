@@ -263,4 +263,22 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+    @Test
+    public void raiffeisenBank() {
+        WebDriver driver = new ChromeDriver();
+        List<String> currnecyExpected = List.of("USD", "EUR", "GBP", "CHF", "JPY", "CNY");
+
+        try {
+            driver.get("https://www.raiffeisen.ru/currency_rates/");
+            for (int i =1; i < 7; i++ ) {
+                WebElement currencyActual = driver.findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])["+ i+"]"));
+                Assert.assertEquals(currencyActual.getText(),currnecyExpected.get(i-1));
+                System.out.println(currencyActual.getText());
+            }
+
+        }finally {
+            driver.quit();
+        }
+
+    }
 }
