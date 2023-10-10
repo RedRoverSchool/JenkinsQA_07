@@ -9,6 +9,9 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 public class PlusThreeTest {
@@ -320,5 +323,20 @@ public class PlusThreeTest {
         signInButton.click();
         driver.quit();
     }
+    @Test
+    public void signUpButtonTest(){
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://bandcamp.com/");
+            WebElement signUp = driver.findElement(By.className("all-signup-link"));
+            signUp.click();
+            List<WebElement> list = driver.findElements(By.className("signup-button"));
+            Assert.assertEquals(list.size(), 3);
+        } finally {
+            driver.quit();
+        }
+    }
+
+
 }
 
