@@ -450,5 +450,28 @@ public class GroupUnderdogsTest {
         driver.quit();
     }
 
-    
+    public void yuliafaReddit() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.reddit.com/?feed=home");
+
+        String title = driver.getTitle();
+        Assert.assertEquals( title, "Reddit - Dive into anything");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"login-button\"]"));
+        textBox.click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(900));
+
+        WebElement username = driver.findElement(By.xpath("//*[@id=\"login-username\"]"));
+        username.click();
+        username.sendKeys("test@mail.ru");
+
+        WebElement password = driver.findElement(By.xpath("//*[@id=\"login-password\"]"));
+        password.click();
+        password.sendKeys("12Qwerty");
+
+        driver.quit();
+    }
 }
