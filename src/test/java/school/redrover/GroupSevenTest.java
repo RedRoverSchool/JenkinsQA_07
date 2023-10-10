@@ -297,11 +297,6 @@ public class GroupSevenTest {
 
         driver.quit();
     }
-}
-
-
-
-
 
     @Test
     public void YMCATest() {
