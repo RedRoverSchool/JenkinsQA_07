@@ -304,7 +304,7 @@ public class GroupUnderdogsTest {
         List<WebElement> listItems = driver.findElements(By.xpath("//*[@id=\"main\"]/ul/li/span"));
         Assert.assertFalse(listItems.isEmpty(), "We should have at least one list item with bold text");
 
-        for (WebElement el :listItems) {
+        for (WebElement el : listItems) {
             String notificationText = el.getText();
             if (notificationText.equalsIgnoreCase("important:")) {
                 String backgroundColor = el.getCssValue("background-color");
@@ -367,4 +367,25 @@ public class GroupUnderdogsTest {
 
         driver.quit();
     }
+    @Test
+    public void testChromeEnglishBooksFind() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.99-bottles-of-beer.net/");
+        WebElement buttonClick = driver.findElement(By.xpath("//*/ul/li[3]/a"));
+        buttonClick.click();
+        WebElement searchType = driver.findElement(By.name("search"));
+        searchType.sendKeys("English");
+        WebElement submitClick = driver.findElement(By.name("submitsearch"));
+        submitClick.click();
+        WebElement linkName = driver.findElement(By.linkText("English"));
+        String toAssert = linkName.getText();
+        Assert.assertEquals(toAssert, "English");
+        driver.quit();
+    }
+
+
+
+
+
+
 }
