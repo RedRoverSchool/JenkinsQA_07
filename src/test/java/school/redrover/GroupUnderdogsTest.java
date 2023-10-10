@@ -473,5 +473,6 @@ public class GroupUnderdogsTest {
         password.sendKeys("12Qwerty");
 
         driver.quit();
+
     }
 }
