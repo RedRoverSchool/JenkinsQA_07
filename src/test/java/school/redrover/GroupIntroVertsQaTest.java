@@ -157,14 +157,12 @@ public class GroupIntroVertsQaTest {
 
     // region AkiMiraTest
     @Test (description = "Test of Text-Box 'Name'")
-    public void TextBoxTest () {
+    public void TextBoxNameTest () {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/text-box");
 
         String title = driver.getTitle();
         Assert.assertEquals("DEMOQA", title);
-
-//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
         WebElement textBox = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
         WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
@@ -178,4 +176,25 @@ public class GroupIntroVertsQaTest {
 
         driver.quit();
     }
+    @Test (description = "Test of Text-Box 'Current Address'")
+    public void TextBoxCurrentAddressTest () {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/text-box");
+
+        String title = driver.getTitle();
+        Assert.assertEquals("DEMOQA", title);
+
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+
+        textBox.sendKeys("Russian Federation");
+        submitButton.click();
+
+        WebElement message = driver.findElement(By.cssSelector("#currentAddress.mb-1"));
+        String value = message.getText();
+        Assert.assertEquals("Current Address :Russian Federation", value);
+
+        driver.quit();
+    }
+    // endregion
 }
