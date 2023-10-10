@@ -88,7 +88,7 @@ import java.time.Duration;
             WebElement messageEmail = driver.findElement(By.className("//*[@id=\"email\"]"));
             WebElement messageCurrent = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
             WebElement messagePermanent = driver.findElement(By.xpath("//*[@id=\"permanentAddress\"]"));
-            String value = message.getText();
+           // String value = message.getText();
 
             Assert.assertEquals("Name:Natalia", value);
             Assert.assertEquals("Email:natalia@gmail.com",value);
