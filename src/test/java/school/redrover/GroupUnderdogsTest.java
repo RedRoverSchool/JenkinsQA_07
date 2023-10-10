@@ -218,23 +218,22 @@ public class GroupUnderdogsTest {
         driver.manage().window().maximize();
         driver.get(baseUrlArt);
 
-        WebElement modWind = driver.findElement(By.xpath("//*[@viewBox=\"0 0 22 13\"]"));
+        WebElement modWindOffersAvailable = driver.findElement(By.xpath("//*[@viewBox='0 0 22 13']"));
         Thread.sleep(1000);
-        modWind.click();
+        modWindOffersAvailable.click();
         Thread.sleep(1000);
 
-        WebElement fRlocal = driver.findElement(By.xpath("(//*[@class=\"utility-nav__link\"])[5]"));
+        WebElement fRlocal = driver.findElement(By.xpath("(//*[@class='utility-nav__link'])[5]"));
         fRlocal.click();
-        Thread.sleep(3000);
+        Thread.sleep(1000);
 
-        WebElement modWind2 = driver.findElement(By.xpath("//*[@class=\"promo-drawer__heading\"]"));
-        System.out.println(modWind2.getText());
-        modWind2.click();
+        WebElement modWindOfferEnCours = driver.findElement(By.xpath("//*[@class='promo-drawer__heading']"));
+        modWindOfferEnCours.click();
 
 
-        WebElement address = driver.findElement(By.xpath("//*[@class='location-data']"));
-        address.click();
-        Thread.sleep(2000);
+        WebElement addresseZipCode = driver.findElement(By.xpath("//*[@class='location-data']"));
+        addresseZipCode.click();
+        Thread.sleep(1000);
 
 
         WebElement fieldSearch = driver.findElement(By.xpath("//input[@placeholder='Tout rechercher']"));
@@ -243,47 +242,60 @@ public class GroupUnderdogsTest {
         fieldSearch.sendKeys(Keys.ENTER);
 
 
-        WebElement sortPrice = driver.findElement(By.xpath("//*[@aria-label=\"sort by\"]/option[2]"));
-        sortPrice.click();
+        WebElement sortPricePertinceLtoH = driver.findElement(By.xpath("//*[@aria-label='sort by']/option[2]"));
+        sortPricePertinceLtoH.click();
         Thread.sleep(1000);
 
-        WebElement fullfilter = driver.findElement(By.xpath("(//*[@href=\"/fr_ca/accessories/kitchen-accessories/refrigerator/p.freshflow-refrigerator-air-filter-air1.w10311524.html?originVariantsOrder=NC\"])[1]"));
+        WebElement FILTRE_À_AIR_FRESHFLOWTM_AIR1_POUR_RÉFRIGÉRATEUR = driver.findElement(By.xpath("(//*[@href='/fr_ca/accessories/kitchen-accessories/refrigerator/p.freshflow-refrigerator-air-filter-air1.w10311524.html?originVariantsOrder=NC'])[1]"));
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        int yOffset = fullfilter.getLocation().getY();
+        int yOffset = FILTRE_À_AIR_FRESHFLOWTM_AIR1_POUR_RÉFRIGÉRATEUR.getLocation().getY();
         for (int i = 0; i < yOffset; i += 20) {
             js.executeScript("window.scrollTo(0, " + i + ")");
             Thread.sleep(50);
         }
-        fullfilter.click();
+        FILTRE_À_AIR_FRESHFLOWTM_AIR1_POUR_RÉFRIGÉRATEUR.click();
+        Thread.sleep(1000);
+
+
 
         JavascriptExecutor js1 = (JavascriptExecutor) driver;
-        WebElement trash = driver.findElement(By.xpath("(//*[@class=\"button checking-availability-btn trigger-modal\"])[2]"));
-        js1.executeScript("arguments[0].scrollIntoView();", trash);
+        WebElement Disponibilte_Available = driver.findElement(By.xpath("(//*[@class='button checking-availability-btn trigger-modal'])[2]"));
+        js1.executeScript("arguments[0].scrollIntoView();", Disponibilte_Available);
         Thread.sleep(1000);
-        trash.click();
-        Thread.sleep(1000);
+        Disponibilte_Available.click();
 
-        WebElement zipCode = driver.findElement(By.xpath("//*[@class=\"signin-account-field form-input mm-zipcode-location-v2\"]"));
+        WebElement zipCode = driver.findElement(By.xpath("//*[@class='signin-account-field form-input mm-zipcode-location-v2']"));
         zipCode.click();
-        Thread.sleep(1000);
 
-        WebElement fieldZip = driver.findElement(By.xpath("//*[@placeholder=\"Tapez le code postal ici...\"]"));
+        WebElement fieldZip = driver.findElement(By.xpath("//*[@placeholder='Tapez le code postal ici...']"));
         fieldZip.click();
         fieldZip.sendKeys("A1A 1A1");
 
 
-        WebElement submit = driver.findElement(By.xpath("//*[@id=\"update-location-btn\"]"));
+        WebElement submit = driver.findElement(By.xpath("//*[@id='update-location-btn']"));
         submit.click();
         Thread.sleep(2000);
-        System.out.println("Проверка");
+
 
 
         JavascriptExecutor js2 = (JavascriptExecutor) driver;
-        WebElement bins = driver.findElement(By.xpath("(//span[@class=\"button__text\"])[2]"));
-        js2.executeScript("arguments[0].scrollIntoView();", bins);
+        WebElement AJOUTER_AU_PANIER_AddToBin = driver.findElement(By.xpath("(//span[@class='button__text'])[2]"));
+        js2.executeScript("arguments[0].scrollIntoView();", AJOUTER_AU_PANIER_AddToBin);
 
-        Thread.sleep(2000);
-        bins.click();
+        Thread.sleep(1000);
+        AJOUTER_AU_PANIER_AddToBin.click();
+
+        Thread.sleep(1000);
+        WebElement passer_Au_Panier = driver.findElement(By.xpath("//span[@data-backdrop='static']"));
+        passer_Au_Panier.click();
+        Thread.sleep(1000);
+
+
+        WebElement totalEst = driver.findElement(By.xpath("(//*[@class='row--value '])[4]"));
+        String actRes = totalEst.getText();
+        String expRes = "15,56 $";
+
+        Assert.assertEquals(actRes,expRes);
 
     }
 
