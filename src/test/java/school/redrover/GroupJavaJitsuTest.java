@@ -30,5 +30,6 @@ public class GroupJavaJitsuTest {
 
         Assert.assertEquals(url,  "https://www.saucedemo.com/inventory.html");
 
+
     }
 }
