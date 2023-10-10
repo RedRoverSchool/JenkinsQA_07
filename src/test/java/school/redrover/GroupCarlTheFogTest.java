@@ -145,6 +145,24 @@ public class GroupCarlTheFogTest {
         }
 
         driver.quit();
+    }
 
+
+
+    @Test
+    public void myBrokenLinkTest() throws Exception {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.hireright.com");
+
+        String contactUsURL = driver.findElement(By.xpath("//li[@class='w-full']/a[@href='/contact-us']")).getAttribute("href");
+
+        URL url = new URL(contactUsURL);
+        HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+        huc.setRequestMethod("GET");
+        huc.connect();
+        int statusCode = huc.getResponseCode();
+        Assert.assertEquals(statusCode, 200, "Expected 200, but found: " + statusCode);
+
+        driver.quit();
     }
 }
