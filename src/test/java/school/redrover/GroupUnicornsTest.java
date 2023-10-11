@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.util.HashMap;
 import java.time.Duration;
@@ -15,9 +16,10 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-@Ignore
-public class GroupUnicornsTest {
 
+public class GroupUnicornsTest extends BaseTest {
+
+    @Ignore
     @Test
     public void usPsPageOpenTest() {
         WebDriver driver = new ChromeDriver();
@@ -26,7 +28,7 @@ public class GroupUnicornsTest {
         assertEquals("Welcome | USPS", title);
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void usPsSendMailPackageTest() {
         WebDriver driver = new ChromeDriver();
@@ -40,7 +42,7 @@ public class GroupUnicornsTest {
 
     @Test
     public void testSuccessfulLogin() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith";
         String password = "SuperSecretPassword!";
@@ -49,12 +51,11 @@ public class GroupUnicornsTest {
         driver.findElement(By.className("radius")).click();
         String actual = driver.findElement(By.id("flash")).getText();
         assertTrue(actual.contains("You logged into a secure area!"));
-        driver.quit();
     }
 
     @Test
     public void testLoginAttemptWithInvalidUsername() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith123";
         String password = "SuperSecretPassword!";
@@ -63,9 +64,9 @@ public class GroupUnicornsTest {
         driver.findElement(By.className("radius")).click();
         String actual = driver.findElement(By.id("flash-messages")).getText();
         assertTrue(actual.contains("Your username is invalid!"));
-        driver.quit();
     }
 
+    @Ignore
     @Test
     public void w3SchoolTest() {
         WebDriver wd = new ChromeDriver();
@@ -103,7 +104,7 @@ public class GroupUnicornsTest {
             wd.quit();
         }
     }
-
+    @Ignore
     @Test
     public void testGeico() {
         WebDriver driver = new ChromeDriver();
@@ -127,7 +128,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void testSearch() {
         WebDriver driver = new ChromeDriver();
@@ -144,7 +145,7 @@ public class GroupUnicornsTest {
 
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void demoWebShopTest() {
         WebDriver driver = new ChromeDriver();
@@ -177,7 +178,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void searchVerificationGitHub() {
         WebDriver driver = new ChromeDriver();
@@ -198,7 +199,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void testTradingView() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -221,7 +222,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void verificationSocialIconsGitHub() {
         WebDriver driver = new ChromeDriver();
@@ -244,7 +245,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void testComputersMenu() {
         WebDriver driver = new ChromeDriver();
@@ -268,7 +269,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void verificationSocialIconsGitHub2() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -289,7 +290,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void unsuccessfulLoginDigitalBank() {
         WebDriver driver = new ChromeDriver();
@@ -312,7 +313,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void successfulLoginDigitalBank() {
         WebDriver driver = new ChromeDriver();
