@@ -1,6 +1,4 @@
 package school.redrover;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,12 +6,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class AnzhAmazonTest {
+public class LashkoAmazonTest {
     @Test
     public void testSearch() throws InterruptedException {
         String PAGE_URL = "https://www.amazon.com/";
 
-        WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
         try {
