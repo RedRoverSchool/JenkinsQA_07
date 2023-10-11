@@ -95,6 +95,8 @@ public class LocomotiveGroupTest extends BaseTest {
 
         driver.close();
     }
+
+    @Ignore
     public static void selectRadioButton(WebDriver driver, String value) {
         WebElement RadioButton = driver.findElement(By.xpath("//label[normalize-space()='" + value + "']"));
         RadioButton.click();
