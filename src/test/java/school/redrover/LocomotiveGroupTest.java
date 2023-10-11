@@ -138,4 +138,19 @@ public class LocomotiveGroupTest extends BaseTest {
             driver.quit();
         }
       }
+
+    @Ignore
+    @Test
+    public void skateSiteHeaderTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.skate.net/");
+
+        WebElement title = driver.findElement(By.className("header_text"));
+        String value = title.getText();
+        Assert.assertEquals(value, "skates, skate gear, ice skates and more");
+
+        Thread.sleep(2000);
+        driver.quit();
+    }
+
 }
