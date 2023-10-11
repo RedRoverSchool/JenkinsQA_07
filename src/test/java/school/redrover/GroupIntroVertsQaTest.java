@@ -251,5 +251,4 @@ public class GroupIntroVertsQaTest extends BaseTest {
         driver.quit();
     }
 
-
 }
