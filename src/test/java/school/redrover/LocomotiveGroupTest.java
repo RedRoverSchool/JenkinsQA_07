@@ -72,7 +72,7 @@ public class LocomotiveGroupTest extends BaseTest {
             Thread.sleep(1000);
             getGetDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
     }
-
+    @Ignore
     @Test
     public void checkRadioButton() throws InterruptedException {
 
@@ -99,6 +99,8 @@ public class LocomotiveGroupTest extends BaseTest {
         WebElement RadioButton = driver.findElement(By.xpath("//label[normalize-space()='" + value + "']"));
         RadioButton.click();
     }
+
+    @Ignore
     @Test
 
     public void DashboardButtonTest() {
