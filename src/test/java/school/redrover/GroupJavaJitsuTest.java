@@ -41,7 +41,7 @@ public class GroupJavaJitsuTest {
         String url = driver.getCurrentUrl();
 
         Assert.assertEquals(url,  "https://www.saucedemo.com/inventory.html");
-
+        driver.quit();
 
     }
 }
