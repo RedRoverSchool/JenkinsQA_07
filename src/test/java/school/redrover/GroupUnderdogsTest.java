@@ -475,4 +475,38 @@ public class GroupUnderdogsTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testSearchMion() {
+        driver = new ChromeDriver();
+        driver.get("https://mion.by/");
+
+        WebElement searchField = driver.findElement(By.cssSelector("#title-search-input_fixed"));
+        searchField.sendKeys("лампочка");
+
+        WebElement searchButton = driver.findElement(By.cssSelector("#title-search_fixed > form > div.search-button-div > button"));
+        searchButton.click();
+
+        WebElement  searchTitle = driver.findElement(By.cssSelector("#pagetitle"))    ;
+        String value = searchTitle.getText();
+        Assert.assertEquals(value, "Поиск");
+
+//        driver.quit();
+
+    }
+
+    @Test
+    public void testCatalogMion(){
+        driver = new ChromeDriver();
+        driver.get("https://mion.by/");
+
+        WebElement catalogButton = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div[2]/div/div/div/div/nav/div/table/tbody/tr/td[1]/div/a"));
+        catalogButton.click();
+
+        WebElement catalogTitle = driver.findElement(By.xpath("//*[@id=\"pagetitle\"]"));
+        String title = catalogTitle.getText();
+        Assert.assertEquals(title, "Каталог");
+
+//        driver.quit();
+    }
 }
