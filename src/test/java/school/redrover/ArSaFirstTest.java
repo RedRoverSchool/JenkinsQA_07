@@ -10,7 +10,7 @@ public class ArSaFirstTest extends BaseTest {
 
     //Check if Title of the Website is correct..
     @Test
-    public void titleCheckTest()
+    public void testTitleCheck()
     {
             getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -19,7 +19,7 @@ public class ArSaFirstTest extends BaseTest {
     }
     //Check if the form "Text Input" is working, try to input some text, check the input text.
     @Test
-    public void textInputTest() {
+    public void testTextInput() {
 
             getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -32,7 +32,7 @@ public class ArSaFirstTest extends BaseTest {
 
     //Check "my-disabled" element for the following functions: is disabled, is visible and the placeholder text is correct.
     @Test
-    public void disabledTextInputTest() {
+    public void testDisabledTextInput() {
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -53,7 +53,7 @@ public class ArSaFirstTest extends BaseTest {
 
     //Check the color of "my-colors" element
     @Test
-    public void colorCheckTest() {
+    public void testColorCheck() {
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
