@@ -48,28 +48,28 @@ public class LocomotiveGroupTest extends BaseTest {
 
     @Test
     public void testLink() throws InterruptedException {
-            String linkExpected = "https://demoqa.com/";
+        String linkExpected = "https://demoqa.com/";
 
-            getDriver().get("https://demoqa.com/links");
-            String originalWindow = getDriver().getWindowHandle();
-            WebElement link = getDriver().findElement(By.xpath("//*[@id=\"simpleLink\"]"));
-            String linkActual = link.getAttribute("href");
+        getDriver().get("https://demoqa.com/links");
+        String originalWindow = getDriver().getWindowHandle();
+        WebElement link = getDriver().findElement(By.xpath("//*[@id=\"simpleLink\"]"));
+        String linkActual = link.getAttribute("href");
 
-            Assert.assertEquals(linkActual, linkExpected);
+        Assert.assertEquals(linkActual, linkExpected);
 
-            link.click();
+        link.click();
 
-            Thread.sleep(1000);
+        Thread.sleep(1000);
 
-            for (String windowHandle : getDriver().getWindowHandles()) {
-                if (!originalWindow.contentEquals(windowHandle)) {
-                    getDriver().switchTo().window(windowHandle);
-                    break;
-                }
+        for (String windowHandle : getDriver().getWindowHandles()) {
+            if (!originalWindow.contentEquals(windowHandle)) {
+                getDriver().switchTo().window(windowHandle);
+                break;
             }
+        }
 
-            Thread.sleep(1000);
-            getDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
+        Thread.sleep(1000);
+        getDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
     }
 
     @Ignore
@@ -118,14 +118,14 @@ public class LocomotiveGroupTest extends BaseTest {
         } finally {
             driver.quit();
         }
-      }
+    }
 
-      @Ignore
-      @Test
+    @Ignore
+    @Test
     public void yandexSearchBarTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         String url = "https://ya.ru/";
-        try{
+        try {
             driver.get(url);
             WebElement searchBar = driver.findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
             WebElement searchButton = driver.findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
@@ -134,8 +134,22 @@ public class LocomotiveGroupTest extends BaseTest {
             searchButton.click();
             WebElement searchText = driver.findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
             Assert.assertTrue(searchText.isDisplayed());
-        }finally {
+        } finally {
             driver.quit();
         }
-      }
+    }
+
+    @Ignore
+    @Test
+    public void skateSiteHeaderTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.skate.net/");
+
+        WebElement title = driver.findElement(By.className("header_text"));
+        String value = title.getText();
+        Assert.assertEquals(value, "skates, skate gear, ice skates and more");
+
+        Thread.sleep(2000);
+        driver.quit();
+    }
 }
