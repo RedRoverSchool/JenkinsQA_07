@@ -289,7 +289,7 @@ public class GroupUnicornsTest {
     }
 
     @Test
-    public void testSubmit() throws InterruptedException {
+    public void testSubmit() {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://chadd.org/for-adults/overview/");
