@@ -10,33 +10,33 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.Dimension;
 import org.testng.Assert;
 import org.testng.annotations.*;
-
+import school.redrover.runner.BaseTest;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-@Ignore
-public class GroupUnitedByJavaTest {
+
+public class GroupUnitedByJavaTest extends BaseTest {
+
     @Test
-    public void demoqaElementsRedirection() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            String title = driver.getTitle();
+    public void testDemoqaElementsRedirection() throws InterruptedException {
+
+            getDriver().get("https://demoqa.com/");
+
+            String title = getDriver().getTitle();
             Assert.assertEquals(title, "DEMOQA");
-            WebElement elementsButton = driver.findElement(By.cssSelector(".top-card:nth-child(1)"));
+
+            WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(1)"));
             elementsButton.click();
-            String currentUrl = driver.getCurrentUrl();
+
+            String currentUrl = getDriver().getCurrentUrl();
             String elementsUrl = "https://demoqa.com/elements";
             Assert.assertEquals(currentUrl, elementsUrl);
             Thread.sleep(2000);
-        } finally {
-            driver.quit();
-        }
     }
+
     public static class DataProviders {
         @DataProvider(name = "validPasswordAndName")
         public static String[][] validPasswordAndName(){
@@ -61,22 +61,11 @@ public class GroupUnitedByJavaTest {
         }
     }
 
-    public WebDriver driver;
-    @BeforeMethod
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(50));
-    }
-    @AfterMethod(alwaysRun = true)
-    public void tearDown() {
-        driver.quit();
-    }
-
+    @Ignore
     @Test(dataProvider = "validPasswordAndName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with correct username and password")
     public void testLoginWithCorrectData(String username, String password) {
-
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
@@ -91,10 +80,11 @@ public class GroupUnitedByJavaTest {
         assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
     }
 
+    @Ignore
     @Test(dataProvider = "inValidPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with incorrect username and password")
     public void TestLoginWithIncorrectData(String username, String password) {
-
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
@@ -111,10 +101,11 @@ public class GroupUnitedByJavaTest {
         assertEquals(errorMessage, driver.findElement(By.xpath("//h3[@data-test=\"error\"]")).getText());
     }
 
+    @Ignore
     @Test(dataProvider = "EmptyPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with empty username or password")
     public void testLoginWithEmptyFields(String username, String password, String flag) {
-
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
@@ -134,10 +125,11 @@ public class GroupUnitedByJavaTest {
         }
     }
 
+    @Ignore
     @Test
     @Description("Check that the number of items on the home page is correct")
     public void testCountItemsOnHomePage() {
-
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
@@ -154,10 +146,11 @@ public class GroupUnitedByJavaTest {
         assertEquals(numberOfItems, 6);
     }
 
+    @Ignore
     @Test()
     @Description("Check that sotring by price is working properly")
     public void testSortByPriceDesc() {
-
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
 
         WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
@@ -180,8 +173,9 @@ public class GroupUnitedByJavaTest {
         assertTrue(priceMax > priceMin);
     }
 
+    @Ignore
     @Test
-    public void demoqaFormsRedirection() throws InterruptedException {
+    public void testDemoqaFormsRedirection() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/");
@@ -198,7 +192,7 @@ public class GroupUnitedByJavaTest {
         }
     }
 
-
+    @Ignore
     @Test
     public void testDemoqa(){
         WebDriver driver = new ChromeDriver();
@@ -217,6 +211,7 @@ public class GroupUnitedByJavaTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testDemoqaEdgeBookFlow(){
         WebDriver driver = new EdgeDriver();
@@ -238,6 +233,8 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+
+    @Ignore
     @Test
     public void testSearch () throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -261,6 +258,8 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+
+    @Ignore
     @Test
     @Description("Check some elements")
     public void testCheckSomeElements() throws InterruptedException {
@@ -293,6 +292,7 @@ public class GroupUnitedByJavaTest {
         }
     }
 
+    @Ignore
     @Test
     @Description("WebTables: Test open the window Registration form")
     public void demoqaTestAddNewRecordButton() throws InterruptedException {
@@ -317,6 +317,7 @@ public class GroupUnitedByJavaTest {
         }
     }
 
+    @Ignore
     @Test
     @Description("Testing a site with non-working search")
     public void testSomesing () throws InterruptedException {
@@ -348,6 +349,7 @@ public class GroupUnitedByJavaTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     @Description("testing a book search on a store website")
     public void testBookSearch(){
@@ -368,6 +370,7 @@ public class GroupUnitedByJavaTest {
 
     }
 
+    @Ignore
     @Test
     public void testDemoqaEdgeExperiment(){
         WebDriver driver = new EdgeDriver();
@@ -387,8 +390,11 @@ public class GroupUnitedByJavaTest {
 
         driver.quit();
     }
+
+    @Ignore
     @Test
     public void testAddItemFromCatalogueToCart() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
         driver.get("https://www.saucedemo.com/");
         try {
             WebElement usernameField = driver.findElement(By.id("user-name"));
@@ -422,9 +428,10 @@ public class GroupUnitedByJavaTest {
         }
     }
 
+    @Ignore
     @Test
     public void testClickElementsLinkText() throws InterruptedException {
-
+        WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/elements");
 
         WebElement elementsButton = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/span/div/div[1]"));
