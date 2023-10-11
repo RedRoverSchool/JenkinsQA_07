@@ -87,8 +87,6 @@ public class GroupLetsQATest extends BaseTest {
             WebElement updatingButton = getDriver().findElement(By.cssSelector("#updatingButton"));
             updatingButton.click();
 
-            getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
             String value = updatingButton.getText();
             Assert.assertEquals(newButtonName, value);
 
