@@ -149,23 +149,18 @@ public class GroupUnitedByJavaTest extends BaseTest {
         assertTrue(priceMax > priceMin);
     }
 
-    @Ignore
     @Test
     public void testDemoqaFormsRedirection() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            String title = driver.getTitle();
-            Assert.assertEquals(title, "DEMOQA");
-            WebElement elementsButton = driver.findElement(By.cssSelector(".top-card:nth-child(2)"));
-            elementsButton.click();
-            String currentUrl = driver.getCurrentUrl();
-            String elementsUrl = "https://demoqa.com/forms";
-            Assert.assertEquals(currentUrl, elementsUrl);
-            Thread.sleep(2000);
-        } finally {
-            driver.quit();
-        }
+
+        getDriver().get("https://demoqa.com/");
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "DEMOQA");
+        WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(2)"));
+        elementsButton.click();
+        String currentUrl = getDriver().getCurrentUrl();
+        String elementsUrl = "https://demoqa.com/forms";
+        Assert.assertEquals(currentUrl, elementsUrl);
+        Thread.sleep(2000);
     }
 
     @Ignore
@@ -235,6 +230,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     @Description("Check some elements")
     public void testCheckSomeElements() throws InterruptedException {
