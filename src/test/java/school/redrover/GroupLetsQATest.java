@@ -36,6 +36,7 @@ public class GroupLetsQATest extends BaseTest {
     }
 
 
+
     @Ignore
     @Test
     public void clickChromeTest() {
