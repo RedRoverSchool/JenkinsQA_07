@@ -173,5 +173,6 @@ public class LocomotiveGroupTest {
             Assert.assertEquals(value2,"Autoturisme (600)");
 
         driver.quit();
+        //test
     }
 }
