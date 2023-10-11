@@ -19,7 +19,7 @@ import static org.testng.Assert.assertEquals;
 
 @Ignore
 public class GroupUnderdogsTest {
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;// = new ChromeDriver();
 
     private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
     String userName = "academic198405@gmail.com";
