@@ -15,9 +15,9 @@ public class GroupJavaJitsuTest {
     WebDriver driver;
     @BeforeTest
     public void browserStart (){
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com");
+        //WebDriverManager.chromedriver().setup();
+        //driver = new ChromeDriver();
+        //driver.get("https://www.saucedemo.com");
 
     }
     @Test
