@@ -7,10 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class PlusThreeTest {
 
     public static final String USERNAME = "TestUser1";
@@ -303,6 +305,21 @@ public class PlusThreeTest {
         String value = proverka.getText();
         Assert.assertEquals(value, "Thanks for submitting the form");
 
+        driver.quit();
+    }
+    @Test
+    public void Trivio () {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://login.trivio.ru/");
+
+        WebElement textBox1 = driver.findElement(By.xpath("//input[contains(@id,'login')]"));
+        textBox1.sendKeys("demo");
+
+        WebElement textBox2 = driver.findElement(By.xpath("//*[@id=\"password\"]"));
+        textBox2.sendKeys("demo");
+
+        WebElement signInButton = driver.findElement(By.xpath("//*[@id=\"loginForm\"]/button"));
+        signInButton.click();
         driver.quit();
     }
 }

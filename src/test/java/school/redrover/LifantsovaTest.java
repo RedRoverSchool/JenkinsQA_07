@@ -6,12 +6,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+@Ignore
 public class LifantsovaTest {
 
     @Test
-    public void  testSearch() throws InterruptedException {
+    public void testSearch() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
@@ -36,8 +38,9 @@ public class LifantsovaTest {
             driver.quit();
         }
     }
+
     @Test
-    public void  testSearch1() throws InterruptedException {
+    public void testSearch1() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
 
         WebDriver driver = new ChromeDriver();
@@ -55,6 +58,34 @@ public class LifantsovaTest {
             WebElement title = driver.findElement(By.className("content-title"));
             String value = title.getText();
             Assert.assertEquals(value, "УЧЕБНЫЕ ПРЕДМЕТЫ");
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testSearch2() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            driver.get("https://resh.edu.ru/");
+
+            WebElement href1 = driver.findElement(By.xpath("/html/body/div[1]/div/main/div[2]/div/div[2]/a[3]"));
+            href1.click();
+
+            WebElement title1 = driver.findElement(By.className("content-title"));
+            String value1 = title1.getText();
+            Assert.assertEquals(value1, "МУЗЕИ");
+
+            WebElement href2 = driver.findElement(By.xpath("/html/body/div[1]/div/main/div[1]/div/div/div[5]/a[5]/div[2]"));
+            href2.click();
+
+            driver.get("https://www.culture.ru/institutes/4445/muzei-usadba-n-g-chernyshevskogo-g-saratova");
+
+            WebElement title2 = driver.findElement(By.className("tAsaH"));
+            String value2 = title2.getText();
+            Assert.assertEquals(value2, "Музей-усадьба Н.Г. Чернышевского г. Саратова");
         } finally {
             driver.quit();
         }

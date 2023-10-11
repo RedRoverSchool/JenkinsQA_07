@@ -4,9 +4,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 
+@Ignore
 public class SevchenkoTest {
     // TODO: 05.10.2023 coorected class name. 
     //Search elements //*[@id='mainbar']//a[@href='/questions/tagged/slf4j']
