@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 @Ignore
-public class GroupUnderdogsTest {
+public class GroupUnderdogsTest extends BaseTest {
     WebDriver driver;// = new ChromeDriver();
 
     private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
