@@ -17,20 +17,24 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
-public class GroupUnicornsTest extends BaseTest {
+public class GroupUnicornsTest extends BaseTest
+{
 
     @Ignore
     @Test
-    public void usPsPageOpenTest() {
+    public void usPsPageOpenTest()
+    {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.usps.com/");
         String title = driver.getTitle();
         assertEquals("Welcome | USPS", title);
         driver.quit();
     }
+
     @Ignore
     @Test
-    public void usPsSendMailPackageTest() {
+    public void usPsSendMailPackageTest()
+    {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.usps.com/");
         WebElement send = driver.findElement(By.xpath("//a[@id='mail-ship-width']"));
@@ -41,7 +45,8 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testSuccessfulLogin() {
+    public void testSuccessfulLogin()
+    {
         WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith";
@@ -54,7 +59,8 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testLoginAttemptWithInvalidUsername() {
+    public void testLoginAttemptWithInvalidUsername()
+    {
         WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith123";
@@ -66,48 +72,45 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual.contains("Your username is invalid!"));
     }
 
-    @Ignore
     @Test
-    public void w3SchoolTest() {
-        WebDriver wd = new ChromeDriver();
-        try {
-            wd.get("https://www.w3schools.com/");
+    public void w3SchoolTest()
+    {
+        WebDriver wd = getDriver();
+        wd.get("https://www.w3schools.com/");
 
-            //title
-            String title = wd.getTitle();
-            Assert.assertEquals(title, "W3Schools Online Web Tutorials");
+        //title
+        String title = wd.getTitle();
+        Assert.assertEquals(title, "W3Schools Online Web Tutorials");
 
-            //H1 heading
-            WebElement h1Heading = wd.findElement(By.className("learntocodeh1"));
-            Assert.assertEquals(h1Heading.getText(), "Learn to Code");
+        //H1 heading
+        WebElement h1Heading = wd.findElement(By.className("learntocodeh1"));
+        Assert.assertEquals(h1Heading.getText(), "Learn to Code");
 
-            //H3 heading
-            WebElement h3Heading = wd.findElement(By.className("learntocodeh3"));
-            Assert.assertEquals(h3Heading.getText(), "With the world's largest web developer site.");
+        //H3 heading
+        WebElement h3Heading = wd.findElement(By.className("learntocodeh3"));
+        Assert.assertEquals(h3Heading.getText(), "With the world's largest web developer site.");
 
-            //H4 heading
-            WebElement h4Heading = wd.findElement(By.className("learntocodeh4"));
-            Assert.assertEquals(h4Heading.getText(), "Not Sure Where To Begin?");
+        //H4 heading
+        WebElement h4Heading = wd.findElement(By.className("learntocodeh4"));
+        Assert.assertEquals(h4Heading.getText(), "Not Sure Where To Begin?");
 
-            //text box
-            WebElement textBox = wd.findElement(By.id("search2"));
+        //text box
+        WebElement textBox = wd.findElement(By.id("search2"));
 
-            //search button
-            WebElement searchButton = wd.findElement(By.id("learntocode_searchbtn"));
-            textBox.sendKeys("java tutorial");
-            searchButton.click();
+        //search button
+        WebElement searchButton = wd.findElement(By.id("learntocode_searchbtn"));
+        textBox.sendKeys("java tutorial");
+        searchButton.click();
 
-            //title
-            title = wd.getTitle();
-            Assert.assertEquals(title, "Java Tutorial");
-        } finally {
-            wd.quit();
-        }
+        //title
+        title = wd.getTitle();
+        Assert.assertEquals(title, "Java Tutorial");
     }
-    
+
     @Ignore
     @Test
-    public void testSearch() {
+    public void testSearch()
+    {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.w3schools.com/");
         String title = driver.getTitle();
@@ -122,9 +125,11 @@ public class GroupUnicornsTest extends BaseTest {
 
         driver.quit();
     }
+
     @Ignore
     @Test
-    public void demoWebShopTest() {
+    public void demoWebShopTest()
+    {
         WebDriver driver = new ChromeDriver();
 
         String pageTitlePath = "//div[@class='page-title' ]//h1";
@@ -142,24 +147,30 @@ public class GroupUnicornsTest extends BaseTest {
 
         String pageTitle;
 
-        try {
+        try
+        {
             driver.get("https://demowebshop.tricentis.com/");
 
-            for (String key : pages.keySet()) {
+            for (String key : pages.keySet())
+            {
                 driver.findElement(By.xpath(pages.get(key))).click();
                 pageTitle = driver.findElement(By.xpath(pageTitlePath)).getText();
                 Assert.assertEquals(pageTitle, key);
             }
 
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
-    public void searchVerificationGitHub() {
+    public void searchVerificationGitHub()
+    {
         WebDriver driver = new ChromeDriver();
-        try {
+        try
+        {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
             driver.manage().window().maximize();
@@ -172,16 +183,20 @@ public class GroupUnicornsTest extends BaseTest {
             int expectedSize = 10;
             int actualSize = listOfResults.size();
             Assert.assertEquals(actualSize, expectedSize);
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
-    public void testTradingView() throws InterruptedException {
+    public void testTradingView() throws InterruptedException
+    {
         WebDriver driver = new ChromeDriver();
         String url = "https://www.tradingview.com/chart/";
-        try {
+        try
+        {
             driver.get(url);
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(500));
             WebElement tickerNameActual = driver.findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
@@ -195,15 +210,19 @@ public class GroupUnicornsTest extends BaseTest {
             Thread.sleep(500);
             WebElement newTickerNameActual = driver.findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
             Assert.assertEquals(newTickerNameActual.getText(), "SPX");
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
-    public void verificationSocialIconsGitHub() {
+    public void verificationSocialIconsGitHub()
+    {
         WebDriver driver = new ChromeDriver();
-        try {
+        try
+        {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
             driver.manage().window().maximize();
@@ -218,39 +237,49 @@ public class GroupUnicornsTest extends BaseTest {
             wait.until(ExpectedConditions.elementToBeClickable(closeButton));
             closeButton.click();
             Assert.assertTrue(url.contains("twitter"));
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
-    public void testComputersMenu() {
+    public void testComputersMenu()
+    {
         WebDriver driver = new ChromeDriver();
         String[] computers = new String[]{"Desktops", "Notebooks", "Accessories"};
 
-        try {
+        try
+        {
             driver.get("https://demowebshop.tricentis.com/");
             driver.findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
             List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
 
             boolean actual = true;
-            for (int i = 0; i < elements.size(); i++) {
-                if (!computers[i].equals(elements.get(i).getText())) {
+            for (int i = 0; i < elements.size(); i++)
+            {
+                if (!computers[i].equals(elements.get(i).getText()))
+                {
                     actual = false;
                     break;
                 }
             }
             assertTrue(actual);
 
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
-    public void verificationSocialIconsGitHub2() throws InterruptedException {
+    public void verificationSocialIconsGitHub2() throws InterruptedException
+    {
         WebDriver driver = new ChromeDriver();
-        try {
+        try
+        {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
             driver.manage().window().maximize();
@@ -263,15 +292,19 @@ public class GroupUnicornsTest extends BaseTest {
             String url = driver.getCurrentUrl();
             driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
             Assert.assertTrue(url.contains("face"));
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
-    public void unsuccessfulLoginDigitalBank() {
+    public void unsuccessfulLoginDigitalBank()
+    {
         WebDriver driver = new ChromeDriver();
-        try {
+        try
+        {
             driver.get("http://18.118.14.155:8080/bank/login");
             driver.manage().window().maximize();
             WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
@@ -286,15 +319,19 @@ public class GroupUnicornsTest extends BaseTest {
             WebElement errorMsg = driver.findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
             errorMsg.isDisplayed();
 
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
-    public void successfulLoginDigitalBank() {
+    public void successfulLoginDigitalBank()
+    {
         WebDriver driver = new ChromeDriver();
-        try {
+        try
+        {
             driver.get("http://18.118.14.155:8080/bank/login");
             driver.manage().window().maximize();
             WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
@@ -308,7 +345,8 @@ public class GroupUnicornsTest extends BaseTest {
             submitBtn.click();
             WebElement avatar = driver.findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
             avatar.isDisplayed();
-        } finally {
+        } finally
+        {
             driver.quit();
         }
     }
