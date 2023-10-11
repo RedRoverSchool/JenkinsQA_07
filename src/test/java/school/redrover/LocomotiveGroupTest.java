@@ -9,6 +9,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class LocomotiveGroupTest {
@@ -121,5 +122,26 @@ public class LocomotiveGroupTest {
             driver.quit();
         }
       }
+
+    @Test
+    public void testHoverOver() {
+        By image = By.className("figure");
+        By captionInput = By.cssSelector("#content > div > div:nth-child(3) > div > h5");
+        int imageIndex = 0;
+        String captionExpected = "name: user" + (imageIndex + 1);
+
+        var driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/hovers");
+        var hoverElement = driver.findElements(image).get(imageIndex); // returns 1st image
+
+        var action = new Actions(driver);
+        action.moveToElement(hoverElement).perform();
+
+        var captionText = driver.findElements(captionInput).get(imageIndex);
+
+        Assert.assertEquals(captionText.getText(), captionExpected, "The caption text is wrong");
+
+        driver.quit();
+    }
 }
 
