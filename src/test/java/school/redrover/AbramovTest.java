@@ -15,7 +15,7 @@ public class AbramovTest {
     WebDriver driver;
     @BeforeTest
     public void beforeTest(){
-        driver = new ChromeDriver();
+        //driver = new ChromeDriver();
     }
 
     @AfterTest
