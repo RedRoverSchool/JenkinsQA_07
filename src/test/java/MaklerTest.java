@@ -7,35 +7,30 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+public class MaklerTEST {
 
-public class MaklerTest {
-
-        @Test
+    @Test
         public void testSearch() throws InterruptedException {
             WebDriver driver = new ChromeDriver();
             driver.get("https://makler.md/");
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(10000));
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(6000));
 
             WebElement textBox = driver.findElement(By.className("disable-border"));
             textBox.sendKeys("Handmade");
 
-            Thread.sleep(5000);
+            Thread.sleep(6000);
 
             WebElement searchButton = driver.findElement(By.id("header_searchButton"));
             searchButton.click();
 
-            /* WebElement title = driver.findElement(By.id("header_searchField"));
+            WebElement title = driver.findElement(By.id("header_searchField"));
             String value = title.getText();
-            Assert.assertEquals(value,"Handmade");*/
+            Assert.assertEquals(value,"Handmade");
+
             driver.quit();
-
-
         }
-
-
-    }
-
+}
 
 
 
