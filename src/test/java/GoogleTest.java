@@ -20,7 +20,7 @@ public class GoogleTest {
             WebElement textBox = driver.findElement(By.className("gLFyF"));
             textBox.sendKeys("Selenium");
 
-            Thread.sleep(9000);
+            Thread.sleep(8000);
 
             WebElement searchButton = driver.findElement(By.className("gNO89b"));
             searchButton.click();
