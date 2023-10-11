@@ -5,17 +5,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+@Ignore
 public class GroupUnicornsTest {
 
     @Test
@@ -198,6 +198,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+
     @Test
     public void testTradingView() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -220,25 +221,115 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+
     @Test
-    public void verificationSocialIconsGitHub() throws InterruptedException {
+    public void verificationSocialIconsGitHub() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
             driver.manage().window().maximize();
             driver.get("https://github.com");
-            JavascriptExecutor jsExec=(JavascriptExecutor) driver;
-            WebElement twitterIcon= driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
+            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
+            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
             jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            String mainWindow= driver.getWindowHandle();
             twitterIcon.click();
             String url = driver.getCurrentUrl();
-            WebElement closeButton=driver.findElement(By.xpath("//*[@aria-label='Close']"));
-            WebDriverWait wait=new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement closeButton = driver.findElement(By.xpath("//*[@aria-label='Close']"));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.elementToBeClickable(closeButton));
             closeButton.click();
             Assert.assertTrue(url.contains("twitter"));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testComputersMenu() {
+        WebDriver driver = new ChromeDriver();
+        String[] computers = new String[]{"Desktops", "Notebooks", "Accessories"};
+
+        try {
+            driver.get("https://demowebshop.tricentis.com/");
+            driver.findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
+            List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
+
+            boolean actual = true;
+            for (int i = 0; i < elements.size(); i++) {
+                if (!computers[i].equals(elements.get(i).getText())) {
+                    actual = false;
+                    break;
+                }
+            }
+            assertTrue(actual);
+
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void verificationSocialIconsGitHub2() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+            driver.manage().window().maximize();
+            driver.get("https://github.com");
+            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
+            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
+            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
+            List<WebElement> listOfIcons = driver.findElements(By.xpath("(//footer[@role='contentinfo']//ul)[5]//a"));
+            listOfIcons.get(1).click();
+            String url = driver.getCurrentUrl();
+            driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
+            Assert.assertTrue(url.contains("face"));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void unsuccessfulLoginDigitalBank() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("http://18.118.14.155:8080/bank/login");
+            driver.manage().window().maximize();
+            WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
+            icon.isDisplayed();
+
+            WebElement loginBtn = driver.findElement(By.id("username"));
+            loginBtn.sendKeys("tester1@gmail.com");
+            WebElement password = driver.findElement(By.id("password"));
+            password.sendKeys("1234Test");
+            WebElement submitBtn = driver.findElement(By.id("submit"));
+            submitBtn.click();
+            WebElement errorMsg = driver.findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
+            errorMsg.isDisplayed();
+
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void successfulLoginDigitalBank() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("http://18.118.14.155:8080/bank/login");
+            driver.manage().window().maximize();
+            WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
+            icon.isDisplayed();
+
+            WebElement loginBtn = driver.findElement(By.id("username"));
+            loginBtn.sendKeys("tester@gmail.com");
+            WebElement password = driver.findElement(By.id("password"));
+            password.sendKeys("Test1234");
+            WebElement submitBtn = driver.findElement(By.id("submit"));
+            submitBtn.click();
+            WebElement avatar = driver.findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
+            avatar.isDisplayed();
         } finally {
             driver.quit();
         }

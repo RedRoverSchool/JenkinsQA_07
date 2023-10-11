@@ -1,39 +1,22 @@
 package school.redrover;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 
-public class  FirstTest {
+public class  FirstTest extends BaseTest {
 
     @Test
-    public void  testSearch() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();
+    public void testSearch() throws InterruptedException {
 
-        WebDriver driver = new ChromeDriver();
+        JenkinsUtils.login(getDriver());
 
-            driver.get("https://www.google.com/");
-
-            WebElement textBox = driver.findElement(By.className("gLFyf"));
-            textBox.sendKeys("Selenium");
-
-              Thread.sleep(2100);
-
-             WebElement searchButton = driver.findElement(By.className("gNO89b"));
-             searchButton.click();
-
-            System.out.println("Hello, and Good Luck");
-
-            WebElement title = driver.findElement(By.className("yKMVIe"));
-            String value = title.getText();
-            Assert.assertEquals(value, "Selenium");
-
-            driver.quit();
-        }
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
+                "Welcome to Jenkins!");
     }
+}
 

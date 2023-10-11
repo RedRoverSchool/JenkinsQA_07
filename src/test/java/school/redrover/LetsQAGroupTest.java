@@ -5,22 +5,24 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+@Ignore
 public class LetsQAGroupTest {
     private static final String BASE_URL = "https://www.sawinery.net/";
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;// = new ChromeDriver();
     @Test
     public void testChrome(){
 
-        WebDriver driver = new ChromeDriver();
         driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
         String title = driver.getTitle();
@@ -70,7 +72,7 @@ public class LetsQAGroupTest {
     }
     @AfterTest
     public void quitBrowser() {
-        driver.quit();
+        //driver.quit();
     }
 
 
@@ -103,6 +105,30 @@ public class LetsQAGroupTest {
         }
     }
 
+    @Test
+    public void testTextInput() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.uitestingplayground.com/textinput");
+        try {
+
+            WebElement newButtonNameField = driver.findElement(By.cssSelector("#newButtonName"));
+            String newButtonName = "Changed Button Name";
+            newButtonNameField.sendKeys(newButtonName);
+
+            WebElement updatingButton = driver.findElement(By.cssSelector("#updatingButton"));
+            updatingButton.click();
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+            String value = updatingButton.getText();
+            Assert.assertEquals(newButtonName, value);
+
+        } finally {
+
+            driver.quit();
+        }
+    }
+    @Test
     public void confIXBT(){
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.ixbt.com/");
@@ -119,4 +145,41 @@ public class LetsQAGroupTest {
         driver.quit();
     }
 
+    @Test
+    public void clickSafariTest() {
+       WebDriver driver = new SafariDriver();
+        driver.get("http://www.uitestingplayground.com/click");
+
+        WebElement badButton = driver.findElement(By.id("badButton"));
+        badButton.click();
+
+        Assert.assertFalse("rgba(0, 123, 255, 1)".equals(badButton.getCssValue("background-color")));
+
+
+        driver.quit();
+    }
+
+    @Test
+    public void clickChromeTest() {
+        driver.get("http://www.uitestingplayground.com/click");
+
+        WebElement badButton = driver.findElement(By.id("badButton"));
+        badButton.click();
+
+        Assert.assertFalse("rgba(0, 123, 255, 1)".equals(badButton.getCssValue("background-color")));
+
+        driver.quit();
+    }
+
+    @Test
+    public void verifyTextTest() {
+        driver.get("http://www.uitestingplayground.com/verifytext");
+
+        WebElement textBlock = driver.findElement(By.xpath("//html/body/section/div/div[4]/span"));
+        String text = textBlock.getText();
+
+        Assert.assertEquals(text, "Welcome UserName!");
+
+        driver.quit();
+    }
 }

@@ -4,15 +4,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class  GroupSevenTest {
+@Ignore
+public class GroupSevenTest {
     @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
@@ -26,7 +27,7 @@ public class  GroupSevenTest {
 
     @Test
     public void searchTest() throws InterruptedException {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://kyliecosmetics.com/collections/kylie-cosmetics");
 
@@ -111,21 +112,68 @@ public class  GroupSevenTest {
     }
 
     @Test
-    public void testPage() throws InterruptedException {
+
+    public void testSearchAB() {
+
         WebDriver driver = new ChromeDriver();
-        driver.get("https://megagroup.by/");
-        driver.manage().window().maximize();
-        Thread.sleep(1500);
+        driver.get("https://duckduckgo.com/");
 
-        WebElement price = driver.findElement(
-                By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
-        price.click();
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "DuckDuckGo — Privacy, simplified.");
 
-        Thread.sleep(1500);
-        WebElement header = driver.findElement(By.xpath("//h1"));
-        Assert.assertEquals(header.getText(), "Стоимость сайтов");
+        WebElement textBox = driver.findElement(By.name("q"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@aria-label='Search']"));
+
+        textBox.sendKeys("Wikipedia");
+        submitButton.click();
+
+        WebElement wikiName = driver.findElement(By.xpath("(//*[@data-testid='result-title-a'])[1]"));
+        String wikiName2 = wikiName.getText();
+        Assert.assertEquals(wikiName2, "Wikipedia");
+
         driver.quit();
     }
+
+    @Test
+    public void testLinks() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://duckduckgo.com/");
+
+        WebElement textBox = driver.findElement(By.name("q"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@aria-label='Search']"));
+
+        textBox.sendKeys("Wikipedia");
+        submitButton.click();
+
+        Thread.sleep(5000);
+
+        int linkCount = driver.findElements(By.xpath("//*[@data-testid='result-extras-url-link']")).size();
+
+        Assert.assertEquals(linkCount, 10);
+
+        driver.quit();
+    }
+
+    @Test
+    public void testPricePageHeader() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://megagroup.by/");
+            driver.manage().window().maximize();
+            Thread.sleep(1500);
+
+            WebElement price = driver.findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+            price.click();
+
+            Thread.sleep(1500);
+            WebElement header = driver.findElement(By.xpath("//h1"));
+            Assert.assertEquals(header.getText(), "Стоимость сайтов");
+        } finally {
+            driver.quit();
+        }
+    }
+
     @Test
     public void testHPSearch() {
         WebDriver driver = new ChromeDriver();
@@ -145,11 +193,12 @@ public class  GroupSevenTest {
             ArrayList<String> wid = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(wid.get(1));
             WebElement resultHeader = driver.findElement(By.xpath("//h1"));
-            Assert.assertEquals(resultHeader.getText(),"Harry Potter");
+            Assert.assertEquals(resultHeader.getText(), "Harry Potter");
         } finally {
             driver.quit();
         }
     }
+
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -225,5 +274,97 @@ public class  GroupSevenTest {
         }
 
         driver.quit();
+    }
+
+    @Test
+    public void testBookSearch() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.doylestownbookshop.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "The Doylestown Bookshop |");
+
+        WebElement textBox = driver.findElement(By.id("edit-search-block-form--2"));
+        WebElement searchButton = driver.findElement(By.id("edit-submit"));
+
+        textBox.sendKeys("Making it so");
+        searchButton.click();
+
+        WebElement message = driver.findElement(By.id("b-9781982167738"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Making It So: A Memoir");
+
+        driver.quit();
+    }
+
+    @Test
+    public void YMCATest() {
+
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://ymcacapecod.org/");
+
+            WebElement textBox = driver.findElement(By.className("field"));
+            WebElement SearchButton = driver.findElement(By.className("submit"));
+
+            textBox.sendKeys("pool");
+            SearchButton.click();
+
+            WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
+            findelement.click();
+
+            WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
+            text.click();
+
+            String value = text.getText();
+            Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testKumon() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.kumon.com/");
+
+
+        WebElement locationButton = driver.findElement(By.xpath("//*[@href = '/locations']"));
+        locationButton.click();
+        Thread.sleep(1000);
+
+        String titleLocation = driver.getTitle();
+        Thread.sleep(1000);
+        Assert.assertEquals(titleLocation, "Find Kids' Learning Centers - Kumon Locations");
+
+
+        WebElement inputButton = driver.findElement(By.xpath("//input[@type = 'text']"));
+        inputButton.click();
+        Thread.sleep(1000);
+
+
+        WebElement locationText = driver.findElement(By.xpath("//h4[text()='INDIAN LAND']"));
+        String getText  = locationText.getText();
+        Assert.assertEquals(getText, "INDIAN LAND");
+
+        WebElement schedulerButton = driver.findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
+        Thread.sleep(1000);
+        schedulerButton.click();
+        Thread.sleep(5000);
+        String parentWindowHandle = driver.getWindowHandle(); //это метод в библиотеке Selenium WebDriver,
+        // который используется для получения идентификатора (handle) текущего окна или вкладки браузера.
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(parentWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                return; // Завершить метод и вернуться
+            }
+        }
+
+        String schedulerTitle = driver.getTitle();
+
+        Assert.assertEquals(schedulerTitle, "Book Appointment | Kumon of  INDIAN LAND");
+
+        driver.quit();
+
     }
 }

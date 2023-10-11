@@ -4,14 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class BrainBuildersTest {
 
     @Test
@@ -63,7 +64,7 @@ public class BrainBuildersTest {
     }
     @Test
     public void testAlcobendasSearch() {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://www.alcobendas.org/es");
 
@@ -84,6 +85,32 @@ public class BrainBuildersTest {
 
             String value = resultOfSearch.getText();
             Assert.assertEquals(value, "/2 resultados");
+        } finally {
+            driver.quit();
+        }
+    }
+    @Test
+    public void testAskentSearch() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.askent.ru/");
+
+            String title = driver.getTitle();
+            assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
+
+            WebElement magnifierIcon = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[1]"));
+            magnifierIcon.click();
+
+            WebElement searchTextField = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[2]/form/input"));
+            searchTextField.click();
+            searchTextField.sendKeys("сумка");
+
+            WebElement magnifierButton = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[2]/form/button"));
+            magnifierButton.click();
+
+            WebElement searchResult = driver.findElement(By.cssSelector("h1"));
+            String result = searchResult.getText();
+            Assert.assertEquals(result, "Результаты поиска");
         } finally {
             driver.quit();
         }

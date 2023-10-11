@@ -9,17 +9,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.Dimension;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+@Ignore
 public class GroupUnitedByJavaTest {
     @Test
     public void demoqaElementsRedirection() throws InterruptedException {
@@ -316,5 +315,145 @@ public class GroupUnitedByJavaTest {
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    @Description("Testing a site with non-working search")
+    public void testSomesing () throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.mybirds.ru/");
+
+        // Test title
+        WebElement textBox = driver.findElement(By.className("slogan"));
+        String text = textBox.getText();
+        Assert.assertEquals(text,"Энциклопедия владельца птицы");
+
+        // Test search
+        WebElement inputTxt = driver.findElement(By.className("input_txt"));
+        inputTxt.sendKeys("Parrots");
+
+        WebElement searchButton = driver.findElement(By.name("submit"));
+        searchButton.click();
+
+        WebElement noText = driver.findElement(By.className("notetext"));
+        String value = noText.getText();
+        Assert.assertEquals(value, "К сожалению, на ваш поисковый запрос ничего не найдено.");
+
+        // Test link
+        WebElement linkButton = driver.findElement(By.xpath("//a[@href='/nature/' and text()='Птицы в природе']"));
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", linkButton);
+
+        driver.quit();
+    }
+
+    @Test
+    @Description("testing a book search on a store website")
+    public void testBookSearch(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.belavrana.com/");
+
+        String title = driver.getTitle();
+        assertEquals(title, "Купить книги на русском в Сербии - Bela Vrana (Белая Ворона)");
+
+        WebElement button = driver.findElement(By.name("s"));
+        button.click();
+
+        WebElement search = driver.findElement(By.name("q"));
+        search.sendKeys("Толстой");
+
+        WebElement button2 = driver.findElement(By.name("s"));
+        button2.click();
+
+    }
+
+    @Test
+    public void testDemoqaEdgeExperiment(){
+        WebDriver driver = new EdgeDriver();
+
+        driver.get("http://restful-booker.herokuapp.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals (title, "Welcome to Restful-Booker");
+
+        WebElement cardBookStore = driver.findElement(By.xpath("//img[@src='/images/motpro.png']"));
+        cardBookStore.click();
+
+        driver.getWindowHandles().forEach(tab->driver.switchTo().window(tab));
+
+        String title2 = driver.getTitle();
+        Assert.assertEquals (title2, "Ninja training for software testers | Ministry of Testing");
+
+        driver.quit();
+    }
+    @Test
+    public void testAddItemFromCatalogueToCart() throws InterruptedException {
+        driver.get("https://www.saucedemo.com/");
+        try {
+            WebElement usernameField = driver.findElement(By.id("user-name"));
+            usernameField.sendKeys("standard_user");
+
+            WebElement passwordField = driver.findElement(By.id("password"));
+            passwordField.sendKeys("secret_sauce");
+
+            WebElement login_button = driver.findElement(By.className("submit-button"));
+            login_button.click();
+
+            String item_name = "Sauce Labs Fleece Jacket";
+            String quantity = "1";
+
+            WebElement fleece_jacket_to_cart_button = driver.findElement(By.id(
+                    "add-to-cart-sauce-labs-fleece-jacket"));
+            fleece_jacket_to_cart_button.click();
+
+            WebElement shopping_cart_button = driver.findElement(By.className("shopping_cart_container"));
+            shopping_cart_button.click();
+            Thread.sleep(2000);
+
+            String cart_item_name = driver.findElement(By.cssSelector(".cart_item_label .inventory_item_name"))
+                    .getText();
+            String cart_item_quantity = driver.findElement(By.xpath("//div[3]/*[contains(@class, " +
+                    "'cart_quantity')]")).getText();
+            Assert.assertEquals(cart_item_name, item_name, "The cart does not have " + item_name);
+            Assert.assertEquals(cart_item_quantity, quantity, "The cart quantity is not " + quantity);
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void testClickElementsLinkText() throws InterruptedException {
+
+        driver.get("https://demoqa.com/elements");
+
+        WebElement elementsButton = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/div/div/div[1]/span/div/div[1]"));
+        elementsButton.click();
+
+        String url = driver.getCurrentUrl();
+        String url1 = "https://demoqa.com/elements";
+        Assert.assertEquals(url, url1);
+
+        driver.get("https://demoqa.com/links");
+
+        WebElement search_Text = driver.findElement(By.xpath("//*[@id='linkWrapper']/h5[2]/strong"));
+        String searchTextExpected = search_Text.getText();
+        Assert.assertEquals(searchTextExpected, "Following links will send an api call");
+
+        WebElement createdButtonClick = driver.findElement(By.xpath("//*[@id='created']"));
+        createdButtonClick.click();
+        Thread.sleep(2000);
+
+        WebElement searchStatus = driver.findElement(By.xpath("//*[@id='linkResponse']/b[1]"));
+        String searchStatusExpected = searchStatus.getText();
+
+        WebElement searchStatusText = driver.findElement(By.xpath("//*[@id='linkResponse']/b[2]"));
+        String searchStatusTextExpected = searchStatusText.getText();
+
+        Assert.assertEquals(searchStatusExpected, "201");
+        Assert.assertEquals(searchStatusTextExpected, "Created");
+
+        driver.quit();
+
     }
 }
