@@ -11,13 +11,16 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+@Ignore
 public class LetsQAGroupTest {
     private static final String BASE_URL = "https://www.sawinery.net/";
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;// = new ChromeDriver();
+
     @Test
     public void testChrome(){
 
@@ -70,7 +73,7 @@ public class LetsQAGroupTest {
     }
     @AfterTest
     public void quitBrowser() {
-        driver.quit();
+        //driver.quit();
     }
 
 

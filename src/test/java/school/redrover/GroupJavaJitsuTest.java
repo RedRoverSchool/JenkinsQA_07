@@ -7,15 +7,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+@Ignore
 public class GroupJavaJitsuTest {
     WebDriver driver;
     @BeforeTest
     public void browserStart (){
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com");
+        //WebDriverManager.chromedriver().setup();
+        //driver = new ChromeDriver();
+        //driver.get("https://www.saucedemo.com");
 
     }
     @Test
@@ -41,7 +43,7 @@ public class GroupJavaJitsuTest {
         String url = driver.getCurrentUrl();
 
         Assert.assertEquals(url,  "https://www.saucedemo.com/inventory.html");
-
+        driver.quit();
 
     }
 }

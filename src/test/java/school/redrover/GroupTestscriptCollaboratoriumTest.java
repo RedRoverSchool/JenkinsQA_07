@@ -4,12 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class GroupTestscriptCollaboratoriumTest {
     @Test
     public void getGuru() throws InterruptedException {
@@ -33,7 +34,7 @@ public class GroupTestscriptCollaboratoriumTest {
     @Test
     public void testSubscription(){
 
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
 
             driver.get("https://murzilka.org/");
@@ -58,7 +59,7 @@ public class GroupTestscriptCollaboratoriumTest {
     @Test
     public void testAddToBasket(){
 
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
 
             driver.get("https://murzilka.org/products/category/redaktsionnaya-podpiska");

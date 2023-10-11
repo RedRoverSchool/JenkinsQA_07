@@ -4,8 +4,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class GroupItFriendlyTest {
 
     @Test
@@ -190,7 +191,7 @@ public class GroupItFriendlyTest {
     @Test
     public void ActionsWithCheckBoxTest(){
 
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/elements");
             driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);

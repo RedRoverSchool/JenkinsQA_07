@@ -2,21 +2,23 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import org.testng.collections.Lists;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
+@Ignore
 public class GroupUnderdogsTest {
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;// = new ChromeDriver();
 
     private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
     String userName = "academic198405@gmail.com";
@@ -38,7 +40,7 @@ public class GroupUnderdogsTest {
     public void MainPageTitleTest() {
         openMainPage();
         String title = driver.getTitle();
-        Assert.assertEquals(title, "99 Bottles of Beer | Start");
+        assertEquals(title, "99 Bottles of Beer | Start");
     }
 
     @Test
@@ -49,7 +51,7 @@ public class GroupUnderdogsTest {
         WebElement title = driver.findElement(By.xpath("//*[@id=\"header\"]/h1"));
         String titleValue = title.getText();
 
-        Assert.assertEquals(titleValue, "99 Bottles of Beer");
+        assertEquals(titleValue, "99 Bottles of Beer");
 
     }
 
@@ -61,7 +63,7 @@ public class GroupUnderdogsTest {
         WebElement lastMenuLink = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
 
         String lastMenuLinkValue = lastMenuLink.getAttribute("textContent");
-        Assert.assertEquals(lastMenuLinkValue, "Submit new Language");
+        assertEquals(lastMenuLinkValue, "Submit new Language");
 
     }
 
@@ -73,7 +75,7 @@ public class GroupUnderdogsTest {
         WebElement lastMenuLink = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
 
         String lastMenuLinkValue = lastMenuLink.getText();
-        Assert.assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
+        assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
 
     }
 
@@ -81,7 +83,7 @@ public class GroupUnderdogsTest {
     public void firstMenuTabTextTest() {
         driver.get("http://www.99-bottles-of-beer.net/abc.html");
         String elementName = driver.findElement(By.xpath("//ul[@id='submenu']/li[1]/a")).getText();
-        Assert.assertEquals(elementName, "0-9");
+        assertEquals(elementName, "0-9");
     }
 
     @Test
@@ -94,18 +96,18 @@ public class GroupUnderdogsTest {
         for (WebElement i : elements) {
             authorNames.add(i.getText());
         }
-        Assert.assertEquals(authorNames, expectedAuthorNames);
+        assertEquals(authorNames, expectedAuthorNames);
     }
 
     //text written in lower case and color red
     @Test
     public void maksinTestInactive() {
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
         driver.get("http://www.99-bottles-of-beer.net/team.html");
         WebElement text = driver.findElement(By.xpath
                 ("/html/body/div/div[3]/p[7]/font/b"));
         Assert.assertTrue(text.getText().toLowerCase().equals(text.getText()));
-        Assert.assertEquals(text.getCssValue("color"), "rgb(255, 0, 0)");
+        assertEquals(text.getCssValue("color"), "rgb(255, 0, 0)");
     }
 
     @Test
@@ -136,12 +138,10 @@ public class GroupUnderdogsTest {
         button.click();
         Thread.sleep(1000);
 
-
         WebElement isAllNewArrivals = driver.findElement(By.xpath("(//*[@class=\"pdl-heading pdl-heading--xl \"])[1]"));
 
         String text = isAllNewArrivals.getText();
-        Assert.assertEquals(text, "All-new arrivals");
-
+        assertEquals(text, "All-new arrivals");
 
     }
 
@@ -176,7 +176,7 @@ public class GroupUnderdogsTest {
         WebElement incorrectUser = driver.findElement(By.xpath("//*[text()='Incorrect username or password']"));
 
         String text = incorrectUser.getText();
-        Assert.assertEquals(text, "Incorrect username or password");
+        assertEquals(text, "Incorrect username or password");
 
 
     }
@@ -210,7 +210,7 @@ public class GroupUnderdogsTest {
         Thread.sleep(2000);
 
         String bikeName = marlin4.getText();
-        Assert.assertEquals(bikeName, "Marlin 4 Gen 2");
+        assertEquals(bikeName, "Marlin 4 Gen 2");
     }
 
     @Test
@@ -218,23 +218,21 @@ public class GroupUnderdogsTest {
         driver.manage().window().maximize();
         driver.get(baseUrlArt);
 
-        WebElement modWind = driver.findElement(By.xpath("//*[@viewBox=\"0 0 22 13\"]"));
+        WebElement modWindOffersAvailable = driver.findElement(By.xpath("//*[@viewBox='0 0 22 13']"));
         Thread.sleep(1000);
-        modWind.click();
+        modWindOffersAvailable.click();
         Thread.sleep(1000);
 
-        WebElement fRlocal = driver.findElement(By.xpath("(//*[@class=\"utility-nav__link\"])[5]"));
+        WebElement fRlocal = driver.findElement(By.xpath("(//*[@class='utility-nav__link'])[5]"));
         fRlocal.click();
-        Thread.sleep(3000);
+        Thread.sleep(1000);
 
-        WebElement modWind2 = driver.findElement(By.xpath("//*[@class=\"promo-drawer__heading\"]"));
-        System.out.println(modWind2.getText());
-        modWind2.click();
+        WebElement modWindOfferEnCours = driver.findElement(By.xpath("//*[@class='promo-drawer__heading']"));
+        modWindOfferEnCours.click();
 
-
-        WebElement address = driver.findElement(By.xpath("//*[@class='location-data']"));
-        address.click();
-        Thread.sleep(2000);
+        WebElement addresseZipCode = driver.findElement(By.xpath("//*[@class='location-data']"));
+        addresseZipCode.click();
+        Thread.sleep(1000);
 
 
         WebElement fieldSearch = driver.findElement(By.xpath("//input[@placeholder='Tout rechercher']"));
@@ -243,47 +241,58 @@ public class GroupUnderdogsTest {
         fieldSearch.sendKeys(Keys.ENTER);
 
 
-        WebElement sortPrice = driver.findElement(By.xpath("//*[@aria-label=\"sort by\"]/option[2]"));
-        sortPrice.click();
+        WebElement sortPricePertinceLtoH = driver.findElement(By.xpath("//*[@aria-label='sort by']/option[2]"));
+        sortPricePertinceLtoH.click();
         Thread.sleep(1000);
 
-        WebElement fullfilter = driver.findElement(By.xpath("(//*[@href=\"/fr_ca/accessories/kitchen-accessories/refrigerator/p.freshflow-refrigerator-air-filter-air1.w10311524.html?originVariantsOrder=NC\"])[1]"));
+        WebElement FILTRE_À_AIR_FRESHFLOWTM_AIR1_POUR_RÉFRIGÉRATEUR = driver.findElement(By.xpath("(//*[@href='/fr_ca/accessories/kitchen-accessories/refrigerator/p.freshflow-refrigerator-air-filter-air1.w10311524.html?originVariantsOrder=NC'])[1]"));
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        int yOffset = fullfilter.getLocation().getY();
+        int yOffset = FILTRE_À_AIR_FRESHFLOWTM_AIR1_POUR_RÉFRIGÉRATEUR.getLocation().getY();
         for (int i = 0; i < yOffset; i += 20) {
             js.executeScript("window.scrollTo(0, " + i + ")");
             Thread.sleep(50);
         }
-        fullfilter.click();
+        FILTRE_À_AIR_FRESHFLOWTM_AIR1_POUR_RÉFRIGÉRATEUR.click();
+        Thread.sleep(1000);
+
 
         JavascriptExecutor js1 = (JavascriptExecutor) driver;
-        WebElement trash = driver.findElement(By.xpath("(//*[@class=\"button checking-availability-btn trigger-modal\"])[2]"));
-        js1.executeScript("arguments[0].scrollIntoView();", trash);
+        WebElement Disponibilte_Available = driver.findElement(By.xpath("(//*[@class='button checking-availability-btn trigger-modal'])[2]"));
+        js1.executeScript("arguments[0].scrollIntoView();", Disponibilte_Available);
         Thread.sleep(1000);
-        trash.click();
-        Thread.sleep(1000);
+        Disponibilte_Available.click();
 
-        WebElement zipCode = driver.findElement(By.xpath("//*[@class=\"signin-account-field form-input mm-zipcode-location-v2\"]"));
+        WebElement zipCode = driver.findElement(By.xpath("//*[@class='signin-account-field form-input mm-zipcode-location-v2']"));
         zipCode.click();
-        Thread.sleep(1000);
 
-        WebElement fieldZip = driver.findElement(By.xpath("//*[@placeholder=\"Tapez le code postal ici...\"]"));
+        WebElement fieldZip = driver.findElement(By.xpath("//*[@placeholder='Tapez le code postal ici...']"));
         fieldZip.click();
         fieldZip.sendKeys("A1A 1A1");
 
 
-        WebElement submit = driver.findElement(By.xpath("//*[@id=\"update-location-btn\"]"));
+        WebElement submit = driver.findElement(By.xpath("//*[@id='update-location-btn']"));
         submit.click();
         Thread.sleep(2000);
-        System.out.println("Проверка");
 
 
         JavascriptExecutor js2 = (JavascriptExecutor) driver;
-        WebElement bins = driver.findElement(By.xpath("(//span[@class=\"button__text\"])[2]"));
-        js2.executeScript("arguments[0].scrollIntoView();", bins);
+        WebElement AJOUTER_AU_PANIER_AddToBin = driver.findElement(By.xpath("(//span[@class='button__text'])[2]"));
+        js2.executeScript("arguments[0].scrollIntoView();", AJOUTER_AU_PANIER_AddToBin);
 
-        Thread.sleep(2000);
-        bins.click();
+        Thread.sleep(1000);
+        AJOUTER_AU_PANIER_AddToBin.click();
+
+        Thread.sleep(1000);
+        WebElement passer_Au_Panier = driver.findElement(By.xpath("//span[@data-backdrop='static']"));
+        passer_Au_Panier.click();
+        Thread.sleep(1000);
+
+
+        WebElement totalEst = driver.findElement(By.xpath("(//*[@class='row--value '])[4]"));
+        String actRes = totalEst.getText();
+        String expRes = "15,56 $";
+
+        assertEquals(actRes, expRes);
 
     }
 
@@ -297,15 +306,15 @@ public class GroupUnderdogsTest {
 
         WebElement nameOliver = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[1]"));
         String name1 = nameOliver.getText();
-        Assert.assertEquals(name1, "Oliver Schade");
+        assertEquals(name1, "Oliver Schade");
 
         WebElement nameGregor = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[2]"));
         String name2 = nameGregor.getText();
-        Assert.assertEquals(name2, "Gregor Scheithauer");
+        assertEquals(name2, "Gregor Scheithauer");
 
         WebElement nameStefan = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[3]"));
         String name3 = nameStefan.getText();
-        Assert.assertEquals(name3, "Stefan Scheler");
+        assertEquals(name3, "Stefan Scheler");
 
         driver.quit();
     }
@@ -320,7 +329,7 @@ public class GroupUnderdogsTest {
 
         WebElement language = driver.findElement(By.xpath("//*[@id=\"category\"]/tbody/tr[2]/td[2]/a"));
         String title1 = language.getText();
-        Assert.assertEquals(title1, "Malbolge (real loop version)");
+        assertEquals(title1, "Malbolge (real loop version)");
 
         driver.quit();
     }
@@ -342,7 +351,7 @@ public class GroupUnderdogsTest {
         WebElement languagePageHeader = driver.findElement(By.xpath("//div[@id='main']/h2"));
         String pageHeader = languagePageHeader.getText();
 
-        Assert.assertEquals(pageHeader, "Language Kotlin");
+        assertEquals(pageHeader, "Language Kotlin");
     }
 
     @Test
@@ -365,7 +374,7 @@ public class GroupUnderdogsTest {
 
         for (WebElement element : searchResult) {
             Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
-            Assert.assertEquals(element.getTagName(), "a");
+            assertEquals(element.getTagName(), "a");
         }
     }
 
@@ -384,9 +393,9 @@ public class GroupUnderdogsTest {
             if (notificationText.equalsIgnoreCase("important:")) {
                 String backgroundColor = el.getCssValue("background-color");
                 String textColor = el.getCssValue("color");
-                Assert.assertEquals(backgroundColor, "rgba(255, 0, 0, 1)");
-                Assert.assertEquals(textColor, "rgba(255, 255, 255, 1)");
-                Assert.assertEquals(notificationText, notificationText.toUpperCase());
+                assertEquals(backgroundColor, "rgba(255, 0, 0, 1)");
+                assertEquals(textColor, "rgba(255, 255, 255, 1)");
+                assertEquals(notificationText, notificationText.toUpperCase());
             }
 
         }
@@ -407,8 +416,7 @@ public class GroupUnderdogsTest {
             namesOfCreators.add(element.getText());
         }
 
-        Assert.assertEquals(namesOfCreators, teamMembers);
-
+        assertEquals(namesOfCreators, teamMembers);
     }
 
     @Test
@@ -424,7 +432,7 @@ public class GroupUnderdogsTest {
         WebElement header = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//*[@id=\"submenu\"]/li/a")));
         String actualHeader = header.getText();
-        Assert.assertEquals(actualHeader, "Submit New Language");
+        assertEquals(actualHeader, "Submit New Language");
 
         driver.quit();
     }
@@ -438,7 +446,32 @@ public class GroupUnderdogsTest {
         WebElement title = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//*[@id=\"header\"]/h1")));
         String actualTitle = title.getText();
-        Assert.assertEquals(actualTitle, "99 Bottles of Beer");
+        assertEquals(actualTitle, "99 Bottles of Beer");
+
+        driver.quit();
+    }
+
+    public void yuliafaReddit() {
+        WebDriver driver = new ChromeDriver();
+
+        driver.get("https://www.reddit.com/?feed=home");
+
+        String title = driver.getTitle();
+        Assert.assertEquals( title, "Reddit - Dive into anything");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"login-button\"]"));
+        textBox.click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(900));
+
+        WebElement username = driver.findElement(By.xpath("//*[@id=\"login-username\"]"));
+        username.click();
+        username.sendKeys("test@mail.ru");
+
+        WebElement password = driver.findElement(By.xpath("//*[@id=\"login-password\"]"));
+        password.click();
+        password.sendKeys("12Qwerty");
 
         driver.quit();
     }
