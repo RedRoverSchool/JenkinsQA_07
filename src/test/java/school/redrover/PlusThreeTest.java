@@ -335,6 +335,7 @@ public class PlusThreeTest {
             List<WebElement> list = driver.findElements(By.className("signup-button"));
             Assert.assertEquals(list.size(), 3);
         } finally {
+
             driver.quit();
         }
     }
