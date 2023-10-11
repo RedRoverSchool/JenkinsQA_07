@@ -12,6 +12,8 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 
+import static org.testng.Assert.assertEquals;
+
 public class GroupSevenTest {
     @Test
     public void kylieTitleTest() {
@@ -365,5 +367,25 @@ public class GroupSevenTest {
 
         driver.quit();
 
+    }
+
+    @Test
+    public void forgetPass() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        //driver.get(URL);
+        WebElement myAccount = driver.findElement(By.className("authorization-link"));
+        myAccount.click();
+        WebElement forgetPass = driver.findElement(By.cssSelector("#login-form > fieldset > div.actions-toolbar > div.secondary > a > span"));
+        forgetPass.click();
+        WebElement enterEmail = driver.findElement(By.name("email"));
+        //enterEmail.sendKeys(EMAIL);
+        WebElement submitButton = driver.findElement(By.cssSelector("#form-validate > div > div.primary > button > span"));
+        submitButton.click();
+        Thread.sleep(2000);
+        String greeting = driver.findElement(By.cssSelector("#maincontent > div.page.messages > div:nth-child(2) > div > div")).getText();
+        assertEquals(greeting, "If there is an account associated with test_redrov@yahoo.com you " +
+                "will receive an email with a link to reset your password.");
+        driver.quit();
     }
 }
