@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
+
 
 public class GroupSurvivorsTest {
 
@@ -34,4 +36,21 @@ public class GroupSurvivorsTest {
             driver.quit();
         }
     }
+    @Test
+    public void vitaliMartTest() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+
+        WebElement submitElButton = driver.findElement(By.cssSelector(".card:nth-of-type(1)"));
+        submitElButton.click();
+
+        String url =  driver.getCurrentUrl();
+        Assert.assertEquals(url,"https://demoqa.com/elements");
+
+        driver.quit();
+    }
+
 }
