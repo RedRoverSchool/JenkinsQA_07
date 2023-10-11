@@ -108,18 +108,14 @@ public class GroupIntroVertsQaTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
-    public void aboutUsTest(){
-        WebDriver driver = new ChromeDriver();
-        driver.get(URL);
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
-        WebElement usernameInput = driver.findElement(By.xpath(" //a[@href=contains(text(), \"About Us\")]"));
+    public void testAboutUs(){
+        getDriver().get(URL);
+        WebElement usernameInput = getDriver().findElement(By.xpath(" //a[@href=contains(text(), 'About Us')]"));
         usernameInput.click();
 
-        WebElement greetings = driver.findElement(By.xpath("//h1[@class=\"title\"]"));
+        WebElement greetings = getDriver().findElement(By.xpath("//h1[@class='title']"));
         Assert.assertEquals(greetings.getText(), "ParaSoft Demo Website");
-        driver.quit();
     }
 
     /**
