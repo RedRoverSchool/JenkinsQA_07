@@ -142,7 +142,7 @@ public class LocomotiveGroupTest extends BaseTest {
     @Ignore
     @Test
     public void skateSiteHeaderTest() throws InterruptedException {
-        // этот комметарий добавлен для пуша гита, ибо не пушится и не ньюреквестится
+        // этот комметарий добавлен для пуша гита,   ибо   не пушится и не ньюреквестится
         WebDriver driver = new ChromeDriver();
         driver.get("http://www.skate.net/");
 
