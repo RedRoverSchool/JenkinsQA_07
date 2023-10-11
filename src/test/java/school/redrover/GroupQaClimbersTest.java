@@ -560,6 +560,7 @@ public class GroupQaClimbersTest {
         WebElement bookStoreApplicationButton = driver.findElement(
                 By.xpath("//div[@class='card mt-4 top-card'][6]"));
         bookStoreApplicationButton.click();
+        Thread.sleep(500);
 
         WebElement searchArea = driver.findElement(
                 By.xpath("//div[@class='mb-3 input-group']/input[@class='form-control']"));
