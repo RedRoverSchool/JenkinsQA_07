@@ -104,30 +104,7 @@ public class GroupUnicornsTest extends BaseTest {
             wd.quit();
         }
     }
-    @Ignore
-    @Test
-    public void testGeico() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.geico.com/");
-
-            WebElement title = driver.findElement(By.xpath("//div/h1[@id ='section1heading']"));
-            title.isDisplayed();
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-
-            WebElement zipCode = driver.findElement(By.xpath("//div/input[@id ='ssp-service-zip']"));
-            zipCode.sendKeys("11111");
-
-            WebElement submit = driver.findElement(By.xpath("//input[@class ='btn btn--secondary']"));
-            submit.click();
-
-            WebElement message = driver.findElement(By.xpath("//div/p[@class = 'text-message']"));
-            message.isDisplayed();
-        } finally {
-            driver.quit();
-        }
-    }
+    
     @Ignore
     @Test
     public void testSearch() {
