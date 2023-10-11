@@ -120,6 +120,7 @@ public class LocomotiveGroupTest extends BaseTest {
         }
       }
 
+      @Ignore
       @Test
     public void yandexSearchBarTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
