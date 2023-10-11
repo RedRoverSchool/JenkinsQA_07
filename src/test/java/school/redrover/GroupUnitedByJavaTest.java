@@ -11,7 +11,6 @@ import org.openqa.selenium.Dimension;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import school.redrover.runner.BaseTest;
-import java.time.Duration;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -20,24 +19,30 @@ import static org.testng.Assert.assertTrue;
 
 public class GroupUnitedByJavaTest extends BaseTest {
 
+    private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
+    private static final String USERNAME_LOCATOR = "//input[@placeholder='Username']";
+    private static final String PASSWORD_LOCATOR = "//input[@placeholder='Password']";
+    private static final String SUBMIT_BUTTON ="//input[@type='submit']";
+
     @Test
     public void testDemoqaElementsRedirection() throws InterruptedException {
 
-            getDriver().get("https://demoqa.com/");
+        getDriver().get("https://demoqa.com/");
 
-            String title = getDriver().getTitle();
-            Assert.assertEquals(title, "DEMOQA");
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "DEMOQA");
 
-            WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(1)"));
-            elementsButton.click();
+        WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(1)"));
+        elementsButton.click();
 
-            String currentUrl = getDriver().getCurrentUrl();
-            String elementsUrl = "https://demoqa.com/elements";
-            Assert.assertEquals(currentUrl, elementsUrl);
-            Thread.sleep(2000);
+        String currentUrl = getDriver().getCurrentUrl();
+        String elementsUrl = "https://demoqa.com/elements";
+        Assert.assertEquals(currentUrl, elementsUrl);
+        Thread.sleep(2000);
     }
 
     public static class DataProviders {
+
         @DataProvider(name = "validPasswordAndName")
         public static String[][] validPasswordAndName(){
             return new String[][]{
@@ -45,13 +50,16 @@ public class GroupUnitedByJavaTest extends BaseTest {
                     {"problem_user","secret_sauce"}
             };
         }
+
         @DataProvider(name = "inValidPasswordOrName")
+
         public static String[][] inValidPasswordOrName(){
             return new String[][]{
                     {"user","secret_sauce"},
                     {"standard_user","password"}
             };
         }
+
         @DataProvider(name = "EmptyPasswordOrName")
         public static String[][] EmptyPasswordOrName(){
             return new String[][]{
@@ -61,114 +69,83 @@ public class GroupUnitedByJavaTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test(dataProvider = "validPasswordAndName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with correct username and password")
     public void testLoginWithCorrectData(String username, String password) {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
 
-        WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
-        usernameField.sendKeys(username);
+        getDriver().get(SAUCEDEMO_URL);
 
-        WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder=\"Password\"]"));
-        passwordField.sendKeys(password);
+        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys(username);
+        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys(password);
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
 
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
-        loginButton.click();
-
-        assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
+        assertEquals(getDriver().getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
     }
 
-    @Ignore
+
     @Test(dataProvider = "inValidPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with incorrect username and password")
     public void TestLoginWithIncorrectData(String username, String password) {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
 
-        WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
-        usernameField.sendKeys(username);
+        getDriver().get(SAUCEDEMO_URL);
 
-        WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder=\"Password\"]"));
-        passwordField.sendKeys(password);
-
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
-        loginButton.click();
+        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys(username);
+        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys(password);
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
 
         String errorMessage = "Epic sadface: Username and password do not match any user in this service";
 
-        assertEquals(errorMessage, driver.findElement(By.xpath("//h3[@data-test=\"error\"]")).getText());
+        assertEquals(errorMessage, getDriver().findElement(By.xpath("//h3[@data-test='error']")).getText());
     }
 
-    @Ignore
+
     @Test(dataProvider = "EmptyPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
     @Description("Login with empty username or password")
     public void testLoginWithEmptyFields(String username, String password, String flag) {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
 
-        WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
-        usernameField.sendKeys(username);
+        getDriver().get(SAUCEDEMO_URL);
 
-        WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder=\"Password\"]"));
-        passwordField.sendKeys(password);
-
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
-        loginButton.click();
+        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys(username);
+        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys(password);
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
 
         if(flag.equals("incorrect_username")) {
-            assertEquals(driver.findElement(By.xpath("//h3[@data-test=\"error\"]")).getText(), "Epic sadface: Username is required");
+            assertEquals(getDriver().findElement(By.xpath("//h3[@data-test='error']")).getText(), "Epic sadface: Username is required");
         }
         else{
-            assertEquals(driver.findElement(By.xpath("//h3[@data-test=\"error\"]")).getText(), "Epic sadface: Password is required");
+            assertEquals(getDriver().findElement(By.xpath("//h3[@data-test='error']")).getText(), "Epic sadface: Password is required");
         }
     }
 
-    @Ignore
     @Test
     @Description("Check that the number of items on the home page is correct")
     public void testCountItemsOnHomePage() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
 
-        WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
-        usernameField.sendKeys("standard_user");
+        getDriver().get(SAUCEDEMO_URL);
 
-        WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder=\"Password\"]"));
-        passwordField.sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys("standard_user");
+        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
 
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
-        loginButton.click();
-
-        int numberOfItems = driver.findElements(By.xpath("//div[@class=\"inventory_item_name\"]")).size();
+        int numberOfItems = getDriver().findElements(By.xpath("//div[@class='inventory_item_name']")).size();
 
         assertEquals(numberOfItems, 6);
     }
 
-    @Ignore
-    @Test()
+    @Test
     @Description("Check that sotring by price is working properly")
     public void testSortByPriceDesc() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
 
-        WebElement usernameField = driver.findElement(By.xpath("//input[@placeholder=\"Username\"]"));
-        usernameField.sendKeys("standard_user");
+        getDriver().get(SAUCEDEMO_URL);
 
-        WebElement passwordField = driver.findElement(By.xpath("//input[@placeholder=\"Password\"]"));
-        passwordField.sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys("standard_user");
+        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
 
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type=\"submit\"]"));
-        loginButton.click();
+        List<WebElement> listOfItems = getDriver().findElements(By.xpath("//div[@class='inventory_item']"));
 
-        WebElement selectButton = driver.findElement(By.xpath("//option[@value=\"hilo\"]"));
-        selectButton.click();
-
-        List<WebElement> listOfItems = driver.findElements(By.xpath("//div[@class=\"inventory_item\"]"));
-
-        double priceMax = Double.parseDouble(listOfItems.get(0).findElement(By.xpath(".//div[@class=\"inventory_item_price\"]")).getText().replace("$", ""));
-        double priceMin = Double.parseDouble(listOfItems.get(5).findElement(By.xpath(".//div[@class=\"inventory_item_price\"]")).getText().replace("$", ""));
+        double priceMax = Double.parseDouble(listOfItems.get(0).findElement(By.xpath(".//div[@class='inventory_item_price']")).getText().replace("$", ""));
+        double priceMin = Double.parseDouble(listOfItems.get(5).findElement(By.xpath(".//div[@class='inventory_item_price']")).getText().replace("$", ""));
 
         assertTrue(priceMax > priceMin);
     }

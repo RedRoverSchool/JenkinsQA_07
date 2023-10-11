@@ -9,11 +9,13 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class PlusThreeTest {
+
+public class PlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
     public static final String URL = "https://parabank.parasoft.com/parabank/register.htm";
@@ -25,23 +27,23 @@ public class PlusThreeTest {
     public static final String CITY= "LOS ANGELES";
     public static final String STATE ="California";
     public static final String URL_PARABANK = "https://parabank.parasoft.com/";
-    ChromeDriver driver;
 
-    public void cleanDataBaseAndCloseBrow() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(URL);
 
-        WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
-        adminPanel.click();
-
-        WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
-        cleanButton.click();
-        Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p > b")).getText());
-
-        driver.quit();
-    }
-
+//    public void cleanDataBaseAndCloseBrow() {
+//        driver = new ChromeDriver();
+//
+//        driver.get(URL);
+//
+//        WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
+//        adminPanel.click();
+//
+//        WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
+//        cleanButton.click();
+//        Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p > b")).getText());
+//
+//        driver.quit();
+//    }
+@Ignore
     @Test
     public void testSearch() {
         WebDriver driver = new EdgeDriver();
@@ -80,11 +82,10 @@ public class PlusThreeTest {
 
         driver.quit();
     }
-
+@Ignore
     @Test(description = "Создание/регистрация пользователя в банке")
     public void createUser() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        WebDriver driver = new ChromeDriver();
         driver.get(URL);
 
         WebElement firstName = driver.findElement(By.id("customer.firstName"));
@@ -128,13 +129,13 @@ public class PlusThreeTest {
         String resText = result.getText();
         Assert.assertEquals(resText, "Your account was created successfully. You are now logged in.");
 
-        cleanDataBaseAndCloseBrow();
+//        cleanDataBaseAndCloseBrow();
     }
-
+@Ignore
     @Test
-    public static void forgotLoginTest () {
+    public static void testForgotLoginTest () {
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
+
         driver.get("https://parabank.parasoft.com/parabank/index.htm");
 
         driver.findElement(By.xpath("//a[contains(.,\"Forgot login info?\")]")).click();
@@ -171,9 +172,8 @@ public class PlusThreeTest {
         String textError = titleError.getText();
         Assert.assertEquals(textError, "The customer information provided could not be found.");
 
-        driver.quit();
     }
-
+@Ignore
     @Test
     public static void testSearchDuck() {
         WebDriver driver = new ChromeDriver();
@@ -198,9 +198,8 @@ public class PlusThreeTest {
             System.out.println("My_Frame not found: " + e.getMessage());
         }
 
-        driver.quit();
     }
-
+@Ignore
     @Test(description = "Swag labs login")
     public void loginSwagLabs() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -223,9 +222,8 @@ public class PlusThreeTest {
         String name = marketLogo.getText();
         Assert.assertEquals(name, "Swag Labs");
 
-        driver.quit();
     }
-
+@Ignore
     @Test
     public  void contactUs() {
         WebDriver driver = new ChromeDriver();
@@ -253,13 +251,12 @@ public class PlusThreeTest {
 
         WebElement confirmationMessage = driver.findElement(By.xpath("//*[@id='rightPanel']/p[contains(text(),'Thank you')]"));
         Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
-        driver.quit();
     }
+    @Ignore
     @Test
     public void testTemperatureInFahrenheit() {
 
         WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
 
         String url = "https://openweathermap.org/";
         String fTempSymbol = "°F";
@@ -278,9 +275,8 @@ public class PlusThreeTest {
 
         Assert.assertTrue(tempInF.contains(fTempSymbol));
 
-        driver.quit();
     }
-
+@Ignore
     @Test
     public void DemoqaTest() {
         WebDriver driver = new ChromeDriver();
@@ -305,8 +301,8 @@ public class PlusThreeTest {
         String value = proverka.getText();
         Assert.assertEquals(value, "Thanks for submitting the form");
 
-        driver.quit();
     }
+    @Ignore
     @Test
     public void Trivio () {
         WebDriver driver = new ChromeDriver();
@@ -320,7 +316,6 @@ public class PlusThreeTest {
 
         WebElement signInButton = driver.findElement(By.xpath("//*[@id=\"loginForm\"]/button"));
         signInButton.click();
-        driver.quit();
     }
 }
 
