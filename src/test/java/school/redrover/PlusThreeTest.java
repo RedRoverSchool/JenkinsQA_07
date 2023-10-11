@@ -9,11 +9,13 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
 @Ignore
-public class PlusThreeTest {
+public class PlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
     public static final String URL = "https://parabank.parasoft.com/parabank/register.htm";
