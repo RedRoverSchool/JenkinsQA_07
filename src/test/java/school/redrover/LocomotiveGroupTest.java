@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LocomotiveGroupTest extends BaseTest {
     @Test
-    public void demoqaTextBoxTest() {
+    public void testDemoqaTextBox() {
         String fullName = "Tom Jonson";
         String email = "mail@mail.com";
 
@@ -72,6 +72,7 @@ public class LocomotiveGroupTest extends BaseTest {
             Thread.sleep(1000);
             getGetDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
     }
+
     @Ignore
     @Test
     public void checkRadioButton() throws InterruptedException {
