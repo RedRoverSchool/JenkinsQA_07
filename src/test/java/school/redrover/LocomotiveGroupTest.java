@@ -20,27 +20,27 @@ public class LocomotiveGroupTest extends BaseTest {
         String fullName = "Tom Jonson";
         String email = "mail@mail.com";
 
-        getGetDriver().get("https://demoqa.com/text-box");
+        getDriver().get("https://demoqa.com/text-box");
 
-        String pageTitleText = getGetDriver().findElement(By.className("main-header")).getText();
+        String pageTitleText = getDriver().findElement(By.className("main-header")).getText();
         Assert.assertEquals(pageTitleText, "Text Box");
 
-        WebElement fullNameTextBox = getGetDriver().findElement(By.cssSelector("#userName"));
+        WebElement fullNameTextBox = getDriver().findElement(By.cssSelector("#userName"));
         fullNameTextBox.sendKeys(fullName);
 
-        WebElement emailTextBox = getGetDriver().findElement(By.id("userEmail"));
+        WebElement emailTextBox = getDriver().findElement(By.id("userEmail"));
         emailTextBox.sendKeys(email);
 
-        WebElement submitButton = getGetDriver().findElement(By.id("submit"));
-        ((JavascriptExecutor) getGetDriver()).executeScript("arguments[0].scrollIntoView(true);", submitButton);
+        WebElement submitButton = getDriver().findElement(By.id("submit"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", submitButton);
         submitButton.click();
 
-        String actualFullName = getGetDriver()
+        String actualFullName = getDriver()
                 .findElement(By.id("name"))
                 .getText();
         Assert.assertEquals(actualFullName, "Name:" + fullName);
 
-        String actualEmail = getGetDriver()
+        String actualEmail = getDriver()
                 .findElement(By.xpath("//*[@id=\"email\"]"))
                 .getText();
 
@@ -51,9 +51,9 @@ public class LocomotiveGroupTest extends BaseTest {
     public void testLink() throws InterruptedException {
             String linkExpected = "https://demoqa.com/";
 
-            getGetDriver().get("https://demoqa.com/links");
-            String originalWindow = getGetDriver().getWindowHandle();
-            WebElement link = getGetDriver().findElement(By.xpath("//*[@id=\"simpleLink\"]"));
+            getDriver().get("https://demoqa.com/links");
+            String originalWindow = getDriver().getWindowHandle();
+            WebElement link = getDriver().findElement(By.xpath("//*[@id=\"simpleLink\"]"));
             String linkActual = link.getAttribute("href");
 
             Assert.assertEquals(linkActual, linkExpected);
@@ -62,15 +62,15 @@ public class LocomotiveGroupTest extends BaseTest {
 
             Thread.sleep(1000);
 
-            for (String windowHandle : getGetDriver().getWindowHandles()) {
+            for (String windowHandle : getDriver().getWindowHandles()) {
                 if (!originalWindow.contentEquals(windowHandle)) {
-                    getGetDriver().switchTo().window(windowHandle);
+                    getDriver().switchTo().window(windowHandle);
                     break;
                 }
             }
 
             Thread.sleep(1000);
-            getGetDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
+            getDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
     }
 
     @Ignore
