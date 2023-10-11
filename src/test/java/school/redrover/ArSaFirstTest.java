@@ -10,7 +10,7 @@ public class ArSaFirstTest extends BaseTest {
 
     //Check if Title of the Website is correct..
     @Test
-    public void titleCheck()
+    public void titleCheckTest()
     {
             getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -51,8 +51,9 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
+    //Check the color of "my-colors" element
     @Test
-    public void colorCheck() {
+    public void colorCheckTest() {
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
