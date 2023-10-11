@@ -19,7 +19,7 @@ public class MDTest {
         WebElement textBox = driver.findElement(By.className("gLFyf"));
         textBox.sendKeys("Selenium");
 
-        Thread.sleep(1000);
+        Thread.sleep(9000);
 
         WebElement searchButton = driver.findElement(By.className("gNO89b"));
         searchButton.click();
