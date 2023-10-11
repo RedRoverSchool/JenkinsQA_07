@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -44,14 +45,14 @@ public class GroupForwardTest {
             WebElement languageButton = driver.findElement(By.xpath("//span[@class='text']"));
             languageButton.click();
             WebElement spanishButton = driver.findElement(
-                By.xpath("//a[@class='item' and text()='Español latino']"));
+                    By.xpath("//a[@class='item' and text()='Español latino']"));
             spanishButton.click();
 
             WebElement title = driver.findElement(By.xpath("//h1[contains(text(),'Bienvenido')]"));
             String value = title.getText();
 
             Assert.assertEquals(value,
-                "Bienvenido al Longman Dictionary of Contemporary English Online");
+                    "Bienvenido al Longman Dictionary of Contemporary English Online");
 
         } finally {
             driver.quit();
@@ -72,7 +73,7 @@ public class GroupForwardTest {
     }
 
     @Test
-    public void getDictionaryOfWordOfTheDayTest(){
+    public void getDictionaryOfWordOfTheDayTest() {
         String urlOfDictionaryOfWordOfDay = "https://www.ldoceonline.com/dictionary/";
         WebDriver driver = new ChromeDriver();
         try {
@@ -89,5 +90,30 @@ public class GroupForwardTest {
             driver.quit();
         }
     }
-}
 
+    @Test
+    public void aboutUsTest() {
+        WebDriver driver = new FirefoxDriver();
+        try {
+            driver.get(PAGE_URL);
+
+
+            WebElement closeCookieWindow = driver.findElement(By.xpath("//button[@aria-label = 'Close']"));
+            closeCookieWindow.click();
+            WebElement aboutUsLink = driver.findElement(By.xpath("//a[text()='About LDOCE']"));
+
+            aboutUsLink.click();
+
+            Assert.assertEquals(driver.getCurrentUrl(), "https://www.ldoceonline.com/about.html");
+            WebElement title = driver.findElement(By.xpath("//h1[@class='about_title']"));
+            String value = title.getText();
+
+            Assert.assertEquals(value,"About LDOCE Online");
+
+        } finally {
+            driver.quit();
+        }
+
+    }
+
+}
