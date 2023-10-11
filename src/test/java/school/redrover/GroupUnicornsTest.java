@@ -15,7 +15,7 @@ public class GroupUnicornsTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.usps.com/");
         String title = driver.getTitle();
-        assertEquals("Welcome | USPS", title);
+        assertEquals( title,"Welcome | USPS");
         driver.quit();
     }
 
@@ -26,7 +26,7 @@ public class GroupUnicornsTest {
         WebElement send = driver.findElement(By.xpath("//a[@id='mail-ship-width']"));
         send.click();
         String sendTitle = driver.getTitle();
-        assertEquals("Send Mail & Packages | USPS", sendTitle);
+        assertEquals(sendTitle ,"Send Mail & Packages | USPS");
         driver.quit();
     }
 }
