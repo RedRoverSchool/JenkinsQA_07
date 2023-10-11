@@ -221,7 +221,7 @@ public class GroupUnicornsTest {
     }
 
     @Test
-    public void verificationSocialIconsGitHub(){
+    public void verificationSocialIconsGitHub() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -242,6 +242,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+
     @Test
     public void testComputersMenu() {
         WebDriver driver = new ChromeDriver();
@@ -253,7 +254,7 @@ public class GroupUnicornsTest {
             List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
 
             boolean actual = true;
-            for(int i = 0; i < elements.size(); i++){
+            for (int i = 0; i < elements.size(); i++) {
                 if (!computers[i].equals(elements.get(i).getText())) {
                     actual = false;
                     break;
@@ -265,6 +266,7 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+
     @Test
     public void verificationSocialIconsGitHub2() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -284,5 +286,21 @@ public class GroupUnicornsTest {
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    public void testSubmit() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://chadd.org/for-adults/overview/");
+
+        WebElement textBox = driver.findElement(By.name("EMAIL"));
+        WebElement submitButton = driver.findElement(By.className("button"));
+
+        textBox.sendKeys("ximotof590@ibtrades.com");
+        submitButton.click();
+
+        driver.quit();
+
     }
 }
