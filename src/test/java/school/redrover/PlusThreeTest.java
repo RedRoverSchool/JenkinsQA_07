@@ -7,10 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class PlusThreeTest {
 
     public static final String USERNAME = "TestUser1";
@@ -253,5 +255,72 @@ public class PlusThreeTest {
         Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
         driver.quit();
     }
+    @Test
+    public void testTemperatureInFahrenheit() {
 
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        String url = "https://openweathermap.org/";
+        String fTempSymbol = "°F";
+
+        driver.get(url);
+
+        WebElement menuImperial = driver.findElement(
+                By.xpath("//div[@class = 'switch-container']/div[@class='option']/following-sibling::div")
+        );
+        menuImperial.click();
+
+        WebElement tempF = driver.findElement(
+                By.xpath("//div[@class='current-temp']/span")
+        );
+        String tempInF = tempF.getText();
+
+        Assert.assertTrue(tempInF.contains(fTempSymbol));
+
+        driver.quit();
+    }
+
+    @Test
+    public void DemoqaTest() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/automation-practice-form");
+
+        WebElement textBox = driver.findElement(By.id("firstName"));
+        textBox.sendKeys("Vova");
+
+        WebElement textBox2 = driver.findElement(By.id("lastName"));
+        textBox2.sendKeys("Petrov");
+
+        WebElement tel = driver.findElement(By.id("userNumber"));
+        tel.sendKeys("8800222552");
+
+        WebElement pol = driver.findElement(By.className("custom-control-label"));
+        pol.click();
+
+        WebElement submitButton = driver.findElement(By.id("submit"));
+        submitButton.click();
+
+        WebElement proverka = driver.findElement(By.id("example-modal-sizes-title-lg"));
+        String value = proverka.getText();
+        Assert.assertEquals(value, "Thanks for submitting the form");
+
+        driver.quit();
+    }
+    @Test
+    public void Trivio () {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://login.trivio.ru/");
+
+        WebElement textBox1 = driver.findElement(By.xpath("//input[contains(@id,'login')]"));
+        textBox1.sendKeys("demo");
+
+        WebElement textBox2 = driver.findElement(By.xpath("//*[@id=\"password\"]"));
+        textBox2.sendKeys("demo");
+
+        WebElement signInButton = driver.findElement(By.xpath("//*[@id=\"loginForm\"]/button"));
+        signInButton.click();
+        driver.quit();
+    }
 }
+

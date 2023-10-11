@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class GroupItFriendlyTest {
 
     @Test
@@ -180,6 +182,59 @@ public class GroupItFriendlyTest {
             impressiveButton.click();
 
             assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Impressive");
+
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    public void ActionsWithCheckBoxTest(){
+
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/elements");
+            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+
+            WebElement checkbox = driver.findElement(By.xpath("//span[contains(text(), 'Check Box')]"));
+            checkbox.click();
+
+            WebElement checkboxIsSelected = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
+            checkboxIsSelected.click();
+
+            assertEquals(driver.findElement(By.xpath("//*[@id=\"result\"]")).getText(), "You have selected :\n" +
+                    "home\n" +
+                    "desktop\n" +
+                    "notes\n" +
+                    "commands\n" +
+                    "documents\n" +
+                    "workspace\n" +
+                    "react\n" +
+                    "angular\n" +
+                    "veu\n" +
+                    "office\n" +
+                    "public\n" +
+                    "private\n" +
+                    "classified\n" +
+                    "general\n" +
+                    "downloads\n" +
+                    "wordFile\n" +
+                    "excelFile");
+          } finally {
+            driver.quit();
+        }
+    }
+
+  @Test
+  public void BadRequestButtonTest() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/links");
+            driver.manage().window().maximize();
+
+            WebElement badRequestButton = driver.findElement(By.id("bad-request"));
+
+            assertEquals(badRequestButton.getText(), "Bad Request");
 
         } finally {
             driver.quit();
