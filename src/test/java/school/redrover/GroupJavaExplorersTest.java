@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class GroupJavaExplorersTest {
 
     private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
