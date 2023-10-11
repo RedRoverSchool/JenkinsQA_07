@@ -125,5 +125,18 @@ public class GroupForwardTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void titleTest() {
+        WebDriver driver = new ChromeDriver();
+        try{
+            driver.get(PAGE_URL);
+            String title = driver.getTitle();
+
+            Assert.assertEquals(title, "Longman Dictionary of Contemporary English | LDOCE");
+        } finally {
+            driver.quit();
+        }
+    }
 }
 
