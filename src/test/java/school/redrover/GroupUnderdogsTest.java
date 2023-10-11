@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -103,7 +102,7 @@ public class GroupUnderdogsTest {
     //text written in lower case and color red
     @Test
     public void maksinTestInactive() {
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
         driver.get("http://www.99-bottles-of-beer.net/team.html");
         WebElement text = driver.findElement(By.xpath
                 ("/html/body/div/div[3]/p[7]/font/b"));

@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -28,7 +27,7 @@ public class GroupSevenTest {
 
     @Test
     public void searchTest() throws InterruptedException {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://kyliecosmetics.com/collections/kylie-cosmetics");
 
@@ -302,7 +301,7 @@ public class GroupSevenTest {
     @Test
     public void YMCATest() {
 
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://ymcacapecod.org/");
 

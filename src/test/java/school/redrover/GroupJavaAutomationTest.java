@@ -3,7 +3,6 @@ package school.redrover;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -37,9 +36,7 @@ public class GroupJavaAutomationTest {
 
     @Test
     public void herokuAppAddRemoveTest() throws InterruptedException {
-        WebDriver driver = new FirefoxDriver();
-        WebDriverManager.firefoxdriver().setup();
-        driver.manage().window().maximize();
+        WebDriver driver = new ChromeDriver();
 
         driver.get("https://the-internet.herokuapp.com/");
         try {
