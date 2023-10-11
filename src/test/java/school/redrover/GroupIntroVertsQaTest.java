@@ -209,6 +209,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/text-box");
 
+
         WebElement fullName = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
         fullName.sendKeys("Natalia");
 
