@@ -13,56 +13,36 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
-@Ignore
-public class LetsQAGroupTest {
+
+public class GroupLetsQATest extends BaseTest {
     private static final String BASE_URL = "https://www.sawinery.net/";
-    WebDriver driver;// = new ChromeDriver();
-    @Test
-    public void testChrome(){
 
-        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
-
-        String title = driver.getTitle();
-        Assert.assertEquals("Web form", title);
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        WebElement textBox = driver.findElement(By.name("my-text"));
-        WebElement submitButton = driver.findElement(By.cssSelector("button"));
-
-        textBox.sendKeys("Selenium");
-        submitButton.click();
-
-        WebElement message = driver.findElement(By.id("message"));
-        String value = message.getText();
-        Assert.assertEquals("Received!", value);
-
-        driver.quit();
-    }
-
-
+    @Ignore
     @Test
     public void checkTitle() {
-        driver.get(BASE_URL);
+        getDriver().get(BASE_URL);
 
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         Assert.assertEquals("Sawinery - #1 Woodworking Education Resource", title);
     }
+
+    @Ignore
     @Test
     public void searchTest() {
         try {
-            driver.get(BASE_URL);
+            getDriver().get(BASE_URL);
 
-            WebElement searchField = driver.findElement(By.xpath("//*[@id='elementor-search-form-77435a6']"));
+            WebElement searchField = getDriver().findElement(By.xpath("//*[@id='elementor-search-form-77435a6']"));
             searchField.sendKeys("saw");
             searchField.sendKeys(Keys.ENTER);
 
             Thread.sleep(1000);
 
-            WebElement searchResult = driver.findElement(By.xpath("//*[@id=\"content\"]/div/section[2]/div/div/div/div/div/div/article[1]/div/h3/a"));
+            WebElement searchResult = getDriver().findElement(By.xpath("//*[@id=\"content\"]/div/section[2]/div/div/div/div/div/div/article[1]/div/h3/a"));
             String searchText = searchResult.getAttribute("textContent").toLowerCase();
             Assert.assertTrue(searchText.contains("saw"));
 
@@ -70,6 +50,7 @@ public class LetsQAGroupTest {
             throw new RuntimeException(e);
         }
     }
+    @Ignore
     @AfterTest
     public void quitBrowser() {
         //driver.quit();
@@ -79,19 +60,15 @@ public class LetsQAGroupTest {
 
     @Test
     public void testLOadDelays(){
-        WebDriver driver = new ChromeDriver();
-        driver.get("http://www.uitestingplayground.com/loaddelay");
-        Wait<WebDriver> wait = new WebDriverWait(driver,Duration.ofSeconds(2));
-        try {
 
-            driver.manage().window().maximize();
+        getDriver().get("http://www.uitestingplayground.com/loaddelay");
 
-            WebElement homrPageLink = driver.findElement(By.cssSelector(".nav-link[href='/home']"));
+            WebElement homrPageLink = getDriver().findElement(By.cssSelector(".nav-link[href='/home']"));
             homrPageLink.click();
 
-            WebElement laodDelaysLink = driver.findElement(By.xpath("//a[@href='/loaddelay']"));
+            WebElement laodDelaysLink = getDriver().findElement(By.xpath("//a[@href='/loaddelay']"));
             laodDelaysLink.click();
-            WebElement buttonAppearigAfterDelay = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-primary")));
+        WebElement buttonAppearigAfterDelay = getDriver().findElement(By.cssSelector(".btn-primary"));
 
             try {
                 buttonAppearigAfterDelay.click();
@@ -99,12 +76,9 @@ public class LetsQAGroupTest {
             } catch (Exception e) {
                 Assert.fail("The button Appearig After Delay is not clickable.");
             }
-        }finally {
 
-            driver.quit();
-        }
     }
-
+    @Ignore
     @Test
     public void testTextInput() {
         WebDriver driver = new ChromeDriver();
@@ -128,6 +102,7 @@ public class LetsQAGroupTest {
             driver.quit();
         }
     }
+    @Ignore
     @Test
     public void confIXBT(){
         WebDriver driver = new ChromeDriver();
@@ -145,6 +120,7 @@ public class LetsQAGroupTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void clickSafariTest() {
        WebDriver driver = new SafariDriver();
@@ -159,27 +135,29 @@ public class LetsQAGroupTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void clickChromeTest() {
-        driver.get("http://www.uitestingplayground.com/click");
+        getDriver().get("http://www.uitestingplayground.com/click");
 
-        WebElement badButton = driver.findElement(By.id("badButton"));
+        WebElement badButton = getDriver().findElement(By.id("badButton"));
         badButton.click();
 
         Assert.assertFalse("rgba(0, 123, 255, 1)".equals(badButton.getCssValue("background-color")));
 
-        driver.quit();
+
     }
 
+    @Ignore
     @Test
     public void verifyTextTest() {
-        driver.get("http://www.uitestingplayground.com/verifytext");
+        getDriver().get("http://www.uitestingplayground.com/verifytext");
 
-        WebElement textBlock = driver.findElement(By.xpath("//html/body/section/div/div[4]/span"));
+        WebElement textBlock = getDriver().findElement(By.xpath("//html/body/section/div/div[4]/span"));
         String text = textBlock.getText();
 
         Assert.assertEquals(text, "Welcome UserName!");
 
-        driver.quit();
+
     }
 }
