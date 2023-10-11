@@ -209,7 +209,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/text-box");
 
-
         String title = driver.getTitle();
         Assert.assertEquals( "DEMOQA",title);
 
@@ -245,14 +244,10 @@ public class GroupIntroVertsQaTest extends BaseTest {
         WebDriver driver = new ChromeDriver();
         driver.get("https://demoqa.com/text-box");
 
-
-
         WebElement fullName = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
         fullName.sendKeys("Natalia");
 
-
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
-
 
         WebElement Email = driver.findElement(By.xpath("//*[@id=\"userEmail\"]"));
         Email.sendKeys("natalia@gmail.com");
@@ -289,8 +284,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
         WebElement messagePM= driver.findElement(By.xpath("//*[@id=\"permanentAddress\"]"));
         String valueMP = messagePM.getText();
         Assert.assertEquals("Permananet Address :Udacia",value);
-
-
 
 
         driver.quit();
