@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 public class ArSaFirstTest {
 
-    //Check if Title of the Website is correct.
+    //Check if Title of the Website is correct..
     @Test
     public void titleCheck()
     {
