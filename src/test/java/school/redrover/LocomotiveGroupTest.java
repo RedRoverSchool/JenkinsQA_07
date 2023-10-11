@@ -1,15 +1,11 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
 import java.util.concurrent.TimeUnit;
 
 @Ignore
@@ -123,5 +119,22 @@ public class LocomotiveGroupTest {
             driver.quit();
         }
       }
-}
 
+      @Test
+    public void yandexSearchBarTest() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        String url = "https://ya.ru/";
+        try{
+            driver.get(url);
+            WebElement searchBar = driver.findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
+            WebElement searchButton = driver.findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
+            searchBar.click();
+            searchBar.sendKeys("Ответ на главный вопрос жизни");
+            searchButton.click();
+            WebElement searchText = driver.findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
+            Assert.assertTrue(searchText.isDisplayed());
+        }finally {
+            driver.quit();
+        }
+      }
+}
