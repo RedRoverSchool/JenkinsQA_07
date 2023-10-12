@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.util.HashMap;
 import java.time.Duration;
@@ -61,43 +62,39 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual.contains("Your username is invalid!"));
     }
 
-    @Ignore
     @Test
-    public void w3SchoolTest() {
-        WebDriver wd = new ChromeDriver();
-        try {
-            wd.get("https://www.w3schools.com/");
+    public void w3SchoolTest()
+    {
+        WebDriver wd = getDriver();
+        wd.get("https://www.w3schools.com/");
 
-            //title
-            String title = wd.getTitle();
-            Assert.assertEquals(title, "W3Schools Online Web Tutorials");
+        //title
+        String title = wd.getTitle();
+        Assert.assertEquals(title, "W3Schools Online Web Tutorials");
 
-            //H1 heading
-            WebElement h1Heading = wd.findElement(By.className("learntocodeh1"));
-            Assert.assertEquals(h1Heading.getText(), "Learn to Code");
+        //H1 heading
+        WebElement h1Heading = wd.findElement(By.className("learntocodeh1"));
+        Assert.assertEquals(h1Heading.getText(), "Learn to Code");
 
-            //H3 heading
-            WebElement h3Heading = wd.findElement(By.className("learntocodeh3"));
-            Assert.assertEquals(h3Heading.getText(), "With the world's largest web developer site.");
+        //H3 heading
+        WebElement h3Heading = wd.findElement(By.className("learntocodeh3"));
+        Assert.assertEquals(h3Heading.getText(), "With the world's largest web developer site.");
 
-            //H4 heading
-            WebElement h4Heading = wd.findElement(By.className("learntocodeh4"));
-            Assert.assertEquals(h4Heading.getText(), "Not Sure Where To Begin?");
+        //H4 heading
+        WebElement h4Heading = wd.findElement(By.className("learntocodeh4"));
+        Assert.assertEquals(h4Heading.getText(), "Not Sure Where To Begin?");
 
-            //text box
-            WebElement textBox = wd.findElement(By.id("search2"));
+        //text box
+        WebElement textBox = wd.findElement(By.id("search2"));
 
-            //search button
-            WebElement searchButton = wd.findElement(By.id("learntocode_searchbtn"));
-            textBox.sendKeys("java tutorial");
-            searchButton.click();
+        //search button
+        WebElement searchButton = wd.findElement(By.id("learntocode_searchbtn"));
+        textBox.sendKeys("java tutorial");
+        searchButton.click();
 
-            //title
-            title = wd.getTitle();
-            Assert.assertEquals(title, "Java Tutorial");
-        } finally {
-            wd.quit();
-        }
+        //title
+        title = wd.getTitle();
+        Assert.assertEquals(title, "Java Tutorial");
     }
 
     @Ignore
@@ -299,5 +296,13 @@ public class GroupUnicornsTest extends BaseTest {
         } finally {
             driver.quit();
         }
+    }
+    @Test
+    public void testJenkinsVersion() {
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(),
+                "Jenkins 2.414.2");
     }
 }

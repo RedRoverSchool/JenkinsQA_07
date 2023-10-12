@@ -2,15 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
-
 
 import java.util.concurrent.TimeUnit;
 
@@ -186,4 +183,35 @@ public class LocomotiveGroupTest extends BaseTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testHoverOver() {
+        By image = By.className("figure");
+        By captionInput = By.cssSelector("#content > div > div:nth-child(3) > div > h5");
+        int imageIndex = 0;
+        String captionExpected = "name: user" + (imageIndex + 1);
+
+        var driver = getDriver();
+        driver.get("https://the-internet.herokuapp.com/hovers");
+        var hoverElement = driver.findElements(image).get(imageIndex); // returns 1st image
+
+        var action = new Actions(driver);
+        action.moveToElement(hoverElement).perform();
+
+        var captionText = driver.findElements(captionInput).get(imageIndex);
+        Assert.assertEquals(captionText.getText(), captionExpected, "The caption text is wrong");
+    }
+
+
+    @Test
+    public void testSkateSiteHeader() throws InterruptedException {
+        getDriver().get("http://www.skate.net/");
+
+        WebElement title = getDriver().findElement(By.className("header_text"));
+        String value = title.getText();
+        Assert.assertEquals(value, "skates, skate gear, ice skates and more");
+
+        Thread.sleep(2000);
+    }
+
 }
