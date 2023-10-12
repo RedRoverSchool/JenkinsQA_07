@@ -8,12 +8,15 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
-@Ignore
-public class GroupSevenTest {
+
+public class GroupSevenTest extends BaseTest {
+
+    @Ignore
     @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
@@ -25,6 +28,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void searchTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -51,6 +55,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void TestBddSearch() {
         WebDriver driver = new ChromeDriver();
@@ -69,6 +74,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testSearch() {
         WebDriver driver = new ChromeDriver();
@@ -88,6 +94,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testTextInput() {
 
@@ -111,6 +118,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
 
     public void testSearchAB() {
@@ -134,6 +142,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testLinks() throws InterruptedException {
 
@@ -155,6 +164,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testPricePageHeader() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -174,6 +184,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testHPSearch() {
         WebDriver driver = new ChromeDriver();
@@ -199,6 +210,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -276,6 +288,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testBookSearch() {
         WebDriver driver = new ChromeDriver();
@@ -298,6 +311,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void YMCATest() {
 
@@ -323,6 +337,8 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+
+    @Ignore
     @Test
     public void testKumon() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
