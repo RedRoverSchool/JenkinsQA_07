@@ -13,6 +13,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 public class PlusThreeTest extends BaseTest {
@@ -373,6 +375,15 @@ public class PlusThreeTest extends BaseTest {
         WebElement signInButton = driver.findElement(By.xpath("//*[@id=\"loginForm\"]/button"));
         signInButton.click();
         driver.quit();
+    }
+
+    @Test
+    public void testSignUpButton() {
+        getDriver().get("https://bandcamp.com/");
+        WebElement signUp = getDriver().findElement(By.className("all-signup-link"));
+        signUp.click();
+        List<WebElement> list = getDriver().findElements(By.className("signup-button"));
+        Assert.assertEquals(list.size(), 3);
     }
 }
 
