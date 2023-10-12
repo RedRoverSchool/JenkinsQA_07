@@ -257,29 +257,19 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(expectedHeading, heading);
     }
 
-    @Ignore
     @Test
     @Description("WebTables: Test open the window Registration form")
-    public void demoqaTestAddNewRecordButton() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/webtables");
-            String title = driver.getTitle();
-            Assert.assertEquals(title, "DEMOQA");
+    public void testDemoqaAddNewRecordButton() {
+            getDriver().get("https://demoqa.com/webtables");
+            Assert.assertEquals(getDriver().getTitle(), "DEMOQA");
 
-            WebElement main_header = driver.findElement(By.className("main-header"));
-            String value = main_header.getText();
-            Assert.assertEquals(value, "Web Tables");
+            WebElement main_header = getDriver().findElement(By.className("main-header"));
+            Assert.assertEquals(main_header.getText(), "Web Tables");
 
-            WebElement button_add = driver.findElement(By.xpath("//*[@id=\"addNewRecordButton\"]"));
+            WebElement button_add = getDriver().findElement(By.xpath("//*[@id='addNewRecordButton']"));
             button_add.click();
-            WebElement window_add = driver.findElement(By.xpath("//*[@id=\"registration-form-modal\"]"));
-            String title_add_form = window_add.getText();
-            Assert.assertEquals(title_add_form, "Registration Form");
-            Thread.sleep(2000);
-        } finally {
-            driver.quit();
-        }
+            WebElement window_add = getDriver().findElement(By.xpath("//*[@id='registration-form-modal']"));
+            Assert.assertEquals(window_add.getText(), "Registration Form");
     }
 
     @Ignore
