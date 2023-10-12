@@ -186,4 +186,16 @@ public class LocomotiveGroupTest extends BaseTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testSkateSiteHeader() throws InterruptedException {
+        getDriver().get("http://www.skate.net/");
+
+        WebElement title = getDriver().findElement(By.className("header_text"));
+        String value = title.getText();
+        Assert.assertEquals(value, "skates, skate gear, ice skates and more");
+
+        Thread.sleep(2000);
+    }
+
 }
