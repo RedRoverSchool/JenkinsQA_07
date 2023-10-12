@@ -5,7 +5,6 @@ import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -25,7 +24,7 @@ public class PlusThreeTest extends BaseTest {
     public static final String CITY= "LOS ANGELES";
     public static final String STATE ="California";
     public static final String URL_PARABANK = "https://parabank.parasoft.com/";
-
+    public static final String CURRENT_ADDRESS = "USA";
     //---------------------------------------------------------------------------------------------------------------------------------
     private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
 
@@ -114,66 +113,64 @@ public class PlusThreeTest extends BaseTest {
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
-    // public void cleanDataBaseAndCloseBrow() {
-    //     driver = new ChromeDriver();
-    //     driver.manage().window().maximize();
-    //     driver.get(URL);
+    public void cleanDataBaseAndCloseBrow() {
 
-    //     WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
-    //     adminPanel.click();
+        getDriver().get(URL);
 
-    //     WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
-    //     cleanButton.click();
-    //     Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p > b")).getText());
+        WebElement adminPanel = getDriver().findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
+        adminPanel.click();
 
-    //     driver.quit();
-    // }
+        WebElement cleanButton = getDriver().findElement(By.cssSelector("button[value='CLEAN']"));
+        cleanButton.click();
+        Assert.assertEquals("Database Cleaned", getDriver().findElement(By.cssSelector("div[id='rightPanel'] > p > b")).getText());
+
+        getDriver().quit();
+    }
 
     @Ignore
     @Test(description = "Создание/регистрация пользователя в банке")
     public void createUser() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(URL);
+        
+        getDriver().get(URL);
 
-        WebElement firstName = driver.findElement(By.id("customer.firstName"));
+        WebElement firstName = getDriver().findElement(By.id("customer.firstName"));
         firstName.sendKeys("Test");
 
-        WebElement lastName = driver.findElement(By.id("customer.lastName"));
+        WebElement lastName = getDriver().findElement(By.id("customer.lastName"));
         lastName.sendKeys("Test");
 
-        WebElement address = driver.findElement(By.id("customer.address.street"));
+        WebElement address = getDriver().findElement(By.id("customer.address.street"));
         address.sendKeys("SPB");
 
-        WebElement city = driver.findElement(By.id("customer.address.city"));
+        WebElement city = getDriver().findElement(By.id("customer.address.city"));
         city.sendKeys("SPB");
 
-        WebElement state = driver.findElement(By.id("customer.address.state"));
+        WebElement state = getDriver().findElement(By.id("customer.address.state"));
         state.sendKeys("LO");
 
-        WebElement zipCode = driver.findElement(By.id("customer.address.zipCode"));
+        WebElement zipCode = getDriver().findElement(By.id("customer.address.zipCode"));
         zipCode.sendKeys("123-415");
 
-        WebElement userName = driver.findElement(By.id("customer.username"));
+        WebElement userName = getDriver().findElement(By.id("customer.username"));
         userName.sendKeys(USERNAME);
 
-        WebElement password = driver.findElement(By.id("customer.password"));
+        WebElement password = getDriver().findElement(By.id("customer.password"));
         password.sendKeys(PASSWORD);
 
-        WebElement repeatPass = driver.findElement(By.id("repeatedPassword"));
+        WebElement repeatPass = getDriver().findElement(By.id("repeatedPassword"));
         repeatPass.sendKeys(PASSWORD);
 
-        WebElement ssn = driver.findElement(By.id("customer.ssn"));
+        WebElement ssn = getDriver().findElement(By.id("customer.ssn"));
         ssn.sendKeys("123456");
 
-        WebElement register = driver.findElement(By.cssSelector("[value='Register']"));
+        WebElement register = getDriver().findElement(By.cssSelector("[value='Register']"));
         register.submit();
 
-        WebElement title = driver.findElement(By.xpath("//div[@id='rightPanel']/h1"));
+        WebElement title = getDriver().findElement(By.xpath("//div[@id='rightPanel']/h1"));
         String resTitle = title.getText();
         Assert.assertEquals(resTitle, "Welcome " + USERNAME);
 
-        WebElement result = driver.findElement(By.xpath("//div[@id='rightPanel']/p"));
+        WebElement result = getDriver().findElement(By.xpath("//div[@id='rightPanel']/p"));
         String resText = result.getText();
         Assert.assertEquals(resText, "Your account was created successfully. You are now logged in.");
 
