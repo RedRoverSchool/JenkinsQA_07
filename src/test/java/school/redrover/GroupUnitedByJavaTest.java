@@ -7,10 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.Dimension;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -150,23 +151,18 @@ public class GroupUnitedByJavaTest extends BaseTest {
         assertTrue(priceMax > priceMin);
     }
 
-    @Ignore
     @Test
     public void testDemoqaFormsRedirection() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            String title = driver.getTitle();
-            Assert.assertEquals(title, "DEMOQA");
-            WebElement elementsButton = driver.findElement(By.cssSelector(".top-card:nth-child(2)"));
-            elementsButton.click();
-            String currentUrl = driver.getCurrentUrl();
-            String elementsUrl = "https://demoqa.com/forms";
-            Assert.assertEquals(currentUrl, elementsUrl);
-            Thread.sleep(2000);
-        } finally {
-            driver.quit();
-        }
+
+        getDriver().get("https://demoqa.com/");
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "DEMOQA");
+        WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(2)"));
+        elementsButton.click();
+        String currentUrl = getDriver().getCurrentUrl();
+        String elementsUrl = "https://demoqa.com/forms";
+        Assert.assertEquals(currentUrl, elementsUrl);
+        Thread.sleep(2000);
     }
 
     @Ignore
@@ -240,58 +236,45 @@ public class GroupUnitedByJavaTest extends BaseTest {
     @Test
     @Description("Check some elements")
     public void testCheckSomeElements() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        Dimension d = new Dimension(1920,1080);
-        driver.manage().window().setSize(d);
-        try {
-            driver.get("https://redrover.school/");
-            String title = driver.getTitle();
-            Assert.assertEquals(title, "RedRover | Non-commercial it-school");
-            Thread.sleep(2000);
-            WebElement submitButton = driver.findElement(By.xpath("//div[@data-elem-id='1674179354982']"));
-            submitButton.click();
-            WebElement emailField = driver.findElement(By.xpath("//input[@placeholder='Email']"));
-            emailField.sendKeys("testSeleniumFirstCommit@test.ru");
-            WebElement nameField = driver.findElement(By.xpath("//input[@placeholder='Name']"));
-            nameField.sendKeys("testUser");
-            WebElement checkbox = driver.findElement(By.className("t-checkbox__indicator"));
-            boolean isSelected = checkbox.isSelected();
-            if (!isSelected) {
-                checkbox.click();
-            }
-            WebElement teachers = driver.findElement(By.xpath("//h2[@field=\"tn_text_1674776847053\"]"));
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", teachers);
-            String expectedHeading = "Teachers";
-            String heading = driver.findElement(By.xpath("//h2[contains(text(), \"Teachers\")]")).getText();
-            Assert.assertEquals(expectedHeading, heading);
-        } finally {
-            driver.quit();
+        getDriver().get("https://redrover.school/");
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "RedRover | Non-commercial it-school");
+        Thread.sleep(2000);
+        WebElement submitButton = getDriver().findElement(By.xpath("//div[@data-elem-id='1674179354982']"));
+        submitButton.click();
+        WebElement emailField = getDriver().findElement(By.xpath("//input[@placeholder='Email']"));
+        emailField.sendKeys("testSeleniumFirstCommit@test.ru");
+        WebElement nameField = getDriver().findElement(By.xpath("//input[@placeholder='Name']"));
+        nameField.sendKeys("testUser");
+        Thread.sleep(3000);
+        WebElement checkbox = getDriver().findElement(By.className("t-checkbox__indicator"));
+        boolean isSelected = checkbox.isSelected();
+        if (!isSelected) {
+            checkbox.click();
         }
+        WebElement teachers = getDriver().findElement(By.xpath("//h2[@field=\"tn_text_1674776847053\"]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", teachers);
+        String expectedHeading = "Teachers";
+        String heading = getDriver().findElement(By.xpath("//h2[contains(text(), \"Teachers\")]")).getText();
+        Assert.assertEquals(expectedHeading, heading);
     }
 
-    @Ignore
+
     @Test
     @Description("WebTables: Test open the window Registration form")
-    public void demoqaTestAddNewRecordButton() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/webtables");
-            String title = driver.getTitle();
-            Assert.assertEquals(title, "DEMOQA");
+    public void testDemoqaAddNewRecordButton() {
+            getDriver().get("https://demoqa.com/webtables");
+            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 
-            WebElement main_header = driver.findElement(By.className("main-header"));
-            String value = main_header.getText();
-            Assert.assertEquals(value, "Web Tables");
+            Assert.assertEquals(getDriver().getTitle(), "DEMOQA");
 
-            WebElement button_add = driver.findElement(By.xpath("//*[@id=\"addNewRecordButton\"]"));
+            WebElement main_header = getDriver().findElement(By.className("main-header"));
+            Assert.assertEquals(main_header.getText(), "Web Tables");
+
+            WebElement button_add = getDriver().findElement(By.xpath("//button[@id='addNewRecordButton']"));
             button_add.click();
-            WebElement window_add = driver.findElement(By.xpath("//*[@id=\"registration-form-modal\"]"));
-            String title_add_form = window_add.getText();
-            Assert.assertEquals(title_add_form, "Registration Form");
-            Thread.sleep(2000);
-        } finally {
-            driver.quit();
-        }
+            WebElement window_add = getDriver().findElement(By.xpath("//*[@id='registration-form-modal']"));
+            Assert.assertEquals(window_add.getText(), "Registration Form");
     }
 
     @Ignore

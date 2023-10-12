@@ -7,14 +7,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class BrainBuildersTest {
 
+public class BrainBuildersTest extends BaseTest {
+
+    @Ignore
     @Test
     public void  testCreatingDoubleRoom() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -62,6 +64,7 @@ public class BrainBuildersTest {
             driver.quit();
         }
     }
+    @Ignore
     @Test
     public void testAlcobendasSearch() {
         WebDriver driver = new ChromeDriver();
@@ -89,6 +92,7 @@ public class BrainBuildersTest {
             driver.quit();
         }
     }
+    @Ignore
     @Test
     public void testAskentSearch() {
         WebDriver driver = new ChromeDriver();

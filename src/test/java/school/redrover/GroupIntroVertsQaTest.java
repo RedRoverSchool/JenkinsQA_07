@@ -201,4 +201,55 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
     }
     // endregion
+
+    @Ignore
+    @Test
+
+    public void testTextBoxNN () {
+
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/text-box");
+
+        WebElement fullName = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
+        fullName.sendKeys("Natalia");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement Email = driver.findElement(By.xpath("//*[@id=\"userEmail\"]"));
+        Email.sendKeys("natalia@gmail.com");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement currentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        currentAddress.sendKeys("Sciastlivaia");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement permanentAddress = driver.findElement(By.xpath("//*[@id=\"permanentAddress\"]"));
+        permanentAddress.sendKeys("Udacia");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+        submitButton.click();
+
+        WebElement messageName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        String value = messageName.getText();
+        Assert.assertEquals("Name:Natalia", value);
+
+        WebElement messageEmail = driver.findElement(By.cssSelector("#email.mb-1"));
+        String valueE = messageEmail.getText();
+        Assert.assertEquals("Email:natalia@gmail.com",valueE);
+
+        WebElement messageCurrent = driver.findElement(By.cssSelector("#currentAddress.mb-1"));
+        String valueMC= messageCurrent.getText();
+        Assert.assertEquals("Current Address :Sciastlivaia", valueMC);
+
+        WebElement messagePM= driver.findElement(By.cssSelector("#permanentAddress.mb-1"));
+        String valueMP = messagePM.getText();
+        Assert.assertEquals("Permananet Address :Udacia",valueMP);
+
+        driver.quit();
+    }
 }
