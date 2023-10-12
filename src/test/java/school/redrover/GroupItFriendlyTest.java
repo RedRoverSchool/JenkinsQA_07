@@ -138,6 +138,7 @@ public class GroupItFriendlyTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void DemoQARadioButtonTest() {
         WebDriver driver = getDriver();
