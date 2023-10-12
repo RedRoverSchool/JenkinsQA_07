@@ -53,6 +53,5 @@ public class GroupSurvivorsTest {
         } finally {
             driver.quit();
         }
-
     }
 }
