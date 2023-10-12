@@ -18,7 +18,6 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-//@Ignore
 public class GroupUnderdogsTest extends BaseTest {
 
     private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
