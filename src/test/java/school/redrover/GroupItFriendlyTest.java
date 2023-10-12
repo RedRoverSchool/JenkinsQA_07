@@ -138,7 +138,7 @@ public class GroupItFriendlyTest extends BaseTest {
 
     }
 
-    @Ignore
+
     @Test
     public void DemoQARadioButtonTest() {
         WebDriver driver = getDriver();
@@ -156,7 +156,7 @@ public class GroupItFriendlyTest extends BaseTest {
             WebElement yesButton = driver.findElement(By.xpath("//div[@class='custom-control custom-radio custom-control-inline']/label[@for='yesRadio']"));
             yesButton.click();
 
-            assertEquals(driver.findElement(By.xpath("//p[@class='mt-3']/span")).getText(), "Yes");
+            assertEquals(driver.findElement(By.xpath("//span[@class='text-success']")).getText(), "Yes");
 
             WebElement impressiveButton = driver.findElement(By.xpath("//div[@class='custom-control custom-radio custom-control-inline']/label[@for='impressiveRadio']"));
             impressiveButton.click();
