@@ -97,23 +97,34 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(title, "Java Tutorial");
     }
 
-    @Ignore
-    @Test
-    public void testSearch() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.w3schools.com/");
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "W3Schools Online Web Tutorials");
-        WebElement textBox = driver.findElement(By.id("search2"));
-        WebElement submitButton = driver.findElement(By.id("learntocode_searchbtn"));
-        textBox.sendKeys("HTML Tutorial");
-        submitButton.click();
-        WebElement message = driver.findElement(By.className("color_h1"));
-        String value = message.getText();
-        Assert.assertEquals(value, "Tutorial");
 
-        driver.quit();
-    }
+    @Test
+            public void W3school1test() {
+            getDriver().get("https://www.w3schools.com/");
+
+            Assert.assertEquals(getDriver().getTitle(), "W3Schools Online Web Tutorials");
+
+            getDriver().findElement(By.id("search2")).sendKeys("HTML Tutorial");
+
+            getDriver().findElement(By.id("learntocode_searchbtn")).click();
+
+            Assert.assertEquals(getDriver().getTitle(), "HTML Tutorial");
+
+
+        }
+        @Test
+        public void Jenkinstest() {
+
+            JenkinsUtils.login(getDriver());
+
+            //Check the button REST API
+
+            getDriver().findElement(By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/a")).click();
+
+            Assert.assertEquals(
+                    getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/h1")).getText(),
+                    "REST API");
+        }
 
     @Test
     public void testDemoWebShop() {
