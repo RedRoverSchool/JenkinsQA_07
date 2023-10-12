@@ -114,20 +114,20 @@ public class PlusThreeTest extends BaseTest {
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
-    public void cleanDataBaseAndCloseBrow() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(URL);
+    // public void cleanDataBaseAndCloseBrow() {
+    //     driver = new ChromeDriver();
+    //     driver.manage().window().maximize();
+    //     driver.get(URL);
 
-        WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
-        adminPanel.click();
+    //     WebElement adminPanel = driver.findElement(By.cssSelector(".leftmenu li:nth-child(6)"));
+    //     adminPanel.click();
 
-        WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
-        cleanButton.click();
-        Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p > b")).getText());
+    //     WebElement cleanButton = driver.findElement(By.cssSelector("button[value='CLEAN']"));
+    //     cleanButton.click();
+    //     Assert.assertEquals("Database Cleaned", driver.findElement(By.cssSelector("div[id='rightPanel'] > p > b")).getText());
 
-        driver.quit();
-    }
+    //     driver.quit();
+    // }
 
     @Ignore
     @Test(description = "Создание/регистрация пользователя в банке")
