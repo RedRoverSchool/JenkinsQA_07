@@ -9,6 +9,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.lang.reflect.Method;
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
@@ -64,34 +65,31 @@ public class BrainBuildersTest extends BaseTest {
             driver.quit();
         }
     }
-    @Ignore
+    
     @Test
-    public void testAlcobendasSearch() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.alcobendas.org/es");
+    public void testAlcobendasSearch() throws InterruptedException{
 
-            String title = driver.getTitle();
+            getDriver().get("https://www.alcobendas.org/es");
+
+            String title = getDriver().getTitle();
             assertEquals(title, "Página Web del Ayuntamiento de Alcobendas");
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+            getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-            WebElement lupaButton = driver.findElement(By.xpath("//*[@id='block-views-block-ayto-vista-lupa-header-block-1']/div/div"));
-            WebElement buscarButton = driver.findElement(By.xpath("//*[@id='edit-submit-ayto-resultados-de-busqueda-bloque']"));
-            WebElement searchInput = driver.findElement(By.xpath("//*[@id='edit-buscar']"));
+            WebElement lupaButton = getDriver().findElement(By.xpath("//*[@id='block-views-block-ayto-vista-lupa-header-block-1']/div/div"));
+            WebElement buscarButton = getDriver().findElement(By.xpath("//*[@id='edit-submit-ayto-resultados-de-busqueda-bloque']"));
+            WebElement searchInput = getDriver().findElement(By.xpath("//*[@id='edit-buscar']"));
 
             lupaButton.click();
             searchInput.sendKeys("yoga");
             buscarButton.click();
 
-            WebElement resultOfSearch = driver.findElement(By.cssSelector("h2:nth-child(2)"));
+            WebElement resultOfSearch = getDriver().findElement(By.cssSelector("h2:nth-child(2)"));
 
             String value = resultOfSearch.getText();
             Assert.assertEquals(value, "/2 resultados");
-        } finally {
-            driver.quit();
-        }
     }
+
     @Ignore
     @Test
     public void testAskentSearch() {
