@@ -23,7 +23,7 @@ public class GroupUnicornsTest extends BaseTest {
     public void testUsPsPageOpen() {
         getDriver().get("https://www.usps.com/");
 
-        Assert.assertEquals(getDriver().getTitle(),"Welcome | USPS");
+        Assert.assertEquals(getDriver().getTitle(), "Welcome | USPS");
     }
 
     @Test
@@ -33,7 +33,7 @@ public class GroupUnicornsTest extends BaseTest {
         WebElement send = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
         send.click();
 
-        Assert.assertEquals(getDriver().getTitle(),"Send Mail & Packages | USPS");
+        Assert.assertEquals(getDriver().getTitle(), "Send Mail & Packages | USPS");
     }
 
     @Test
@@ -63,8 +63,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void w3SchoolTest()
-    {
+    public void w3SchoolTest() {
         WebDriver wd = getDriver();
         wd.get("https://www.w3schools.com/");
 
@@ -97,23 +96,67 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(title, "Java Tutorial");
     }
 
-    @Ignore
-    @Test
-    public void testSearch() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.w3schools.com/");
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "W3Schools Online Web Tutorials");
-        WebElement textBox = driver.findElement(By.id("search2"));
-        WebElement submitButton = driver.findElement(By.id("learntocode_searchbtn"));
-        textBox.sendKeys("HTML Tutorial");
-        submitButton.click();
-        WebElement message = driver.findElement(By.className("color_h1"));
-        String value = message.getText();
-        Assert.assertEquals(value, "Tutorial");
 
-        driver.quit();
+    @Test
+    public void W3school1test() {
+        getDriver().get("https://www.w3schools.com/");
+
+        Assert.assertEquals(getDriver().getTitle(), "W3Schools Online Web Tutorials");
+
+        getDriver().findElement(By.id("search2")).sendKeys("HTML Tutorial");
+
+        getDriver().findElement(By.id("learntocode_searchbtn")).click();
+
+        Assert.assertEquals(getDriver().getTitle(), "HTML Tutorial");
     }
+
+    @Test
+    public void Jenkinstest()  {
+
+        JenkinsUtils.login(getDriver());
+
+        //Check the button REST API
+
+        getDriver().findElement(By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/a")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/h1")).getText(),
+                "REST API");
+    }
+
+
+    @Test
+    public void Jenkins1test()  {
+
+        JenkinsUtils.login(getDriver());
+
+        //Check the button Jenkins 2.414.2
+
+        getDriver().findElement(By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tippy-1\"]/div/div/a[1]")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div[1]/h1")).getText(),
+                "Jenkins");
+
+    }
+
+    @Test
+    public void Jenkins2test() {
+
+        JenkinsUtils.login(getDriver());
+
+        //Check the button My Views
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
+        getDriver().findElement(By.linkText("Create a job")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id=\"createItem\"]/div[1]/div/label")).getText(),
+                "Enter an item name");
+
+    }
+
 
     @Test
     public void testDemoWebShop() {
