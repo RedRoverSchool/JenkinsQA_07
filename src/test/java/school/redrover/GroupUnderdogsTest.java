@@ -9,6 +9,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
+
 public class GroupUnderdogsTest extends BaseTest {
     WebDriver driver;// = new ChromeDriver();
 
@@ -30,11 +31,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
     public void openMainPage() {
         driver.get(mainPageUrl);
-    }
-
-    @AfterMethod
-    public void after() {
-        driver.quit();
     }
 
     @Ignore
@@ -107,15 +103,28 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     //text written in lower case and color red
-    @Ignore
+
     @Test
     public void maksinTestInactive() {
-        driver = new ChromeDriver();
-        driver.get("http://www.99-bottles-of-beer.net/team.html");
-        WebElement text = driver.findElement(By.xpath
+
+        getDriver().get("http://www.99-bottles-of-beer.net/team.html");
+
+        WebElement text = getDriver().findElement(By.xpath
                 ("/html/body/div/div[3]/p[7]/font/b"));
         Assert.assertTrue(text.getText().toLowerCase().equals(text.getText()));
-        assertEquals(text.getCssValue("color"), "rgb(255, 0, 0)");
+        assertEquals(text.getCssValue("color"), "rgba(255, 0, 0, 1)");
+    }
+
+    @Test
+    public void testLofOut() throws InterruptedException {
+
+        JenkinsUtils.login(getDriver());
+
+        getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[2]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath
+                        ("//*[@id=\"main-panel\"]/div/h1")).getText(),
+                "Sign in to Jenkins");
     }
 
     @Ignore
@@ -470,6 +479,7 @@ public class GroupUnderdogsTest extends BaseTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void yuliafaReddit() {
         WebDriver driver = new ChromeDriver();

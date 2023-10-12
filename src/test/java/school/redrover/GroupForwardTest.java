@@ -12,7 +12,7 @@ import school.redrover.runner.BaseTest;
 
 public class GroupForwardTest extends BaseTest {
 
-  private final String PAGE_URL = "https://www.ldoceonline.com/";
+  private static final String PAGE_URL = "https://www.ldoceonline.com/";
 
 
   @Ignore
@@ -59,19 +59,13 @@ public class GroupForwardTest extends BaseTest {
 
   }
 
-
-
-  @Ignore
   @Test
-  public void logoIsDisplayed() {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
-      WebElement logo = driver.findElement(By.xpath("//img[@class = 'logo responsive_hide_on_smartphone']"));
-      Assert.assertTrue(logo.isDisplayed());
-    } finally {
-      driver.quit();
-    }
+  public void testLogoIsDisplayed() {
+    getDriver().get(PAGE_URL);
+    WebElement logo = getDriver().findElement(
+        By.xpath("//img[@class = 'logo responsive_hide_on_smartphone']"));
+
+    Assert.assertTrue(logo.isDisplayed());
   }
 
   @Ignore
