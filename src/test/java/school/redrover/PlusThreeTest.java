@@ -5,30 +5,111 @@ import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+
+import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class PlusThreeTest {
+public class PlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
     public static final String URL = "https://parabank.parasoft.com/parabank/register.htm";
     public static final String PASSWORD = "qwert12345";
-    public static final String FULL_NAME = "Akiko";
-    public static final String EMAIL = "Akiko@gmail.com";
-    public static final String CURRENT_ADDRESS = "USA";
-    public static final String PERMANENT_ADDRESS = "USA1";
     public static final String CITY= "LOS ANGELES";
     public static final String STATE ="California";
     public static final String URL_PARABANK = "https://parabank.parasoft.com/";
-    ChromeDriver driver;
+    public static final String CURRENT_ADDRESS = "USA";
+    //---------------------------------------------------------------------------------------------------------------------------------
+    private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
+
+    public static class DataProviders {
+
+        @DataProvider(name = "validData")
+        public String[][] validCredentials() {
+            return new String[][] {
+                    { "standard_user", "secret_sauce" }
+            };
+        }
+
+        @DataProvider(name = "invalidData")
+        public String[][] inValidCredentials() {
+            return new String[][] {
+                    { "user", "user" }
+            };
+        }
+    }
+
+    private void login(String username, String password) {
+
+        getDriver().get(SAUCEDEMO_URL);
+
+        WebElement usernameInput = getDriver().findElement(By.id("user-name"));
+        usernameInput.sendKeys(username);
+
+        WebElement passwordInput = getDriver().findElement(By.id("password"));
+        passwordInput.sendKeys(password);
+
+        WebElement loginButton = getDriver().findElement(By.id("login-button"));
+        loginButton.click();
+    }
+    
+    @Test(dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
+    public void TestAuthorizationPositive(String username, String password) {
+
+        login(username, password);
+
+        String currentURL = getDriver().getCurrentUrl();
+        Assert.assertEquals(currentURL, "https://www.saucedemo.com/inventory.html");
+
+    }
+
+    @Test(dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "invalidData")
+    public void TestAuthorizationNegative(String username, String password) {
+
+        login(username, password);
+
+        String actualResult =  getDriver().findElement(By.xpath("//h3[@data-test='error']")).getText();
+        Assert.assertEquals(actualResult, "Epic sadface: Username and password do not match any user in this service");
+
+    }
+
+    @Test(description = "Add to cart via catalog", dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
+    public void TestAddCart(String username, String password) {
+
+        login(username, password);
+
+        WebElement itemButton = getDriver().findElement(By.xpath("//button[@id = 'add-to-cart-sauce-labs-backpack']"));
+        itemButton.click();
+
+        WebElement redIcon = getDriver().findElement(By.xpath("//span[@class = 'shopping_cart_badge']"));
+
+        Assert.assertNotNull(redIcon, "Элемент redIcon не найден на странице");
+
+    }
+
+    @Test(description = "Remove from cart via basket", dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
+    public void TestRemoveCart(String username, String password) {
+
+        login(username, password);
+
+        WebElement itemButton = getDriver().findElement(By.xpath("//button[@id = 'add-to-cart-sauce-labs-backpack']"));
+        itemButton.click();
+
+        WebElement redIcon = getDriver().findElement(By.xpath("//span[@class = 'shopping_cart_badge']"));
+
+        Assert.assertNotNull(redIcon, "Элемент redIcon не найден на странице");
+
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
 
     public void cleanDataBaseAndCloseBrow() {
-        driver = new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get(URL);
 
@@ -42,48 +123,10 @@ public class PlusThreeTest {
         driver.quit();
     }
 
-    @Test
-    public void testSearch() {
-        WebDriver driver = new EdgeDriver();
-        driver.get("https://demoqa.com/text-box");
-
-        WebElement fullName = driver.findElement(By.id("userName"));
-        fullName.sendKeys(FULL_NAME);
-
-        WebElement email = driver.findElement(By.id("userEmail"));
-        email.sendKeys(EMAIL);
-
-        WebElement currentAddress = driver.findElement(By.id("currentAddress"));
-        currentAddress.sendKeys(CURRENT_ADDRESS);
-
-        WebElement permanentAddress = driver.findElement(By.id("permanentAddress"));
-        permanentAddress.sendKeys(PERMANENT_ADDRESS);
-
-        WebElement submitButton = driver.findElement(By.id("submit"));
-        submitButton.click();
-
-        WebElement nameR = driver.findElement(By.id("name"));
-        String value = nameR.getText();
-        Assert.assertEquals("Name:" + FULL_NAME, value);
-
-        WebElement emailR = driver.findElement(By.id("email"));
-        String value1 = emailR.getText();
-        Assert.assertEquals("Email:" + EMAIL, value1);
-
-        WebElement currentAddreesR = driver.findElement(By.xpath("//*[@class=\"border col-md-12 col-sm-12\"]/p[3]"));
-        String value2 = currentAddreesR.getText();
-        Assert.assertEquals("Current Address :" + CURRENT_ADDRESS, value2);
-
-        WebElement permanentAddressR = driver.findElement(By.xpath("//*[@class=\"border col-md-12 col-sm-12\"]/p[4]"));
-        String value3 = permanentAddressR.getText();
-        Assert.assertEquals("Permananet Address :" + PERMANENT_ADDRESS, value3);
-
-        driver.quit();
-    }
-
+    @Ignore
     @Test(description = "Создание/регистрация пользователя в банке")
     public void createUser() {
-        driver = new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get(URL);
 
@@ -131,6 +174,7 @@ public class PlusThreeTest {
         cleanDataBaseAndCloseBrow();
     }
 
+    @Ignore
     @Test
     public static void forgotLoginTest () {
         WebDriver driver = new ChromeDriver();
@@ -174,6 +218,7 @@ public class PlusThreeTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public static void testSearchDuck() {
         WebDriver driver = new ChromeDriver();
@@ -201,6 +246,7 @@ public class PlusThreeTest {
         driver.quit();
     }
 
+    @Ignore
     @Test(description = "Swag labs login")
     public void loginSwagLabs() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -226,6 +272,7 @@ public class PlusThreeTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public  void contactUs() {
         WebDriver driver = new ChromeDriver();
@@ -255,6 +302,8 @@ public class PlusThreeTest {
         Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
         driver.quit();
     }
+
+    @Ignore
     @Test
     public void testTemperatureInFahrenheit() {
 
@@ -281,6 +330,7 @@ public class PlusThreeTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void DemoqaTest() {
         WebDriver driver = new ChromeDriver();
@@ -307,6 +357,8 @@ public class PlusThreeTest {
 
         driver.quit();
     }
+
+    @Ignore
     @Test
     public void Trivio () {
         WebDriver driver = new ChromeDriver();
