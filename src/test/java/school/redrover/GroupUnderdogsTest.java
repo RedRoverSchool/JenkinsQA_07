@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import org.testng.collections.Lists;
+//import org.testng.collections.Lists;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -203,7 +203,7 @@ public class GroupUnderdogsTest {
         seeTheBikes.click();
         Thread.sleep(2000);
 
-        JavascriptExecutor js1 = (JavascriptExecutor) driver;
+        //JavascriptExecutor js1 = (JavascriptExecutor) driver;
         WebElement marlin4 = driver.findElement(By.xpath("//*[text()='Marlin 4 Gen 2']"));
         js.executeScript("arguments[0].scrollIntoView();", marlin4);
         Thread.sleep(2000);
@@ -316,7 +316,7 @@ public class GroupUnderdogsTest {
 
         }
     }
-
+@Test
     public void testNamesOfCreatorsOfSite() {
         List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
 
