@@ -4,15 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
-@Ignore
 public class GroupSevenTest {
     @Test
     public void kylieTitleTest() {
@@ -27,7 +26,7 @@ public class GroupSevenTest {
 
     @Test
     public void searchTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://kyliecosmetics.com/collections/kylie-cosmetics");
 
@@ -301,7 +300,7 @@ public class GroupSevenTest {
     @Test
     public void YMCATest() {
 
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://ymcacapecod.org/");
 
@@ -324,47 +323,16 @@ public class GroupSevenTest {
         }
     }
     @Test
-    public void testKumon() throws InterruptedException {
+    public void SyTest(){
         WebDriver driver = new ChromeDriver();
-        driver.get("https://www.kumon.com/");
-
-
-        WebElement locationButton = driver.findElement(By.xpath("//*[@href = '/locations']"));
-        locationButton.click();
-        Thread.sleep(1000);
-
-        String titleLocation = driver.getTitle();
-        Thread.sleep(1000);
-        Assert.assertEquals(titleLocation, "Find Kids' Learning Centers - Kumon Locations");
-
-
-        WebElement inputButton = driver.findElement(By.xpath("//input[@type = 'text']"));
-        inputButton.click();
-        Thread.sleep(1000);
-
-
-        WebElement locationText = driver.findElement(By.xpath("//h4[text()='INDIAN LAND']"));
-        String getText  = locationText.getText();
-        Assert.assertEquals(getText, "INDIAN LAND");
-
-        WebElement schedulerButton = driver.findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
-        Thread.sleep(1000);
-        schedulerButton.click();
-        Thread.sleep(5000);
-        String parentWindowHandle = driver.getWindowHandle(); //это метод в библиотеке Selenium WebDriver,
-        // который используется для получения идентификатора (handle) текущего окна или вкладки браузера.
-        for (String windowHandle : driver.getWindowHandles()) {
-            if (!windowHandle.equals(parentWindowHandle)) {
-                driver.switchTo().window(windowHandle);
-                return; // Завершить метод и вернуться
-            }
-        }
-
-        String schedulerTitle = driver.getTitle();
-
-        Assert.assertEquals(schedulerTitle, "Book Appointment | Kumon of  INDIAN LAND");
-
+        driver.get("https://animevost.org/");
+        driver.manage().window().maximize();
+        WebElement textBox = driver.findElement(By.id("story"));
+        textBox.sendKeys("Токийский Гуль");
+        WebElement SearchButton = driver.findElement(By.className("searchButton"));
+        SearchButton.click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.quit();
-
     }
+
 }
