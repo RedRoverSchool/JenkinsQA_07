@@ -38,30 +38,28 @@ public class GroupForwardTest extends BaseTest {
 
   }
 
-  @Ignore
-  @Test
-  public void testToSpanish() {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
 
-      WebElement languageButton = driver.findElement(By.xpath("//span[@class='text']"));
+  @Test
+  public void testToSpanish() throws InterruptedException {
+
+      getDriver().get(PAGE_URL);
+
+      WebElement languageButton = getDriver().findElement(By.xpath("//span[@class='text']"));
       languageButton.click();
-      WebElement spanishButton = driver.findElement(
+      WebElement spanishButton = getDriver().findElement(
           By.xpath("//a[@class='item' and text()='Español latino']"));
       spanishButton.click();
 
-      WebElement title = driver.findElement(By.xpath("//h1[contains(text(),'Bienvenido')]"));
+      WebElement title = getDriver().findElement(By.xpath("//h1[contains(text(),'Bienvenido')]"));
+      Thread.sleep(8000);
       String value = title.getText();
 
       Assert.assertEquals(value,
           "Bienvenido al Longman Dictionary of Contemporary English Online");
 
-    } finally {
-      driver.quit();
-    }
-
   }
+
+
 
   @Ignore
   @Test
