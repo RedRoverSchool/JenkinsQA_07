@@ -80,13 +80,12 @@ public class GroupItFriendlyTest extends BaseTest {
         String expectedUrl = "https://so-yummi-qa.netlify.app/home";
         Assert.assertEquals(currentUrl, expectedUrl, "The current URL does not match the expected URL.");
     }
-@Ignore
+
     @Test
     public void DemoQATextBoxTest() {
-          WebDriver driver = new ChromeDriver();
-        try {
+          WebDriver driver = getDriver();
+
             driver.get("https://demoqa.com/");
-            driver.manage().window().maximize();
             JavascriptExecutor jsx = (JavascriptExecutor)driver;
             jsx.executeScript("window.scrollBy(0,450)", "");
 
@@ -96,37 +95,33 @@ public class GroupItFriendlyTest extends BaseTest {
             WebElement textBox = driver.findElement(By.xpath("//span[normalize-space()='Text Box']"));
             textBox.click();
 
-            WebElement inputFullName = driver.findElement(By.xpath("//input[@placeholder=\"Full Name\"]"));
+            WebElement inputFullName = driver.findElement(By.xpath("//input[@placeholder='Full Name']"));
             inputFullName.sendKeys("Natalia V");
 
-            WebElement inputEmail = driver.findElement(By.xpath("//input[@id=\"userEmail\"]"));
+            WebElement inputEmail = driver.findElement(By.xpath("//input[@id='userEmail']"));
             inputEmail.sendKeys("mail@gmail.com");
 
-            WebElement inputCurrentAddress = driver.findElement(By.xpath("//textarea[@placeholder=\"Current Address\"]"));
+            WebElement inputCurrentAddress = driver.findElement(By.xpath("//textarea[@placeholder='Current Address']"));
             inputCurrentAddress.sendKeys("Slo");
 
-            WebElement inputPermanentAddress = driver.findElement(By.xpath("//textarea[@id=\"permanentAddress\"]"));
+            WebElement inputPermanentAddress = driver.findElement(By.xpath("//textarea[@id='permanentAddress']"));
             inputPermanentAddress.sendKeys("Ukr");
 
             WebElement submitBTN = driver.findElement(By.xpath("//button[@id='submit']"));
             jsx.executeScript("window.scrollBy(0,450)", "");
             submitBTN.click();
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"name\"]")).getText(), "Name:Natalia V");
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"email\"]")).getText(), "Email:mail@gmail.com");
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"currentAddress\"]")).getText(), "Current Address :Slo");
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"permanentAddress\"]")).getText(), "Permananet Address :Ukr");
-
-        } finally {
-            driver.quit();
-        }
+            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='name']")).getText(), "Name:Natalia V");
+            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='email']")).getText(), "Email:mail@gmail.com");
+            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='currentAddress']")).getText(), "Current Address :Slo");
+            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='permanentAddress']")).getText(), "Permananet Address :Ukr");
     }
-@Ignore
+
+
     @Test
     public void DemoQACheckBoxTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
+        WebDriver driver = getDriver();
+
             driver.get("https://demoqa.com/");
-            driver.manage().window().maximize();
             JavascriptExecutor jsx = (JavascriptExecutor)driver;
             jsx.executeScript("window.scrollBy(0,450)", "");
 
@@ -139,20 +134,16 @@ public class GroupItFriendlyTest extends BaseTest {
             WebElement checkBox = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
             checkBox.click();
 
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"result\"]/span[1]")).getText(), "You have selected :");
+            assertEquals(driver.findElement(By.xpath("//span[text()='You have selected :']")).getText(), "You have selected :");
 
-        } finally {
-            driver.quit();
-        }
     }
-    @Ignore
+
 
     @Test
     public void DemoQARadioButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
+        WebDriver driver = getDriver();
+
             driver.get("https://demoqa.com/");
-            driver.manage().window().maximize();
             JavascriptExecutor jsx = (JavascriptExecutor)driver;
             jsx.executeScript("window.scrollBy(0,450)", "");
 
@@ -162,19 +153,15 @@ public class GroupItFriendlyTest extends BaseTest {
             WebElement radioButtonElement = driver.findElement(By.xpath("//span[normalize-space()='Radio Button']"));
             radioButtonElement.click();
 
-            WebElement yesButton = driver.findElement(By.xpath("//div[@class=\"custom-control custom-radio custom-control-inline\"]/label[@for=\"yesRadio\"]"));
+            WebElement yesButton = driver.findElement(By.xpath("//div[@class='custom-control custom-radio custom-control-inline']/label[@for='yesRadio']"));
             yesButton.click();
 
-            assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Yes");
+            assertEquals(driver.findElement(By.xpath("//span[@class='text-success']")).getText(), "Yes");
 
-            WebElement impressiveButton = driver.findElement(By.xpath("//div[@class=\"custom-control custom-radio custom-control-inline\"]/label[@for=\"impressiveRadio\"]"));
+            WebElement impressiveButton = driver.findElement(By.xpath("//div[@class='custom-control custom-radio custom-control-inline']/label[@for='impressiveRadio']"));
             impressiveButton.click();
 
-            assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Impressive");
-
-        } finally {
-            driver.quit();
-        }
+            assertEquals(driver.findElement(By.xpath("//p[@class='mt-3']/span")).getText(), "Impressive");
     }
 @Ignore
     @Test

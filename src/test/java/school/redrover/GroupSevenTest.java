@@ -8,12 +8,14 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
-@Ignore
-public class GroupSevenTest {
+
+public class GroupSevenTest extends BaseTest {
+    @Ignore
     @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
@@ -25,6 +27,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void searchTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -51,6 +54,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void TestBddSearch() {
         WebDriver driver = new ChromeDriver();
@@ -69,6 +73,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testSearch() {
         WebDriver driver = new ChromeDriver();
@@ -88,6 +93,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testTextInput() {
 
@@ -111,6 +117,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
 
     public void testSearchAB() {
@@ -134,6 +141,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testLinks() throws InterruptedException {
 
@@ -155,25 +163,19 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+
     @Test
-    public void testPricePageHeader() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://megagroup.by/");
-            driver.manage().window().maximize();
-            Thread.sleep(1500);
+    public void testPricePageHeader()  {
+        getDriver().get("https://megagroup.by/");
 
-            WebElement price = driver.findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
-            price.click();
+        WebElement price = getDriver().findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+        price.click();
 
-            Thread.sleep(1500);
-            WebElement header = driver.findElement(By.xpath("//h1"));
-            Assert.assertEquals(header.getText(), "Стоимость сайтов");
-        } finally {
-            driver.quit();
-        }
+        WebElement header = getDriver().findElement(By.xpath("//h1"));
+        Assert.assertEquals(header.getText(), "Стоимость сайтов");
     }
 
+    @Ignore
     @Test
     public void testHPSearch() {
         WebDriver driver = new ChromeDriver();
@@ -199,6 +201,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -276,6 +279,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testBookSearch() {
         WebDriver driver = new ChromeDriver();
@@ -298,6 +302,8 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+
+    @Ignore
     @Test
     public void YMCATest() {
 
@@ -323,6 +329,8 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+
+    @Ignore
     @Test
     public void testKumon() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -344,7 +352,7 @@ public class GroupSevenTest {
 
 
         WebElement locationText = driver.findElement(By.xpath("//h4[text()='INDIAN LAND']"));
-        String getText  = locationText.getText();
+        String getText = locationText.getText();
         Assert.assertEquals(getText, "INDIAN LAND");
 
         WebElement schedulerButton = driver.findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
