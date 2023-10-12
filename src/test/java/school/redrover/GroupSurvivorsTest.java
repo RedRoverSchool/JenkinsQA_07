@@ -41,15 +41,15 @@ public class GroupSurvivorsTest {
     public void sabinaFirstTest() {
         WebDriver driver = new ChromeDriver();
         try {
-            driver.get("http://baskino.me/index.php?do=stoptime&id=23027&action=count");
+            driver.get("https://hd.baskino.website/");
             driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
             WebElement textBox = driver.findElement(By.id("story"));
             WebElement loginButton = driver.findElement(By.className("find-button"));
             textBox.sendKeys("Avengers");
             loginButton.click();
-            WebElement text = driver.findElement(By.className("logo"));
+            WebElement text = driver.findElement(By.linkText("Новые Мстители: Герои завтрашнего дня"));
             String value = text.getText();
-            Assert.assertEquals(value,"Baskino.me" );
+            Assert.assertEquals(value,"Новые Мстители: Герои завтрашнего дня" );
         } finally {
             driver.quit();
         }
