@@ -1,5 +1,6 @@
 package school.redrover;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -458,7 +459,7 @@ public class GroupUnderdogsTest extends BaseTest {
         driver.get("https://www.reddit.com/?feed=home");
 
         String title = driver.getTitle();
-        Assert.assertEquals( title, "Reddit - Dive into anything");
+        Assert.assertEquals(title, "Reddit - Dive into anything");
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
@@ -477,23 +478,23 @@ public class GroupUnderdogsTest extends BaseTest {
         driver.quit();
     }
     @Test
-    public void TestSearch() {
-        WebDriver driver = (WebDriver) new ChromeDriver();
 
-        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+    public void TestSearch2() throws  InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.google.com/");
 
-        driver.getTitle();
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        WebElement textBox = driver.findElement(By.name("my-text"));
-        WebElement submitButton = driver.findElement(By.cssSelector("button"));
-
+        WebElement textBox = driver.findElement(By.className("gLFyf"));
         textBox.sendKeys("Selenium");
-        submitButton.click();
 
-        WebElement message = driver.findElement(By.id("message"));
-        message.getText();
+        Thread.sleep(1000);
+
+        WebElement searchButton = driver.findElement(By.className("gNO89b"));
+
+        searchButton.click();
+
+        WebElement title = driver.findElement(By.className("yKMVIe"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Selenium");
 
         driver.quit();
     }
