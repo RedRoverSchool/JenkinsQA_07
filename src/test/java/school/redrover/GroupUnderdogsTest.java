@@ -505,4 +505,20 @@ public class GroupUnderdogsTest extends BaseTest {
 
         driver.quit();
     }
+    @Ignore
+    @Test
+    public void testChromeEnglishBooksFind() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://www.99-bottles-of-beer.net/");
+        WebElement buttonClick = driver.findElement(By.xpath("//*/ul/li[3]/a"));
+        buttonClick.click();
+        WebElement searchType = driver.findElement(By.name("search"));
+        searchType.sendKeys("English");
+        WebElement submitClick = driver.findElement(By.name("submitsearch"));
+        submitClick.click();
+        WebElement linkName = driver.findElement(By.linkText("English"));
+        String toAssert = linkName.getText();
+        Assert.assertEquals(toAssert, "English");
+        driver.quit();
+    }
 }
