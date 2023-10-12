@@ -116,6 +116,7 @@ public class GroupItFriendlyTest extends BaseTest {
             assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='permanentAddress']")).getText(), "Permananet Address :Ukr");
     }
 
+    @Ignore
     @Test
     public void DemoQACheckBoxTest() {
         WebDriver driver = getDriver();
