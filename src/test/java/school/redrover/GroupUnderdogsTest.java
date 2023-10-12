@@ -495,7 +495,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
         driver.quit();
     }
-
     @Ignore
     @Test
     public void testChromeEnglishBooksFind() {
