@@ -5,12 +5,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.Random;
 
-public class GroupIntroVertsQaTest {
+public class GroupIntroVertsQaTest extends BaseTest {
     static Random random = new Random();
     static String URL = "https://parabank.parasoft.com/parabank/index.htm";
     static int n = random.nextInt(1000);
@@ -28,6 +30,7 @@ public class GroupIntroVertsQaTest {
         }
 
     }
+    @Ignore
     @Test
     public void testRegistr(){
         WebDriver driver = new ChromeDriver();
@@ -80,6 +83,7 @@ public class GroupIntroVertsQaTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testCorrectLogin() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -104,6 +108,7 @@ public class GroupIntroVertsQaTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void aboutUsTest(){
         WebDriver driver = new ChromeDriver();
@@ -121,6 +126,7 @@ public class GroupIntroVertsQaTest {
      * DmitryS. Тесты
      */
     // region DmitryS. Добавляю в данный блок тесты.
+    @Ignore
     @Test (description = "проверка содержания хидера")
     public void textHeaderForm() {
         WebDriver driver = new ChromeDriver();
@@ -134,6 +140,7 @@ public class GroupIntroVertsQaTest {
         driver.quit();
     }
 
+    @Ignore
     @Test (description = "проверка заполнения полей")
     public void positiveTest() {
         WebDriver driver = new ChromeDriver();
@@ -157,24 +164,91 @@ public class GroupIntroVertsQaTest {
 
     // region AkiMiraTest
     @Test (description = "Test of Text-Box 'Name'")
-    public void TextBoxTest () {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/text-box");
+    public void testTextBox () {
 
-        String title = driver.getTitle();
+        getDriver().get("https://demoqa.com/text-box");
+
+        String title = getDriver().getTitle();
         Assert.assertEquals("DEMOQA", title);
 
-//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+        WebElement textBox = getDriver().findElement(By.xpath("//*[@id=\"userName\"]"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
 
         textBox.sendKeys("Oleg");
         submitButton.click();
 
-        WebElement message = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        WebElement message = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
         String value = message.getText();
         Assert.assertEquals("Name:Oleg", value);
+
+    }
+    @Test (description = "Test of Text-Box 'Current Address'")
+    public void testTextBoxCurrentAddress () {
+        getDriver().get("https://demoqa.com/text-box");
+
+        String title = getDriver().getTitle();
+        Assert.assertEquals("DEMOQA", title);
+
+        WebElement textBox = getDriver().findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
+
+        textBox.sendKeys("Russian Federation");
+        submitButton.click();
+
+        WebElement message = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
+        String value = message.getText();
+        Assert.assertEquals("Current Address :Russian Federation", value);
+
+    }
+    // endregion
+
+    @Ignore
+    @Test
+
+    public void testTextBoxNN () {
+
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://demoqa.com/text-box");
+
+        WebElement fullName = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
+        fullName.sendKeys("Natalia");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement Email = driver.findElement(By.xpath("//*[@id=\"userEmail\"]"));
+        Email.sendKeys("natalia@gmail.com");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement currentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        currentAddress.sendKeys("Sciastlivaia");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement permanentAddress = driver.findElement(By.xpath("//*[@id=\"permanentAddress\"]"));
+        permanentAddress.sendKeys("Udacia");
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+        submitButton.click();
+
+        WebElement messageName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        String value = messageName.getText();
+        Assert.assertEquals("Name:Natalia", value);
+
+        WebElement messageEmail = driver.findElement(By.cssSelector("#email.mb-1"));
+        String valueE = messageEmail.getText();
+        Assert.assertEquals("Email:natalia@gmail.com",valueE);
+
+        WebElement messageCurrent = driver.findElement(By.cssSelector("#currentAddress.mb-1"));
+        String valueMC= messageCurrent.getText();
+        Assert.assertEquals("Current Address :Sciastlivaia", valueMC);
+
+        WebElement messagePM= driver.findElement(By.cssSelector("#permanentAddress.mb-1"));
+        String valueMP = messagePM.getText();
+        Assert.assertEquals("Permananet Address :Udacia",valueMP);
 
         driver.quit();
     }

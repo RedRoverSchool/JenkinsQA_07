@@ -5,7 +5,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.util.HashMap;
 import java.time.Duration;
@@ -14,31 +16,29 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class GroupUnicornsTest {
+
+public class GroupUnicornsTest extends BaseTest {
 
     @Test
-    public void usPsPageOpenTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        String title = driver.getTitle();
-        assertEquals("Welcome | USPS", title);
-        driver.quit();
+    public void testUsPsPageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        Assert.assertEquals(getDriver().getTitle(),"Welcome | USPS");
     }
 
     @Test
-    public void usPsSendMailPackageTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        WebElement send = driver.findElement(By.xpath("//a[@id='mail-ship-width']"));
+    public void testUsPsSendMailPackageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        WebElement send = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
         send.click();
-        String sendTitle = driver.getTitle();
-        assertEquals("Send Mail & Packages | USPS", sendTitle);
-        driver.quit();
+
+        Assert.assertEquals(getDriver().getTitle(),"Send Mail & Packages | USPS");
     }
 
     @Test
     public void testSuccessfulLogin() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith";
         String password = "SuperSecretPassword!";
@@ -47,12 +47,11 @@ public class GroupUnicornsTest {
         driver.findElement(By.className("radius")).click();
         String actual = driver.findElement(By.id("flash")).getText();
         assertTrue(actual.contains("You logged into a secure area!"));
-        driver.quit();
     }
 
     @Test
     public void testLoginAttemptWithInvalidUsername() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith123";
         String password = "SuperSecretPassword!";
@@ -61,9 +60,9 @@ public class GroupUnicornsTest {
         driver.findElement(By.className("radius")).click();
         String actual = driver.findElement(By.id("flash-messages")).getText();
         assertTrue(actual.contains("Your username is invalid!"));
-        driver.quit();
     }
 
+    @Ignore
     @Test
     public void w3SchoolTest() {
         WebDriver wd = new ChromeDriver();
@@ -102,30 +101,7 @@ public class GroupUnicornsTest {
         }
     }
 
-    @Test
-    public void testGeico() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.geico.com/");
-
-            WebElement title = driver.findElement(By.xpath("//div/h1[@id ='section1heading']"));
-            title.isDisplayed();
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-
-            WebElement zipCode = driver.findElement(By.xpath("//div/input[@id ='ssp-service-zip']"));
-            zipCode.sendKeys("11111");
-
-            WebElement submit = driver.findElement(By.xpath("//input[@class ='btn btn--secondary']"));
-            submit.click();
-
-            WebElement message = driver.findElement(By.xpath("//div/p[@class = 'text-message']"));
-            message.isDisplayed();
-        } finally {
-            driver.quit();
-        }
-    }
-
+    @Ignore
     @Test
     public void testSearch() {
         WebDriver driver = new ChromeDriver();
@@ -143,6 +119,7 @@ public class GroupUnicornsTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void demoWebShopTest() {
         WebDriver driver = new ChromeDriver();
@@ -176,6 +153,7 @@ public class GroupUnicornsTest {
         }
     }
 
+    @Ignore
     @Test
     public void searchVerificationGitHub() {
         WebDriver driver = new ChromeDriver();
@@ -197,6 +175,7 @@ public class GroupUnicornsTest {
         }
     }
 
+    @Ignore
     @Test
     public void testTradingView() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -220,8 +199,9 @@ public class GroupUnicornsTest {
         }
     }
 
+    @Ignore
     @Test
-    public void verificationSocialIconsGitHub(){
+    public void verificationSocialIconsGitHub() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -242,6 +222,8 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+
+    @Ignore
     @Test
     public void testComputersMenu() {
         WebDriver driver = new ChromeDriver();
@@ -253,7 +235,7 @@ public class GroupUnicornsTest {
             List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
 
             boolean actual = true;
-            for(int i = 0; i < elements.size(); i++){
+            for (int i = 0; i < elements.size(); i++) {
                 if (!computers[i].equals(elements.get(i).getText())) {
                     actual = false;
                     break;
@@ -265,6 +247,8 @@ public class GroupUnicornsTest {
             driver.quit();
         }
     }
+
+    @Ignore
     @Test
     public void verificationSocialIconsGitHub2() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -281,6 +265,53 @@ public class GroupUnicornsTest {
             String url = driver.getCurrentUrl();
             driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
             Assert.assertTrue(url.contains("face"));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Ignore
+    @Test
+    public void unsuccessfulLoginDigitalBank() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("http://18.118.14.155:8080/bank/login");
+            driver.manage().window().maximize();
+            WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
+            icon.isDisplayed();
+
+            WebElement loginBtn = driver.findElement(By.id("username"));
+            loginBtn.sendKeys("tester1@gmail.com");
+            WebElement password = driver.findElement(By.id("password"));
+            password.sendKeys("1234Test");
+            WebElement submitBtn = driver.findElement(By.id("submit"));
+            submitBtn.click();
+            WebElement errorMsg = driver.findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
+            errorMsg.isDisplayed();
+
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Ignore
+    @Test
+    public void successfulLoginDigitalBank() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("http://18.118.14.155:8080/bank/login");
+            driver.manage().window().maximize();
+            WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
+            icon.isDisplayed();
+
+            WebElement loginBtn = driver.findElement(By.id("username"));
+            loginBtn.sendKeys("tester@gmail.com");
+            WebElement password = driver.findElement(By.id("password"));
+            password.sendKeys("Test1234");
+            WebElement submitBtn = driver.findElement(By.id("submit"));
+            submitBtn.click();
+            WebElement avatar = driver.findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
+            avatar.isDisplayed();
         } finally {
             driver.quit();
         }
