@@ -7,14 +7,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class GroupItFriendlyTest {
+
+public class GroupItFriendlyTest extends BaseTest {
+    @Ignore
 
     @Test
     public void testDemoQaOpenPage() {
@@ -28,7 +31,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
-
+@Ignore
     @Test
     public void testDemoQaChangePage() {
         WebDriver driver = new ChromeDriver();
@@ -45,7 +48,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
-
+@Ignore
     @Test
     public void testDemoQaTextBox() {
         WebDriver driver = new ChromeDriver();
@@ -63,13 +66,12 @@ public class GroupItFriendlyTest {
 
     @Test
     public void testSearch() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://so-yummi-qa.netlify.app/register");
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
         String randomEmail = "test" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
 
-
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         WebElement usernameInput = driver.findElement(By.name("username"));
         usernameInput.click();
         usernameInput.sendKeys(randomUsername);
@@ -80,19 +82,15 @@ public class GroupItFriendlyTest {
         passwordInput.click();
         passwordInput.sendKeys("Test@123456");
 
-
         WebElement searchButton2 = driver.findElement(By.xpath("//button[@type='submit']"));
         searchButton2.click();
 
         Thread.sleep(3000);
-
         String currentUrl = driver.getCurrentUrl();
         String expectedUrl = "https://so-yummi-qa.netlify.app/home";
         Assert.assertEquals(currentUrl, expectedUrl, "The current URL does not match the expected URL.");
-
-        driver.quit();
     }
-
+@Ignore
     @Test
     public void DemoQATextBoxTest() {
           WebDriver driver = new ChromeDriver();
@@ -132,7 +130,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
-
+@Ignore
     @Test
     public void DemoQACheckBoxTest() {
         WebDriver driver = new ChromeDriver();
@@ -157,6 +155,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
+    @Ignore
 
     @Test
     public void DemoQARadioButtonTest() {
@@ -187,7 +186,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
-
+@Ignore
     @Test
     public void ActionsWithCheckBoxTest(){
 
@@ -224,7 +223,7 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
-
+@Ignore
   @Test
   public void BadRequestButtonTest() {
         WebDriver driver = new ChromeDriver();
