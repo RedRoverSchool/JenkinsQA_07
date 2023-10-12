@@ -10,32 +10,29 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-@Ignore
-public class GroupJavaBustersTest {
+public class GroupJavaBustersTest extends BaseTest {
 
     @Test
     public void testMovieSearch() {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://letterboxd.com");
+        getDriver().get("https://letterboxd.com");
 
-        WebElement searchField = driver.findElement(By.xpath("//input[@id='search-q']"));
-        WebElement submitButton = driver.findElement(By.xpath("//input[@class='action']"));
+        WebElement searchField = getDriver().findElement(By.id("search-q"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//input[@class='action']"));
 
         searchField.sendKeys("Merry Christmas, Mr. Lawrence");
         submitButton.click();
 
-        WebElement movie = driver.findElement(By.xpath("//span[@class='film-title-wrapper']/a[contains(@href, 'lawrence')]"));
+        WebElement movie = getDriver().findElement(By.xpath("//span[@class='film-title-wrapper']/a[contains(@href, 'lawrence')]"));
         String value = movie.getText();
         Assert.assertEquals("Merry Christmas, Mr. Lawrence", value);
-
-        driver.quit();
     }
 
     @Test
@@ -43,29 +40,26 @@ public class GroupJavaBustersTest {
 
         String fieldValue = "";
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://letterboxd.com");
+        getDriver().get("https://letterboxd.com");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
-        WebElement signInButton = driver.findElement(By.xpath("//a[@href='/sign-in/']"));
+        WebElement signInButton = getDriver().findElement(By.xpath("//a[@href='/sign-in/']"));
         signInButton.click();
 
-        WebElement usernameForm = driver.findElement(By.xpath("//input[@id='username']"));
-        WebElement passwordForm = driver.findElement(By.xpath("//input[@id='password']"));
-        WebElement signInButtonForm = driver.findElement(By.xpath("//input[@class='button -action button-green']"));
+        WebElement usernameForm = getDriver().findElement(By.id("username"));
+        WebElement passwordForm = getDriver().findElement(By.id("password"));
+        WebElement signInButtonForm = getDriver().findElement(By.xpath("//input[@class='button -action button-green']"));
 
         usernameForm.sendKeys(fieldValue);
         passwordForm.sendKeys(fieldValue);
         signInButtonForm.click();
 
-        WebElement message = driver.findElement(By.xpath("//div[@class='errormessage']//p"));
+        WebElement message = getDriver().findElement(By.xpath("//div[@class='errormessage']//p"));
         String value = message.getText();
         Assert.assertEquals("Your credentials don’t match. It’s probably attributable to human error.", value);
 
-        driver.quit();
     }
 
+    @Ignore
     @Test
     public void testFillUserName() {
         WebDriver driver = new ChromeDriver();
@@ -84,6 +78,7 @@ public class GroupJavaBustersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testCancelFillingUserName() {
         WebDriver driver = new ChromeDriver();
@@ -101,6 +96,7 @@ public class GroupJavaBustersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testAllFields() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -138,6 +134,7 @@ public class GroupJavaBustersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void fillInFormTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -165,6 +162,7 @@ public class GroupJavaBustersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
 
@@ -194,6 +192,8 @@ public class GroupJavaBustersTest {
 
         driver.quit();
     }
+
+    @Ignore
     @Test
     public void testSearchCorrectProduct() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -214,6 +214,7 @@ public class GroupJavaBustersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testNavigateToExpectedUrl() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
