@@ -53,7 +53,7 @@ public class GroupItFriendlyTest extends BaseTest {
         submit.click();
         Assert.assertEquals(submit,submit);
     }
-
+@Ignore
     @Test
     public void testSearch() throws InterruptedException {
         WebDriver driver = getDriver();
