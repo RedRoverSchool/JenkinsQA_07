@@ -176,48 +176,47 @@ public class PlusThreeTest extends BaseTest {
         cleanDataBaseAndCloseBrow();
     }
 
-    @Ignore
+
     @Test
-    public static void forgotLoginTest () {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+    public void testForgotLoginTest() {
 
-        driver.findElement(By.xpath("//a[contains(.,\"Forgot login info?\")]")).click();
+        getDriver().get("https://parabank.parasoft.com/parabank/index.htm");
 
-        WebElement titleForgotLogin = driver.findElement(By.xpath("//h1[@class=\"title\"]"));
+        getDriver().findElement(By.xpath("//a[contains(.,\"Forgot login info?\")]")).click();
+
+        WebElement titleForgotLogin = getDriver().findElement(By.xpath("//h1[@class=\"title\"]"));
         String resultTextTitle = titleForgotLogin.getText();
         Assert.assertEquals(resultTextTitle, "Customer Lookup");
 
-        WebElement firstNameForgotLogin = driver.findElement(By.id("firstName"));
+        WebElement firstNameForgotLogin = getDriver().findElement(By.id("firstName"));
         firstNameForgotLogin.sendKeys("user");
 
-        WebElement lastNameForgotLogin = driver.findElement(By.cssSelector("#lastName"));
+        WebElement lastNameForgotLogin = getDriver().findElement(By.cssSelector("#lastName"));
         lastNameForgotLogin.sendKeys("User_user");
 
-        WebElement addressForgotLogin = driver.findElement(By.id("address.street"));
+        WebElement addressForgotLogin = getDriver().findElement(By.id("address.street"));
         addressForgotLogin.sendKeys(CURRENT_ADDRESS);
 
-        WebElement cityForgotLogin = driver.findElement(By.id("address.city"));
+        WebElement cityForgotLogin = getDriver().findElement(By.id("address.city"));
         cityForgotLogin.sendKeys(CITY);
 
-        WebElement stateForgotLogin= driver.findElement(By.id("address.state"));
+        WebElement stateForgotLogin= getDriver().findElement(By.id("address.state"));
         stateForgotLogin.sendKeys(STATE);
 
-        WebElement zipCodeForgotLogin = driver.findElement(By.id("address.zipCode"));
+        WebElement zipCodeForgotLogin = getDriver().findElement(By.id("address.zipCode"));
         zipCodeForgotLogin.sendKeys("123456");
 
-        WebElement ssnForgotLogin = driver.findElement(By.id("ssn"))  ;
+        WebElement ssnForgotLogin = getDriver().findElement(By.id("ssn"))  ;
         ssnForgotLogin.sendKeys("123fff");
 
-        WebElement submitForgotLogin = driver.findElement(By.xpath("//input[contains(@value,\"Find My Login Info\")]"));
+        WebElement submitForgotLogin = getDriver().findElement(By.xpath("//input[contains(@value,\"Find My Login Info\")]"));
         submitForgotLogin.click();
 
-        WebElement titleError = driver.findElement(By.xpath("//p[contains(@class,\"error\")]"));
+        WebElement titleError = getDriver().findElement(By.xpath("//p[contains(@class,\"error\")]"));
         String textError = titleError.getText();
         Assert.assertEquals(textError, "The customer information provided could not be found.");
 
-        driver.quit();
+
     }
 
     @Ignore
