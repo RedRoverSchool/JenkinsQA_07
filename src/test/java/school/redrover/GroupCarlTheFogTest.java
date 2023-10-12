@@ -59,22 +59,20 @@ public class GroupCarlTheFogTest extends BaseTest {
 
     }
 
-    @Ignore
     @Test
     public void testGoogleFinance() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.google.com/finance/");
+        String googleFinancePage = "https://www.google.com/finance/";
+        getDriver().get(googleFinancePage);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
-        WebElement searchTickerGoogl = driver.findElement(By.xpath("//div[@class = 'L6J0Pc ZB3Ebc nz7KN']/div/input[2]"));
+        WebElement searchTickerGoogl = getDriver().findElement(By.xpath("//div[@class = 'L6J0Pc ZB3Ebc nz7KN']/div/input[2]"));
         searchTickerGoogl.sendKeys("GOOGL");
         searchTickerGoogl.sendKeys(Keys.RETURN);
         WebElement previousClosingPriceElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class = 'AHmHk']/span/div/div")));
         String previousClosingPrice = previousClosingPriceElement.getText();
 
         Assert.assertNotNull(previousClosingPrice);
-        driver.quit();
     }
 
     @Test
