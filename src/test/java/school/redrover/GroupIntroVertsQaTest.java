@@ -252,4 +252,24 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
         driver.quit();
     }
+
+    //AnnaByliginaTest
+    @Ignore
+    @Test
+    public void testTextBox1() {
+        WebDriver driver = new ChromeDriver();
+        driver.get(" https://demoqa.com/text-box");
+        String title = driver.getTitle();
+        Assert.assertEquals("DEMOQA", title);
+
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+        textBox.sendKeys("Краснодар, ул.Тихая, д.454");
+        submitButton.click();
+        WebElement message = driver.findElement(By.cssSelector("#currentAddress.mb-1"));
+        String value = message.getText();
+        Assert.assertEquals("Current Address :Краснодар, ул.Тихая, д.454", value);
+        driver.quit();
+    }
+
 }
