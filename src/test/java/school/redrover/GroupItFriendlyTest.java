@@ -3,7 +3,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -16,20 +16,19 @@ public class GroupItFriendlyTest {
 
     @Test
     public void testDemoQaOpenPage() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
             WebElement image = driver.findElement(By.xpath("//*[@id=\"app\"]/header/a/img"));
             image.click();
         } finally {
-            driver.quit();
-        }
+            driver.quit();        }
     }
 
     @Test
     public void testDemoQaChangePage() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -46,14 +45,14 @@ public class GroupItFriendlyTest {
 
     @Test
     public void testDemoQaTextBox() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://demoqa.com/elements");
             WebElement element = driver.findElement(By.xpath("//span[contains(text(),'Text Box')]"));
             element.click();
             WebElement fullNameField = driver.findElement(By.xpath("//*[@id='userName']"));
             fullNameField.click();
-            fullNameField.sendKeys("Adam Adams");
+            fullNameField.sendKeys("James Bond");
         } finally {
           driver.quit();
         }
@@ -61,7 +60,7 @@ public class GroupItFriendlyTest {
 
     @Test
     public void testSearch() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         driver.get("https://so-yummi-qa.netlify.app/register");
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
         String randomEmail = "test" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
@@ -93,7 +92,7 @@ public class GroupItFriendlyTest {
 
     @Test
     public void DemoQATextBoxTest() {
-          WebDriver driver = new ChromeDriver();
+          WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().window().maximize();
@@ -133,7 +132,7 @@ public class GroupItFriendlyTest {
 
     @Test
     public void DemoQACheckBoxTest() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().window().maximize();
@@ -158,7 +157,7 @@ public class GroupItFriendlyTest {
 
     @Test
     public void DemoQARadioButtonTest() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new FirefoxDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().window().maximize();
