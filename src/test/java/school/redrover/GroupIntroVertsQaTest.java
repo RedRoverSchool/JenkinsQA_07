@@ -151,7 +151,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
     }
 
     @Test
-    public void testSwagLabsAddToCart() throws InterruptedException {
+    public void testSwagLabsAddToCart(){
         getDriver().get("https://www.saucedemo.com/");
         getDriver().findElement(By.xpath("//input[@id='user-name']")).sendKeys("standard_user");
         getDriver().findElement(By.xpath("//input[@id='password']")).sendKeys("secret_sauce");
