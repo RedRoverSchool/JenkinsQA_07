@@ -26,7 +26,7 @@ public class GroupPlusThreeTest extends BaseTest {
     public static final String STATE ="California";
     public static final String URL_PARABANK = "https://parabank.parasoft.com/";
     public static final String CURRENT_ADDRESS = "USA";
-    //---------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------------------------
     private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
 
     public static class DataProviders {
