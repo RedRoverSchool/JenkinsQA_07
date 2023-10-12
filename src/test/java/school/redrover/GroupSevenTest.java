@@ -15,6 +15,24 @@ import java.util.ArrayList;
 @Ignore
 public class GroupSevenTest {
     @Test
+    public void datePicker(){
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement myDate = driver.findElement(By.name("my-date"));
+        myDate.click();
+
+        WebElement weekDay = driver.findElement(By.xpath("//thead/tr[3]/th[1]"));
+        String text = weekDay.getText();
+        Assert.assertEquals(text,"Su");
+
+        driver.quit();
+
+    }
+
+
+    @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
 
