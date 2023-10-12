@@ -122,24 +122,20 @@ public class LocomotiveGroupTest extends BaseTest {
         }
       }
 
-      @Ignore
+
       @Test
-    public void yandexSearchBarTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+    public void testYandexSearchBar() throws InterruptedException {
         String url = "https://ya.ru/";
-        try{
-            driver.get(url);
-            WebElement searchBar = driver.findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
-            WebElement searchButton = driver.findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
-            searchBar.click();
-            searchBar.sendKeys("Ответ на главный вопрос жизни");
-            searchButton.click();
-            WebElement searchText = driver.findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
-            Assert.assertTrue(searchText.isDisplayed());
-        }finally {
-            driver.quit();
-        }
+        getDriver().get(url);
+        WebElement searchBar = getDriver().findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
+        WebElement searchButton = getDriver().findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
+        searchBar.click();
+        searchBar.sendKeys("Ответ на главный вопрос жизни");
+        searchButton.click();
+        WebElement searchText = getDriver().findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
+        Assert.assertTrue(searchText.isDisplayed());
       }
+
     @Ignore
     @Test
     public void testSimpleSearch() throws InterruptedException {
