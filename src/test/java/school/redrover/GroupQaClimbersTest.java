@@ -649,4 +649,40 @@ public class GroupQaClimbersTest {
         String actualMessage = message.getText();
         Assert.assertEquals(actualMessage, "Search - \"java\"");
     }
+   @Test
+    public void textBox(){
+        driver.get(URL);
+    driver.manage().window().maximize();
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    js.executeScript("scroll(0,200)");
+
+    WebElement element = driver.findElement(By.xpath("(//h5)[1]"));
+    element.click();
+    WebElement textBox = driver.findElement(By.xpath("//span[text()='Text Box']"));
+    textBox.click();
+    WebElement userName = driver.findElement(By.id("userName"));
+    userName.sendKeys("Sam Don");
+    WebElement email = driver.findElement(By.id("userEmail"));
+    email.sendKeys("sam@gmail.com");
+    WebElement currentAddress = driver.findElement(By.id("currentAddress"));
+    currentAddress.sendKeys("123 My Road");
+    WebElement permanentAddress = driver.findElement(By.id("permanentAddress"));
+    permanentAddress.sendKeys("1256 S Loop");
+    js.executeScript("scroll(0,200)");
+    WebElement submitBtn = driver.findElement(By.id("submit"));
+    submitBtn.click();
+    String actualName = driver.findElement(By.id("name")).getText();
+    String expectedName = "Name:Sam Don";
+    Assert.assertEquals(actualName, expectedName);
+    }
 }
+
+
+
+
+
+
+
+
+
