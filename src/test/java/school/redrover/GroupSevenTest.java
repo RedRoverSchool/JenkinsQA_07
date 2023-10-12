@@ -15,43 +15,32 @@ import java.util.ArrayList;
 
 
 public class GroupSevenTest extends BaseTest {
-    @Ignore
     @Test
-    public void kylieTitleTest() {
-        WebDriver driver = new ChromeDriver();
+    public void testKylieTitle() {
+        getDriver().get("https://kyliecosmetics.com/");
 
-        driver.get("https://kyliecosmetics.com/");
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
+
         Assert.assertEquals(title, "Kylie Cosmetics by Kylie Jenner | Kylie Skin | Kylie Baby");
-
-        driver.quit();
     }
 
-    @Ignore
     @Test
-    public void searchTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://kyliecosmetics.com/collections/kylie-cosmetics");
+    public void testSearchField ()  {
 
-            Thread.sleep(1000);
+        getDriver().get("https://kyliecosmetics.com/collections/kylie-cosmetics");
 
-            WebElement searchButton = driver.findElement(By.xpath("//a[@title='Search']"));
-            searchButton.click();
+        WebElement searchButton = getDriver().findElement(By.xpath("//a[@title='Search']"));
+        searchButton.click();
 
-            WebElement searchInput = driver.findElement(By.xpath("//input[@id='SearchForm-Header-Query']"));
-            searchInput.sendKeys("lip kit");
+        WebElement searchInput = getDriver().findElement(By.xpath("//input[@id='SearchForm-Header-Query']"));
+        searchInput.sendKeys("lip kit");
 
-            WebElement searchButtonNext = driver.findElement(By.xpath("//button[@id='SearchForm-Header-Submit']"));
-            searchButtonNext.click();
+        WebElement searchButtonNext = getDriver().findElement(By.xpath("//button[@id='SearchForm-Header-Submit']"));
+        searchButtonNext.click();
 
-            WebElement title = driver.findElement(By.xpath("//h1[normalize-space()='Search']"));
-            String value = title.getText();
-            Assert.assertEquals(value, "SEARCH");
-
-        } finally {
-            driver.quit();
-        }
+        WebElement title = getDriver().findElement(By.xpath("//h1[normalize-space()='Search']"));
+        String value = title.getText();
+        Assert.assertEquals(value, "SEARCH");
     }
 
     @Ignore
