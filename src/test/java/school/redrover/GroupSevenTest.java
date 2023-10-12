@@ -29,7 +29,6 @@ public class GroupSevenTest {
 
     }
 
-
     @Test
     public void datePicker(){
 
