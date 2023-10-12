@@ -4,10 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 
 public class GroupLetsQATest extends BaseTest {
     private static final String BASE_URL = "https://www.sawinery.net/";
@@ -34,8 +37,6 @@ public class GroupLetsQATest extends BaseTest {
         String searchText = searchResult.getAttribute("textContent").toLowerCase();
         Assert.assertTrue(searchText.contains("saw"));
     }
-
-
 
     @Ignore
     @Test
@@ -74,4 +75,20 @@ public class GroupLetsQATest extends BaseTest {
         String title_k = getDriver().getTitle();
         Assert.assertEquals("Конференция iXBT.com", title_k);
     }
-}
+    @Ignore
+    @Test
+    public void testTextInput() {
+
+        getDriver().get("http://www.uitestingplayground.com/textinput");
+            WebElement newButtonNameField = getDriver().findElement(By.cssSelector("#newButtonName"));
+            String newButtonName = "Changed Button Name";
+            newButtonNameField.sendKeys(newButtonName);
+
+            WebElement updatingButton = getDriver().findElement(By.cssSelector("#updatingButton"));
+            updatingButton.click();
+
+            String value = updatingButton.getText();
+            Assert.assertEquals(newButtonName, value);
+
+        }
+    }
