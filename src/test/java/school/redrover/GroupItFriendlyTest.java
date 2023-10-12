@@ -116,7 +116,7 @@ public class GroupItFriendlyTest extends BaseTest {
             assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='permanentAddress']")).getText(), "Permananet Address :Ukr");
     }
 
-    @Ignore
+
     @Test
     public void DemoQACheckBoxTest() {
         WebDriver driver = getDriver();
@@ -134,7 +134,7 @@ public class GroupItFriendlyTest extends BaseTest {
             WebElement checkBox = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
             checkBox.click();
 
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"result\"]/span[1]")).getText(), "You have selected :");
+            assertEquals(driver.findElement(By.xpath("//span[text()='You have selected :']")).getText(), "You have selected :");
 
     }
 
