@@ -2,10 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
@@ -124,7 +122,7 @@ public class LocomotiveGroupTest extends BaseTest {
 
 
       @Test
-    public void testYandexSearchBar() throws InterruptedException {
+    public void testYandexSearchBar(){
         String url = "https://ya.ru/";
         getDriver().get(url);
         WebElement searchBar = getDriver().findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
