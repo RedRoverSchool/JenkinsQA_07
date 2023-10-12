@@ -186,7 +186,6 @@ public class LocomotiveGroupTest extends BaseTest {
 
         driver.quit();
     }
-  
     @Test
     public void testHoverOver() {
         By image = By.className("figure");
@@ -194,7 +193,7 @@ public class LocomotiveGroupTest extends BaseTest {
         int imageIndex = 0;
         String captionExpected = "name: user" + (imageIndex + 1);
 
-        var driver = new ChromeDriver();
+        var driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/hovers");
         var hoverElement = driver.findElements(image).get(imageIndex); // returns 1st image
 
@@ -202,9 +201,6 @@ public class LocomotiveGroupTest extends BaseTest {
         action.moveToElement(hoverElement).perform();
 
         var captionText = driver.findElements(captionInput).get(imageIndex);
-
         Assert.assertEquals(captionText.getText(), captionExpected, "The caption text is wrong");
-
-        driver.quit();
     }
 }
