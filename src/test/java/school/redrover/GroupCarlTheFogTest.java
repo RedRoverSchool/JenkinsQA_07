@@ -10,10 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -22,8 +21,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Ignore
-public class GroupCarlTheFogTest {
+public class GroupCarlTheFogTest extends BaseTest {
+
+    private WebDriverWait wait;
+
+    @Ignore
     @Test
     public void hireRightTest() {
 
@@ -41,6 +43,7 @@ public class GroupCarlTheFogTest {
 
     }
 
+    @Ignore
     @Test
     public void registerNowDisplayTest() {
         WebDriver driver = new ChromeDriver();
@@ -56,6 +59,7 @@ public class GroupCarlTheFogTest {
 
     }
 
+    @Ignore
     @Test
     public void testGoogleFinance() {
         WebDriver driver = new ChromeDriver();
@@ -74,16 +78,14 @@ public class GroupCarlTheFogTest {
     }
 
     @Test
-    public void testDeadlinkPrinter() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    public void testDeadlinkPrinter() {
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         String pageToCheck = "https://stackoverflow.com/";
-        driver.get(pageToCheck);
-        Thread.sleep(5000);
+        getDriver().get(pageToCheck);
 
         List<String> deadlinkList = new ArrayList<>();
-        List<WebElement> deadlinks = driver.findElements(By.tagName("a"));
+        List<WebElement> deadlinks = getDriver().findElements(By.tagName("a"));
 
         for (int i = 0; i < deadlinks.size(); i++) {
             String link = deadlinks.get(i).getAttribute("href");
@@ -95,8 +97,12 @@ public class GroupCarlTheFogTest {
             }
         }
 
-        deadlinkList.forEach(link -> System.out.println(link));
-        driver.quit();
+        if (deadlinkList.isEmpty()) {
+            System.out.println("Broken links not found.");
+        } else {
+            deadlinkList.forEach(link -> System.out.println(link));
+        }
+        getDriver().quit();
     }
 
     private String testDeadLink(String link) {
@@ -104,7 +110,6 @@ public class GroupCarlTheFogTest {
             URL url = new URL(link);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setConnectTimeout(5000);
-            httpURLConnection.setRequestMethod("HEAD");
             httpURLConnection.connect();
 
             if (httpURLConnection.getResponseCode() >= 400) {
@@ -114,6 +119,7 @@ public class GroupCarlTheFogTest {
         return null;
     }
 
+    @Ignore
     @Test
     public void testRadyShellCalendar()  {
         WebDriver driver = new ChromeDriver();
@@ -136,6 +142,7 @@ public class GroupCarlTheFogTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void menuItemsTest1() {
         WebDriver driver = new ChromeDriver();
@@ -154,6 +161,7 @@ public class GroupCarlTheFogTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void menuItemsTest2() {
         WebDriver driver = new ChromeDriver();
