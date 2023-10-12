@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -14,51 +15,42 @@ import java.util.concurrent.TimeUnit;
 import static org.testng.Assert.assertEquals;
 
 @Ignore
-public class GroupItFriendlyTest {
+public class GroupItFriendlyTest extends BaseTest {
 
     @Test
-    public void testDemoQaOpenPage() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            WebElement image = driver.findElement(By.xpath("//*[@id=\"app\"]/header/a/img"));
-            image.click();
-        } finally {
-            driver.quit();
-        }
+    public void testDemoQaOpenPage()  {
+        WebDriver driver = getDriver();
+        driver.get("https://demoqa.com/");
+        WebElement image = driver.findElement(By.xpath("//*[@id='app']/header/a/img"));
+        image.click();
+        Assert.assertEquals(image,image);
     }
 
     @Test
     public void testDemoQaChangePage() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            WebElement element = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
-            element.click();
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            WebElement text = driver.findElement(By.xpath("//*[.='Please select an item from left to start practice.']"));
-            String value = text.getText();
-            Assert.assertEquals(value, "Please select an item from left to start practice.");
-        } finally {
-            driver.quit();
-        }
+        WebDriver driver = getDriver();
+        driver.get("https://demoqa.com/");
+        WebElement element = driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[1]/div/div[3]/h5"));
+        element.click();
+        WebElement text = driver.findElement(By.xpath("//*[.='Please select an item from left to start practice.']"));
+        String value = text.getText();
+        Assert.assertEquals(value, "Please select an item from left to start practice.");
     }
 
     @Test
     public void testDemoQaTextBox() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/elements");
-            WebElement element = driver.findElement(By.xpath("//span[contains(text(),'Text Box')]"));
-            element.click();
-            WebElement fullNameField = driver.findElement(By.xpath("//*[@id='userName']"));
-            fullNameField.click();
-            fullNameField.sendKeys("Adam Adams");
-        } finally {
-          driver.quit();
-        }
+        getDriver().get("https://demoqa.com/elements");
+        WebElement element = getDriver().findElement(By.xpath("//span[contains(text(),'Text Box')]"));
+        element.click();
+        WebElement fullNameField = getDriver().findElement(By.id("userName"));
+        fullNameField.click();
+        fullNameField.sendKeys("Adam Adams");
+        WebElement email = getDriver().findElement(By.id("userEmail"));
+        email.click();
+        fullNameField.sendKeys("adam@gmail.com");;
+        WebElement submit = getDriver().findElement(By.id("submit"));
+        submit.click();
+        Assert.assertEquals(submit,submit);
     }
 
     @Test
