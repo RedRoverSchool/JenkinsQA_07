@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -20,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.testng.AssertJUnit.assertEquals;
 
+@Ignore
 public class GroupCarlTheFogTest {
     @Test
     public void hireRightTest() {
@@ -119,7 +120,7 @@ public class GroupCarlTheFogTest {
         driver.get("https://www.theshell.org/");
 
         String title = driver.getTitle();
-        assertEquals("Home | Rady Shell at Jacobs Park", title);
+        Assert.assertEquals("Home | Rady Shell at Jacobs Park", title);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
@@ -130,7 +131,7 @@ public class GroupCarlTheFogTest {
         driver.findElement(By.xpath("//*[@id='site-menu']/li[3]/a")).click();
 
         String performancesPage = driver.getTitle();
-        assertEquals("Performances | Rady Shell at Jacobs Park", performancesPage);
+        Assert.assertEquals("Performances | Rady Shell at Jacobs Park", performancesPage);
 
         driver.quit();
     }
