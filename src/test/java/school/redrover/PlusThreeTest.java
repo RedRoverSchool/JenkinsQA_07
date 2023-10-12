@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -321,6 +323,36 @@ public class PlusThreeTest {
         WebElement signInButton = driver.findElement(By.xpath("//*[@id=\"loginForm\"]/button"));
         signInButton.click();
         driver.quit();
+    }
+
+    @Test
+    public void tripadvisorTest(){
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.tripadvisor.ru");
+
+            driver.findElement(By.xpath("//a[@href='/Restaurants']")).click();
+
+            String value = driver.findElement(By.className("lockup_header")).getText();
+            Assert.assertEquals(value, "Найдите идеальный ресторан");
+
+            driver.findElement(By.id("component_7")).click();
+            driver.findElement(By.className("ctKgY")).click();
+            driver.findElement(By.cssSelector("[placeholder='Город или название ресторана']"))
+                    .sendKeys("Москва");
+
+            WebDriverWait waitLink = new WebDriverWait(driver, Duration.ofSeconds(10));
+            waitLink.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href=" +
+                    "'/Restaurants-g298484-Moscow_Central_Russia.html']"))).click();
+
+            WebDriverWait waitTitle = new WebDriverWait(driver, Duration.ofSeconds(10));
+            waitTitle.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test-target='main_h1']")));
+
+            String getTitle = driver.findElement(By.cssSelector("[data-test-target='main_h1']")).getText();
+            Assert.assertEquals(getTitle, "Рестораны Москвы");
+        }finally {
+            driver.quit();
+        }
     }
 }
 
