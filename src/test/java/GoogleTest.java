@@ -3,36 +3,35 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-@Ignore
-public class GoogleTest {
+public class MaklerTEST {
 
-        @Test
+    @Test
         public void testSearch() throws InterruptedException {
             WebDriver driver = new ChromeDriver();
-            driver.get("https://www.google.com/");
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(9000));
+            driver.get("https://makler.md/");
 
-            WebElement textBox = driver.findElement(By.className("gLFyF"));
-            textBox.sendKeys("Selenium");
+            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(6000));
 
-            Thread.sleep(9000);
+            WebElement textBox = driver.findElement(By.className("disable-border"));
+            textBox.sendKeys("Handmade");
 
-            WebElement searchButton = driver.findElement(By.className("gNO89b"));
+            Thread.sleep(6000);
+
+            WebElement searchButton = driver.findElement(By.id("header_searchButton"));
             searchButton.click();
 
-            WebElement title = driver.findElement(By.className("yKMVIe"));
+            WebElement title = driver.findElement(By.id("header_searchField"));
             String value = title.getText();
-            Assert.assertEquals(value,"Selenium");
+            Assert.assertEquals(value,"Handmade");
+
             driver.quit();
-
-
         }
+}
 
 
-    }
+
 
