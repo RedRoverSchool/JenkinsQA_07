@@ -15,6 +15,22 @@ import java.util.ArrayList;
 @Ignore
 public class GroupSevenTest {
     @Test
+    public void datalist() {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement readonly = driver.findElement(By.name("my-readonly"));
+        readonly.click();
+        String text = readonly.getAccessibleName();
+        Assert.assertEquals(text,"Readonly input");
+
+        driver.quit();
+
+    }
+
+
+    @Test
     public void datePicker(){
 
         WebDriver driver = new ChromeDriver();
