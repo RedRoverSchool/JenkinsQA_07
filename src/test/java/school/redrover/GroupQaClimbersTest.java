@@ -650,7 +650,7 @@ public class GroupQaClimbersTest {
         Assert.assertEquals(actualMessage, "Search - \"java\"");
     }
    @Test
-    public void textBox(){
+    public void textBoxTest(){
         driver.get(URL);
     driver.manage().window().maximize();
     driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
