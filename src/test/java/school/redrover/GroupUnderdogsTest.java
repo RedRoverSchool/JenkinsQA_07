@@ -28,7 +28,7 @@ public class GroupUnderdogsTest extends BaseTest {
     String baseUrl = "https://www.trekbikes.com/us/en_US/";
     String baseUrlArt = "https://www.maytag.ca/";
 
-    @Ignore
+
     public void openMainPage() {
         WebDriver driver = new ChromeDriver();
         driver.get(mainPageUrl);
