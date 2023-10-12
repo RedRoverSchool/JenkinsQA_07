@@ -13,31 +13,26 @@ import java.util.HashMap;
 import java.time.Duration;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
 public class GroupUnicornsTest extends BaseTest {
 
-    @Ignore
     @Test
-    public void usPsPageOpenTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        String title = driver.getTitle();
-        assertEquals("Welcome | USPS", title);
-        driver.quit();
+    public void testUsPsPageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        Assert.assertEquals(getDriver().getTitle(),"Welcome | USPS");
     }
-    @Ignore
+
     @Test
-    public void usPsSendMailPackageTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        WebElement send = driver.findElement(By.xpath("//a[@id='mail-ship-width']"));
+    public void testUsPsSendMailPackageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        WebElement send = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
         send.click();
-        String sendTitle = driver.getTitle();
-        assertEquals("Send Mail & Packages | USPS", sendTitle);
-        driver.quit();
+
+        Assert.assertEquals(getDriver().getTitle(),"Send Mail & Packages | USPS");
     }
 
     @Test
@@ -104,7 +99,7 @@ public class GroupUnicornsTest extends BaseTest {
             wd.quit();
         }
     }
-    
+
     @Ignore
     @Test
     public void testSearch() {
@@ -122,13 +117,11 @@ public class GroupUnicornsTest extends BaseTest {
 
         driver.quit();
     }
-    @Ignore
+
     @Test
-    public void demoWebShopTest() {
-        WebDriver driver = new ChromeDriver();
+    public void testDemoWebShop() {
 
-        String pageTitlePath = "//div[@class='page-title' ]//h1";
-
+        String pageTitlePath = "//div[@class='page-title']//h1";
         String basePath = "//ul[@class='top-menu']//a[@href='/";
 
         HashMap<String, String> pages = new HashMap<>();
@@ -141,20 +134,15 @@ public class GroupUnicornsTest extends BaseTest {
         pages.put("Gift Cards", basePath + "gift-cards']");
 
         String pageTitle;
+        getDriver().get("https://demowebshop.tricentis.com/");
 
-        try {
-            driver.get("https://demowebshop.tricentis.com/");
-
-            for (String key : pages.keySet()) {
-                driver.findElement(By.xpath(pages.get(key))).click();
-                pageTitle = driver.findElement(By.xpath(pageTitlePath)).getText();
-                Assert.assertEquals(pageTitle, key);
-            }
-
-        } finally {
-            driver.quit();
+        for (String key : pages.keySet()) {
+            getDriver().findElement(By.xpath(pages.get(key))).click();
+            pageTitle = getDriver().findElement(By.xpath(pageTitlePath)).getText();
+            Assert.assertEquals(pageTitle, key);
         }
     }
+
     @Ignore
     @Test
     public void searchVerificationGitHub() {
@@ -176,6 +164,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void testTradingView() throws InterruptedException {
@@ -199,6 +188,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void verificationSocialIconsGitHub() {
@@ -222,33 +212,29 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
-    @Ignore
+
     @Test
     public void testComputersMenu() {
-        WebDriver driver = new ChromeDriver();
+
         String[] computers = new String[]{"Desktops", "Notebooks", "Accessories"};
 
-        try {
-            driver.get("https://demowebshop.tricentis.com/");
-            driver.findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
-            List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
+        getDriver().get("https://demowebshop.tricentis.com/");
+        getDriver().findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
 
-            boolean actual = true;
-            for (int i = 0; i < elements.size(); i++) {
-                if (!computers[i].equals(elements.get(i).getText())) {
-                    actual = false;
-                    break;
-                }
+        List<WebElement> elements = getDriver().findElements(By.className("sub-category-item"));
+        boolean actual = true;
+        for (int i = 0; i < elements.size(); i++) {
+            if (!computers[i].equals(elements.get(i).getText())) {
+                actual = false;
+                break;
             }
-            assertTrue(actual);
-
-        } finally {
-            driver.quit();
         }
+        assertTrue(actual);
     }
+
     @Ignore
     @Test
-    public void verificationSocialIconsGitHub2() throws InterruptedException {
+    public void verificationSocialIconsGitHub2(){
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -267,6 +253,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void unsuccessfulLoginDigitalBank() {
@@ -290,6 +277,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void successfulLoginDigitalBank() {
