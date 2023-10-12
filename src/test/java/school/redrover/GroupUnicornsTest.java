@@ -19,25 +19,21 @@ import static org.testng.Assert.assertTrue;
 
 public class GroupUnicornsTest extends BaseTest {
 
-    @Ignore
     @Test
-    public void usPsPageOpenTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        String title = driver.getTitle();
-        assertEquals("Welcome | USPS", title);
-        driver.quit();
+    public void testUsPsPageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        Assert.assertEquals(getDriver().getTitle(),"Welcome | USPS");
     }
-    @Ignore
+
     @Test
-    public void usPsSendMailPackageTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        WebElement send = driver.findElement(By.xpath("//a[@id='mail-ship-width']"));
+    public void testUsPsSendMailPackageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        WebElement send = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
         send.click();
-        String sendTitle = driver.getTitle();
-        assertEquals("Send Mail & Packages | USPS", sendTitle);
-        driver.quit();
+
+        Assert.assertEquals(getDriver().getTitle(),"Send Mail & Packages | USPS");
     }
 
     @Test
@@ -104,7 +100,7 @@ public class GroupUnicornsTest extends BaseTest {
             wd.quit();
         }
     }
-    
+
     @Ignore
     @Test
     public void testSearch() {
@@ -122,6 +118,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         driver.quit();
     }
+
     @Ignore
     @Test
     public void demoWebShopTest() {
@@ -155,6 +152,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void searchVerificationGitHub() {
@@ -176,6 +174,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void testTradingView() throws InterruptedException {
@@ -199,6 +198,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void verificationSocialIconsGitHub() {
@@ -222,6 +222,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void testComputersMenu() {
@@ -246,6 +247,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void verificationSocialIconsGitHub2() throws InterruptedException {
@@ -267,6 +269,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void unsuccessfulLoginDigitalBank() {
@@ -290,6 +293,7 @@ public class GroupUnicornsTest extends BaseTest {
             driver.quit();
         }
     }
+
     @Ignore
     @Test
     public void successfulLoginDigitalBank() {

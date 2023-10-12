@@ -131,7 +131,7 @@ public class LetsQAGroupTest {
     }
     @Test
     public void confIXBT(){
-        WebDriver driver = new ChromeDriver();
+
         driver.get("https://www.ixbt.com/");
 
         String title = driver.getTitle();
@@ -143,7 +143,7 @@ public class LetsQAGroupTest {
         String title_k = driver.getTitle();
         Assert.assertEquals("Конференция iXBT.com", title_k);
 
-        driver.quit();
+
     }
 
     @Test

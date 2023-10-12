@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 @Ignore
-public class GroupUnderdogsTest {
+public class GroupUnderdogsTest extends BaseTest {
     WebDriver driver;// = new ChromeDriver();
 
     private final String mainPageUrl = "http://www.99-bottles-of-beer.net/";
@@ -36,6 +37,7 @@ public class GroupUnderdogsTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void MainPageTitleTest() {
         openMainPage();
@@ -43,6 +45,7 @@ public class GroupUnderdogsTest {
         assertEquals(title, "99 Bottles of Beer | Start");
     }
 
+    @Ignore
     @Test
     public void tereshenkov99BottlesTitleTest() {
         driver = new ChromeDriver();
@@ -55,6 +58,7 @@ public class GroupUnderdogsTest {
 
     }
 
+    @Ignore
     @Test
     public void tereshenkov99BottlesLastMenuLinkTestGetAttribute() {
         driver = new ChromeDriver();
@@ -67,6 +71,7 @@ public class GroupUnderdogsTest {
 
     }
 
+    @Ignore
     @Test
     public void tereshenkov99BottlesLastMenuLinkTestGetText() {
         driver = new ChromeDriver();
@@ -79,6 +84,7 @@ public class GroupUnderdogsTest {
 
     }
 
+    @Ignore
     @Test
     public void firstMenuTabTextTest() {
         driver.get("http://www.99-bottles-of-beer.net/abc.html");
@@ -86,6 +92,7 @@ public class GroupUnderdogsTest {
         assertEquals(elementName, "0-9");
     }
 
+    @Ignore
     @Test
     public void authorNamesTest() {
         List<String> expectedAuthorNames = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
@@ -100,6 +107,7 @@ public class GroupUnderdogsTest {
     }
 
     //text written in lower case and color red
+    @Ignore
     @Test
     public void maksinTestInactive() {
         driver = new ChromeDriver();
@@ -110,6 +118,7 @@ public class GroupUnderdogsTest {
         assertEquals(text.getCssValue("color"), "rgb(255, 0, 0)");
     }
 
+    @Ignore
     @Test
     public void artuomTrack_correct_CredentialTest() throws InterruptedException {
         driver = new ChromeDriver();
@@ -145,6 +154,7 @@ public class GroupUnderdogsTest {
 
     }
 
+    @Ignore
     @Test
     public void artuomTrack_Incorrect_CredentialTest() throws InterruptedException {
         driver = new ChromeDriver();
@@ -181,6 +191,7 @@ public class GroupUnderdogsTest {
 
     }
 
+    @Ignore
     @Test
     public void artuomMarlin4Test() throws InterruptedException {
         driver = new ChromeDriver();
@@ -213,6 +224,7 @@ public class GroupUnderdogsTest {
         assertEquals(bikeName, "Marlin 4 Gen 2");
     }
 
+    @Ignore
     @Test
     public void artuomEnd_to_EndTest() throws InterruptedException {
         driver.manage().window().maximize();
@@ -296,6 +308,7 @@ public class GroupUnderdogsTest {
 
     }
 
+    @Ignore
     @Test
     public void kristinaNameAuthorSite() {
         WebDriver driver = new ChromeDriver();
@@ -319,6 +332,7 @@ public class GroupUnderdogsTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void kristinaTopLists() {
         WebDriver driver = new ChromeDriver();
@@ -334,6 +348,7 @@ public class GroupUnderdogsTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testBrowseLanguagesKotlin() {
         driver = new ChromeDriver();
@@ -354,6 +369,7 @@ public class GroupUnderdogsTest {
         assertEquals(pageHeader, "Language Kotlin");
     }
 
+    @Ignore
     @Test
     public void testSearchLanguages() {
         final String partOfWordToSearch = "kot";
@@ -378,6 +394,7 @@ public class GroupUnderdogsTest {
         }
     }
 
+    @Ignore
     @Test
     public void testRailiaImportantNoticeMarkup() {
         driver = new ChromeDriver();
@@ -419,6 +436,7 @@ public class GroupUnderdogsTest {
         assertEquals(namesOfCreators, teamMembers);
     }
 
+    @Ignore
     @Test
     public void testSubmitLanguage() {
         WebDriver driver = new ChromeDriver();
@@ -437,6 +455,7 @@ public class GroupUnderdogsTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testTitle() {
         WebDriver driver = new ChromeDriver();
@@ -451,6 +470,7 @@ public class GroupUnderdogsTest {
         driver.quit();
     }
 
+    @Test
     public void yuliafaReddit() {
         WebDriver driver = new ChromeDriver();
 
