@@ -27,7 +27,6 @@ public class GroupSevenTest {
         WebElement weekDay = driver.findElement(By.xpath("//thead/tr[3]/th[1]"));
         String text = weekDay.getText();
         Assert.assertEquals(text, "Su");
-
         driver.quit();
 
     }
