@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.apache.commons.compress.utils.ByteUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -111,11 +112,58 @@ public class GroupIntroVertsQaTest extends BaseTest {
     @Test
     public void testAboutUs(){
         getDriver().get(URL);
+
         WebElement usernameInput = getDriver().findElement(By.xpath(" //a[@href=contains(text(), 'About Us')]"));
         usernameInput.click();
 
         WebElement greetings = getDriver().findElement(By.xpath("//h1[@class='title']"));
         Assert.assertEquals(greetings.getText(), "ParaSoft Demo Website");
+    }
+
+    @Test
+    public void testSwagLabsEmptyInputsAuthorization(){
+        getDriver().get("https://www.saucedemo.com/");
+        Assert.assertEquals(getDriver().getTitle(), "Swag Labs");
+
+        WebElement loginButton = getDriver().findElement(By.xpath("//input[@id='login-button']"));
+        loginButton.click();
+
+        WebElement errorMessage = getDriver().findElement(By.xpath("//div[@class='error-message-container error']"));
+        Assert.assertEquals(errorMessage.getText(),"Epic sadface: Username is required");
+    }
+
+    @Test
+    public void testSwagLabsStandartAuthorization(){
+        getDriver().get("https://www.saucedemo.com/");
+        Assert.assertEquals(getDriver().getTitle(), "Swag Labs");
+
+        WebElement username = getDriver().findElement(By.xpath("//input[@id='user-name']"));
+        username.sendKeys("standard_user");
+
+        WebElement password = getDriver().findElement(By.xpath("//input[@id='password']"));
+        password.sendKeys("secret_sauce");
+
+        WebElement loginButton = getDriver().findElement(By.xpath("//input[@id='login-button']"));
+        loginButton.click();
+
+        WebElement profileTitle = getDriver().findElement(By.xpath("//div[@class='header_secondary_container']/child::span[@class='title']"));
+        Assert.assertEquals(profileTitle.getText(), "Products");
+    }
+
+    @Test
+    public void testSwagLabsAddToCart() throws InterruptedException {
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.xpath("//input[@id='user-name']")).sendKeys("standard_user");
+        getDriver().findElement(By.xpath("//input[@id='password']")).sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath("//input[@id='login-button']")).click();
+
+        WebElement backPack = getDriver().findElement(By.xpath("//div[text()='Sauce Labs Backpack']/parent::*"));
+        backPack.click();
+        WebElement addToCart = getDriver().findElement(By.xpath("//button[text()='Add to cart']"));
+        addToCart.click();
+
+        WebElement cart = getDriver().findElement(By.xpath("//span[@class='shopping_cart_badge']"));
+        Assert.assertEquals(cart.getText(),"1");
     }
 
     /**
