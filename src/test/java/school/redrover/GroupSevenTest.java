@@ -8,12 +8,13 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
 @Ignore
-public class GroupSevenTest {
+public class GroupSevenTest extends BaseTest {
     @Test
     public void kylieTitleTest() {
         WebDriver driver = new ChromeDriver();
