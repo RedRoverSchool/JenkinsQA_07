@@ -511,5 +511,6 @@ public class GroupUnderdogsTest extends BaseTest {
         String toAssert = linkName.getText();
         Assert.assertEquals(toAssert, "English");
         driver.quit();
+
     }
 }
