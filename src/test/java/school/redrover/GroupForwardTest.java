@@ -203,7 +203,6 @@ public class GroupForwardTest extends BaseTest {
 //    Thread.sleep(5000);
 
     Assert.assertEquals(actualResult, expectedResult);
-
   }
 
 }
