@@ -495,6 +495,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
         driver.quit();
     }
+
     @Ignore
     @Test
     public void testChromeEnglishBooksFind() {
@@ -511,10 +512,4 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(toAssert, "English");
         driver.quit();
     }
-
-
-
-
-
-
 }
