@@ -165,12 +165,14 @@ public class GroupSevenTest extends BaseTest {
 
 
     @Test
-    public void testPricePageHeader()  {
+    public void testPricePageHeader() throws InterruptedException {
         getDriver().get("https://megagroup.by/");
 
         getDriver().manage().window().maximize();
+        Thread.sleep(1500);
 
         WebElement price = getDriver().findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+        Thread.sleep(1500);
         price.click();
 
         WebElement header = getDriver().findElement(By.xpath("//h1"));
