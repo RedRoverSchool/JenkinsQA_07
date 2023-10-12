@@ -15,26 +15,24 @@ public class GroupForwardTest extends BaseTest {
   private static final String PAGE_URL = "https://www.ldoceonline.com/";
 
 
-  @Ignore
-  @Test
+    @Test
   public void testSearch() throws InterruptedException {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
 
-      WebElement textBox = driver.findElement(By.className("search_input"));
-      WebElement searchButton = driver.findElement(By.xpath("//*[@type='submit']"));
+      getDriver().get(PAGE_URL);
+
+      WebElement textBox = getDriver().findElement(By.className("search_input"));
+      WebElement searchButton = getDriver().findElement(By.xpath("//*[@type='submit']"));
 
       textBox.sendKeys("readable");
       searchButton.click();
       Thread.sleep(600);
-      WebElement titleElement = driver.findElement(By.className("HYPHENATION"));
+      WebElement titleElement = getDriver().findElement(By.className("HYPHENATION"));
       String value = titleElement.getText();
       Assert.assertEquals(value, "read‧a‧ble");
 
-    } finally {
-      driver.quit();
-    }
+
+      getDriver().quit();
+
 
   }
 
