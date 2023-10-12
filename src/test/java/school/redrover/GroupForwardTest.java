@@ -154,28 +154,53 @@ public class GroupForwardTest extends BaseTest {
 
     getDriver().get(PAGE_URL);
 
+    WebElement languageButtonValue = getDriver().findElement(By.xpath(
+        "//span[@class= 'text res_hos']"));
+
+    languageButtonValue.click();
+
+    Thread.sleep(5000);
+
+    WebElement japaneseToEnglish = getDriver().findElement(By.xpath(
+        "//a[@data-value = 'japanese-english']"));
+
+    japaneseToEnglish.click();
+
+    Thread.sleep(5000);
+
+    String actualResult = languageButtonValue.getText();
+
+    Assert.assertEquals(actualResult, expectedResult);
+  }
+
+  @Test
+  public void test_InputFieldText_WhenChangingLanguage() throws InterruptedException {
+
+    String expectedResult = "Japanese - English";
+
+    getDriver().get(PAGE_URL);
+
     WebElement changeLanguageButton = getDriver().findElement(By.xpath(
-        "/html/body/div[1]/form/div[1]"));
+        "//span[@class= 'text res_hos']"));
 
     changeLanguageButton.click();
 
     Thread.sleep(5000);
 
     WebElement japaneseToEnglish = getDriver().findElement(By.xpath(
-        "/html/body/div[1]/form/div[1]/div/a[5]"));
+        "//a[@data-value = 'japanese-english']"));
 
     japaneseToEnglish.click();
 
     Thread.sleep(5000);
 
-    //Japanese - English
 
-     WebElement languageButtonValue = getDriver().findElement(By.xpath(
-         "//html/body/div[1]/form/div[1]/span"));
+    WebElement searchField = getDriver().findElement(By.xpath(
+        "//div[contains(@class,'search-input-container')]/input[@class='search_input']"));
 
-    String actualResult = languageButtonValue.getText();
+    String actualResult = searchField.getAttribute("placeholder");
 
-    Thread.sleep(5000);
+//    Thread.sleep(5000);
 
     Assert.assertEquals(actualResult, expectedResult);
   }
