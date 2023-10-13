@@ -375,7 +375,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(footer,expectedText);
     }
     @Test
-    public void datalistTest() {
+    public void testDatalist() {
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -387,7 +387,7 @@ public class GroupSevenTest extends BaseTest {
     }
 
     @Test
-    public void datePickerTest(){
+    public void testDatePicker(){
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
