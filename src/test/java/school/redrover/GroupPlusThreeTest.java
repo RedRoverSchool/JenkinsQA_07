@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
-@Ignore
+
 public class GroupPlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
