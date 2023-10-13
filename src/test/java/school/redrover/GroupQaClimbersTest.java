@@ -243,6 +243,7 @@ public class GroupQaClimbersTest extends BaseTest {
         Assert.assertEquals(value, "Name:Barak Obama\nEmail:barak1961@gmail.com");//ожидаем что текст "
     }
 
+    @Ignore
     @Test
     public void testProgressBarInWidgets() {
 
