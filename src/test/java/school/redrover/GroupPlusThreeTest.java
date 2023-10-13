@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-public class PlusThreeTest extends BaseTest {
+public class GroupPlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
     public static final String URL = "https://parabank.parasoft.com/parabank/register.htm";
@@ -61,7 +61,7 @@ public class PlusThreeTest extends BaseTest {
         loginButton.click();
     }
     
-    @Test(dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
+    @Test(dataProviderClass = GroupPlusThreeTest.DataProviders.class, dataProvider = "validData")
     public void TestAuthorizationPositive(String username, String password) {
 
         login(username, password);
@@ -71,7 +71,7 @@ public class PlusThreeTest extends BaseTest {
 
     }
 
-    @Test(dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "invalidData")
+    @Test(dataProviderClass = GroupPlusThreeTest.DataProviders.class, dataProvider = "invalidData")
     public void TestAuthorizationNegative(String username, String password) {
 
         login(username, password);
@@ -81,7 +81,7 @@ public class PlusThreeTest extends BaseTest {
 
     }
 
-    @Test(description = "Add to cart via catalog", dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
+    @Test(description = "Add to cart via catalog", dataProviderClass = GroupPlusThreeTest.DataProviders.class, dataProvider = "validData")
     public void TestAddCart(String username, String password) {
 
         login(username, password);
@@ -95,7 +95,7 @@ public class PlusThreeTest extends BaseTest {
 
     }
 
-    @Test(description = "Remove from cart via basket", dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
+    @Test(description = "Remove from cart via basket", dataProviderClass = GroupPlusThreeTest.DataProviders.class, dataProvider = "validData")
     public void TestRemoveCart(String username, String password) {
 
         login(username, password);
