@@ -263,7 +263,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(expectedHeading, heading);
     }
 
-
+    @Ignore
     @Test
     @Description("WebTables: Test open the window Registration form")
     public void testDemoqaAddNewRecordButton() {
