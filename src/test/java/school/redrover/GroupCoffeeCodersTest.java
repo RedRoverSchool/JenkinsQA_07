@@ -92,4 +92,38 @@ public class GroupCoffeeCodersTest {
         driver.quit();
 
     }
+
+
+    @Test
+    public void testSearch()  {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.labirint.ru/");
+        WebElement searchBook = driver.findElement(By.className("b-header-b-search-e-input"));
+        searchBook.sendKeys("война  и  мир");
+        WebElement searchButton = driver.findElement(By.className("b-header-b-search-e-btn"));
+        searchButton.click();
+        WebElement FirstBook = driver.findElement(By.xpath("//*[@id=\"rubric-tab\"]/div[3]/section/div/div[1]/a[1]"));
+        String value = FirstBook.getText();
+        Assert.assertEquals(value, "Война и мир. В 4-х томах.");
+        driver.quit();
+    }
+
+    @Test
+    public void  testSorting () throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.labirint.ru/");
+        WebElement searchBook = driver.findElement(By.className("b-header-b-search-e-input"));
+        searchBook.sendKeys("война  и  мир");
+        WebElement searchButton = driver.findElement(By.className("b-header-b-search-e-btn"));
+        searchButton.click();
+        WebElement sorting = driver.findElement(By.xpath("//*[@id=\"catalog-navigation\"]/form/div[1]/div[1]/div/div/span[7]/span/span/span[1]/span"));
+        sorting.click();
+        WebElement LowPrice = driver.findElement(By.xpath("//*[@id=\"catalog-navigation\"]/form/div[1]/div[1]/div/div/span[7]/span/span/span[2]/ul/li[5]/a"));
+        LowPrice.click();
+        Thread.sleep(2000);
+        WebElement CheapestBook = driver.findElement(By.xpath("//*[@id=\"rubric-tab\"]/div[3]/section/div/div[1]/div[2]/div[1]"));
+        String value = CheapestBook.getText();
+        Assert.assertEquals(value, "73 ₽");
+        driver.quit();
+    }
 }
