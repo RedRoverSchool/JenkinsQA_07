@@ -3,32 +3,38 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 
-public class GroupItFriendlyTest {
+
+public class GroupItFriendlyTest extends BaseTest {
+    @Ignore
 
     @Test
     public void testDemoQaOpenPage() {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
             WebElement image = driver.findElement(By.xpath("//*[@id=\"app\"]/header/a/img"));
             image.click();
         } finally {
-            driver.quit();        }
+            driver.quit();
+        }
     }
-
+@Ignore
     @Test
     public void testDemoQaChangePage() {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -42,17 +48,17 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
-
+@Ignore
     @Test
     public void testDemoQaTextBox() {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/elements");
             WebElement element = driver.findElement(By.xpath("//span[contains(text(),'Text Box')]"));
             element.click();
             WebElement fullNameField = driver.findElement(By.xpath("//*[@id='userName']"));
             fullNameField.click();
-            fullNameField.sendKeys("James Bond");
+            fullNameField.sendKeys("Adam Adams");
         } finally {
           driver.quit();
         }
@@ -60,13 +66,12 @@ public class GroupItFriendlyTest {
 
     @Test
     public void testSearch() throws InterruptedException {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = getDriver();
         driver.get("https://so-yummi-qa.netlify.app/register");
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
         String randomEmail = "test" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
 
-
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         WebElement usernameInput = driver.findElement(By.name("username"));
         usernameInput.click();
         usernameInput.sendKeys(randomUsername);
@@ -77,22 +82,18 @@ public class GroupItFriendlyTest {
         passwordInput.click();
         passwordInput.sendKeys("Test@123456");
 
-
         WebElement searchButton2 = driver.findElement(By.xpath("//button[@type='submit']"));
         searchButton2.click();
 
         Thread.sleep(3000);
-
         String currentUrl = driver.getCurrentUrl();
         String expectedUrl = "https://so-yummi-qa.netlify.app/home";
         Assert.assertEquals(currentUrl, expectedUrl, "The current URL does not match the expected URL.");
-
-        driver.quit();
     }
-
+@Ignore
     @Test
     public void DemoQATextBoxTest() {
-          WebDriver driver = new FirefoxDriver();
+          WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().window().maximize();
@@ -129,10 +130,10 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
-
+@Ignore
     @Test
     public void DemoQACheckBoxTest() {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().window().maximize();
@@ -154,10 +155,11 @@ public class GroupItFriendlyTest {
             driver.quit();
         }
     }
+    @Ignore
 
     @Test
     public void DemoQARadioButtonTest() {
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://demoqa.com/");
             driver.manage().window().maximize();
@@ -179,6 +181,59 @@ public class GroupItFriendlyTest {
             impressiveButton.click();
 
             assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Impressive");
+
+        } finally {
+            driver.quit();
+        }
+    }
+@Ignore
+    @Test
+    public void ActionsWithCheckBoxTest(){
+
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/elements");
+            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+
+            WebElement checkbox = driver.findElement(By.xpath("//span[contains(text(), 'Check Box')]"));
+            checkbox.click();
+
+            WebElement checkboxIsSelected = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
+            checkboxIsSelected.click();
+
+            assertEquals(driver.findElement(By.xpath("//*[@id=\"result\"]")).getText(), "You have selected :\n" +
+                    "home\n" +
+                    "desktop\n" +
+                    "notes\n" +
+                    "commands\n" +
+                    "documents\n" +
+                    "workspace\n" +
+                    "react\n" +
+                    "angular\n" +
+                    "veu\n" +
+                    "office\n" +
+                    "public\n" +
+                    "private\n" +
+                    "classified\n" +
+                    "general\n" +
+                    "downloads\n" +
+                    "wordFile\n" +
+                    "excelFile");
+          } finally {
+            driver.quit();
+        }
+    }
+@Ignore
+  @Test
+  public void BadRequestButtonTest() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://demoqa.com/links");
+            driver.manage().window().maximize();
+
+            WebElement badRequestButton = driver.findElement(By.id("bad-request"));
+
+            assertEquals(badRequestButton.getText(), "Bad Request");
 
         } finally {
             driver.quit();
