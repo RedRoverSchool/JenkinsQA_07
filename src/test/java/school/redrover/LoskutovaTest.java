@@ -10,8 +10,7 @@ public class LoskutovaTest extends BaseTest {
 
     @Test
     public void testSauceDemoPositiveLogin(){
-
-        try {
+        
             getDriver().get("https://www.saucedemo.com/");
             WebElement username = getDriver().findElement(By.id("user-name"));
             WebElement password = getDriver().findElement(By.id("password"));
@@ -21,14 +20,9 @@ public class LoskutovaTest extends BaseTest {
             password.sendKeys("secret_sauce");
             loginBtn.click();
 
-            Thread.sleep(500);
-
             String expectedTitle = "Swag Labs";
             String actualTitle = getDriver().getTitle();
 
             Assert.assertEquals(actualTitle, expectedTitle, "Login failed.");
-        }catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
