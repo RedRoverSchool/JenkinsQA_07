@@ -374,7 +374,17 @@ public class GroupSevenTest extends BaseTest {
         String expectedText = "Home";
         Assert.assertEquals(footer,expectedText);
     }
+    @Test
+    public void datalist() {
 
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement readonly = getDriver().findElement(By.name("my-readonly"));
+        readonly.click();
+        String text = readonly.getAccessibleName();
+        Assert.assertEquals(text,"Readonly input");
+
+    }
 
 
 }
