@@ -273,24 +273,23 @@ public class PlusThreeTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
-    public  void contactUs() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(URL_PARABANK);
+    public  void testContactUs() {
 
-        WebElement contactUs = driver.findElement(By.xpath("//a[contains(text(), 'contact')]"));
+        getDriver().get(URL_PARABANK);
+
+        WebElement contactUs = getDriver().findElement(By.xpath("//a[contains(text(), 'contact')]"));
         contactUs.click();
-        WebElement title = driver.findElement(By.xpath("//*[@class='title']"));
+
+        WebElement title = getDriver().findElement(By.xpath("//*[@class='title']"));
         String resTitle = title.getText();
         Assert.assertEquals(resTitle, "Customer Care");
 
-        WebElement nameField = driver.findElement(By.name("name"));
-        WebElement emailField = driver.findElement(By.name("email"));
-        WebElement phoneField = driver.findElement(By.name("phone"));
-        WebElement messageField = driver.findElement(By.name("message"));
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id='contactForm']//descendant::input[@class='button']"));
+        WebElement nameField = getDriver().findElement(By.name("name"));
+        WebElement emailField = getDriver().findElement(By.name("email"));
+        WebElement phoneField = getDriver().findElement(By.name("phone"));
+        WebElement messageField = getDriver().findElement(By.name("message"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id='contactForm']//descendant::input[@class='button']"));
 
         nameField.sendKeys(USERNAME);
         emailField.sendKeys("example@example.com");
@@ -299,9 +298,8 @@ public class PlusThreeTest extends BaseTest {
 
         submitButton.click();
 
-        WebElement confirmationMessage = driver.findElement(By.xpath("//*[@id='rightPanel']/p[contains(text(),'Thank you')]"));
+        WebElement confirmationMessage = getDriver().findElement(By.xpath("//*[@id='rightPanel']/p[contains(text(),'Thank you')]"));
         Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
-        driver.quit();
     }
 
     @Ignore
