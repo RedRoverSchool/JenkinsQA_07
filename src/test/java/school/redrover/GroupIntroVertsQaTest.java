@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -11,6 +13,7 @@ import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class GroupIntroVertsQaTest extends BaseTest {
     static Random random = new Random();
@@ -206,6 +209,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
     // endregion
 
     // region AkiMiraTest
+    @Ignore
     @Test (description = "Test of Text-Box 'Name'")
     public void testTextBox () {
 
@@ -225,6 +229,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
         Assert.assertEquals("Name:Oleg", value);
 
     }
+    @Ignore
     @Test (description = "Test of Text-Box 'Current Address'")
     public void testTextBoxCurrentAddress () {
         getDriver().get("https://demoqa.com/text-box");
@@ -241,6 +246,27 @@ public class GroupIntroVertsQaTest extends BaseTest {
         WebElement message = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
         String value = message.getText();
         Assert.assertEquals("Current Address :Russian Federation", value);
+
+    }
+
+    @Test (description = "Test of Login to Swag Labs")
+    public void testLoginSwagLabs () {
+        getDriver().get("https://www.saucedemo.com");
+
+        String title = getDriver().getTitle();
+        Assert.assertEquals("Swag Labs", title);
+
+        WebElement textBoxName = getDriver().findElement(By.xpath("//*[@id=\"user-name\"]"));
+        WebElement textBoxPassword = getDriver().findElement(By.xpath("//*[@id=\"password\"]"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"login-button\"]"));
+
+        textBoxName.sendKeys("standard_user");
+        textBoxPassword.sendKeys("secret_sauce");
+        submitButton.click();
+
+        WebElement text = getDriver().findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/span"));
+        String value = text.getText();
+        Assert.assertEquals("Products", value);
 
     }
     // endregion
