@@ -262,16 +262,16 @@ public class GroupPlusThreeTest extends BaseTest {
         Assert.assertEquals(name, "Swag Labs");
 
     }
-    @Ignore
-    @Test(description = "Jenkins first test")
-    public void loginJenkinsVasilyiD() throws InterruptedException {
-
-        JenkinsUtils.login(getDriver());
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
-                "Welcome to Jenkins!");
-    }
+//    @Ignore
+//    @Test(description = "Jenkins first test")
+//    public void loginJenkinsVasilyiD() throws InterruptedException {
+//
+//        JenkinsUtils.login(getDriver());
+//
+//        Assert.assertEquals(
+//                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
+//                "Welcome to Jenkins!");
+//    }
 
     @Ignore
     @Test
