@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,20 +44,16 @@ public class GroupCarlTheFogTest extends BaseTest {
 
     }
 
-    @Ignore
     @Test
-    public void registerNowDisplayTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
+    public void testRegisterNowDisplay() {
+        String hrUrl = "https://www.hireright.com";
+        getDriver().get(hrUrl);
         String expectedText = "Register Now";
         String registerNow= "//a[@class = 'btn btn--primary btn--hover-red-dark btn-active-red-darker'][contains(text(),'Register Now')]";
-        WebElement registerNowBTN = driver.findElement(By.xpath(registerNow));
+        WebElement registerNowBTN = getDriver().findElement(By.xpath(registerNow));
         registerNowBTN.getText();
 
         Assert.assertEquals(registerNowBTN.getText(), expectedText);
-
-        driver.quit();
-
     }
 
     @Test
@@ -140,14 +137,13 @@ public class GroupCarlTheFogTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
-    public void menuItemsTest1() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
+    public void testMenuItems() {
+        String hrUrl = "https://www.hireright.com";
+        getDriver().get(hrUrl);
         List<String> menuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
 
-        List<WebElement> foundMenuItems = driver.findElements(By.cssSelector("ul.hidden > li > button, ul.hidden > li > a"));
+        List<WebElement> foundMenuItems = getDriver().findElements(By.cssSelector("ul.hidden > li > button, ul.hidden > li > a"));
 
         List<String> foundTexts = new ArrayList<>();
         for (WebElement menuItem : foundMenuItems) {
@@ -155,26 +151,28 @@ public class GroupCarlTheFogTest extends BaseTest {
         }
 
         Assert.assertEquals(foundTexts, menuItems);
-
-        driver.quit();
     }
 
-    @Ignore
     @Test
     public void menuItemsTest2() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
+        String hrUrl = "https://www.hireright.com";
+        getDriver().get(hrUrl);
         List<String> expectedMenuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
-        List<WebElement> foundMenuItems = driver.findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
+        List<WebElement> foundMenuItems = getDriver().findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
 
         List<String> foundMenuTexts = foundMenuItems.stream().map(WebElement::getText).collect(Collectors.toList());
 
         for (String expectedItem : expectedMenuItems) {
+
             Assert.assertTrue(foundMenuTexts.contains(expectedItem), "Expected menu item '" + expectedItem + "' not found!");
-
         }
+    }
 
-        driver.quit();
+    @Test
+    public void testJenkinsGreetings() {
+        JenkinsUtils.login(getDriver());
+        String JenkinsGreetings = getDriver().findElement(By.tagName("h1")).getText();
 
+        Assert.assertEquals("Welcome to Jenkins!", JenkinsGreetings);
     }
 }
