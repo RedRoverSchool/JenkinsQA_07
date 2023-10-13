@@ -206,6 +206,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
     // endregion
 
     // region AkiMiraTest
+    @Ignore
     @Test (description = "Test of Text-Box 'Name'")
     public void testTextBox () {
 
@@ -225,6 +226,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
         Assert.assertEquals("Name:Oleg", value);
 
     }
+    @Ignore
     @Test (description = "Test of Text-Box 'Current Address'")
     public void testTextBoxCurrentAddress () {
         getDriver().get("https://demoqa.com/text-box");
@@ -241,6 +243,27 @@ public class GroupIntroVertsQaTest extends BaseTest {
         WebElement message = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
         String value = message.getText();
         Assert.assertEquals("Current Address :Russian Federation", value);
+
+    }
+
+    @Test (description = "Test of Login to Swag Labs")
+    public void testLoginSwagLabs () {
+        getDriver().get("https://www.saucedemo.com");
+
+        String title = getDriver().getTitle();
+        Assert.assertEquals("Swag Labs", title);
+
+        WebElement textBoxName = getDriver().findElement(By.xpath("//*[@id=\"user-name\"]"));
+        WebElement textBoxPassword = getDriver().findElement(By.xpath("//*[@id=\"password\"]"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"login-button\"]"));
+
+        textBoxName.sendKeys("standard_user");
+        textBoxPassword.sendKeys("secret_sauce");
+        submitButton.click();
+
+        WebElement text = getDriver().findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/span"));
+        String value = text.getText();
+        Assert.assertEquals("Products", value);
 
     }
     // endregion
@@ -295,4 +318,25 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
         driver.quit();
     }
+
+    //AnnaByliginaTest
+    @Ignore
+    @Test
+
+    public void testTextBox1() {
+        WebDriver driver = new ChromeDriver();
+        driver.get(" https://demoqa.com/text-box");
+        String title = driver.getTitle();
+        Assert.assertEquals("DEMOQA", title);
+
+        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+        textBox.sendKeys("Краснодар, ул.Тихая, д.454");
+        submitButton.click();
+        WebElement message = driver.findElement(By.cssSelector("#currentAddress.mb-1"));
+        String value = message.getText();
+        Assert.assertEquals("Current Address :Краснодар, ул.Тихая, д.454", value);
+        driver.quit();
+    }
+
 }

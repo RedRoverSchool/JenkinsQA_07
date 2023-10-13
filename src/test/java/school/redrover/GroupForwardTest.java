@@ -118,18 +118,11 @@ public class GroupForwardTest extends BaseTest {
       Assert.assertEquals(value, "TANK");
   }
 
-  @Ignore
   @Test
   public void titleTest() {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
-      String title = driver.getTitle();
-
+      getDriver().get(PAGE_URL);
+      String title = getDriver().getTitle();
       Assert.assertEquals(title, "Longman Dictionary of Contemporary English | LDOCE");
-    } finally {
-      driver.quit();
-    }
   }
 
   @Test
@@ -190,6 +183,22 @@ public class GroupForwardTest extends BaseTest {
     Assert.assertEquals(actualResult, expectedResult);
   }
 
+  @Test
+  public void testLongmanSearch() throws InterruptedException {
+        getDriver().get(PAGE_URL);
+
+        Thread.sleep(5000);
+
+        WebElement inputSearch = getDriver().findElement(By.xpath("//input[@name='q']"));
+        inputSearch.sendKeys("Selenium");
+
+        WebElement searchButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        searchButton.click();
+
+        WebElement pagetitle = getDriver().findElement(By.xpath("//h1[@class='pagetitle']"));
+        String value = pagetitle.getText();
+        Assert.assertEquals(value, "selenium");
+  }
 }
 
 

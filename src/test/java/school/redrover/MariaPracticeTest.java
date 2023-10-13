@@ -5,14 +5,17 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
+
 
 public class MariaPracticeTest extends BaseTest {
+
+    public static final String PAGESELENIUM = "https://www.selenium.dev/selenium/web/web-form.html";
 
     @Test
     public void SearchTest() {
 
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
-
+        getDriver().get(PAGESELENIUM);
         String title = getDriver().getTitle();
 
         WebElement textBox = getDriver().findElement(By.name("my-text"));
@@ -30,7 +33,7 @@ public class MariaPracticeTest extends BaseTest {
     @Test
     public void createUserTest() {
 
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+        getDriver().get(PAGESELENIUM);
 
         WebElement textInput = getDriver().findElement(By.xpath("//input[@name='my-text']"));
         textInput.sendKeys("Maria Dymsha");
@@ -52,16 +55,24 @@ public class MariaPracticeTest extends BaseTest {
     @Test
     public void linkReturnToIndexTest() {
 
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+        getDriver().get(PAGESELENIUM);
 
-        WebElement clickSubmit = getDriver().findElement(By.xpath("//a[@href=\"./index.html\"]"));
+        WebElement clickSubmit = getDriver().findElement(By.xpath("//a[@href='./index.html']"));
         clickSubmit.click();
 
-        WebElement clickDisabledElement = getDriver().findElement(By.xpath("//a[@href=\"click_tests/disabled_element.html\"]"));
+        WebElement clickDisabledElement = getDriver().findElement(By.xpath("//a[@href='click_tests/disabled_element.html']"));
         clickDisabledElement.click();
 
         WebElement textSeeBelow = getDriver().findElement(By.xpath("//*[text()='See below']"));
 
         Assert.assertEquals(textSeeBelow.getText(), "See below");
+    }
+
+    @Test
+    public void WelcomeToJenkinsTest() {
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[text()='Dashboard']")).getText(),
+                "Dashboard");
     }
 }

@@ -263,55 +263,43 @@ public class GroupSevenTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
-    public void testBookSearch() {
-        WebDriver driver = new ChromeDriver();
+    public void testBooksSearch() {
+        getDriver().get("https://www.doylestownbookshop.com/");
 
-        driver.get("https://www.doylestownbookshop.com/");
-
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "The Doylestown Bookshop |");
 
-        WebElement textBox = driver.findElement(By.id("edit-search-block-form--2"));
-        WebElement searchButton = driver.findElement(By.id("edit-submit"));
+        WebElement textBox = getDriver().findElement(By.id("edit-search-block-form--2"));
+        WebElement searchButton = getDriver().findElement(By.id("edit-submit"));
 
         textBox.sendKeys("Making it so");
         searchButton.click();
 
-        WebElement message = driver.findElement(By.id("b-9781982167738"));
+        WebElement message = getDriver().findElement(By.id("b-9781982167738"));
         String value = message.getText();
         Assert.assertEquals(value, "Making It So: A Memoir");
-
-        driver.quit();
     }
 
-
-    @Ignore
     @Test
-    public void YMCATest() {
+    public void TestYMCA() {
 
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://ymcacapecod.org/");
+            getDriver().get("https://ymcacapecod.org/");
 
-            WebElement textBox = driver.findElement(By.className("field"));
-            WebElement SearchButton = driver.findElement(By.className("submit"));
+            WebElement textBox = getDriver().findElement(By.className("field"));
+            WebElement SearchButton = getDriver().findElement(By.className("submit"));
 
             textBox.sendKeys("pool");
             SearchButton.click();
 
-            WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
+            WebElement findelement = getDriver().findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
             findelement.click();
 
-            WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
+            WebElement text = getDriver().findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
             text.click();
 
             String value = text.getText();
             Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
-        } finally {
-            driver.quit();
-        }
     }
 
     @Ignore
@@ -374,7 +362,31 @@ public class GroupSevenTest extends BaseTest {
         String expectedText = "Home";
         Assert.assertEquals(footer,expectedText);
     }
+    @Test
+    public void testDatalist() {
 
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement readonly = getDriver().findElement(By.name("my-readonly"));
+        readonly.click();
+        String text = readonly.getAccessibleName();
+        Assert.assertEquals(text,"Readonly input");
+
+    }
+
+    @Test
+    public void testDatePicker(){
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement myDate = getDriver().findElement(By.name("my-date"));
+        myDate.click();
+
+        WebElement weekDay = getDriver().findElement(By.xpath("//thead/tr[3]/th[1]"));
+        String text = weekDay.getText();
+        Assert.assertEquals(text,"Su");
+
+    }
 
 
 }
