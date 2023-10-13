@@ -114,4 +114,28 @@ public class BrainBuildersTest extends BaseTest {
             String result = searchResult.getText();
             Assert.assertEquals(result, "Результаты поиска");
     }
+
+    @Test
+    public void testAskentLogIn() throws InterruptedException {
+        getDriver().get("https://www.askent.ru/cabinet/order/?show_all=Y");
+
+        String title = getDriver().getTitle();
+        assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
+
+        WebElement emailField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div/input"));
+        emailField.click();
+        emailField.sendKeys("testaccaskenttest@gmail.com");
+
+        WebElement passwordField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div[2]/input"));
+        passwordField.click();
+        passwordField.sendKeys("testpasswordaskent123!");
+
+        WebElement submitButtonLogIn = getDriver().findElement(By.xpath("//form[@id='loginform']/a"));
+        submitButtonLogIn.click();
+        Thread.sleep(1000);
+
+        WebElement personalAccountTitle = getDriver().findElement(By.cssSelector("h1"));
+        String resultTitle = personalAccountTitle.getText();
+        Assert.assertEquals(resultTitle, "Личный кабинет");
+    }
 }

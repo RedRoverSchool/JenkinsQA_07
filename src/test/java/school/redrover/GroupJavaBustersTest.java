@@ -24,6 +24,12 @@ public class GroupJavaBustersTest extends BaseTest {
 
         getDriver().get("https://letterboxd.com");
 
+        WebElement popupButton = findPopUp(By.xpath("//button[@aria-label='Consent']"));
+
+        if (popupButton != null) {
+            popupButton.click();
+        }
+
         WebElement searchField = getDriver().findElement(By.id("search-q"));
         WebElement submitButton = getDriver().findElement(By.xpath("//input[@class='action']"));
 
@@ -42,6 +48,12 @@ public class GroupJavaBustersTest extends BaseTest {
 
         getDriver().get("https://letterboxd.com");
 
+        WebElement popupButton = findPopUp(By.xpath("//button[@aria-label='Consent']"));
+
+        if (popupButton != null) {
+            popupButton.click();
+        }
+
         WebElement signInButton = getDriver().findElement(By.xpath("//a[@href='/sign-in/']"));
         signInButton.click();
 
@@ -57,6 +69,14 @@ public class GroupJavaBustersTest extends BaseTest {
         String value = message.getText();
         Assert.assertEquals("Your credentials don’t match. It’s probably attributable to human error.", value);
 
+    }
+
+    private WebElement findPopUp(By locator) {
+        try {
+            return getDriver().findElement(locator);
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            return null;
+        }
     }
 
     @Ignore

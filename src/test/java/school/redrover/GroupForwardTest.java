@@ -15,26 +15,24 @@ public class GroupForwardTest extends BaseTest {
   private static final String PAGE_URL = "https://www.ldoceonline.com/";
 
 
-  @Ignore
-  @Test
+    @Test
   public void testSearch() throws InterruptedException {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
 
-      WebElement textBox = driver.findElement(By.className("search_input"));
-      WebElement searchButton = driver.findElement(By.xpath("//*[@type='submit']"));
+      getDriver().get(PAGE_URL);
+
+      WebElement textBox = getDriver().findElement(By.className("search_input"));
+      WebElement searchButton = getDriver().findElement(By.xpath("//*[@type='submit']"));
 
       textBox.sendKeys("readable");
       searchButton.click();
       Thread.sleep(600);
-      WebElement titleElement = driver.findElement(By.className("HYPHENATION"));
+      WebElement titleElement = getDriver().findElement(By.className("HYPHENATION"));
       String value = titleElement.getText();
       Assert.assertEquals(value, "read‧a‧ble");
 
-    } finally {
-      driver.quit();
-    }
+
+      getDriver().quit();
+
 
   }
 
@@ -88,41 +86,36 @@ public class GroupForwardTest extends BaseTest {
     }
   }
 
-  @Ignore
+
   @Test
   public void testStoreSearch() throws InterruptedException {
 
-    WebDriver driver = new ChromeDriver();
+      getDriver().get("https://www.nobullproject.com/");
 
-    try {
-      driver.get("https://www.nobullproject.com/");
-
-      WebElement closeCookies = driver.findElement(By.id("onetrust-close-btn-container"));
+      WebElement closeCookies = getDriver().findElement(By.id("onetrust-close-btn-container"));
       closeCookies.click();
 
-      WebElement searchButton = driver.findElement(By.xpath("//*[@data-target = 'search-button']"));
+      WebElement searchButton = getDriver().findElement(By.xpath("//*[@data-target = 'search-button']"));
       searchButton.click();
 
-      WebElement searchField = driver.findElement(By.xpath("//input[@name = 'q']"));
+      WebElement searchField = getDriver().findElement(By.xpath("//input[@name = 'q']"));
       searchField.sendKeys("Tank");
 
-      WebElement searchButtonOnBar = driver.findElement(By.xpath("//button[@class = 'text-black'][1]"));
+      WebElement searchButtonOnBar = getDriver().findElement(By.xpath("//button[@class = 'text-black'][1]"));
       searchButtonOnBar.click();
 
       Thread.sleep(8000);
 
-      driver.switchTo().frame("attentive_creative");
-      WebElement discountPopUp = driver.findElement(By.id("closeIconContainer"));
+      getDriver().switchTo().frame("attentive_creative");
+      WebElement discountPopUp = getDriver().findElement(By.id("closeIconContainer"));
       discountPopUp.click();
 
-      driver.switchTo().defaultContent();
+      getDriver().switchTo().defaultContent();
 
-      WebElement searchResult = driver.findElement(By.xpath("//span[@class = 'ss__query']"));
+      WebElement searchResult = getDriver().findElement(By.xpath("//span[@class = 'ss__query']"));
       String value = searchResult.getText();
+
       Assert.assertEquals(value, "TANK");
-    } finally {
-      driver.quit();
-    }
   }
 
   @Ignore
@@ -146,31 +139,58 @@ public class GroupForwardTest extends BaseTest {
 
     getDriver().get(PAGE_URL);
 
+    WebElement languageButtonValue = getDriver().findElement(By.xpath(
+        "//span[@class= 'text res_hos']"));
+
+    languageButtonValue.click();
+
+    Thread.sleep(5000);
+
+    WebElement japaneseToEnglish = getDriver().findElement(By.xpath(
+        "//a[@data-value = 'japanese-english']"));
+
+    japaneseToEnglish.click();
+
+    Thread.sleep(5000);
+
+    String actualResult = languageButtonValue.getText();
+
+    Assert.assertEquals(actualResult, expectedResult);
+  }
+
+  @Test
+  public void test_InputFieldText_WhenChangingLanguage() throws InterruptedException {
+
+    String expectedResult = "Japanese - English";
+
+    getDriver().get(PAGE_URL);
+
     WebElement changeLanguageButton = getDriver().findElement(By.xpath(
-        "/html/body/div[1]/form/div[1]"));
+        "//span[@class= 'text res_hos']"));
 
     changeLanguageButton.click();
 
     Thread.sleep(5000);
 
     WebElement japaneseToEnglish = getDriver().findElement(By.xpath(
-        "/html/body/div[1]/form/div[1]/div/a[5]"));
+        "//a[@data-value = 'japanese-english']"));
 
     japaneseToEnglish.click();
 
     Thread.sleep(5000);
 
-    //Japanese - English
 
-     WebElement languageButtonValue = getDriver().findElement(By.xpath(
-         "//html/body/div[1]/form/div[1]/span"));
+    WebElement searchField = getDriver().findElement(By.xpath(
+        "//div[contains(@class,'search-input-container')]/input[@class='search_input']"));
 
-    String actualResult = languageButtonValue.getText();
+    String actualResult = searchField.getAttribute("placeholder");
 
-    Thread.sleep(5000);
+//    Thread.sleep(5000);
 
     Assert.assertEquals(actualResult, expectedResult);
   }
 
 }
+
+
 
