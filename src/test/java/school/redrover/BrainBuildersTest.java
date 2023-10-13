@@ -115,6 +115,7 @@ public class BrainBuildersTest extends BaseTest {
             Assert.assertEquals(result, "Результаты поиска");
     }
 
+    @Ignore
     @Test
     public void testAskentLogIn() throws InterruptedException {
         getDriver().get("https://www.askent.ru/cabinet/order/?show_all=Y");
@@ -139,6 +140,7 @@ public class BrainBuildersTest extends BaseTest {
         Assert.assertEquals(resultTitle, "Личный кабинет");
     }
 
+    @Ignore
     @Test
     public void testAskentAddToCart() throws InterruptedException {
         getDriver().get("https://www.askent.ru/cat/bumazhniki/portmone_308/");

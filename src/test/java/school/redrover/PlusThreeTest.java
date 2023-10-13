@@ -5,6 +5,8 @@ import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -273,24 +275,23 @@ public class PlusThreeTest extends BaseTest {
                 "Welcome to Jenkins!");
     }
 
-    @Ignore
     @Test
-    public  void contactUs() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(URL_PARABANK);
+    public  void testContactUs() {
 
-        WebElement contactUs = driver.findElement(By.xpath("//a[contains(text(), 'contact')]"));
+        getDriver().get(URL_PARABANK);
+
+        WebElement contactUs = getDriver().findElement(By.xpath("//a[contains(text(), 'contact')]"));
         contactUs.click();
-        WebElement title = driver.findElement(By.xpath("//*[@class='title']"));
+
+        WebElement title = getDriver().findElement(By.xpath("//*[@class='title']"));
         String resTitle = title.getText();
         Assert.assertEquals(resTitle, "Customer Care");
 
-        WebElement nameField = driver.findElement(By.name("name"));
-        WebElement emailField = driver.findElement(By.name("email"));
-        WebElement phoneField = driver.findElement(By.name("phone"));
-        WebElement messageField = driver.findElement(By.name("message"));
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id='contactForm']//descendant::input[@class='button']"));
+        WebElement nameField = getDriver().findElement(By.name("name"));
+        WebElement emailField = getDriver().findElement(By.name("email"));
+        WebElement phoneField = getDriver().findElement(By.name("phone"));
+        WebElement messageField = getDriver().findElement(By.name("message"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id='contactForm']//descendant::input[@class='button']"));
 
         nameField.sendKeys(USERNAME);
         emailField.sendKeys("example@example.com");
@@ -299,9 +300,8 @@ public class PlusThreeTest extends BaseTest {
 
         submitButton.click();
 
-        WebElement confirmationMessage = driver.findElement(By.xpath("//*[@id='rightPanel']/p[contains(text(),'Thank you')]"));
+        WebElement confirmationMessage = getDriver().findElement(By.xpath("//*[@id='rightPanel']/p[contains(text(),'Thank you')]"));
         Assert.assertEquals(confirmationMessage.getText(), "Thank you " + USERNAME);
-        driver.quit();
     }
 
     @Ignore
@@ -383,6 +383,30 @@ public class PlusThreeTest extends BaseTest {
         signUp.click();
         List<WebElement> list = getDriver().findElements(By.className("signup-button"));
         Assert.assertEquals(list.size(), 3);
+    }
+
+    @Test
+    void tripadvisorTest() {
+        getDriver().get("https://www.tripadvisor.ru");
+
+        getDriver().findElement(By.xpath("//a[@href='/Restaurants']")).click();
+
+        String value = getDriver().findElement(By.className("lockup_header")).getText();
+        Assert.assertEquals(value, "Найдите идеальный ресторан");
+
+        getDriver().findElement(By.id("component_7")).click();
+        getDriver().findElement(By.className("ctKgY")).click();
+        getDriver().findElement(By.cssSelector("[placeholder='Город или название ресторана']"))
+                .sendKeys("Москва");
+
+        getDriver().findElement(By.xpath("//a[@href='/Restaurants-g298484-Moscow_Central_Russia.html']"))
+                .click();
+
+        WebDriverWait waitTitle = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+        waitTitle.until(ExpectedConditions.visibilityOfElementLocated(By.id("HEADING")));
+
+        String getTitle = getDriver().findElement(By.id("HEADING")).getText();
+        Assert.assertEquals(getTitle, "Рестораны Москвы Moscow");
     }
 }
 
