@@ -118,18 +118,11 @@ public class GroupForwardTest extends BaseTest {
       Assert.assertEquals(value, "TANK");
   }
 
-  @Ignore
   @Test
   public void titleTest() {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
-      String title = driver.getTitle();
-
+      getDriver().get(PAGE_URL);
+      String title = getDriver().getTitle();
       Assert.assertEquals(title, "Longman Dictionary of Contemporary English | LDOCE");
-    } finally {
-      driver.quit();
-    }
   }
 
   @Test
