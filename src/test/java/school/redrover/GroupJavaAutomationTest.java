@@ -9,31 +9,26 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
 import java.io.File;
 import java.net.URI;
 import java.time.Duration;
-
 import org.testng.asserts.SoftAssert;
-
+import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class GroupJavaAutomationTest {
+public class GroupJavaAutomationTest extends BaseTest {
 
     @Test
-    public void herokuappHomePageTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://the-internet.herokuapp.com/");
-        String title = driver.getTitle();
+    public void testHerokuAppHomePage() {
+        getDriver().get("https://the-internet.herokuapp.com/");
+        String title = getDriver().getTitle();
         assertEquals(title, "The Internet");
-        driver.quit();
+        getDriver().quit();
     }
-
+    @Ignore
     @Test
     public void herokuAppAddRemoveTest() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -58,7 +53,7 @@ public class GroupJavaAutomationTest {
         driver.quit();
 
     }
-
+    @Ignore
     @Test
     public void testTextEditor() {
         final String expectedText = "My text\nsecond row";
@@ -79,7 +74,7 @@ public class GroupJavaAutomationTest {
         driver.quit();
 
     }
-
+    @Ignore
     @Test
     public void herokuAppABTest() {
         WebDriver driver = new ChromeDriver();
@@ -91,7 +86,7 @@ public class GroupJavaAutomationTest {
         assertEquals(abTestTitle, "A/B Test Control");
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void herokuAppCheckBoxTest() {
         WebDriver driver = new ChromeDriver();
@@ -107,7 +102,7 @@ public class GroupJavaAutomationTest {
         softAssert.assertAll();
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void testEntryAd() {
         WebDriver driver = new ChromeDriver();
@@ -129,7 +124,7 @@ public class GroupJavaAutomationTest {
 
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void testAddElement() {
         List<String> expectedButtonsName = new ArrayList<>(List.of("Add Element","Delete"));
@@ -151,7 +146,7 @@ public class GroupJavaAutomationTest {
 
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void testBasicAuth() {
         WebDriver driver = new ChromeDriver();
@@ -166,7 +161,7 @@ public class GroupJavaAutomationTest {
 
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void loginSuccessfulTest() {
         WebDriver webDriver = new ChromeDriver();
@@ -189,7 +184,7 @@ public class GroupJavaAutomationTest {
         logout.click();
         webDriver.quit();
     }
-
+    @Ignore
     @Test
     public void loginEmptyNameTest() {
         WebDriver webDriver = new ChromeDriver();
@@ -208,16 +203,16 @@ public class GroupJavaAutomationTest {
                 "Your username is invalid!");
         webDriver.quit();
     }
+
     @Test
     public void testBasicAuthWithoutAlert() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
-        String authMessage = driver.findElement(By.xpath("//h3/following-sibling::p")).getText();
+       getDriver().get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
+        String authMessage = getDriver().findElement(By.xpath("//h3/following-sibling::p")).getText();
         Assert.assertTrue(authMessage.contains("Congratulations"));
-        driver.quit();
+        getDriver().quit();
     }
 
-
+    @Ignore
     @Test
     public void checkBoxTest(){
         WebDriver webDriver = new ChromeDriver();
@@ -237,6 +232,7 @@ public class GroupJavaAutomationTest {
         Assert.assertEquals(List.of(checkBox1.isSelected(),checkBox2.isSelected()), List.of(true,true));
         webDriver.quit();
     }
+    @Ignore
     @Test
     public void downloadFile(){
         WebDriver webDriver = new ChromeDriver();
@@ -259,7 +255,7 @@ public class GroupJavaAutomationTest {
 
         webDriver.quit();
     }
-
+    @Ignore
     @Test
     public void testBrokenImage() {
         WebDriver driver = new ChromeDriver();

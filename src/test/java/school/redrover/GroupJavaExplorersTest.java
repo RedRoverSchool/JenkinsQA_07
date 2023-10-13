@@ -9,79 +9,67 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class GroupJavaExplorersTest {
+public class GroupJavaExplorersTest extends BaseTest {
 
     private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
 
     @Test
-    public void testSearchWatches() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
+    public void testSearchWatches() {
+        getDriver().get(BASE_URL);
 
-        Thread.sleep(1000);
-
-        WebElement gear = driver.findElement(By.xpath("//a[@id='ui-id-6']/span[2]"));
+        WebElement gear = getDriver().findElement(By.xpath("//a[@id='ui-id-6']/span[2]"));
         gear.click();
 
-        WebElement watches = driver.
-                findElement(By.xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
+        WebElement watches = getDriver()
+                .findElement(By.xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
         watches.click();
 
-        WebElement clamberWatch = driver.
-                findElement(By.xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
+        WebElement clamberWatch = getDriver()
+                .findElement(By.xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
         clamberWatch.click();
 
-        WebElement text = driver.findElement(By.xpath("//*[@class='base']"));
+        WebElement text = getDriver().findElement(By.xpath("//*[@class='base']"));
         String value = text.getText();
 
         Assert.assertEquals(value, "Clamber Watch");
-
-        driver.quit();
     }
 
     @Test
-    public void testLoginWithIncorrectData() throws InterruptedException {
+    public void testLoginWithIncorrectData() {
         String email = "asdfg@mail.ru";
         String password = "12345";
         String message = "The account sign-in was incorrect or your account is disabled temporarily." +
                 " Please wait and try again later.";
 
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
+        getDriver().get(BASE_URL);
 
-        Thread.sleep(1000);
-
-        WebElement loginIn = driver.
-                findElement(By.xpath("//header/div[1]/div/ul/li[2]/a"));
+        WebElement loginIn = getDriver().findElement(By.xpath("//header/div[1]/div/ul/li[2]/a"));
         loginIn.click();
 
-        WebElement textBoxEmail = driver.findElement(By.id("email"));
+        WebElement textBoxEmail = getDriver().findElement(By.id("email"));
         textBoxEmail.sendKeys(email);
 
-        WebElement textBoxPassword = driver.findElement(By.id("pass"));
+        WebElement textBoxPassword = getDriver().findElement(By.id("pass"));
         textBoxPassword.sendKeys(password);
 
-        WebElement submitButton = driver.
-                findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
         submitButton.click();
 
-        Thread.sleep(1000);
-
-        String value = driver.
-                findElement(By.xpath("//div[contains(text(), 'The account sign-in')]")).
-                getText();
+        String value = getDriver()
+                .findElement(By.xpath("//div[contains(text(), 'The account sign-in')]"))
+                .getText();
 
         Assert.assertTrue(value.contains(message));
-
-        driver.quit();
     }
+
+    @Ignore
     @Test
     public void testSignInNegative() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -107,6 +95,7 @@ public class GroupJavaExplorersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testSearchOlivia() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -126,6 +115,8 @@ public class GroupJavaExplorersTest {
 
         driver.quit();
     }
+
+    @Ignore
     @Test
     public void testInvalidLoginWithNonExistedUser() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -150,6 +141,7 @@ public class GroupJavaExplorersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testAddToCart() {
 
@@ -194,6 +186,7 @@ public class GroupJavaExplorersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testImages() {
         WebDriver driver = new ChromeDriver();
@@ -214,6 +207,7 @@ public class GroupJavaExplorersTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testTitle() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
