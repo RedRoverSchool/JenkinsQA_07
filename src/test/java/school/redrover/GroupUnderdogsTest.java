@@ -522,4 +522,27 @@ public class GroupUnderdogsTest extends BaseTest {
 
         driver.quit();
     }
+
+    @Ignore
+    @Test
+    public void KTsTask1Test() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://99-bottles-of-beer.net");
+        WebElement element = driver.findElement(By.xpath
+                ("//body/div[@id='wrap']/div[@id='header']/h1"));
+
+        String expectedResult = "99 Bottles of Beer";
+
+        Thread.sleep(3000);
+
+
+        Assert.assertEquals(element.getText(), expectedResult);
+
+        driver.quit();
+
+    }
+
+
 }
