@@ -5,6 +5,8 @@ import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -381,6 +383,30 @@ public class PlusThreeTest extends BaseTest {
         signUp.click();
         List<WebElement> list = getDriver().findElements(By.className("signup-button"));
         Assert.assertEquals(list.size(), 3);
+    }
+
+    @Test
+    void tripadvisorTest() {
+        getDriver().get("https://www.tripadvisor.ru");
+
+        getDriver().findElement(By.xpath("//a[@href='/Restaurants']")).click();
+
+        String value = getDriver().findElement(By.className("lockup_header")).getText();
+        Assert.assertEquals(value, "Найдите идеальный ресторан");
+
+        getDriver().findElement(By.id("component_7")).click();
+        getDriver().findElement(By.className("ctKgY")).click();
+        getDriver().findElement(By.cssSelector("[placeholder='Город или название ресторана']"))
+                .sendKeys("Москва");
+
+        getDriver().findElement(By.xpath("//a[@href='/Restaurants-g298484-Moscow_Central_Russia.html']"))
+                .click();
+
+        WebDriverWait waitTitle = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
+        waitTitle.until(ExpectedConditions.visibilityOfElementLocated(By.id("HEADING")));
+
+        String getTitle = getDriver().findElement(By.id("HEADING")).getText();
+        Assert.assertEquals(getTitle, "Рестораны Москвы Moscow");
     }
 }
 
