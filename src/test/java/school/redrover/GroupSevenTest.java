@@ -374,7 +374,16 @@ public class GroupSevenTest extends BaseTest {
         String expectedText = "Home";
         Assert.assertEquals(footer,expectedText);
     }
-
-
-
+    @Test
+    public void SyTest(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://animevost.org/");
+        driver.manage().window().maximize();
+        WebElement textBox = driver.findElement(By.id("story"));
+        textBox.sendKeys("Токийский Гуль");
+        WebElement SearchButton = driver.findElement(By.className("searchButton"));
+        SearchButton.click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.quit();
+    }
 }
