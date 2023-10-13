@@ -304,7 +304,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsVersion1() {
+    public void testJenkinsAddDescription() {
 
         JenkinsUtils.login(getDriver());
 
