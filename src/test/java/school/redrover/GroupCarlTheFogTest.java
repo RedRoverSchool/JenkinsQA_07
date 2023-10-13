@@ -146,7 +146,7 @@ public class GroupCarlTheFogTest extends BaseTest {
     }
 
     @Test
-    public void menuItemsTest2() {
+    public void testMainMenuItems() {
         String hrUrl = "https://www.hireright.com";
         getDriver().get(hrUrl);
         List<String> expectedMenuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
