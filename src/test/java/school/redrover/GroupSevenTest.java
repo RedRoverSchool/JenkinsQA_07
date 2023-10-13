@@ -281,32 +281,25 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "Making It So: A Memoir");
     }
 
-
-    @Ignore
     @Test
-    public void YMCATest() {
+    public void TestYMCA() {
 
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://ymcacapecod.org/");
+            getDriver().get("https://ymcacapecod.org/");
 
-            WebElement textBox = driver.findElement(By.className("field"));
-            WebElement SearchButton = driver.findElement(By.className("submit"));
+            WebElement textBox = getDriver().findElement(By.className("field"));
+            WebElement SearchButton = getDriver().findElement(By.className("submit"));
 
             textBox.sendKeys("pool");
             SearchButton.click();
 
-            WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
+            WebElement findelement = getDriver().findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
             findelement.click();
 
-            WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
+            WebElement text = getDriver().findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
             text.click();
 
             String value = text.getText();
             Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
-        } finally {
-            driver.quit();
-        }
     }
 
     @Ignore
