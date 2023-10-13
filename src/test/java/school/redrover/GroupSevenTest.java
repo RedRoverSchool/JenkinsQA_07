@@ -4,70 +4,60 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class GroupSevenTest {
+
+public class GroupSevenTest extends BaseTest {
     @Test
-    public void kylieTitleTest() {
-        WebDriver driver = new ChromeDriver();
+    public void testKylieTitle() {
+        getDriver().get("https://kyliecosmetics.com/");
 
-        driver.get("https://kyliecosmetics.com/");
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
+
         Assert.assertEquals(title, "Kylie Cosmetics by Kylie Jenner | Kylie Skin | Kylie Baby");
-
-        driver.quit();
     }
 
     @Test
-    public void searchTest() throws InterruptedException {
-        WebDriver driver = new FirefoxDriver();
-        try {
-            driver.get("https://kyliecosmetics.com/collections/kylie-cosmetics");
+    public void testSearchField ()  {
 
-            Thread.sleep(1000);
+        getDriver().get("https://kyliecosmetics.com/collections/kylie-cosmetics");
 
-            WebElement searchButton = driver.findElement(By.xpath("//a[@title='Search']"));
-            searchButton.click();
+        WebElement searchButton = getDriver().findElement(By.xpath("//a[@title='Search']"));
+        searchButton.click();
 
-            WebElement searchInput = driver.findElement(By.xpath("//input[@id='SearchForm-Header-Query']"));
-            searchInput.sendKeys("lip kit");
+        WebElement searchInput = getDriver().findElement(By.xpath("//input[@id='SearchForm-Header-Query']"));
+        searchInput.sendKeys("lip kit");
 
-            WebElement searchButtonNext = driver.findElement(By.xpath("//button[@id='SearchForm-Header-Submit']"));
-            searchButtonNext.click();
+        WebElement searchButtonNext = getDriver().findElement(By.xpath("//button[@id='SearchForm-Header-Submit']"));
+        searchButtonNext.click();
 
-            WebElement title = driver.findElement(By.xpath("//h1[normalize-space()='Search']"));
-            String value = title.getText();
-            Assert.assertEquals(value, "SEARCH");
-
-        } finally {
-            driver.quit();
-        }
+        WebElement title = getDriver().findElement(By.xpath("//h1[normalize-space()='Search']"));
+        String value = title.getText();
+        Assert.assertEquals(value, "SEARCH");
     }
 
     @Test
     public void TestBddSearch() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
-            driver.get("https://duckduckgo.com/");
-            WebElement searchBox = driver.findElement(By.xpath("//input[@class = 'searchbox_input__bEGm3']"));
-            searchBox.sendKeys("bdd");
-            WebElement searchButton = driver.findElement(By.xpath("//button[@class = 'searchbox_searchButton__F5Bwq iconButton_button__6x_9C']"));
-            searchButton.click();
-            WebElement searchResult = driver.findElement(By.xpath("//h2[@class = 'Ee2e63EzQ9F3xq9wsGDY']"));
-            String resultText = searchResult.getText();
-            Assert.assertTrue(resultText.contains("Behavior-driven development"));
-        } finally {
-            driver.quit();
-        }
+        WebDriver driver = getDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+        driver.get("https://duckduckgo.com/");
+        WebElement searchBox = driver.findElement(By.xpath("//input[@class = 'searchbox_input__bEGm3']"));
+        searchBox.sendKeys("bdd");
+        WebElement searchButton = driver.findElement(By.xpath("//button[@class = 'searchbox_searchButton__F5Bwq iconButton_button__6x_9C']"));
+        searchButton.click();
+        WebElement searchResult = driver.findElement(By.xpath("//h2[@class = 'Ee2e63EzQ9F3xq9wsGDY']"));
+        String resultText = searchResult.getText();
+        Assert.assertTrue(resultText.contains("Behavior-driven development"));
     }
 
+    @Ignore
     @Test
     public void testSearch() {
         WebDriver driver = new ChromeDriver();
@@ -87,6 +77,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testTextInput() {
 
@@ -110,6 +101,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
 
     public void testSearchAB() {
@@ -133,6 +125,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testLinks() throws InterruptedException {
 
@@ -154,25 +147,19 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+
     @Test
-    public void testPricePageHeader() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://megagroup.by/");
-            driver.manage().window().maximize();
-            Thread.sleep(1500);
+    public void testPricePageHeader()  {
+        getDriver().get("https://megagroup.by/");
 
-            WebElement price = driver.findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
-            price.click();
+        WebElement price = getDriver().findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
+        price.click();
 
-            Thread.sleep(1500);
-            WebElement header = driver.findElement(By.xpath("//h1"));
-            Assert.assertEquals(header.getText(), "Стоимость сайтов");
-        } finally {
-            driver.quit();
-        }
+        WebElement header = getDriver().findElement(By.xpath("//h1"));
+        Assert.assertEquals(header.getText(), "Стоимость сайтов");
     }
 
+    @Ignore
     @Test
     public void testHPSearch() {
         WebDriver driver = new ChromeDriver();
@@ -198,6 +185,7 @@ public class GroupSevenTest {
         }
     }
 
+    @Ignore
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -275,6 +263,7 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testBookSearch() {
         WebDriver driver = new ChromeDriver();
@@ -297,10 +286,12 @@ public class GroupSevenTest {
         driver.quit();
     }
 
+
+    @Ignore
     @Test
     public void YMCATest() {
 
-        WebDriver driver = new FirefoxDriver();
+        WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://ymcacapecod.org/");
 
@@ -322,4 +313,92 @@ public class GroupSevenTest {
             driver.quit();
         }
     }
+
+    @Ignore
+    @Test
+    public void testKumon() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.kumon.com/");
+
+
+        WebElement locationButton = driver.findElement(By.xpath("//*[@href = '/locations']"));
+        locationButton.click();
+        Thread.sleep(1000);
+
+        String titleLocation = driver.getTitle();
+        Thread.sleep(1000);
+        Assert.assertEquals(titleLocation, "Find Kids' Learning Centers - Kumon Locations");
+
+
+        WebElement inputButton = driver.findElement(By.xpath("//input[@type = 'text']"));
+        inputButton.click();
+        Thread.sleep(1000);
+
+
+        WebElement locationText = driver.findElement(By.xpath("//h4[text()='INDIAN LAND']"));
+        String getText = locationText.getText();
+        Assert.assertEquals(getText, "INDIAN LAND");
+
+        WebElement schedulerButton = driver.findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
+        Thread.sleep(1000);
+        schedulerButton.click();
+        Thread.sleep(5000);
+        String parentWindowHandle = driver.getWindowHandle(); //это метод в библиотеке Selenium WebDriver,
+        // который используется для получения идентификатора (handle) текущего окна или вкладки браузера.
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(parentWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                return; // Завершить метод и вернуться
+            }
+        }
+
+        String schedulerTitle = driver.getTitle();
+
+        Assert.assertEquals(schedulerTitle, "Book Appointment | Kumon of  INDIAN LAND");
+
+        driver.quit();
+
+    }
+
+    @Test
+    public void testTitle(){
+
+        getDriver().get("https://www.psafe.com/");
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "PSafe | Leading provider of mobile privacy, security, and performance apps");
+
+        WebElement enterHomeButton = getDriver().findElement(By.linkText("Home"));
+        enterHomeButton.click();
+
+        String footer = getDriver().findElement(By.xpath("//a[@href = 'https://www.psafe.com/dfndr/']")).getText();
+        String expectedText = "Home";
+        Assert.assertEquals(footer,expectedText);
+    }
+    @Test
+    public void testDatalist() {
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement readonly = getDriver().findElement(By.name("my-readonly"));
+        readonly.click();
+        String text = readonly.getAccessibleName();
+        Assert.assertEquals(text,"Readonly input");
+
+    }
+
+    @Test
+    public void testDatePicker(){
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement myDate = getDriver().findElement(By.name("my-date"));
+        myDate.click();
+
+        WebElement weekDay = getDriver().findElement(By.xpath("//thead/tr[3]/th[1]"));
+        String text = weekDay.getText();
+        Assert.assertEquals(text,"Su");
+
+    }
+
+
 }

@@ -1,50 +1,38 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-public class VladTest {
-    String pass = "_.3JsTMMvjtqzAa";
-    String email = "newtestd0tc0m@gmail.com";
-    String site = "https://www.ministryoftesting.com/";
 
-@Test
+public class VladTest extends BaseTest {
+    @Test
     public void testLogin() {
+        getDriver().get("https://www.ministryoftesting.com/");
 
-    WebDriver driver = new ChromeDriver();
-
-    try {
-        driver.get(site);
-        driver.manage().window().maximize();
-
-        WebElement language = driver.findElement(By.xpath("//*[@id=\"nav-sign-in\"]"));
+        WebElement language = getDriver().findElement(By.id("nav-sign-in"));
         language.click();
 
-        WebElement textEmail = driver.findElement(By.xpath("//*[@id=\"user_login\"]"));
-        textEmail.sendKeys(email);
+        WebElement textEmail = getDriver().findElement(By.id("user_login"));
+        textEmail.sendKeys("newtestd0tc0m@gmail.com");
 
-        WebElement textPass = driver.findElement(By.xpath("//*[@id=\"user_password\"]"));
-        textPass.sendKeys(pass);
+        WebElement textPass = getDriver().findElement(By.name("user[password]"));
+        textPass.sendKeys("_.3JsTMMvjtqzAa");
 
-        WebElement textLogin = driver.findElement(By.xpath("//*[@id=\"new_user\"]/div[3]/input"));
+        WebElement textLogin = getDriver().findElement(By.name("commit"));
         textLogin.click();
 
-        WebElement pngAccount = driver.findElement(By.xpath("//*[@id=\"profileDropdown\"]/img"));
+        WebElement pngAccount = getDriver().findElement(By.xpath("/html/body/main/header/nav/div/div[2]/div[2]/a/img"));
         pngAccount.click();
 
-        WebElement textDashboard = driver.findElement(By.xpath("//*[@id=\"myMoT\"]/span"));
+        WebElement textDashboard = getDriver().findElement(By.xpath("/html/body/main/header/nav/div/div[2]/div[2]/ul/li[3]/a"));
         textDashboard.click();
 
-        WebElement textExpected = driver.findElement(By.xpath("/html/body/main/div[3]/section[2]/div/div/div[2]/p"));
+        WebElement textExpected = getDriver().findElement(By.xpath("/html/body/main/div[3]/section[2]/div/div/div[2]/p"));
 
         String value = textExpected.getText();
         Assert.assertEquals(value, "Please use the navigation to find the existing sections of your My MoT pages.");
-    } finally {
-        driver.quit();
     }
-}
 }
