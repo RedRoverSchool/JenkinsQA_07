@@ -277,36 +277,33 @@ public class GroupUnitedByJavaTest extends BaseTest {
             Assert.assertEquals(window_add.getText(), "Registration Form");
     }
 
-    @Ignore
     @Test
     @Description("Testing a site with non-working search")
-    public void testSomesing () throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+    public void testSomething () {
 
-        driver.get("https://www.mybirds.ru/");
+        getDriver().get("https://www.mybirds.ru/");
 
         // Test title
-        WebElement textBox = driver.findElement(By.className("slogan"));
+        WebElement textBox = getDriver().findElement(By.className("slogan"));
         String text = textBox.getText();
         Assert.assertEquals(text,"Энциклопедия владельца птицы");
 
         // Test search
-        WebElement inputTxt = driver.findElement(By.className("input_txt"));
+        WebElement inputTxt = getDriver().findElement(By.className("input_txt"));
         inputTxt.sendKeys("Parrots");
 
-        WebElement searchButton = driver.findElement(By.name("submit"));
+        WebElement searchButton = getDriver().findElement(By.name("submit"));
         searchButton.click();
 
-        WebElement noText = driver.findElement(By.className("notetext"));
+        WebElement noText = getDriver().findElement(By.className("notetext"));
         String value = noText.getText();
         Assert.assertEquals(value, "К сожалению, на ваш поисковый запрос ничего не найдено.");
 
         // Test link
-        WebElement linkButton = driver.findElement(By.xpath("//a[@href='/nature/' and text()='Птицы в природе']"));
-        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        WebElement linkButton = getDriver().findElement(By.xpath("//a[@href='/nature/' and text()='Птицы в природе']"));
+        JavascriptExecutor executor = (JavascriptExecutor)getDriver();
         executor.executeScript("arguments[0].click();", linkButton);
 
-        driver.quit();
     }
 
     @Ignore
