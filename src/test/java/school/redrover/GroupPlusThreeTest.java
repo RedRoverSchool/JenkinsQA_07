@@ -46,7 +46,7 @@ public class GroupPlusThreeTest extends BaseTest {
             };
         }
     }
-
+ 
     private void login(String username, String password) {
 
         getDriver().get(SAUCEDEMO_URL);
