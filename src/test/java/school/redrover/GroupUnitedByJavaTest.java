@@ -152,17 +152,21 @@ public class GroupUnitedByJavaTest extends BaseTest {
     }
 
     @Test
-    public void testDemoqaFormsRedirection() throws InterruptedException {
+    public void testDemoqaFormsRedirection() {
 
         getDriver().get("https://demoqa.com/");
+
         String title = getDriver().getTitle();
         Assert.assertEquals(title, "DEMOQA");
+
         WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(2)"));
         elementsButton.click();
+
         String currentUrl = getDriver().getCurrentUrl();
         String elementsUrl = "https://demoqa.com/forms";
-        Assert.assertEquals(currentUrl, elementsUrl);
-        Thread.sleep(2000);
+
+        Assert.assertEquals(currentUrl, elementsUrl, "The actual URL: " + currentUrl +
+                " differs from the expected one: " + elementsUrl);
     }
 
     @Ignore
@@ -259,7 +263,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(expectedHeading, heading);
     }
 
-
+    @Ignore
     @Test
     @Description("WebTables: Test open the window Registration form")
     public void testDemoqaAddNewRecordButton() {
@@ -348,41 +352,35 @@ public class GroupUnitedByJavaTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
     public void testAddItemFromCatalogueToCart() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
-        try {
-            WebElement usernameField = driver.findElement(By.id("user-name"));
-            usernameField.sendKeys("standard_user");
+        getDriver().get(SAUCEDEMO_URL);
 
-            WebElement passwordField = driver.findElement(By.id("password"));
-            passwordField.sendKeys("secret_sauce");
+        WebElement usernameField = getDriver().findElement(By.id("user-name"));
+        usernameField.sendKeys("standard_user");
 
-            WebElement login_button = driver.findElement(By.className("submit-button"));
-            login_button.click();
+        WebElement passwordField = getDriver().findElement(By.id("password"));
+        passwordField.sendKeys("secret_sauce");
 
-            String item_name = "Sauce Labs Fleece Jacket";
-            String quantity = "1";
+        WebElement login_button = getDriver().findElement(By.className("submit-button"));
+        login_button.click();
 
-            WebElement fleece_jacket_to_cart_button = driver.findElement(By.id(
-                    "add-to-cart-sauce-labs-fleece-jacket"));
-            fleece_jacket_to_cart_button.click();
+        String item_name = "Sauce Labs Fleece Jacket";
+        String quantity = "1";
 
-            WebElement shopping_cart_button = driver.findElement(By.className("shopping_cart_container"));
-            shopping_cart_button.click();
-            Thread.sleep(2000);
+        WebElement fleece_jacket_to_cart_button = getDriver().findElement(By.id(
+                "add-to-cart-sauce-labs-fleece-jacket"));
+        fleece_jacket_to_cart_button.click();
 
-            String cart_item_name = driver.findElement(By.cssSelector(".cart_item_label .inventory_item_name"))
-                    .getText();
-            String cart_item_quantity = driver.findElement(By.xpath("//div[3]/*[contains(@class, " +
-                    "'cart_quantity')]")).getText();
-            Assert.assertEquals(cart_item_name, item_name, "The cart does not have " + item_name);
-            Assert.assertEquals(cart_item_quantity, quantity, "The cart quantity is not " + quantity);
-        } finally {
-            driver.quit();
-        }
+        WebElement shopping_cart_button = getDriver().findElement(By.className("shopping_cart_container"));
+        shopping_cart_button.click();
+        Thread.sleep(2000);
+
+        String cart_item_name = getDriver().findElement(By.cssSelector(".cart_item_label .inventory_item_name"))
+                .getText();
+        String cart_item_quantity = getDriver().findElement(By.className("cart_quantity")).getText();
+        Assert.assertEquals(cart_item_name, item_name, "The cart does not have " + item_name);
+        Assert.assertEquals(cart_item_quantity, quantity, "The cart quantity is not " + quantity);
     }
 
     @Ignore

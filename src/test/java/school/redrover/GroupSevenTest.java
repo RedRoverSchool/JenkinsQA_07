@@ -265,7 +265,7 @@ public class GroupSevenTest extends BaseTest {
 
 
     @Test
-    public void testBookSearch() {
+    public void testBooksSearch() {
         getDriver().get("https://www.doylestownbookshop.com/");
 
         String title = getDriver().getTitle();

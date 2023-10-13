@@ -117,27 +117,19 @@ public class GroupCarlTheFogTest extends BaseTest {
         return null;
     }
 
-    @Ignore
     @Test
     public void testRadyShellCalendar()  {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.theshell.org/");
+        getDriver().get("https://www.theshell.org/");
 
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         Assert.assertEquals("Home | Rady Shell at Jacobs Park", title);
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        getDriver().findElement(By.xpath("//button[@class='navtoggle']")).click();
 
-        driver.findElement(By.xpath("//button[@class='navtoggle']")).click();
+        getDriver().findElement(By.xpath("//*[@id='site-menu']/li[3]/a")).click();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        driver.findElement(By.xpath("//*[@id='site-menu']/li[3]/a")).click();
-
-        String performancesPage = driver.getTitle();
+        String performancesPage = getDriver().getTitle();
         Assert.assertEquals("Performances | Rady Shell at Jacobs Park", performancesPage);
-
-        driver.quit();
     }
 
     @Ignore
