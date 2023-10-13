@@ -386,5 +386,19 @@ public class GroupSevenTest extends BaseTest {
 
     }
 
+    @Test
+    public void datePicker(){
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+
+        WebElement myDate = getDriver().findElement(By.name("my-date"));
+        myDate.click();
+
+        WebElement weekDay = getDriver().findElement(By.xpath("//thead/tr[3]/th[1]"));
+        String text = weekDay.getText();
+        Assert.assertEquals(text,"Su");
+
+    }
+
 
 }
