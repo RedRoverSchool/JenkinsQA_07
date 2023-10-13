@@ -32,7 +32,7 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void MainPageTitleTest() {
         getDriver().get(MAIN_PAGE_URL);
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         assertEquals(title, "99 Bottles of Beer | Start");
     }
 
