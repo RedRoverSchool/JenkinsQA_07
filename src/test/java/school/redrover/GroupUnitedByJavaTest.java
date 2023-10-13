@@ -279,7 +279,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
     @Test
     @Description("Testing a site with non-working search")
-    public void testSomething () throws InterruptedException {
+    public void testSomething () {
 
         getDriver().get("https://www.mybirds.ru/");
 
