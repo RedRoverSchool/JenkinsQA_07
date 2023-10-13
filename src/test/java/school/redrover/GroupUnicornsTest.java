@@ -110,6 +110,19 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getTitle(), "HTML Tutorial");
     }
+            @Test
+        public void JenkinsTest() {
+
+            JenkinsUtils.login(getDriver());
+
+            //Check the button REST API
+
+            getDriver().findElement(By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/a")).click();
+
+            Assert.assertEquals(
+                    getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/h1")).getText(),
+                    "REST API");
+        }
 
     @Test
     public void testDemoWebShop() {
