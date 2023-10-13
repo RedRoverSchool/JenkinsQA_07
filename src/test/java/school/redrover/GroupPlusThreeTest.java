@@ -384,5 +384,15 @@ public class GroupPlusThreeTest extends BaseTest {
         List<WebElement> list = getDriver().findElements(By.className("signup-button"));
         Assert.assertEquals(list.size(), 3);
     }
+
+    @Test
+    public void testSignUpAsFan() {
+        getDriver().get("https://bandcamp.com/");
+        WebElement signUp = getDriver().findElement(By.className("all-signup-link"));
+        signUp.click();
+        WebElement signUpAsFan = getDriver().findElement(By.className("open-fan-signup"));
+        signUpAsFan.click();
+        Assert.assertEquals("Email address", getDriver().findElement(By.className("email-label")).getText());
+    }
 }
 
