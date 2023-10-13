@@ -263,9 +263,8 @@ public class GroupSevenTest extends BaseTest {
         driver.quit();
     }
 
-
     @Test
-    public void testBookSearch() {
+    public void testBooksSearch() {
         getDriver().get("https://www.doylestownbookshop.com/");
 
         String title = getDriver().getTitle();
