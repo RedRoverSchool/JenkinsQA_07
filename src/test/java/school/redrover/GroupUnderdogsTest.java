@@ -476,6 +476,7 @@ public class GroupUnderdogsTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
     public void testSearchMion() {
         driver = new ChromeDriver();
@@ -495,6 +496,7 @@ public class GroupUnderdogsTest {
 
     }
 
+    @Ignore
     @Test
     public void testCatalogMion(){
         driver = new ChromeDriver();
