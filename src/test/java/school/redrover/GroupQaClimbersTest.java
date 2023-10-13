@@ -141,7 +141,7 @@ public class GroupQaClimbersTest extends BaseTest {
     }
 
     @Test
-    public void TestCheckBoxMenuSubmitWindow() {
+    public void testCheckBoxMenuSubmitWindow() {
 
         getDriver().get(URL);
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -243,7 +243,7 @@ public class GroupQaClimbersTest extends BaseTest {
         Assert.assertEquals(value, "Name:Barak Obama\nEmail:barak1961@gmail.com");//ожидаем что текст "
     }
 
-    @Ignore
+
     @Test
     public void testProgressBarInWidgets() {
 
@@ -263,7 +263,7 @@ public class GroupQaClimbersTest extends BaseTest {
         WebElement progressBar = getDriver().findElement
                 (By.xpath("//div[@id = 'progressBar'][@class = 'progress']"));
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
         wait.until(ExpectedConditions.textToBePresentInElement(progressBar, "100%"));
 
         WebElement resetButton = getDriver().findElement(By.xpath("//button[@id = 'resetButton']"));
