@@ -7,10 +7,10 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
-public class XLosTest extends BaseTest {
+public class XeniyaLTest extends BaseTest {
 
     @Test
-    public void SauceDemoPositiveLoginTest(){
+    public void testSauceDemoPositiveLogin(){
 
         try {
             getDriver().get("https://www.saucedemo.com/");
@@ -22,7 +22,7 @@ public class XLosTest extends BaseTest {
             password.sendKeys("secret_sauce");
             loginBtn.click();
 
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             String expectedTitle = "Swag Labs";
             String actualTitle = getDriver().getTitle();
