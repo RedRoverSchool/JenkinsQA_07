@@ -384,5 +384,26 @@ public class PlusThreeTest extends BaseTest {
         List<WebElement> list = getDriver().findElements(By.className("signup-button"));
         Assert.assertEquals(list.size(), 3);
     }
+
+    @Test(description = "Tripadvisor search for Moscow restaurants")
+    void tripadvisorTest(){
+         getDriver().get("https://www.tripadvisor.ru");
+
+         getDriver().findElement(By.xpath("//a[@href='/Restaurants']")).click();
+
+         String value = getDriver().findElement(By.className("lockup_header")).getText();
+         Assert.assertEquals(value, "Найдите идеальный ресторан");
+
+         getDriver().findElement(By.id("component_7")).click();
+         getDriver().findElement(By.className("ctKgY")).click();
+         getDriver().findElement(By.cssSelector("[placeholder='Город или название ресторана']"))
+                 .sendKeys("Москва");
+
+         getDriver().findElement(By.xpath("//a[@href='/Restaurants-g298484-Moscow_Central_Russia.html']"))
+                 .click();
+
+         String getTitle = getDriver().findElement(By.cssSelector("[data-test-target='main_h1']")).getText();
+         Assert.assertEquals(getTitle, "Рестораны Москвы");
+    }
 }
 
