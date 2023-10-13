@@ -43,6 +43,27 @@ public class GroupCarlTheFogTest extends BaseTest {
 
     }
 
+    public void searchIndustryTest() {
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.get("https://www.hireright.com/");
+
+            WebElement industriesDropDown = driver.findElement(By.xpath("//span[contains(text(), 'Industries')]"));
+            industriesDropDown.click();
+
+            String Industries = driver.findElement(By.xpath("//h4[contains(text(), 'Industries')]")).getText();
+            Assert.assertEquals(Industries,"Industries");
+
+            WebElement healthCareAndLifeSciensces = driver.findElement(By.xpath("//p[contains(text(), 'Healthcare & Life Sciences')]"));
+            Assert.assertEquals(healthCareAndLifeSciensces.isDisplayed(), true);
+
+
+
+        } finally {
+            driver.quit();
+        }
+    }
+
     @Ignore
     @Test
     public void registerNowDisplayTest() {
