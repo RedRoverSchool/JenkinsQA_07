@@ -7,40 +7,38 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.util.HashMap;
 import java.time.Duration;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-@Ignore
-public class GroupUnicornsTest {
+
+public class GroupUnicornsTest extends BaseTest {
 
     @Test
-    public void usPsPageOpenTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        String title = driver.getTitle();
-        assertEquals("Welcome | USPS", title);
-        driver.quit();
+    public void testUsPsPageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        Assert.assertEquals(getDriver().getTitle(), "Welcome | USPS");
     }
 
     @Test
-    public void usPsSendMailPackageTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.usps.com/");
-        WebElement send = driver.findElement(By.xpath("//a[@id='mail-ship-width']"));
+    public void testUsPsSendMailPackageOpen() {
+        getDriver().get("https://www.usps.com/");
+
+        WebElement send = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
         send.click();
-        String sendTitle = driver.getTitle();
-        assertEquals("Send Mail & Packages | USPS", sendTitle);
-        driver.quit();
+
+        Assert.assertEquals(getDriver().getTitle(), "Send Mail & Packages | USPS");
     }
 
     @Test
     public void testSuccessfulLogin() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith";
         String password = "SuperSecretPassword!";
@@ -49,12 +47,11 @@ public class GroupUnicornsTest {
         driver.findElement(By.className("radius")).click();
         String actual = driver.findElement(By.id("flash")).getText();
         assertTrue(actual.contains("You logged into a secure area!"));
-        driver.quit();
     }
 
     @Test
     public void testLoginAttemptWithInvalidUsername() {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         String username = "tomsmith123";
         String password = "SuperSecretPassword!";
@@ -63,94 +60,60 @@ public class GroupUnicornsTest {
         driver.findElement(By.className("radius")).click();
         String actual = driver.findElement(By.id("flash-messages")).getText();
         assertTrue(actual.contains("Your username is invalid!"));
-        driver.quit();
     }
 
     @Test
-    public void w3SchoolTest() {
-        WebDriver wd = new ChromeDriver();
-        try {
-            wd.get("https://www.w3schools.com/");
+    public void testW3School()
+    {
+        getDriver().get("https://www.w3schools.com/");
 
-            //title
-            String title = wd.getTitle();
-            Assert.assertEquals(title, "W3Schools Online Web Tutorials");
-
-            //H1 heading
-            WebElement h1Heading = wd.findElement(By.className("learntocodeh1"));
-            Assert.assertEquals(h1Heading.getText(), "Learn to Code");
-
-            //H3 heading
-            WebElement h3Heading = wd.findElement(By.className("learntocodeh3"));
-            Assert.assertEquals(h3Heading.getText(), "With the world's largest web developer site.");
-
-            //H4 heading
-            WebElement h4Heading = wd.findElement(By.className("learntocodeh4"));
-            Assert.assertEquals(h4Heading.getText(), "Not Sure Where To Begin?");
-
-            //text box
-            WebElement textBox = wd.findElement(By.id("search2"));
-
-            //search button
-            WebElement searchButton = wd.findElement(By.id("learntocode_searchbtn"));
-            textBox.sendKeys("java tutorial");
-            searchButton.click();
-
-            //title
-            title = wd.getTitle();
-            Assert.assertEquals(title, "Java Tutorial");
-        } finally {
-            wd.quit();
-        }
-    }
-
-    @Test
-    public void testGeico() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.geico.com/");
-
-            WebElement title = driver.findElement(By.xpath("//div/h1[@id ='section1heading']"));
-            title.isDisplayed();
-
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-
-            WebElement zipCode = driver.findElement(By.xpath("//div/input[@id ='ssp-service-zip']"));
-            zipCode.sendKeys("11111");
-
-            WebElement submit = driver.findElement(By.xpath("//input[@class ='btn btn--secondary']"));
-            submit.click();
-
-            WebElement message = driver.findElement(By.xpath("//div/p[@class = 'text-message']"));
-            message.isDisplayed();
-        } finally {
-            driver.quit();
-        }
-    }
-
-    @Test
-    public void testSearch() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.w3schools.com/");
-        String title = driver.getTitle();
+        //title
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "W3Schools Online Web Tutorials");
-        WebElement textBox = driver.findElement(By.id("search2"));
-        WebElement submitButton = driver.findElement(By.id("learntocode_searchbtn"));
-        textBox.sendKeys("HTML Tutorial");
-        submitButton.click();
-        WebElement message = driver.findElement(By.className("color_h1"));
-        String value = message.getText();
-        Assert.assertEquals(value, "Tutorial");
 
-        driver.quit();
+        //H1 heading
+        WebElement h1Heading = getDriver().findElement(By.className("learntocodeh1"));
+        Assert.assertEquals(h1Heading.getText(), "Learn to Code");
+
+        //H3 heading
+        WebElement h3Heading = getDriver().findElement(By.className("learntocodeh3"));
+        Assert.assertEquals(h3Heading.getText(), "With the world's largest web developer site.");
+
+        //H4 heading
+        WebElement h4Heading = getDriver().findElement(By.className("learntocodeh4"));
+        Assert.assertEquals(h4Heading.getText(), "Not Sure Where To Begin?");
+
+        //text box
+        WebElement textBox = getDriver().findElement(By.id("search2"));
+
+        //search button
+        WebElement searchButton = getDriver().findElement(By.id("learntocode_searchbtn"));
+        textBox.sendKeys("java tutorial");
+        searchButton.click();
+
+        //title
+        title = getDriver().getTitle();
+        Assert.assertEquals(title, "Java Tutorial");
+    }
+
+
+    @Test
+    public void W3school1test() {
+        getDriver().get("https://www.w3schools.com/");
+
+        Assert.assertEquals(getDriver().getTitle(), "W3Schools Online Web Tutorials");
+
+        getDriver().findElement(By.id("search2")).sendKeys("HTML Tutorial");
+
+        getDriver().findElement(By.id("learntocode_searchbtn")).click();
+
+        Assert.assertEquals(getDriver().getTitle(), "HTML Tutorial");
     }
 
     @Test
-    public void demoWebShopTest() {
-        WebDriver driver = new ChromeDriver();
+    public void testDemoWebShop() {
 
-        String pageTitlePath = "//div[@class='page-title' ]//h1";
-
+        String pageTitlePath = "//div[@class='page-title']//h1";
         String basePath = "//ul[@class='top-menu']//a[@href='/";
 
         HashMap<String, String> pages = new HashMap<>();
@@ -163,21 +126,16 @@ public class GroupUnicornsTest {
         pages.put("Gift Cards", basePath + "gift-cards']");
 
         String pageTitle;
+        getDriver().get("https://demowebshop.tricentis.com/");
 
-        try {
-            driver.get("https://demowebshop.tricentis.com/");
-
-            for (String key : pages.keySet()) {
-                driver.findElement(By.xpath(pages.get(key))).click();
-                pageTitle = driver.findElement(By.xpath(pageTitlePath)).getText();
-                Assert.assertEquals(pageTitle, key);
-            }
-
-        } finally {
-            driver.quit();
+        for (String key : pages.keySet()) {
+            getDriver().findElement(By.xpath(pages.get(key))).click();
+            pageTitle = getDriver().findElement(By.xpath(pageTitlePath)).getText();
+            Assert.assertEquals(pageTitle, key);
         }
     }
 
+    @Ignore
     @Test
     public void searchVerificationGitHub() {
         WebDriver driver = new ChromeDriver();
@@ -199,6 +157,7 @@ public class GroupUnicornsTest {
         }
     }
 
+    @Ignore
     @Test
     public void testTradingView() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -222,6 +181,7 @@ public class GroupUnicornsTest {
         }
     }
 
+    @Ignore
     @Test
     public void verificationSocialIconsGitHub() {
         WebDriver driver = new ChromeDriver();
@@ -247,30 +207,26 @@ public class GroupUnicornsTest {
 
     @Test
     public void testComputersMenu() {
-        WebDriver driver = new ChromeDriver();
+
         String[] computers = new String[]{"Desktops", "Notebooks", "Accessories"};
 
-        try {
-            driver.get("https://demowebshop.tricentis.com/");
-            driver.findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
-            List<WebElement> elements = driver.findElements(By.className("sub-category-item"));
+        getDriver().get("https://demowebshop.tricentis.com/");
+        getDriver().findElement(By.xpath("//ul[@class='top-menu']//a[@href='/computers']")).click();
 
-            boolean actual = true;
-            for (int i = 0; i < elements.size(); i++) {
-                if (!computers[i].equals(elements.get(i).getText())) {
-                    actual = false;
-                    break;
-                }
+        List<WebElement> elements = getDriver().findElements(By.className("sub-category-item"));
+        boolean actual = true;
+        for (int i = 0; i < elements.size(); i++) {
+            if (!computers[i].equals(elements.get(i).getText())) {
+                actual = false;
+                break;
             }
-            assertTrue(actual);
-
-        } finally {
-            driver.quit();
         }
+        assertTrue(actual);
     }
 
+    @Ignore
     @Test
-    public void verificationSocialIconsGitHub2() throws InterruptedException {
+    public void verificationSocialIconsGitHub2(){
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -291,47 +247,46 @@ public class GroupUnicornsTest {
     }
 
     @Test
-    public void unsuccessfulLoginDigitalBank() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("http://18.118.14.155:8080/bank/login");
-            driver.manage().window().maximize();
-            WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
-            icon.isDisplayed();
+    public void unsuccessfulLoginDigitalBankTest() {
+        WebDriver driver = getDriver();
+        driver.get("http://18.118.14.155:8080/bank/login");
+        driver.manage().window().maximize();
+        WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
+        icon.isDisplayed();
 
-            WebElement loginBtn = driver.findElement(By.id("username"));
-            loginBtn.sendKeys("tester1@gmail.com");
-            WebElement password = driver.findElement(By.id("password"));
-            password.sendKeys("1234Test");
-            WebElement submitBtn = driver.findElement(By.id("submit"));
-            submitBtn.click();
-            WebElement errorMsg = driver.findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
-            errorMsg.isDisplayed();
-
-        } finally {
-            driver.quit();
-        }
+        WebElement loginBtn = driver.findElement(By.id("username"));
+        loginBtn.sendKeys("tester1@gmail.com");
+        WebElement password = driver.findElement(By.id("password"));
+        password.sendKeys("1234Test");
+        WebElement submitBtn = driver.findElement(By.id("submit"));
+        submitBtn.click();
+        WebElement errorMsg = driver.findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
+        Assert.assertTrue(errorMsg.isDisplayed(), "Error message is displayed");
     }
 
     @Test
-    public void successfulLoginDigitalBank() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("http://18.118.14.155:8080/bank/login");
-            driver.manage().window().maximize();
-            WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
-            icon.isDisplayed();
+    public void successfulLoginDigitalBankTest() {
+        WebDriver driver = getDriver();
+        driver.get("http://18.118.14.155:8080/bank/login");
+        driver.manage().window().maximize();
+        WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
+        icon.isDisplayed();
 
-            WebElement loginBtn = driver.findElement(By.id("username"));
-            loginBtn.sendKeys("tester@gmail.com");
-            WebElement password = driver.findElement(By.id("password"));
-            password.sendKeys("Test1234");
-            WebElement submitBtn = driver.findElement(By.id("submit"));
-            submitBtn.click();
-            WebElement avatar = driver.findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
-            avatar.isDisplayed();
-        } finally {
-            driver.quit();
-        }
+        WebElement loginBtn = driver.findElement(By.id("username"));
+        loginBtn.sendKeys("tester@gmail.com");
+        WebElement password = driver.findElement(By.id("password"));
+        password.sendKeys("Test1234");
+        WebElement submitBtn = driver.findElement(By.id("submit"));
+        submitBtn.click();
+        WebElement avatar = driver.findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
+        Assert.assertTrue(avatar.isDisplayed(), "Avatar is displayed");
+    }
+    @Test
+    public void testJenkinsVersion() {
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(),
+                "Jenkins 2.414.2");
     }
 }

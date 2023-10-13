@@ -7,14 +7,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class BrainBuildersTest {
 
+public class BrainBuildersTest extends BaseTest {
+
+    @Ignore
     @Test
     public void  testCreatingDoubleRoom() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
@@ -62,6 +64,7 @@ public class BrainBuildersTest {
             driver.quit();
         }
     }
+    @Ignore
     @Test
     public void testAlcobendasSearch() {
         WebDriver driver = new ChromeDriver();
@@ -89,30 +92,50 @@ public class BrainBuildersTest {
             driver.quit();
         }
     }
+
     @Test
     public void testAskentSearch() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.askent.ru/");
+            getDriver().get("https://www.askent.ru/");
 
-            String title = driver.getTitle();
+            String title = getDriver().getTitle();
             assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
 
-            WebElement magnifierIcon = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[1]"));
+            WebElement magnifierIcon = getDriver().findElement(By.className("search_icon"));
             magnifierIcon.click();
 
-            WebElement searchTextField = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[2]/form/input"));
+            WebElement searchTextField = getDriver().findElement(By.name("q"));
             searchTextField.click();
             searchTextField.sendKeys("сумка");
 
-            WebElement magnifierButton = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[2]/form/button"));
+            WebElement magnifierButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
             magnifierButton.click();
 
-            WebElement searchResult = driver.findElement(By.cssSelector("h1"));
+            WebElement searchResult = getDriver().findElement(By.cssSelector("h1"));
             String result = searchResult.getText();
             Assert.assertEquals(result, "Результаты поиска");
-        } finally {
-            driver.quit();
-        }
+    }
+
+    @Test
+    public void testAskentLogIn() throws InterruptedException {
+        getDriver().get("https://www.askent.ru/cabinet/order/?show_all=Y");
+
+        String title = getDriver().getTitle();
+        assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
+
+        WebElement emailField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div/input"));
+        emailField.click();
+        emailField.sendKeys("testaccaskenttest@gmail.com");
+
+        WebElement passwordField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div[2]/input"));
+        passwordField.click();
+        passwordField.sendKeys("testpasswordaskent123!");
+
+        WebElement submitButtonLogIn = getDriver().findElement(By.xpath("//form[@id='loginform']/a"));
+        submitButtonLogIn.click();
+        Thread.sleep(1000);
+
+        WebElement personalAccountTitle = getDriver().findElement(By.cssSelector("h1"));
+        String resultTitle = personalAccountTitle.getText();
+        Assert.assertEquals(resultTitle, "Личный кабинет");
     }
 }

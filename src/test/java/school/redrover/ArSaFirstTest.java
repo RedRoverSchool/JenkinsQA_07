@@ -1,14 +1,14 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
 public class ArSaFirstTest extends BaseTest {
 
+
     String URL = "https://www.selenium.dev/selenium/web/web-form.html";
+  
 
     //Check if Title of the Website is correct..
     @Test
@@ -41,6 +41,7 @@ public class ArSaFirstTest extends BaseTest {
         String placeholderText = disabledInput.getAttribute("placeholder");
         Assert.assertEquals(placeholderText, "Disabled input");
     }
+
 
     //Check the color of "my-colors" element
     @Test
