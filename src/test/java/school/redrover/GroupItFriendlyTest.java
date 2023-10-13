@@ -200,21 +200,11 @@ public class GroupItFriendlyTest extends BaseTest {
             driver.quit();
         }
     }
-@Ignore
+
   @Test
   public void BadRequestButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/links");
-            driver.manage().window().maximize();
-
-            WebElement badRequestButton = driver.findElement(By.id("bad-request"));
-
-            assertEquals(badRequestButton.getText(), "Bad Request");
-
-        } finally {
-            driver.quit();
-        }
+        WebDriver driver = getDriver();
+        driver.get("https://demoqa.com/links");
+        assertEquals(driver.findElement(By.id("bad-request")).getText(), "Bad Request");
     }
-
 }
