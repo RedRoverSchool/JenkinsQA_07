@@ -1,5 +1,6 @@
 package school.redrover;
 
+import com.beust.ah.A;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -288,5 +289,32 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(),
                 "Jenkins 2.414.2");
+    }
+
+    private String enterText(String text){
+
+        getDriver().findElement(By.id("description-link")).click();
+        if (!text.isEmpty()){
+            getDriver().findElement(By.name("description")).sendKeys(text);
+        } else {
+            getDriver().findElement(By.name("description")).clear();
+        }
+        getDriver().findElement(By.name("Submit")).click();
+        return getDriver().findElement(By.xpath("//div[@id='description']/div")).getText();
+    }
+
+    @Test
+    public void testJenkinsVersion1() {
+
+        JenkinsUtils.login(getDriver());
+
+        String text = "Testing.";
+        String descText = enterText(text);
+        Assert.assertEquals(text, descText);
+
+        text = "";
+        descText = enterText(text);
+        Assert.assertEquals(text, descText);
+
     }
 }
