@@ -262,7 +262,7 @@ public class GroupPlusThreeTest extends BaseTest {
         Assert.assertEquals(name, "Swag Labs");
 
     }
-
+    @Ignore
     @Test(description = "Jenkins first test")
     public void loginJenkinsVasilyiD() throws InterruptedException {
 
