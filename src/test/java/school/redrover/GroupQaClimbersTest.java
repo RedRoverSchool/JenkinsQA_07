@@ -7,7 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
