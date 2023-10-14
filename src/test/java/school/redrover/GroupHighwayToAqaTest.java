@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.devtools.v85.dom.model.ShadowRootType;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -94,12 +93,41 @@ public class GroupHighwayToAqaTest extends BaseTest {
     }
 
     @Test
-    public void testLogin(){
+    public void testLogin() {
+
         JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div/h1[text()='Welcome to Jenkins!']")).getText(),
                 "Welcome to Jenkins!"
         );
+    }
+
+    @Test
+    public void testEmptyProjectName() {
+
+        JenkinsUtils.login(getDriver());
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test
+    public void testCreateNewFreestyleProject() {
+
+        JenkinsUtils.login(getDriver());
+
+        final String projectName = "HighwayNew";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(),
+                String.format("Project %s", projectName));
     }
 }
