@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -57,48 +58,42 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertTrue(resultText.contains("Behavior-driven development"));
     }
 
-    @Ignore
     @Test
     public void testSearch() {
-        WebDriver driver = new ChromeDriver();
+
         try {
-            driver.get("https://elitetransit.com/");
+            getDriver().get("https://elitetransit.com/");
 
-            driver.manage().window().maximize();
+            getDriver().manage().window().maximize();
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-            WebElement buttonContact = driver.findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
+            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
+            WebElement buttonContact = getDriver().findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
             buttonContact.click();
-            String title = driver.getTitle();
+            String title = getDriver().getTitle();
 
             Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
         } finally {
-            driver.quit();
+            getDriver().quit();
         }
     }
-
-    @Ignore
     @Test
     public void testTextInput() {
 
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.selenium.dev/selenium/web/web-form.html");
+            getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
-            driver.manage().window().maximize();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(800));
+            getDriver().manage().window().maximize();
+            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(800));
 
-            WebElement input = driver.findElement(By.id("my-text-id"));
+            WebElement input = getDriver().findElement(By.id("my-text-id"));
             input.click();
             input.sendKeys("Selenium");
 
-            WebElement submit = driver.findElement(By.tagName("button")); ////button[@type='submit']
+            WebElement submit = getDriver().findElement(By.tagName("button")); ////button[@type='submit']
             submit.submit();
-            WebElement message = driver.findElement(By.id("message"));
+            WebElement message = getDriver().findElement(By.id("message"));
             Assert.assertEquals(message.getText(), "Received!");
-        } finally {
-            driver.quit();
-        }
+
+            getDriver().quit();
     }
 
     @Ignore
@@ -387,6 +382,11 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(text,"Su");
 
     }
+@Test
+    public void testLogin(){
+    JenkinsUtils.login(getDriver());
+
+}
 
 
 }
