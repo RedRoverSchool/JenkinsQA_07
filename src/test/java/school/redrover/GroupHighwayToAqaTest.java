@@ -8,11 +8,13 @@ import org.openqa.selenium.devtools.v85.dom.model.ShadowRootType;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
-@Ignore
-public class GroupHighwayToAqaTest {
 
-    @Test
+public class GroupHighwayToAqaTest extends BaseTest {
+
+    @Ignore
     public void testInvalidCreds() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
@@ -42,7 +44,7 @@ public class GroupHighwayToAqaTest {
         driver.quit();
     }
 
-    @Test
+    @Ignore
     public void testCreateAcc() throws InterruptedException {
         String firstName = "firstName";
         String lastName = "LastName";
@@ -91,4 +93,13 @@ public class GroupHighwayToAqaTest {
         driver.quit();
     }
 
+    @Test
+    public void testLogin(){
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div/h1[text()='Welcome to Jenkins!']")).getText(),
+                "Welcome to Jenkins!"
+        );
+    }
 }
