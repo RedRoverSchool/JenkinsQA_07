@@ -27,14 +27,10 @@ public class BezverkhovaTest extends BaseTest {
     public void testLogIn() throws InterruptedException {
         getDriver().get(URL);
 
-        WebElement myaccount = getDriver().findElement(By.className("authorization-link"));
-        myaccount.click();
-        WebElement enterEmail = getDriver().findElement(By.name("login[username]"));
-        enterEmail.sendKeys(EMAIL);
-        WebElement enterPass = getDriver().findElement(By.name("login[password]"));
-        enterPass.sendKeys(PASS);
-        WebElement submitButton = getDriver().findElement(By.cssSelector("#send2 > span"));
-        submitButton.click();
+        getDriver().findElement(By.className("authorization-link")).click();
+        getDriver().findElement(By.name("login[username]")).sendKeys(EMAIL);
+        getDriver().findElement(By.name("login[password]")).sendKeys(PASS);
+        getDriver().findElement(By.cssSelector("#send2 > span")).click();
         Thread.sleep(2000);
         String greeting = getDriver().findElement(By.cssSelector("body > div.page-wrapper > header > div.panel.wrapper > div > ul > li.greet.welcome > span")).getText();
         assertEquals(greeting, "Welcome, Test Redrov!");
@@ -44,14 +40,10 @@ public class BezverkhovaTest extends BaseTest {
     @Test
     public void testForgetPass() throws InterruptedException {
         getDriver().get(URL);
-        WebElement myAccount = getDriver().findElement(By.className("authorization-link"));
-        myAccount.click();
-        WebElement forgetPass = getDriver().findElement(By.cssSelector("#login-form > fieldset > div.actions-toolbar > div.secondary > a > span"));
-        forgetPass.click();
-        WebElement enterEmail = getDriver().findElement(By.name("email"));
-        enterEmail.sendKeys(EMAIL);
-        WebElement submitButton = getDriver().findElement(By.cssSelector("#form-validate > div > div.primary > button > span"));
-        submitButton.click();
+        getDriver().findElement(By.className("authorization-link")).click();
+        getDriver().findElement(By.cssSelector("#login-form > fieldset > div.actions-toolbar > div.secondary > a > span")).click();
+        getDriver().findElement(By.name("email")).sendKeys(EMAIL);
+        getDriver().findElement(By.cssSelector("#form-validate > div > div.primary > button > span")).click();
         Thread.sleep(2000);
         String greeting = getDriver().findElement(By.cssSelector("#maincontent > div.page.messages > div:nth-child(2) > div > div")).getText();
         assertEquals(greeting, "If there is an account associated with test_redrov@yahoo.com you " +
