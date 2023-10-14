@@ -2,14 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
 public class BezverkhovaTest extends BaseTest {
     public static final String ANYITEM = "#maincontent > div.columns > div.column.main > div.products.wrapper.grid.products-grid > ol > li:nth-child(1) > div > div > strong > a";
     public static final String SIZE = "#option-label-size-143-item-168";
