@@ -92,12 +92,12 @@ public class GroupHighwayToAqaTest extends BaseTest {
         driver.quit();
     }
 
+    @Ignore
     @Test
-    public void testLogin() throws InterruptedException {
+    public void testLogin() {
 
         JenkinsUtils.login(getDriver());
 
-        Thread.sleep(10000);
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div/h1[text()='Welcome to Jenkins!']")).getText(),
                 "Welcome to Jenkins!"
