@@ -13,8 +13,7 @@ public class PopovTest extends BaseTest {
         WebElement submitButton = getDriver().findElement(By.cssSelector("button"));
         submitButton.click();
         WebElement message = getDriver().findElement(By.id("message"));
-        String value = message.getText();
-        return value;
+        return message.getText();
     }
 
     @BeforeMethod
