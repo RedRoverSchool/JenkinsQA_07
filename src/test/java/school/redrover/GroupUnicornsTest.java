@@ -355,7 +355,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testSearch() throws InterruptedException {
+    public void testSearch()  {
         JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector(" .empty-state-block > h1")).getText(),
