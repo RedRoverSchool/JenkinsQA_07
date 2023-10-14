@@ -628,7 +628,8 @@ public class GroupQaClimbersTest extends BaseTest {
     }
    @Test
     public void testTextBoxTest() {
-        getDriver().get(URL);
+
+       getDriver().get(URL);
        JavascriptExecutor js = (JavascriptExecutor) getDriver();
        js.executeScript("scroll(0,200)");
        WebElement element = getDriver().findElement(By.xpath("(//h5)[1]"));
