@@ -1,15 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
+import school.redrover.runner.BaseTest;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,22 +14,10 @@ import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class GroupQaClimbersTest {
 
-    final static String URL = "https://demoqa.com/";
-    private WebDriver driver;
+public class GroupQaClimbersTest extends BaseTest {
 
-
-    @BeforeMethod
-    public void before() {
-        this.driver = new ChromeDriver();
-    }
-
-    @AfterMethod
-    public void after() {
-        driver.quit();
-    }
+    private static final String URL = "https://demoqa.com/";
 
     @Test
     public void testTextBox() {
@@ -650,32 +634,30 @@ public class GroupQaClimbersTest {
         Assert.assertEquals(actualMessage, "Search - \"java\"");
     }
    @Test
-    public void textBoxTest(){
-        driver.get(URL);
-    driver.manage().window().maximize();
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("scroll(0,200)");
+    public void testTextBoxTest() {
 
-    WebElement element = driver.findElement(By.xpath("(//h5)[1]"));
-    element.click();
-    WebElement textBox = driver.findElement(By.xpath("//span[text()='Text Box']"));
-    textBox.click();
-    WebElement userName = driver.findElement(By.id("userName"));
-    userName.sendKeys("Sam Don");
-    WebElement email = driver.findElement(By.id("userEmail"));
-    email.sendKeys("sam@gmail.com");
-    WebElement currentAddress = driver.findElement(By.id("currentAddress"));
-    currentAddress.sendKeys("123 My Road");
-    WebElement permanentAddress = driver.findElement(By.id("permanentAddress"));
-    permanentAddress.sendKeys("1256 S Loop");
-    js.executeScript("scroll(0,200)");
-    WebElement submitBtn = driver.findElement(By.id("submit"));
-    submitBtn.click();
-    String actualName = driver.findElement(By.id("name")).getText();
-    String expectedName = "Name:Sam Don";
-    Assert.assertEquals(actualName, expectedName);
-    }
+       getDriver().get(URL);
+       JavascriptExecutor js = (JavascriptExecutor) getDriver();
+       js.executeScript("scroll(0,200)");
+       WebElement element = getDriver().findElement(By.xpath("(//h5)[1]"));
+       element.click();
+       WebElement textBox = getDriver().findElement(By.xpath("//span[text()='Text Box']"));
+       textBox.click();
+       WebElement userName = getDriver().findElement(By.id("userName"));
+       userName.sendKeys("Sam Don");
+       WebElement email = getDriver().findElement(By.id("userEmail"));
+       email.sendKeys("sam@gmail.com");
+       WebElement currentAddress = getDriver().findElement(By.id("currentAddress"));
+       currentAddress.sendKeys("123 My Road");
+       WebElement permanentAddress = getDriver().findElement(By.id("permanentAddress"));
+       permanentAddress.sendKeys("1256 S Loop");
+       js.executeScript("scroll(0,200)");
+       WebElement submitBtn = getDriver().findElement(By.id("submit"));
+       submitBtn.click();
+       String actualName = getDriver().findElement(By.id("name")).getText();
+       String expectedName = "Name:Sam Don";
+       Assert.assertEquals(actualName, expectedName);
+   }
 }
 
 
