@@ -45,6 +45,36 @@ public class GroupCarlTheFogTest extends BaseTest {
     }
 
     @Test
+    public void testSlowCalculator(){
+        String url = "https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html";
+        int calculatorDelay = 0;
+        int firstValue = 4;
+        int secondValue = 7;
+        int result = firstValue + secondValue;
+        getDriver().get(url);
+
+        String firstOperand = String.format("//span[contains(@class, 'btn-outline-primary') and text() = %d]", firstValue);
+        String secondOperand = String.format("//span[contains(@class, 'btn-outline-primary') and text() = %d]", secondValue);
+        String operation = "//span[contains(@class, 'operator') and text() = '+']";
+        String equalSign = "//span[contains(@class, 'btn-outline-warning') and text() = '=']";
+        String justScreen = "//div[@class='screen']";
+        String screenWithResult = String.format("//div[@class='screen' and text() = %d]", result);
+
+        getDriver().findElement(By.id("delay")).clear();
+        getDriver().findElement(By.id("delay")).sendKeys("" + calculatorDelay);
+        getDriver().findElement(By.xpath(firstOperand)).click();
+        getDriver().findElement(By.xpath(operation)).click();
+        getDriver().findElement(By.xpath(secondOperand)).click();
+        getDriver().findElement(By.xpath(equalSign)).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(calculatorDelay));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(screenWithResult)));
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(justScreen)).getText(), "" + result);
+
+    }
+
+    @Test
     public void testRegisterNowDisplay() {
         String hrUrl = "https://www.hireright.com";
         getDriver().get(hrUrl);
