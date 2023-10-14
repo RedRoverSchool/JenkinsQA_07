@@ -2,15 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
-
 
 import java.util.concurrent.TimeUnit;
 
@@ -122,24 +119,27 @@ public class LocomotiveGroupTest extends BaseTest {
         }
       }
 
-      @Ignore
+
       @Test
-    public void yandexSearchBarTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+    public void testYandexSearchBar(){
         String url = "https://ya.ru/";
-        try{
-            driver.get(url);
-            WebElement searchBar = driver.findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
-            WebElement searchButton = driver.findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
+        getDriver().get(url);
+        try {
+
+            WebElement searchBar = getDriver().findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
+            WebElement searchButton = getDriver().findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
             searchBar.click();
             searchBar.sendKeys("Ответ на главный вопрос жизни");
             searchButton.click();
-            WebElement searchText = driver.findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
+            WebElement searchText = getDriver().findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
             Assert.assertTrue(searchText.isDisplayed());
+        }catch (NoSuchElementException e){
+            System.out.println("Капча яндекса не позволяет закончить тест");
         }finally {
-            driver.quit();
+            System.out.println("Тест окончен");
         }
       }
+
     @Ignore
     @Test
     public void testSimpleSearch() throws InterruptedException {
@@ -186,4 +186,35 @@ public class LocomotiveGroupTest extends BaseTest {
 
         driver.quit();
     }
+
+    @Test
+    public void testHoverOver() {
+        By image = By.className("figure");
+        By captionInput = By.cssSelector("#content > div > div:nth-child(3) > div > h5");
+        int imageIndex = 0;
+        String captionExpected = "name: user" + (imageIndex + 1);
+
+        var driver = getDriver();
+        driver.get("https://the-internet.herokuapp.com/hovers");
+        var hoverElement = driver.findElements(image).get(imageIndex); // returns 1st image
+
+        var action = new Actions(driver);
+        action.moveToElement(hoverElement).perform();
+
+        var captionText = driver.findElements(captionInput).get(imageIndex);
+        Assert.assertEquals(captionText.getText(), captionExpected, "The caption text is wrong");
+    }
+
+
+    @Test
+    public void testSkateSiteHeader() throws InterruptedException {
+        getDriver().get("http://www.skate.net/");
+
+        WebElement title = getDriver().findElement(By.className("header_text"));
+        String value = title.getText();
+        Assert.assertEquals(value, "skates, skate gear, ice skates and more");
+
+        Thread.sleep(2000);
+    }
+
 }

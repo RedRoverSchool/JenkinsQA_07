@@ -92,31 +92,76 @@ public class BrainBuildersTest extends BaseTest {
             driver.quit();
         }
     }
-    @Ignore
+
     @Test
     public void testAskentSearch() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.askent.ru/");
+            getDriver().get("https://www.askent.ru/");
 
-            String title = driver.getTitle();
+            String title = getDriver().getTitle();
             assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
 
-            WebElement magnifierIcon = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[1]"));
+            WebElement magnifierIcon = getDriver().findElement(By.className("search_icon"));
             magnifierIcon.click();
 
-            WebElement searchTextField = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[2]/form/input"));
+            WebElement searchTextField = getDriver().findElement(By.name("q"));
             searchTextField.click();
             searchTextField.sendKeys("сумка");
 
-            WebElement magnifierButton = driver.findElement(By.xpath("//*[@id='no_indent']/div[5]/div[2]/div/div[3]/div[2]/div[2]/form/button"));
+            WebElement magnifierButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
             magnifierButton.click();
 
-            WebElement searchResult = driver.findElement(By.cssSelector("h1"));
+            WebElement searchResult = getDriver().findElement(By.cssSelector("h1"));
             String result = searchResult.getText();
             Assert.assertEquals(result, "Результаты поиска");
-        } finally {
-            driver.quit();
+    }
+
+    @Ignore
+    @Test
+    public void testAskentLogIn() throws InterruptedException {
+        getDriver().get("https://www.askent.ru/cabinet/order/?show_all=Y");
+
+        String title = getDriver().getTitle();
+        assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
+
+        WebElement emailField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div/input"));
+        emailField.click();
+        emailField.sendKeys("testaccaskenttest@gmail.com");
+
+        WebElement passwordField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div[2]/input"));
+        passwordField.click();
+        passwordField.sendKeys("testpasswordaskent123!");
+
+        WebElement submitButtonLogIn = getDriver().findElement(By.xpath("//form[@id='loginform']/a"));
+        submitButtonLogIn.click();
+        Thread.sleep(1000);
+
+        WebElement personalAccountTitle = getDriver().findElement(By.cssSelector("h1"));
+        String resultTitle = personalAccountTitle.getText();
+        Assert.assertEquals(resultTitle, "Личный кабинет");
+    }
+
+    @Ignore
+    @Test
+    public void testAskentAddToCart() throws InterruptedException {
+        getDriver().get("https://www.askent.ru/cat/bumazhniki/portmone_308/");
+
+        String title = getDriver().getTitle();
+        assertEquals(title, "МИНИ ПОРТМОНЕ MODULE , пол: Женский, цвет: breen, размер: 100х080х035. Купить в интернет-магазине ASKENT. Цена 4 490 руб.");
+
+        if (getDriver().findElement(By.xpath("//*[@id = 'cookie_accept']")).isDisplayed()) {
+            WebElement cookieButton = getDriver().findElement(By.xpath("//*[@id = 'cookie_accept']"));
+            cookieButton.click();
         }
+
+        WebElement addToCartButton = getDriver().findElement(By.xpath("//*[@class = 'optionsBlock__add add-cart-statistics']"));
+        addToCartButton.click();
+
+        WebElement cartIcon = getDriver().findElement(By.xpath("//*[@class = 'cart_icon']"));
+        cartIcon.click();
+        Thread.sleep(2000);
+
+        WebElement itemName = getDriver().findElement(By.xpath("//*[@href = '/cat/bumazhniki/portmone_308/']"));
+        String resultName = itemName.getText();
+        Assert.assertEquals(resultName, "МИНИ ПОРТМОНЕ MODULE");
     }
 }
