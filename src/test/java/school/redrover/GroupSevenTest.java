@@ -300,49 +300,46 @@ public class GroupSevenTest extends BaseTest {
             Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
     }
 
-    @Ignore
     @Test
     public void testKumon() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.kumon.com/");
+
+        getDriver().get("https://www.kumon.com/");
 
 
-        WebElement locationButton = driver.findElement(By.xpath("//*[@href = '/locations']"));
+        WebElement locationButton = getDriver().findElement(By.xpath("//*[@href = '/locations']"));
         locationButton.click();
         Thread.sleep(1000);
 
-        String titleLocation = driver.getTitle();
+        String titleLocation = getDriver().getTitle();
         Thread.sleep(1000);
         Assert.assertEquals(titleLocation, "Find Kids' Learning Centers - Kumon Locations");
 
 
-        WebElement inputButton = driver.findElement(By.xpath("//input[@type = 'text']"));
+        WebElement inputButton = getDriver().findElement(By.xpath("//input[@type = 'text']"));
         inputButton.click();
         Thread.sleep(1000);
 
 
-        WebElement locationText = driver.findElement(By.xpath("//h4[text()='INDIAN LAND']"));
+        WebElement locationText = getDriver().findElement(By.xpath("//h4[text()='INDIAN LAND']"));
         String getText = locationText.getText();
         Assert.assertEquals(getText, "INDIAN LAND");
 
-        WebElement schedulerButton = driver.findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
+        WebElement schedulerButton = getDriver().findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
         Thread.sleep(1000);
         schedulerButton.click();
         Thread.sleep(5000);
-        String parentWindowHandle = driver.getWindowHandle(); //это метод в библиотеке Selenium WebDriver,
+        String parentWindowHandle = getDriver().getWindowHandle(); //это метод в библиотеке Selenium WebDriver,
         // который используется для получения идентификатора (handle) текущего окна или вкладки браузера.
-        for (String windowHandle : driver.getWindowHandles()) {
+        for (String windowHandle : getDriver().getWindowHandles()) {
             if (!windowHandle.equals(parentWindowHandle)) {
-                driver.switchTo().window(windowHandle);
+                getDriver().switchTo().window(windowHandle);
                 return; // Завершить метод и вернуться
             }
         }
 
-        String schedulerTitle = driver.getTitle();
+        String schedulerTitle = getDriver().getTitle();
 
         Assert.assertEquals(schedulerTitle, "Book Appointment | Kumon of  INDIAN LAND");
-
-        driver.quit();
 
     }
 
