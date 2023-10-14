@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import static org.testng.Assert.assertEquals;
 
@@ -91,5 +92,15 @@ public class BezverkhovaTest extends BaseTest {
             System.out.println("Sale finished");
         }
         getDriver().quit();
+    }
+
+    @Test
+    public void testJenkinsStatus(){
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.className("model-link")).click();
+        String iconText = getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText();
+        assertEquals(iconText, "admin");
+        String statusIconText = getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(4)")).getText();
+        assertEquals(statusIconText, "Jenkins User ID: admin");
     }
 }
