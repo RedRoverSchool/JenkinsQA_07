@@ -34,7 +34,6 @@ public class BezverkhovaTest extends BaseTest {
         Thread.sleep(2000);
         String greeting = getDriver().findElement(By.cssSelector("body > div.page-wrapper > header > div.panel.wrapper > div > ul > li.greet.welcome > span")).getText();
         assertEquals(greeting, "Welcome, Test Redrov!");
-        getDriver().quit();
     }
 
     @Test
@@ -48,7 +47,6 @@ public class BezverkhovaTest extends BaseTest {
         String greeting = getDriver().findElement(By.cssSelector("#maincontent > div.page.messages > div:nth-child(2) > div > div")).getText();
         assertEquals(greeting, "If there is an account associated with test_redrov@yahoo.com you " +
                 "will receive an email with a link to reset your password.");
-        getDriver().quit();
     }
 
     @Test
@@ -83,7 +81,6 @@ public class BezverkhovaTest extends BaseTest {
         } else {
             System.out.println("Sale finished");
         }
-        getDriver().quit();
     }
 
     @Test
