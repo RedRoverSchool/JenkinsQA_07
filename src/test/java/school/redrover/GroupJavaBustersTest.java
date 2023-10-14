@@ -153,18 +153,16 @@ public class GroupJavaBustersTest extends BaseTest {
 
         driver.quit();
     }
-
-    @Ignore
+    
     @Test
     public void fillInFormTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationintesting.online/");
+        getDriver().get("https://automationintesting.online/");
 
-        WebElement nameField = driver.findElement(By.xpath("//input[@id='name']"));
-        WebElement emailField = driver.findElement(By.xpath("//input[@id='email']"));
-        WebElement phoneField = driver.findElement(By.xpath("//input[@id='phone']"));
-        WebElement subjectField = driver.findElement(By.xpath("//input[@id='subject']"));
-        WebElement messageField = driver.findElement(By.xpath("//textarea[@id='description']"));
+        WebElement nameField = getDriver().findElement(By.xpath("//input[@id='name']"));
+        WebElement emailField = getDriver().findElement(By.xpath("//input[@id='email']"));
+        WebElement phoneField = getDriver().findElement(By.xpath("//input[@id='phone']"));
+        WebElement subjectField = getDriver().findElement(By.xpath("//input[@id='subject']"));
+        WebElement messageField = getDriver().findElement(By.xpath("//textarea[@id='description']"));
 
         nameField.sendKeys("Marta");
         emailField.sendKeys("fake@fakeemail.com");
@@ -172,14 +170,12 @@ public class GroupJavaBustersTest extends BaseTest {
         subjectField.sendKeys("Subject must be between 5 and 100 characters.");
         messageField.sendKeys("The Old Farmhouse, Shady Street, Newfordburyshire, NE1 410S");
 
-        WebElement submitButton = driver.findElement(By.xpath("//button[@id='submitContact']"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@id='submitContact']"));
         submitButton.click();
-        Thread.sleep(5000);
 
-        WebElement message = driver.findElement(By.xpath("//h2[normalize-space()='Thanks for getting in touch Marta!']"));
+        WebElement message = getDriver().findElement(By.xpath("//h2[normalize-space()='Thanks for getting in touch Marta!']"));
         String value = message.getText();
         assertEquals(value, "Thanks for getting in touch Marta!");
-        driver.quit();
     }
 
     @Ignore
