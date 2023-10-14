@@ -262,37 +262,29 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void unsuccessfulLoginDigitalBankTest() {
-        WebDriver driver = getDriver();
-        driver.get("http://18.118.14.155:8080/bank/login");
-        driver.manage().window().maximize();
-        WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
-        icon.isDisplayed();
 
-        WebElement loginBtn = driver.findElement(By.id("username"));
-        loginBtn.sendKeys("tester1@gmail.com");
-        WebElement password = driver.findElement(By.id("password"));
-        password.sendKeys("1234Test");
-        WebElement submitBtn = driver.findElement(By.id("submit"));
-        submitBtn.click();
-        WebElement errorMsg = driver.findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
+        getDriver().get("http://18.118.14.155:8080/bank/login");
+        getDriver().manage().window().maximize();
+        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
+
+        getDriver().findElement(By.id("username")).sendKeys("tester1@gmail.com");
+        getDriver().findElement(By.id("password")).sendKeys("1234Test");
+        getDriver().findElement(By.id("submit")).click();
+        WebElement errorMsg = getDriver().findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
         Assert.assertTrue(errorMsg.isDisplayed(), "Error message is displayed");
     }
 
     @Test
     public void successfulLoginDigitalBankTest() {
-        WebDriver driver = getDriver();
-        driver.get("http://18.118.14.155:8080/bank/login");
-        driver.manage().window().maximize();
-        WebElement icon = driver.findElement(By.xpath("//div//img[@class = 'align-content']"));
-        icon.isDisplayed();
 
-        WebElement loginBtn = driver.findElement(By.id("username"));
-        loginBtn.sendKeys("tester@gmail.com");
-        WebElement password = driver.findElement(By.id("password"));
-        password.sendKeys("Test1234");
-        WebElement submitBtn = driver.findElement(By.id("submit"));
-        submitBtn.click();
-        WebElement avatar = driver.findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
+        getDriver().get("http://18.118.14.155:8080/bank/login");
+        getDriver().manage().window().maximize();
+        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
+
+        getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
+        getDriver().findElement(By.id("password")).sendKeys("Test1234");
+        getDriver().findElement(By.id("submit")).click();
+        WebElement avatar = getDriver().findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
         Assert.assertTrue(avatar.isDisplayed(), "Avatar is displayed");
     }
 
