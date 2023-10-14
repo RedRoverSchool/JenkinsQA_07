@@ -220,6 +220,22 @@ public class GroupForwardTest extends BaseTest {
 
   }
 
+  @Test
+  public void testClickLogoToMainPage() {
+
+    JenkinsUtils.login(getDriver());
+    WebElement myViewsButton = getDriver().findElement(By.xpath(
+            "//a[@href='/me/my-views']"));
+    myViewsButton.click();
+
+    WebElement logoJenkins = getDriver().findElement(By.id("jenkins-head-icon"));
+    logoJenkins.click();
+
+    Assert.assertEquals(
+            getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
+            "Welcome to Jenkins!");
+  }
+
 }
 
 
