@@ -155,7 +155,7 @@ public class GroupJavaBustersTest extends BaseTest {
     }
     
     @Test
-    public void fillInFormTest() throws InterruptedException {
+    public void fillInFormTest() {
         getDriver().get("https://automationintesting.online/");
 
         WebElement nameField = getDriver().findElement(By.xpath("//input[@id='name']"));
