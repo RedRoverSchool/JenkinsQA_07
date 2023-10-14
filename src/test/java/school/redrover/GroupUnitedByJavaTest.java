@@ -169,23 +169,23 @@ public class GroupUnitedByJavaTest extends BaseTest {
                 " differs from the expected one: " + elementsUrl);
     }
 
-    @Ignore
     @Test
-    public void testDemoqa(){
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
+    public void testDemoqa() throws InterruptedException{
 
-        String title = driver.getTitle();
-        assertEquals (title, "DEMOQA");
+        getDriver().get("https://demoqa.com/");
 
-        WebElement testBloc = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[6]"));
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title,"DEMOQA");
+
+        WebElement testBloc = getDriver().findElement(By.cssSelector(".top-card:nth-child(6)"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", testBloc);
+        Thread.sleep(500);
+
         testBloc.click();
 
-        WebElement message = driver.findElement(By.className("main-header"));
+        WebElement message = getDriver().findElement(By.className("main-header"));
         String value = message.getText();
-        assertEquals( value, "Book Store");
-
-        driver.quit();
+        Assert.assertEquals(value, "Book Store");
     }
 
     @Ignore
