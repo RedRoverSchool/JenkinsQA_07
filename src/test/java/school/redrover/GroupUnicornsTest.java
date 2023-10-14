@@ -353,12 +353,11 @@ public class GroupUnicornsTest extends BaseTest {
         String actualText = getDriver().findElement(By.className("textarea-preview")).getText();
         Assert.assertEquals(descText, actualText);
     }
-
     @Test
-    public void testSearch()  {
-        JenkinsUtils.login(getDriver());
+    public void testSearch2() {
+        getDriver().get("https://edostavka.by");
+        String title = getDriver().getTitle();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(" .empty-state-block > h1")).getText(),
-                "Добро пожаловать в Jenkins!");
+        Assert.assertEquals(title, "Едоставка: Доставка продуктов питания на дом по Минску и Минской области");
     }
 }
