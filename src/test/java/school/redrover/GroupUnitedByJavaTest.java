@@ -177,7 +177,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         String title = getDriver().getTitle();
         assertEquals(title, "DEMOQA");
 
-        WebElement testBloc = getDriver().findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[6]"));
+        WebElement testBloc = getDriver().findElement(By.cssSelector(".top-card:nth-child(6)"));
         testBloc.click();
 
         WebElement message = getDriver().findElement(By.className("main-header"));
