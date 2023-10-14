@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.time.Duration;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
@@ -63,8 +64,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testW3School()
-    {
+    public void testW3School() {
         getDriver().get("https://www.w3schools.com/");
 
         //title
@@ -226,7 +226,7 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Ignore
     @Test
-    public void verificationSocialIconsGitHub2(){
+    public void verificationSocialIconsGitHub2() {
         WebDriver driver = new ChromeDriver();
         try {
             driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
@@ -281,12 +281,42 @@ public class GroupUnicornsTest extends BaseTest {
         WebElement avatar = driver.findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
         Assert.assertTrue(avatar.isDisplayed(), "Avatar is displayed");
     }
+
     @Test
     public void testJenkinsVersion() {
         JenkinsUtils.login(getDriver());
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(),
-                "Jenkins 2.414.2");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(), "Jenkins 2.414.2");
     }
+
+    @Test
+    public void testAddDescriptionFeature() {
+        String expected = "Testing description feature on Jenkins Home Page";
+        WebDriver driver = getDriver();
+        JenkinsUtils.login(driver);
+
+        By descriptionButton = By.id("description-link");
+        By textDescriptionArea = By.xpath("//textarea[@name='description']");
+        By descriptionArea = By.cssSelector("#description > div:nth-child(1)");
+        By saveDescriptionButton = By.name("Submit");
+
+        //adding text to "Add description area" on Home page
+
+        driver.findElement(descriptionButton).click();
+        driver.findElement(textDescriptionArea).sendKeys(expected);
+        driver.findElement(saveDescriptionButton).click();
+        String actualResult = driver.findElement(descriptionArea).getText();
+        assertEquals(actualResult, expected);
+
+        //removing text
+
+        driver.findElement(descriptionButton).click();
+        driver.findElement(textDescriptionArea).sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        driver.findElement(textDescriptionArea).sendKeys(Keys.BACK_SPACE);
+        driver.findElement(saveDescriptionButton).click();
+        actualResult = driver.findElement(descriptionArea).getText();
+        assertTrue(actualResult.isEmpty());
+    }
+
+
 }
