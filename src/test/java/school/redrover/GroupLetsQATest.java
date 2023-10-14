@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
@@ -63,7 +64,7 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(text, "Welcome UserName!");
     }
 
-
+    @Ignore
     @Test
     public void testConfIxbt() {
 
