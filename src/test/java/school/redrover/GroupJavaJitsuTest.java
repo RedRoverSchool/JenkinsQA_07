@@ -13,20 +13,15 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 public class GroupJavaJitsuTest  extends BaseTest {
-//    WebDriver driver;
-//    @BeforeTest
-//    public void browserStart (){
-//        //WebDriverManager.chromedriver().setup();
-//        //driver = new ChromeDriver();
-//        //driver.get("https://www.saucedemo.com");
 
-//    }
-//    @Test
-//    public void testGetTile (){
-//
-//        String title = driver.getTitle();
-//        Assert.assertEquals("Swag Labs", title);
-//    }
+    @Test
+    public void testGetTile (){
+        getDriver().get("https://www.saucedemo.com");
+
+        String title = getDriver().getTitle();
+        Assert.assertEquals("Swag Labs", title);
+    }
+
    @Ignore
     @Test
     public void testLogin(){
