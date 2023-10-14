@@ -353,4 +353,12 @@ public class GroupUnicornsTest extends BaseTest {
         String actualText = getDriver().findElement(By.className("textarea-preview")).getText();
         Assert.assertEquals(descText, actualText);
     }
+
+    @Test
+    public void testSearch() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(" .empty-state-block > h1")).getText(),
+                "Добро пожаловать в Jenkins!");
+    }
 }
