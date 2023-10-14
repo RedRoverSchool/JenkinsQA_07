@@ -155,7 +155,7 @@ public class GroupJavaBustersTest extends BaseTest {
     }
     
     @Test
-    public void fillInFormTest() {
+    public void testFillInForm() {
         getDriver().get("https://automationintesting.online/");
 
         WebElement nameField = getDriver().findElement(By.xpath("//input[@id='name']"));
