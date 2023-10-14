@@ -343,5 +343,37 @@ public class GroupUnicornsTest extends BaseTest {
         textBox.sendKeys("ximotof590@ibtrades.com");
         submitButton.click();
     }
+    @Test
+    public void upsPageOpenTest() {
+        getDriver().get("https://www.ups.com/us/en/Home.page");
+        WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
+        shipButton.click();
+
+        WebElement fullName = getDriver().findElement(By.xpath("//input[@id='origin-cac_companyOrName']"));
+        fullName.sendKeys("John Doe");
+
+        WebElement address = getDriver().findElement(By.xpath("//input[@id='origin-cac_singleLineAddress']"));
+        address.sendKeys("101 Avery Avenue, Long Branch, NJ 07740");
+
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        List<WebElement> addressSuggestions = getDriver().findElements(By.cssSelector(".dropdown-item"));
+        wait.until(ExpectedConditions.visibilityOfAllElements(addressSuggestions));
+        WebElement firstPick = addressSuggestions.get(0);
+        wait.until(ExpectedConditions.elementToBeClickable(firstPick));
+        firstPick.click();
+
+        WebElement email = getDriver().findElement(By.xpath("//input[@id='origin-cac_email']"));
+        email.sendKeys("jdoe@email.com");
+
+        WebElement phone = getDriver().findElement(By.xpath("//input[@id='origin-cac_phone']"));
+        phone.sendKeys("+989256365");
+
+
+        WebElement continueButton = getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']"));
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+
+
+    }
 
 }
