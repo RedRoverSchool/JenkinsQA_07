@@ -380,11 +380,15 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(text,"Su");
 
     }
-@Test
-    public void testLogin(){
-    JenkinsUtils.login(getDriver());
+    @Test
+    public void testJenkinsLogin() {
 
-}
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
+                "Welcome to Jenkins!");
+    }
 
 
 }
