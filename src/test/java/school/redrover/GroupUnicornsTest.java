@@ -336,4 +336,21 @@ public class GroupUnicornsTest extends BaseTest {
         submitButton.click();
     }
 
+    @Test
+    public void testJenkinsAddDescr() {
+
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.id("description-link")).click();
+        WebElement descriptionTextArea = getDriver().findElement(By.name("description"));
+        boolean visible = descriptionTextArea.isDisplayed();
+        assertTrue(visible);
+
+        String descText = "Testing";
+
+        descriptionTextArea.sendKeys(descText);
+
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+        String actualText = getDriver().findElement(By.className("textarea-preview")).getText();
+        Assert.assertEquals(descText, actualText);
+    }
 }

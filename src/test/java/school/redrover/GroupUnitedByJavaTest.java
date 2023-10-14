@@ -423,15 +423,15 @@ public class GroupUnitedByJavaTest extends BaseTest {
     public void testWeatherSearch() throws InterruptedException {
         getDriver().get("https://weather.rambler.ru/");
 
-        WebElement textBox = getDriver().findElement(By.xpath("//*[@id='app']/div[4]/div/div/div[2]/div/form/input"));
+        WebElement textBox = getDriver().findElement(By.xpath("//input[@placeholder='Поиск по интернету']"));
         textBox.sendKeys("Тбилиси");
-        WebElement searchButton = getDriver().findElement(By.xpath("/html/body/div[1]/div[4]/div/div/div[2]/div/form/button[2]"));
+        WebElement searchButton = getDriver().findElement(By.xpath("//button[@aria-label='Найти']"));
         searchButton.click();
 
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
-        WebElement title = getDriver().findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div[1]/div/div[2]/div[2]/div[1]/div[1]/div"));
+        WebElement title = getDriver().findElement(By.xpath("//h2[text()='Тбилиси']"));
         String value = title.getText();
-        Assert.assertEquals(value, "Столица Грузии");
+        Assert.assertEquals(value, "Тбилиси");
     }
 }

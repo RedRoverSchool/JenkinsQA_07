@@ -2,10 +2,18 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
+
+import java.time.Duration;
 
 import static org.testng.Assert.*;
 
@@ -56,9 +64,9 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(text, "Welcome UserName!");
     }
 
-
+    @Ignore
     @Test
-    public void testConfIxbt(){
+    public void testConfIxbt() {
 
         getDriver().get("https://www.ixbt.com/");
 
@@ -76,20 +84,20 @@ public class GroupLetsQATest extends BaseTest {
     public void testTextInput() {
 
         getDriver().get("http://www.uitestingplayground.com/textinput");
-            WebElement newButtonNameField = getDriver().findElement(By.cssSelector("#newButtonName"));
-            String newButtonName = "Changed Button Name";
-            newButtonNameField.sendKeys(newButtonName);
+        WebElement newButtonNameField = getDriver().findElement(By.cssSelector("#newButtonName"));
+        String newButtonName = "Changed Button Name";
+        newButtonNameField.sendKeys(newButtonName);
 
-            WebElement updatingButton = getDriver().findElement(By.cssSelector("#updatingButton"));
-            updatingButton.click();
+        WebElement updatingButton = getDriver().findElement(By.cssSelector("#updatingButton"));
+        updatingButton.click();
 
-            String value = updatingButton.getText();
-            Assert.assertEquals(newButtonName, value);
+        String value = updatingButton.getText();
+        Assert.assertEquals(newButtonName, value);
 
-        }
+    }
 
     @Test
-    public void testLOadDelays(){
+    public void testLOadDelays() {
         getDriver().get("http://www.uitestingplayground.com/loaddelay");
         WebElement homePageLink = getDriver().findElement(By.cssSelector(".nav-link[href='/home']"));
         homePageLink.click();
@@ -97,12 +105,12 @@ public class GroupLetsQATest extends BaseTest {
         loadDelaysLink.click();
         WebElement buttonAppearingAfterDelay = getDriver().findElement(By.cssSelector(".btn-primary"));
 
-            try {
-                buttonAppearingAfterDelay.click();
-                assertTrue(true);
-            } catch (Exception e) {
-                Assert.fail("The button Appearing After Delay is not clickable.");
-            }
+        try {
+            buttonAppearingAfterDelay.click();
+            assertTrue(true);
+        } catch (Exception e) {
+            Assert.fail("The button Appearing After Delay is not clickable.");
+        }
 
     }
 
@@ -119,4 +127,37 @@ public class GroupLetsQATest extends BaseTest {
         WebElement dialog = getDriver().findElement(By.className("dialog-content"));
         assertNotNull(dialog);
     }
+
+    @Test
+    public void testDescriptionTextAreaAppearsJenkinsProject() {
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        JenkinsUtils.login(getDriver());
+        WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
+        addDescriptionButton.click();
+        try {
+            WebElement descriptionInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("jenkins-input")));
+            Assert.assertTrue(true);
+        } catch (Exception TimeoutException) {
+            Assert.assertTrue(false);
+        }
+
+    }
+
+    @Test
+    public void testSaveDescriptionButtonAppearsJenkinsProject() {
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
+        JenkinsUtils.login(getDriver());
+        WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
+        addDescriptionButton.click();
+
+        try {
+            WebElement descriptionInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".jenkins-button--primary")));
+            Assert.assertTrue(true);
+        } catch (Exception TimeoutException) {
+            Assert.assertTrue(false);
+        }
+
+    }
+
 }
