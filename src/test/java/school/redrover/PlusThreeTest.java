@@ -331,32 +331,28 @@ public class PlusThreeTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
     public void DemoqaTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/automation-practice-form");
+        getDriver().get("https://demoqa.com/automation-practice-form");
 
-        WebElement textBox = driver.findElement(By.id("firstName"));
+        WebElement textBox = getDriver().findElement(By.id("firstName"));
         textBox.sendKeys("Vova");
 
-        WebElement textBox2 = driver.findElement(By.id("lastName"));
+        WebElement textBox2 = getDriver().findElement(By.id("lastName"));
         textBox2.sendKeys("Petrov");
 
-        WebElement tel = driver.findElement(By.id("userNumber"));
+        WebElement tel = getDriver().findElement(By.id("userNumber"));
         tel.sendKeys("8800222552");
 
-        WebElement pol = driver.findElement(By.className("custom-control-label"));
+        WebElement pol = getDriver().findElement(By.className("custom-control-label"));
         pol.click();
 
-        WebElement submitButton = driver.findElement(By.id("submit"));
+        WebElement submitButton = getDriver().findElement(By.id("submit"));
         submitButton.click();
 
-        WebElement proverka = driver.findElement(By.id("example-modal-sizes-title-lg"));
+        WebElement proverka = getDriver().findElement(By.id("example-modal-sizes-title-lg"));
         String value = proverka.getText();
         Assert.assertEquals(value, "Thanks for submitting the form");
-
-        driver.quit();
     }
 
     @Ignore
