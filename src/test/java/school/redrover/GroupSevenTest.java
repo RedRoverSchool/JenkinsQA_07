@@ -185,59 +185,59 @@ public class GroupSevenTest extends BaseTest {
         }
     }
 
-    @Ignore
+
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bestbrains.com/");
 
-        String title = driver.getTitle();
+        getDriver().get("https://bestbrains.com/");
+
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "Best Brains: Be Your Best!");
 
         // driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement textBox = driver.findElement(By.xpath("//input[@placeholder='Enter Your Zip/Postal Code']"));
-        WebElement submitButton = driver.findElement(By.xpath("//button[@class = 'btn btn-white']"));
+        WebElement textBox = getDriver().findElement(By.xpath("//input[@placeholder='Enter Your Zip/Postal Code']"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@class = 'btn btn-white']"));
         textBox.sendKeys("29707");
         submitButton.click();
 
         Thread.sleep(5000);
-        WebElement message = driver.findElement(By.xpath("//p[@class = 'address']"));
+        WebElement message = getDriver().findElement(By.xpath("//p[@class = 'address']"));
         String value = message.getText();
         Assert.assertEquals(value, "17206 Lancaster Hwy, STE 504, Charlotte, NC-28277");
 
 
-        String title1 = driver.getTitle();
+        String title1 = getDriver().getTitle();
         Assert.assertEquals(title1, "Best Brains Center Locations");
 
 
-        WebElement location = driver.findElement(By.xpath("//h1[@class = 'text-center']"));
+        WebElement location = getDriver().findElement(By.xpath("//h1[@class = 'text-center']"));
         Thread.sleep(1000);
         String value1 = location.getText();
         Assert.assertEquals(value1, "Find your nearest center to schedule a FREE placement test and orientation.");
 
 
-        WebElement ballantyneLink = driver.findElement(By.xpath("//a[@href = '/ballantyne']"));
+        WebElement ballantyneLink = getDriver().findElement(By.xpath("//a[@href = '/ballantyne']"));
         ballantyneLink.click();
-        WebElement ballantyneText = driver.findElement(By.xpath("//span[@class = 'd-inline-block']"));
+        WebElement ballantyneText = getDriver().findElement(By.xpath("//span[@class = 'd-inline-block']"));
         String valueBallantyneText = ballantyneText.getText();
         Assert.assertEquals(valueBallantyneText, "Ballantyne");
 
 
-        WebElement registration = driver.findElement(By.xpath("//a[@href = '/new-registration']"));
+        WebElement registration = getDriver().findElement(By.xpath("//a[@href = '/new-registration']"));
         Thread.sleep(1000);
         registration.click();
 
 
-        String titleRegistration = driver.getTitle();
+        String titleRegistration = getDriver().getTitle();
         Assert.assertEquals(titleRegistration, "Student Registration | Best Brains");
         Thread.sleep(1000);
 
-        WebElement zipCode = driver.findElement(By.xpath("//input[@id = 'zipcode' ]"));
+        WebElement zipCode = getDriver().findElement(By.xpath("//input[@id = 'zipcode' ]"));
         zipCode.sendKeys("29707");
 
 
-        Select drpCenters = new Select(driver.findElement(By.name("locationId")));
+        Select drpCenters = new Select(getDriver().findElement(By.name("locationId")));
 
 
         boolean isMultiple = drpCenters.isMultiple();
@@ -250,7 +250,7 @@ public class GroupSevenTest extends BaseTest {
         }
         Thread.sleep(1000);
 
-        WebElement lastNameField = driver.findElement(By.name("lastName"));
+        WebElement lastNameField = getDriver().findElement(By.name("lastName"));
         Thread.sleep(1000);
         String nameAttributeValue = lastNameField.getAttribute("name");
 
@@ -259,8 +259,6 @@ public class GroupSevenTest extends BaseTest {
         } else {
             System.out.println("Элемент не представляет поле 'last name'.");
         }
-
-        driver.quit();
     }
 
     @Test
