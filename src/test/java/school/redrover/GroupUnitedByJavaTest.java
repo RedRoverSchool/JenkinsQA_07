@@ -175,9 +175,9 @@ public class GroupUnitedByJavaTest extends BaseTest {
         getDriver().get("https://demoqa.com/");
 
         String title = getDriver().getTitle();
-        Assert.assertEquals(title, "DEMOQA");
+        assertEquals(title, "DEMOQA");
 
-        WebElement testBloc = getDriver().findElement(By.xpath("//*[@id='app']//div[6]"));
+        WebElement testBloc = getDriver().findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[6]"));
         testBloc.click();
 
         WebElement message = getDriver().findElement(By.className("main-header"));
