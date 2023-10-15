@@ -462,4 +462,11 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().findElement(By.id("login-password")).sendKeys("12Qwerty");
 
     }
+    @Test
+    public  void testSearch4() {
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector (".empty-state-block > h1")).getText(),
+               "Добро пожаловать в Jenkins!");
+    }
 }
