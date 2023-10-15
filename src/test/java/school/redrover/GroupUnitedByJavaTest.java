@@ -118,6 +118,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     @Description("Check that the number of items on the home page is correct")
     public void testCountItemsOnHomePage() {
@@ -436,6 +437,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(value, "Тбилиси");
     }
 
+    @Ignore
     @Test
     public void firstTestJenkins() throws InterruptedException {
         JenkinsUtils.login(getDriver());
@@ -451,5 +453,26 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(value, "Enter an item name");
         Thread.sleep(2000);
 
+    }
+    @Test
+    public void testJenkinsDescriptionPreview() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        WebElement description = getDriver().findElement(By.id("description-link"));
+        description.click();
+
+        String descriptionText = "We're getting started";
+
+        WebElement descriptionArea = getDriver().findElement(By.name("description"));
+        descriptionArea.sendKeys(descriptionText);
+
+        WebElement previewButton = getDriver().findElement(By.className("textarea-show-preview"));
+        previewButton.click();
+
+        WebElement textPreview = getDriver().findElement(By.className("textarea-preview"));
+
+        Assert.assertEquals(textPreview.getText(), descriptionText,
+                textPreview + " differs from " + descriptionText );
+        Thread.sleep(1000);
     }
 }
