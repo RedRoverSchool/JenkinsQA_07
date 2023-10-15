@@ -480,30 +480,22 @@ public class GroupUnderdogsTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
+
     @Test
-    public void yuliafaReddit() {
-        WebDriver driver = new ChromeDriver();
+    public void testyuliafaReddit() {
 
-        driver.get("https://www.reddit.com/?feed=home");
+        JenkinsUtils.login(getDriver());
 
-        String title = driver.getTitle();
+        getDriver().get("https://www.reddit.com/?feed=home");
+
+        String title = getDriver().getTitle();
         Assert.assertEquals( title, "Reddit - Dive into anything");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        getDriver().findElement(By.id("login-button")).click();
 
-        WebElement textBox = driver.findElement(By.xpath("//*[@id=\"login-button\"]"));
-        textBox.click();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(900));
+        getDriver().findElement(By.id("login-username")).sendKeys("test@mail.ru");
 
-        WebElement username = driver.findElement(By.xpath("//*[@id=\"login-username\"]"));
-        username.click();
-        username.sendKeys("test@mail.ru");
+        getDriver().findElement(By.id("login-password")).sendKeys("12Qwerty");
 
-        WebElement password = driver.findElement(By.xpath("//*[@id=\"login-password\"]"));
-        password.click();
-        password.sendKeys("12Qwerty");
-
-        driver.quit();
     }
 }

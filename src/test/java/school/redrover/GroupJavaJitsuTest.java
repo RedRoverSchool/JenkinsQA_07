@@ -13,39 +13,31 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 public class GroupJavaJitsuTest  extends BaseTest {
-//    WebDriver driver;
-//    @BeforeTest
-//    public void browserStart (){
-//        //WebDriverManager.chromedriver().setup();
-//        //driver = new ChromeDriver();
-//        //driver.get("https://www.saucedemo.com");
 
-//    }
-//    @Test
-//    public void testGetTile (){
-//
-//        String title = driver.getTitle();
-//        Assert.assertEquals("Swag Labs", title);
-//    }
-   @Ignore
+    @Test
+    public void testGetTile (){
+        getDriver().get("https://www.saucedemo.com");
+
+        String title = getDriver().getTitle();
+        Assert.assertEquals("Swag Labs", title);
+    }
+
+
     @Test
     public void testLogin(){
-        WebDriver driver= new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
+        getDriver().get("https://www.saucedemo.com/");
 
-        WebElement user = driver.findElement(By.xpath("//input[@placeholder='Username']"));
-        WebElement password = driver.findElement(By.xpath("//input[@placeholder='Password']"));
+        WebElement user = getDriver().findElement(By.xpath("//input[@placeholder='Username']"));
+        WebElement password = getDriver().findElement(By.xpath("//input[@placeholder='Password']"));
 
         user.sendKeys("standard_user");
         password.sendKeys("secret_sauce");
 
-        WebElement loginBtn = driver.findElement(By.xpath("//input[@id='login-button']"));
+        WebElement loginBtn = getDriver().findElement(By.xpath("//input[@id='login-button']"));
         loginBtn.click();
-        String url = driver.getCurrentUrl();
+        String url = getDriver().getCurrentUrl();
 
         Assert.assertEquals(url,  "https://www.saucedemo.com/inventory.html");
-        driver.quit();
-
     }
 
     @Test
@@ -54,7 +46,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
        newItem.click();
        WebElement itemName = getDriver().findElement(By.id("name"));
-       itemName.sendKeys("NewProject2");
+       itemName.sendKeys("NewProject3");
        WebElement pipeLine = getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']"));
        pipeLine.click();
        WebElement button = getDriver().findElement(By.id("ok-button"));
@@ -62,5 +54,22 @@ public class GroupJavaJitsuTest  extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
                 "Configure");
+    }
+
+    @Test
+    public void testNewFreestyleProject() throws InterruptedException{
+        JenkinsUtils.login(getDriver());
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        newItem.click();
+        WebElement itemName = getDriver().findElement(By.id("name"));
+        itemName.sendKeys("NewFreestyleProject");
+        WebElement freestyleProject = getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject"));
+        freestyleProject.click();
+        WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
+        buttonOk.click();
+        WebElement buttonSave = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+        buttonSave.click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), "Project NewFreestyleProject");
+
     }
 }

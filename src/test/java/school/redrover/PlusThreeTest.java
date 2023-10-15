@@ -183,7 +183,7 @@ public class PlusThreeTest extends BaseTest {
     @Test
     public void testForgotLoginTest() {
 
-        getDriver().get("https://parabank.parasoft.com/parabank/index.htm");
+        getDriver().get(URL_PARABANK + "/index.htm");
 
         getDriver().findElement(By.xpath("//a[contains(.,\"Forgot login info?\")]")).click();
 
@@ -218,9 +218,15 @@ public class PlusThreeTest extends BaseTest {
         WebElement titleError = getDriver().findElement(By.xpath("//p[contains(@class,\"error\")]"));
         String textError = titleError.getText();
         Assert.assertEquals(textError, "The customer information provided could not be found.");
-
-
     }
+@Test (description = "Jenkins login First Test")
+public void testLoginJenkinsKaramelev() {
+        JenkinsUtils.login(getDriver());
+        Assert.assertEquals
+                (getDriver()
+                        .findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]"))
+                        .getText(),"Welcome to Jenkins!");
+}
 
     @Ignore
     @Test
@@ -384,7 +390,7 @@ public class PlusThreeTest extends BaseTest {
         List<WebElement> list = getDriver().findElements(By.className("signup-button"));
         Assert.assertEquals(list.size(), 3);
     }
-
+@Ignore
     @Test
     void tripadvisorTest() {
         getDriver().get("https://www.tripadvisor.ru");
