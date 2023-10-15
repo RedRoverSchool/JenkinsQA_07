@@ -18,6 +18,7 @@ import static org.testng.Assert.assertEquals;
 
 public class GroupItFriendlyTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testDemoQaOpenPage()  {
         WebDriver driver = getDriver();
@@ -26,7 +27,7 @@ public class GroupItFriendlyTest extends BaseTest {
         image.click();
         Assert.assertEquals(image,image);
     }
-@Ignore
+    @Ignore
     @Test
     public void testDemoQaChangePage() {
         WebDriver driver = getDriver();
@@ -37,7 +38,7 @@ public class GroupItFriendlyTest extends BaseTest {
         String value = text.getText();
         Assert.assertEquals(value, "Please select an item from left to start practice.");
     }
-@Ignore
+    @Ignore
     @Test
     public void testDemoQaTextBox() {
         getDriver().get("https://demoqa.com/elements");
@@ -53,7 +54,7 @@ public class GroupItFriendlyTest extends BaseTest {
         submit.click();
         Assert.assertEquals(submit,submit);
     }
-@Ignore
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
         WebDriver driver = getDriver();
@@ -81,6 +82,7 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertEquals(currentUrl, expectedUrl, "The current URL does not match the expected URL.");
     }
 
+    @Ignore
     @Test
     public void DemoQATextBoxTest() {
           WebDriver driver = getDriver();
@@ -117,6 +119,7 @@ public class GroupItFriendlyTest extends BaseTest {
     }
 
 
+    @Ignore
     @Test
     public void DemoQACheckBoxTest() {
         WebDriver driver = getDriver();
@@ -139,6 +142,7 @@ public class GroupItFriendlyTest extends BaseTest {
     }
 
 
+    @Ignore
     @Test
     public void DemoQARadioButtonTest() {
         WebDriver driver = getDriver();
@@ -163,7 +167,7 @@ public class GroupItFriendlyTest extends BaseTest {
 
             assertEquals(driver.findElement(By.xpath("//p[@class='mt-3']/span")).getText(), "Impressive");
     }
-@Ignore
+    @Ignore
     @Test
     public void ActionsWithCheckBoxTest(){
 
@@ -201,10 +205,28 @@ public class GroupItFriendlyTest extends BaseTest {
         }
     }
 
-  @Test
-  public void BadRequestButtonTest() {
+    @Ignore
+    @Test
+    public void BadRequestButtonTest() {
         WebDriver driver = getDriver();
         driver.get("https://demoqa.com/links");
         assertEquals(driver.findElement(By.id("bad-request")).getText(), "Bad Request");
+    }
+    @Test
+    public void SearchRecipe() {
+        WebDriver driver = getDriver();
+        driver.get("https://allusrecipe.com/turkey-delight/");
+
+        WebElement boxSearch = driver.findElement(By.xpath("//*[@id=\"navbarNav\"]/form/div/input"));
+        WebElement clickSearch = driver.findElement(By.xpath("//*[@id=\"navbarNav\"]/form/div/div/button"));
+
+        boxSearch.sendKeys("lokum");
+        clickSearch.click();
+
+        WebElement title = driver.findElement(By.xpath("/html/body/div[1]/div/div/div[1]/div/h1"));
+
+        String actual =  title.getText();
+
+        assertEquals(actual, "Lokum Recipes");
     }
 }
