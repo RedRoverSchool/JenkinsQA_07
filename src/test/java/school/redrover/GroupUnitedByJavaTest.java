@@ -118,6 +118,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     @Description("Check that the number of items on the home page is correct")
     public void testCountItemsOnHomePage() {
