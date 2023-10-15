@@ -463,4 +463,11 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().findElement(By.id("login-password")).sendKeys("12Qwerty");
 
     }
+    @Test
+    public void testSearch2() {
+        getDriver().get("https://edostavka.by");
+        String title = getDriver().getTitle();
+
+        Assert.assertEquals(title, "Едоставка: Доставка продуктов питания на дом по Минску и Минской области");
+    }
 }
