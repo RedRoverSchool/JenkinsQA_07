@@ -452,4 +452,25 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Thread.sleep(2000);
 
     }
+    @Test
+    public void testJenkinsDescriptionPreview() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        WebElement description = getDriver().findElement(By.id("description-link"));
+        description.click();
+
+        String descriptionText = "We're getting started";
+
+        WebElement descriptionArea = getDriver().findElement(By.name("description"));
+        descriptionArea.sendKeys(descriptionText);
+
+        WebElement previewButton = getDriver().findElement(By.className("textarea-show-preview"));
+        previewButton.click();
+
+        WebElement textPreview = getDriver().findElement(By.className("textarea-preview"));
+
+        Assert.assertEquals(textPreview.getText(), descriptionText,
+                textPreview + " differs from " + descriptionText );
+        Thread.sleep(1000);
+    }
 }
