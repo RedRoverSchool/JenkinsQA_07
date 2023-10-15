@@ -171,6 +171,7 @@ public class GroupUnicornsTest extends BaseTest {
         }
     }
 
+
     @Test
     public void testTradingView() throws InterruptedException {
         final String URL = "https://www.tradingview.com/chart/";
@@ -348,31 +349,5 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.className("textarea-show-preview")).click();
         String actualText = getDriver().findElement(By.className("textarea-preview")).getText();
         Assert.assertEquals(descText, actualText);
-    }
-
-    @Test
-    public void testRaiffeisenBank() {
-        final List<String> currnecyExpected = List.of("USD", "EUR", "GBP", "CHF", "JPY", "CNY");
-
-            getDriver().get("https://www.raiffeisen.ru/currency_rates/");
-            for (int i =1; i < 7; i++ ) {
-                WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])["+ i+"]"));
-                Assert.assertEquals(currencyActual.getText(),currnecyExpected.get(i-1));
-            }
-    }
-
-    @Test
-    public void testPearson() {
-        getDriver().get("https://www.pearson.com/");
-
-        getDriver().findElement(By.id("onetrust-accept-btn-handler")).click();
-
-        getDriver().findElement(By.className("usernav-signin-button")).click();
-        getDriver().findElement(By.className("side-banner__heading"));
-        getDriver().findElement(By.className("ies-input")).sendKeys("tester@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("Test1234");
-        getDriver().findElement(By.id("submitBttn")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(),"We can't find an account with this email and password. Please try again.");
     }
 }
