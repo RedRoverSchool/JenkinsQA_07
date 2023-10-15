@@ -110,7 +110,7 @@ public class IronTeamGroupTest {
         WebDriver driver = new ChromeDriver();
         try {
             driver.navigate().to("https://telranedu.web.app/home");
-            Thread.sleep(1200);
+            Thread.sleep(1000);
             WebElement logo = driver.findElement(By.cssSelector("h1"));
             String site = logo.getText();
             Assert.assertEquals(site, "PHONEBOOK");
