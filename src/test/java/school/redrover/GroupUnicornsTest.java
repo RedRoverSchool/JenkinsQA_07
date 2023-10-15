@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -375,4 +376,43 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(),"We can't find an account with this email and password. Please try again.");
     }
+
+    @Test
+    public void upsPageOpenTest() {
+        getDriver().get("https://www.ups.com/us/en/Home.page");
+        WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
+        shipButton.click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'Create a Shipment')]")).getText(),"Create a Shipment");
+        WebElement fullName = getDriver().findElement(By.xpath("//input[@id='origin-cac_companyOrName']"));
+        fullName.sendKeys("John Doe");
+
+        WebElement address = getDriver().findElement(By.xpath("//input[@id='origin-cac_singleLineAddress']"));
+        address.sendKeys("101 Avery Avenue, Long Branch, NJ 07740");
+
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        List<WebElement> addressSuggestions = getDriver().findElements(By.cssSelector(".dropdown-item"));
+        wait.until(ExpectedConditions.visibilityOfAllElements(addressSuggestions));
+        WebElement firstPick = addressSuggestions.get(0);
+        wait.until(ExpectedConditions.elementToBeClickable(firstPick));
+        firstPick.click();
+
+        WebElement email = getDriver().findElement(By.xpath("//input[@id='origin-cac_email']"));
+        email.sendKeys("jdoe@email.com");
+
+        WebElement phone = getDriver().findElement(By.xpath("//input[@id='origin-cac_phone']"));
+        phone.sendKeys("+989256365");
+
+
+        WebElement continueButton = getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']"));
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(continueButton).click(continueButton).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+        actions.moveToElement(continueButton).click(continueButton).perform();
+
+
+    }
+
 }
