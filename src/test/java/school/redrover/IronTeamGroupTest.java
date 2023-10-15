@@ -8,12 +8,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import static org.openqa.selenium.By.className;
 
-@Ignore
-public class IronTeamGroupTest {
+
+public class IronTeamGroupTest extends BaseTest {
+    @Ignore
     @Test
+
     public void w3schoolTest() throws InterruptedException {
         // Check Title of site
         WebDriverManager.chromedriver().setup();
@@ -28,8 +31,9 @@ public class IronTeamGroupTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
+
     public void javaPageTest() throws InterruptedException {
         // Check Java page of site
         WebDriverManager.chromedriver().setup();
@@ -49,7 +53,7 @@ public class IronTeamGroupTest {
             driver.quit();
         }
     }
-
+    @Ignore
     @Test
     public void testCustomerLogin() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
@@ -71,6 +75,7 @@ public class IronTeamGroupTest {
             driver.quit();
         }
     }
+    @Ignore
     @Test
     public void testFerosorSearch() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
@@ -87,6 +92,7 @@ public class IronTeamGroupTest {
             driver.quit();
         }
     }
+    @Ignore
     @Test
     public void testFerosorLogin() throws InterruptedException{
         WebDriverManager.chromedriver().setup();
@@ -103,19 +109,13 @@ public class IronTeamGroupTest {
             driver.quit();
         }
     }
-
     @Test
     public void PositiveTest() throws InterruptedException{
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.navigate().to("https://telranedu.web.app/home");
+            WebDriver driver = getDriver();
+            getDriver().get("https://telranedu.web.app/home");
             Thread.sleep(1500);
             WebElement logo = driver.findElement(By.cssSelector("h1"));
             String site = logo.getText();
             Assert.assertEquals(site, "PHONEBOOK");
-        } finally {
-            driver.quit();
-        }
     }
 }
