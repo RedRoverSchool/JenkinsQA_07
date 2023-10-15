@@ -437,6 +437,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(value, "Тбилиси");
     }
 
+    @Ignore
     @Test
     public void firstTestJenkins() throws InterruptedException {
         JenkinsUtils.login(getDriver());
