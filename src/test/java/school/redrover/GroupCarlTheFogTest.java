@@ -47,7 +47,7 @@ public class GroupCarlTheFogTest extends BaseTest {
         Assert.assertEquals(Industries,"Industries");
 
         WebElement healthCareAndLifeSciensces = getDriver().findElement(By.xpath("//p[contains(text(), 'Healthcare & Life Sciences')]"));
-        Assert.assertEquals(healthCareAndLifeSciensces.isDisplayed(), true);
+        Assert.assertTrue(healthCareAndLifeSciensces.isDisplayed());
     }
 
     @Test
