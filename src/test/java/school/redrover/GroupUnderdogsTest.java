@@ -35,7 +35,7 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
         WebElement title = getDriver().findElement(By.xpath("//*[@id=\"header\"]/h1"));
         String titleValue = title.getText();
-        assertEquals(titleValue, "99 Bottles of Beer");
+        assertEquals(titleValue, "22 Bottles of Beer");
     }
 
     @Test
