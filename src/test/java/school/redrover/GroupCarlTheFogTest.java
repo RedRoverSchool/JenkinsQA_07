@@ -2,13 +2,10 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
@@ -26,46 +23,33 @@ public class GroupCarlTheFogTest extends BaseTest {
 
     private WebDriverWait wait;
 
-    @Ignore
     @Test
     public void hireRightTest() {
 
+        getDriver().get("https://www.hireright.com");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
-
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "Employment Background Checks, Background Screening | HireRight");
 
-        WebElement cacheButton = driver.findElement(By.xpath("//div[@class='CookieConsent']//button[contains(text(), 'Continue')]"));
+        WebElement cacheButton = getDriver().findElement(By.xpath("//div[@class='CookieConsent']//button[contains(text(), 'Continue')]"));
 
         cacheButton.click();
-        driver.quit();
-
     }
 
+    @Test
     public void searchIndustryTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.hireright.com/");
+        getDriver().get("https://www.hireright.com/");
 
-            WebElement industriesDropDown = driver.findElement(By.xpath("//span[contains(text(), 'Industries')]"));
-            industriesDropDown.click();
+        WebElement industriesDropDown = getDriver().findElement(By.xpath("//span[contains(text(), 'Industries')]"));
+        industriesDropDown.click();
 
-            String Industries = driver.findElement(By.xpath("//h4[contains(text(), 'Industries')]")).getText();
-            Assert.assertEquals(Industries,"Industries");
+        String Industries = getDriver().findElement(By.xpath("//h4[contains(text(), 'Industries')]")).getText();
+        Assert.assertEquals(Industries,"Industries");
 
-            WebElement healthCareAndLifeSciensces = driver.findElement(By.xpath("//p[contains(text(), 'Healthcare & Life Sciences')]"));
-            Assert.assertEquals(healthCareAndLifeSciensces.isDisplayed(), true);
-
-
-
-        } finally {
-            driver.quit();
-        }
+        WebElement healthCareAndLifeSciensces = getDriver().findElement(By.xpath("//p[contains(text(), 'Healthcare & Life Sciences')]"));
+        Assert.assertEquals(healthCareAndLifeSciensces.isDisplayed(), true);
     }
 
-    @Ignore
     @Test
     public void testSlowCalculator(){
         String url = "https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html";
