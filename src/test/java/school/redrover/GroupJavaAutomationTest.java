@@ -268,7 +268,7 @@ public class GroupJavaAutomationTest extends BaseTest {
         WebElement versionJenkinsButton = getDriver().findElement
         (By.xpath("//div[@class='page-footer__links page-footer__links--white jenkins_ver']/a"));
         String versionJenkins = versionJenkinsButton.getText();
-        Assert.assertEquals("Jenkins 2.387.2",versionJenkins);
+        Assert.assertEquals("Jenkins 2.414.2",versionJenkins);
     }
 }
 
