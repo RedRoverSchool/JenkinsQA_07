@@ -232,9 +232,10 @@ public class GroupJavaExplorersTest extends BaseTest {
     }
 
     @Test
-    public void testGetTitle() {
+    public void testGetTitle() throws InterruptedException {
 
         JenkinsUtils.login(getDriver());
+        Thread.sleep(4000);
 
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
