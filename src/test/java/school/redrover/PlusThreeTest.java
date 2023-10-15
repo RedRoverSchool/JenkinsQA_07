@@ -414,5 +414,17 @@ public void testLoginJenkinsKaramelev() {
         String getTitle = getDriver().findElement(By.id("HEADING")).getText();
         Assert.assertEquals(getTitle, "Рестораны Москвы Moscow");
     }
+
+    @Test (description = "Go to the section Manage Jenkins")
+    public void testJenkinsManage(){
+        JenkinsUtils.login(getDriver());
+
+        WebElement manageJenkinsLink = getDriver().findElement(By.linkText("Manage Jenkins"));
+        manageJenkinsLink.click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[text()='Manage Jenkins']")).getText(),
+                "Manage Jenkins");
+    }
 }
 
