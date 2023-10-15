@@ -464,10 +464,20 @@ public class GroupUnderdogsTest extends BaseTest {
 
     }
     @Test
-    public void testSearch2() {
-        getDriver().get("https://edostavka.by");
-        String title = getDriver().getTitle();
+    public void TestSearch2() throws  InterruptedException {
+        getDriver().get("https://www.google.com/");
 
-        Assert.assertEquals(title, "Едоставка: Доставка продуктов питания на дом по Минску и Минской области");
+        WebElement textBox = getDriver().findElement(By.className ("gLFyf"));
+        textBox.sendKeys("Selenium");
+
+        Thread.sleep( 2000);
+
+        WebElement searchButton = getDriver().findElement(By.className ("gNO89b"));
+        searchButton.click();
+
+        WebElement title = getDriver().findElement(By.className("SPZz6b"));
+        String value = title.getText();
+        Assert.assertEquals(value,"Selenium");
+
     }
 }
