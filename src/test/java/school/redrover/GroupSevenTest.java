@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -169,7 +170,7 @@ public class GroupSevenTest extends BaseTest {
         searchActivation.click();
 
         WebElement searchField = getDriver().findElement(By.xpath("//input[@placeholder='Search']"));
-        searchField.sendKeys("Harry Potter",Keys.RETURN);
+        searchField.sendKeys("Harry Potter", Keys.RETURN);
 
         WebElement searchResults = getDriver().findElement(By.xpath("//h3[text()='Harry Potter']"));
         searchResults.click();
@@ -384,5 +385,21 @@ public class GroupSevenTest extends BaseTest {
 
     }
 
+    @Test
+    public void testToolsSearch() {
+        JenkinsUtils.login(getDriver());
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "Dashboard [Jenkins]");
 
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+
+        WebElement searchBox = getDriver().findElement(By.id("settings-search-bar"));
+
+        searchBox.sendKeys("tools");
+        getDriver().findElement(By.xpath("//a[@class='jenkins-search__results-item--selected']")).click();
+
+        WebElement message = getDriver().findElement(By.xpath("//h1[text()='Tools']"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Tools");
+    }
 }
