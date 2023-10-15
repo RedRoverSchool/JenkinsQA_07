@@ -97,7 +97,7 @@ public class GroupJavaExplorersTest extends BaseTest {
     }
 
     @Test
-    public void testSearchOlivia() throws InterruptedException {
+    public void testSearchOlivia(){
         getDriver().get(BASE_URL);
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[@id='search']"));
@@ -105,8 +105,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
-
-        Thread.sleep(3000);
 
         String title = getDriver().findElement(By.xpath("//h1")).getText();
 
