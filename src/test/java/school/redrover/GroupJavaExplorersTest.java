@@ -142,70 +142,53 @@ public class GroupJavaExplorersTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
     public void testAddToCart() {
 
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().window().maximize();
+        getDriver().get(BASE_URL);
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
 
-        driver.get(BASE_URL);
-        wait.until(ExpectedConditions.
-                elementToBeClickable(By.xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]")));
-        WebElement catalogueItem = driver.
+        WebElement catalogueItem = getDriver().
                 findElement(By.xpath("//div//img[@class='product-image-photo']"));
         catalogueItem.click();
-        wait.until(ExpectedConditions.
-                elementToBeClickable(By.xpath("//div//button[@id='product-addtocart-button']")));
 
-        WebElement item = driver.
+        WebElement item = getDriver().
                 findElement(By.xpath("//div//button[@id='product-addtocart-button']"));
 
-        List<WebElement> sizes = driver.
+        List<WebElement> sizes = getDriver().
                 findElements(By.xpath("//div//div[@class='swatch-option text']"));
         sizes.get((int) (Math.random() * sizes.size())).click();
 
-        List<WebElement> colors = driver.
+        List<WebElement> colors = getDriver().
                 findElements(By.xpath("//div//div[@class='swatch-option color']"));
         colors.get((int) (Math.random() * colors.size())).click();
 
-        WebElement input = driver.findElement(By.xpath("//div/input[@id='qty']"));
+        WebElement input = getDriver().findElement(By.xpath("//div/input[@id='qty']"));
         input.clear();
         input.sendKeys("2");
         item.click();
 
-        WebElement cart = driver.findElement(By.xpath("//div//a[@class='action showcart']"));
+        WebElement cart = getDriver().findElement(By.xpath("//div//a[@class='action showcart']"));
         wait.until(ExpectedConditions.
                 visibilityOfElementLocated(By.xpath("//div//div[@data-ui-id='message-success']")));
         cart.click();
 
-        WebElement itemInCart = driver.findElement(By.xpath("//div//span[@class='count']"));
+        WebElement itemInCart = getDriver().findElement(By.xpath("//div//span[@class='count']"));
 
         int actualResult = Integer.parseInt(itemInCart.getText());
         Assert.assertEquals(actualResult, 2);
-        driver.quit();
     }
 
-    @Ignore
     @Test
     public void testImages() {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().window().maximize();
 
-        driver.get(BASE_URL);
-        wait.until(ExpectedConditions.
-                elementToBeClickable(By.xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]")));
-
-        WebElement whatsNew = driver.
+        getDriver().get(BASE_URL);
+        WebElement whatsNew = getDriver().
                 findElement(By.xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]"));
         whatsNew.click();
-        List<WebElement> images = driver.
+        List<WebElement> images = getDriver().
                 findElements(By.xpath("//div//img[@class='product-image-photo']"));
         Assert.assertEquals(images.size(), 4);
-
-        driver.quit();
     }
 
     @Ignore
