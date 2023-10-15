@@ -446,37 +446,31 @@ public class GroupUnderdogsTest extends BaseTest {
         assertEquals(namesOfCreators, teamMembers);
     }
 
-    @Ignore
+
     @Test
     public void testSubmitLanguage() {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        driver.get(MAIN_PAGE_URL);
+        driver = new ChromeDriver();
+        driver.get("http://www.99-bottles-of-beer.net/");
 
-        WebElement clickSub = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//*[@id=\"menu\"]/li[6]/a")));
+        WebElement clickSub = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
         clickSub.click();
+        WebElement header = driver.findElement(By.xpath("//*[@id=\"submenu\"]/li/a"));
 
-        WebElement header = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//*[@id=\"submenu\"]/li/a")));
         String actualHeader = header.getText();
         assertEquals(actualHeader, "Submit New Language");
-
         driver.quit();
     }
 
-    @Ignore
+
     @Test
     public void testTitle() {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        driver.get(MAIN_PAGE_URL);
+        driver = new ChromeDriver();
+        driver.get("http://www.99-bottles-of-beer.net/");
 
-        WebElement title = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//*[@id=\"header\"]/h1")));
+        WebElement title = driver.findElement(By.xpath("//*[@id=\"header\"]/h1"));
+
         String actualTitle = title.getText();
         assertEquals(actualTitle, "99 Bottles of Beer");
-
         driver.quit();
     }
 
