@@ -258,12 +258,13 @@ public class GroupJavaAutomationTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsHomePageAndJenkinsVersion() {
+    public void testJenkinsHomePageAndJenkinsVersion() throws InterruptedException {
 
         JenkinsUtils.login(getDriver());
 
         String title = getDriver().getTitle();
         Assert.assertEquals("Dashboard [Jenkins]",title);
+        Thread.sleep(3000);
         WebElement versionJenkinsButton = getDriver().findElement
         (By.xpath("//div[@class='page-footer__links page-footer__links--white jenkins_ver']/a"));
         String versionJenkins = versionJenkinsButton.getText();
