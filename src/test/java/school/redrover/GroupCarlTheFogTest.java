@@ -24,7 +24,7 @@ public class GroupCarlTheFogTest extends BaseTest {
     private WebDriverWait wait;
 
     @Test
-    public void hireRightTest() {
+    public void testHireRight() {
 
         getDriver().get("https://www.hireright.com");
 
@@ -37,7 +37,7 @@ public class GroupCarlTheFogTest extends BaseTest {
     }
 
     @Test
-    public void searchIndustryTest() {
+    public void testSearchIndustry() {
         getDriver().get("https://www.hireright.com/");
 
         WebElement industriesDropDown = getDriver().findElement(By.xpath("//span[contains(text(), 'Industries')]"));
