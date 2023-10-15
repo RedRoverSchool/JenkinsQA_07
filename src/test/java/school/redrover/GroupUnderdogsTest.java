@@ -19,9 +19,11 @@ import static org.testng.Assert.assertEquals;
 
 
 public class GroupUnderdogsTest extends BaseTest {
-    WebDriver driver;// = new ChromeDriver();
 
-    private static final String MAIN_PAGE_URL = "http://www.99-bottles-of-beer.net/";
+    // the next line will be deleted as soon as all methods within the class are refactored and driver is changed to getDriver()
+    WebDriver driver;
+
+    private static final String MAIN_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/";
     String userName = "academic198405@gmail.com";
     String password = "BikeTrekMarlyn4!";
     String wrongPassword = "Sbbhbhbln2";
@@ -30,49 +32,40 @@ public class GroupUnderdogsTest extends BaseTest {
 
 
     @Test
-    public void MainPageTitleTest() {
-        getDriver().get(MAIN_PAGE_URL);
+    public void test99BottlesMainPageTitle_Olgla() {
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
         String title = getDriver().getTitle();
         assertEquals(title, "99 Bottles of Beer | Start");
     }
 
-    @Ignore
     @Test
-    public void tereshenkov99BottlesTitleTest() {
-        driver = new ChromeDriver();
-        driver.get("http://www.99-bottles-of-beer.net/");
+    public void test99BottlesTitleTest_tereshenkov29() {
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement title = driver.findElement(By.xpath("//*[@id=\"header\"]/h1"));
+        WebElement title = getDriver().findElement(By.xpath("//*[@id=\"header\"]/h1"));
         String titleValue = title.getText();
 
         assertEquals(titleValue, "99 Bottles of Beer");
-
     }
 
-    @Ignore
     @Test
-    public void tereshenkov99BottlesLastMenuLinkTestGetAttribute() {
-        driver = new ChromeDriver();
-        driver.get("http://www.99-bottles-of-beer.net/");
+    public void test99BottlesLastMenuLinkGetAttribute_tereshenkov29() {
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement lastMenuLink = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
+        WebElement lastMenuLink = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
 
         String lastMenuLinkValue = lastMenuLink.getAttribute("textContent");
         assertEquals(lastMenuLinkValue, "Submit new Language");
-
     }
 
-    @Ignore
     @Test
-    public void tereshenkov99BottlesLastMenuLinkTestGetText() {
-        driver = new ChromeDriver();
-        driver.get("http://www.99-bottles-of-beer.net/");
+    public void test99BottlesLastMenuLinkGetText_tereshenkov29() {
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement lastMenuLink = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
+        WebElement lastMenuLink = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
 
         String lastMenuLinkValue = lastMenuLink.getText();
         assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
-
     }
 
     @Test
@@ -85,7 +78,7 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void authorNamesTest() {
         List<String> expectedAuthorNames = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
-        getDriver().get(MAIN_PAGE_URL);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
         getDriver().findElement(By.xpath("//a[@href='team.html']")).click();
         List<WebElement> elements = getDriver().findElements(By.xpath("//h3"));
         List<String> authorNames = new ArrayList<>();
@@ -362,7 +355,7 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void testBrowseLanguagesKotlin() {
         driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MAIN_PAGE_URL_99BOTTLES);
 
         WebElement browseLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Browse Languages']"));
         browseLanguagesBtn.click();
@@ -385,7 +378,7 @@ public class GroupUnderdogsTest extends BaseTest {
         final String partOfWordToSearch = "kot";
 
         driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MAIN_PAGE_URL_99BOTTLES);
 
         WebElement searchLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Search Languages']"));
         searchLanguagesBtn.click();
@@ -408,7 +401,7 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void testRailiaImportantNoticeMarkup() {
         driver = new ChromeDriver();
-        getDriver().get(MAIN_PAGE_URL);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
         driver.findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
 
 
@@ -432,7 +425,7 @@ public class GroupUnderdogsTest extends BaseTest {
         List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
 
         driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MAIN_PAGE_URL_99BOTTLES);
 
         WebElement teamLink = driver.findElement(By.xpath("//a[text()='Team']"));
         teamLink.click();
@@ -451,7 +444,7 @@ public class GroupUnderdogsTest extends BaseTest {
     public void testSubmitLanguage() {
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MAIN_PAGE_URL_99BOTTLES);
 
         WebElement clickSub = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//*[@id=\"menu\"]/li[6]/a")));
@@ -470,7 +463,7 @@ public class GroupUnderdogsTest extends BaseTest {
     public void testTitle() {
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        driver.get(MAIN_PAGE_URL);
+        driver.get(MAIN_PAGE_URL_99BOTTLES);
 
         WebElement title = wait.until(ExpectedConditions
                 .visibilityOfElementLocated(By.xpath("//*[@id=\"header\"]/h1")));
