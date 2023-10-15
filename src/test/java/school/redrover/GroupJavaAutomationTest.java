@@ -264,10 +264,10 @@ public class GroupJavaAutomationTest extends BaseTest {
 
         String title = getDriver().getTitle();
         Assert.assertEquals("Dashboard [Jenkins]",title);
-
-        String versionJenkins = getDriver().findElement
-                (By.xpath("//a[@href='https://www.jenkins.io/']")).getText();
-        Assert.assertEquals("Jenkins 2.387.2",versionJenkins);
+        WebElement versionJenkinsButton = getDriver().findElement
+        (By.xpath("//a[@href='https://www.jenkins.io/']"));
+        String versionJenkins = versionJenkinsButton.getText();
+        Assert.assertEquals("Jenkins  2.414.2",versionJenkins);
     }
 }
 
