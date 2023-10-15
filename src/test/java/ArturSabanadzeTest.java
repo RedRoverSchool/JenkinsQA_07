@@ -9,7 +9,7 @@ public class ArturSabanadzeTest {
 
     //Check if Title of the Website is correct.
     @Test
-    public void titeleCheck1()
+    public void titeleCheck()
     {
 
         WebDriver driver = new ChromeDriver();
