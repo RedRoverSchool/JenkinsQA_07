@@ -247,7 +247,6 @@ public class GroupItFriendlyTest extends BaseTest {
 
         String title2 = driver.getTitle();
         Assert.assertEquals(title2, "Swag Labs");
-
         driver.quit();
     }
 }
