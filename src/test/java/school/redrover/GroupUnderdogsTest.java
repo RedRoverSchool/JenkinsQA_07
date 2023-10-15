@@ -464,7 +464,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
     }
     @Test
-    public void TestSearch2() throws  InterruptedException {
+    public void testSearch2() throws  InterruptedException {
         getDriver().get("https://www.google.com/");
 
         WebElement textBox = getDriver().findElement(By.className("gLFyf"));
@@ -479,4 +479,5 @@ public class GroupUnderdogsTest extends BaseTest {
         String value = title.getText();
         Assert.assertEquals(value, "Selenium");
     }
+
 }
