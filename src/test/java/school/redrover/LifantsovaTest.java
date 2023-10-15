@@ -9,13 +9,16 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 public class LifantsovaTest extends BaseTest {
 
     @Test
-    public void testSearch() {
+    public void testSearch() throws InterruptedException {
 
         getDriver().get("https://resh.edu.ru/");
+
+        Thread.sleep(3000);
 
         WebElement textBox = getDriver().findElement(By.id("search"));
         textBox.sendKeys("Математика");
@@ -23,18 +26,24 @@ public class LifantsovaTest extends BaseTest {
         WebElement searchButton = getDriver().findElement(By.xpath("/html/body/div[1]/div/header/div/div/div[2]/form/div/button"));
         searchButton.click();
 
+        Thread.sleep(3000);
+
         WebElement title = getDriver().findElement(By.className("content-title"));
         String value = title.getText();
         Assert.assertEquals(value, "РЕЗУЛЬТАТЫ ПОИСКА");
     }
 
     @Test
-    public void testSearch1() {
+    public void testSearch1() throws InterruptedException {
 
         getDriver().get("https://resh.edu.ru/");
 
+        Thread.sleep(3000);
+
         WebElement element = getDriver().findElement(By.xpath("/html/body/div[1]/div/header/nav/div/div/a[1]"));
         element.click();
+
+        Thread.sleep(3000);
 
         WebElement title = getDriver().findElement(By.className("content-title"));
         String value = title.getText();
@@ -42,9 +51,11 @@ public class LifantsovaTest extends BaseTest {
     }
 
     @Test
-    public void testSearch2() {
+    public void testSearch2() throws InterruptedException {
 
         getDriver().get("https://resh.edu.ru/");
+
+        Thread.sleep(3000);
 
         WebElement href1 = getDriver().findElement(By.xpath("/html/body/div[1]/div/main/div[2]/div/div[2]/a[3]"));
         href1.click();
@@ -57,6 +68,8 @@ public class LifantsovaTest extends BaseTest {
         href2.click();
 
         getDriver().get("https://www.culture.ru/institutes/4445/muzei-usadba-n-g-chernyshevskogo-g-saratova");
+
+        Thread.sleep(5000);
 
         WebElement title2 = getDriver().findElement(By.className("tAsaH"));
         String value2 = title2.getText();
