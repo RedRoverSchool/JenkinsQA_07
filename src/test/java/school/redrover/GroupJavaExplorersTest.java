@@ -230,32 +230,5 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         Assert.assertEquals(title, "Folder1");
     }
-
-    @Test
-    public void testGetTitle() throws InterruptedException {
-
-        JenkinsUtils.login(getDriver());
-        Thread.sleep(4000);
-
-        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
-        newItem.click();
-
-        WebElement textBox = getDriver().findElement(By.id("name"));
-        textBox.sendKeys("Folder1");
-
-        WebElement folder = getDriver()
-                .findElement(By.xpath("//div[@id='j-add-item-type-nested-projects']/ul/li[1]"));
-        folder.click();
-
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        okButton.click();
-
-        WebElement saveButton = getDriver().findElement(By.name("Submit"));
-        saveButton.click();
-
-        String title = getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText();
-
-        Assert.assertEquals(title, "Folder1");
-    }
 }
 
