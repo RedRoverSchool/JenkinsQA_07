@@ -429,10 +429,10 @@ public class GroupUnderdogsTest extends BaseTest {
     public void testSubmitLanguage() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement clickSub = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
+        WebElement clickSub = getDriver().findElement(By.xpath("//*[@id=\'menu\']/li[6]/a"));
         clickSub.click();
 
-        WebElement header = getDriver().findElement(By.xpath("//*[@id=\"submenu\"]/li/a"));
+        WebElement header = getDriver().findElement(By.xpath("//*[@id=\'submenu\']/li/a"));
         String actualHeader = header.getText();
 
         assertEquals(actualHeader, "Submit New Language");
@@ -443,7 +443,7 @@ public class GroupUnderdogsTest extends BaseTest {
     public void testTitle() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement title = getDriver().findElement(By.xpath("//*[@id=\"header\"]/h1"));
+        WebElement title = getDriver().findElement(By.xpath("//*[@id=\'header\']/h1"));
         String actualTitle = title.getText();
 
         assertEquals(actualTitle, "99 Bottles of Beer");
