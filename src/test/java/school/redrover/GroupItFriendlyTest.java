@@ -237,8 +237,6 @@ public class GroupItFriendlyTest extends BaseTest {
         String title = driver.getTitle();
         Assert.assertEquals(title, "Swag Labs");
 
-        //   driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
         WebElement textBox = driver.findElement(By.name("user-name"));
         WebElement textBox2 = driver.findElement(By.name("password")) ;
         WebElement submitButton = driver.findElement(By.cssSelector("#login-button"));
