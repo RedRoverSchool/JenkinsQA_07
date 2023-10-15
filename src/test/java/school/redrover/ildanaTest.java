@@ -1,14 +1,13 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import com.beust.ah.A;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 
@@ -41,6 +40,40 @@ public class ildanaTest extends BaseTest {
         String buttonText = clearbutton.getText();
 
         Assert.assertEquals(buttonText,"Computer Science\n" + ",delete" );
+
+    }
+
+    @Test
+    public void testJenkins(){
+        JenkinsUtils.login(getDriver());
+
+       WebElement newItem =getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']"));
+
+       //Assert.assertEquals(newItem.getText(),"New Item");
+
+       newItem.click();
+
+       WebElement inputJenkins = getDriver().findElement(By.xpath("//div[@class='add-item-name']/input[@name=\"name\"]"));
+        inputJenkins.sendKeys("IldanaFrolova");
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id=\"itemname-invalid\"]")).getText(),"» A job already exists with the name ‘IldanaFrolova’"
+
+        );
+
+//        WebElement project = getDriver().findElement(By.xpath("//ul[@class=\"j-item-options\"]/li[@class=\"hudson_model_FreeStyleProject\"]"));
+//        project.click();
+//
+//        JavascriptExecutor js = (JavascriptExecutor)getDriver();
+//        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+//
+//        WebElement buttonOk = getDriver().findElement(By.xpath("//button[@id=\"ok-button\"]"));
+//        buttonOk.click();
+//
+//       Assert.assertEquals(
+//               getDriver().findElement(By.xpath("//a[@href='/job/IldanaFrolova/']")).getText(),"IldanaFrolova"
+//       );
+
 
     }
 
