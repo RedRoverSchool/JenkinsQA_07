@@ -15,18 +15,19 @@ public class NikolaevaTest extends BaseTest {
         getDriver().get("https://www.w3schools.com/");
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[@id='search2']"));
+        Thread.sleep(500);
         textBox.sendKeys("SQL Tutorial");
 
-        Thread.sleep(2100);
-
         WebElement searchButton = getDriver().findElement(By.xpath("//button[@id='learntocode_searchbtn']"));
+        Thread.sleep(500);
         searchButton.click();
 
         WebElement title = getDriver().findElement(By.cssSelector("h1"));
         String value = title.getText();
         Assert.assertEquals(value, "SQL Tutorial");
-
     }
+
+
 
 
 }
