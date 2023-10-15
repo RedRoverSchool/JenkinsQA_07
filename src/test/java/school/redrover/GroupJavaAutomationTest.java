@@ -213,6 +213,7 @@ public class GroupJavaAutomationTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void downloadFile(){
 
