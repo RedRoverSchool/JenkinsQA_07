@@ -10,6 +10,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+import java.time.Duration;
+
 
 public class GroupForwardTest extends BaseTest {
 
@@ -255,6 +257,16 @@ public class GroupForwardTest extends BaseTest {
     Assert.assertEquals(value, "About LDOCE Online");
   }
 
+  @Test
+  public void testWordOfTheDay(){
+    getDriver().get(PAGE_URL);
+    getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+    WebElement title = getDriver().findElement(By.xpath("/*[@id='wotd']/span[@class='box_title']"));
+    String value = title.getText();
+
+    Assert.assertEquals(value, "Word of the day");
+  }
 
 }
 
