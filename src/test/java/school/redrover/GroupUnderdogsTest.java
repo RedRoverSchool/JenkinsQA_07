@@ -65,7 +65,7 @@ public class GroupUnderdogsTest extends BaseTest {
     public void testJenkinsVersionInFooter_tereshenkov29() {
         JenkinsUtils.login(getDriver());
 
-        WebElement JenkinsVersionInFooter = getDriver().findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"));
+        WebElement JenkinsVersionInFooter = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
 
         String JenkinsVersionInFooterValue = JenkinsVersionInFooter.getText();
         assertEquals(JenkinsVersionInFooterValue, "Jenkins 2.414.2");
