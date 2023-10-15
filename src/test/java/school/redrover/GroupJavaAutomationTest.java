@@ -28,7 +28,6 @@ public class GroupJavaAutomationTest extends BaseTest {
         getDriver().get(HEROKUAPP);
         String title = getDriver().getTitle();
         assertEquals(title, "The Internet");
-        getDriver().quit();
     }
     @Ignore
     @Test
@@ -190,7 +189,6 @@ public class GroupJavaAutomationTest extends BaseTest {
        getDriver().get("http://admin:admin@the-internet.herokuapp.com/basic_auth");
         String authMessage = getDriver().findElement(By.xpath("//h3/following-sibling::p")).getText();
         Assert.assertTrue(authMessage.contains("Congratulations"));
-        getDriver().quit();
     }
 
 
@@ -258,17 +256,17 @@ public class GroupJavaAutomationTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsHomePageAndJenkinsVersion() throws InterruptedException {
+    public void testJenkinsHomePageAndJenkinsVersion()  {
 
         JenkinsUtils.login(getDriver());
 
         String title = getDriver().getTitle();
-        Assert.assertEquals("Dashboard [Jenkins]",title);
-        Thread.sleep(3000);
+        Assert.assertEquals(title,"Dashboard [Jenkins]");
+
         WebElement versionJenkinsButton = getDriver().findElement
         (By.xpath("//button[@type='button']"));
         String versionJenkins = versionJenkinsButton.getText();
-        Assert.assertEquals("Jenkins 2.414.2",versionJenkins);
+        Assert.assertEquals(versionJenkins,"Jenkins 2.414.2");
     }
 }
 
