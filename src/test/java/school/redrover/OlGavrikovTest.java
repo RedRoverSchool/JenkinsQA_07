@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 public class OlGavrikovTest {
 
     @Test
-    public void testSite() throws InterruptedException {
+    public void testSite() {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://the-internet.herokuapp.com/");
@@ -25,7 +25,7 @@ public class OlGavrikovTest {
     }
 
     @Test
-    public void testSite2() throws InterruptedException {
+    public void testSite2() {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -41,7 +41,7 @@ public class OlGavrikovTest {
     }
 
     @Test
-    public void testSite3() throws InterruptedException {
+    public void testSite3() {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
