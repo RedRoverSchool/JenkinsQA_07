@@ -92,7 +92,7 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void maksinTestInactive() {
+    public void testInactiveMember_maksin() {
 
         getDriver().get("http://www.99-bottles-of-beer.net/team.html");
         WebElement text = getDriver().findElement(By.xpath
@@ -102,11 +102,11 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testLofOut() throws InterruptedException {
+    public void testJenkinsLogOut_maksin() throws InterruptedException {
         JenkinsUtils.login(getDriver());
-        getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[2]")).click();
+        getDriver().findElement(By.xpath("//*[@id='page-header']/div[3]/a[2]")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath
-                        ("//*[@id=\"main-panel\"]/div/h1")).getText(),
+                        ("//*[@id='main-panel']/div/h1")).getText(),
                 "Sign in to Jenkins");
     }
 
