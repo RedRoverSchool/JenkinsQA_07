@@ -249,4 +249,25 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertEquals(title2, "Swag Labs");
         driver.quit();
     }
+    @Test
+    public void testS() {
+        WebDriver driver = new ChromeDriver();
+        driver.get ("https://www.saucedemo.com/");
+
+        String title = driver.getTitle();
+        Assert.assertEquals(title, "Swag Labs");
+
+        WebElement textBox = driver.findElement(By.name("user-name"));
+        WebElement textBox2 = driver.findElement(By.name("password")) ;
+        WebElement submitButton = driver.findElement(By.cssSelector("#login-button"));
+
+        textBox.sendKeys("error_user");
+        textBox2.sendKeys("secret_sauce");
+        submitButton.click();
+
+        String title2 = driver.getTitle();
+        Assert.assertEquals(title2, "Swag Labs");
+
+        driver.quit();
+    }
 }
