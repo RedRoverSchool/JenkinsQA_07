@@ -379,6 +379,7 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void upsPageOpenTest() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         getDriver().get("https://www.ups.com/us/en/Home.page");
         WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
         shipButton.click();
@@ -391,7 +392,7 @@ public class GroupUnicornsTest extends BaseTest {
         address.sendKeys("101 Avery Avenue, Long Branch, NJ 07740");
 
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
         List<WebElement> addressSuggestions = getDriver().findElements(By.cssSelector(".dropdown-item"));
         wait.until(ExpectedConditions.visibilityOfAllElements(addressSuggestions));
         WebElement firstPick = addressSuggestions.get(0);
