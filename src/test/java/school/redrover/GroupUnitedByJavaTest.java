@@ -211,29 +211,30 @@ public class GroupUnitedByJavaTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
+
     @Test
     public void testSearch () throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/");
+        getDriver().get("https://demoqa.com/");
 
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "DEMOQA");
-        WebElement widgets = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[4]"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", widgets);
+
+        WebElement widgets = getDriver().findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[4]"));
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", widgets);
         Thread.sleep(500);
+
         widgets.click();
         Thread.sleep(2000);
-        String url = driver.getCurrentUrl();
+
+        String url = getDriver().getCurrentUrl();
         String url1 = "https://demoqa.com/widgets";
         Assert.assertEquals(url, url1);
-        WebElement appellation = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[1]/div"));
+
+        WebElement appellation = getDriver().findElement(By.xpath("//*[@id='app']/div/div/div[1]/div"));
         String value = appellation.getText();
         Assert.assertEquals(value, "Widgets");
         Thread.sleep(2000);
 
-
-        driver.quit();
     }
 
     @Ignore
