@@ -30,14 +30,6 @@ public class GroupUnderdogsTest extends BaseTest {
     String baseUrl = "https://www.trekbikes.com/us/en_US/";
     String baseUrlArt = "https://www.maytag.ca/";
 
-
-    @Test
-    public void test99BottlesMainPageTitle_Olgla() {
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-        String title = getDriver().getTitle();
-        assertEquals(title, "99 Bottles of Beer | Start");
-    }
-
     @Test
     public void test99BottlesTitleTest_tereshenkov29() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
@@ -60,6 +52,23 @@ public class GroupUnderdogsTest extends BaseTest {
         WebElement lastMenuLink = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
         String lastMenuLinkValue = lastMenuLink.getText();
         assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
+    }
+
+    @Test
+    public void testJenkinsVersionInFooter_tereshenkov29() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement JenkinsVersionInFooter = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+
+        String JenkinsVersionInFooterValue = JenkinsVersionInFooter.getText();
+        assertEquals(JenkinsVersionInFooterValue, "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void test99BottlesMainPageTitle_Olgla() {
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
+        String title = getDriver().getTitle();
+        assertEquals(title, "99 Bottles of Beer | Start");
     }
 
     @Test
@@ -416,38 +425,28 @@ public class GroupUnderdogsTest extends BaseTest {
         assertEquals(namesOfCreators, teamMembers);
     }
 
-    @Ignore
     @Test
     public void testSubmitLanguage() {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement clickSub = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//*[@id=\"menu\"]/li[6]/a")));
+        WebElement clickSub = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
         clickSub.click();
 
-        WebElement header = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//*[@id=\"submenu\"]/li/a")));
+        WebElement header = getDriver().findElement(By.xpath("//*[@id=\"submenu\"]/li/a"));
         String actualHeader = header.getText();
-        assertEquals(actualHeader, "Submit New Language");
 
-        driver.quit();
+        assertEquals(actualHeader, "Submit New Language");
     }
 
-    @Ignore
+
     @Test
     public void testTitle() {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement title = wait.until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//*[@id=\"header\"]/h1")));
+        WebElement title = getDriver().findElement(By.xpath("//*[@id=\"header\"]/h1"));
         String actualTitle = title.getText();
-        assertEquals(actualTitle, "99 Bottles of Beer");
 
-        driver.quit();
+        assertEquals(actualTitle, "99 Bottles of Beer");
     }
 
     @Test

@@ -96,25 +96,19 @@ public class GroupJavaExplorersTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
-    public void testSearchOlivia() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
+    public void testSearchOlivia(){
+        getDriver().get(BASE_URL);
 
-        WebElement textBox = driver.findElement(By.xpath("//input[@id='search']"));
+        WebElement textBox = getDriver().findElement(By.xpath("//input[@id='search']"));
         textBox.sendKeys("Olivia");
 
-        WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
 
-        Thread.sleep(3000);
-
-        String title = driver.findElement(By.xpath("//h1")).getText();
+        String title = getDriver().findElement(By.xpath("//h1")).getText();
 
         assertEquals(title, "Search results for: 'Olivia'");
-
-        driver.quit();
     }
 
     @Ignore
@@ -230,5 +224,28 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         Assert.assertEquals(title, "Folder1");
     }
+
+    @Test
+    public void testCreateNewJob() {
+
+        String expectedText = "This view has no jobs associated with it. You can either add " +
+                "some existing jobs to this view or create a new job in this view.";
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement newView = getDriver().findElement(By.xpath("//div//a[@title='New View']"));
+        newView.click();
+        WebElement viewName = getDriver().findElement(By.xpath("//div//input[@id='name']"));
+        viewName.sendKeys("MyView2");
+        WebElement viewTypeChckbx = getDriver().findElement(By.xpath("//div//label[@for='hudson.model.ListView']"));
+        viewTypeChckbx.click();
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//div//button[@name='Submit']"));
+        buttonSubmit.click();
+        WebElement buttonSubmitView = getDriver().findElement(By.xpath("//div//button[@name='Submit']"));
+        buttonSubmitView.click();
+        String actualText = getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText();
+
+        Assert.assertTrue(actualText.contains(expectedText));
+        }
 }
 
