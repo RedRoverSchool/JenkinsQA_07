@@ -15,7 +15,7 @@ public class JikTest {
         WebDriver driver = new ChromeDriver();
         try {
             driver.get("https://www.selenium.dev/selenium/web/web-form.html");
-            Thread.sleep(1000);
+
             String title = driver.getTitle();
             Assert.assertEquals(title, "Web form");
         } finally {
