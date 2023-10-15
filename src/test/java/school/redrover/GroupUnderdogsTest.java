@@ -30,14 +30,6 @@ public class GroupUnderdogsTest extends BaseTest {
     String baseUrl = "https://www.trekbikes.com/us/en_US/";
     String baseUrlArt = "https://www.maytag.ca/";
 
-
-    @Test
-    public void test99BottlesMainPageTitle_Olgla() {
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-        String title = getDriver().getTitle();
-        assertEquals(title, "99 Bottles of Beer | Start");
-    }
-
     @Test
     public void test99BottlesTitleTest_tereshenkov29() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
@@ -60,6 +52,23 @@ public class GroupUnderdogsTest extends BaseTest {
         WebElement lastMenuLink = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
         String lastMenuLinkValue = lastMenuLink.getText();
         assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
+    }
+
+    @Test
+    public void testJenkinsVersionInFooter_tereshenkov29() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement JenkinsVersionInFooter = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+
+        String JenkinsVersionInFooterValue = JenkinsVersionInFooter.getText();
+        assertEquals(JenkinsVersionInFooterValue, "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void test99BottlesMainPageTitle_Olgla() {
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
+        String title = getDriver().getTitle();
+        assertEquals(title, "99 Bottles of Beer | Start");
     }
 
     @Test
