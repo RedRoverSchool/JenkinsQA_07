@@ -233,7 +233,10 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     @Test
     public void testGetTitle() {
+
         JenkinsUtils.login(getDriver());
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div//h1")));
         String actualResult = getDriver().findElement(By.xpath("//div//h1")).getText();
         Assert.assertEquals(actualResult,"Welcome to Jenkins!");
     }
