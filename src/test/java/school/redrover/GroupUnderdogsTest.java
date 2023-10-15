@@ -41,19 +41,15 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void test99BottlesTitleTest_tereshenkov29() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-
         WebElement title = getDriver().findElement(By.xpath("//*[@id=\"header\"]/h1"));
         String titleValue = title.getText();
-
         assertEquals(titleValue, "99 Bottles of Beer");
     }
 
     @Test
     public void test99BottlesLastMenuLinkGetAttribute_tereshenkov29() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-
         WebElement lastMenuLink = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
-
         String lastMenuLinkValue = lastMenuLink.getAttribute("textContent");
         assertEquals(lastMenuLinkValue, "Submit new Language");
     }
@@ -61,22 +57,20 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void test99BottlesLastMenuLinkGetText_tereshenkov29() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-
         WebElement lastMenuLink = getDriver().findElement(By.xpath("//*[@id=\"menu\"]/li[6]/a"));
-
         String lastMenuLinkValue = lastMenuLink.getText();
         assertEquals(lastMenuLinkValue, "SUBMIT NEW LANGUAGE");
     }
 
     @Test
-    public void firstMenuTabTextTest() {
+    public void testFirstMenuTabText_Olgla() {
         getDriver().get("http://www.99-bottles-of-beer.net/abc.html");
         String elementName = getDriver().findElement(By.xpath("//ul[@id='submenu']/li[1]")).getText();
         assertEquals(elementName, "0-9");
     }
 
     @Test
-    public void authorNamesTest() {
+    public void testAuthorNames_Olgla() {
         List<String> expectedAuthorNames = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
         getDriver().findElement(By.xpath("//a[@href='team.html']")).click();
@@ -100,11 +94,8 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testLofOut() throws InterruptedException {
-
         JenkinsUtils.login(getDriver());
-
         getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[2]")).click();
-
         Assert.assertEquals(getDriver().findElement(By.xpath
                         ("//*[@id=\"main-panel\"]/div/h1")).getText(),
                 "Sign in to Jenkins");
@@ -143,7 +134,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
         String text = isAllNewArrivals.getText();
         assertEquals(text, "All-new arrivals");
-
     }
 
     @Ignore
@@ -178,8 +168,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
         String text = incorrectUser.getText();
         assertEquals(text, "Incorrect username or password");
-
-
     }
 
     @Ignore
@@ -242,7 +230,6 @@ public class GroupUnderdogsTest extends BaseTest {
         fieldSearch.sendKeys("FILTRE À EAU");
         fieldSearch.sendKeys(Keys.ENTER);
 
-
         WebElement sortPricePertinceLtoH = driver.findElement(By.xpath("//*[@aria-label='sort by']/option[2]"));
         sortPricePertinceLtoH.click();
         Thread.sleep(1000);
@@ -291,14 +278,12 @@ public class GroupUnderdogsTest extends BaseTest {
         String expRes = "15,56 $";
 
         assertEquals(actRes, expRes);
-
     }
 
     @Ignore
     @Test
     public void testKristinaNameAuthorSite() {
         getDriver().get("http://www.99-bottles-of-beer.net/");
-
         WebElement button = driver.findElement(By.xpath("//*[@id=\"main\"]/p[4]/a[2]"));
         button.click();
 
@@ -319,7 +304,6 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void testKristinaNameMenu(){
         getDriver().get("http://www.99-bottles-of-beer.net/abc.html");
-
         WebElement title = driver.findElement(By.xpath("//*[@id=\"submenu\"]/li[1]/a"));
         String value = title.getText();
         Assert.assertEquals(value, "0-9");
@@ -329,10 +313,8 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void testKristinaTopLists() {
         getDriver().get("http://www.99-bottles-of-beer.net/");
-
         WebElement title = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[4]/a[@href=\"/toplist.html\"]"));
         title.click();
-
         WebElement language = driver.findElement(By.xpath("//*[@id=\"category\"]/tbody/tr[2]/td[2]/a"));
         String title1 = language.getText();
         assertEquals(title1, "Malbolge (real loop version)");
@@ -376,7 +358,6 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void testSearchLanguages() {
         final String partOfWordToSearch = "kot";
-
         driver = new ChromeDriver();
         driver.get(MAIN_PAGE_URL_99BOTTLES);
 
@@ -390,7 +371,6 @@ public class GroupUnderdogsTest extends BaseTest {
         goBtn.click();
 
         List<WebElement> searchResult = driver.findElements(By.xpath("//td/a[contains(@href,'language')]"));
-
         for (WebElement element : searchResult) {
             Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
             assertEquals(element.getTagName(), "a");
@@ -403,7 +383,6 @@ public class GroupUnderdogsTest extends BaseTest {
         driver = new ChromeDriver();
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
         driver.findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
-
 
         List<WebElement> listItems = driver.findElements(By.xpath("//*[@id=\"main\"]/ul/li/span"));
         Assert.assertFalse(listItems.isEmpty(), "We should have at least one list item with bold text");
@@ -423,7 +402,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
     public void testNamesOfCreatorsOfSite() {
         List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
-
         driver = new ChromeDriver();
         driver.get(MAIN_PAGE_URL_99BOTTLES);
 
@@ -435,7 +413,6 @@ public class GroupUnderdogsTest extends BaseTest {
         for (WebElement element : creators) {
             namesOfCreators.add(element.getText());
         }
-
         assertEquals(namesOfCreators, teamMembers);
     }
 
@@ -473,21 +450,16 @@ public class GroupUnderdogsTest extends BaseTest {
         driver.quit();
     }
 
-
     @Test
-    public void testyuliafaReddit() {
-
+    public void testYuliafaReddit() {
         JenkinsUtils.login(getDriver());
-
         getDriver().get("https://www.reddit.com/?feed=home");
 
         String title = getDriver().getTitle();
         Assert.assertEquals( title, "Reddit - Dive into anything");
 
         getDriver().findElement(By.id("login-button")).click();
-
         getDriver().findElement(By.id("login-username")).sendKeys("test@mail.ru");
-
         getDriver().findElement(By.id("login-password")).sendKeys("12Qwerty");
 
     }
