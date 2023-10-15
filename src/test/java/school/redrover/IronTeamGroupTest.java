@@ -103,4 +103,19 @@ public class IronTeamGroupTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void PositiveTest() throws InterruptedException {
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver = new ChromeDriver();
+        try {
+            driver.navigate().to("https://telranedu.web.app/home");
+            Thread.sleep(1000);
+            WebElement logo = driver.findElement(By.cssSelector("h1"));
+            String site = logo.getText();
+            Assert.assertEquals(site, "PHONEBOOK");
+        } finally {
+            driver.quit();
+        }
+    }
 }
