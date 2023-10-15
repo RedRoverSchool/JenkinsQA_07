@@ -16,7 +16,6 @@ import static org.openqa.selenium.By.className;
 public class IronTeamGroupTest extends BaseTest {
     @Ignore
     @Test
-
     public void w3schoolTest() throws InterruptedException {
         // Check Title of site
         WebDriverManager.chromedriver().setup();
@@ -33,7 +32,6 @@ public class IronTeamGroupTest extends BaseTest {
     }
     @Ignore
     @Test
-
     public void javaPageTest() throws InterruptedException {
         // Check Java page of site
         WebDriverManager.chromedriver().setup();
