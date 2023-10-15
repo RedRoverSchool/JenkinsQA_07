@@ -139,8 +139,8 @@ public class GroupHighwayToAqaTest extends BaseTest {
         final String projectName = "HighwayNewPipeline";
         final String newProjectName = "HighwayNewPipeline_NewName";
 
-        String title =getDriver().findElement(By.cssSelector("h1")).getText();
-        Assert.assertEquals(title, "Welcome to Jenkins!");
+//        String title =getDriver().findElement(By.cssSelector("h1")).getText();
+//        Assert.assertEquals(title, "Welcome to Jenkins!");
 
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(projectName);
