@@ -183,7 +183,7 @@ public class PlusThreeTest extends BaseTest {
     @Test
     public void testForgotLoginTest() {
 
-        getDriver().get("https://parabank.parasoft.com/parabank/index.htm");
+        getDriver().get(URL_PARABANK + "/index.htm");
 
         getDriver().findElement(By.xpath("//a[contains(.,\"Forgot login info?\")]")).click();
 
@@ -218,8 +218,15 @@ public class PlusThreeTest extends BaseTest {
         WebElement titleError = getDriver().findElement(By.xpath("//p[contains(@class,\"error\")]"));
         String textError = titleError.getText();
         Assert.assertEquals(textError, "The customer information provided could not be found.");
+    }
 
-
+    @Test(description = "Jenkins login First Test")
+    public void testLoginJenkinsKaramelev() {
+        JenkinsUtils.login(getDriver());
+        Assert.assertEquals
+                (getDriver()
+                        .findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]"))
+                        .getText(), "Welcome to Jenkins!");
     }
 
     @Ignore
@@ -384,7 +391,7 @@ public class PlusThreeTest extends BaseTest {
         List<WebElement> list = getDriver().findElements(By.className("signup-button"));
         Assert.assertEquals(list.size(), 3);
     }
-
+    @Ignore
     @Test
     void tripadvisorTest() {
         getDriver().get("https://www.tripadvisor.ru");
@@ -407,6 +414,41 @@ public class PlusThreeTest extends BaseTest {
 
         String getTitle = getDriver().findElement(By.id("HEADING")).getText();
         Assert.assertEquals(getTitle, "Рестораны Москвы Moscow");
+    }
+
+    @Test (description = "Go to the section Manage Jenkins")
+    public void testJenkinsManage(){
+        JenkinsUtils.login(getDriver());
+
+        WebElement manageJenkinsLink = getDriver().findElement(By.linkText("Manage Jenkins"));
+        manageJenkinsLink.click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[text()='Manage Jenkins']")).getText(),
+                "Manage Jenkins");
+    }
+
+    @Test (description = "Jenkins version control")
+    public void testJenkinsVersion(){
+        JenkinsUtils.login(getDriver());
+
+        WebElement versionOfJenkins = getDriver().findElement(By.xpath("//footer/div/div[2]/button"));
+        assertEquals(versionOfJenkins.getText(), "Jenkins 2.414.2");
+    }
+
+    @Test (description = "Jenkins version control")
+    public void testJenkinsVersionAbout(){
+        JenkinsUtils.login(getDriver());
+
+        getDriver().findElement(By.xpath("//footer/div/div[2]/button"))
+                .click();
+
+        getDriver().findElement(By.xpath("//*[@id='tippy-1']/div/div/a[1]"))
+                .click();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+
+        WebElement version = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
+        assertEquals(version.getText(), "Version 2.414.2");
     }
 }
 

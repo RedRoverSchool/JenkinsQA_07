@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -25,7 +26,7 @@ public class GroupSevenTest extends BaseTest {
     }
 
     @Test
-    public void testSearchField ()  {
+    public void testSearchField() {
 
         getDriver().get("https://kyliecosmetics.com/collections/kylie-cosmetics");
 
@@ -149,7 +150,7 @@ public class GroupSevenTest extends BaseTest {
 
 
     @Test
-    public void testPricePageHeader()  {
+    public void testPricePageHeader() {
         getDriver().get("https://megagroup.by/");
 
         WebElement price = getDriver().findElement(By.xpath("//nav[@class='mp-header__nav']/a[@href='/price']"));
@@ -159,85 +160,80 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(header.getText(), "Стоимость сайтов");
     }
 
-    @Ignore
+
     @Test
     public void testHPSearch() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://www.wizardingworld.com/");
-            WebElement hamBurgerMenu = driver.findElement(By.xpath("//*[@id='hamBurgerMenu']"));
-            hamBurgerMenu.click();
-            WebElement searchActivation = driver.findElement(By.xpath("//button[@data-testid='navSearchButton']"));
-            searchActivation.click();
-            WebElement searchField = driver.findElement(By.xpath("//input[@name='Search']"));
-            searchField.sendKeys("Harry Potter");
-            WebElement searchButton = driver.findElement(By.xpath(" //button[@name='Search button']"));
-            searchButton.click();
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(8000));
-            WebElement searchResults = driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/div/div[6]/div/div[3]/div[2]/div[2]/ul/li[4]/article/a/div[2]"));
-            searchResults.click();
-            ArrayList<String> wid = new ArrayList<>(driver.getWindowHandles());
-            driver.switchTo().window(wid.get(1));
-            WebElement resultHeader = driver.findElement(By.xpath("//h1"));
-            Assert.assertEquals(resultHeader.getText(), "Harry Potter");
-        } finally {
-            driver.quit();
-        }
+        getDriver().get("https://www.wizardingworld.com/");
+
+        WebElement searchActivation = getDriver().findElement(By.xpath("//button[@name='search']"));
+        searchActivation.click();
+
+        WebElement searchField = getDriver().findElement(By.xpath("//input[@placeholder='Search']"));
+        searchField.sendKeys("Harry Potter",Keys.RETURN);
+
+        WebElement searchResults = getDriver().findElement(By.xpath("//h3[text()='Harry Potter']"));
+        searchResults.click();
+
+        ArrayList<String> wid = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(wid.get(1));
+
+        WebElement resultHeader = getDriver().findElement(By.xpath("//h1"));
+        Assert.assertEquals(resultHeader.getText(), "Harry Potter");
     }
 
-    @Ignore
+
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://bestbrains.com/");
 
-        String title = driver.getTitle();
+        getDriver().get("https://bestbrains.com/");
+
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "Best Brains: Be Your Best!");
 
         // driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
-        WebElement textBox = driver.findElement(By.xpath("//input[@placeholder='Enter Your Zip/Postal Code']"));
-        WebElement submitButton = driver.findElement(By.xpath("//button[@class = 'btn btn-white']"));
+        WebElement textBox = getDriver().findElement(By.xpath("//input[@placeholder='Enter Your Zip/Postal Code']"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@class = 'btn btn-white']"));
         textBox.sendKeys("29707");
         submitButton.click();
 
         Thread.sleep(5000);
-        WebElement message = driver.findElement(By.xpath("//p[@class = 'address']"));
+        WebElement message = getDriver().findElement(By.xpath("//p[@class = 'address']"));
         String value = message.getText();
         Assert.assertEquals(value, "17206 Lancaster Hwy, STE 504, Charlotte, NC-28277");
 
 
-        String title1 = driver.getTitle();
+        String title1 = getDriver().getTitle();
         Assert.assertEquals(title1, "Best Brains Center Locations");
 
 
-        WebElement location = driver.findElement(By.xpath("//h1[@class = 'text-center']"));
+        WebElement location = getDriver().findElement(By.xpath("//h1[@class = 'text-center']"));
         Thread.sleep(1000);
         String value1 = location.getText();
         Assert.assertEquals(value1, "Find your nearest center to schedule a FREE placement test and orientation.");
 
 
-        WebElement ballantyneLink = driver.findElement(By.xpath("//a[@href = '/ballantyne']"));
+        WebElement ballantyneLink = getDriver().findElement(By.xpath("//a[@href = '/ballantyne']"));
         ballantyneLink.click();
-        WebElement ballantyneText = driver.findElement(By.xpath("//span[@class = 'd-inline-block']"));
+        WebElement ballantyneText = getDriver().findElement(By.xpath("//span[@class = 'd-inline-block']"));
         String valueBallantyneText = ballantyneText.getText();
         Assert.assertEquals(valueBallantyneText, "Ballantyne");
 
 
-        WebElement registration = driver.findElement(By.xpath("//a[@href = '/new-registration']"));
+        WebElement registration = getDriver().findElement(By.xpath("//a[@href = '/new-registration']"));
         Thread.sleep(1000);
         registration.click();
 
 
-        String titleRegistration = driver.getTitle();
+        String titleRegistration = getDriver().getTitle();
         Assert.assertEquals(titleRegistration, "Student Registration | Best Brains");
         Thread.sleep(1000);
 
-        WebElement zipCode = driver.findElement(By.xpath("//input[@id = 'zipcode' ]"));
+        WebElement zipCode = getDriver().findElement(By.xpath("//input[@id = 'zipcode' ]"));
         zipCode.sendKeys("29707");
 
 
-        Select drpCenters = new Select(driver.findElement(By.name("locationId")));
+        Select drpCenters = new Select(getDriver().findElement(By.name("locationId")));
 
 
         boolean isMultiple = drpCenters.isMultiple();
@@ -250,7 +246,7 @@ public class GroupSevenTest extends BaseTest {
         }
         Thread.sleep(1000);
 
-        WebElement lastNameField = driver.findElement(By.name("lastName"));
+        WebElement lastNameField = getDriver().findElement(By.name("lastName"));
         Thread.sleep(1000);
         String nameAttributeValue = lastNameField.getAttribute("name");
 
@@ -259,8 +255,6 @@ public class GroupSevenTest extends BaseTest {
         } else {
             System.out.println("Элемент не представляет поле 'last name'.");
         }
-
-        driver.quit();
     }
 
 
@@ -282,32 +276,25 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "Making It So: A Memoir");
     }
 
-
-    @Ignore
     @Test
-    public void YMCATest() {
+    public void TestYMCA() {
 
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://ymcacapecod.org/");
+        getDriver().get("https://ymcacapecod.org/");
 
-            WebElement textBox = driver.findElement(By.className("field"));
-            WebElement SearchButton = driver.findElement(By.className("submit"));
+        WebElement textBox = getDriver().findElement(By.className("field"));
+        WebElement SearchButton = getDriver().findElement(By.className("submit"));
 
-            textBox.sendKeys("pool");
-            SearchButton.click();
+        textBox.sendKeys("pool");
+        SearchButton.click();
 
-            WebElement findelement = driver.findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
-            findelement.click();
+        WebElement findelement = getDriver().findElement(By.xpath("//*[@id=\"folio\"]/nav/ul/li[2]/a"));
+        findelement.click();
 
-            WebElement text = driver.findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
-            text.click();
+        WebElement text = getDriver().findElement(By.xpath("//*[@id=\"content\"]/article/p[4]/strong/a"));
+        text.click();
 
-            String value = text.getText();
-            Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
-        } finally {
-            driver.quit();
-        }
+        String value = text.getText();
+        Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
     }
 
     @Ignore
@@ -357,7 +344,7 @@ public class GroupSevenTest extends BaseTest {
     }
 
     @Test
-    public void testTitle(){
+    public void testTitle() {
 
         getDriver().get("https://www.psafe.com/");
         String title = getDriver().getTitle();
@@ -368,8 +355,9 @@ public class GroupSevenTest extends BaseTest {
 
         String footer = getDriver().findElement(By.xpath("//a[@href = 'https://www.psafe.com/dfndr/']")).getText();
         String expectedText = "Home";
-        Assert.assertEquals(footer,expectedText);
+        Assert.assertEquals(footer, expectedText);
     }
+
     @Test
     public void testDatalist() {
 
@@ -378,12 +366,12 @@ public class GroupSevenTest extends BaseTest {
         WebElement readonly = getDriver().findElement(By.name("my-readonly"));
         readonly.click();
         String text = readonly.getAccessibleName();
-        Assert.assertEquals(text,"Readonly input");
+        Assert.assertEquals(text, "Readonly input");
 
     }
 
     @Test
-    public void testDatePicker(){
+    public void testDatePicker() {
 
         getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
@@ -392,7 +380,7 @@ public class GroupSevenTest extends BaseTest {
 
         WebElement weekDay = getDriver().findElement(By.xpath("//thead/tr[3]/th[1]"));
         String text = weekDay.getText();
-        Assert.assertEquals(text,"Su");
+        Assert.assertEquals(text, "Su");
 
     }
 

@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 import static org.testng.Assert.assertEquals;
 
 public class GroupJavaAutomationTest extends BaseTest {
-
+    private static final String HEROKUAPP = "https://the-internet.herokuapp.com/";
     @Test
     public void testHerokuAppHomePage() {
         getDriver().get("https://the-internet.herokuapp.com/");
@@ -102,28 +102,7 @@ public class GroupJavaAutomationTest extends BaseTest {
         softAssert.assertAll();
         driver.quit();
     }
-    @Ignore
-    @Test
-    public void testEntryAd() {
-        WebDriver driver = new ChromeDriver();
 
-        driver.get("https://the-internet.herokuapp.com/");
-
-        WebElement entryAd = driver.findElement(By.xpath("//a[@href='/entry_ad']"));
-        entryAd.click();
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-
-        WebElement pClose = driver.findElement(By.xpath("//*[@id=\"modal\"]/div[2]/div[3]"));
-        pClose.click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.invisibilityOf(pClose));
-
-        Assert.assertFalse(pClose.isDisplayed());
-
-        driver.quit();
-    }
     @Ignore
     @Test
     public void testAddElement() {
@@ -212,17 +191,18 @@ public class GroupJavaAutomationTest extends BaseTest {
         getDriver().quit();
     }
 
-    @Ignore
+
     @Test
     public void checkBoxTest(){
-        WebDriver webDriver = new ChromeDriver();
-        webDriver.get("https://the-internet.herokuapp.com/");
-        webDriver.manage().window().maximize();
-        WebElement elementCheckBoxes = webDriver.findElement(By.xpath("//a[@href='/checkboxes']"));
+
+        getDriver().get(HEROKUAPP);
+
+        WebElement elementCheckBoxes = getDriver().findElement(By.xpath("//a[@href='/checkboxes']"));
         elementCheckBoxes.click();
+
         List<WebElement> elementFormCheckBoxes;
-        WebElement checkBox1 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[1]"));
-        WebElement checkBox2 = webDriver.findElement(By.xpath("//form[@id='checkboxes']/input[2]"));
+        WebElement checkBox1 = getDriver().findElement(By.xpath("//form[@id='checkboxes']/input[1]"));
+        WebElement checkBox2 = getDriver().findElement(By.xpath("//form[@id='checkboxes']/input[2]"));
         elementFormCheckBoxes = List.of(checkBox1, checkBox2);
         for (WebElement item: elementFormCheckBoxes){
             if (!item.isSelected()){
@@ -230,20 +210,21 @@ public class GroupJavaAutomationTest extends BaseTest {
             }
         }
         Assert.assertEquals(List.of(checkBox1.isSelected(),checkBox2.isSelected()), List.of(true,true));
-        webDriver.quit();
+
     }
+
     @Ignore
     @Test
     public void downloadFile(){
-        WebDriver webDriver = new ChromeDriver();
-        webDriver.get("https://the-internet.herokuapp.com/");
-        webDriver.manage().window().maximize();
+
+        getDriver().get(HEROKUAPP);
+
         String pathToSave = "C:\\Users\\48573\\Downloads\\";
 
-        WebElement elementFileDownload = webDriver.findElement(By.xpath("//a[@href='/download']"));
+        WebElement elementFileDownload = getDriver().findElement(By.xpath("//a[@href='/download']"));
         elementFileDownload.click();
 
-        WebElement firstFile = webDriver.findElement(By.xpath("//div[@id='content']/div/a[1]"));
+        WebElement firstFile = getDriver().findElement(By.xpath("//div[@id='content']/div/a[1]"));
         firstFile.click();
 
         String nameFile = firstFile.getText();
@@ -253,7 +234,6 @@ public class GroupJavaAutomationTest extends BaseTest {
         boolean downloadPass =  file.exists() && !file.isDirectory();
         Assert.assertTrue(downloadPass);
 
-        webDriver.quit();
     }
     @Ignore
     @Test

@@ -1,18 +1,20 @@
 package school.redrover;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.devtools.v85.dom.model.ShadowRootType;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
-@Ignore
-public class GroupHighwayToAqaTest {
 
-    @Test
+public class GroupHighwayToAqaTest extends BaseTest {
+
+    @Ignore
     public void testInvalidCreds() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
@@ -42,7 +44,7 @@ public class GroupHighwayToAqaTest {
         driver.quit();
     }
 
-    @Test
+    @Ignore
     public void testCreateAcc() throws InterruptedException {
         String firstName = "firstName";
         String lastName = "LastName";
@@ -91,4 +93,77 @@ public class GroupHighwayToAqaTest {
         driver.quit();
     }
 
+    @Ignore
+    @Test
+    public void testLogin() {
+
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div/h1[text()='Welcome to Jenkins!']")).getText(),
+                "Welcome to Jenkins!"
+        );
+    }
+
+    @Test
+    public void testEmptyProjectName() {
+
+        JenkinsUtils.login(getDriver());
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test
+    public void testCreateNewFreestyleProject() {
+
+        JenkinsUtils.login(getDriver());
+
+        final String projectName = "HighwayNew";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(),
+                String.format("Project %s", projectName));
+    }
+    @Test
+    public void testRenamePipelineProject() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        final String projectName = "HighwayNewPipeline";
+        final String newProjectName = "HighwayNewPipeline_NewName";
+
+//        String title =getDriver().findElement(By.cssSelector("h1")).getText();
+//        Assert.assertEquals(title, "Welcome to Jenkins!");
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[.='Pipeline']")).click();
+
+        WebElement okBtnIsEnabled = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
+        Assert.assertTrue(okBtnIsEnabled.isEnabled());
+        okBtnIsEnabled.click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[contains(.,'Rename')]")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(newProjectName);
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        WebElement newTitle = getDriver().findElement(By.cssSelector(".job-index-headline"));
+        assert newTitle.getText().contains("Pipeline " + newProjectName);
+
+        getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']")).click();
+
+        Alert alert = getDriver().switchTo().alert();
+        alert.accept();
+    }
 }

@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 
@@ -153,18 +154,16 @@ public class GroupJavaBustersTest extends BaseTest {
 
         driver.quit();
     }
-
-    @Ignore
+    
     @Test
-    public void fillInFormTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://automationintesting.online/");
+    public void testFillInForm() {
+        getDriver().get("https://automationintesting.online/");
 
-        WebElement nameField = driver.findElement(By.xpath("//input[@id='name']"));
-        WebElement emailField = driver.findElement(By.xpath("//input[@id='email']"));
-        WebElement phoneField = driver.findElement(By.xpath("//input[@id='phone']"));
-        WebElement subjectField = driver.findElement(By.xpath("//input[@id='subject']"));
-        WebElement messageField = driver.findElement(By.xpath("//textarea[@id='description']"));
+        WebElement nameField = getDriver().findElement(By.xpath("//input[@id='name']"));
+        WebElement emailField = getDriver().findElement(By.xpath("//input[@id='email']"));
+        WebElement phoneField = getDriver().findElement(By.xpath("//input[@id='phone']"));
+        WebElement subjectField = getDriver().findElement(By.xpath("//input[@id='subject']"));
+        WebElement messageField = getDriver().findElement(By.xpath("//textarea[@id='description']"));
 
         nameField.sendKeys("Marta");
         emailField.sendKeys("fake@fakeemail.com");
@@ -172,45 +171,34 @@ public class GroupJavaBustersTest extends BaseTest {
         subjectField.sendKeys("Subject must be between 5 and 100 characters.");
         messageField.sendKeys("The Old Farmhouse, Shady Street, Newfordburyshire, NE1 410S");
 
-        WebElement submitButton = driver.findElement(By.xpath("//button[@id='submitContact']"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@id='submitContact']"));
         submitButton.click();
-        Thread.sleep(5000);
 
-        WebElement message = driver.findElement(By.xpath("//h2[normalize-space()='Thanks for getting in touch Marta!']"));
+        WebElement message = getDriver().findElement(By.xpath("//h2[normalize-space()='Thanks for getting in touch Marta!']"));
         String value = message.getText();
         assertEquals(value, "Thanks for getting in touch Marta!");
-        driver.quit();
     }
 
-    @Ignore
+
+
     @Test
     public void testSearch() throws InterruptedException {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.euronics.lv/");
+        getDriver().get("https://www.euronics.lv/");
 
-        WebElement cookieButton = driver.findElement(By.id("cookie-accept-all-button"));
+        WebElement cookieButton = getDriver().findElement(By.id("cookie-accept-all-button"));
         cookieButton.click();
 
-        WebElement searchWrapper = driver.findElement(By.xpath("//div[@class = 'search']"));
-        searchWrapper.click();
-
-        WebElement textBox = driver.findElement(By.className("autocomplete__input"));
+        WebElement textBox = getDriver().findElement(By.className("autocomplete__input"));
         textBox.sendKeys("macbook");
 
-        Thread.sleep(1000);
 
-        WebElement searchButton = driver.findElement(By.className("autocomplete__search-button"));
+        WebElement searchButton = getDriver().findElement(By.className("autocomplete__search-button"));
         searchButton.click();
 
-        driver.manage().window().maximize();
-        Thread.sleep(1000);
-
-        WebElement message = driver.findElement(By.xpath("//h1[@class = 'category__header']"));
+        WebElement message = getDriver().findElement(By.xpath("//h1[@class = 'category__header']"));
         String value = message.getText();
         Assert.assertEquals(value, "macbook");
-
-        driver.quit();
     }
 
     @Ignore
@@ -248,5 +236,12 @@ public class GroupJavaBustersTest extends BaseTest {
         assertEquals(driver.getCurrentUrl(), "https://shop.studiob3.pl/product-category/end-of-series/");
 
         driver.quit();
+    }
+
+    @Test
+    public void testSomeJenkins() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+
     }
 }

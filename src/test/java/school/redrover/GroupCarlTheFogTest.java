@@ -2,15 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,38 +23,73 @@ public class GroupCarlTheFogTest extends BaseTest {
 
     private WebDriverWait wait;
 
-    @Ignore
     @Test
-    public void hireRightTest() {
+    public void testHireRight() {
 
+        getDriver().get("https://www.hireright.com");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
-
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "Employment Background Checks, Background Screening | HireRight");
 
-        WebElement cacheButton = driver.findElement(By.xpath("//div[@class='CookieConsent']//button[contains(text(), 'Continue')]"));
+        WebElement cacheButton = getDriver().findElement(By.xpath("//div[@class='CookieConsent']//button[contains(text(), 'Continue')]"));
 
         cacheButton.click();
-        driver.quit();
+    }
+
+    @Test
+    public void testSearchIndustry() {
+        getDriver().get("https://www.hireright.com/");
+
+        WebElement industriesDropDown = getDriver().findElement(By.xpath("//span[contains(text(), 'Industries')]"));
+        industriesDropDown.click();
+
+        String Industries = getDriver().findElement(By.xpath("//h4[contains(text(), 'Industries')]")).getText();
+        Assert.assertEquals(Industries,"Industries");
+
+        WebElement healthCareAndLifeSciensces = getDriver().findElement(By.xpath("//p[contains(text(), 'Healthcare & Life Sciences')]"));
+        Assert.assertTrue(healthCareAndLifeSciensces.isDisplayed());
+    }
+
+    @Test
+    public void testSlowCalculator(){
+        String url = "https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html";
+        int calculatorDelay = 0;
+        int firstValue = 4;
+        int secondValue = 7;
+        int result = firstValue + secondValue;
+        getDriver().get(url);
+
+        String firstOperand = String.format("//span[contains(@class, 'btn-outline-primary') and text() = %d]", firstValue);
+        String secondOperand = String.format("//span[contains(@class, 'btn-outline-primary') and text() = %d]", secondValue);
+        String operation = "//span[contains(@class, 'operator') and text() = '+']";
+        String equalSign = "//span[contains(@class, 'btn-outline-warning') and text() = '=']";
+        String justScreen = "//div[@class='screen']";
+        String screenWithResult = String.format("//div[@class='screen' and text() = %d]", result);
+
+        getDriver().findElement(By.id("delay")).clear();
+        getDriver().findElement(By.id("delay")).sendKeys("" + calculatorDelay);
+        getDriver().findElement(By.xpath(firstOperand)).click();
+        getDriver().findElement(By.xpath(operation)).click();
+        getDriver().findElement(By.xpath(secondOperand)).click();
+        getDriver().findElement(By.xpath(equalSign)).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(calculatorDelay));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(screenWithResult)));
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(justScreen)).getText(), "" + result);
 
     }
 
-    @Ignore
     @Test
-    public void registerNowDisplayTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
+    public void testRegisterNowDisplay() {
+        String hrUrl = "https://www.hireright.com";
+        getDriver().get(hrUrl);
         String expectedText = "Register Now";
         String registerNow= "//a[@class = 'btn btn--primary btn--hover-red-dark btn-active-red-darker'][contains(text(),'Register Now')]";
-        WebElement registerNowBTN = driver.findElement(By.xpath(registerNow));
+        WebElement registerNowBTN = getDriver().findElement(By.xpath(registerNow));
         registerNowBTN.getText();
 
         Assert.assertEquals(registerNowBTN.getText(), expectedText);
-
-        driver.quit();
-
     }
 
     @Test
@@ -132,14 +165,13 @@ public class GroupCarlTheFogTest extends BaseTest {
         Assert.assertEquals("Performances | Rady Shell at Jacobs Park", performancesPage);
     }
 
-    @Ignore
     @Test
-    public void menuItemsTest1() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
+    public void testMenuItems() {
+        String hrUrl = "https://www.hireright.com";
+        getDriver().get(hrUrl);
         List<String> menuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
 
-        List<WebElement> foundMenuItems = driver.findElements(By.cssSelector("ul.hidden > li > button, ul.hidden > li > a"));
+        List<WebElement> foundMenuItems = getDriver().findElements(By.cssSelector("ul.hidden > li > button, ul.hidden > li > a"));
 
         List<String> foundTexts = new ArrayList<>();
         for (WebElement menuItem : foundMenuItems) {
@@ -147,26 +179,28 @@ public class GroupCarlTheFogTest extends BaseTest {
         }
 
         Assert.assertEquals(foundTexts, menuItems);
-
-        driver.quit();
     }
 
-    @Ignore
     @Test
-    public void menuItemsTest2() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
+    public void testMainMenuItems() {
+        String hrUrl = "https://www.hireright.com";
+        getDriver().get(hrUrl);
         List<String> expectedMenuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
-        List<WebElement> foundMenuItems = driver.findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
+        List<WebElement> foundMenuItems = getDriver().findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
 
         List<String> foundMenuTexts = foundMenuItems.stream().map(WebElement::getText).collect(Collectors.toList());
 
         for (String expectedItem : expectedMenuItems) {
+
             Assert.assertTrue(foundMenuTexts.contains(expectedItem), "Expected menu item '" + expectedItem + "' not found!");
-
         }
+    }
 
-        driver.quit();
+    @Test
+    public void testJenkinsGreetings() {
+        JenkinsUtils.login(getDriver());
+        String JenkinsGreetings = getDriver().findElement(By.tagName("h1")).getText();
 
+        Assert.assertEquals("Welcome to Jenkins!", JenkinsGreetings);
     }
 }
