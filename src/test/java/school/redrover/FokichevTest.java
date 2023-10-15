@@ -12,18 +12,14 @@ public class FokichevTest extends BaseTest {
     private static final String PAGE_URL = "https://www.emu-land.net/";
 
     @Test
-    public void searchTest() throws InterruptedException {
+    public void testSearch() throws InterruptedException {
         getDriver().get(PAGE_URL);
 
         WebElement textBox = getDriver().findElement(By.name("q"));
         textBox.sendKeys("tekken");
 
-        Thread.sleep(1000);
-
         WebElement submitButton = getDriver().findElement(By.xpath("//div[@class='gmenu']//button"));
         submitButton.click();
-
-        Thread.sleep(1000);
 
         WebElement textBox2 = getDriver().findElement(By.xpath("//div[@class='fcontainer'][1]//p/a"));
         String value = textBox2.getText();
@@ -31,7 +27,7 @@ public class FokichevTest extends BaseTest {
     }
 
     @Test
-    public void selectConsolesTest() {
+    public void testSelectConsoles() {
         getDriver().get(PAGE_URL);
 
         WebElement consolesButton = getDriver().findElement(By.xpath("//li/a[@href='/consoles']"));
