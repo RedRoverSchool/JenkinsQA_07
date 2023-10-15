@@ -96,25 +96,21 @@ public class GroupJavaExplorersTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
     @Test
     public void testSearchOlivia() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
+        getDriver().get(BASE_URL);
 
-        WebElement textBox = driver.findElement(By.xpath("//input[@id='search']"));
+        WebElement textBox = getDriver().findElement(By.xpath("//input[@id='search']"));
         textBox.sendKeys("Olivia");
 
-        WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
 
         Thread.sleep(3000);
 
-        String title = driver.findElement(By.xpath("//h1")).getText();
+        String title = getDriver().findElement(By.xpath("//h1")).getText();
 
         assertEquals(title, "Search results for: 'Olivia'");
-
-        driver.quit();
     }
 
     @Ignore
