@@ -255,6 +255,23 @@ public class GroupForwardTest extends BaseTest {
     Assert.assertEquals(value, "About LDOCE Online");
   }
 
+  @Test
+  public void testAddDescription() {
+
+    JenkinsUtils.login(getDriver());
+    String addDescription = "GroupForward #1";
+
+    WebElement description = getDriver().findElement(By.id("description-link"));
+    description.click();
+    WebElement textField = getDriver().findElement(By.name("description"));
+    textField.clear();
+    textField.sendKeys(addDescription);
+    getDriver().findElement(By.name("Submit")).click();
+    String newDescriprtion = getDriver().findElement(By.id("description")).getText();
+
+    Assert.assertTrue(newDescriprtion.contains(addDescription));
+
+  }
 
 }
 
