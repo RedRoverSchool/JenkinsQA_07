@@ -262,7 +262,7 @@ public class GroupForwardTest extends BaseTest {
     getDriver().get(PAGE_URL);
     getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-    WebElement title = getDriver().findElement(By.xpath("/*[@id='wotd']/span[@class='box_title']"));
+    WebElement title = getDriver().findElement(By.xpath("//*[@id='wotd']/span[@class='box_title']"));
     String value = title.getText();
 
     Assert.assertEquals(value, "Word of the day");
