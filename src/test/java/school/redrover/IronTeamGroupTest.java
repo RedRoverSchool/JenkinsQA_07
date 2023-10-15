@@ -105,7 +105,7 @@ public class IronTeamGroupTest {
     }
 
     @Test
-    public void PositiveTest() throws InterruptedException {
+    public void PositiveTest() throws InterruptedException{
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
         try {
