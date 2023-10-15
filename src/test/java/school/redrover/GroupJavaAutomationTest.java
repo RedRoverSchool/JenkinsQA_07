@@ -1,6 +1,6 @@
 package school.redrover;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -28,29 +28,22 @@ public class GroupJavaAutomationTest extends BaseTest {
         assertEquals(title, "The Internet");
         getDriver().quit();
     }
-    @Ignore
-    @Test
-    public void herokuAppAddRemoveTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
 
-        driver.get("https://the-internet.herokuapp.com/");
-        try {
-            WebElement addRemove = driver.findElement(By.xpath("//a[@href='/add_remove_elements/']"));
+    @Test
+    public void herokuAppAddRemoveTest()  {
+        getDriver().get("https://the-internet.herokuapp.com/");
+
+            WebElement addRemove = getDriver().findElement(By.xpath("//a[@href='/add_remove_elements/']"));
             addRemove.click();
-            WebElement addElement = driver.findElement(By.xpath("//*[@id='content']/div/button"));
+            WebElement addElement = getDriver().findElement(By.xpath("//*[@id='content']/div/button"));
             addElement.click();
             //explicit expectation - declaration, initialization
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
             //explicitly wait for the visibility of the button element
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"elements\"]/button[1]")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='elements']/button[1]")));
             //clicking on the button, this action will only happen when the button element is visible on the page
-            driver.findElement(By.xpath("//*[@id=\"elements\"]/button[1]")).click();
+            getDriver().findElement(By.xpath("//*[@id='elements']/button[1]")).click();
 
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        driver.quit();
 
     }
     @Ignore
