@@ -14,6 +14,8 @@ import java.net.URI;
 import java.time.Duration;
 import org.testng.asserts.SoftAssert;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -23,7 +25,7 @@ public class GroupJavaAutomationTest extends BaseTest {
     private static final String HEROKUAPP = "https://the-internet.herokuapp.com/";
     @Test
     public void testHerokuAppHomePage() {
-        getDriver().get("https://the-internet.herokuapp.com/");
+        getDriver().get(HEROKUAPP);
         String title = getDriver().getTitle();
         assertEquals(title, "The Internet");
         getDriver().quit();
@@ -253,6 +255,19 @@ public class GroupJavaAutomationTest extends BaseTest {
 
         Assert.assertTrue(brokenImages.size()==0, "List of broken images:" + brokenImages);
         driver.quit();
+    }
+
+    @Test
+    public void testJenkinsHomePageAndJenkinsVersion() {
+
+        JenkinsUtils.login(getDriver());
+
+        String title = getDriver().getTitle();
+        Assert.assertEquals("Dashboard [Jenkins]",title);
+
+        String versionJenkins = getDriver().findElement
+                (By.xpath("//a[@rel='noopener noreferrer']")).getText();
+        Assert.assertEquals("Jenkins 2.387.2",versionJenkins);
     }
 }
 
