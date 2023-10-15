@@ -49,8 +49,6 @@ public class ildanaTest extends BaseTest {
 
        WebElement newItem =getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']"));
 
-       //Assert.assertEquals(newItem.getText(),"New Item");
-
        newItem.click();
 
        WebElement inputJenkins = getDriver().findElement(By.xpath("//div[@class='add-item-name']/input[@name=\"name\"]"));
@@ -60,20 +58,6 @@ public class ildanaTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@id=\"itemname-invalid\"]")).getText(),"» A job already exists with the name ‘IldanaFrolova’"
 
         );
-
-//        WebElement project = getDriver().findElement(By.xpath("//ul[@class=\"j-item-options\"]/li[@class=\"hudson_model_FreeStyleProject\"]"));
-//        project.click();
-//
-//        JavascriptExecutor js = (JavascriptExecutor)getDriver();
-//        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-//
-//        WebElement buttonOk = getDriver().findElement(By.xpath("//button[@id=\"ok-button\"]"));
-//        buttonOk.click();
-//
-//       Assert.assertEquals(
-//               getDriver().findElement(By.xpath("//a[@href='/job/IldanaFrolova/']")).getText(),"IldanaFrolova"
-//       );
-
 
     }
 
