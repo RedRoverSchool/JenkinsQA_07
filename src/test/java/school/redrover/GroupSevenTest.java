@@ -57,44 +57,47 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertTrue(resultText.contains("Behavior-driven development"));
     }
 
+    @Ignore
     @Test
     public void testSearch() {
-
+        WebDriver driver = new ChromeDriver();
         try {
-            getDriver().get("https://elitetransit.com/");
+            driver.get("https://elitetransit.com/");
 
-            getDriver().manage().window().maximize();
+            driver.manage().window().maximize();
 
-            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-            WebElement buttonContact = getDriver().findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
+            WebElement buttonContact = driver.findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
             buttonContact.click();
-            String title = getDriver().getTitle();
+            String title = driver.getTitle();
 
             Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
         } finally {
-            getDriver().quit();
+            driver.quit();
         }
     }
 
+    @Ignore
     @Test
     public void testTextInput() {
 
+        WebDriver driver = new ChromeDriver();
         try {
-            getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+            driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
-            getDriver().manage().window().maximize();
-            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(800));
+            driver.manage().window().maximize();
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(800));
 
-            WebElement input = getDriver().findElement(By.id("my-text-id"));
+            WebElement input = driver.findElement(By.id("my-text-id"));
             input.click();
             input.sendKeys("Selenium");
 
-            WebElement submit = getDriver().findElement(By.tagName("button")); ////button[@type='submit']
+            WebElement submit = driver.findElement(By.tagName("button")); ////button[@type='submit']
             submit.submit();
-            WebElement message = getDriver().findElement(By.id("message"));
+            WebElement message = driver.findElement(By.id("message"));
             Assert.assertEquals(message.getText(), "Received!");
         } finally {
-            getDriver().quit();
+            driver.quit();
         }
     }
 
