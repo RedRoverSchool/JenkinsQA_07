@@ -235,7 +235,8 @@ public class GroupJavaExplorersTest extends BaseTest {
     public void testGetTitle() {
 
         JenkinsUtils.login(getDriver());
-        String actualResult = getDriver().findElement(By.xpath("//div/h1")).getText();
+        WebElement h1 = getDriver().findElement(By.xpath("//div/h1"));
+        String actualResult = h1.getText();
         Assert.assertEquals(actualResult,"Welcome to Jenkins!");
     }
 }
