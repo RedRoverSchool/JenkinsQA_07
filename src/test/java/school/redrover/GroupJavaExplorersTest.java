@@ -230,5 +230,28 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         Assert.assertEquals(title, "Folder1");
     }
+
+    @Test
+    public void testCreateNewJob() {
+
+        String expectedText = "This view has no jobs associated with it. You can either add " +
+                "some existing jobs to this view or create a new job in this view.";
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement newView = getDriver().findElement(By.xpath("//div//a[@title='New View']"));
+        newView.click();
+        WebElement viewName = getDriver().findElement(By.xpath("//div//input[@id='name']"));
+        viewName.sendKeys("MyView2");
+        WebElement viewTypeChckbx = getDriver().findElement(By.xpath("//div//label[@for='hudson.model.ListView']"));
+        viewTypeChckbx.click();
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//div//button[@name='Submit']"));
+        buttonSubmit.click();
+        WebElement buttonSubmitView = getDriver().findElement(By.xpath("//div//button[@name='Submit']"));
+        buttonSubmitView.click();
+        String actualText = getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText();
+
+        Assert.assertTrue(actualText.contains(expectedText));
+        }
 }
 
