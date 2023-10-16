@@ -10,6 +10,15 @@ import school.redrover.runner.JenkinsUtils;
 
 public class LifantsovaTest extends BaseTest {
 
+    @Test
+    public void testSearch4(){
+        getDriver().get("https://resh.edu.ru/");
+
+        WebElement element = getDriver().findElement(By.className("logo__name"));
+        String value = element.getText();
+        Assert.assertEquals(value, "РОССИЙСКАЯ ЭЛЕКТРОННАЯ ШКОЛА");
+    }
+
     @Ignore
     @Test
     public void testSearch() throws InterruptedException {
@@ -49,6 +58,7 @@ public class LifantsovaTest extends BaseTest {
         Assert.assertEquals(value, "УЧЕБНЫЕ ПРЕДМЕТЫ");
     }
 
+    @Ignore
     @Test
     public void testSearch2() throws InterruptedException {
 
