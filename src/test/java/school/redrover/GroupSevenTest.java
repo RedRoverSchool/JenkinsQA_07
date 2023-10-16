@@ -458,20 +458,20 @@ public class GroupSevenTest extends BaseTest {
     }
 
     @Test
-    public void testSaveButton() {
+    public void testSaveButton() throws InterruptedException{
         JenkinsUtils.login(getDriver());
 
-        WebElement searchBar = getDriver().findElement(By.xpath("//input[@id=\"search-box\"]"));
+        WebElement searchBar = getDriver().findElement(By.xpath("//input[@id='search-box']"));
         searchBar.click();
         searchBar.sendKeys("configure");
         searchBar.sendKeys(Keys.ENTER);
 
-        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
         saveButton.click();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement configureTitle = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h1[contains(text(), \"System\")]")));
+        WebElement configureTitle = getDriver().findElement(By.xpath("//h1[normalize-space()='System']"));
         String value = configureTitle.getText();
+        Thread.sleep(2000);
         Assert.assertEquals(value, "System");
     }
 }
