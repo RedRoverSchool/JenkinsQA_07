@@ -49,6 +49,5 @@ public class GroupJavaPlaywrightTest extends BaseTest {
         WebElement tableRow = getDriver().findElement(By.id("job_Project1"));
         Assert.assertEquals(tableRow.getAttribute("id"), "job_Project1");
 
-
     }
 }
