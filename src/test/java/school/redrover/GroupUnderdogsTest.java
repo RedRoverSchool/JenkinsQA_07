@@ -29,7 +29,7 @@ public class GroupUnderdogsTest extends BaseTest {
     private static final String MAIN_PAGE_URL_MAYTAG = "https://www.maytag.ca/";
 
     @Test
-    public void test99BottlesTitleTest_tereshenkov29() {
+    public void  test99BottlesTitleTest_tereshenkov29() {
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
         WebElement title = getDriver().findElement(By.xpath("//*[@id=\"header\"]/h1"));
         String titleValue = title.getText();
