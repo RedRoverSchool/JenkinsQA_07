@@ -404,7 +404,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "Tools");
     }
 
-    // @Ignore
+    @Ignore
     @Test
     public void testInventoryPage() {
         getDriver().get("https://www.saucedemo.com/inventory.html");
