@@ -39,7 +39,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
         WebElement movie = getDriver().findElement(By.xpath("//span[@class='film-title-wrapper']/a[contains(@href, 'lawrence')]"));
         String value = movie.getText();
-        Assert.assertEquals("Merry Christmas, Mr. Lawrence", value);
+        Assert.assertEquals(value, "Merry Christmas, Mr. Lawrence");
     }
 
     @Test
@@ -68,7 +68,18 @@ public class GroupJavaBustersTest extends BaseTest {
 
         WebElement message = getDriver().findElement(By.xpath("//div[@class='errormessage']//p"));
         String value = message.getText();
-        Assert.assertEquals("Your credentials don’t match. It’s probably attributable to human error.", value);
+        Assert.assertEquals(value, "Your credentials don’t match. It’s probably attributable to human error.");
+
+    }
+
+    @Test
+    public void testWelcomeJenkins() {
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement mainHeading = getDriver().findElement(By.cssSelector("h1"));
+        String value = mainHeading.getText();
+        Assert.assertEquals(value, "Welcome to Jenkins!");
 
     }
 
@@ -154,7 +165,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
         driver.quit();
     }
-    
+
     @Test
     public void testFillInForm() {
         getDriver().get("https://automationintesting.online/");
@@ -178,7 +189,6 @@ public class GroupJavaBustersTest extends BaseTest {
         String value = message.getText();
         assertEquals(value, "Thanks for getting in touch Marta!");
     }
-
 
 
     @Test
