@@ -5,7 +5,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -404,7 +406,6 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "Tools");
     }
 
-    @Ignore
     @Test
     public void testInventoryPage() {
         getDriver().get("https://www.saucedemo.com/inventory.html");
@@ -419,14 +420,6 @@ public class GroupSevenTest extends BaseTest {
         WebElement productsPageTitle = getDriver().findElement(By.className("title"));
         Assert.assertTrue(productsPageTitle.isDisplayed(), "Not on product page");
 
-        List<WebElement> inventoryItemDescriptions = getDriver().findElements(By.className("inventory_item_desc"));
-        List<WebElement> inventoryItemTitles = getDriver().findElements(By.className("inventory_item_name"));
-
-        for (int i = 0; i < inventoryItemDescriptions.size(); i++) {
-           inventoryItemTitles.get(i).getText();
-           inventoryItemDescriptions.get(i).getText();
 
         }
     }
-}
-
