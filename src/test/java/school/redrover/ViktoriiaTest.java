@@ -32,4 +32,5 @@ public class ViktoriiaTest extends BaseTest {
 
         Assert.assertTrue(projectName.isDisplayed());
     }
+
 }
