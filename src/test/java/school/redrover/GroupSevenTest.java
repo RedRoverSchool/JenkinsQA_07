@@ -469,7 +469,7 @@ public class GroupSevenTest extends BaseTest {
         WebElement saveButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
         saveButton.click();
 
-        WebElement configureTitle = getDriver().findElement(By.cssSelector("div[class='jenkins-app-bar__content'] h1"));
+        WebElement configureTitle = getDriver().findElement(By.className("jenkins-app-bar__content"));
         String value = configureTitle.getText();
         Assert.assertEquals(value, "System");
     }
