@@ -40,4 +40,24 @@ public class GroupJavaPlaywrightTest extends BaseTest {
         Assert.assertEquals(tableRow.getAttribute("id"), "job_" + projectName);
 
     }
+
+    @Test
+    public void testAddDescriptionFromMyViewsPage() {
+        JenkinsUtils.login(getDriver());
+
+        String descriptionMessage = "Simple test";
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Simple test");
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().
+                findElement(By.xpath("//div[@id='description']/div[1]")).getText(), descriptionMessage);
+
+    }
+
 }

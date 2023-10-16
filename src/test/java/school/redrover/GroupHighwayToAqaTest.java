@@ -11,10 +11,13 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+import java.util.List;
+
 
 public class GroupHighwayToAqaTest extends BaseTest {
 
     @Ignore
+    @Test
     public void testInvalidCreds() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
@@ -45,6 +48,7 @@ public class GroupHighwayToAqaTest extends BaseTest {
     }
 
     @Ignore
+    @Test
     public void testCreateAcc() throws InterruptedException {
         String firstName = "firstName";
         String lastName = "LastName";
@@ -132,15 +136,13 @@ public class GroupHighwayToAqaTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(),
                 String.format("Project %s", projectName));
     }
+
     @Test
     public void testRenamePipelineProject() throws InterruptedException {
         JenkinsUtils.login(getDriver());
 
         final String projectName = "HighwayNewPipeline";
         final String newProjectName = "HighwayNewPipeline_NewName";
-
-//        String title =getDriver().findElement(By.cssSelector("h1")).getText();
-//        Assert.assertEquals(title, "Welcome to Jenkins!");
 
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(projectName);
@@ -165,5 +167,47 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
         Alert alert = getDriver().switchTo().alert();
         alert.accept();
+    }
+
+    @Test
+    public void testSetFolderDisplayNameAndDescription() {
+
+        JenkinsUtils.login(getDriver());
+
+        final String folderName = String.format("Some test folder name %3d", (int)(Math.random()*1000));
+        final String folderDisplayName = "Some test folder display name";
+        final String folderDescription = "Some test folder description";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(folderDisplayName);
+        getDriver().findElement(By.name("_.description")).sendKeys(folderDescription);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(),
+                folderDisplayName);
+        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(),
+                folderDescription);
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText()
+                .contains(String.format("Folder name: %s", folderName)));
+    }
+
+    @Test
+    public void testSideBarOnMainPage() {
+
+        JenkinsUtils.login(getDriver());
+
+        List<WebElement> sideBarItems = getDriver().findElements(By.xpath("//div[@id = 'tasks']//div[@class = 'task ']"));
+
+        String[] sideBarTitles = new String[]{"New Item", "People", "Build History", "Manage Jenkins", "My Views"};
+
+        Assert.assertEquals(sideBarTitles.length, sideBarItems.size());
+
+        for (int i = 0; i < sideBarTitles.length; i++) {
+            Assert.assertEquals(sideBarItems.get(i).getText(), sideBarTitles[i]);
+        }
     }
 }

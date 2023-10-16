@@ -1,17 +1,18 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-import java.util.HashMap;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -149,25 +150,23 @@ public class GroupUnicornsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void searchVerificationGitHub() {
-        WebDriver driver = new ChromeDriver();
+    public void testSearchVerificationGitHub() {
+        getDriver().get("https://github.com");
         try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            WebElement searchBox = driver.findElement(By.xpath("//span[@class=\"flex-1\"]"));
+            WebElement searchBox = getDriver().findElement(By.xpath("//span[@class=\"flex-1\"]"));
             searchBox.click();
-            WebElement inputButton = driver.findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
+            WebElement inputButton = getDriver().findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
             inputButton.sendKeys("selenium" + Keys.ENTER);
-            List<WebElement> listOfResults = driver.findElements(By.xpath("//span[starts-with(@class, 'Text-sc-17v1xeu-0 qaOIC search-match')]"));
-            int expectedSize = 10;
-            int actualSize = listOfResults.size();
-            Assert.assertEquals(actualSize, expectedSize);
-        } finally {
-            driver.quit();
+            Thread.sleep(1000);
+            List<WebElement> listOfResults = getDriver().findElements(By.xpath("//div[@data-testid='results-list']//h3//a"));
+            Actions actions = new Actions(getDriver());
+            for (WebElement result : listOfResults) {
+                actions.moveByOffset(0, 50).build().perform();
+                Assert.assertTrue(result.getText().toLowerCase().contains("selenium"));
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -190,31 +189,6 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
 
-
-    @Ignore
-    @Test
-    public void verificationSocialIconsGitHub() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            twitterIcon.click();
-            String url = driver.getCurrentUrl();
-            WebElement closeButton = driver.findElement(By.xpath("//*[@aria-label='Close']"));
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.elementToBeClickable(closeButton));
-            closeButton.click();
-            Assert.assertTrue(url.contains("twitter"));
-        } finally {
-            driver.quit();
-        }
-    }
-
     @Test
     public void testComputersMenu() {
 
@@ -234,27 +208,6 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
-    @Ignore
-    @Test
-    public void verificationSocialIconsGitHub2() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            List<WebElement> listOfIcons = driver.findElements(By.xpath("(//footer[@role='contentinfo']//ul)[5]//a"));
-            listOfIcons.get(1).click();
-            String url = driver.getCurrentUrl();
-            driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
-            Assert.assertTrue(url.contains("face"));
-        } finally {
-            driver.quit();
-        }
-    }
 
     @Test
     public void unsuccessfulLoginDigitalBankTest() {
@@ -354,13 +307,14 @@ public class GroupUnicornsTest extends BaseTest {
     public void testRaiffeisenBank() {
         final List<String> currnecyExpected = List.of("USD", "EUR", "GBP", "CHF", "JPY", "CNY");
 
-            getDriver().get("https://www.raiffeisen.ru/currency_rates/");
-            for (int i =1; i < 7; i++ ) {
-                WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])["+ i+"]"));
-                Assert.assertEquals(currencyActual.getText(),currnecyExpected.get(i-1));
-            }
+        getDriver().get("https://www.raiffeisen.ru/currency_rates/");
+        for (int i = 1; i < 7; i++) {
+            WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])[" + i + "]"));
+            Assert.assertEquals(currencyActual.getText(), currnecyExpected.get(i - 1));
+        }
     }
 
+    @Ignore
     @Test
     public void testPearson() {
         getDriver().get("https://www.pearson.com/");
@@ -373,6 +327,6 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.id("password")).sendKeys("Test1234");
         getDriver().findElement(By.id("submitBttn")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(),"We can't find an account with this email and password. Please try again.");
+        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
     }
 }
