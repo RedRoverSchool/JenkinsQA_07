@@ -675,5 +675,19 @@ public class GroupQaClimbersTest extends BaseTest {
     @Test
     public void testLoginJenkins() {
         JenkinsUtils.login(getDriver());
+        WebElement checkJenkinsVersion = getDriver().findElement(By.xpath("//button[@type='button']"));
+        checkJenkinsVersion.click();
+
+        WebElement openJenkinsWebSite = getDriver().findElement(By.xpath("//a[@rel='noopener noreferrer']"));
+        openJenkinsWebSite.click();
+
+        WebElement getTitle = getDriver().findElement(By.xpath("//a[@href='/']"));
+        String value = getTitle.getText();
+        Assert.assertEquals("Jenkins","Jenkins");
+
+
+
+
+
     }
 }
