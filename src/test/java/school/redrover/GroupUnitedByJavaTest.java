@@ -477,4 +477,17 @@ public class GroupUnitedByJavaTest extends BaseTest {
                 textPreview + " differs from " + descriptionText );
         Thread.sleep(1000);
     }
+
+    @Test
+    public void testJenkinsAdminButton() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        WebElement adminButton = getDriver().findElement(By.xpath("//span[text()='admin']"));
+        adminButton.click();
+
+        WebElement title = getDriver().findElement(By.xpath("//div[text()='Jenkins User ID: admin']"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Jenkins User ID: admin");
+        Thread.sleep(1000);
+    }
 }

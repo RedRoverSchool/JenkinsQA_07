@@ -202,41 +202,57 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "macbook");
     }
 
-    @Ignore
     @Test
-    public void testSearchCorrectProduct() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://shop.studiob3.pl/");
+    public void testSearchCorrectProduct() {
+        getDriver().get("https://shop.studiob3.pl/");
 
-        driver.findElement(By.className("search-open")).click();
-        Thread.sleep(1000);
+        getDriver().findElement(By.className("search-open")).click();
 
-        WebElement typeSearch = driver.findElement(By.className("search-field"));
+        WebElement typeSearch = getDriver().findElement(By.className("search-field"));
         typeSearch.sendKeys("dress");
         typeSearch.submit();
-        Thread.sleep(5000);
 
-        WebElement foundElement = driver.findElement(By.className("post-10807"));
+        String linkToProduct = getDriver()
+            .findElement(By.xpath("//*[@id='search-shop-grid']/div[1]/div/div[3]/h5/a"))
+            .getAttribute("href");
 
-        assertTrue(foundElement.getText().contains("dress"));
-
-        driver.quit();
+        assertTrue(linkToProduct.contains("dress"));
     }
 
-    @Ignore
     @Test
-    public void testNavigateToExpectedUrl() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://shop.studiob3.pl/");
+    public void testDeleteFromBim() {
+        getDriver().get("https://shop.studiob3.pl/product/iola-beanie/");
 
-        driver.findElement(By.className("hamburger")).click();
-        Thread.sleep(1000);
+        // Add product's color.
+        getDriver().findElement(By.id("pa_color")).submit();
+        getDriver().findElement(By.xpath("//*[@id=\"pa_color\"]/option[4]")).click();
 
-        driver.findElement(By.linkText("End of Series")).click();
+        // Add product's size.
+        getDriver().findElement(By.id("pa_size")).submit();
+        getDriver().findElement(By.xpath("//*[@id=\"pa_size\"]/option[2]")).click();
 
-        assertEquals(driver.getCurrentUrl(), "https://shop.studiob3.pl/product-category/end-of-series/");
+        // Check if product with given color and size exists.
+        var unused = getDriver().findElement(By.className("stock"));
 
-        driver.quit();
+        getDriver().findElement(By.className("pseudo-add-to-cart")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div[1]/form/table/tbody/tr/td[2" +
+            "]/div/span[2]")).click();
+
+        WebElement foundElement = getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div" +
+            "/div[2]/strong"));
+
+        assertTrue(foundElement.getText().contains("Your cart is empty"));
+    }
+
+    @Test
+    public void testNavigateToExpectedUrl() {
+
+        getDriver().get("https://shop.studiob3.pl/");
+
+        getDriver().findElement(By.linkText("End of Series")).click();
+
+        assertEquals(getDriver().getCurrentUrl(), "https://shop.studiob3" +
+            ".pl/product-category/end-of-series/");
     }
 
     @Test
