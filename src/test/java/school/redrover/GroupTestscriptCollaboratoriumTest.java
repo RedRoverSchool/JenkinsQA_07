@@ -76,7 +76,6 @@ public class GroupTestscriptCollaboratoriumTest {
     }
 
     @Test
-    public void testEssayAppSwitchWebsiteColorMode() throws InterruptedException {
     public void testEssayAppGetSite() {
 
         WebDriver driver = new ChromeDriver();
@@ -85,21 +84,26 @@ public class GroupTestscriptCollaboratoriumTest {
         String title = driver.getTitle();
         assertEquals(title, "Essay - Write better.");
     }
+    @Test
+    public void testEssayAppSwitchWebsiteColorLayout() {
 
-        String darkLayoutLocator = "css-qnyjs3";
-        Assert.assertEquals("css-qnyjs3", darkLayoutLocator);
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://essay.app/");
 
-        WebElement backgroundSwitcherHandle = driver.findElement(By.className("ant-switch-handle"));
-        Thread.sleep(1000);
-        backgroundSwitcherHandle.click();
+        WebElement upperSitePanel = driver.findElement(By.className("css-s5xdrg"));
 
-        String lightLayoutLocator = "css-1air1wh";
-        Assert.assertEquals("css-1air1wh", lightLayoutLocator);
+        WebElement colorLayoutSwitcher = upperSitePanel.findElement(By.tagName("button"));
+        String colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
 
-        Thread.sleep(1000);
-        backgroundSwitcherHandle.click();
+        Assert.assertEquals(colorLayoutSwitcherCurrentState, "true",
+                "Current layout is Dark");
 
-        Assert.assertEquals("css-qnyjs3", darkLayoutLocator);
+        WebElement colorLayoutSwitcherHandle = colorLayoutSwitcher.findElement(By.className("ant-switch-handle"));
+        colorLayoutSwitcherHandle.click();
+
+        colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
+        Assert.assertEquals(colorLayoutSwitcherCurrentState, "false",
+                "Current layout is Light");
 
         driver.quit();
     }
