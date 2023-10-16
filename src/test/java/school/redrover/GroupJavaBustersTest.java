@@ -11,7 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
+
 
 import java.time.Duration;
 
@@ -182,7 +182,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
 
     @Test
-    public void testSearch() throws InterruptedException {
+    public void testSearch() {
 
         getDriver().get("https://www.euronics.lv/");
 
@@ -200,6 +200,8 @@ public class GroupJavaBustersTest extends BaseTest {
         String value = message.getText();
         Assert.assertEquals(value, "macbook");
     }
+
+
 
     @Ignore
     @Test
@@ -236,12 +238,5 @@ public class GroupJavaBustersTest extends BaseTest {
         assertEquals(driver.getCurrentUrl(), "https://shop.studiob3.pl/product-category/end-of-series/");
 
         driver.quit();
-    }
-
-    @Test
-    public void testSomeJenkins() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
-
-
     }
 }
