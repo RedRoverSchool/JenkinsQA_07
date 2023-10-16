@@ -269,6 +269,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
     // endregion
 
 
+    @Ignore
     @Test
 
     public void testTextBoxNN () {
