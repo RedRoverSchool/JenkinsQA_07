@@ -210,10 +210,9 @@ public class GroupUnicornsTest extends BaseTest {
 
 
     @Test
-    public void unsuccessfulLoginDigitalBankTest() {
+    public void testUnsuccessfulLoginDigitalBank() {
 
         getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().manage().window().maximize();
         getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
 
         getDriver().findElement(By.id("username")).sendKeys("tester1@gmail.com");
@@ -224,10 +223,9 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void successfulLoginDigitalBankTest() {
+    public void testSuccessfulLoginDigitalBank() {
 
         getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().manage().window().maximize();
         getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
 
         getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
