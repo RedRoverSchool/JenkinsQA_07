@@ -658,7 +658,7 @@ public class GroupQaClimbersTest extends BaseTest {
     @Test
     public void testLoginSauceDemo() throws InterruptedException {
         getDriver().get("https://saucedemo.com/");
-        List<WebElement> loginButtons=getDriver().findElements(By.tagName("input"));
+        List<WebElement> loginButtons = getDriver().findElements(By.tagName("input"));
         loginButtons.get(0).sendKeys("standard_user");
         loginButtons.get(1).sendKeys("secret_sauce");
         loginButtons.get(2).click();
@@ -666,9 +666,9 @@ public class GroupQaClimbersTest extends BaseTest {
         Select sort = new Select(dropdown);
         Thread.sleep(1000);
         sort.selectByVisibleText("Price (high to low)");
-        String expectedMessage="Swag Labs";
-        String actualMessage=getDriver().findElement(By.xpath("//div[text()='Swag Labs']")).getText();
-        Assert.assertEquals(actualMessage,expectedMessage);
+        String expectedMessage = "Swag Labs";
+        String actualMessage = getDriver().findElement(By.xpath("//div[text()='Swag Labs']")).getText();
+        Assert.assertEquals(actualMessage, expectedMessage);
     }
 
     @Test
@@ -695,9 +695,24 @@ public class GroupQaClimbersTest extends BaseTest {
         Thread.sleep(500);
         searchSettingsField.sendKeys(Keys.ENTER);
         String actualTitle = getDriver().findElement(
-                By.xpath("//div[@id='main-panel']/h1[text()='Script Console']"))
+                        By.xpath("//div[@id='main-panel']/h1[text()='Script Console']"))
                 .getText();
 
         Assert.assertEquals(actualTitle, "Script Console");
+    }
+
+    @Test
+    public void testLoginJenkins() {
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
+        WebElement checkJenkinsVersion = getDriver().findElement(By.xpath("//button[@type='button']"));
+        checkJenkinsVersion.click();
+
+        WebElement openJenkinsWebSite = getDriver().findElement(By.xpath("//a[@rel='noopener noreferrer']"));
+        openJenkinsWebSite.click();
+
+        String getTitle = getDriver().findElement(By.xpath("//a[@href='/']")).getText();
+        Assert.assertEquals("Jenkins", "Jenkins");
+
     }
 }
