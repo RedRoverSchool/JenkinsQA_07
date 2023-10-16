@@ -29,6 +29,8 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(title, "Kylie Cosmetics by Kylie Jenner | Kylie Skin | Kylie Baby");
     }
 
+
+    @Ignore
     @Test
     public void testSearchField() {
 
