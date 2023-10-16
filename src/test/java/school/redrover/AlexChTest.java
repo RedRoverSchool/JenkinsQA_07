@@ -8,7 +8,6 @@ import school.redrover.runner.JenkinsUtils;
 
 public class AlexChTest extends BaseTest {
 
-    private final String jobName = "randomStringName";
     public void createNewPipeline(String pipelineName){
         getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
@@ -27,6 +26,7 @@ public class AlexChTest extends BaseTest {
 
     @Test
     public void createPipelineWithCorrectNameTest(){
+        String jobName = "correctName";
         JenkinsUtils.login(getDriver());
 
         createNewPipeline(jobName);
@@ -49,6 +49,7 @@ public class AlexChTest extends BaseTest {
 
     @Test
     public void createPipelineWithDuplicateNameTest(){
+        String jobName = "duplicateName";
         JenkinsUtils.login(getDriver());
 
         createNewPipeline(jobName);
