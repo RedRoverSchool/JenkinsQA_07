@@ -282,7 +282,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
     }
     // endregion
 
-
     @Ignore
     @Test
 
