@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+import java.util.List;
+
 
 public class GroupHighwayToAqaTest extends BaseTest {
 
@@ -191,5 +193,21 @@ public class GroupHighwayToAqaTest extends BaseTest {
                 folderDescription);
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText()
                 .contains(String.format("Folder name: %s", folderName)));
+    }
+
+    @Test
+    public void testSideBarOnMainPage() {
+
+        JenkinsUtils.login(getDriver());
+
+        List<WebElement> sideBarItems = getDriver().findElements(By.xpath("//div[@id = 'tasks']//div[@class = 'task ']"));
+
+        String[] sideBarTitles = new String[]{"New Item", "People", "Build History", "Manage Jenkins", "My Views"};
+
+        Assert.assertEquals(sideBarTitles.length, sideBarItems.size());
+
+        for (int i = 0; i < sideBarTitles.length; i++) {
+            Assert.assertEquals(sideBarItems.get(i).getText(), sideBarTitles[i]);
+        }
     }
 }
