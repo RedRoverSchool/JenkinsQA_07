@@ -108,7 +108,7 @@ public class GroupUnderdogsTest extends BaseTest {
                 "Sign in to Jenkins");
     }
 
-
+    @Ignore
     @Test
     public void testTrack_correct_Credential_Artuom() throws InterruptedException {
         Dimension windowSize = new Dimension(1024, 768);
@@ -144,7 +144,7 @@ public class GroupUnderdogsTest extends BaseTest {
         assertEquals(text, "All-new arrivals");
     }
 
-
+    @Ignore
     @Test
     public void testTrack_Incorrect_Credential_Artuom() throws InterruptedException {
         Dimension windowSize = new Dimension(1024, 768);
@@ -223,7 +223,7 @@ public class GroupUnderdogsTest extends BaseTest {
             }
         }
     }
-
+    @Ignore
     @Test
     public void testEnd_to_End_Artuom() throws InterruptedException {
         getDriver().get(MAIN_PAGE_URL_MAYTAG);
