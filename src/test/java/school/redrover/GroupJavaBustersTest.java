@@ -117,7 +117,7 @@ public class GroupJavaBustersTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
+
     @Test
     public void testAllFields() throws InterruptedException {
         String mainLink = "https://www.selenium.dev/selenium/web/web-form.html";
@@ -142,8 +142,8 @@ public class GroupJavaBustersTest extends BaseTest {
         String currentLink = getDriver().getCurrentUrl();
         Assert.assertEquals(currentLink, indexLink);
         getDriver().get(mainLink);
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        WebElement dropdownSelect = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name='my-select']")));
+
+        WebElement dropdownSelect = getDriver().findElement(By.xpath("//*[@name='my-select']"));
         Select dropDownSelectedValue = new Select(dropdownSelect);
         dropDownSelectedValue.selectByValue("1");
         dropDownSelectedValue.selectByValue("2");
