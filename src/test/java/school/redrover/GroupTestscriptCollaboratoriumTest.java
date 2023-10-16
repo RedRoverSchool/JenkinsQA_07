@@ -74,4 +74,31 @@ public class GroupTestscriptCollaboratoriumTest {
             driver.quit();
         }
     }
+
+    @Test
+    public void testEssayAppSwitchWebsiteColorMode() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://essay.app/");
+
+        String title = driver.getTitle();
+        assertEquals(title, "Essay - Write better.");
+
+        String darkLayoutLocator = "css-qnyjs3";
+        Assert.assertEquals("css-qnyjs3", darkLayoutLocator);
+
+        WebElement backgroundSwitcherHandle = driver.findElement(By.className("ant-switch-handle"));
+        Thread.sleep(1000);
+        backgroundSwitcherHandle.click();
+
+        String lightLayoutLocator = "css-1air1wh";
+        Assert.assertEquals("css-1air1wh", lightLayoutLocator);
+
+        Thread.sleep(1000);
+        backgroundSwitcherHandle.click();
+
+        Assert.assertEquals("css-qnyjs3", darkLayoutLocator);
+
+        driver.quit();
+    }
 }
