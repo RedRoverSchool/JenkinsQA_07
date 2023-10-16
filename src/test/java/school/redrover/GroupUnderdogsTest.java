@@ -24,6 +24,8 @@ public class GroupUnderdogsTest extends BaseTest {
     WebDriver driver;
 
     private static final String MAIN_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/";
+
+    private static final String ABC_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/abc.html";
     String userName = "academic198405@gmail.com";
     String password = "BikeTrekMarlyn4!";
     String wrongPassword = "Sbbhbhbln2";
@@ -462,4 +464,18 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().findElement(By.id("login-password")).sendKeys("12Qwerty");
 
     }
+    @Test
+    public void testTask4Kateryna1979() throws InterruptedException {
+
+        getDriver().get(ABC_PAGE_URL_99BOTTLES);
+
+        String menu = getDriver().findElement(By.xpath
+                ("//body/div[@id='wrap']/div[@id='navigation']/ul[@id='submenu']/li/a[@href='0.html']")).getText();
+
+        String expectedResult = "0-9";
+
+        Assert.assertEquals(menu,expectedResult);
+
+        }
+
 }
