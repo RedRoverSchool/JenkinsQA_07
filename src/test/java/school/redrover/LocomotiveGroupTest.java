@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
 
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 
@@ -215,6 +216,20 @@ public class LocomotiveGroupTest extends BaseTest {
         Assert.assertEquals(value, "skates, skate gear, ice skates and more");
 
         Thread.sleep(2000);
+    }
+
+    @Test
+    public void testMartspecGoPageBiorhythms () {
+        getDriver().get("https://martspec.com/ru/emotion");
+        WebElement buttonForBiorh = getDriver().findElement(By.xpath("//div[@class='col-lg-6 d-table mb-lg-0 mb-4']//a"));
+
+        buttonForBiorh.click();
+
+        //WebElement imageBiorh = getDriver().findElement(By.xpath("//div[@class='col']/img[1]"));
+        // learn how to find a picture on a page
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                "//div[@class='col']/h1")).getText(), "Биоритмы");
+
     }
 
 }
