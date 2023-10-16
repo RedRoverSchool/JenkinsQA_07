@@ -284,7 +284,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
     @Ignore
     @Test
-
     public void testTextBoxNN () {
         getDriver().get("https://demoqa.com/text-box");
 
