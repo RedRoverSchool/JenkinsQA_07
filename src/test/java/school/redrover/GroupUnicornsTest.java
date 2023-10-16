@@ -149,27 +149,22 @@ public class GroupUnicornsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void searchVerificationGitHub() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            WebElement searchBox = driver.findElement(By.xpath("//span[@class=\"flex-1\"]"));
-            searchBox.click();
-            WebElement inputButton = driver.findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
-            inputButton.sendKeys("selenium" + Keys.ENTER);
-            List<WebElement> listOfResults = driver.findElements(By.xpath("//span[starts-with(@class, 'Text-sc-17v1xeu-0 qaOIC search-match')]"));
-            int expectedSize = 10;
-            int actualSize = listOfResults.size();
-            Assert.assertEquals(actualSize, expectedSize);
-        } finally {
-            driver.quit();
-        }
+    public void testSearchVerificationGitHub() {
+        WebDriver driver = getDriver();
+        driver.get("https://github.com");
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+        WebElement searchBox = driver.findElement(By.xpath("//span[@class=\"flex-1\"]"));
+        searchBox.click();
+        WebElement inputButton = driver.findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
+        inputButton.sendKeys("selenium" + Keys.ENTER);
+        List<WebElement> listOfResults = driver.findElements(By.xpath("//span[starts-with(@class, 'Text-sc-17v1xeu-0 qaOIC search-match')]"));
+        int expectedSize = 10;
+        int actualSize = listOfResults.size();
+        Assert.assertEquals(actualSize, expectedSize);
+        driver.quit();
     }
+
 
     @Test
     public void testTradingView() throws InterruptedException {
@@ -189,30 +184,22 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(newTickerNameActual.getText(), "SPX");
     }
 
-
-
-    @Ignore
     @Test
-    public void verificationSocialIconsGitHub() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            twitterIcon.click();
-            String url = driver.getCurrentUrl();
-            WebElement closeButton = driver.findElement(By.xpath("//*[@aria-label='Close']"));
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.elementToBeClickable(closeButton));
-            closeButton.click();
-            Assert.assertTrue(url.contains("twitter"));
-        } finally {
-            driver.quit();
-        }
+    public void testVerificationSocialIconsGitHub() {
+        WebDriver driver = getDriver();
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+        driver.get("https://github.com");
+        JavascriptExecutor jsExec = (JavascriptExecutor) driver;
+        WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
+        jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
+        twitterIcon.click();
+        String url = driver.getCurrentUrl();
+        WebElement closeButton = driver.findElement(By.xpath("//*[@aria-label='Close']"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(closeButton));
+        closeButton.click();
+        Assert.assertTrue(url.contains("twitter"));
+        driver.quit();
     }
 
     @Test
@@ -234,26 +221,20 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
-    @Ignore
     @Test
-    public void verificationSocialIconsGitHub2() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            List<WebElement> listOfIcons = driver.findElements(By.xpath("(//footer[@role='contentinfo']//ul)[5]//a"));
-            listOfIcons.get(1).click();
-            String url = driver.getCurrentUrl();
-            driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
-            Assert.assertTrue(url.contains("face"));
-        } finally {
-            driver.quit();
-        }
+    public void testVerificationSocialIconsGitHub2() {
+        WebDriver driver = getDriver();
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+        driver.get("https://github.com");
+        JavascriptExecutor jsExec = (JavascriptExecutor) driver;
+        WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
+        jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
+        List<WebElement> listOfIcons = driver.findElements(By.xpath("(//footer[@role='contentinfo']//ul)[5]//a"));
+        listOfIcons.get(1).click();
+        String url = driver.getCurrentUrl();
+        driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
+        Assert.assertTrue(url.contains("face"));
+        driver.quit();
     }
 
     @Test
@@ -354,11 +335,11 @@ public class GroupUnicornsTest extends BaseTest {
     public void testRaiffeisenBank() {
         final List<String> currnecyExpected = List.of("USD", "EUR", "GBP", "CHF", "JPY", "CNY");
 
-            getDriver().get("https://www.raiffeisen.ru/currency_rates/");
-            for (int i =1; i < 7; i++ ) {
-                WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])["+ i+"]"));
-                Assert.assertEquals(currencyActual.getText(),currnecyExpected.get(i-1));
-            }
+        getDriver().get("https://www.raiffeisen.ru/currency_rates/");
+        for (int i = 1; i < 7; i++) {
+            WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])[" + i + "]"));
+            Assert.assertEquals(currencyActual.getText(), currnecyExpected.get(i - 1));
+        }
     }
 
     @Test
@@ -373,6 +354,14 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.id("password")).sendKeys("Test1234");
         getDriver().findElement(By.id("submitBttn")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(),"We can't find an account with this email and password. Please try again.");
+        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
+    }
+
+    @Test
+    public void testJenkinsNewItemTitle() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("(//*[@class='task-icon-link']) [1]")).click();
+        String expectedTitle = "New Item [Jenkins]";
+        Assert.assertEquals(getDriver().getTitle(), expectedTitle);
     }
 }

@@ -27,7 +27,7 @@ public abstract class BaseTest {
         driver.quit();
     }
 
-    protected WebDriver getDriver() {
+    protected WebDriver getDriver()    {
         return driver;
     }
 }
