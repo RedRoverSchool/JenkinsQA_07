@@ -2,15 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -344,44 +341,40 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(title, "Error: Precondition failed - Incomplete Input.");
     }
 
-    @Ignore
     @Test
     public void testBrowseLanguagesKotlin() {
-        driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement browseLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Browse Languages']"));
+        WebElement browseLanguagesBtn = getDriver().findElement(By.xpath("//li/a[text()='Browse Languages']"));
         browseLanguagesBtn.click();
 
-        WebElement letterLink = driver.findElement(By.xpath("//li/a[text()='K']"));
+        WebElement letterLink = getDriver().findElement(By.xpath("//li/a[text()='K']"));
         letterLink.click();
 
-        WebElement languageLink = driver.findElement(By.xpath("//a[contains(@href, 2901)]"));
+        WebElement languageLink = getDriver().findElement(By.xpath("//a[contains(@href, 2901)]"));
         languageLink.click();
 
-        WebElement languagePageHeader = driver.findElement(By.xpath("//div[@id='main']/h2"));
+        WebElement languagePageHeader = getDriver().findElement(By.xpath("//div[@id='main']/h2"));
         String pageHeader = languagePageHeader.getText();
 
         assertEquals(pageHeader, "Language Kotlin");
     }
 
-    @Ignore
     @Test
     public void testSearchLanguages() {
         final String partOfWordToSearch = "kot";
-        driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement searchLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Search Languages']"));
+        WebElement searchLanguagesBtn = getDriver().findElement(By.xpath("//li/a[text()='Search Languages']"));
         searchLanguagesBtn.click();
 
-        WebElement searchField = driver.findElement(By.xpath("//input[@name='search']"));
+        WebElement searchField = getDriver().findElement(By.xpath("//input[@name='search']"));
         searchField.sendKeys(partOfWordToSearch);
 
-        WebElement goBtn = driver.findElement(By.xpath("//input[@name='submitsearch']"));
+        WebElement goBtn = getDriver().findElement(By.xpath("//input[@name='submitsearch']"));
         goBtn.click();
 
-        List<WebElement> searchResult = driver.findElements(By.xpath("//td/a[contains(@href,'language')]"));
+        List<WebElement> searchResult = getDriver().findElements(By.xpath("//td/a[contains(@href,'language')]"));
         for (WebElement element : searchResult) {
             Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
             assertEquals(element.getTagName(), "a");
@@ -411,15 +404,15 @@ public class GroupUnderdogsTest extends BaseTest {
         }
     }
 
+    @Test
     public void testNamesOfCreatorsOfSite() {
         List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
-        driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement teamLink = driver.findElement(By.xpath("//a[text()='Team']"));
+        WebElement teamLink = getDriver().findElement(By.xpath("//a[text()='Team']"));
         teamLink.click();
 
-        List<WebElement> creators = driver.findElements(By.xpath("//h3"));
+        List<WebElement> creators = getDriver().findElements(By.xpath("//h3"));
         List<String> namesOfCreators = new ArrayList<>();
         for (WebElement element : creators) {
             namesOfCreators.add(element.getText());
@@ -504,6 +497,4 @@ public class GroupUnderdogsTest extends BaseTest {
 
 
     }
-
-
 }
