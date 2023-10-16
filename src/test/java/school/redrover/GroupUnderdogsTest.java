@@ -110,6 +110,8 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testTrack_correct_Credential_Artuom() throws InterruptedException {
+        Dimension windowSize = new Dimension(1024, 768);
+        getDriver().manage().window().setSize(windowSize);
         getDriver().get(MAIN_PAGE_URL_TREKBIKES);
         WebElement enterButton = getDriver().findElement(By.xpath("(//*[@class='pdl-icon pdl-icon--size-24'])[1]"));
         Thread.sleep(2000);
@@ -144,6 +146,8 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testTrack_Incorrect_Credential_Artuom() throws InterruptedException {
+        Dimension windowSize = new Dimension(1024, 768);
+        getDriver().manage().window().setSize(windowSize);
         getDriver().get(MAIN_PAGE_URL_TREKBIKES);
         WebElement enterButton = getDriver().findElement(By.xpath("(//*[@class='pdl-icon pdl-icon--size-24'])[1]"));
         Thread.sleep(2000);
@@ -177,6 +181,8 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testMarlin4_Artuom() throws InterruptedException {
+        Dimension windowSize = new Dimension(1024, 768);
+        getDriver().manage().window().setSize(windowSize);
         getDriver().get(MAIN_PAGE_URL_TREKBIKES);
         WebElement enterButton = getDriver().findElement(By.xpath("(//*[@class='pdl-icon pdl-icon--size-24'])[1]"));
         Thread.sleep(2000);
@@ -205,16 +211,22 @@ public class GroupUnderdogsTest extends BaseTest {
         String bikeName = marlin4.getText();
         assertEquals(bikeName, "Marlin 4 Gen 2");
     }
+    public void closePromoDrawerIfVisible() {
+        WebElement promoDrawer = getDriver().findElement(By.className("promo-drawer__drawer"));
+        String drawerStatus = promoDrawer.getAttribute("data-drawer-status");
+
+        if (drawerStatus != null && drawerStatus.equals("open")) {
+            List<WebElement> promoDrawerHeaders = promoDrawer.findElements(By.className("promo-drawer__header"));
+            if (!promoDrawerHeaders.isEmpty()) {
+                promoDrawerHeaders.get(0).click();
+            }
+        }
+    }
 
     @Test
     public void testEnd_to_End_Artuom() throws InterruptedException {
-        getDriver().manage().window().maximize();
         getDriver().get(MAIN_PAGE_URL_MAYTAG);
-
-        WebElement modWindOffersAvailable = getDriver().findElement(By.xpath("//*[@viewBox='0 0 22 13']"));
-        Thread.sleep(1000);
-        modWindOffersAvailable.click();
-        Thread.sleep(1000);
+        closePromoDrawerIfVisible();
 
         WebElement fRlocal = getDriver().findElement(By.xpath("(//*[@class='utility-nav__link'])[5]"));
         fRlocal.click();
