@@ -682,4 +682,14 @@ public class GroupQaClimbersTest extends BaseTest {
 
         Assert.assertEquals(actualResult, "Enter an item name");
     }
+
+    @Test
+    public void testManageJenkinsOption(){
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.linkText("Manage Jenkins")).click();
+        String actualMessage=getDriver().findElement(By.xpath("//div/h1[text()='Manage Jenkins']")).getText();
+        String expectedMessage="Manage Jenkins";
+        Assert.assertEquals(actualMessage,expectedMessage);
+    }
+
 }
