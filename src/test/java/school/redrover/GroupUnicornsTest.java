@@ -236,6 +236,18 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
+    public void testLogout(){
+        getDriver().get("http://18.118.14.155:8080/bank/login");
+        getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
+        getDriver().findElement(By.id("password")).sendKeys("Test1234");
+        getDriver().findElement(By.id("submit")).click();
+        getDriver().findElement(By.xpath("//img[contains(@class, 'user-avatar')]")).click();
+        getDriver().findElement(By.xpath("//div/a[text() ='Logout']")).click();
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div/span[text() ='Success']")).isDisplayed(), "Logout completed");
+
+    }
+
+    @Test
     public void testJenkinsVersion() {
         JenkinsUtils.login(getDriver());
 
@@ -327,4 +339,5 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
     }
+
 }
