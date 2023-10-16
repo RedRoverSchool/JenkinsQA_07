@@ -465,12 +465,12 @@ public class GroupSevenTest extends BaseTest {
         searchBar.sendKeys("configure");
         searchBar.sendKeys(Keys.ENTER);
 
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
+        saveButton.click();
+
         WebElement configureTitle = getDriver().findElement(By.xpath("//h1[normalize-space()='System']"));
         String value = configureTitle.getText();
         Assert.assertEquals(value, "System");
-
-        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
-        saveButton.click();
     }
 
 }
