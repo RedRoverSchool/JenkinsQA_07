@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class JikTest extends BaseTest {
+public class JikTest {
 
     @Test
     public void testTitleCheck() {
