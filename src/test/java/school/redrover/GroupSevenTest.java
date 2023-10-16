@@ -422,4 +422,16 @@ public class GroupSevenTest extends BaseTest {
 
 
         }
+
+    @Test
+    public void testUserPage() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement userIcon = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
+        userIcon.click();
+
+        WebElement nameTitle = getDriver().findElement(By.xpath("//h1[normalize-space()='admin']"));
+        String value = nameTitle.getText();
+        Assert.assertEquals(value, "admin");
     }
+}
