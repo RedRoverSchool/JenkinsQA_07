@@ -501,6 +501,13 @@ public class GroupUnderdogsTest extends BaseTest {
         String value = title.getText();
         Assert.assertEquals(value, "Project My Job");
 
-
     }
+    @Test
+    public void testSearchSeleniumOB() {
+        getDriver().get("https://www.selenium.dev");
+        String title = getDriver().getTitle();
+
+        Assert.assertEquals(title, "Selenium");
+    }
+
 }
