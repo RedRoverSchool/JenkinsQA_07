@@ -1,51 +1,41 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class FokichevTest {
-    @Test
-    public void searchTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.emu-land.net/");
+public class FokichevTest extends BaseTest {
 
-        WebElement textBox = driver.findElement(By.name("q"));
+    private static final String PAGE_URL = "https://www.emu-land.net/";
+
+    @Test
+    public void testSearch() throws InterruptedException {
+        getDriver().get(PAGE_URL);
+
+        WebElement textBox = getDriver().findElement(By.name("q"));
         textBox.sendKeys("tekken");
 
-        Thread.sleep(1000);
-
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"row_right\"]/div[4]/div/form/div[2]/button"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//div[@class='gmenu']//button"));
         submitButton.click();
 
-        Thread.sleep(1000);
-
-        WebElement textBox2 = driver.findElement(By.xpath("//*[@id=\"row_center\"]/div[3]/div[2]/p/a"));
+        WebElement textBox2 = getDriver().findElement(By.xpath("//div[@class='fcontainer'][1]//p/a"));
         String value = textBox2.getText();
         assertEquals(value, "Tekken Card Challenge");
-
-        driver.quit();
     }
 
     @Test
-    public void selectConsolesTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.emu-land.net/");
+    public void testSelectConsoles() {
+        getDriver().get(PAGE_URL);
 
-        WebElement consolesButton = driver.findElement(By.xpath("//a[@href=\"/consoles\"]"));
-        consolesButton.click();;
+        WebElement consolesButton = getDriver().findElement(By.xpath("//li/a[@href='/consoles']"));
+        consolesButton.click();
 
-        WebElement textBox = driver.findElement(By.xpath("//div[@class=\"path\"]"));
+        WebElement textBox = getDriver().findElement(By.xpath("//div[@class='path']"));
         String value = textBox.getText();
         assertEquals(value, "Консоли");
-
-        driver.quit();
     }
 
 

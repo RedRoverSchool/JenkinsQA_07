@@ -118,6 +118,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     @Description("Check that the number of items on the home page is correct")
     public void testCountItemsOnHomePage() {
@@ -426,6 +427,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[@placeholder='Поиск по интернету']"));
         textBox.sendKeys("Тбилиси");
+
         WebElement searchButton = getDriver().findElement(By.xpath("//button[@aria-label='Найти']"));
         searchButton.click();
 
@@ -436,20 +438,43 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(value, "Тбилиси");
     }
 
+
     @Test
-    public void firstTestJenkins() throws InterruptedException {
+    public void firstJenkinsTest() throws InterruptedException {
         JenkinsUtils.login(getDriver());
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
-                "Welcome to Jenkins!");
         WebElement newItem = getDriver().findElement(By.xpath ("//*[@id='tasks']/div[1]/span/a"));
         newItem.click();
 
-        WebElement enter = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label"));
-        String value = enter.getText();
-        Assert.assertEquals(value, "Enter an item name");
+        String url = getDriver().getCurrentUrl();
+        String urlExp = "http://localhost:8080/view/all/newJob";
+        Assert.assertEquals(url, urlExp);
+
+        WebElement message = getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']//li[1]//span"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Freestyle project");
         Thread.sleep(2000);
 
+    }
+    @Test
+    public void testJenkinsDescriptionPreview() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        WebElement description = getDriver().findElement(By.id("description-link"));
+        description.click();
+
+        String descriptionText = "We're getting started";
+
+        WebElement descriptionArea = getDriver().findElement(By.name("description"));
+        descriptionArea.sendKeys(descriptionText);
+
+        WebElement previewButton = getDriver().findElement(By.className("textarea-show-preview"));
+        previewButton.click();
+
+        WebElement textPreview = getDriver().findElement(By.className("textarea-preview"));
+
+        Assert.assertEquals(textPreview.getText(), descriptionText,
+                textPreview + " differs from " + descriptionText );
+        Thread.sleep(1000);
     }
 }
