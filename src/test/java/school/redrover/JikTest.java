@@ -7,10 +7,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class JikTest {
+public class JikTest extends BaseTest {
 
     @Test
-    public void titleCheck() {
+    public void testTitleCheck() {
 
         WebDriver driver = new ChromeDriver();
         try {
@@ -25,7 +25,7 @@ public class JikTest {
 
     //Check if the form "Text Input" is working, try to input some text, check the input text.
     @Test
-    public void textInputTest() {
+    public void testTextInput() {
 
         WebDriver driver = new ChromeDriver();
         try {
