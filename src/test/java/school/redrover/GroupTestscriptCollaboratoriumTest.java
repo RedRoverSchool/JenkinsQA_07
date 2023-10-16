@@ -77,12 +77,14 @@ public class GroupTestscriptCollaboratoriumTest {
 
     @Test
     public void testEssayAppSwitchWebsiteColorMode() throws InterruptedException {
+    public void testEssayAppGetSite() {
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://essay.app/");
 
         String title = driver.getTitle();
         assertEquals(title, "Essay - Write better.");
+    }
 
         String darkLayoutLocator = "css-qnyjs3";
         Assert.assertEquals("css-qnyjs3", darkLayoutLocator);
