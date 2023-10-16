@@ -293,6 +293,30 @@ public class GroupUnderdogsTest extends BaseTest {
 
         assertEquals(actRes, expRes);
     }
+    @Test
+    public void  test_idAdmin_Artuom() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+        WebElement nameOfUser = getDriver().findElement(By.xpath("//span[@class='hidden-xs hidden-sm' and text()='Artuom']"));
+        nameOfUser.click();
+        WebElement config = getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]"));
+        config.click();
+        WebElement button = getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']"));
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        int subm = button.getLocation().getY();
+        for (int i = 0; i < subm; i += 20) {
+            js.executeScript("window.scrollTo(0, " + i + ")");
+            Thread.sleep(50);
+        }
+        button.click();
+
+        WebElement UserIdAdm = getDriver().findElement(By.xpath("//div[text()='Jenkins User ID: admin']"));
+        String actNameOfUser = UserIdAdm.getText();
+        String expRes = "Jenkins User ID: admin";
+
+        assertEquals(actNameOfUser, expRes);
+    }
+
+
 
     @Ignore
     @Test
