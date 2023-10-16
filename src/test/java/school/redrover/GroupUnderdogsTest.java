@@ -478,4 +478,32 @@ public class GroupUnderdogsTest extends BaseTest {
 
         }
 
+    @Test
+    public void testCreateNewJob() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        WebElement createJobButton = getDriver().findElement(By.xpath("//a [@href='newJob']"));
+        createJobButton.click();
+
+        WebElement inputField = getDriver().findElement(By.xpath("//input[@name = 'name']"));
+        inputField.click();
+        inputField.sendKeys("My Job");
+
+        WebElement projectType = getDriver().findElement(By.xpath("//div[contains(text(),'This is the central feature of Jenkins. Jenkins wi')]"));
+        projectType.click();
+
+        WebElement okButton = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
+        okButton.click();
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[contains(text(),'Save')]"));
+        saveButton.click();
+
+        WebElement title = getDriver().findElement(By.xpath("//*[@class = 'job-index-headline page-headline']"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Project My Job");
+
+
+    }
+
+
 }

@@ -5,9 +5,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +36,7 @@ public class GroupQaClimbersTest extends BaseTest {
         inputName.sendKeys("Jane Dou");
         inputEmail.sendKeys("example@example.com");
         js.executeScript("arguments[0].scrollIntoView();", submitButton);
+
         submitButton.click();
 
         String actualStringName = getDriver().findElement(By.id("name")).getText();
@@ -670,11 +671,15 @@ public class GroupQaClimbersTest extends BaseTest {
         Assert.assertEquals(actualMessage,expectedMessage);
     }
 
+    @Test
+    public void testClickOnCreateAJob() {
 
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
 
+        String actualResult = getDriver().findElement(By.xpath("//label[@for='name']"))
+                .getText();
 
-
-
-
-
+        Assert.assertEquals(actualResult, "Enter an item name");
+    }
 }

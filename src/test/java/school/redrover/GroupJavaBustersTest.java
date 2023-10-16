@@ -4,16 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
-
-import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -128,21 +124,19 @@ public class GroupJavaBustersTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
+
     @Test
     public void testAllFields() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-
         String mainLink = "https://www.selenium.dev/selenium/web/web-form.html";
         String indexLink = "https://www.selenium.dev/selenium/web/index.html";
 
-        driver.get(mainLink);
-        WebElement textInput = driver.findElement(By.xpath("//input[@id='my-text-id']"));
-        WebElement passwordInput = driver.findElement(By.xpath("//label[2]/input[1]"));
-        WebElement textArea = driver.findElement(By.xpath("//label[3]/textarea[1]"));
-        WebElement disableInput = driver.findElement(By.xpath("//label[4]/input[1]"));
-        WebElement readOnlyField = driver.findElement(By.xpath("//label[5]/input[1]"));
-        WebElement linkReturnToIndex = driver.findElement(By.xpath("//a[contains(text(),'Return to index')]"));
+        getDriver().get(mainLink);
+        WebElement textInput = getDriver().findElement(By.xpath("//input[@id='my-text-id']"));
+        WebElement passwordInput = getDriver().findElement(By.xpath("//label[2]/input[1]"));
+        WebElement textArea = getDriver().findElement(By.xpath("//label[3]/textarea[1]"));
+        WebElement disableInput = getDriver().findElement(By.xpath("//label[4]/input[1]"));
+        WebElement readOnlyField = getDriver().findElement(By.xpath("//label[5]/input[1]"));
+        WebElement linkReturnToIndex = getDriver().findElement(By.xpath("//a[contains(text(),'Return to index')]"));
 
         textInput.sendKeys("test");
         passwordInput.sendKeys("12345678");
@@ -152,18 +146,15 @@ public class GroupJavaBustersTest extends BaseTest {
 
         linkReturnToIndex.click();
         Thread.sleep(2000);
-        String currentLink = driver.getCurrentUrl();
+        String currentLink = getDriver().getCurrentUrl();
         Assert.assertEquals(currentLink, indexLink);
+        getDriver().get(mainLink);
 
-        driver.get(mainLink);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement dropdownSelect = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name='my-select']")));
+        WebElement dropdownSelect = getDriver().findElement(By.xpath("//*[@name='my-select']"));
         Select dropDownSelectedValue = new Select(dropdownSelect);
         dropDownSelectedValue.selectByValue("1");
         dropDownSelectedValue.selectByValue("2");
         dropDownSelectedValue.selectByValue("3");
-
-        driver.quit();
     }
 
     @Test

@@ -32,7 +32,7 @@ public class GroupJavaExplorersTest extends BaseTest {
                 .findElement(By.xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
         watches.click();
 
-        WebElement clamberWatch = getDriver()
+         WebElement clamberWatch = getDriver()
                 .findElement(By.xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
         clamberWatch.click();
 
@@ -247,5 +247,18 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         Assert.assertTrue(actualText.contains(expectedText));
         }
+
+    @Test
+    public void testTitl()  {
+
+        getDriver().get(BASE_URL);
+
+        WebElement whatsNew = getDriver()
+                .findElement(By.xpath("//span[text()=\"Women\"]"));
+        whatsNew.click();
+        String header = getDriver().findElement(By.xpath("//h1")).getText();
+        assertEquals(header, "Women");
+
+    }
 }
 
