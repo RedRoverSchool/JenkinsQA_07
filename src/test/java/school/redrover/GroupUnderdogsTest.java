@@ -21,6 +21,7 @@ public class GroupUnderdogsTest extends BaseTest {
     WebDriver driver;
 
     private static final String MAIN_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/";
+    private static final String ABC_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/abc.html";
     private static final String userName = "academic198405@gmail.com";
     private static final String password = "BikeTrekMarlyn4!";
     private static final String wrongPassword = "Sbbhbhbln2";
@@ -89,7 +90,7 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void maksinTestInactive() {
+    public void testInactiveMember_maksin() {
 
         getDriver().get("http://www.99-bottles-of-beer.net/team.html");
         WebElement text = getDriver().findElement(By.xpath
@@ -99,11 +100,11 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testLofOut() throws InterruptedException {
+    public void testJenkinsLogOut_maksin() throws InterruptedException {
         JenkinsUtils.login(getDriver());
-        getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[2]")).click();
+        getDriver().findElement(By.xpath("//*[@id='page-header']/div[3]/a[2]")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath
-                        ("//*[@id=\"main-panel\"]/div/h1")).getText(),
+                        ("//*[@id='main-panel']/div/h1")).getText(),
                 "Sign in to Jenkins");
     }
 
@@ -467,4 +468,18 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().findElement(By.id("login-password")).sendKeys("12Qwerty");
 
     }
+    @Test
+    public void testTask4Kateryna1979() throws InterruptedException {
+
+        getDriver().get(ABC_PAGE_URL_99BOTTLES);
+
+        String menu = getDriver().findElement(By.xpath
+                ("//body/div[@id='wrap']/div[@id='navigation']/ul[@id='submenu']/li/a[@href='0.html']")).getText();
+
+        String expectedResult = "0-9";
+
+        Assert.assertEquals(menu,expectedResult);
+
+        }
+
 }
