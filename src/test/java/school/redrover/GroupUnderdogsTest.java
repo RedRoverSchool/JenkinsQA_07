@@ -296,7 +296,7 @@ public class GroupUnderdogsTest extends BaseTest {
     @Test
     public void  test_idAdmin_Artuom() throws InterruptedException {
         JenkinsUtils.login(getDriver());
-        WebElement nameOfUser = getDriver().findElement(By.xpath("//span[@class='hidden-xs hidden-sm' and text()='Artuom']"));
+        WebElement nameOfUser = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
         nameOfUser.click();
         WebElement config = getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]"));
         config.click();
