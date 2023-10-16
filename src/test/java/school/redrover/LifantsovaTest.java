@@ -10,15 +10,19 @@ import school.redrover.runner.BaseTest;
 public class LifantsovaTest extends BaseTest {
 
     @Test
-    public void testSearch() {
+    public void testSearch() throws InterruptedException {
 
         getDriver().get("https://resh.edu.ru/");
+
+        Thread.sleep(6000);
 
         WebElement textBox = getDriver().findElement(By.id("search"));
         textBox.sendKeys("Математика");
 
         WebElement searchButton = getDriver().findElement(By.xpath("/html/body/div[1]/div/header/div/div/div[2]/form/div/button"));
         searchButton.click();
+
+        Thread.sleep(3000);
 
         WebElement title = getDriver().findElement(By.className("content-title"));
         String value = title.getText();
