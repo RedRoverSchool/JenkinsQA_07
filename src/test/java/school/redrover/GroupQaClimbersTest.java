@@ -711,7 +711,8 @@ public class GroupQaClimbersTest extends BaseTest {
         WebElement openJenkinsWebSite = getDriver().findElement(By.xpath("//a[@rel='noopener noreferrer']"));
         openJenkinsWebSite.click();
 
-        String getTitle = getDriver().findElement(By.xpath("//a[@href='/']")).getText();
+        WebElement getTitle = getDriver().findElement(By.xpath("//a[@href='/']"));
+        String getTitleText = getTitle.getText();
         Assert.assertEquals("Jenkins", "Jenkins");
 
     }
