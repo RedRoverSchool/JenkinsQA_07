@@ -36,6 +36,7 @@ public class GroupQaClimbersTest extends BaseTest {
         inputName.sendKeys("Jane Dou");
         inputEmail.sendKeys("example@example.com");
         js.executeScript("arguments[0].scrollIntoView();", submitButton);
+
         submitButton.click();
 
         String actualStringName = getDriver().findElement(By.id("name")).getText();
