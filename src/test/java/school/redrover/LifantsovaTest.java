@@ -31,6 +31,7 @@ public class LifantsovaTest extends BaseTest {
         Assert.assertEquals(value, "РЕЗУЛЬТАТЫ ПОИСКА");
     }
 
+    @Ignore
     @Test
     public void testSearch1() throws InterruptedException {
 
@@ -48,7 +49,6 @@ public class LifantsovaTest extends BaseTest {
         Assert.assertEquals(value, "УЧЕБНЫЕ ПРЕДМЕТЫ");
     }
 
-    @Ignore
     @Test
     public void testSearch2() throws InterruptedException {
 
@@ -77,7 +77,7 @@ public class LifantsovaTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testSearch3(){
+    public void testSearch3() {
 
         JenkinsUtils.login(getDriver());
 
