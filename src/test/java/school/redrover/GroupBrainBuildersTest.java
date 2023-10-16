@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -10,6 +11,7 @@ import school.redrover.runner.JenkinsUtils;
 import static org.testng.Assert.assertEquals;
 
 public class GroupBrainBuildersTest extends BaseTest {
+
 
     @Test
     public void testAskentLogIn() throws InterruptedException {
@@ -35,6 +37,7 @@ public class GroupBrainBuildersTest extends BaseTest {
         Assert.assertEquals(resultTitle, "Личный кабинет");
     }
 
+
     @Test
     public void testAskentAddToCart() throws InterruptedException {
         getDriver().get("https://www.askent.ru/cat/bumazhniki/portmone_308/");
@@ -58,6 +61,7 @@ public class GroupBrainBuildersTest extends BaseTest {
         String resultName = itemName.getText();
         Assert.assertEquals(resultName, "МИНИ ПОРТМОНЕ MODULE");
     }
+
 
     @Test
     public void testCreatingDoubleRoom() throws InterruptedException {
@@ -101,9 +105,33 @@ public class GroupBrainBuildersTest extends BaseTest {
         Thread.sleep(2000);
         Assert.assertTrue(getDriver().getPageSource().contains("Double"));
     }
+    @Test
+    public void testAlcobendasSearch() throws InterruptedException{
+
+        getDriver().get("https://www.alcobendas.org/es");
+
+        String title = getDriver().getTitle();
+        assertEquals(title, "Página Web del Ayuntamiento de Alcobendas");
+
+        Thread.sleep(2000);
+
+        WebElement lupaButton = getDriver().findElement(By.xpath("//*[@id='block-views-block-ayto-vista-lupa-header-block-1']/div/div"));
+        WebElement buscarButton = getDriver().findElement(By.xpath("//*[@id='edit-submit-ayto-resultados-de-busqueda-bloque']"));
+        WebElement searchInput = getDriver().findElement(By.xpath("//*[@id='edit-buscar']"));
+
+        lupaButton.click();
+        searchInput.sendKeys("yoga");
+        buscarButton.click();
+
+        WebElement resultOfSearch = getDriver().findElement(By.xpath("//*[@id='block-contenidoprincipaldelapagina-2']/div/div/div[1]/div[1]/h2"));
+        Thread.sleep(2000);
+        String value = resultOfSearch.getText();
+        Assert.assertEquals(value, "/2 resultados");
+    }
+
 
     @Test
-    public void testJenkinsAdminStatus() throws InterruptedException {
+    public void testJenkinsAdminStatus() {
 
         JenkinsUtils.login(getDriver());
 
@@ -116,4 +144,47 @@ public class GroupBrainBuildersTest extends BaseTest {
         Assert.assertTrue(getDriver().getPageSource().contains(userName));
     }
 
+
+    @Test
+    public void testAskentSearch() {
+        getDriver().get("https://www.askent.ru/");
+
+        String title = getDriver().getTitle();
+        assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
+
+        WebElement magnifierIcon = getDriver().findElement(By.className("search_icon"));
+        magnifierIcon.click();
+
+        WebElement searchTextField = getDriver().findElement(By.name("q"));
+        searchTextField.click();
+        searchTextField.sendKeys("сумка");
+
+        WebElement magnifierButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        magnifierButton.click();
+
+        WebElement searchResult = getDriver().findElement(By.cssSelector("h1"));
+        String result = searchResult.getText();
+        Assert.assertEquals(result, "Результаты поиска");
+    }
+
+    @Test
+    public void testJenkinsCredentialsTooltip() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement adminMenu = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
+        adminMenu.click();
+
+        WebElement credentialsItem = getDriver().findElement(By.xpath("//a[@href='/user/admin/credentials']"));
+        credentialsItem.click();
+
+        WebElement systemTableItem = getDriver().findElement(By.xpath("//a[@href='/manage/credentials/store/system']"));
+        systemTableItem.click();
+
+        WebElement imageSystemTable = getDriver().findElement(By.xpath("//img[@class='icon-credentials-domain icon-lg']"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(imageSystemTable).perform();
+
+        WebElement tooltip = getDriver().findElement(By.xpath("//img[@aria-describedby = 'tippy-10']"));
+        Assert.assertTrue(tooltip.isDisplayed());
+    }
 }

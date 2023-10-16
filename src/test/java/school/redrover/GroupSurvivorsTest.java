@@ -19,4 +19,26 @@ public class GroupSurvivorsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.className("mw-page-title-main")).getText(), "Java");
     }
+
+    @Test
+    public void  testEvgenySetEnglish() throws InterruptedException {
+        getDriver().get("https://www.erarta.com/");
+
+        getDriver().findElement(By.cssSelector(".header__second-menu-link.lang-link")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class='header__menu-list']/*[1]")).getText(), "museum");
+    }
+
+    @Test
+    public void  testEvgenyFindMembershipPageBySearch() throws InterruptedException {
+        getDriver().get("https://www.erarta.com/");
+
+        getDriver().findElement(By.className("header__search-svg")).click();
+        getDriver().findElement(By.cssSelector(".search-popup__input.base-input.search-input")).sendKeys("клубный билет");
+        getDriver().findElement(By.className("search-popup__submit")).click();
+        getDriver().findElement(By.xpath("//*[@class='search-page__result-item'][1]/*[@class='search-page__result-title']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("hero__title")).getText(), "клубный билет в музей Эрарта");
+    }
+
 }

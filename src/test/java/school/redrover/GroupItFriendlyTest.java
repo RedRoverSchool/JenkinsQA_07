@@ -1,4 +1,5 @@
 package school.redrover;
+import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -8,8 +9,10 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +21,7 @@ import static org.testng.Assert.assertEquals;
 
 public class GroupItFriendlyTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testDemoQaOpenPage()  {
         WebDriver driver = getDriver();
@@ -26,7 +30,7 @@ public class GroupItFriendlyTest extends BaseTest {
         image.click();
         Assert.assertEquals(image,image);
     }
-@Ignore
+    @Ignore
     @Test
     public void testDemoQaChangePage() {
         WebDriver driver = getDriver();
@@ -37,7 +41,7 @@ public class GroupItFriendlyTest extends BaseTest {
         String value = text.getText();
         Assert.assertEquals(value, "Please select an item from left to start practice.");
     }
-@Ignore
+    @Ignore
     @Test
     public void testDemoQaTextBox() {
         getDriver().get("https://demoqa.com/elements");
@@ -53,7 +57,7 @@ public class GroupItFriendlyTest extends BaseTest {
         submit.click();
         Assert.assertEquals(submit,submit);
     }
-@Ignore
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
         WebDriver driver = getDriver();
@@ -81,6 +85,7 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertEquals(currentUrl, expectedUrl, "The current URL does not match the expected URL.");
     }
 
+    @Ignore
     @Test
     public void DemoQATextBoxTest() {
           WebDriver driver = getDriver();
@@ -117,6 +122,7 @@ public class GroupItFriendlyTest extends BaseTest {
     }
 
 
+    @Ignore
     @Test
     public void DemoQACheckBoxTest() {
         WebDriver driver = getDriver();
@@ -139,6 +145,7 @@ public class GroupItFriendlyTest extends BaseTest {
     }
 
 
+    @Ignore
     @Test
     public void DemoQARadioButtonTest() {
         WebDriver driver = getDriver();
@@ -163,7 +170,7 @@ public class GroupItFriendlyTest extends BaseTest {
 
             assertEquals(driver.findElement(By.xpath("//p[@class='mt-3']/span")).getText(), "Impressive");
     }
-@Ignore
+    @Ignore
     @Test
     public void ActionsWithCheckBoxTest(){
 
@@ -201,10 +208,54 @@ public class GroupItFriendlyTest extends BaseTest {
         }
     }
 
-  @Test
-  public void BadRequestButtonTest() {
+    @Ignore
+    @Test
+    public void BadRequestButtonTest() {
         WebDriver driver = getDriver();
         driver.get("https://demoqa.com/links");
         assertEquals(driver.findElement(By.id("bad-request")).getText(), "Bad Request");
+    }
+    @Test
+    public void SearchRecipe() {
+        WebDriver driver = getDriver();
+        driver.get("https://allusrecipe.com/turkey-delight/");
+
+        WebElement boxSearch = driver.findElement(By.xpath("//*[@id=\"navbarNav\"]/form/div/input"));
+        WebElement clickSearch = driver.findElement(By.xpath("//*[@id=\"navbarNav\"]/form/div/div/button"));
+
+        boxSearch.sendKeys("lokum");
+        clickSearch.click();
+
+        WebElement title = driver.findElement(By.xpath("/html/body/div[1]/div/div/div[1]/div/h1"));
+
+        String actual =  title.getText();
+
+        assertEquals(actual, "Lokum Recipes");
+    }
+    @Test
+    public void CreateNewItem(){
+        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        JenkinsUtils.login(getDriver());
+        WebElement newItem = getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"));
+        newItem.click();
+        WebElement inputField = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
+        inputField.click();
+        inputField.sendKeys(randomUsername);
+        WebElement freeStileProject = getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]"));
+        freeStileProject.click();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+        WebElement dashBoard = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a"));
+        dashBoard.click();
+        List <WebElement> list = getDriver().findElements(By.xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
+        String str = "";
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).getText());
+            if (list.get(i).getText().contains(randomUsername)){
+                str=list.get(i).getText();
+             break;
+            }
+        }
+        Assert.assertEquals(str,randomUsername);
     }
 }

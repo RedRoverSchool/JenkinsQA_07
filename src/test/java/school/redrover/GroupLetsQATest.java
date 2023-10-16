@@ -160,4 +160,38 @@ public class GroupLetsQATest extends BaseTest {
 
     }
 
+    @Test
+    public void searchBoxJenkinsTest() {
+        JenkinsUtils.login(getDriver());
+        WebElement searchBox = getDriver().findElement(By.name("q"));
+        searchBox.sendKeys("admin");
+        searchBox.sendKeys(Keys.ENTER);
+
+        try {
+            WebElement searchResult = getDriver().findElement(By.xpath("//*[@id='main-panel']/div[2]"));
+            Assert.assertTrue(searchResult.getText().contains("admin"));
+        } catch (Exception e) {
+            System.out.println("You have no admin user");
+        }
+
+    }
+
+    @Test
+    public void versionJenkinsTest() {
+        JenkinsUtils.login(getDriver());
+        WebElement versionBox = getDriver().findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"));
+
+        Assert.assertEquals(versionBox.getText(), "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void newItemButtonTest() {
+        JenkinsUtils.login(getDriver());
+        WebElement newItemButton = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span"));
+        newItemButton.click();
+
+        WebElement newItemSpan = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label"));
+
+        Assert.assertEquals(newItemSpan.getText().trim(), "Enter an item name");
+    }
 }
