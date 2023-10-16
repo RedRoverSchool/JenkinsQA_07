@@ -2,11 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import org.testng.reporters.TestHTMLReporter;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
@@ -96,7 +99,7 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(title, "Java Tutorial");
     }
 
-
+    @Ignore
     @Test
     public void W3school1test() {
         getDriver().get("https://www.w3schools.com/");
@@ -149,51 +152,44 @@ public class GroupUnicornsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void searchVerificationGitHub() {
-        WebDriver driver = new ChromeDriver();
+    public void testSearchVerificationGitHub() {
+        getDriver().get("https://github.com");
         try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            WebElement searchBox = driver.findElement(By.xpath("//span[@class=\"flex-1\"]"));
+            WebElement searchBox = getDriver().findElement(By.xpath("//span[@class=\"flex-1\"]"));
             searchBox.click();
-            WebElement inputButton = driver.findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
+            WebElement inputButton = getDriver().findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
             inputButton.sendKeys("selenium" + Keys.ENTER);
-            List<WebElement> listOfResults = driver.findElements(By.xpath("//span[starts-with(@class, 'Text-sc-17v1xeu-0 qaOIC search-match')]"));
-            int expectedSize = 10;
-            int actualSize = listOfResults.size();
-            Assert.assertEquals(actualSize, expectedSize);
-        } finally {
-            driver.quit();
+            Thread.sleep(1000);
+            List<WebElement> listOfResults = getDriver().findElements(By.xpath("//div[@data-testid='results-list']//h3//a"));
+            Actions actions = new Actions(getDriver());
+            for (WebElement result : listOfResults) {
+                actions.moveByOffset(0, 50).build().perform();
+                Assert.assertTrue(result.getText().toLowerCase().contains("selenium"));
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    @Ignore
     @Test
     public void testTradingView() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        String url = "https://www.tradingview.com/chart/";
-        try {
-            driver.get(url);
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(500));
-            WebElement tickerNameActual = driver.findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
-            Assert.assertEquals(tickerNameActual.getText(), "AAPL");
+        final String URL = "https://www.tradingview.com/chart/";
+        getDriver().get(URL);
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(500));
+        WebElement tickerNameActual = getDriver().findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
+        Assert.assertEquals(tickerNameActual.getText(), "AAPL");
 
-            driver.findElement(By.xpath("//button[@id = 'header-toolbar-symbol-search']")).click();
-            WebElement searchTable = driver.findElement(By.xpath("//input[@class = 'search-ZXzPWcCf upperCase-ZXzPWcCf input-qm7Rg5MB']"));
-            searchTable.clear();
-            searchTable.sendKeys("SPX");
-            searchTable.sendKeys(Keys.ENTER);
-            Thread.sleep(500);
-            WebElement newTickerNameActual = driver.findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
-            Assert.assertEquals(newTickerNameActual.getText(), "SPX");
-        } finally {
-            driver.quit();
-        }
+        getDriver().findElement(By.xpath("//button[@id = 'header-toolbar-symbol-search']")).click();
+        WebElement searchTable = getDriver().findElement(By.xpath("//input[@class = 'search-ZXzPWcCf upperCase-ZXzPWcCf input-qm7Rg5MB']"));
+        searchTable.clear();
+        searchTable.sendKeys("SPX");
+        searchTable.sendKeys(Keys.ENTER);
+        Thread.sleep(500);
+        WebElement newTickerNameActual = getDriver().findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
+        Assert.assertEquals(newTickerNameActual.getText(), "SPX");
     }
+
 
     @Ignore
     @Test
@@ -352,5 +348,32 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.className("textarea-show-preview")).click();
         String actualText = getDriver().findElement(By.className("textarea-preview")).getText();
         Assert.assertEquals(descText, actualText);
+    }
+
+    @Test
+    public void testRaiffeisenBank() {
+        final List<String> currnecyExpected = List.of("USD", "EUR", "GBP", "CHF", "JPY", "CNY");
+
+        getDriver().get("https://www.raiffeisen.ru/currency_rates/");
+        for (int i = 1; i < 7; i++) {
+            WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])[" + i + "]"));
+            Assert.assertEquals(currencyActual.getText(), currnecyExpected.get(i - 1));
+        }
+    }
+
+    @Ignore
+    @Test
+    public void testPearson() {
+        getDriver().get("https://www.pearson.com/");
+
+        getDriver().findElement(By.id("onetrust-accept-btn-handler")).click();
+
+        getDriver().findElement(By.className("usernav-signin-button")).click();
+        getDriver().findElement(By.className("side-banner__heading"));
+        getDriver().findElement(By.className("ies-input")).sendKeys("tester@gmail.com");
+        getDriver().findElement(By.id("password")).sendKeys("Test1234");
+        getDriver().findElement(By.id("submitBttn")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
     }
 }

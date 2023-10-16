@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 
@@ -178,35 +179,26 @@ public class GroupJavaBustersTest extends BaseTest {
         assertEquals(value, "Thanks for getting in touch Marta!");
     }
 
-    @Ignore
+
+
     @Test
     public void testSearch() throws InterruptedException {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.euronics.lv/");
+        getDriver().get("https://www.euronics.lv/");
 
-        WebElement cookieButton = driver.findElement(By.id("cookie-accept-all-button"));
+        WebElement cookieButton = getDriver().findElement(By.id("cookie-accept-all-button"));
         cookieButton.click();
 
-        WebElement searchWrapper = driver.findElement(By.xpath("//div[@class = 'search']"));
-        searchWrapper.click();
-
-        WebElement textBox = driver.findElement(By.className("autocomplete__input"));
+        WebElement textBox = getDriver().findElement(By.className("autocomplete__input"));
         textBox.sendKeys("macbook");
 
-        Thread.sleep(1000);
 
-        WebElement searchButton = driver.findElement(By.className("autocomplete__search-button"));
+        WebElement searchButton = getDriver().findElement(By.className("autocomplete__search-button"));
         searchButton.click();
 
-        driver.manage().window().maximize();
-        Thread.sleep(1000);
-
-        WebElement message = driver.findElement(By.xpath("//h1[@class = 'category__header']"));
+        WebElement message = getDriver().findElement(By.xpath("//h1[@class = 'category__header']"));
         String value = message.getText();
         Assert.assertEquals(value, "macbook");
-
-        driver.quit();
     }
 
     @Ignore
@@ -244,5 +236,12 @@ public class GroupJavaBustersTest extends BaseTest {
         assertEquals(driver.getCurrentUrl(), "https://shop.studiob3.pl/product-category/end-of-series/");
 
         driver.quit();
+    }
+
+    @Test
+    public void testSomeJenkins() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+
     }
 }

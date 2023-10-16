@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -626,4 +627,54 @@ public class GroupQaClimbersTest extends BaseTest {
         String actualMessage = message.getText();
         Assert.assertEquals(actualMessage, "Search - \"java\"");
     }
+
+    @Test
+    public void testTextBoxTest() {
+
+        getDriver().get(URL);
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("scroll(0,200)");
+        WebElement element = getDriver().findElement(By.xpath("(//h5)[1]"));
+        element.click();
+        WebElement textBox = getDriver().findElement(By.xpath("//span[text()='Text Box']"));
+        textBox.click();
+        WebElement userName = getDriver().findElement(By.id("userName"));
+        userName.sendKeys("Sam Don");
+        WebElement email = getDriver().findElement(By.id("userEmail"));
+        email.sendKeys("sam@gmail.com");
+        WebElement currentAddress = getDriver().findElement(By.id("currentAddress"));
+        currentAddress.sendKeys("123 My Road");
+        WebElement permanentAddress = getDriver().findElement(By.id("permanentAddress"));
+        permanentAddress.sendKeys("1256 S Loop");
+        js.executeScript("scroll(0,200)");
+        WebElement submitBtn = getDriver().findElement(By.id("submit"));
+        submitBtn.click();
+        String actualName = getDriver().findElement(By.id("name")).getText();
+        String expectedName = "Name:Sam Don";
+        Assert.assertEquals(actualName, expectedName);
+    }
+
+    @Test
+    public void testLoginSauceDemo() throws InterruptedException {
+        getDriver().get("https://saucedemo.com/");
+        List<WebElement> loginButtons=getDriver().findElements(By.tagName("input"));
+        loginButtons.get(0).sendKeys("standard_user");
+        loginButtons.get(1).sendKeys("secret_sauce");
+        loginButtons.get(2).click();
+        WebElement dropdown = getDriver().findElement(By.className("product_sort_container"));
+        Select sort = new Select(dropdown);
+        Thread.sleep(1000);
+        sort.selectByVisibleText("Price (high to low)");
+        String expectedMessage="Swag Labs";
+        String actualMessage=getDriver().findElement(By.xpath("//div[text()='Swag Labs']")).getText();
+        Assert.assertEquals(actualMessage,expectedMessage);
+    }
+
+
+
+
+
+
+
+
 }

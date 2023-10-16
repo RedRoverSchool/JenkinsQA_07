@@ -7,14 +7,15 @@ import school.redrover.runner.BaseTest;
 public class ArSaFirstTest extends BaseTest {
 
 
-    String URL = "https://www.selenium.dev/selenium/web/web-form.html";
-  
+    String initialURL = "https://www.selenium.dev/selenium/web/web-form.html";
+    String redirectedURL = "https://www.selenium.dev/selenium/web/submitted-form.html?my-text=&my-password=&my-textarea=&my-readonly=Readonly+input&my-select=Open+this+select+menu&my-datalist=&my-file=&my-check=on&my-radio=on&my-colors=%23563d7c&my-date=&my-range=5&my-hidden=";
 
     //Check if Title of the Website is correct..
     @Test
     public void testTitleCheck()
     {
-        getDriver().get(URL);
+        getDriver().get(initialURL);
+
         String title = getDriver().getTitle();
         Assert.assertEquals(title, "Web form");
     }
@@ -23,7 +24,8 @@ public class ArSaFirstTest extends BaseTest {
     @Test
     public void testTextInput()
     {
-        getDriver().get(URL);
+
+        getDriver().get(initialURL);
         WebElement nameInput = getDriver().findElement(By.id("my-text-id"));
         nameInput.sendKeys("Artur Sabanadze");
         String enteredText = nameInput.getAttribute("value");
@@ -34,7 +36,8 @@ public class ArSaFirstTest extends BaseTest {
     @Test
     public void testDisabledTextInput()
     {
-        getDriver().get(URL);
+
+        getDriver().get(initialURL);
         WebElement disabledInput = getDriver().findElement(By.name("my-disabled"));
         Assert.assertEquals(disabledInput.getAttribute("disabled"), "true");
         Assert.assertTrue(disabledInput.isDisplayed());
@@ -42,15 +45,34 @@ public class ArSaFirstTest extends BaseTest {
         Assert.assertEquals(placeholderText, "Disabled input");
     }
 
-
     //Check the color of "my-colors" element
     @Test
     public void testColorCheck()
     {
-        getDriver().get(URL);
+
+        getDriver().get(initialURL);
         WebElement colorInputElement = getDriver().findElement(By.name("my-colors"));
         String actualColor = colorInputElement.getAttribute("value");
         String expectedColor = "#563d7c";
         Assert.assertEquals(actualColor, expectedColor, "Element color is not as expected");
+    }
+
+
+    //Check the functionality of submit button and some elements on redirected url.
+    @Test
+    public void testSubmitButton() {
+        getDriver().get(initialURL);
+
+        WebElement submitButton = getDriver().findElement(By.className("btn-outline-primary"));
+        submitButton.click();
+
+        String currentUrl = getDriver().getCurrentUrl();
+        Assert.assertEquals(currentUrl, redirectedURL, "Incorrect URL after submission");
+
+        WebElement headerElement = getDriver().findElement(By.className("display-6"));
+        WebElement messageElement = getDriver().findElement(By.id("message"));
+
+        Assert.assertEquals(headerElement.getText(), "Form submitted", "Incorrect header text");
+        Assert.assertEquals(messageElement.getText(), "Received!", "Incorrect message text");
     }
 }

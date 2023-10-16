@@ -2,13 +2,10 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
@@ -26,22 +23,31 @@ public class GroupCarlTheFogTest extends BaseTest {
 
     private WebDriverWait wait;
 
-    @Ignore
     @Test
-    public void hireRightTest() {
+    public void testHireRight() {
 
+        getDriver().get("https://www.hireright.com");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
-
-        String title = driver.getTitle();
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "Employment Background Checks, Background Screening | HireRight");
 
-        WebElement cacheButton = driver.findElement(By.xpath("//div[@class='CookieConsent']//button[contains(text(), 'Continue')]"));
+        WebElement cacheButton = getDriver().findElement(By.xpath("//div[@class='CookieConsent']//button[contains(text(), 'Continue')]"));
 
         cacheButton.click();
-        driver.quit();
+    }
 
+    @Test
+    public void testSearchIndustry() {
+        getDriver().get("https://www.hireright.com/");
+
+        WebElement industriesDropDown = getDriver().findElement(By.xpath("//span[contains(text(), 'Industries')]"));
+        industriesDropDown.click();
+
+        String Industries = getDriver().findElement(By.xpath("//h4[contains(text(), 'Industries')]")).getText();
+        Assert.assertEquals(Industries,"Industries");
+
+        WebElement healthCareAndLifeSciensces = getDriver().findElement(By.xpath("//p[contains(text(), 'Healthcare & Life Sciences')]"));
+        Assert.assertTrue(healthCareAndLifeSciensces.isDisplayed());
     }
 
     @Test
