@@ -17,7 +17,7 @@ public class AlexChTest extends BaseTest {
     }
     
     @Test
-    public void checkJenkinsVersionTest(){
+    public void testJenkinsVersion(){
         JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'page-footer__links']/button"))
@@ -25,7 +25,7 @@ public class AlexChTest extends BaseTest {
     }
 
     @Test
-    public void createPipelineWithCorrectNameTest(){
+    public void testCreatePipelineWithCorrectName(){
         String jobName = "correctName";
         JenkinsUtils.login(getDriver());
 
@@ -37,7 +37,7 @@ public class AlexChTest extends BaseTest {
     }
 
     @Test
-    public void createPipelineWithEmptyNameTest(){
+    public void testCreatePipelineWithEmptyName(){
         JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
@@ -48,7 +48,7 @@ public class AlexChTest extends BaseTest {
     }
 
     @Test
-    public void createPipelineWithDuplicateNameTest(){
+    public void testCreatePipelineWithDuplicateName(){
         String jobName = "duplicateName";
         JenkinsUtils.login(getDriver());
 
