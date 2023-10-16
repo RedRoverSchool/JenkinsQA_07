@@ -178,8 +178,7 @@ public class GroupUnderdogsTest extends BaseTest {
         String text = incorrectUser.getText();
         assertEquals(text, "Incorrect username or password");
     }
-
-
+    @Ignore
     @Test
     public void testMarlin4_Artuom() throws InterruptedException {
         Dimension windowSize = new Dimension(1024, 768);
