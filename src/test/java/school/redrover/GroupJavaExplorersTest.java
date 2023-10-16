@@ -79,6 +79,7 @@ public class GroupJavaExplorersTest extends BaseTest {
         signIn.click();
         WebElement signInto = getDriver().findElement(By.xpath("//*[@id='send2']/span"));
         signInto.click();
+        Thread.sleep(1000);
         WebElement field = getDriver().findElement(By.xpath("//*[@id='email-error']"));
         String failText = field.getText();
         Assert.assertEquals(failText, "This is a required field.");
@@ -87,9 +88,9 @@ public class GroupJavaExplorersTest extends BaseTest {
         WebElement password = getDriver().findElement(By.xpath("//*[@id='pass']"));
         password.sendKeys("1234");
         signInto.click();
+        Thread.sleep(1000);
         WebElement accIncorrect = getDriver().findElement(By.xpath("//*[@id='maincontent']/div[2]/div[2]/div/div/div"));
         String accFailText = accIncorrect.getText();
-        Thread.sleep(1000);
         Assert.assertEquals(accFailText, "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.");
 
     }
