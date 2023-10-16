@@ -6,9 +6,11 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 public class LifantsovaTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
 
@@ -29,18 +31,17 @@ public class LifantsovaTest extends BaseTest {
         Assert.assertEquals(value, "РЕЗУЛЬТАТЫ ПОИСКА");
     }
 
-    @Ignore
     @Test
-    public void testSearch1() throws InterruptedException {
+    public void testSearch1(){
 
         getDriver().get("https://resh.edu.ru/");
 
-        Thread.sleep(3000);
+//        Thread.sleep(3000);
 
         WebElement element = getDriver().findElement(By.xpath("/html/body/div[1]/div/header/nav/div/div/a[1]"));
         element.click();
 
-        Thread.sleep(3000);
+//        Thread.sleep(3000);
 
         WebElement title = getDriver().findElement(By.className("content-title"));
         String value = title.getText();
@@ -72,5 +73,23 @@ public class LifantsovaTest extends BaseTest {
         WebElement title2 = getDriver().findElement(By.className("tAsaH"));
         String value2 = title2.getText();
         Assert.assertEquals(value2, "Музей-усадьба Н.Г. Чернышевского г. Саратова");
+    }
+
+    @Ignore
+    @Test
+    public void testSearch3(){
+
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(
+                getDriver().findElement(By.id("jenkins-name-icon")).getText(),
+                "Jenkins");
+
+        WebElement href = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a"));
+        href.click();
+
+        WebElement title = getDriver().findElement(By.className("h3"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Enter an item name");
     }
 }
