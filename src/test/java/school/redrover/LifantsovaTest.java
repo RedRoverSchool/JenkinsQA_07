@@ -32,16 +32,16 @@ public class LifantsovaTest extends BaseTest {
     }
 
     @Test
-    public void testSearch1(){
+    public void testSearch1() throws InterruptedException {
 
         getDriver().get("https://resh.edu.ru/");
 
-//        Thread.sleep(3000);
+        Thread.sleep(5000);
 
         WebElement element = getDriver().findElement(By.xpath("/html/body/div[1]/div/header/nav/div/div/a[1]"));
         element.click();
 
-//        Thread.sleep(3000);
+        Thread.sleep(3000);
 
         WebElement title = getDriver().findElement(By.className("content-title"));
         String value = title.getText();
