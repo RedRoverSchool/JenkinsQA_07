@@ -183,7 +183,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
 
     @Test
-    public void testSearch() throws InterruptedException {
+    public void testSearch()  {
 
         getDriver().get("https://www.euronics.lv/");
 
@@ -253,12 +253,5 @@ public class GroupJavaBustersTest extends BaseTest {
 
         assertEquals(getDriver().getCurrentUrl(), "https://shop.studiob3" +
             ".pl/product-category/end-of-series/");
-    }
-
-    @Test
-    public void testSomeJenkins() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
-
-
     }
 }
