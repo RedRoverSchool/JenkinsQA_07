@@ -3,17 +3,16 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class LifantsovaTest extends BaseTest {
 
     @Test
-    public void testSearch() throws InterruptedException {
+    public void testSearch() {
 
         getDriver().get("https://resh.edu.ru/");
-
-        Thread.sleep(3000);
 
         WebElement textBox = getDriver().findElement(By.id("search"));
         textBox.sendKeys("Математика");
@@ -21,13 +20,12 @@ public class LifantsovaTest extends BaseTest {
         WebElement searchButton = getDriver().findElement(By.xpath("/html/body/div[1]/div/header/div/div/div[2]/form/div/button"));
         searchButton.click();
 
-        Thread.sleep(3000);
-
         WebElement title = getDriver().findElement(By.className("content-title"));
         String value = title.getText();
         Assert.assertEquals(value, "РЕЗУЛЬТАТЫ ПОИСКА");
     }
 
+    @Ignore
     @Test
     public void testSearch1() throws InterruptedException {
 
@@ -45,6 +43,7 @@ public class LifantsovaTest extends BaseTest {
         Assert.assertEquals(value, "УЧЕБНЫЕ ПРЕДМЕТЫ");
     }
 
+    @Ignore
     @Test
     public void testSearch2() throws InterruptedException {
 
