@@ -84,6 +84,7 @@ public class GroupTestscriptCollaboratoriumTest {
         String title = driver.getTitle();
         assertEquals(title, "Essay - Write better.");
     }
+    
     @Test
     public void testEssayAppSwitchWebsiteColorLayout() {
 
