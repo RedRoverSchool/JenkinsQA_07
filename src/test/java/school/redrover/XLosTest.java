@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 
 public class XLosTest extends BaseTest {
@@ -57,5 +58,19 @@ public class XLosTest extends BaseTest {
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testFirstJenkinsTest(){
+        JenkinsUtils.login(getDriver());
+
+        String actualWelcomeText = getDriver().findElement(By.tagName("h1")).getText();
+        String expectedWelcomeText = "Welcome to Jenkins!";
+
+        String actualTitle = getDriver().getTitle();
+        String expectedTitle = "Dashboard [Jenkins]";
+
+        Assert.assertEquals(actualWelcomeText, expectedWelcomeText, "Login failed");
+        Assert.assertEquals(actualTitle, expectedTitle, "Title didn't match");
     }
 }
