@@ -32,10 +32,10 @@ public class JikTest extends BaseTest {
             driver.get("https://www.selenium.dev/selenium/web/web-form.html");
 
             WebElement nameInput = driver.findElement(By.id("my-text-id"));
-            nameInput.sendKeys("Artur Sabanadze");
+            nameInput.sendKeys("Jika");
 
             String enteredText = nameInput.getAttribute("value");
-            Assert.assertEquals(enteredText, "Artur Sabanadze");
+            Assert.assertEquals(enteredText, "Jika");
         } finally {
             driver.quit();
         }
