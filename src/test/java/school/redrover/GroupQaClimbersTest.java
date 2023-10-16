@@ -682,4 +682,22 @@ public class GroupQaClimbersTest extends BaseTest {
 
         Assert.assertEquals(actualResult, "Enter an item name");
     }
+
+    @Test
+    public void testSearchSettingsField() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(
+                By.xpath("//div[@id='tasks']/div[4]/span/a")).click();
+        WebElement searchSettingsField = getDriver().findElement(
+                By.xpath("//div[@class='jenkins-search-container']/div/input[@id='settings-search-bar']"));
+        searchSettingsField.click();
+        searchSettingsField.sendKeys("script");
+        Thread.sleep(500);
+        searchSettingsField.sendKeys(Keys.ENTER);
+        String actualTitle = getDriver().findElement(
+                By.xpath("//div[@id='main-panel']/h1[text()='Script Console']"))
+                .getText();
+
+        Assert.assertEquals(actualTitle, "Script Console");
+    }
 }
