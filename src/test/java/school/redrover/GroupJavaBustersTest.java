@@ -141,7 +141,6 @@ public class GroupJavaBustersTest extends BaseTest {
         Thread.sleep(2000);
         String currentLink = getDriver().getCurrentUrl();
         Assert.assertEquals(currentLink, indexLink);
-
         getDriver().get(mainLink);
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         WebElement dropdownSelect = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name='my-select']")));
