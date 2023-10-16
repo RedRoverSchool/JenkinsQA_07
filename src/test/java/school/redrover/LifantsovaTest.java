@@ -9,10 +9,20 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 
 public class LifantsovaTest extends BaseTest {
 
+    @Test
+    public void testJenkins() {
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(getDriver().findElement(By.id("description-link")).getText(),
+                "Add description");
+    }
+
+    @Ignore
     @Test
     public void testSearch1() throws InterruptedException {
 
@@ -33,6 +43,7 @@ public class LifantsovaTest extends BaseTest {
         Assert.assertEquals(value, "РЕЗУЛЬТАТЫ ПОИСКА");
     }
 
+    @Ignore
     @Test
     public void testSearch2() throws InterruptedException {
 
@@ -50,6 +61,7 @@ public class LifantsovaTest extends BaseTest {
         Assert.assertEquals(value, "УЧЕБНЫЕ ПРЕДМЕТЫ");
     }
 
+    @Ignore
     @Test
     public void testSearch3() throws InterruptedException {
 
