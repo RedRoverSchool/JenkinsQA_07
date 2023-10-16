@@ -456,8 +456,9 @@ public class GroupSevenTest extends BaseTest {
         String value = nameTitle.getText();
         Assert.assertEquals(value, "admin");
     }
+
     @Test
-    public void testSearchBar() {
+    public void testSaveButton() {
         JenkinsUtils.login(getDriver());
 
         WebElement searchBar = getDriver().findElement(By.xpath("//input[@id=\"search-box\"]"));
@@ -468,9 +469,8 @@ public class GroupSevenTest extends BaseTest {
         WebElement saveButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
         saveButton.click();
 
-        WebElement configureTitle = getDriver().findElement(By.xpath("//h1[normalize-space()='System']"));
+        WebElement configureTitle = getDriver().findElement(By.cssSelector("div[class='jenkins-app-bar__content'] h1"));
         String value = configureTitle.getText();
         Assert.assertEquals(value, "System");
     }
-
 }
