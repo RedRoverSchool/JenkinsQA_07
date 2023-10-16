@@ -72,6 +72,17 @@ public class GroupJavaBustersTest extends BaseTest {
 
     }
 
+    @Test
+    public void testWelcomeJenkins() {
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement mainHeading = getDriver().findElement(By.cssSelector("h1"));
+        String value = mainHeading.getText();
+        Assert.assertEquals("Welcome to Jenkins!", value);
+
+    }
+
     private WebElement findPopUp(By locator) {
         try {
             return getDriver().findElement(locator);
@@ -154,7 +165,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
         driver.quit();
     }
-    
+
     @Test
     public void testFillInForm() {
         getDriver().get("https://automationintesting.online/");
@@ -178,7 +189,6 @@ public class GroupJavaBustersTest extends BaseTest {
         String value = message.getText();
         assertEquals(value, "Thanks for getting in touch Marta!");
     }
-
 
 
     @Test
