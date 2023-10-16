@@ -469,7 +469,8 @@ public class GroupSevenTest extends BaseTest {
         WebElement saveButton = getDriver().findElement(By.xpath("//button[@name=\"Submit\"]"));
         saveButton.click();
 
-        WebElement configureTitle = getDriver().findElement(By.className("jenkins-app-bar__content"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebElement configureTitle = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//h1[contains(text(), \"System\")]")));
         String value = configureTitle.getText();
         Assert.assertEquals(value, "System");
     }
