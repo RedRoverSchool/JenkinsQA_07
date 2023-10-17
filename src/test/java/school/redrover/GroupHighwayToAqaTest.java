@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -209,5 +206,22 @@ public class GroupHighwayToAqaTest extends BaseTest {
         for (int i = 0; i < sideBarTitles.length; i++) {
             Assert.assertEquals(sideBarItems.get(i).getText(), sideBarTitles[i]);
         }
+    }
+
+    @Test
+    public void testManageToolsGitInstallation() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        getDriver().get("http://localhost:8080/manage/configureTools/");
+
+        Thread.sleep(1000);
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement checkBox = getDriver().findElement(By.xpath("//span[@class='jenkins-checkbox']"));
+        js.executeScript("arguments[0].scrollIntoView();", checkBox);
+        checkBox.click();
+        Thread.sleep(1000);
+
+        WebElement addInstallerIsVisible = getDriver().findElement(By.xpath("//button[.='Add Installer']"));
+        Assert.assertTrue(addInstallerIsVisible.isDisplayed());
     }
 }
