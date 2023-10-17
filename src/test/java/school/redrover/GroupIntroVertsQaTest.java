@@ -285,6 +285,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
     @Ignore
     @Test
     public void testTextBoxNN () {
+
         getDriver().get("https://demoqa.com/text-box");
 
         WebElement fullName = getDriver().findElement(By.xpath("//*[@id=\"userName\"]"));
@@ -325,7 +326,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
         WebElement messagePM= getDriver().findElement(By.cssSelector("#permanentAddress.mb-1"));
         String valueMP = messagePM.getText();
         Assert.assertEquals("Permananet Address :Udacia",valueMP);
-
 
     }
 
