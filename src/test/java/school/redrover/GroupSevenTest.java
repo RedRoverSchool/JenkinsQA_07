@@ -65,7 +65,6 @@ public class GroupSevenTest extends BaseTest {
     public void testSearch() {
 
             getDriver().get("https://elitetransit.com/");
-            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
             WebElement buttonContact = getDriver().findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
             buttonContact.click();
 
