@@ -11,7 +11,7 @@ import school.redrover.runner.JenkinsUtils;
 import static org.testng.Assert.assertEquals;
 
 public class GroupBrainBuildersTest extends BaseTest {
-
+    String NameOfProject = "New_Brains";
 
     @Test
     public void testAskentLogIn() throws InterruptedException {
@@ -192,8 +192,6 @@ public class GroupBrainBuildersTest extends BaseTest {
     public void testJenkinsCreateItem() throws InterruptedException {
         JenkinsUtils.login(getDriver());
 
-        String NameOfProject = "New_Brains";
-
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
 
@@ -209,7 +207,7 @@ public class GroupBrainBuildersTest extends BaseTest {
 
         WebElement saveButton = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--primary ']"));
         saveButton.click();
-        
+
         WebElement projectName = getDriver().findElement(By.xpath("//*[@id='main-panel']/h1"));
         Thread.sleep(2000);
         String value = projectName.getText();
@@ -221,7 +219,7 @@ public class GroupBrainBuildersTest extends BaseTest {
 
         JenkinsUtils.login(getDriver());
 
-        WebElement nameOfProjectButton = getDriver().findElement(By.xpath("//a[@href='job/Brain_builders/']"));
+        WebElement nameOfProjectButton = getDriver().findElement(By.xpath("//a[@href='job/" + NameOfProject + "/']"));
         nameOfProjectButton.click();
 
         WebElement addDescriptionButton = getDriver().findElement(By.xpath("//a[@href='editDescription']"));
@@ -238,6 +236,16 @@ public class GroupBrainBuildersTest extends BaseTest {
         Thread.sleep(2000);
         String value = description.getText();
         Assert.assertEquals(value, "my_new_project");
+    }@Test
+    public void testJenkinsDeleteItem() throws InterruptedException {
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement nameOfProjectButton = getDriver().findElement(By.xpath("//a[@href='job/" + NameOfProject + "/']"));
+        nameOfProjectButton.click();
+
+        WebElement deleteBusket = getDriver().findElement(By.className("icon-edit-delete icon-md"));
+        deleteBusket.click();
 
     }
 }
