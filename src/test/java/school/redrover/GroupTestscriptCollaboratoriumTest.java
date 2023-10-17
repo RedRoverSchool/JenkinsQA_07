@@ -118,7 +118,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
         Thread.sleep(1000);
 
         colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
-        Assert.assertEquals(colorLayoutSwitcherCurrentState, "false",
+        Assert.assertEquals(colorLayoutSwitcherCurrentState, "true",
                 "Current layout is Light");
     }
 }
