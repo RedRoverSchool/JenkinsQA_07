@@ -246,7 +246,7 @@ public class GroupItFriendlyTest extends BaseTest {
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
         okButton.click();
         WebElement dashBoard = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a"));
-        dashBoard.click();
+         dashBoard.click();
         List <WebElement> list = getDriver().findElements(By.xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
         String str = "";
         for (int i = 0; i < list.size(); i++) {
@@ -258,4 +258,22 @@ public class GroupItFriendlyTest extends BaseTest {
         }
         Assert.assertEquals(str,randomUsername);
     }
+
+    @Test
+    public void JenkinsLinkTest() {
+        String paragraphAboutJenkinsText = "The leading open source automation server which enables developers around the world to reliably build, test, and deploy their software.";
+
+        WebDriver driver = getDriver();
+        JenkinsUtils.login(getDriver());
+
+        WebElement jenkinsLink = driver.findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+        jenkinsLink.click();
+
+        WebElement aboutJenkins = driver.findElement(By.xpath("//a[@class='jenkins-dropdown__item' and contains(text(), 'About Jenkins')]"));
+        aboutJenkins.click();
+
+        WebElement descriptionParagraph = driver.findElement(By.xpath("//p[@class='app-about-paragraph']"));
+        Assert.assertEquals(descriptionParagraph.getText(), paragraphAboutJenkinsText);
+    }
+
 }
