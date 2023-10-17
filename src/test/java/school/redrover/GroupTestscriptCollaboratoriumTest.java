@@ -103,6 +103,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     public void testEssayAppSwitchWebsiteColorLayout() throws InterruptedException {
 
         getDriver().get("https://essay.app/");
+        Thread.sleep(1000);
 
         WebElement upperSitePanel = getDriver().findElement(By.className("css-s5xdrg"));
 
