@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -209,5 +206,14 @@ public class GroupHighwayToAqaTest extends BaseTest {
         for (int i = 0; i < sideBarTitles.length; i++) {
             Assert.assertEquals(sideBarItems.get(i).getText(), sideBarTitles[i]);
         }
+    }
+    @Test
+    public void testTicketInToolsManageJenkins() {
+
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/section[2]/div/div[2]/a")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", getDriver().findElement(By.id("cb2")));
     }
 }
