@@ -66,7 +66,7 @@ public class GroupSevenTest extends BaseTest {
 
         try {
             getDriver().get("https://elitetransit.com/");
-
+            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
             getDriver().manage().window().maximize();
 
             getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
