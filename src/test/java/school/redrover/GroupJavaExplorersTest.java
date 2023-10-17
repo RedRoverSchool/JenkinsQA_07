@@ -294,7 +294,7 @@ public class GroupJavaExplorersTest extends BaseTest {
     @Test()
     public void testCreateFreeStyleProject() {
         int desiredLength = 5;
-        String jenkinsAutoJobName = UUID.randomUUID()
+        String testFreeStyleProjectName = UUID.randomUUID()
                 .toString()
                 .substring(0, desiredLength);
 
@@ -304,7 +304,7 @@ public class GroupJavaExplorersTest extends BaseTest {
         newViewButton.click();
 
         WebElement jenkinsJobNameField = getDriver().findElement(By.xpath("//*[@class='jenkins-input']"));
-        jenkinsJobNameField.sendKeys(jenkinsAutoJobName);
+        jenkinsJobNameField.sendKeys(testFreeStyleProjectName);
 
         WebElement freeStyleProject = getDriver().findElement(By.xpath("//*[text()='Freestyle project']"));
         freeStyleProject.click();
@@ -314,10 +314,9 @@ public class GroupJavaExplorersTest extends BaseTest {
         WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
 
         saveButton.click();
-        WebElement jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']"));
-        String text = jenkinsJobName.getText();
+        String jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']")).getText();
 
-        Assert.assertTrue(text.contains(jenkinsAutoJobName));
+        Assert.assertTrue(jenkinsJobName.contains(testFreeStyleProjectName));
 
     }
 
