@@ -14,6 +14,7 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.UUID;
 
 import static org.testng.Assert.assertEquals;
 
@@ -34,7 +35,7 @@ public class GroupJavaExplorersTest extends BaseTest {
                 .findElement(By.xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
         watches.click();
 
-         WebElement clamberWatch = getDriver()
+        WebElement clamberWatch = getDriver()
                 .findElement(By.xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
         clamberWatch.click();
 
@@ -96,7 +97,7 @@ public class GroupJavaExplorersTest extends BaseTest {
     }
 
     @Test
-    public void testSearchOlivia(){
+    public void testSearchOlivia() {
         getDriver().get(BASE_URL);
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[@id='search']"));
@@ -114,7 +115,7 @@ public class GroupJavaExplorersTest extends BaseTest {
     @Test
     public void testInvalidLoginWithNonExistedUser() throws InterruptedException {
         getDriver().get(BASE_URL);
-        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         WebElement signInElement = getDriver().findElement(By.className("authorization-link"));
         signInElement.click();
 
@@ -138,7 +139,7 @@ public class GroupJavaExplorersTest extends BaseTest {
     public void testAddToCart() {
 
         getDriver().get(BASE_URL);
-        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
 
         WebElement catalogueItem = getDriver().
                 findElement(By.xpath("//div//img[@class='product-image-photo']"));
@@ -244,10 +245,10 @@ public class GroupJavaExplorersTest extends BaseTest {
         String actualText = getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText();
 
         Assert.assertTrue(actualText.contains(expectedText));
-        }
+    }
 
     @Test
-    public void testTitl()  {
+    public void testTitl() {
 
         getDriver().get(BASE_URL);
 
@@ -289,5 +290,37 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
     }
+
+    @Test()
+    public void testCreateFreeStyleProject() {
+        int desiredLength = 5;
+        String jenkinsAutoJobName = UUID.randomUUID()
+                .toString()
+                .substring(0, desiredLength);
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement newViewButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
+        newViewButton.click();
+
+        WebElement jenkinsJobNameField = getDriver().findElement(By.xpath("//*[@class='jenkins-input']"));
+        jenkinsJobNameField.sendKeys(jenkinsAutoJobName);
+
+        WebElement freeStyleProject = getDriver().findElement(By.xpath("//*[text()='Freestyle project']"));
+        freeStyleProject.click();
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        submitButton.click();
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+
+        saveButton.click();
+        WebElement jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']"));
+        String text = jenkinsJobName.getText();
+
+        Assert.assertTrue(text.contains(jenkinsAutoJobName));
+
+    }
+
+
 }
 
