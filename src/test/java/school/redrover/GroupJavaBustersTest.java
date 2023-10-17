@@ -261,4 +261,16 @@ public class GroupJavaBustersTest extends BaseTest {
 
 
     }
+
+    @Test
+    public void testSignInJenkins(){
+
+        JenkinsUtils.login(getDriver());
+        Assert.assertEquals(By
+                        .cssSelector("#main-panel > div:nth-child(3) > div > h1")
+                        .findElement(getDriver())
+                        .getText(),
+                        "Welcome to Jenkins!");
+
+    }
 }
