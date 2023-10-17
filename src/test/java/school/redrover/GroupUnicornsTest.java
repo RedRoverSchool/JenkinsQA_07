@@ -318,9 +318,7 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void testPearson() {
         getDriver().get("https://www.pearson.com/");
-
         getDriver().findElement(By.id("onetrust-accept-btn-handler")).click();
-
         getDriver().findElement(By.className("usernav-signin-button")).click();
         getDriver().findElement(By.className("side-banner__heading"));
         getDriver().findElement(By.className("ies-input")).sendKeys("tester@gmail.com");
@@ -329,4 +327,28 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
     }
+
+    @Test
+    public void testMyStudyingPage() {
+
+        getDriver().get("https://power.arc.losrios.edu/~suleymanova/cisw300/");
+        getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //cheack logo
+
+        getDriver().findElement(By.xpath("//a[@href='about.html']")).click();//click about button
+        getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
+
+        getDriver().findElement(By.xpath("//a[@href='contact.html']")).click();//click contact button
+        getDriver().findElement(By.xpath("//a[@href='mailto:w2029557@apps.losrios.edu' and text()='w2029557@apps.losrios.edu']"));//check email
+
+        getDriver().findElement(By.xpath("//a[@href='projects.html']")).click();// click projects button
+        getDriver().findElement(By.xpath("//h1[text()='PROJECTS ']"));//check projects page
+
+        getDriver().findElement(By.xpath("//a[@href='book.html']")).click();//click book button
+        getDriver().findElement(By.xpath("//h1[text()='TUTORIALS ']"));//check book page
+        Assert.assertEquals(getDriver().getTitle(), "Book");//check title
+
+        getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
+
+    }
+
 }
