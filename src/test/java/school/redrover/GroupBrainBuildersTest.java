@@ -1,7 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -236,7 +235,9 @@ public class GroupBrainBuildersTest extends BaseTest {
         Thread.sleep(2000);
         String value = description.getText();
         Assert.assertEquals(value, "my_new_project");
-    }@Test
+    }
+
+    @Test
     public void testJenkinsDeleteItem() throws InterruptedException {
 
         JenkinsUtils.login(getDriver());
@@ -244,8 +245,12 @@ public class GroupBrainBuildersTest extends BaseTest {
         WebElement nameOfProjectButton = getDriver().findElement(By.xpath("//a[@href='job/" + NameOfProject + "/']"));
         nameOfProjectButton.click();
 
-        WebElement deleteBusket = getDriver().findElement(By.className("icon-edit-delete icon-md"));
+        WebElement deleteBusket = getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span/a/span[1]"));
         deleteBusket.click();
+        Thread.sleep(2000);
 
+       // for (String windowHandle : getDriver().getWindowHandles()) {getDriver().switchTo().window(windowHandle);}
+        Alert alert = getDriver().switchTo().alert();
+        alert.accept();
     }
 }
