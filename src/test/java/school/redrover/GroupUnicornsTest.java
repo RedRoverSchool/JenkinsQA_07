@@ -212,7 +212,7 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void testUnsuccessfulLoginDigitalBank() {
-
+        JenkinsUtils.login(getDriver());
         getDriver().get("http://18.118.14.155:8080/bank/login");
         getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
         getDriver().findElement(By.id("username")).sendKeys("tester1@gmail.com");
@@ -224,7 +224,7 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void testSuccessfulLoginDigitalBank() {
-
+        JenkinsUtils.login(getDriver());
         getDriver().get("http://18.118.14.155:8080/bank/login");
         getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
         getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
@@ -236,7 +236,7 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void testLogout(){
-
+        JenkinsUtils.login(getDriver());
         getDriver().get("http://18.118.14.155:8080/bank/login");
         getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
         getDriver().findElement(By.id("password")).sendKeys("Test1234");
