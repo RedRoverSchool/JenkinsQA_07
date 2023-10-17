@@ -17,7 +17,6 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.util.HashMap;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -383,9 +382,10 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void upsPageOpenTest() {
+    public void upsPageOpenTest() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         getDriver().get("https://www.ups.com/us/en/Home.page");
+        Thread.sleep(500);
         WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
         shipButton.click();
 
@@ -397,8 +397,7 @@ public class GroupUnicornsTest extends BaseTest {
         address.sendKeys("101 Avery Avenue, Long Branch, NJ 07740");
 
 
-
-        List<WebElement> addressSuggestions = getDriver().findElements(By.cssSelector(".dropdown-item"));
+        List <WebElement> addressSuggestions = getDriver().findElements(By.cssSelector(".dropdown-item"));
         wait.until(ExpectedConditions.visibilityOfAllElements(addressSuggestions));
         WebElement firstPick = addressSuggestions.get(0);
         wait.until(ExpectedConditions.elementToBeClickable(firstPick));
