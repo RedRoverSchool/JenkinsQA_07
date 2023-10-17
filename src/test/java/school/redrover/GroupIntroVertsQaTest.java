@@ -314,19 +314,19 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
         WebElement messageName = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
         String value = messageName.getText();
-        Assert.assertEquals("Name:Natalia", value);
+        Assert.assertEquals(value,"Name:Natalia");
 
         WebElement messageEmail = getDriver().findElement(By.cssSelector("#email.mb-1"));
         String valueE = messageEmail.getText();
-        Assert.assertEquals("Email:natalia@gmail.com",valueE);
+        Assert.assertEquals(valueE,"Email:natalia@gmail.com");
 
         WebElement messageCurrent = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
         String valueMC= messageCurrent.getText();
-        Assert.assertEquals("Current Address :Sciastlivaia", valueMC);
+        Assert.assertEquals(valueMC,"Current Address :Sciastlivaia");
 
         WebElement messagePM= getDriver().findElement(By.cssSelector("#permanentAddress.mb-1"));
         String valueMP = messagePM.getText();
-        Assert.assertEquals("Permananet Address :Udacia",valueMP);
+        Assert.assertEquals(valueMP,"Permananet Address :Udacia");
 
         getDriver().quit();
     }
