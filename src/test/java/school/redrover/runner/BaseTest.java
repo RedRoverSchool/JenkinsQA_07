@@ -12,7 +12,7 @@ import java.time.Duration;
 
 
 @Listeners({FilterForTests.class})
-public abstract class BaseTest {
+public abstract class  BaseTest {
 
     private WebDriver driver;
 
