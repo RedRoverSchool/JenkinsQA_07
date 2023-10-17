@@ -376,4 +376,21 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
     }
+
+    @Test
+    public void testTasksInSideNavigation()
+    {
+        JenkinsUtils.login(getDriver());
+        WebElement newItem = getDriver().findElement(By.xpath("//a[contains(@href, 'view/all/newJob')]"));
+        Assert.assertEquals(newItem.getText(), "New Item");
+
+        newItem.click();
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/view/all/newJob");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//label[@for='name']")).getText(),"Enter an item name");
+
+        getDriver().findElement(By.xpath("//label[@for='name']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText(), "» This field cannot be empty, please enter a valid name");
+
+    }
 }
