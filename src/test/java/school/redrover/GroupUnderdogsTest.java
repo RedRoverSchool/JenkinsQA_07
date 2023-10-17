@@ -293,6 +293,30 @@ public class GroupUnderdogsTest extends BaseTest {
 
         assertEquals(actRes, expRes);
     }
+    @Test
+    public void  test_idAdmin_Artuom() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+        WebElement nameOfUser = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
+        nameOfUser.click();
+        WebElement config = getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]"));
+        config.click();
+        WebElement button = getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']"));
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        int subm = button.getLocation().getY();
+        for (int i = 0; i < subm; i += 20) {
+            js.executeScript("window.scrollTo(0, " + i + ")");
+            Thread.sleep(50);
+        }
+        button.click();
+
+        WebElement UserIdAdm = getDriver().findElement(By.xpath("//div[@id='description']/following-sibling::div"));
+        String actNameOfUser = UserIdAdm.getText();
+        String expRes = "Jenkins User ID: admin";
+
+        assertEquals(actNameOfUser, expRes);
+    }
+
+
 
     @Ignore
     @Test
@@ -347,58 +371,53 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(title, "Error: Precondition failed - Incomplete Input.");
     }
 
-    @Ignore
     @Test
     public void testBrowseLanguagesKotlin() {
-        driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement browseLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Browse Languages']"));
+        WebElement browseLanguagesBtn = getDriver().findElement(By.xpath("//li/a[text()='Browse Languages']"));
         browseLanguagesBtn.click();
 
-        WebElement letterLink = driver.findElement(By.xpath("//li/a[text()='K']"));
+        WebElement letterLink = getDriver().findElement(By.xpath("//li/a[text()='K']"));
         letterLink.click();
 
-        WebElement languageLink = driver.findElement(By.xpath("//a[contains(@href, 2901)]"));
+        WebElement languageLink = getDriver().findElement(By.xpath("//a[contains(@href, 2901)]"));
         languageLink.click();
 
-        WebElement languagePageHeader = driver.findElement(By.xpath("//div[@id='main']/h2"));
+        WebElement languagePageHeader = getDriver().findElement(By.xpath("//div[@id='main']/h2"));
         String pageHeader = languagePageHeader.getText();
 
         assertEquals(pageHeader, "Language Kotlin");
     }
 
-    @Ignore
     @Test
     public void testSearchLanguages() {
         final String partOfWordToSearch = "kot";
-        driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement searchLanguagesBtn = driver.findElement(By.xpath("//li/a[text()='Search Languages']"));
+        WebElement searchLanguagesBtn = getDriver().findElement(By.xpath("//li/a[text()='Search Languages']"));
         searchLanguagesBtn.click();
 
-        WebElement searchField = driver.findElement(By.xpath("//input[@name='search']"));
+        WebElement searchField = getDriver().findElement(By.xpath("//input[@name='search']"));
         searchField.sendKeys(partOfWordToSearch);
 
-        WebElement goBtn = driver.findElement(By.xpath("//input[@name='submitsearch']"));
+        WebElement goBtn = getDriver().findElement(By.xpath("//input[@name='submitsearch']"));
         goBtn.click();
 
-        List<WebElement> searchResult = driver.findElements(By.xpath("//td/a[contains(@href,'language')]"));
+        List<WebElement> searchResult = getDriver().findElements(By.xpath("//td/a[contains(@href,'language')]"));
         for (WebElement element : searchResult) {
             Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
             assertEquals(element.getTagName(), "a");
         }
     }
 
-    @Ignore
     @Test
-    public void testRailiaImportantNoticeMarkup() {
-        driver = new ChromeDriver();
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-        driver.findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
+    public void testImportantNoticeMarkupRailia() {
 
-        List<WebElement> listItems = driver.findElements(By.xpath("//*[@id=\"main\"]/ul/li/span"));
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
+
+        List<WebElement> listItems = getDriver().findElements(By.xpath("//*[@id='main']/ul/li/span"));
         Assert.assertFalse(listItems.isEmpty(), "We should have at least one list item with bold text");
 
         for (WebElement el : listItems) {
@@ -414,15 +433,15 @@ public class GroupUnderdogsTest extends BaseTest {
         }
     }
 
+    @Test
     public void testNamesOfCreatorsOfSite() {
         List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
-        driver = new ChromeDriver();
-        driver.get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
 
-        WebElement teamLink = driver.findElement(By.xpath("//a[text()='Team']"));
+        WebElement teamLink = getDriver().findElement(By.xpath("//a[text()='Team']"));
         teamLink.click();
 
-        List<WebElement> creators = driver.findElements(By.xpath("//h3"));
+        List<WebElement> creators = getDriver().findElements(By.xpath("//h3"));
         List<String> namesOfCreators = new ArrayList<>();
         for (WebElement element : creators) {
             namesOfCreators.add(element.getText());
@@ -507,6 +526,4 @@ public class GroupUnderdogsTest extends BaseTest {
 
 
     }
-
-
 }
