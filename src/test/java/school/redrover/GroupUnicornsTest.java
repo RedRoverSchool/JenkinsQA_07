@@ -335,30 +335,29 @@ public class GroupUnicornsTest extends BaseTest {
 
 
     @Test
-    public void TestRizzolibooks() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.rizzolibookstore.com/");
+    public void testRizzolibooks() throws InterruptedException {
 
-        String title = driver.getTitle();
+        getDriver().get ("https://www.rizzolibookstore.com/");
+
+        String title = getDriver().getTitle();
         AssertJUnit.assertEquals("Welcome to the Most Beautiful Bookstore in New York | Rizzoli Bookstore", title);
 
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(800));
+        Thread.sleep(500);
 
-        WebElement signinButton = driver.findElement(By.xpath("//*[@id='block-rizzoli-2023-commerceiconmenu']/ul/li[2]/a"));
+        WebElement signinButton = getDriver().findElement(By.xpath("//*[@id='block-rizzoli-2023-commerceiconmenu']/ul/li[2]/a"));
         signinButton.click();
 
-        WebElement textBox = driver.findElement(By.id("edit-e-mail"));
-        WebElement subscribeButton = driver.findElement(By.xpath("//*[@id='edit-actions-submit']"));
+        WebElement textBox = getDriver().findElement(By.id("edit-e-mail"));
+        WebElement subscribeButton = getDriver().findElement(By.xpath("//*[@id='edit-actions-submit']"));
 
         textBox.sendKeys("user@gmail.com");
         Thread.sleep(500);
         subscribeButton.click();
 
-        WebElement message = driver.findElement(By.className("webform-confirmation__message"));
+        WebElement message = getDriver().findElement(By.className("webform-confirmation__message"));
         String value = message.getText();
         AssertJUnit.assertEquals("New submission added to Signup for our Newsletter.", value);
 
-        driver.quit();
     }
 }
