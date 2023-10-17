@@ -1,68 +1,43 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
 
-@Ignore
-public class AikaTest {
 
-    WebDriver driver;// = new ChromeDriver();
-    String categoriesOpt = "Categories";
+public class AikaTest extends BaseTest {
 
-    @BeforeMethod
-    public void setup() {
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-        driver.get("https://mvnrepository.com/");
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        driver.quit();
+    @Test
+    public void testAdminUserDisplayed() {
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//span[text()='People']/parent::a")).click();
+        Assert.assertTrue(getDriver().findElement(By.linkText("admin")).isDisplayed());
     }
 
     @Test
-    public void relativeLocationToLeftOfTest() {
+    public void testVerifyJenkinsVersion() {
+        String  expectedJenkinsVersion = "2.414.2";
 
-        WebElement popularOpt = driver.findElement(By.xpath("//a[text()= 'Popular']"));
-
-        Assert.assertEquals(driver.findElement(with(By.tagName("a"))
-                .toLeftOf(popularOpt)).getText(), categoriesOpt);
-
+        JenkinsUtils.login(getDriver());
+        String jenkinsVersion = getDriver().findElement(By.xpath("//button[contains(text(), 'Jenkins')]")).getText();
+        Assert.assertEquals(jenkinsVersion.split(" ")[1], expectedJenkinsVersion);
     }
 
     @Test
-    public void relativeLocationBelowTest() {
+    public void testClickingOnDashboardOpensDashboard() {
+        JenkinsUtils.login(getDriver());
 
-         WebElement siteDeveloped = driver.findElement(By.xpath("//span[contains(text(), 'developed')]"));
-         Actions actions = new Actions(driver);
-         actions.moveToElement(siteDeveloped).perform();
+        WebElement newItem = getDriver().findElement(By.xpath("//div[@id='tasks']//a[1]"));
+        newItem.click();
 
-         Assert.assertEquals(driver.findElement(with(By.tagName("a")).below(siteDeveloped))
-                 .getText(), "Contact Us");
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertTrue(getDriver().getTitle().contains("Dashboard"));
     }
-
-    @Test
-    public void relativeLocationAboveTest() {
-
-        WebElement whatsNew = driver.findElement(By.tagName("h1"));
-        WebElement inputField = driver.findElement(with(By.id("query")).above(whatsNew));
-
-        Assert.assertTrue(inputField.isDisplayed());
-
-    }
-
-
 }

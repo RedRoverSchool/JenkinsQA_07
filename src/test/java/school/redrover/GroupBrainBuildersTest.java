@@ -2,8 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
@@ -131,7 +131,7 @@ public class GroupBrainBuildersTest extends BaseTest {
 
 
     @Test
-    public void testJenkinsAdminStatus() throws InterruptedException {
+    public void testJenkinsAdminStatus() {
 
         JenkinsUtils.login(getDriver());
 
@@ -165,5 +165,26 @@ public class GroupBrainBuildersTest extends BaseTest {
         WebElement searchResult = getDriver().findElement(By.cssSelector("h1"));
         String result = searchResult.getText();
         Assert.assertEquals(result, "Результаты поиска");
+    }
+
+    @Test
+    public void testJenkinsCredentialsTooltip() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement adminMenu = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
+        adminMenu.click();
+
+        WebElement credentialsItem = getDriver().findElement(By.xpath("//a[@href='/user/admin/credentials']"));
+        credentialsItem.click();
+
+        WebElement systemTableItem = getDriver().findElement(By.xpath("//a[@href='/manage/credentials/store/system']"));
+        systemTableItem.click();
+
+        WebElement imageSystemTable = getDriver().findElement(By.xpath("//img[@class='icon-credentials-domain icon-lg']"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(imageSystemTable).perform();
+
+        WebElement tooltip = getDriver().findElement(By.xpath("//img[@aria-describedby = 'tippy-10']"));
+        Assert.assertTrue(tooltip.isDisplayed());
     }
 }
