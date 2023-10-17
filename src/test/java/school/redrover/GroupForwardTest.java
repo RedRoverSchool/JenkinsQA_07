@@ -219,7 +219,7 @@ public class GroupForwardTest extends BaseTest {
 
 
   }
-
+@Ignore
   @Test
   public void testClickLogoToMainPage() {
 

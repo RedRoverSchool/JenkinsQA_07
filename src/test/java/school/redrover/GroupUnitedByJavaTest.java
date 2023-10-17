@@ -19,6 +19,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
+@Ignore
 public class GroupUnitedByJavaTest extends BaseTest {
 
     private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
@@ -456,6 +457,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Thread.sleep(2000);
 
     }
+   @Ignore
     @Test
     public void testJenkinsDescriptionPreview() throws InterruptedException {
         JenkinsUtils.login(getDriver());

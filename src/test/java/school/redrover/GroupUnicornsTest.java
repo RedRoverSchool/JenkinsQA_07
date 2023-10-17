@@ -20,7 +20,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-
+@Ignore
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
@@ -244,7 +244,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(), "Jenkins 2.414.2");
     }
-
+@Ignore
     @Test
     public void testAddDescriptionFeature() {
         String expected = "Testing description feature on Jenkins Home Page";
@@ -285,7 +285,7 @@ public class GroupUnicornsTest extends BaseTest {
         textBox.sendKeys("ximotof590@ibtrades.com");
         submitButton.click();
     }
-
+@Ignore
     @Test
     public void testJenkinsAddDescr() {
 

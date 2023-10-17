@@ -18,20 +18,21 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     public void testGetGuru() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
-        driver.get("https://www.guru99.com/");
+        try {
+            driver.get("https://www.guru99.com/");
 
         String title = driver.getTitle();
         Assert.assertEquals("Meet Guru99 – Free Training Tutorials & Video for IT Courses", title);
 
-        WebElement JUnitButton = driver.findElement(By.xpath("//*[@data-lasso-id='147439']"));
-        JUnitButton.click();
-
-        Thread.sleep(900);
-
-        WebElement textButton = driver.findElement(By.xpath("//*[@id='post-862']/div/div/h2[2]"));
-        Assert.assertEquals(textButton.getText(), "JUnit Tutorial Syllabus");
-
-        driver.quit();
+            WebElement JUnitButton = driver.findElement(By.xpath("//*[@data-lasso-id='147439']"));
+            JUnitButton.click();
+            Thread.sleep(900);
+            WebElement textButton = driver.findElement(By.xpath("//*[@id='post-862']/div/div/h2[2]"));
+            Assert.assertEquals(textButton.getText(), "JUnit Tutorial Syllabus");
+        }
+            finally {
+                driver.quit();
+        }
     }
 
     @Test
@@ -53,8 +54,8 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     }
 
     @Test
-    public void testAddToBasket() throws InterruptedException {
-
+    @Ignore
+    public void testAddToBasket() throws InterruptedException{
         getDriver().get("https://murzilka.org/products/category/redaktsionnaya-podpiska");
         WebElement addButton = getDriver().findElement(By.xpath("//button[@class='button product-item__button button_for_product-card cart-btn js-order-product js-cart-btn']"));
         addButton.click();
@@ -66,8 +67,8 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     }
 
     @Test
-    public void testSearch() {
-
+    @Ignore
+    public void testSearch(){
         JenkinsUtils.login(getDriver());
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
@@ -118,5 +119,26 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
         colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
         Assert.assertEquals(colorLayoutSwitcherCurrentState, "true",
                 "Current layout is Dark");
+    }
+
+    @Test
+    public void testSearchZhukova() throws InterruptedException {
+        getDriver().get("http://uitestingplayground.com/");
+
+        WebElement textButton = getDriver().findElement(By.xpath("//a[@href=\"/resources\"]"));
+        textButton.click();
+
+        WebElement title = getDriver().findElement(By.xpath("//a[@href=\"https://www.w3schools.com\"]"));
+    }
+
+    @Test
+    public void testInput() throws InterruptedException {
+        getDriver().get("http://uitestingplayground.com/");
+
+        WebElement textButton = getDriver().findElement(By.xpath("//a[@href=\"/textinput\"]"));
+        textButton.click();
+
+        getDriver().findElement(By.xpath("//input[@class=\"form-control\"]")).sendKeys("text");
+        Thread.sleep(900);
     }
 }

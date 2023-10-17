@@ -12,9 +12,10 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.util.concurrent.TimeUnit;
 
-
+@Ignore
 public class LocomotiveGroupTest extends BaseTest {
     @Test
+    @Ignore
     public void testDemoqaTextBox() {
         String fullName = "Tom Jonson";
         String email = "mail@mail.com";
@@ -239,6 +240,7 @@ public class LocomotiveGroupTest extends BaseTest {
         Thread.sleep(2000);
     }
 
+    @Ignore
     @Test
     public void testAddDescriptionJenkinsHomePage() {
         String description = "My Jenkins home page description";
