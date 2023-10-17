@@ -387,14 +387,13 @@ public class GroupUnderdogsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void testRailiaImportantNoticeMarkup() {
-        driver = new ChromeDriver();
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-        driver.findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
+    public void testImportantNoticeMarkupRailia() {
 
-        List<WebElement> listItems = driver.findElements(By.xpath("//*[@id=\"main\"]/ul/li/span"));
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
+
+        List<WebElement> listItems = getDriver().findElements(By.xpath("//*[@id='main']/ul/li/span"));
         Assert.assertFalse(listItems.isEmpty(), "We should have at least one list item with bold text");
 
         for (WebElement el : listItems) {

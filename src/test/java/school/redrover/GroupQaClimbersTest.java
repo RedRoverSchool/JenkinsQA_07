@@ -700,4 +700,14 @@ public class GroupQaClimbersTest extends BaseTest {
 
         Assert.assertEquals(actualTitle, "Script Console");
     }
+
+    @Test
+    public void testManageJenkinsOption() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("(//a[@class='task-link '])[4]")).click();
+        Thread.sleep(1000);
+        String actualMessage=getDriver().findElement(By.xpath("//div/h1[text()='Manage Jenkins']")).getText();
+        String expectedMessage="Manage Jenkins";
+        Assert.assertEquals(actualMessage,expectedMessage);
+    }
 }
