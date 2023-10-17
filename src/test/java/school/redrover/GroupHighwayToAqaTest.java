@@ -234,4 +234,34 @@ public class GroupHighwayToAqaTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"))
                 .getText(), "System");
     }
+
+    @Test
+    public void testCreateFolderViaCopyFrom() throws InterruptedException {
+
+        JenkinsUtils.login(getDriver());
+
+        final String originalFolderName = String.format("Some test folder name %3d", (int)(Math.random()*1000));
+        final String folderDisplayName = "Some test folder display name";
+        final String folderDescription = "Some test folder description";
+        final String newFolderName = String.format("Some test folder name %3d", (int)(Math.random()*1000));
+
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(originalFolderName);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(folderDisplayName);
+        getDriver().findElement(By.name("_.description")).sendKeys(folderDescription);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newFolderName);
+        getDriver().findElement(By.id("from")).sendKeys(originalFolderName);
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.name("_.description")).getText(),
+                folderDescription);
+    }
 }
