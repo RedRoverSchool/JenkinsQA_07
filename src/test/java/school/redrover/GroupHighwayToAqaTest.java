@@ -245,7 +245,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
         final String folderDescription = "Some test folder description";
         final String newFolderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
 
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(originalFolderName);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
