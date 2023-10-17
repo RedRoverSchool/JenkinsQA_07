@@ -5,6 +5,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -328,5 +330,39 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.id("submitBttn")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
+    }
+
+    @Test
+    public void testUpsPageOpen() throws InterruptedException {
+        getDriver().get("https://www.ups.com/us/en/Home.page");
+        WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
+        shipButton.click();
+
+        Thread.sleep(9000);
+        WebElement fullName = getDriver().findElement(By.xpath("//input[@id='origin-cac_companyOrName']"));
+        fullName.sendKeys("John Doe");
+
+        WebElement address = getDriver().findElement(By.xpath("//input[@id='origin-cac_singleLineAddress']"));
+        address.sendKeys("101 Avery Avenue, Long Branch, NJ 07740");
+
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        List<WebElement> addressSuggestions = getDriver().findElements(By.cssSelector(".dropdown-item"));
+        wait.until(ExpectedConditions.visibilityOfAllElements(addressSuggestions));
+        WebElement firstPick = addressSuggestions.get(0);
+        wait.until(ExpectedConditions.elementToBeClickable(firstPick));
+        firstPick.click();
+
+        WebElement email = getDriver().findElement(By.xpath("//input[@id='origin-cac_email']"));
+        email.sendKeys("jdoe@email.com");
+
+        WebElement phone = getDriver().findElement(By.xpath("//input[@id='origin-cac_phone']"));
+        phone.sendKeys("+989256365");
+
+
+        WebElement continueButton = getDriver().findElement(By.xpath("//button[@id='nbsBackForwardNavigationContinueButton']"));
+        wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+
+
     }
 }
