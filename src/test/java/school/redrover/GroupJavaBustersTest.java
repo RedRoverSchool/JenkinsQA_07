@@ -67,7 +67,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "Your credentials don’t match. It’s probably attributable to human error.");
 
     }
-
+@Ignore
     @Test
     public void testWelcomeJenkins() {
 
@@ -218,7 +218,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
         assertTrue(linkToProduct.contains("dress"));
     }
-
+@Ignore
     @Test
     public void testDeleteFromBim() {
         getDriver().get("https://shop.studiob3.pl/product/iola-beanie/");

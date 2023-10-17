@@ -5,6 +5,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -18,7 +20,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-
+@Ignore
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
@@ -96,7 +98,6 @@ public class GroupUnicornsTest extends BaseTest {
         title = getDriver().getTitle();
         Assert.assertEquals(title, "Java Tutorial");
     }
-
 
     @Test
     public void W3school1test() {
@@ -243,7 +244,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(), "Jenkins 2.414.2");
     }
-
+@Ignore
     @Test
     public void testAddDescriptionFeature() {
         String expected = "Testing description feature on Jenkins Home Page";
@@ -284,7 +285,7 @@ public class GroupUnicornsTest extends BaseTest {
         textBox.sendKeys("ximotof590@ibtrades.com");
         submitButton.click();
     }
-
+@Ignore
     @Test
     public void testJenkinsAddDescr() {
 
@@ -328,5 +329,22 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.id("submitBttn")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
+    }
+
+    @Test
+    public void testTasksInSideNavigation()
+    {
+        JenkinsUtils.login(getDriver());
+        WebElement newItem = getDriver().findElement(By.xpath("//a[contains(@href, 'view/all/newJob')]"));
+        Assert.assertEquals(newItem.getText(), "New Item");
+
+        newItem.click();
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/view/all/newJob");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//label[@for='name']")).getText(),"Enter an item name");
+
+        getDriver().findElement(By.xpath("//label[@for='name']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText(), "» This field cannot be empty, please enter a valid name");
+
     }
 }

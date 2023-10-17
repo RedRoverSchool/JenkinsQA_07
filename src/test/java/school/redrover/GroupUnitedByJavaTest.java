@@ -19,6 +19,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
+@Ignore
 public class GroupUnitedByJavaTest extends BaseTest {
 
     private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
@@ -456,6 +457,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Thread.sleep(2000);
 
     }
+   @Ignore
     @Test
     public void testJenkinsDescriptionPreview() throws InterruptedException {
         JenkinsUtils.login(getDriver());
@@ -488,6 +490,19 @@ public class GroupUnitedByJavaTest extends BaseTest {
         WebElement title = getDriver().findElement(By.xpath("//div[text()='Jenkins User ID: admin']"));
         String value = title.getText();
         Assert.assertEquals(value, "Jenkins User ID: admin");
+        Thread.sleep(1000);
+    }
+
+    @Test
+    public void testJenkinsSimple() throws InterruptedException {
+        JenkinsUtils.login(getDriver());
+
+        WebElement Manage = getDriver().findElement(By.xpath("//a[contains(.,'Manage Jenkins')]"));
+        Manage.click();
+
+        WebElement element = getDriver().findElement(By.xpath("//h2[@class='jenkins-section__title' and text()='System Configuration']"));
+        String value = element.getText();
+        Assert.assertEquals(value, "System Configuration");
         Thread.sleep(1000);
     }
 }

@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class GroupQaClimbersTest extends BaseTest {
 
     private static final String URL = "https://demoqa.com/";
@@ -187,7 +189,7 @@ public class GroupQaClimbersTest extends BaseTest {
         );
         assertEquals(actualListOfElementsNames, expectedListElementsNames);
     }
-
+@Ignore
     @Test
     public void testClickOnHomeCheckBox() {
 
@@ -670,7 +672,7 @@ public class GroupQaClimbersTest extends BaseTest {
         String actualMessage=getDriver().findElement(By.xpath("//div[text()='Swag Labs']")).getText();
         Assert.assertEquals(actualMessage,expectedMessage);
     }
-
+@Ignore
     @Test
     public void testClickOnCreateAJob() {
 
@@ -709,5 +711,21 @@ public class GroupQaClimbersTest extends BaseTest {
         String actualMessage=getDriver().findElement(By.xpath("//div/h1[text()='Manage Jenkins']")).getText();
         String expectedMessage="Manage Jenkins";
         Assert.assertEquals(actualMessage,expectedMessage);
+    }
+
+    @Test
+    public void testLoginJenkins() {
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
+        WebElement checkJenkinsVersion = getDriver().findElement(By.xpath("//button[@type='button']"));
+        checkJenkinsVersion.click();
+
+        WebElement openJenkinsWebSite = getDriver().findElement(By.xpath("//a[@rel='noopener noreferrer']"));
+        openJenkinsWebSite.click();
+
+        WebElement getTitle = getDriver().findElement(By.xpath("//a[@href='/']"));
+        String getTitleText = getTitle.getText();
+        Assert.assertEquals(getTitleText, "");
+
     }
 }

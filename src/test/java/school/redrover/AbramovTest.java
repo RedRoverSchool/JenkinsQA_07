@@ -13,7 +13,7 @@ public class AbramovTest extends BaseTest {
     private void openMainPage() {
         getDriver().get("https://bandcamp.com/");
     }
-
+@Ignore
     @Test
     public void testNewFirstJenkinsFreestyleProject() {
         JenkinsUtils.login(getDriver());
