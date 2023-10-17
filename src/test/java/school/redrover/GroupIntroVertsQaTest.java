@@ -349,4 +349,31 @@ public class GroupIntroVertsQaTest extends BaseTest {
         driver.quit();
     }
 
+
+    @Test
+    public void testSauceDemaRegistration(){
+
+        getDriver().get("https://www.saucedemo.com/");
+
+        WebElement UserName = getDriver().findElement(By.xpath("//*[@id=\"user-name\"]"));
+        UserName.sendKeys("standard_user");
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(8000));
+
+        WebElement Password = getDriver().findElement(By.xpath("//*[@id=\"password\"]"));
+        Password.sendKeys("secret_sauce");
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(8000));
+
+
+        WebElement LoginSubmitButton = getDriver().findElement(By.xpath("//*[@id=\"login-button\"]"));
+        LoginSubmitButton.click();
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(8000));
+        WebElement messageName = getDriver().findElement(By.xpath("//*[@id=\"item_4_title_link\"]/div"));
+        String value = messageName.getText();
+        Assert.assertEquals("Sauce Labs Backpack", value);
+
+    }
 }
+
