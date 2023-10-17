@@ -171,7 +171,7 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
         JenkinsUtils.login(getDriver());
 
-        final String folderName = String.format("Some test folder name %3d", (int)(Math.random()*1000));
+        final String folderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
         final String folderDisplayName = "Some test folder display name";
         final String folderDescription = "Some test folder description";
 
@@ -226,7 +226,7 @@ public class GroupHighwayToAqaTest extends BaseTest {
     }
 
     @Test
-    public void testComparisonManageSystem(){
+    public void testComparisonManageSystem() {
         JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/a")).click();
@@ -236,14 +236,14 @@ public class GroupHighwayToAqaTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFolderViaCopyFrom() throws InterruptedException {
+    public void testCreateFolderViaCopyFrom() {
 
         JenkinsUtils.login(getDriver());
 
-        final String originalFolderName = String.format("Some test folder name %3d", (int)(Math.random()*1000));
+        final String originalFolderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
         final String folderDisplayName = "Some test folder display name";
         final String folderDescription = "Some test folder description";
-        final String newFolderName = String.format("Some test folder name %3d", (int)(Math.random()*1000));
+        final String newFolderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
 
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
