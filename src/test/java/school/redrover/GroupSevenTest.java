@@ -81,7 +81,7 @@ public class GroupSevenTest extends BaseTest {
     }
 
     @Test
-    public void testTextInput() {
+    public void testTextInput()  {
 
         try {
             getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
