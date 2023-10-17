@@ -200,6 +200,7 @@ public class GroupBrainBuildersTest extends BaseTest {
         addDescriptionButton.click();
 
         WebElement descriptionTextField = getDriver().findElement(By.xpath("//*[@id='description']/form/div[1]/div[1]/textarea"));
+        descriptionTextField.clear();
         descriptionTextField.sendKeys("my_new_project");
 
         WebElement saveButton = getDriver().findElement(By.xpath("//*[@id='description']/form/div[2]/button"));
@@ -209,11 +210,6 @@ public class GroupBrainBuildersTest extends BaseTest {
         Thread.sleep(2000);
         String value = projectName.getText();
         Assert.assertEquals(value, "my_new_project");
-
-        //WebElement dashboardButton = getDriver().findElement(By.xpath("//a[@href='/']"));
-        //dashboardButton.click();
-
-
 
     }
 }
