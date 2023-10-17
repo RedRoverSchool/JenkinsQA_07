@@ -24,7 +24,7 @@ public class GroupItFriendlyTest extends BaseTest {
         driver.get("https://demoqa.com/");
         WebElement image = driver.findElement(By.xpath("//*[@id='app']/header/a/img"));
         image.click();
-        Assert. assertEquals(image,image);
+        Assert.assertEquals(image,image);
     }
     @Ignore
     @Test
