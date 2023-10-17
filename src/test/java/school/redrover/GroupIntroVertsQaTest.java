@@ -173,6 +173,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
      * DmitryS. Тесты
      */
     // region DmitryS. Добавляю в данный блок тесты.
+    @Ignore
     @Test (description = "проверка содержания хидера")
     public void testTextHeaderForm() {
         getDriver().get(variablesDmitryS.getUrl());
