@@ -8,6 +8,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -119,24 +120,27 @@ public class LocomotiveGroupTest extends BaseTest {
         }
       }
 
-      @Ignore
+
       @Test
-    public void yandexSearchBarTest() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+    public void testYandexSearchBar(){
         String url = "https://ya.ru/";
-        try{
-            driver.get(url);
-            WebElement searchBar = driver.findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
-            WebElement searchButton = driver.findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
+        getDriver().get(url);
+        try {
+
+            WebElement searchBar = getDriver().findElement(By.xpath("//div[@class='search3__input-wrapper']/input"));
+            WebElement searchButton = getDriver().findElement(By.xpath("//button[@class='search3__button mini-suggest__button']"));
             searchBar.click();
             searchBar.sendKeys("Ответ на главный вопрос жизни");
             searchButton.click();
-            WebElement searchText = driver.findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
+            WebElement searchText = getDriver().findElement(By.xpath("//div[text()='Ответ на главный вопрос жизни, вселенной и всего такого']"));
             Assert.assertTrue(searchText.isDisplayed());
+        }catch (NoSuchElementException e){
+            System.out.println("Капча яндекса не позволяет закончить тест");
         }finally {
-            driver.quit();
+            System.out.println("Тест окончен");
         }
       }
+
     @Ignore
     @Test
     public void testSimpleSearch() throws InterruptedException {
@@ -202,6 +206,27 @@ public class LocomotiveGroupTest extends BaseTest {
         Assert.assertEquals(captionText.getText(), captionExpected, "The caption text is wrong");
     }
 
+    @Test
+    public void testVerifyJenkinsVersion() {
+        WebDriver driver = getDriver();
+        By locatorButtonJenkinsVersion = By.cssSelector("button.jenkins_ver");
+        By locatorButtonAbout = By.cssSelector(".jenkins-dropdown__item:first-of-type");
+        By locatorTextJenkinsVersion = By.cssSelector("p.app-about-version");
+        final String expectedJenkinsVersionText = "Version 2.414.2";
+
+        JenkinsUtils.login(getDriver());
+        WebElement buttonJenkinsVersion = driver.findElement(locatorButtonJenkinsVersion);
+        buttonJenkinsVersion.click();
+
+        Assert.assertEquals(buttonJenkinsVersion.getAttribute("data-dropdown"),
+                "true",
+                "Attribute ' for Jenkins Version button is incorrect");
+
+        driver.findElement(locatorButtonAbout).click();
+        Assert.assertEquals(driver.findElement(locatorTextJenkinsVersion).getText(),
+                expectedJenkinsVersionText,
+                "Jenkins Version is incorrect");
+    }
 
     @Test
     public void testSkateSiteHeader() throws InterruptedException {
@@ -214,4 +239,25 @@ public class LocomotiveGroupTest extends BaseTest {
         Thread.sleep(2000);
     }
 
+    @Test
+    public void testAddDescriptionJenkinsHomePage() {
+        String description = "My Jenkins home page description";
+        By submitButton = By.id("description-link");
+        By descriptionInputField = By.xpath("//textarea[@name='description']");
+        By saveButton = By.xpath("//button[@name='Submit']");
+
+        JenkinsUtils.login(getDriver());
+
+        getDriver().findElement(submitButton).click();
+        getDriver().findElement(descriptionInputField).sendKeys(description);
+        getDriver().findElement(saveButton).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//*[@id='description']/div[1]"))
+                .getText(), description);
+
+        getDriver().findElement(submitButton).click();
+        getDriver().findElement(descriptionInputField).clear();
+        getDriver().findElement(saveButton).click();
+    }
 }

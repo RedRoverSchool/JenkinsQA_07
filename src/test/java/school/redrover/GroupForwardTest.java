@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 
 public class GroupForwardTest extends BaseTest {
@@ -15,26 +16,24 @@ public class GroupForwardTest extends BaseTest {
   private static final String PAGE_URL = "https://www.ldoceonline.com/";
 
 
-  @Ignore
   @Test
   public void testSearch() throws InterruptedException {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
 
-      WebElement textBox = driver.findElement(By.className("search_input"));
-      WebElement searchButton = driver.findElement(By.xpath("//*[@type='submit']"));
+    getDriver().get(PAGE_URL);
 
-      textBox.sendKeys("readable");
-      searchButton.click();
-      Thread.sleep(600);
-      WebElement titleElement = driver.findElement(By.className("HYPHENATION"));
-      String value = titleElement.getText();
-      Assert.assertEquals(value, "read‧a‧ble");
+    WebElement textBox = getDriver().findElement(By.className("search_input"));
+    WebElement searchButton = getDriver().findElement(By.xpath("//*[@type='submit']"));
 
-    } finally {
-      driver.quit();
-    }
+    textBox.sendKeys("readable");
+    searchButton.click();
+    Thread.sleep(600);
+    WebElement titleElement = getDriver().findElement(By.className("HYPHENATION"));
+    String value = titleElement.getText();
+    Assert.assertEquals(value, "read‧a‧ble");
+
+
+    getDriver().quit();
+
 
   }
 
@@ -42,20 +41,20 @@ public class GroupForwardTest extends BaseTest {
   @Test
   public void testToSpanish() throws InterruptedException {
 
-      getDriver().get(PAGE_URL);
+    getDriver().get(PAGE_URL);
 
-      WebElement languageButton = getDriver().findElement(By.xpath("//span[@class='text']"));
-      languageButton.click();
-      WebElement spanishButton = getDriver().findElement(
-          By.xpath("//a[@class='item' and text()='Español latino']"));
-      spanishButton.click();
+    WebElement languageButton = getDriver().findElement(By.xpath("//span[@class='text']"));
+    languageButton.click();
+    WebElement spanishButton = getDriver().findElement(
+        By.xpath("//a[@class='item' and text()='Español latino']"));
+    spanishButton.click();
 
-      WebElement title = getDriver().findElement(By.xpath("//h1[contains(text(),'Bienvenido')]"));
-      Thread.sleep(8000);
-      String value = title.getText();
+    WebElement title = getDriver().findElement(By.xpath("//h1[contains(text(),'Bienvenido')]"));
+    Thread.sleep(8000);
+    String value = title.getText();
 
-      Assert.assertEquals(value,
-          "Bienvenido al Longman Dictionary of Contemporary English Online");
+    Assert.assertEquals(value,
+        "Bienvenido al Longman Dictionary of Contemporary English Online");
 
   }
 
@@ -88,55 +87,43 @@ public class GroupForwardTest extends BaseTest {
     }
   }
 
-  @Ignore
+
   @Test
   public void testStoreSearch() throws InterruptedException {
 
-    WebDriver driver = new ChromeDriver();
+    getDriver().get("https://www.nobullproject.com/");
 
-    try {
-      driver.get("https://www.nobullproject.com/");
+    WebElement closeCookies = getDriver().findElement(By.id("onetrust-close-btn-container"));
+    closeCookies.click();
 
-      WebElement closeCookies = driver.findElement(By.id("onetrust-close-btn-container"));
-      closeCookies.click();
+    WebElement searchButton = getDriver().findElement(By.xpath("//*[@data-target = 'search-button']"));
+    searchButton.click();
 
-      WebElement searchButton = driver.findElement(By.xpath("//*[@data-target = 'search-button']"));
-      searchButton.click();
+    WebElement searchField = getDriver().findElement(By.xpath("//input[@name = 'q']"));
+    searchField.sendKeys("Tank");
 
-      WebElement searchField = driver.findElement(By.xpath("//input[@name = 'q']"));
-      searchField.sendKeys("Tank");
+    WebElement searchButtonOnBar = getDriver().findElement(By.xpath("//button[@class = 'text-black'][1]"));
+    searchButtonOnBar.click();
 
-      WebElement searchButtonOnBar = driver.findElement(By.xpath("//button[@class = 'text-black'][1]"));
-      searchButtonOnBar.click();
+    Thread.sleep(8000);
 
-      Thread.sleep(8000);
+    getDriver().switchTo().frame("attentive_creative");
+    WebElement discountPopUp = getDriver().findElement(By.id("closeIconContainer"));
+    discountPopUp.click();
 
-      driver.switchTo().frame("attentive_creative");
-      WebElement discountPopUp = driver.findElement(By.id("closeIconContainer"));
-      discountPopUp.click();
+    getDriver().switchTo().defaultContent();
 
-      driver.switchTo().defaultContent();
+    WebElement searchResult = getDriver().findElement(By.xpath("//span[@class = 'ss__query']"));
+    String value = searchResult.getText();
 
-      WebElement searchResult = driver.findElement(By.xpath("//span[@class = 'ss__query']"));
-      String value = searchResult.getText();
-      Assert.assertEquals(value, "TANK");
-    } finally {
-      driver.quit();
-    }
+    Assert.assertEquals(value, "TANK");
   }
 
-  @Ignore
   @Test
   public void titleTest() {
-    WebDriver driver = new ChromeDriver();
-    try {
-      driver.get(PAGE_URL);
-      String title = driver.getTitle();
-
-      Assert.assertEquals(title, "Longman Dictionary of Contemporary English | LDOCE");
-    } finally {
-      driver.quit();
-    }
+    getDriver().get(PAGE_URL);
+    String title = getDriver().getTitle();
+    Assert.assertEquals(title, "Longman Dictionary of Contemporary English | LDOCE");
   }
 
   @Test
@@ -146,31 +133,147 @@ public class GroupForwardTest extends BaseTest {
 
     getDriver().get(PAGE_URL);
 
+    WebElement languageButtonValue = getDriver().findElement(By.xpath(
+        "//span[@class= 'text res_hos']"));
+
+    languageButtonValue.click();
+
+    Thread.sleep(5000);
+
+    WebElement japaneseToEnglish = getDriver().findElement(By.xpath(
+        "//a[@data-value = 'japanese-english']"));
+
+    japaneseToEnglish.click();
+
+    Thread.sleep(5000);
+
+    String actualResult = languageButtonValue.getText();
+
+    Assert.assertEquals(actualResult, expectedResult);
+  }
+
+  @Test
+  public void test_InputFieldText_WhenChangingLanguage() throws InterruptedException {
+
+    String expectedResult = "Japanese - English";
+
+    getDriver().get(PAGE_URL);
+
     WebElement changeLanguageButton = getDriver().findElement(By.xpath(
-        "/html/body/div[1]/form/div[1]"));
+        "//span[@class= 'text res_hos']"));
 
     changeLanguageButton.click();
 
     Thread.sleep(5000);
 
     WebElement japaneseToEnglish = getDriver().findElement(By.xpath(
-        "/html/body/div[1]/form/div[1]/div/a[5]"));
+        "//a[@data-value = 'japanese-english']"));
 
     japaneseToEnglish.click();
 
     Thread.sleep(5000);
 
-    //Japanese - English
 
-     WebElement languageButtonValue = getDriver().findElement(By.xpath(
-         "//html/body/div[1]/form/div[1]/span"));
+    WebElement searchField = getDriver().findElement(By.xpath(
+        "//div[contains(@class,'search-input-container')]/input[@class='search_input']"));
 
-    String actualResult = languageButtonValue.getText();
+    String actualResult = searchField.getAttribute("placeholder");
 
-    Thread.sleep(5000);
+//    Thread.sleep(5000);
 
     Assert.assertEquals(actualResult, expectedResult);
   }
 
+  @Test
+  public void testLongmanSearch() throws InterruptedException {
+    getDriver().get(PAGE_URL);
+
+    Thread.sleep(5000);
+
+    WebElement inputSearch = getDriver().findElement(By.xpath("//input[@name='q']"));
+    inputSearch.sendKeys("Selenium");
+
+    WebElement searchButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+    searchButton.click();
+
+    WebElement pagetitle = getDriver().findElement(By.xpath("//h1[@class='pagetitle']"));
+    String value = pagetitle.getText();
+    Assert.assertEquals(value, "selenium");
+  }
+
+  @Test
+  public void test_URL_WhenClickingOnMyViewsButton() {
+
+    String expectedResult = "http://localhost:8080/me/my-views/view/all/";
+
+    JenkinsUtils.login(getDriver());
+
+    WebElement myViewsButton = getDriver().findElement(By.xpath(
+        "//a[@href='/me/my-views']"));
+
+    myViewsButton.click();
+
+    String actualResult = getDriver().getCurrentUrl();
+
+    Assert.assertEquals(actualResult,expectedResult);
+
+
+  }
+
+  @Test
+  public void testClickLogoToMainPage() {
+
+    JenkinsUtils.login(getDriver());
+    WebElement myViewsButton = getDriver().findElement(By.xpath(
+            "//a[@href='/me/my-views']"));
+    myViewsButton.click();
+
+    WebElement logoJenkins = getDriver().findElement(By.id("jenkins-head-icon"));
+    logoJenkins.click();
+
+    Assert.assertEquals(
+            getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
+            "Welcome to Jenkins!");
+  }
+
+
+  @Test
+  public void aboutLDOCETest() {
+    getDriver().get(PAGE_URL);
+
+
+    WebElement closeCookieWindow = getDriver().findElement(By.xpath("//button[@aria-label = 'Close']"));
+    closeCookieWindow.click();
+    WebElement aboutUsLink = getDriver().findElement(By.xpath("//a[text()='About LDOCE']"));
+
+    aboutUsLink.click();
+
+    Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.ldoceonline.com/about.html");
+    WebElement title = getDriver().findElement(By.xpath("//h1[@class='about_title']"));
+    String value = title.getText();
+
+    Assert.assertEquals(value, "About LDOCE Online");
+  }
+
+  @Test
+  public void testAddDescription() {
+
+    JenkinsUtils.login(getDriver());
+    String addDescription = "GroupForward #1";
+
+    WebElement description = getDriver().findElement(By.id("description-link"));
+    description.click();
+    WebElement textField = getDriver().findElement(By.name("description"));
+    textField.clear();
+    textField.sendKeys(addDescription);
+    getDriver().findElement(By.name("Submit")).click();
+    String newDescriprtion = getDriver().findElement(By.id("description")).getText();
+
+    Assert.assertTrue(newDescriprtion.contains(addDescription));
+
+  }
+
 }
+
+
 
