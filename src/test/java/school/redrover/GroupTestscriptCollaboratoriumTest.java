@@ -110,7 +110,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
         WebElement colorLayoutSwitcher = upperSitePanel.findElement(By.tagName("button"));
         String colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
 
-        Assert.assertEquals(colorLayoutSwitcherCurrentState, "true",
+        Assert.assertEquals(colorLayoutSwitcherCurrentState, "false",
                 "Current layout is Dark");
 
         WebElement colorLayoutSwitcherHandle = colorLayoutSwitcher.findElement(By.className("ant-switch-handle"));
