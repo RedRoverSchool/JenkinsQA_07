@@ -1,4 +1,7 @@
 package school.redrover;
+//import jdk.internal.access.JavaIOFileDescriptorAccess;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -8,12 +11,12 @@ import school.redrover.runner.JenkinsUtils;
 
 public class LvTest extends BaseTest {
     @Test
-    public void testSearch() throws InterruptedException {
+    public void MainTitle(){
 
-        JenkinsUtils.login(getDriver());
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
-                "Добро пожаловать в Jenkins!");
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "Web form");
+
     }
 }
