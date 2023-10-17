@@ -243,22 +243,24 @@ public class GroupSevenTest extends BaseTest {
         boolean isMultiple = drpCenters.isMultiple();
         Thread.sleep(5000);
 
-        if (isMultiple) {
+       /* if (isMultiple) {
             System.out.println("The dropdown allows multiple selections.");
         } else {
             System.out.println("The dropdown allows only single selection.");
-        }
+        }*/
+        Assert.assertFalse(drpCenters.isMultiple());
         Thread.sleep(1000);
 
         WebElement lastNameField = getDriver().findElement(By.name("lastName"));
         Thread.sleep(1000);
         String nameAttributeValue = lastNameField.getAttribute("name");
+        Assert.assertEquals(nameAttributeValue,"lastName" );
 
-        if (nameAttributeValue.equals("lastName")) {
+       /* if (nameAttributeValue.equals("lastName")) {
             System.out.println("Элемент представляет поле 'last name'.");
         } else {
             System.out.println("Элемент не представляет поле 'last name'.");
-        }
+        }*/
     }
 
     @Test
@@ -306,7 +308,8 @@ public class GroupSevenTest extends BaseTest {
         getDriver().get("https://www.kumon.com/");
 
         Thread.sleep(5000);
-        WebElement locationButton = getDriver().findElement(By.xpath("//*[@href = '/locations']"));
+        WebElement locationButton = getDriver().findElement(By.xpath("//*[@href = '/locations'] [1]"));
+
         locationButton.click();
         Thread.sleep(1000);
 
