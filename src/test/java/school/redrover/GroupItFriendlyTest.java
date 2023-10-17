@@ -26,8 +26,7 @@ public class GroupItFriendlyTest extends BaseTest {
         image.click();
         Assert. assertEquals(image,image);
     }
-
-@Ignore
+    @Ignore
     @Test
     public void testDemoQaChangePage() {
         WebDriver driver = getDriver();
@@ -38,7 +37,7 @@ public class GroupItFriendlyTest extends BaseTest {
         String value = text.getText();
         Assert.assertEquals(value, "Please select an item from left to start practice.");
     }
-@Ignore
+    @Ignore
     @Test
     public void testDemoQaTextBox() {
         getDriver().get("https://demoqa.com/elements");
@@ -54,7 +53,7 @@ public class GroupItFriendlyTest extends BaseTest {
         submit.click();
         Assert.assertEquals(submit,submit);
     }
-@Ignore
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
         WebDriver driver = getDriver();
@@ -164,7 +163,7 @@ public class GroupItFriendlyTest extends BaseTest {
 
             assertEquals(driver.findElement(By.xpath("//p[@class='mt-3']/span")).getText(), "Impressive");
     }
-@Ignore
+    @Ignore
     @Test
     public void ActionsWithCheckBoxTest(){
 
