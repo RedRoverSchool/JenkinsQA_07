@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
@@ -186,7 +187,7 @@ public class GroupBrainBuildersTest extends BaseTest {
         WebElement tooltip = getDriver().findElement(By.xpath("//img[@aria-describedby = 'tippy-10']"));
         Assert.assertTrue(tooltip.isDisplayed());
     }
-
+    @Ignore
     @Test
     public void testJenkinsCreateItem() throws InterruptedException {
         JenkinsUtils.login(getDriver());
@@ -218,6 +219,33 @@ public class GroupBrainBuildersTest extends BaseTest {
 
         JenkinsUtils.login(getDriver());
 
+        // Create New Item
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        newItem.click();
+
+        WebElement nameTextField = getDriver().findElement(By.className("jenkins-input"));
+        nameTextField.sendKeys(NameOfProject);
+
+        WebElement projectType = getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]"));
+        projectType.click();
+
+        WebElement okButton = getDriver().findElement(By.xpath("//*[@id='ok-button']"));
+        okButton.click();
+        Thread.sleep(2000);
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--primary ']"));
+        saveButton.click();
+
+        WebElement projectName = getDriver().findElement(By.xpath("//*[@id='main-panel']/h1"));
+        Thread.sleep(2000);
+        String value = projectName.getText();
+        Assert.assertEquals(value, "Project "+ NameOfProject);
+
+        // add description
+
+        WebElement dashboardButton = getDriver().findElement(By.xpath("//a[@href='/']"));
+        dashboardButton.click();
+
         WebElement nameOfProjectButton = getDriver().findElement(By.xpath("//a[@href='job/" + NameOfProject + "/']"));
         nameOfProjectButton.click();
 
@@ -228,15 +256,24 @@ public class GroupBrainBuildersTest extends BaseTest {
         descriptionTextField.clear();
         descriptionTextField.sendKeys("my_new_project");
 
-        WebElement saveButton = getDriver().findElement(By.xpath("//*[@id='description']/form/div[2]/button"));
-        saveButton.click();
+        WebElement saveDescriptionButton = getDriver().findElement(By.xpath("//*[@id='description']/form/div[2]/button"));
+        saveDescriptionButton.click();
 
         WebElement description = getDriver().findElement(By.xpath("//*[@id='description']/div[1]"));
         Thread.sleep(2000);
-        String value = description.getText();
-        Assert.assertEquals(value, "my_new_project");
-    }
+        String value1 = description.getText();
+        Assert.assertEquals(value1, "my_new_project");
 
+        //delete the project
+
+        WebElement deleteBusket = getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span/a/span[1]"));
+        deleteBusket.click();
+        Thread.sleep(2000);
+
+        Alert alert = getDriver().switchTo().alert();
+        alert.accept();
+    }
+    @Ignore
     @Test
     public void testJenkinsDeleteItem() throws InterruptedException {
 
