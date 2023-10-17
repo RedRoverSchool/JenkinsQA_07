@@ -384,11 +384,13 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void upsPageOpenTest() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        getDriver().get("https://www.ups.com/us/en/Home.page");
-        Thread.sleep(9000);
-        WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
-        shipButton.click();
+//        getDriver().get("https://www.ups.com/us/en/Home.page");
+//        Thread.sleep(9000);
+//        WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
+//        shipButton.click();
 
+        getDriver().get("https://www.ups.com/ship/guided/origin?tx=39783811088609094&loc=en_US");
+        Thread.sleep(1000);
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'Create a Shipment')]")).getText(),"Create a Shipment");
         WebElement fullName = getDriver().findElement(By.xpath("//input[@id='origin-cac_companyOrName']"));
         fullName.sendKeys("John Doe");
