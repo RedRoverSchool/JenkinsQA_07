@@ -61,7 +61,6 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertTrue(resultText.contains("Behavior-driven development"));
     }
 
-
     @Test
     public void testSearch() {
 
