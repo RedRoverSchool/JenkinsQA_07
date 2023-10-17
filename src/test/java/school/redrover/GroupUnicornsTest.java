@@ -336,7 +336,7 @@ public class GroupUnicornsTest extends BaseTest {
         submitButton.click();
     }
     @Test
-    public void upsPageOpenTest() throws InterruptedException {
+    public void testUpsPageOpen() throws InterruptedException {
         getDriver().get("https://www.ups.com/us/en/Home.page");
         WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
         shipButton.click();
