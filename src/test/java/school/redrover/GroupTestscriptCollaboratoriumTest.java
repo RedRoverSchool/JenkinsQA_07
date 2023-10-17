@@ -82,7 +82,7 @@ public class GroupTestscriptCollaboratoriumTest {
         driver.get("https://essay.app/");
 
         String title = driver.getTitle();
-        assertEquals(title, "Essay - Write better.");
+        Assert.assertEquals("Essay - Write better.", title);
 
         driver.quit();
     }
