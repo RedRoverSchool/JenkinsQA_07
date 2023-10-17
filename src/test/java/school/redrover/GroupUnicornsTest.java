@@ -1,20 +1,18 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import org.testng.reporters.TestHTMLReporter;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-import java.util.HashMap;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -99,7 +97,7 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(title, "Java Tutorial");
     }
 
-    @Ignore
+
     @Test
     public void W3school1test() {
         getDriver().get("https://www.w3schools.com/");
@@ -191,30 +189,6 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
 
-    @Ignore
-    @Test
-    public void verificationSocialIconsGitHub() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            twitterIcon.click();
-            String url = driver.getCurrentUrl();
-            WebElement closeButton = driver.findElement(By.xpath("//*[@aria-label='Close']"));
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.elementToBeClickable(closeButton));
-            closeButton.click();
-            Assert.assertTrue(url.contains("twitter"));
-        } finally {
-            driver.quit();
-        }
-    }
-
     @Test
     public void testComputersMenu() {
 
@@ -234,27 +208,6 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
-    @Ignore
-    @Test
-    public void verificationSocialIconsGitHub2() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            List<WebElement> listOfIcons = driver.findElements(By.xpath("(//footer[@role='contentinfo']//ul)[5]//a"));
-            listOfIcons.get(1).click();
-            String url = driver.getCurrentUrl();
-            driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
-            Assert.assertTrue(url.contains("face"));
-        } finally {
-            driver.quit();
-        }
-    }
 
     @Test
     public void unsuccessfulLoginDigitalBankTest() {
