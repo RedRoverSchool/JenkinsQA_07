@@ -246,7 +246,7 @@ public class GroupItFriendlyTest extends BaseTest {
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
         okButton.click();
         WebElement dashBoard = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a"));
-         dashBoard.click();
+        dashBoard.click();
         List <WebElement> list = getDriver().findElements(By.xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
         String str = "";
         for (int i = 0; i < list.size(); i++) {
