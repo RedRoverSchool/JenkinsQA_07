@@ -308,7 +308,7 @@ public class GroupSevenTest extends BaseTest {
         getDriver().get("https://www.kumon.com/");
 
         Thread.sleep(5000);
-        WebElement locationButton = getDriver().findElement(By.xpath("//*[@class = 'topnav-icon'] "));
+        WebElement locationButton = getDriver().findElement(By.xpath("//img[@class = 'topnav-icon']"));
         //WebElement locationButton = getDriver().findElement(By.xpath("//*[@href = '/locations'] [1]"));
         Thread.sleep(5000);
         locationButton.click();
