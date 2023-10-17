@@ -1,43 +1,76 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
-import java.time.Duration;
 
-@Ignore
-public class XLosTest {
+public class XLosTest extends BaseTest {
+
+    // class name were not changed due to multiple failed tests in ci
+    private static final String BASE_URL = "https://www.saucedemo.com/";
 
     @Test
-    public void SauceDemoPositiveLoginTest(){
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
+    public void testSauceDemoPositiveLogin(){
 
         try {
-            driver.get("https://www.saucedemo.com/");
-            WebElement username = driver.findElement(By.id("user-name"));
-            WebElement password = driver.findElement(By.id("password"));
-            WebElement loginBtn = driver.findElement(By.id("login-button"));
+            getDriver().get(BASE_URL);
+            WebElement username = getDriver().findElement(By.id("user-name"));
+            WebElement password = getDriver().findElement(By.id("password"));
+            WebElement loginBtn = getDriver().findElement(By.id("login-button"));
 
             username.sendKeys("standard_user");
             password.sendKeys("secret_sauce");
             loginBtn.click();
 
-            Thread.sleep(2000);
+            Thread.sleep(500);
 
             String expectedTitle = "Swag Labs";
-            String actualTitle = driver.getTitle();
+            String actualTitle = getDriver().getTitle();
 
             Assert.assertEquals(actualTitle, expectedTitle, "Login failed.");
-        }catch (InterruptedException e){
+        }catch (InterruptedException e) {
             e.printStackTrace();
-        }finally {
-            driver.quit();
         }
+    }
+
+    @Test
+    public void testLoginWithWrongPassword(){
+        try {
+            getDriver().get(BASE_URL);
+            WebElement username = getDriver().findElement(By.id("user-name"));
+            WebElement password = getDriver().findElement(By.id("password"));
+            WebElement loginBtn = getDriver().findElement(By.id("login-button"));
+
+            username.sendKeys("standard_user");
+            password.sendKeys("test");
+            loginBtn.click();
+
+            Thread.sleep(500);
+
+            String actualErrorText = getDriver().findElement(By.tagName("h3")).getText();
+            String expectedErrorText = "Epic sadface: Username and password do not match any user in this service";
+
+            Assert.assertEquals(actualErrorText, expectedErrorText, "Error message didn't match.");
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testFirstJenkinsTest(){
+        JenkinsUtils.login(getDriver());
+
+        String actualWelcomeText = getDriver().findElement(By.tagName("h1")).getText();
+        String expectedWelcomeText = "Welcome to Jenkins!";
+
+        String actualTitle = getDriver().getTitle();
+        String expectedTitle = "Dashboard [Jenkins]";
+
+        Assert.assertEquals(actualWelcomeText, expectedWelcomeText, "Login failed");
+        Assert.assertEquals(actualTitle, expectedTitle, "Title didn't match");
     }
 }
