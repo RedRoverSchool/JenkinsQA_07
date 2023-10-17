@@ -236,6 +236,7 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void testLogout(){
+
         getDriver().get("http://18.118.14.155:8080/bank/login");
         getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
         getDriver().findElement(By.id("password")).sendKeys("Test1234");
