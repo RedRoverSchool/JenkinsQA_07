@@ -14,6 +14,7 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.UUID;
 
 import static org.testng.Assert.assertEquals;
 
@@ -289,6 +290,34 @@ public class GroupJavaExplorersTest extends BaseTest {
         submitButton.click();
 
         Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
+    }
+    @Test()
+    public void testCreateFreeStyleProject() {
+        int desiredLength = 5;
+        String testFreeStyleProjectName = UUID.randomUUID()
+                .toString()
+                .substring(0, desiredLength);
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement newViewButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
+        newViewButton.click();
+
+        WebElement jenkinsJobNameField = getDriver().findElement(By.xpath("//*[@class='jenkins-input']"));
+        jenkinsJobNameField.sendKeys(testFreeStyleProjectName);
+
+        WebElement freeStyleProject = getDriver().findElement(By.xpath("//*[text()='Freestyle project']"));
+        freeStyleProject.click();
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        submitButton.click();
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+
+        saveButton.click();
+        String jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']")).getText();
+
+        Assert.assertTrue(jenkinsJobName.contains(testFreeStyleProjectName));
+
     }
 }
 
