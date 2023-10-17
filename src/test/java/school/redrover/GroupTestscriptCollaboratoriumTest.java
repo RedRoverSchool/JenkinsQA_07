@@ -100,10 +100,9 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     }
 
     @Test
-    public void testEssayAppSwitchWebsiteColorLayout() throws InterruptedException {
+    public void testEssayAppSwitchWebsiteColorLayout() {
 
         getDriver().get("https://essay.app/");
-        Thread.sleep(1000);
 
         WebElement upperSitePanel = getDriver().findElement(By.className("css-s5xdrg"));
 
@@ -111,14 +110,13 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
         String colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
 
         Assert.assertEquals(colorLayoutSwitcherCurrentState, "false",
-                "Current layout is Dark");
+                "Current layout is Light");
 
         WebElement colorLayoutSwitcherHandle = colorLayoutSwitcher.findElement(By.className("ant-switch-handle"));
         colorLayoutSwitcherHandle.click();
-        Thread.sleep(1000);
 
         colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
         Assert.assertEquals(colorLayoutSwitcherCurrentState, "true",
-                "Current layout is Light");
+                "Current layout is Dark");
     }
 }
