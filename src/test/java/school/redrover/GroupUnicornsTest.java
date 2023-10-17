@@ -5,8 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -14,8 +13,7 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -346,5 +344,50 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//label[@for='name']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText(), "» This field cannot be empty, please enter a valid name");
 
+    }
+
+    @Test
+    public void testLoginSwag_Lab(){
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.xpath("//input[@placeholder='Username']")).sendKeys("standard_user");
+        getDriver().findElement(By.xpath("//input[@placeholder='Password']")).sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath("//input[@value='Login']")).click();
+        WebElement burger = getDriver().findElement(By.id("react-burger-menu-btn"));
+        assertTrue(burger.isDisplayed());
+    }
+
+    @Test
+    public void testProductSorting(){
+        getDriver().get("https://www.saucedemo.com/");
+        getDriver().findElement(By.xpath("//input[@placeholder='Username']")).sendKeys("standard_user");
+        getDriver().findElement(By.xpath("//input[@placeholder='Password']")).sendKeys("secret_sauce");
+        getDriver().findElement(By.xpath("//input[@value='Login']")).click();
+
+        getDriver().findElement(By.xpath("//option[@value='az']"));
+//        getDriver().findElement(By.xpath("//option[@value='za']"));
+//        getDriver().findElement(By.xpath("//option[@value='lohi']"));
+//        getDriver().findElement(By.xpath("//option[@value='hilo']"));
+
+        List<WebElement> w_items = getDriver().findElements(By.className("inventory_item"));
+
+        String[] items_name = new String[w_items.size()];
+//        Double[] items_price = new Double[w_items.size()];
+
+        String[] w_items_name = new String[w_items.size()];
+//        Double[] w_items_price = new Double[w_items.size()];
+
+        int i = 0;
+        for (WebElement w_item: w_items) {
+            String[] item = w_item.getText().split("\n");
+            items_name[i] = item[0];
+//            items_price[i] = Double.valueOf(item[2].replace("$", ""));
+
+            w_items_name[i] = items_name[i];
+//            w_items_price[i] = items_price[i];
+            i++;
+        }
+
+        Arrays.sort(items_name);
+        Assert.assertEquals(items_name, w_items_name);
     }
 }
