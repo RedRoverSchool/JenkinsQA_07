@@ -19,7 +19,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
-@Ignore
+
 public class GroupUnitedByJavaTest extends BaseTest {
 
     private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
