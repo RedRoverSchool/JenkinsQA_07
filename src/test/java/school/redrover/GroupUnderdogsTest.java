@@ -309,7 +309,7 @@ public class GroupUnderdogsTest extends BaseTest {
         }
         button.click();
 
-        WebElement UserIdAdm = getDriver().findElement(By.xpath("//div[text()='Jenkins User ID: admin']"));
+        WebElement UserIdAdm = getDriver().findElement(By.xpath("//div[@id='description']/following-sibling::div"));
         String actNameOfUser = UserIdAdm.getText();
         String expRes = "Jenkins User ID: admin";
 
