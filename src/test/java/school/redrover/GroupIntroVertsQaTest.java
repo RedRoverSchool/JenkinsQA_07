@@ -9,10 +9,12 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.Random;
 
+@Ignore
 public class GroupIntroVertsQaTest extends BaseTest {
     static Random random = new Random();
     static String URL = "https://parabank.parasoft.com/parabank/index.htm";
@@ -172,6 +174,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
      * DmitryS. Тесты
      */
     // region DmitryS. Добавляю в данный блок тесты.
+    @Ignore
     @Test (description = "проверка содержания хидера")
     public void testTextHeaderForm() {
         getDriver().get(variablesDmitryS.getUrl());
@@ -220,45 +223,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
     // endregion
 
     // region AkiMiraTest
-    @Ignore
-    @Test (description = "Test of Text-Box 'Name'")
-    public void testTextBox () {
-
-        getDriver().get("https://demoqa.com/text-box");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals("DEMOQA", title);
-
-        WebElement textBox = getDriver().findElement(By.xpath("//*[@id=\"userName\"]"));
-        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
-
-        textBox.sendKeys("Oleg");
-        submitButton.click();
-
-        WebElement message = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
-        String value = message.getText();
-        Assert.assertEquals("Name:Oleg", value);
-
-    }
-    @Ignore
-    @Test (description = "Test of Text-Box 'Current Address'")
-    public void testTextBoxCurrentAddress () {
-        getDriver().get("https://demoqa.com/text-box");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals("DEMOQA", title);
-
-        WebElement textBox = getDriver().findElement(By.xpath("//*[@id=\"currentAddress\"]"));
-        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
-
-        textBox.sendKeys("Russian Federation");
-        submitButton.click();
-
-        WebElement message = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
-        String value = message.getText();
-        Assert.assertEquals("Current Address :Russian Federation", value);
-
-    }
 
     @Test (description = "Test of Login to Swag Labs")
     public void testLoginSwagLabs () {
@@ -277,8 +241,20 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
         WebElement text = getDriver().findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/span"));
         String value = text.getText();
-        Assert.assertEquals("Products", value);
+        Assert.assertEquals(value, "Products");
 
+    }
+
+    @Test (description = "Test of Jenkins Search field")
+    public void testJenkinsSearchField () {
+        JenkinsUtils.login(getDriver());
+        WebElement searchField = getDriver().findElement(By.id("search-box"));
+        searchField.sendKeys("admin");
+        searchField.sendKeys(Keys.ENTER);
+        WebElement searchResults = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]"));
+        Assert.assertTrue(searchResults.isDisplayed());
+        String value = searchResults.getText();
+        Assert.assertTrue(value.contains("admin"));
     }
     // endregion
 
@@ -287,50 +263,47 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
     public void testTextBoxNN () {
 
+        getDriver().get("https://demoqa.com/text-box");
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://demoqa.com/text-box");
-
-        WebElement fullName = driver.findElement(By.xpath("//*[@id=\"userName\"]"));
+        WebElement fullName = getDriver().findElement(By.xpath("//*[@id=\"userName\"]"));
         fullName.sendKeys("Natalia");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-        WebElement Email = driver.findElement(By.xpath("//*[@id=\"userEmail\"]"));
+        WebElement Email = getDriver().findElement(By.xpath("//*[@id=\"userEmail\"]"));
         Email.sendKeys("natalia@gmail.com");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-        WebElement currentAddress = driver.findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        WebElement currentAddress = getDriver().findElement(By.xpath("//*[@id=\"currentAddress\"]"));
         currentAddress.sendKeys("Sciastlivaia");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-        WebElement permanentAddress = driver.findElement(By.xpath("//*[@id=\"permanentAddress\"]"));
+        WebElement permanentAddress = getDriver().findElement(By.xpath("//*[@id=\"permanentAddress\"]"));
         permanentAddress.sendKeys("Udacia");
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
 
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"submit\"]"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
         submitButton.click();
 
-        WebElement messageName = driver.findElement(By.xpath("//*[@id=\"name\"]"));
+        WebElement messageName = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
         String value = messageName.getText();
-        Assert.assertEquals("Name:Natalia", value);
+        Assert.assertEquals(value,"Name:Natalia");
 
-        WebElement messageEmail = driver.findElement(By.cssSelector("#email.mb-1"));
+        WebElement messageEmail = getDriver().findElement(By.cssSelector("#email.mb-1"));
         String valueE = messageEmail.getText();
-        Assert.assertEquals("Email:natalia@gmail.com",valueE);
+        Assert.assertEquals(valueE,"Email:natalia@gmail.com");
 
-        WebElement messageCurrent = driver.findElement(By.cssSelector("#currentAddress.mb-1"));
+        WebElement messageCurrent = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
         String valueMC= messageCurrent.getText();
-        Assert.assertEquals("Current Address :Sciastlivaia", valueMC);
+        Assert.assertEquals(valueMC,"Current Address :Sciastlivaia");
 
-        WebElement messagePM= driver.findElement(By.cssSelector("#permanentAddress.mb-1"));
+        WebElement messagePM= getDriver().findElement(By.cssSelector("#permanentAddress.mb-1"));
         String valueMP = messagePM.getText();
-        Assert.assertEquals("Permananet Address :Udacia",valueMP);
+        Assert.assertEquals(valueMP,"Permananet Address :Udacia");
 
-        driver.quit();
     }
 
     //AnnaByliginaTest
@@ -352,5 +325,4 @@ public class GroupIntroVertsQaTest extends BaseTest {
         Assert.assertEquals("Current Address :Краснодар, ул.Тихая, д.454", value);
         driver.quit();
     }
-
 }

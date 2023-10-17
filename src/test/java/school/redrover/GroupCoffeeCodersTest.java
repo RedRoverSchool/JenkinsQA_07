@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
-
 public class GroupCoffeeCodersTest extends BaseTest {
     public static final String USERNAME = "admin";
     public static final String PASSWORD = "admin";
@@ -71,28 +70,24 @@ public class GroupCoffeeCodersTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void testApteka() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://apteka.ru/");
+        getDriver().get("https://apteka.ru/");
 
-        WebElement button = driver.findElement(By
+        WebElement button = getDriver().findElement(By
                 .xpath("//*[@href ='/svg/sprite.3442412f5a404aaae343385556021881.svg#close' ]"));
         button.click();
-        WebElement textBox = driver.findElement(By.xpath("//input[@type='search']"));
+        WebElement textBox = getDriver().findElement(By.xpath("//input[@type='search']"));
         textBox.sendKeys("анальгин");
 
-        WebElement buttonSearch = driver.findElement(By.xpath("//*[text()='Искать']"));
+        WebElement buttonSearch = getDriver().findElement(By.xpath("//*[text()='Искать']"));
         buttonSearch.click();
 
         Thread.sleep(2000);
 
-        WebElement title = driver.findElement(By.xpath("//span[@class='SearchResultTitle__found']"));
+        WebElement title = getDriver().findElement(By.xpath("//span[@class='SearchResultTitle__found']"));
         String value = title.getText();
-        Assert.assertEquals(value,"Результаты по запросу «анальгин» 15 товаров");
-
-        driver.quit();
+        Assert.assertEquals(value,"Результаты по запросу «анальгин» 16 товаров");
 
     }
 

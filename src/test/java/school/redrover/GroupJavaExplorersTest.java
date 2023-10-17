@@ -20,6 +20,8 @@ import static org.testng.Assert.assertEquals;
 public class GroupJavaExplorersTest extends BaseTest {
 
     private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
+    private static final String PASSWORD = "12345";
+    private static final String EMAIL = "asd@gmail.com";
 
     @Test
     public void testSearchWatches() {
@@ -32,7 +34,7 @@ public class GroupJavaExplorersTest extends BaseTest {
                 .findElement(By.xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
         watches.click();
 
-        WebElement clamberWatch = getDriver()
+         WebElement clamberWatch = getDriver()
                 .findElement(By.xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
         clamberWatch.click();
 
@@ -44,8 +46,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     @Test
     public void testLoginWithIncorrectData() {
-        String email = "asdfg@mail.ru";
-        String password = "12345";
         String message = "The account sign-in was incorrect or your account is disabled temporarily." +
                 " Please wait and try again later.";
 
@@ -55,10 +55,10 @@ public class GroupJavaExplorersTest extends BaseTest {
         loginIn.click();
 
         WebElement textBoxEmail = getDriver().findElement(By.id("email"));
-        textBoxEmail.sendKeys(email);
+        textBoxEmail.sendKeys(EMAIL);
 
         WebElement textBoxPassword = getDriver().findElement(By.id("pass"));
-        textBoxPassword.sendKeys(password);
+        textBoxPassword.sendKeys(PASSWORD);
 
         WebElement submitButton = getDriver().findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
         submitButton.click();
@@ -70,30 +70,29 @@ public class GroupJavaExplorersTest extends BaseTest {
         Assert.assertTrue(value.contains(message));
     }
 
-    @Ignore
     @Test
     public void testSignInNegative() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
-        String title = driver.getTitle();
+        getDriver().get(BASE_URL);
+        String title = getDriver().getTitle();
         Assert.assertEquals(title, "Home Page");
-        WebElement signIn = driver.findElement(By.xpath("/html/body/div[2]/header/div[1]/div/ul/li[2]/a"));
+        WebElement signIn = getDriver().findElement(By.xpath("/html/body/div[2]/header/div[1]/div/ul/li[2]/a"));
         signIn.click();
-        WebElement signInto = driver.findElement(By.xpath("//*[@id='send2']/span"));
+        WebElement signInto = getDriver().findElement(By.xpath("//*[@id='send2']/span"));
         signInto.click();
-        WebElement field = driver.findElement(By.xpath("//*[@id='email-error']"));
+        Thread.sleep(1000);
+        WebElement field = getDriver().findElement(By.xpath("//*[@id='email-error']"));
         String failText = field.getText();
         Assert.assertEquals(failText, "This is a required field.");
-        WebElement email = driver.findElement(By.xpath("//*[@id='email']"));
+        WebElement email = getDriver().findElement(By.xpath("//*[@id='email']"));
         email.sendKeys("abcd@gmail.com");
-        WebElement password = driver.findElement(By.xpath("//*[@id='pass']"));
+        WebElement password = getDriver().findElement(By.xpath("//*[@id='pass']"));
         password.sendKeys("1234");
         signInto.click();
-        WebElement accIncorrect = driver.findElement(By.xpath("//*[@id='maincontent']/div[2]/div[2]/div/div/div"));
-        String accFailText = accIncorrect.getText();
         Thread.sleep(1000);
+        WebElement accIncorrect = getDriver().findElement(By.xpath("//*[@id='maincontent']/div[2]/div[2]/div/div/div"));
+        String accFailText = accIncorrect.getText();
         Assert.assertEquals(accFailText, "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.");
-        driver.quit();
+
     }
 
     @Test
@@ -247,5 +246,49 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         Assert.assertTrue(actualText.contains(expectedText));
         }
+
+    @Test
+    public void testTitl()  {
+
+        getDriver().get(BASE_URL);
+
+        WebElement whatsNew = getDriver()
+                .findElement(By.xpath("//span[text()=\"Women\"]"));
+        whatsNew.click();
+        String header = getDriver().findElement(By.xpath("//h1")).getText();
+        assertEquals(header, "Women");
+
+    }
+
+    @Test
+    public void testAddNewUser() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement manageJenkins = getDriver().findElement(By.xpath("//a[@href ='/manage']"));
+        manageJenkins.click();
+
+        WebElement users = getDriver().findElement(By.xpath("//dt[text()='Users']"));
+        users.click();
+
+        WebElement createUserButton = getDriver().findElement(By.xpath("//a[@href='addUser']"));
+        createUserButton.click();
+
+        WebElement inputUserName = getDriver().findElement(By.name("username"));
+        inputUserName.sendKeys("New_User");
+
+        WebElement inputPassword = getDriver().findElement(By.name("password1"));
+        inputPassword.sendKeys(PASSWORD);
+
+        WebElement inputConfirmPassword = getDriver().findElement(By.name("password2"));
+        inputConfirmPassword.sendKeys(PASSWORD);
+
+        WebElement inputEmail = getDriver().findElement(By.name("email"));
+        inputEmail.sendKeys(EMAIL);
+
+        WebElement submitButton = getDriver().findElement(By.name("Submit"));
+        submitButton.click();
+
+        Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
+    }
 }
 

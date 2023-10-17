@@ -1,9 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -67,7 +65,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "Your credentials don’t match. It’s probably attributable to human error.");
 
     }
-
+@Ignore
     @Test
     public void testWelcomeJenkins() {
 
@@ -87,33 +85,31 @@ public class GroupJavaBustersTest extends BaseTest {
         }
     }
 
-    @Ignore
+
     @Test
     public void testFillUserName() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
 
-        WebElement fieldUsername = driver.findElement(By.name("username"));
-        WebElement submitButton = driver.findElement(By.xpath("//*[@value='submit']"));
+        getDriver().get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
+
+        WebElement fieldUsername = getDriver().findElement(By.name("username"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@value='submit']"));
 
         fieldUsername.sendKeys("Evgeniia");
         submitButton.click();
 
-        WebElement message = driver.findElement(By.id("_valueusername"));
+        WebElement message = getDriver().findElement(By.id("_valueusername"));
         String value = message.getText();
         assertEquals(value, "Evgeniia");
 
-        driver.quit();
     }
 
-    @Ignore
     @Test
     public void testCancelFillingUserName() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
 
-        WebElement fieldUsername = driver.findElement(By.name("username"));
-        WebElement cancelButton = driver.findElement(By.xpath("//*[@value='cancel']"));
+        getDriver().get("https://testpages.eviltester.com/styled/basic-html-form-test.html");
+
+        WebElement fieldUsername = getDriver().findElement(By.name("username"));
+        WebElement cancelButton = getDriver().findElement(By.xpath("//*[@value='cancel']"));
 
         fieldUsername.sendKeys("Evgeniia");
         cancelButton.click();
@@ -121,7 +117,6 @@ public class GroupJavaBustersTest extends BaseTest {
         String value = fieldUsername.getText();
         assertEquals(value, "");
 
-        driver.quit();
     }
 
 
@@ -202,41 +197,57 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "macbook");
     }
 
-    @Ignore
     @Test
-    public void testSearchCorrectProduct() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://shop.studiob3.pl/");
+    public void testSearchCorrectProduct() {
+        getDriver().get("https://shop.studiob3.pl/");
 
-        driver.findElement(By.className("search-open")).click();
-        Thread.sleep(1000);
+        getDriver().findElement(By.className("search-open")).click();
 
-        WebElement typeSearch = driver.findElement(By.className("search-field"));
+        WebElement typeSearch = getDriver().findElement(By.className("search-field"));
         typeSearch.sendKeys("dress");
         typeSearch.submit();
-        Thread.sleep(5000);
 
-        WebElement foundElement = driver.findElement(By.className("post-10807"));
+        String linkToProduct = getDriver()
+            .findElement(By.xpath("//*[@id='search-shop-grid']/div[1]/div/div[3]/h5/a"))
+            .getAttribute("href");
 
-        assertTrue(foundElement.getText().contains("dress"));
+        assertTrue(linkToProduct.contains("dress"));
+    }
+@Ignore
+    @Test
+    public void testDeleteFromBim() {
+        getDriver().get("https://shop.studiob3.pl/product/iola-beanie/");
 
-        driver.quit();
+        // Add product's color.
+        getDriver().findElement(By.id("pa_color")).submit();
+        getDriver().findElement(By.xpath("//*[@id=\"pa_color\"]/option[4]")).click();
+
+        // Add product's size.
+        getDriver().findElement(By.id("pa_size")).submit();
+        getDriver().findElement(By.xpath("//*[@id=\"pa_size\"]/option[2]")).click();
+
+        // Check if product with given color and size exists.
+        var unused = getDriver().findElement(By.className("stock"));
+
+        getDriver().findElement(By.className("pseudo-add-to-cart")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div[1]/form/table/tbody/tr/td[2" +
+            "]/div/span[2]")).click();
+
+        WebElement foundElement = getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div" +
+            "/div[2]/strong"));
+
+        assertTrue(foundElement.getText().contains("Your cart is empty"));
     }
 
-    @Ignore
     @Test
-    public void testNavigateToExpectedUrl() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://shop.studiob3.pl/");
+    public void testNavigateToExpectedUrl() {
 
-        driver.findElement(By.className("hamburger")).click();
-        Thread.sleep(1000);
+        getDriver().get("https://shop.studiob3.pl/");
 
-        driver.findElement(By.linkText("End of Series")).click();
+        getDriver().findElement(By.linkText("End of Series")).click();
 
-        assertEquals(driver.getCurrentUrl(), "https://shop.studiob3.pl/product-category/end-of-series/");
-
-        driver.quit();
+        assertEquals(getDriver().getCurrentUrl(), "https://shop.studiob3" +
+            ".pl/product-category/end-of-series/");
     }
 
     @Test

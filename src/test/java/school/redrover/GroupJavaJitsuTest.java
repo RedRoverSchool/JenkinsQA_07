@@ -41,7 +41,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
     }
 
     @Test
-    public void firsTest() throws InterruptedException{
+    public void testFirst() throws InterruptedException{
         JenkinsUtils.login(getDriver());
        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
        newItem.click();
@@ -71,5 +71,27 @@ public class GroupJavaJitsuTest  extends BaseTest {
         buttonSave.click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), "Project NewFreestyleProject");
 
+    }
+
+    @Test
+    public void testFreestyleProject(){
+        String projectName = "FreestyleProject";
+        JenkinsUtils.login(getDriver());
+        WebElement newItem = getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']"));
+        newItem.click();
+
+        WebElement itemName = getDriver().findElement(By.cssSelector("input.jenkins-input"));
+        itemName.sendKeys(projectName);
+        WebElement freestyleProject = getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject"));
+        freestyleProject.click();
+
+        WebElement okButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
+        okButton.click();
+
+        WebElement saveButton = getDriver().findElement(By.cssSelector("button[name='Submit']"));
+        saveButton.click();
+
+        WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
+        Assert.assertEquals("Project " + projectName, freestyleProjectName.getText());
     }
 }
