@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.Random;
@@ -220,45 +221,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
     // endregion
 
     // region AkiMiraTest
-    @Ignore
-    @Test (description = "Test of Text-Box 'Name'")
-    public void testTextBox () {
-
-        getDriver().get("https://demoqa.com/text-box");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals("DEMOQA", title);
-
-        WebElement textBox = getDriver().findElement(By.xpath("//*[@id=\"userName\"]"));
-        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
-
-        textBox.sendKeys("Oleg");
-        submitButton.click();
-
-        WebElement message = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
-        String value = message.getText();
-        Assert.assertEquals("Name:Oleg", value);
-
-    }
-    @Ignore
-    @Test (description = "Test of Text-Box 'Current Address'")
-    public void testTextBoxCurrentAddress () {
-        getDriver().get("https://demoqa.com/text-box");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals("DEMOQA", title);
-
-        WebElement textBox = getDriver().findElement(By.xpath("//*[@id=\"currentAddress\"]"));
-        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
-
-        textBox.sendKeys("Russian Federation");
-        submitButton.click();
-
-        WebElement message = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
-        String value = message.getText();
-        Assert.assertEquals("Current Address :Russian Federation", value);
-
-    }
 
     @Test (description = "Test of Login to Swag Labs")
     public void testLoginSwagLabs () {
@@ -277,8 +239,20 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
         WebElement text = getDriver().findElement(By.xpath("//*[@id=\"header_container\"]/div[2]/span"));
         String value = text.getText();
-        Assert.assertEquals("Products", value);
+        Assert.assertEquals(value, "Products");
 
+    }
+
+    @Test (description = "Test of Jenkins Search field")
+    public void testJenkinsSearchField () {
+        JenkinsUtils.login(getDriver());
+        WebElement searchField = getDriver().findElement(By.id("search-box"));
+        searchField.sendKeys("admin");
+        searchField.sendKeys(Keys.ENTER);
+        WebElement searchResults = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]"));
+        Assert.assertTrue(searchResults.isDisplayed());
+        String value = searchResults.getText();
+        Assert.assertTrue(value.contains("admin"));
     }
     // endregion
 
@@ -352,5 +326,4 @@ public class GroupIntroVertsQaTest extends BaseTest {
         Assert.assertEquals("Current Address :Краснодар, ул.Тихая, д.454", value);
         driver.quit();
     }
-
 }
