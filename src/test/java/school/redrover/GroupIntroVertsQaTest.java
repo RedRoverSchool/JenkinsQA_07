@@ -250,4 +250,22 @@ public class GroupIntroVertsQaTest extends BaseTest {
         Assert.assertEquals(valueMP,"Permananet Address :Udacia");
 
     }
+
+    // region AnkaBulygina
+    @Test
+    public void testTextBox1() {
+        getDriver().get("https://demoqa.com/text-box");
+
+        String title = getDriver().getTitle();
+        Assert.assertEquals("DEMOQA", title);
+
+        WebElement textBox = getDriver().findElement(By.xpath("//*[@id=\"currentAddress\"]"));
+        WebElement submitButton = getDriver().findElement(By.xpath("//*[@id=\"submit\"]"));
+        textBox.sendKeys("Краснодар, ул.Тихая, д.454");
+        submitButton.click();
+        WebElement message = getDriver().findElement(By.cssSelector("#currentAddress.mb-1"));
+        String value = message.getText();
+        Assert.assertEquals("Current Address :Краснодар, ул.Тихая, д.454", value);
+       }
+    // endregion
 }
