@@ -349,6 +349,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
 
+
     }
 
 }
