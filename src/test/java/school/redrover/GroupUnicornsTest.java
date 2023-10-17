@@ -385,7 +385,7 @@ public class GroupUnicornsTest extends BaseTest {
     public void upsPageOpenTest() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         getDriver().get("https://www.ups.com/us/en/Home.page");
-        Thread.sleep(500);
+        Thread.sleep(1000);
         WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
         shipButton.click();
 
