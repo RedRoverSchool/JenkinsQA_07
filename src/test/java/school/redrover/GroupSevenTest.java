@@ -64,31 +64,21 @@ public class GroupSevenTest extends BaseTest {
     @Test
     public void testSearch() {
 
-        try {
             getDriver().get("https://elitetransit.com/");
-            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-            getDriver().manage().window().maximize();
-
             getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
             WebElement buttonContact = getDriver().findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
             buttonContact.click();
+
             String title = getDriver().getTitle();
 
             Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
-        } finally {
-            getDriver().quit();
-        }
+
     }
 
     @Test
     public void testTextInput()  {
 
-        try {
             getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
-
-            getDriver().manage().window().maximize();
-            getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(800));
-
             WebElement input = getDriver().findElement(By.id("my-text-id"));
             input.click();
             input.sendKeys("Selenium");
@@ -97,9 +87,7 @@ public class GroupSevenTest extends BaseTest {
             submit.submit();
             WebElement message = getDriver().findElement(By.id("message"));
             Assert.assertEquals(message.getText(), "Received!");
-        } finally {
-            getDriver().quit();
-        }
+
     }
 
     @Ignore
