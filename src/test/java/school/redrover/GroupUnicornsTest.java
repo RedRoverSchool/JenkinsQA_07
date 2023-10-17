@@ -4,8 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -328,5 +330,35 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.id("submitBttn")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
+    }
+
+
+
+    @Test
+    public void TestRizzolibooks() throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.rizzolibookstore.com/");
+
+        String title = driver.getTitle();
+        AssertJUnit.assertEquals("Welcome to the Most Beautiful Bookstore in New York | Rizzoli Bookstore", title);
+
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(800));
+
+        WebElement signinButton = driver.findElement(By.xpath("//*[@id='block-rizzoli-2023-commerceiconmenu']/ul/li[2]/a"));
+        signinButton.click();
+
+        WebElement textBox = driver.findElement(By.id("edit-e-mail"));
+        WebElement subscribeButton = driver.findElement(By.xpath("//*[@id='edit-actions-submit']"));
+
+        textBox.sendKeys("user@gmail.com");
+        Thread.sleep(500);
+        subscribeButton.click();
+
+        WebElement message = driver.findElement(By.className("webform-confirmation__message"));
+        String value = message.getText();
+        AssertJUnit.assertEquals("New submission added to Signup for our Newsletter.", value);
+
+        driver.quit();
     }
 }
