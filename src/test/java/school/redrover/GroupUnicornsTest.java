@@ -336,11 +336,11 @@ public class GroupUnicornsTest extends BaseTest {
         submitButton.click();
     }
     @Test
-    public void upsPageOpenTest() {
+    public void upsPageOpenTest() throws InterruptedException {
         getDriver().get("https://www.ups.com/us/en/Home.page");
         WebElement shipButton = getDriver().findElement(By.xpath("//span[contains(text(),'Ship')]"));
         shipButton.click();
-
+        Thread.sleep(9000);
         WebElement fullName = getDriver().findElement(By.xpath("//input[@id='origin-cac_companyOrName']"));
         fullName.sendKeys("John Doe");
 
