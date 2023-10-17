@@ -256,4 +256,15 @@ public class GroupJavaBustersTest extends BaseTest {
 
 
     }
+    @Test
+    public void testCheckVersion() {
+        JenkinsUtils.login(getDriver());
+
+        Assert.assertEquals(getDriver()
+                        .findElement(By
+                                .xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button"))
+                        .getText(),
+                "Jenkins 2.414.2");
+
+    }
 }
