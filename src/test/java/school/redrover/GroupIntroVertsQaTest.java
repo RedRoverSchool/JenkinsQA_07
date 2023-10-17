@@ -328,7 +328,6 @@ public class GroupIntroVertsQaTest extends BaseTest {
         String valueMP = messagePM.getText();
         Assert.assertEquals(valueMP,"Permananet Address :Udacia");
 
-        getDriver().quit();
     }
 
     //AnnaByliginaTest
