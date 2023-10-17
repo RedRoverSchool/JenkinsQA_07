@@ -4,16 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
-
-import java.time.Duration;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -39,7 +35,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
         WebElement movie = getDriver().findElement(By.xpath("//span[@class='film-title-wrapper']/a[contains(@href, 'lawrence')]"));
         String value = movie.getText();
-        Assert.assertEquals("Merry Christmas, Mr. Lawrence", value);
+        Assert.assertEquals(value, "Merry Christmas, Mr. Lawrence");
     }
 
     @Test
@@ -68,7 +64,18 @@ public class GroupJavaBustersTest extends BaseTest {
 
         WebElement message = getDriver().findElement(By.xpath("//div[@class='errormessage']//p"));
         String value = message.getText();
-        Assert.assertEquals("Your credentials don’t match. It’s probably attributable to human error.", value);
+        Assert.assertEquals(value, "Your credentials don’t match. It’s probably attributable to human error.");
+
+    }
+
+    @Test
+    public void testWelcomeJenkins() {
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement mainHeading = getDriver().findElement(By.cssSelector("h1"));
+        String value = mainHeading.getText();
+        Assert.assertEquals(value, "Welcome to Jenkins!");
 
     }
 
@@ -117,21 +124,19 @@ public class GroupJavaBustersTest extends BaseTest {
         driver.quit();
     }
 
-    @Ignore
+
     @Test
     public void testAllFields() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-
         String mainLink = "https://www.selenium.dev/selenium/web/web-form.html";
         String indexLink = "https://www.selenium.dev/selenium/web/index.html";
 
-        driver.get(mainLink);
-        WebElement textInput = driver.findElement(By.xpath("//input[@id='my-text-id']"));
-        WebElement passwordInput = driver.findElement(By.xpath("//label[2]/input[1]"));
-        WebElement textArea = driver.findElement(By.xpath("//label[3]/textarea[1]"));
-        WebElement disableInput = driver.findElement(By.xpath("//label[4]/input[1]"));
-        WebElement readOnlyField = driver.findElement(By.xpath("//label[5]/input[1]"));
-        WebElement linkReturnToIndex = driver.findElement(By.xpath("//a[contains(text(),'Return to index')]"));
+        getDriver().get(mainLink);
+        WebElement textInput = getDriver().findElement(By.xpath("//input[@id='my-text-id']"));
+        WebElement passwordInput = getDriver().findElement(By.xpath("//label[2]/input[1]"));
+        WebElement textArea = getDriver().findElement(By.xpath("//label[3]/textarea[1]"));
+        WebElement disableInput = getDriver().findElement(By.xpath("//label[4]/input[1]"));
+        WebElement readOnlyField = getDriver().findElement(By.xpath("//label[5]/input[1]"));
+        WebElement linkReturnToIndex = getDriver().findElement(By.xpath("//a[contains(text(),'Return to index')]"));
 
         textInput.sendKeys("test");
         passwordInput.sendKeys("12345678");
@@ -141,20 +146,17 @@ public class GroupJavaBustersTest extends BaseTest {
 
         linkReturnToIndex.click();
         Thread.sleep(2000);
-        String currentLink = driver.getCurrentUrl();
+        String currentLink = getDriver().getCurrentUrl();
         Assert.assertEquals(currentLink, indexLink);
+        getDriver().get(mainLink);
 
-        driver.get(mainLink);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement dropdownSelect = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name='my-select']")));
+        WebElement dropdownSelect = getDriver().findElement(By.xpath("//*[@name='my-select']"));
         Select dropDownSelectedValue = new Select(dropdownSelect);
         dropDownSelectedValue.selectByValue("1");
         dropDownSelectedValue.selectByValue("2");
         dropDownSelectedValue.selectByValue("3");
-
-        driver.quit();
     }
-    
+
     @Test
     public void testFillInForm() {
         getDriver().get("https://automationintesting.online/");
@@ -180,7 +182,6 @@ public class GroupJavaBustersTest extends BaseTest {
     }
 
 
-
     @Test
     public void testSearch() throws InterruptedException {
 
@@ -201,41 +202,57 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "macbook");
     }
 
-    @Ignore
     @Test
-    public void testSearchCorrectProduct() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://shop.studiob3.pl/");
+    public void testSearchCorrectProduct() {
+        getDriver().get("https://shop.studiob3.pl/");
 
-        driver.findElement(By.className("search-open")).click();
-        Thread.sleep(1000);
+        getDriver().findElement(By.className("search-open")).click();
 
-        WebElement typeSearch = driver.findElement(By.className("search-field"));
+        WebElement typeSearch = getDriver().findElement(By.className("search-field"));
         typeSearch.sendKeys("dress");
         typeSearch.submit();
-        Thread.sleep(5000);
 
-        WebElement foundElement = driver.findElement(By.className("post-10807"));
+        String linkToProduct = getDriver()
+            .findElement(By.xpath("//*[@id='search-shop-grid']/div[1]/div/div[3]/h5/a"))
+            .getAttribute("href");
 
-        assertTrue(foundElement.getText().contains("dress"));
-
-        driver.quit();
+        assertTrue(linkToProduct.contains("dress"));
     }
 
-    @Ignore
     @Test
-    public void testNavigateToExpectedUrl() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://shop.studiob3.pl/");
+    public void testDeleteFromBim() {
+        getDriver().get("https://shop.studiob3.pl/product/iola-beanie/");
 
-        driver.findElement(By.className("hamburger")).click();
-        Thread.sleep(1000);
+        // Add product's color.
+        getDriver().findElement(By.id("pa_color")).submit();
+        getDriver().findElement(By.xpath("//*[@id=\"pa_color\"]/option[4]")).click();
 
-        driver.findElement(By.linkText("End of Series")).click();
+        // Add product's size.
+        getDriver().findElement(By.id("pa_size")).submit();
+        getDriver().findElement(By.xpath("//*[@id=\"pa_size\"]/option[2]")).click();
 
-        assertEquals(driver.getCurrentUrl(), "https://shop.studiob3.pl/product-category/end-of-series/");
+        // Check if product with given color and size exists.
+        var unused = getDriver().findElement(By.className("stock"));
 
-        driver.quit();
+        getDriver().findElement(By.className("pseudo-add-to-cart")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div[1]/form/table/tbody/tr/td[2" +
+            "]/div/span[2]")).click();
+
+        WebElement foundElement = getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div" +
+            "/div[2]/strong"));
+
+        assertTrue(foundElement.getText().contains("Your cart is empty"));
+    }
+
+    @Test
+    public void testNavigateToExpectedUrl() {
+
+        getDriver().get("https://shop.studiob3.pl/");
+
+        getDriver().findElement(By.linkText("End of Series")).click();
+
+        assertEquals(getDriver().getCurrentUrl(), "https://shop.studiob3" +
+            ".pl/product-category/end-of-series/");
     }
 
     @Test

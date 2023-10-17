@@ -1,4 +1,5 @@
 package school.redrover;
+import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -8,8 +9,10 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -229,4 +232,48 @@ public class GroupItFriendlyTest extends BaseTest {
 
         assertEquals(actual, "Lokum Recipes");
     }
+    @Test
+    public void CreateNewItem(){
+        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        JenkinsUtils.login(getDriver());
+        WebElement newItem = getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"));
+        newItem.click();
+        WebElement inputField = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
+        inputField.click();
+        inputField.sendKeys(randomUsername);
+        WebElement freeStileProject = getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]"));
+        freeStileProject.click();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+        WebElement dashBoard = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a"));
+        dashBoard.click();
+        List <WebElement> list = getDriver().findElements(By.xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
+        String str = "";
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).getText());
+            if (list.get(i).getText().contains(randomUsername)){
+                str=list.get(i).getText();
+             break;
+            }
+        }
+        Assert.assertEquals(str,randomUsername);
+    }
+
+    @Test
+    public void JenkinsLinkTest() {
+        String paragraphAboutJenkinsText = "The leading open source automation server which enables developers around the world to reliably build, test, and deploy their software.";
+
+        WebDriver driver = getDriver();
+        JenkinsUtils.login(getDriver());
+
+        WebElement jenkinsLink = driver.findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+        jenkinsLink.click();
+
+        WebElement aboutJenkins = driver.findElement(By.xpath("//a[@class='jenkins-dropdown__item' and contains(text(), 'About Jenkins')]"));
+        aboutJenkins.click();
+
+        WebElement descriptionParagraph = driver.findElement(By.xpath("//p[@class='app-about-paragraph']"));
+        Assert.assertEquals(descriptionParagraph.getText(), paragraphAboutJenkinsText);
+    }
+
 }
