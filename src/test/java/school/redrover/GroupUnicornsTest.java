@@ -349,7 +349,6 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "Book");//check title
 
         getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
-
     }
 
 }
