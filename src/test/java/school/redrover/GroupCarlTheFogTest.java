@@ -51,6 +51,18 @@ public class GroupCarlTheFogTest extends BaseTest {
     }
 
     @Test
+    public void testGoogleSearchSeleniumFound() {
+        getDriver().get("https://www.google.com/");
+        By searchAreaXPath = By.xpath("//textarea[@name='q']");
+        getDriver().findElement(searchAreaXPath).sendKeys("Selenium");
+        getDriver().findElement(searchAreaXPath).sendKeys(Keys.ENTER);
+
+        By searchResultXPath = By.xpath("//a//cite[contains(text(), 'https://www.selenium.dev')]");
+        WebElement element = getDriver().findElement(searchResultXPath);
+        Assert.assertTrue(element.isDisplayed());
+    }
+
+    @Test
     public void testSlowCalculator(){
         String url = "https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html";
         int calculatorDelay = 0;
