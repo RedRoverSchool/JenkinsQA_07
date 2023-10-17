@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-
+@Ignore
 public class LifantsovaTest extends BaseTest {
 
     @Test

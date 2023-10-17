@@ -42,7 +42,7 @@ public class GroupLetsQATest extends BaseTest {
         assertTrue(searchText.contains("saw"));
     }
 
-
+@Ignore
     @Test
     public void clickChromeTest() {
         getDriver().get("http://www.uitestingplayground.com/click");

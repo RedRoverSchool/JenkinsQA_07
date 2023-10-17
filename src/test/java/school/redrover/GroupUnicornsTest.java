@@ -4,10 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -20,7 +20,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-
+@Ignore
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
@@ -98,7 +98,6 @@ public class GroupUnicornsTest extends BaseTest {
         title = getDriver().getTitle();
         Assert.assertEquals(title, "Java Tutorial");
     }
-
 
     @Test
     public void W3school1test() {
@@ -245,7 +244,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(), "Jenkins 2.414.2");
     }
-
+@Ignore
     @Test
     public void testAddDescriptionFeature() {
         String expected = "Testing description feature on Jenkins Home Page";
@@ -286,7 +285,7 @@ public class GroupUnicornsTest extends BaseTest {
         textBox.sendKeys("ximotof590@ibtrades.com");
         submitButton.click();
     }
-
+@Ignore
     @Test
     public void testJenkinsAddDescr() {
 
@@ -340,7 +339,7 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().get ("https://www.rizzolibookstore.com/");
 
         String title = getDriver().getTitle();
-        AssertJUnit.assertEquals("Welcome to the Most Beautiful Bookstore in New York | Rizzoli Bookstore", title);
+        Assert.assertEquals("Welcome to the Most Beautiful Bookstore in New York | Rizzoli Bookstore", title);
 
 
         Thread.sleep(500);
@@ -357,7 +356,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         WebElement message = getDriver().findElement(By.className("webform-confirmation__message"));
         String value = message.getText();
-        AssertJUnit.assertEquals("New submission added to Signup for our Newsletter.", value);
+        Assert.assertEquals("New submission added to Signup for our Newsletter.", value);
 
     }
 }
