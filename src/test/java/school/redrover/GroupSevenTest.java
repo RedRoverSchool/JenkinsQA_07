@@ -5,9 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -16,7 +14,6 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class GroupSevenTest extends BaseTest {
@@ -455,5 +452,17 @@ public class GroupSevenTest extends BaseTest {
         WebElement nameTitle = getDriver().findElement(By.xpath("//h1[normalize-space()='admin']"));
         String value = nameTitle.getText();
         Assert.assertEquals(value, "admin");
+    }
+    @Test
+    public void testSY() throws InterruptedException {
+        getDriver().get("https://animevost.org/");
+        WebElement textBox = getDriver().findElement(By.id("story"));
+        textBox.sendKeys("Токийский Гуль");
+        WebElement searchButton = getDriver().findElement(By.className("searchButton"));
+        searchButton.click();
+        Thread.sleep(5000);
+        WebElement searchText = getDriver().findElement(By.id("dosearch"));
+        String title = searchText.getAttribute("value");
+        Assert.assertEquals(title, "Начать поиск");
     }
 }
