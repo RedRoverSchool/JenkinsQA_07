@@ -215,7 +215,6 @@ public class GroupUnicornsTest extends BaseTest {
 
         getDriver().get("http://18.118.14.155:8080/bank/login");
         getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
-
         getDriver().findElement(By.id("username")).sendKeys("tester1@gmail.com");
         getDriver().findElement(By.id("password")).sendKeys("1234Test");
         getDriver().findElement(By.id("submit")).click();
@@ -228,7 +227,6 @@ public class GroupUnicornsTest extends BaseTest {
 
         getDriver().get("http://18.118.14.155:8080/bank/login");
         getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
-
         getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
         getDriver().findElement(By.id("password")).sendKeys("Test1234");
         getDriver().findElement(By.id("submit")).click();
