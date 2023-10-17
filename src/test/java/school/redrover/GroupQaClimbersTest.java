@@ -710,4 +710,20 @@ public class GroupQaClimbersTest extends BaseTest {
         String expectedMessage="Manage Jenkins";
         Assert.assertEquals(actualMessage,expectedMessage);
     }
+
+    @Test
+    public void testLoginJenkins() {
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
+        WebElement checkJenkinsVersion = getDriver().findElement(By.xpath("//button[@type='button']"));
+        checkJenkinsVersion.click();
+
+        WebElement openJenkinsWebSite = getDriver().findElement(By.xpath("//a[@rel='noopener noreferrer']"));
+        openJenkinsWebSite.click();
+
+        WebElement getTitle = getDriver().findElement(By.xpath("//a[@href='/']"));
+        String getTitleText = getTitle.getText();
+        Assert.assertEquals(getTitleText, "");
+
+    }
 }

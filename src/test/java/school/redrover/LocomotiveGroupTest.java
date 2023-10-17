@@ -239,4 +239,25 @@ public class LocomotiveGroupTest extends BaseTest {
         Thread.sleep(2000);
     }
 
+    @Test
+    public void testAddDescriptionJenkinsHomePage() {
+        String description = "My Jenkins home page description";
+        By submitButton = By.id("description-link");
+        By descriptionInputField = By.xpath("//textarea[@name='description']");
+        By saveButton = By.xpath("//button[@name='Submit']");
+
+        JenkinsUtils.login(getDriver());
+
+        getDriver().findElement(submitButton).click();
+        getDriver().findElement(descriptionInputField).sendKeys(description);
+        getDriver().findElement(saveButton).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//*[@id='description']/div[1]"))
+                .getText(), description);
+
+        getDriver().findElement(submitButton).click();
+        getDriver().findElement(descriptionInputField).clear();
+        getDriver().findElement(saveButton).click();
+    }
 }

@@ -465,4 +465,18 @@ public class GroupSevenTest extends BaseTest {
         String title = searchText.getAttribute("value");
         Assert.assertEquals(title, "Начать поиск");
     }
+
+    @Test
+    public void testSearchBar() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement searchBar = getDriver().findElement(By.xpath("//input[@id='search-box']"));
+        searchBar.click();
+        searchBar.sendKeys("configure");
+        searchBar.sendKeys(Keys.ENTER);
+
+        WebElement configureTitle = getDriver().findElement(By.xpath("//h1[normalize-space()='System']"));
+        String value = configureTitle.getText();
+        Assert.assertEquals(value, "System");
+    }
 }
