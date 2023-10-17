@@ -7,18 +7,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-import static org.testng.Assert.assertEquals;
-
-@Ignore
-public class GroupTestscriptCollaboratoriumTest {
+public class GroupTestscriptCollaboratoriumTest extends BaseTest {
+    @Ignore
     @Test
-    public void getGuru() throws InterruptedException {
+    public void testGetGuru() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.guru99.com/");
 
         String title = driver.getTitle();
-        assertEquals("Meet Guru99 – Free Training Tutorials & Video for IT Courses", title);
+        Assert.assertEquals("Meet Guru99 – Free Training Tutorials & Video for IT Courses", title);
 
 
         WebElement JUnitButton = driver.findElement(By.xpath("//*[@data-lasso-id='147439']"));
@@ -27,12 +26,14 @@ public class GroupTestscriptCollaboratoriumTest {
         Thread.sleep(900);
 
         WebElement textButton = driver.findElement(By.xpath("//*[@id='post-862']/div/div/h2[2]"));
-        Assert.assertEquals(textButton.getText(),"JUnit Tutorial Syllabus");
+        Assert.assertEquals(textButton.getText(), "JUnit Tutorial Syllabus");
 
         driver.quit();
     }
+
+    @Ignore
     @Test
-    public void testSubscription(){
+    public void testSubscription() {
 
         WebDriver driver = new ChromeDriver();
         try {
@@ -56,8 +57,10 @@ public class GroupTestscriptCollaboratoriumTest {
             driver.quit();
         }
     }
+
+    @Ignore
     @Test
-    public void testAddToBasket(){
+    public void testAddToBasket() {
 
         WebDriver driver = new ChromeDriver();
         try {
@@ -70,7 +73,7 @@ public class GroupTestscriptCollaboratoriumTest {
             String valueBasket = inBasket.getText();
             Assert.assertEquals(valueBasket, "1");
 
-        }finally {
+        } finally {
             driver.quit();
         }
     }
@@ -78,22 +81,18 @@ public class GroupTestscriptCollaboratoriumTest {
     @Test
     public void testEssayAppGetSite() {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://essay.app/");
+        getDriver().get("https://essay.app/");
 
-        String title = driver.getTitle();
-        Assert.assertEquals("Essay - Write better.", title);
-
-        driver.quit();
+        String title = getDriver().getTitle();
+        Assert.assertEquals(title, "Essay - Write better.");
     }
 
     @Test
     public void testEssayAppSwitchWebsiteColorLayout() {
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://essay.app/");
+        testEssayAppGetSite();
 
-        WebElement upperSitePanel = driver.findElement(By.className("css-s5xdrg"));
+        WebElement upperSitePanel = getDriver().findElement(By.className("css-s5xdrg"));
 
         WebElement colorLayoutSwitcher = upperSitePanel.findElement(By.tagName("button"));
         String colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
@@ -107,7 +106,5 @@ public class GroupTestscriptCollaboratoriumTest {
         colorLayoutSwitcherCurrentState = colorLayoutSwitcher.getAttribute("aria-checked");
         Assert.assertEquals(colorLayoutSwitcherCurrentState, "false",
                 "Current layout is Light");
-
-        driver.quit();
     }
 }
