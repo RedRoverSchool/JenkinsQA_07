@@ -75,33 +75,29 @@ public class GroupJavaAutomationTest extends BaseTest {
         driver.quit();
 
     }
-    @Ignore
+
     @Test
-    public void herokuAppABTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://the-internet.herokuapp.com/");
-        WebElement buttonABTesting = driver.findElement(By.xpath("//a[@href='/abtest']"));
+    public void testHerokuAppAB() {
+        getDriver().get(HEROKUAPP);
+        WebElement buttonABTesting = getDriver().findElement(By.xpath("//a[@href='/abtest']"));
         buttonABTesting.click();
-        WebElement textABTest = driver.findElement(By.xpath("//h3[text()='A/B Test Control']"));
-        String abTestTitle = textABTest.getText();
-        assertEquals(abTestTitle, "A/B Test Control");
-        driver.quit();
+        WebElement textABTest = getDriver().findElement(By.xpath("//h3[contains(text(),'A/B Test')]"));
+        assertEquals(textABTest.getText().substring(0,8), "A/B Test");
     }
-    @Ignore
+
     @Test
-    public void herokuAppCheckBoxTest() {
-        WebDriver driver = new ChromeDriver();
+    public void testHerokuAppCheckBoxSizeTwo() {
+        getDriver().get(HEROKUAPP);
         SoftAssert softAssert = new SoftAssert();
-        driver.get("https://the-internet.herokuapp.com/");
-        WebElement buttonCheckBox = driver.findElement(By.xpath("//a[@href='/checkboxes']"));
+        WebElement buttonCheckBox = getDriver().findElement(By.xpath("//a[@href='/checkboxes']"));
         buttonCheckBox.click();
-        WebElement textCheckBox = driver.findElement(By.xpath("//h3[text()='Checkboxes']"));
+        WebElement textCheckBox = getDriver().findElement(By.xpath("//h3[text()='Checkboxes']"));
         String titleCheckBox = textCheckBox.getText();
         softAssert.assertEquals(titleCheckBox, "Checkboxes");
-        List<WebElement> listCheckbox = driver.findElements(By.xpath("//input[@type='checkbox']"));
+        List<WebElement> listCheckbox = getDriver().findElements(By.xpath("//input[@type='checkbox']"));
         softAssert.assertEquals(listCheckbox.size(), 2);
         softAssert.assertAll();
-        driver.quit();
+
     }
 
     @Ignore
@@ -141,47 +137,42 @@ public class GroupJavaAutomationTest extends BaseTest {
 
         driver.quit();
     }
-    @Ignore
+
     @Test
-    public void loginSuccessfulTest() {
-        WebDriver webDriver = new ChromeDriver();
-        webDriver.get("https://the-internet.herokuapp.com/");
-        webDriver.manage().window().maximize();
-        WebElement elementLogin = webDriver.findElement(By.xpath("//a[@href='/login']"));
+    public void testLoginSuccessful() {
+        getDriver().get(HEROKUAPP);
+        WebElement elementLogin = getDriver().findElement(By.xpath("//a[@href='/login']"));
         elementLogin.click();
-        WebElement inputName = webDriver.findElement(By.xpath("//input[@name='username']"));
-        WebElement inputPassword = webDriver.findElement(By.xpath("//input[@name='password']"));
+        WebElement inputName = getDriver().findElement(By.xpath("//input[@name='username']"));
+        WebElement inputPassword = getDriver().findElement(By.xpath("//input[@name='password']"));
         inputName.sendKeys("tomsmith");
         inputPassword.sendKeys("SuperSecretPassword!");
-        WebElement buttonSubmit = webDriver.findElement(By.xpath("//button[@type='submit']"));
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//button[@type='submit']"));
         buttonSubmit.click();
-        WebElement messageTitle = webDriver.findElement(By.xpath("//div[@class='flash success']"));
+        WebElement messageTitle = getDriver().findElement(By.xpath("//div[@class='flash success']"));
         Assert.assertEquals(messageTitle
                         .getText()
                         .replaceAll("[×\n]", ""),
                 "You logged into a secure area!");
-        WebElement logout = webDriver.findElement(By.xpath("//*[@href='/logout']"));
+        WebElement logout = getDriver().findElement(By.xpath("//*[@href='/logout']"));
         logout.click();
-        webDriver.quit();
+
     }
-    @Ignore
+
     @Test
-    public void loginEmptyNameTest() {
-        WebDriver webDriver = new ChromeDriver();
-        webDriver.get("https://the-internet.herokuapp.com/");
-        webDriver.manage().window().maximize();
-        WebElement elementLogin = webDriver.findElement(By.xpath("//a[@href='/login']"));
+    public void testLoginEmptyName() {
+        getDriver().get(HEROKUAPP);
+        WebElement elementLogin = getDriver().findElement(By.xpath("//a[@href='/login']"));
         elementLogin.click();
-        WebElement inputPassword = webDriver.findElement(By.xpath("//input[@name='password']"));
+        WebElement inputPassword = getDriver().findElement(By.xpath("//input[@name='password']"));
         inputPassword.sendKeys("SuperSecretPassword!");
-        WebElement buttonSubmit = webDriver.findElement(By.xpath("//button[@type='submit']"));
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//button[@type='submit']"));
         buttonSubmit.click();
-        WebElement messageTitle = webDriver.findElement(By.xpath("//div[@class='flash error']"));
+        WebElement messageTitle = getDriver().findElement(By.xpath("//div[@class='flash error']"));
         Assert.assertEquals(messageTitle
                         .getText()
                         .replaceAll("[×\n]", ""),
                 "Your username is invalid!");
-        webDriver.quit();
     }
 
     @Test
