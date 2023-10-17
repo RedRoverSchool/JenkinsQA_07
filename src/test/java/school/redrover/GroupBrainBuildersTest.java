@@ -187,4 +187,33 @@ public class GroupBrainBuildersTest extends BaseTest {
         WebElement tooltip = getDriver().findElement(By.xpath("//img[@aria-describedby = 'tippy-10']"));
         Assert.assertTrue(tooltip.isDisplayed());
     }
+
+    @Test
+    public void testJenkinsAddDescription() throws InterruptedException {
+
+        JenkinsUtils.login(getDriver());
+
+        WebElement nameOfProjectButton = getDriver().findElement(By.xpath("//a[@href='job/Brain_builders/']"));
+        nameOfProjectButton.click();
+
+        WebElement addDescriptionButton = getDriver().findElement(By.xpath("//a[@href='editDescription']"));
+        addDescriptionButton.click();
+
+        WebElement descriptionTextField = getDriver().findElement(By.xpath("//*[@id='description']/form/div[1]/div[1]/textarea"));
+        descriptionTextField.sendKeys("my_new_project");
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//*[@id='description']/form/div[2]/button"));
+        saveButton.click();
+
+        WebElement projectName = getDriver().findElement(By.xpath("//*[@id='description']/div[1]"));
+        Thread.sleep(2000);
+        String value = projectName.getText();
+        Assert.assertEquals(value, "my_new_project");
+
+        //WebElement dashboardButton = getDriver().findElement(By.xpath("//a[@href='/']"));
+        //dashboardButton.click();
+
+
+
+    }
 }
