@@ -23,5 +23,14 @@ public class KuzminaTest extends BaseTest {
         String secondTitle = getDriver().getTitle();
         Assert.assertEquals(secondTitle, "Find a national park");
 
+        WebElement geoMapHelpButton = getDriver().findElement(By.className("geomap-help-btn"));
+        geoMapHelpButton.click();
+
+        WebElement panelTitle = getDriver().findElement(By.className("panel-title"));
+        String panelTitleText = panelTitle.getText();
+        Assert.assertEquals(panelTitleText, "Instructions: Map Navigation");
+        
+
+
     }
 }
