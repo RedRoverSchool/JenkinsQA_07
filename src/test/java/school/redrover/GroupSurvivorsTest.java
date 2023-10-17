@@ -2,6 +2,7 @@ package school.redrover;
 
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -41,4 +42,24 @@ public class GroupSurvivorsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("hero__title")).getText(), "клубный билет в музей Эрарта");
     }
 
+    @Test
+    public void testIuliaRadioGarden() throws InterruptedException {
+
+        getDriver().get("https://radio.garden/");
+        String title = getDriver().getTitle();
+
+        WebElement searchButton = getDriver().findElement(By.cssSelector("a[href='/search']"));
+        searchButton.click();
+
+        WebElement textBox = getDriver().findElement(By.cssSelector("#search-input"));
+        textBox.sendKeys("radiojazz\r\n");
+
+        WebElement searchResult = getDriver().findElement(By.xpath("//a[contains(@data-jest-id, 'rowButtonLink')]"));
+        searchResult.click();
+
+        WebElement channelBox = getDriver().findElement(By.xpath("//div[contains(@class, 'channelTitle')]"));
+        String value = channelBox.getText();
+        Assert.assertTrue(value.contains("RadioJAZZ.FM"));
+
+    }
 }
