@@ -520,7 +520,24 @@ public class GroupUnderdogsTest extends BaseTest {
         WebElement title = getDriver().findElement(By.xpath("//*[@class = 'job-index-headline page-headline']"));
         String value = title.getText();
         Assert.assertEquals(value, "Project My Job");
+    }
+    @Test
+    public void testDescription() {
+        JenkinsUtils.login(getDriver());
+        WebElement addDescriptionButton = getDriver().findElement(By.xpath("//a[@id='description-link']"));
+        addDescriptionButton.click();
 
+        WebElement descriptionTextField = getDriver().findElement(By.xpath("//*[@name = 'description']"));
+        descriptionTextField.click();
+        descriptionTextField.sendKeys("Test Description");
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//*[@name = 'Submit']"));
+        saveButton.click();
+
+        WebElement title = getDriver().findElement(By.xpath("//div[contains(text(),'Test Description')]"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Test Description");
 
     }
+
 }
