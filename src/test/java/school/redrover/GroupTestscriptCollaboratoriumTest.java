@@ -58,7 +58,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
         getDriver().get("https://murzilka.org/products/category/redaktsionnaya-podpiska");
         WebElement addButton = getDriver().findElement(By.xpath("//button[@class='button product-item__button button_for_product-card cart-btn js-order-product js-cart-btn']"));
         addButton.click();
-        Thread.sleep(200);
+        Thread.sleep(1000);
 
         WebElement inBasket = getDriver().findElement(By.xpath("//*[@class='quantity-items top-cart__quantity']"));
         String valueBasket = inBasket.getText();
