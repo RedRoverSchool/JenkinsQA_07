@@ -331,6 +331,7 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void testMyStudyingPage() {
 
+
         getDriver().get("https://power.arc.losrios.edu/~suleymanova/cisw300/");
         getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //cheack logo
 
@@ -348,7 +349,6 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "Book");//check title
 
         getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
-
 
     }
 
