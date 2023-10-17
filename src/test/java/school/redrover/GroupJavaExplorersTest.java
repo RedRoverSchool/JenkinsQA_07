@@ -20,6 +20,8 @@ import static org.testng.Assert.assertEquals;
 public class GroupJavaExplorersTest extends BaseTest {
 
     private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
+    private static final String PASSWORD = "12345";
+    private static final String EMAIL = "asd@gmail.com";
 
     @Test
     public void testSearchWatches() {
@@ -44,8 +46,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     @Test
     public void testLoginWithIncorrectData() {
-        String email = "asdfg@mail.ru";
-        String password = "12345";
         String message = "The account sign-in was incorrect or your account is disabled temporarily." +
                 " Please wait and try again later.";
 
@@ -55,10 +55,10 @@ public class GroupJavaExplorersTest extends BaseTest {
         loginIn.click();
 
         WebElement textBoxEmail = getDriver().findElement(By.id("email"));
-        textBoxEmail.sendKeys(email);
+        textBoxEmail.sendKeys(EMAIL);
 
         WebElement textBoxPassword = getDriver().findElement(By.id("pass"));
-        textBoxPassword.sendKeys(password);
+        textBoxPassword.sendKeys(PASSWORD);
 
         WebElement submitButton = getDriver().findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
         submitButton.click();
@@ -258,6 +258,37 @@ public class GroupJavaExplorersTest extends BaseTest {
         String header = getDriver().findElement(By.xpath("//h1")).getText();
         assertEquals(header, "Women");
 
+    }
+
+    @Test
+    public void testAddNewUser() {
+        JenkinsUtils.login(getDriver());
+
+        WebElement manageJenkins = getDriver().findElement(By.xpath("//a[@href ='/manage']"));
+        manageJenkins.click();
+
+        WebElement users = getDriver().findElement(By.xpath("//dt[text()='Users']"));
+        users.click();
+
+        WebElement createUserButton = getDriver().findElement(By.xpath("//a[@href='addUser']"));
+        createUserButton.click();
+
+        WebElement inputUserName = getDriver().findElement(By.name("username"));
+        inputUserName.sendKeys("New_User");
+
+        WebElement inputPassword = getDriver().findElement(By.name("password1"));
+        inputPassword.sendKeys(PASSWORD);
+
+        WebElement inputConfirmPassword = getDriver().findElement(By.name("password2"));
+        inputConfirmPassword.sendKeys(PASSWORD);
+
+        WebElement inputEmail = getDriver().findElement(By.name("email"));
+        inputEmail.sendKeys(EMAIL);
+
+        WebElement submitButton = getDriver().findElement(By.name("Submit"));
+        submitButton.click();
+
+        Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
     }
 }
 
