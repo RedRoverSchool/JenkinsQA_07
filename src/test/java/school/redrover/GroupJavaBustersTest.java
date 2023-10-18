@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+import java.time.Duration;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -260,5 +262,13 @@ public class GroupJavaBustersTest extends BaseTest {
         JenkinsUtils.login(getDriver());
 
 
+    }
+
+    @Test
+    public void testJenkins() {
+
+        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.id("button-icon-legend")).click();
+        WebElement descriptionText = getDriver().findElement(By.className("jenkins-modal__title"));
     }
 }
