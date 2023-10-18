@@ -5,68 +5,24 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 
 public class KuzminaTest extends BaseTest {
 
     @Test
-    public void testJenkins(){
+    public void testJenkins() {
 
-        JenkinsUtils.login(getDriver());
-
-        WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
-
-        Assert.assertTrue(addDescriptionButton.getText().contains("description"));
-
-        addDescriptionButton.click();
+        getDriver().findElement(By.id("description-link")).click();
 
         WebElement textAreaDescription = getDriver().findElement(By.className("jenkins-input"));
 
-//        textAreaDescription.clear();
-
-        textAreaDescription.sendKeys("My description");
+        textAreaDescription.sendKeys("My description\nSecond Line");
 
         getDriver().findElement(By.name("Submit")).click();
 
-        String descriptionText = getDriver().findElement(By.id("description")).getText();
+        String descriptionText = getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]")).getText();
 
-        Assert.assertEquals(descriptionText,"My description");
-
-
-    }
-@Ignore
-public class KuzminaTest extends BaseTest {
-
-    @Test
-    public void testParksOpening() {
-        getDriver().get("https://parks.canada.ca/pn-np");
-
-        String firstTitle = getDriver().getTitle();
-        Assert.assertEquals(firstTitle, "National parks");
-
-        WebElement findANationalParkButton = getDriver().findElement(By.xpath("//a[normalize-space()='Find a national park']"));
-        findANationalParkButton.click();
-
-        String secondTitle = getDriver().getTitle();
-        Assert.assertEquals(secondTitle, "Find a national park");
-
-        WebElement geoMapHelpButton = getDriver().findElement(By.className("geomap-help-btn"));
-        geoMapHelpButton.click();
-
-        WebElement panelTitle = getDriver().findElement(By.className("panel-title"));
-        String panelTitleText = panelTitle.getText();
-        Assert.assertEquals(panelTitleText, "Instructions: Map Navigation");
-
-
-
-        WebElement geoMapHelpButton = getDriver().findElement(By.className("geomap-help-btn"));
-        geoMapHelpButton.click();
-
-        WebElement panelTitle = getDriver().findElement(By.className("panel-title"));
-        String panelTitleText = panelTitle.getText();
-        Assert.assertEquals(panelTitleText, "Instructions: Map Navigation");
-
+        Assert.assertEquals(descriptionText, "My description\nSecond Line");
 
 
     }
