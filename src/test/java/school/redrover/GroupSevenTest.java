@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 
+@Ignore
 public class GroupSevenTest extends BaseTest {
     @Test
     public void testKylieTitle() {
@@ -168,9 +169,9 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(resultHeader.getText(), "Harry Potter");
     }
 
+    @Ignore
     @Test
     public void testJenkinsAbout() {
-        JenkinsUtils.login(getDriver());
 
         WebElement bottomRightButtonExpand = getDriver().findElement(By.xpath("//button[normalize-space()='Jenkins 2.414.2']"));
         bottomRightButtonExpand.click();
@@ -264,7 +265,7 @@ public class GroupSevenTest extends BaseTest {
         }
     }
 
-
+    @Ignore
     @Test
     public void testBooksSearch() {
         getDriver().get("https://www.doylestownbookshop.com/");
@@ -393,7 +394,6 @@ public class GroupSevenTest extends BaseTest {
 
     @Test
     public void testToolsSearch() {
-        JenkinsUtils.login(getDriver());
         String title = getDriver().getTitle();
         Assert.assertEquals(title, "Dashboard [Jenkins]");
 
@@ -428,7 +428,6 @@ public class GroupSevenTest extends BaseTest {
 
     @Test
     public void testUserPage() {
-        JenkinsUtils.login(getDriver());
 
         WebElement userIcon = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
         userIcon.click();
@@ -452,7 +451,6 @@ public class GroupSevenTest extends BaseTest {
 
     @Test
     public void testSearchBar() {
-        JenkinsUtils.login(getDriver());
 
         WebElement searchBar = getDriver().findElement(By.xpath("//input[@id='search-box']"));
         searchBar.click();

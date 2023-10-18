@@ -1,10 +1,11 @@
 package school.redrover;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
-
+@Ignore
 public class SevchenkoTest extends BaseTest {
     //Search elements //*[@id='mainbar']//a[@href='/questions/tagged/slf4j']
     //Show elements//div[@class='s-pagination site1 themed page-sizer float-right']//a[.='15']

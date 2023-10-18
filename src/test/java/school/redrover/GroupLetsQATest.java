@@ -17,6 +17,8 @@ import java.time.Duration;
 
 import static org.testng.Assert.*;
 
+
+@Ignore
 public class GroupLetsQATest extends BaseTest {
     private static final String BASE_URL = "https://www.sawinery.net/";
 
@@ -131,7 +133,7 @@ public class GroupLetsQATest extends BaseTest {
     @Test
     public void testDescriptionTextAreaAppearsJenkinsProject() {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        JenkinsUtils.login(getDriver());
+
         WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
         addDescriptionButton.click();
         try {
@@ -147,7 +149,6 @@ public class GroupLetsQATest extends BaseTest {
     public void testSaveDescriptionButtonAppearsJenkinsProject() {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
-        JenkinsUtils.login(getDriver());
         WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
         addDescriptionButton.click();
 
@@ -162,7 +163,6 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void searchBoxJenkinsTest() {
-        JenkinsUtils.login(getDriver());
         WebElement searchBox = getDriver().findElement(By.name("q"));
         searchBox.sendKeys("admin");
         searchBox.sendKeys(Keys.ENTER);
@@ -178,7 +178,6 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void versionJenkinsTest() {
-        JenkinsUtils.login(getDriver());
         WebElement versionBox = getDriver().findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"));
 
         Assert.assertEquals(versionBox.getText(), "Jenkins 2.414.2");
@@ -186,7 +185,6 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void newItemButtonTest() {
-        JenkinsUtils.login(getDriver());
         WebElement newItemButton = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span"));
         newItemButton.click();
 

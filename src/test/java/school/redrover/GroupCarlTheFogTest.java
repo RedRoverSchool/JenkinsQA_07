@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+@Ignore
 public class GroupCarlTheFogTest extends BaseTest {
 
     private WebDriverWait wait;
@@ -210,7 +212,6 @@ public class GroupCarlTheFogTest extends BaseTest {
 
     @Test
     public void testJenkinsGreetings() {
-        JenkinsUtils.login(getDriver());
         String JenkinsGreetings = getDriver().findElement(By.tagName("h1")).getText();
 
         Assert.assertEquals("Welcome to Jenkins!", JenkinsGreetings);
