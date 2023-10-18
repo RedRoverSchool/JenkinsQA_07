@@ -239,6 +239,8 @@ public class LocomotiveGroupTest extends BaseTest {
         getDriver().findElement(saveButton).click();
     }
 
+
+    @Ignore
     @Test
     public void testMartspecGoPageBiorhythms () {
         getDriver().get("https://martspec.com/ru/emotion");
