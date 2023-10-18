@@ -370,4 +370,23 @@ public class GroupUnicornsTest extends BaseTest {
         String errorMessage = errorMessageField.getText();
         assertEquals(errorMessage, expectedErrorMessage);
     }
+
+    @Test
+    public void testCreateNewJob() {
+
+    final String JOB_NAME = "UnicornProject";
+
+    getDriver().findElement(By.className("content-block__link")).click();
+    getDriver().findElement(By.id("name")).sendKeys("UnicornProject");
+    getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+    getDriver().findElement(By.id("ok-button")).click();
+    getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("First Project");
+    getDriver().findElement(By.name("Submit")).click();
+    getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+    getDriver().findElement(By.className("inside")).click();
+
+    String createdJobName = getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText();
+
+    Assert.assertEquals(createdJobName, String.format("Project %s", JOB_NAME));
+    }
 }

@@ -189,4 +189,42 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertEquals(descriptionParagraph.getText(), paragraphAboutJenkinsText);
     }
 
+    @Test
+    public void testRenameFreeStyleProject() {
+        final String JOBNAME = "FreeStyleProjectJob";
+        final String NEWJOBNAME = "FreeStyleProjectJobNew";
+
+        WebElement newItemButton = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a"));
+        newItemButton.click();
+
+        WebElement inputJobNameField = getDriver().findElement(By.xpath("//*[@id='name']"));
+        inputJobNameField.click();
+        inputJobNameField.sendKeys(JOBNAME);
+
+        WebElement freeStyleProject = getDriver().findElement(By.xpath("//ul[@class='j-item-options']/li[@class='hudson_model_FreeStyleProject']"));
+        freeStyleProject.click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+
+        WebElement jenkinsHomeLink = getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']"));
+        jenkinsHomeLink.click();
+
+        WebElement createdJob = getDriver().findElement(By.xpath("//span[normalize-space()='FreeStyleProjectJob']"));
+        createdJob.click();
+
+        WebElement renameTask = getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]"));
+        renameTask.click();
+
+        WebElement newNameInputField = getDriver().findElement(By.xpath("//input[@checkdependson=\"newName\"]"));
+        newNameInputField.clear();
+        newNameInputField.sendKeys(NEWJOBNAME);
+
+        WebElement confirmRenameButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+        confirmRenameButton.click();
+
+        String jobPageTitle = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText();
+
+        Assert.assertTrue(jobPageTitle.contains(NEWJOBNAME));
+    }
 }

@@ -1,35 +1,29 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-@Ignore
+
 public class PetrovTest extends BaseTest {
-
+    public final static String projectName="TestProject";
     @Test
-    public void testTextBoxForm() {
+    public void testCreateJenkinsProject() {
 
-        getDriver().get("https://demoqa.com/text-box");
+        getDriver().findElement(By.linkText("New Item")).click();
 
-        WebElement fullName = getDriver().findElement(By.xpath("//*[@id=\"userName\"]"));
-        fullName.sendKeys("testName");
+        getDriver().findElement(By.cssSelector("#name")).sendKeys(projectName);
 
-        WebElement email = getDriver().findElement(By.id("userEmail"));
-        email.sendKeys("test@gmail.com");
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
 
-        WebElement submitButton = getDriver().findElement(By.id("submit"));
-        submitButton.click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
 
-        WebElement nameS = getDriver().findElement(By.id("name"));
-        WebElement emailS = getDriver().findElement(By.id("email"));
+        getDriver().findElement(By.linkText(projectName)).click();
 
-        Assert.assertEquals(nameS.getText(), "Name:testName");
-        Assert.assertEquals(emailS.getText(), "Email:test@gmail.com");
-        Assert.assertNotEquals(emailS.getText(), "");
+        String createdProject=getDriver().findElement(By.cssSelector(".job-index-headline")).getText();
+
+        Assert.assertEquals(createdProject, "Project "+projectName);
+
     }
-
 }

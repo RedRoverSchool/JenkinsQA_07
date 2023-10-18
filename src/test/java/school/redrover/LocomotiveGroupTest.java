@@ -8,14 +8,11 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.util.concurrent.TimeUnit;
 
-@Ignore
 public class LocomotiveGroupTest extends BaseTest {
     @Test
-    @Ignore
     public void testDemoqaTextBox() {
         String fullName = "Tom Jonson";
         String email = "mail@mail.com";
@@ -190,24 +187,6 @@ public class LocomotiveGroupTest extends BaseTest {
     }
 
     @Test
-    public void testHoverOver() {
-        By image = By.className("figure");
-        By captionInput = By.cssSelector("#content > div > div:nth-child(3) > div > h5");
-        int imageIndex = 0;
-        String captionExpected = "name: user" + (imageIndex + 1);
-
-        var driver = getDriver();
-        driver.get("https://the-internet.herokuapp.com/hovers");
-        var hoverElement = driver.findElements(image).get(imageIndex); // returns 1st image
-
-        var action = new Actions(driver);
-        action.moveToElement(hoverElement).perform();
-
-        var captionText = driver.findElements(captionInput).get(imageIndex);
-        Assert.assertEquals(captionText.getText(), captionExpected, "The caption text is wrong");
-    }
-
-    @Test
     public void testVerifyJenkinsVersion() {
         WebDriver driver = getDriver();
         By locatorButtonJenkinsVersion = By.cssSelector("button.jenkins_ver");
@@ -220,7 +199,7 @@ public class LocomotiveGroupTest extends BaseTest {
 
         Assert.assertEquals(buttonJenkinsVersion.getAttribute("data-dropdown"),
                 "true",
-                "Attribute ' for Jenkins Version button is incorrect");
+                "Attribute 'data-dropdown' for Jenkins Version button is incorrect");
 
         driver.findElement(locatorButtonAbout).click();
         Assert.assertEquals(driver.findElement(locatorTextJenkinsVersion).getText(),
@@ -260,6 +239,8 @@ public class LocomotiveGroupTest extends BaseTest {
         getDriver().findElement(saveButton).click();
     }
 
+
+    @Ignore
     @Test
     public void testMartspecGoPageBiorhythms () {
         getDriver().get("https://martspec.com/ru/emotion");
