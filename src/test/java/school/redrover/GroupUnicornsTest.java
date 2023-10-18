@@ -5,8 +5,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -20,7 +18,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-@Ignore
+
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
@@ -375,5 +373,21 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
 
     }
+    @Test
+    public void testAgamemnon() {
 
+        getDriver().get("https://rathergood.com/");
+
+        Assert.assertEquals(getDriver().getTitle(), "Rathergood – The Lair Of The Crab Of Ineffable Wisdom");
+
+        getDriver().findElement(By.xpath("//input[@class='search-field']"))
+                .sendKeys("Agamemnon");
+        getDriver().findElement(By.xpath("//input[@class='search-field']"))
+                .sendKeys(Keys.RETURN);
+
+        getDriver().findElement(By.xpath("//a[@href='https://rathergood.com/2015/09/09/agamemnon/']"))
+                .click();
+
+        Assert.assertEquals(getDriver().getTitle(), "Agamemnon – Rathergood");
+    }
 }
