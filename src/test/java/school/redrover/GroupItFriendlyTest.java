@@ -146,7 +146,7 @@ public class GroupItFriendlyTest extends BaseTest {
         //search for an added item and delete this
         Assert.assertTrue(isActualElement(listItems, randomUsername));
         if (isActualElement(listItems, randomUsername)) {
-            driver.findElement(By.xpath("//*[@id=\"job_" + randomUsername + "\"]/td[3]/a"));
+            driver.findElement(By.xpath("//*[@id=\"job_" + randomUsername + "\"]/td[3]/a")).click();
             driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[6]/span/a")).click();
             // accept alert to delete
             Alert alert = driver.switchTo().alert();
