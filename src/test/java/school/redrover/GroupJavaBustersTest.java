@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+import java.time.Duration;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -259,12 +261,9 @@ public class GroupJavaBustersTest extends BaseTest {
     @Test
     public void testCheckVersion() {
         JenkinsUtils.login(getDriver());
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By
-                                .xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button"))
-                        .getText(),
-                "Jenkins 2.414.2");
+        WebElement actualVer = getDriver().findElement(By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button"));
+        String value = actualVer.getText();
+        Assert.assertEquals(value, "Jenkins 2.414.2");
 
     }
 }
