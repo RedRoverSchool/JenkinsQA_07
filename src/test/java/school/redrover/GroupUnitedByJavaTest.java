@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import school.redrover.runner.BaseTest;
@@ -400,7 +402,8 @@ public class GroupUnitedByJavaTest extends BaseTest {
         goToCreateUserPage();
         fillDataFields(userName, password, password, fullname, email);
 
-        String userCreated = getDriver().findElement(By.xpath(String.format("//a[@href='user/%s/']", userName))).getText();
+        String userCreated = (new WebDriverWait(getDriver(), Duration.ofMillis(100)))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(String.format("//a[@href='user/%s/']", userName)))).getText();
 
         assertEquals(userCreated, userName);
     }
