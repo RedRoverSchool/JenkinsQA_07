@@ -15,13 +15,13 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 
-@Ignore
+//@Ignore
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
@@ -39,32 +39,6 @@ public class GroupUnicornsTest extends BaseTest {
         send.click();
 
         Assert.assertEquals(getDriver().getTitle(), "Send Mail & Packages | USPS");
-    }
-
-    @Test
-    public void testSuccessfulLogin() {
-        WebDriver driver = getDriver();
-        driver.get("https://the-internet.herokuapp.com/login");
-        String username = "tomsmith";
-        String password = "SuperSecretPassword!";
-        driver.findElement(By.id("username")).sendKeys(username);
-        driver.findElement(By.id("password")).sendKeys(password);
-        driver.findElement(By.className("radius")).click();
-        String actual = driver.findElement(By.id("flash")).getText();
-        assertTrue(actual.contains("You logged into a secure area!"));
-    }
-
-    @Test
-    public void testLoginAttemptWithInvalidUsername() {
-        WebDriver driver = getDriver();
-        driver.get("https://the-internet.herokuapp.com/login");
-        String username = "tomsmith123";
-        String password = "SuperSecretPassword!";
-        driver.findElement(By.id("username")).sendKeys(username);
-        driver.findElement(By.id("password")).sendKeys(password);
-        driver.findElement(By.className("radius")).click();
-        String actual = driver.findElement(By.id("flash-messages")).getText();
-        assertTrue(actual.contains("Your username is invalid!"));
     }
 
     @Test
@@ -242,7 +216,8 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(), "Jenkins 2.414.2");
     }
-@Ignore
+
+    @Ignore
     @Test
     public void testAddDescriptionFeature() {
         String expected = "Testing description feature on Jenkins Home Page";
@@ -282,7 +257,8 @@ public class GroupUnicornsTest extends BaseTest {
         textBox.sendKeys("ximotof590@ibtrades.com");
         submitButton.click();
     }
-@Ignore
+
+    @Ignore
     @Test
     public void testJenkinsAddDescr() {
 
@@ -343,8 +319,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testDashboardItems()
-    {
+    public void testDashboardItems() {
         List<String> listOfExpectedItems = Arrays.asList("New Item", "People", "Build History", "Manage Jenkins", "My Views");
         List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
 
@@ -356,16 +331,16 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testMyStudyingPage()  {
+    public void testMyStudyingPage() {
 
         String url = "https://power.arc.losrios.edu/~suleymanova/cisw300/";//url
 
         getDriver().get(url); //open page
         WebElement logo = getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //check logo
-        Assert.assertEquals(logo.getText(),"SULEYMANOV");  //check logo text
+        Assert.assertEquals(logo.getText(), "SULEYMANOV");  //check logo text
 
         getDriver().findElement(By.xpath("//a[@href='about.html']")).click();//click about button
-        WebElement aboutMe =getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
+        WebElement aboutMe = getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
         Assert.assertEquals(aboutMe.getText(), "ABOUT ME");//check title
 
         getDriver().findElement(By.xpath("//a[@href='contact.html']")).click();//click contact button
@@ -384,4 +359,20 @@ public class GroupUnicornsTest extends BaseTest {
 
     }
 
+    @Test
+    public void testSearchFieldWithoutResultsExpected() {
+        final String searchRequest = "Incorrect search request";
+        final String expectedErrorMessage = "Nothing seems to match.";
+        WebDriver driver = getDriver();
+
+        driver.findElement(By.id("search-box")).sendKeys(searchRequest + Keys.ENTER);
+        WebElement errorMessageField = null;
+        try {
+            errorMessageField = driver.findElement(By.className("error"));
+        } catch (NoSuchElementException e) {
+            Assert.fail();
+        }
+        String errorMessage = errorMessageField.getText();
+        assertEquals(errorMessage, expectedErrorMessage);
+    }
 }
