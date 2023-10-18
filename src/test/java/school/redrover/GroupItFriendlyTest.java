@@ -154,16 +154,12 @@ public class GroupItFriendlyTest extends BaseTest {
         }
         listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
         Assert.assertFalse(isActualElement(listItems, randomUsername));
-
     }
+    // search item in list items
     private boolean isActualElement(List<WebElement> items, String expecting) {
-        for (WebElement element:items) {
-            if (element.getText().compareTo(expecting) == 0) {
-                return true;
-            }
-        }
-        return false;
+        return items.stream().anyMatch(n -> n.getText().compareTo(expecting) == 0);
     }
+    //get Web elements
     private List<WebElement> getListElements(String xpath) {
         return getDriver().findElements(By.xpath(xpath));
     }
