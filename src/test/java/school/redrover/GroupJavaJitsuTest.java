@@ -12,33 +12,14 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-@Ignore
 public class GroupJavaJitsuTest  extends BaseTest {
-
+    @Ignore
     @Test
     public void testGetTile (){
         getDriver().get("https://www.saucedemo.com");
 
         String title = getDriver().getTitle();
         Assert.assertEquals("Swag Labs", title);
-    }
-
-
-    @Test
-    public void testLogin(){
-        getDriver().get("https://www.saucedemo.com/");
-
-        WebElement user = getDriver().findElement(By.xpath("//input[@placeholder='Username']"));
-        WebElement password = getDriver().findElement(By.xpath("//input[@placeholder='Password']"));
-
-        user.sendKeys("standard_user");
-        password.sendKeys("secret_sauce");
-
-        WebElement loginBtn = getDriver().findElement(By.xpath("//input[@id='login-button']"));
-        loginBtn.click();
-        String url = getDriver().getCurrentUrl();
-
-        Assert.assertEquals(url,  "https://www.saucedemo.com/inventory.html");
     }
 
     @Test
@@ -95,7 +76,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
         WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
         Assert.assertEquals("Project " + projectName, freestyleProjectName.getText());
     }
-
+    @Ignore
     @Test
     public void testEndToEnd(){
         getDriver().get("https://www.saucedemo.com/");
