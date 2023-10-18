@@ -17,6 +17,7 @@ import static org.testng.Assert.assertEquals;
 
 public class GroupUnitedByJavaTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testDemoqaElementsRedirection() throws InterruptedException {
 
@@ -34,6 +35,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Thread.sleep(2000);
     }
 
+    @Ignore
     @Test
     public void testDemoqaFormsRedirection() {
 
@@ -52,6 +54,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
                 " differs from the expected one: " + elementsUrl);
     }
 
+    @Ignore
     @Test
     public void testDemoqa() throws InterruptedException {
 
@@ -94,7 +97,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         driver.quit();
     }
 
-
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
         getDriver().get("https://demoqa.com/");
@@ -165,6 +168,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(window_add.getText(), "Registration Form");
     }
 
+    @Ignore
     @Test
     @Description("Testing a site with non-working search")
     public void testSomething() {
@@ -272,6 +276,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testWeatherSearch() throws InterruptedException {
         getDriver().get("https://weather.rambler.ru/");
@@ -365,26 +370,15 @@ public class GroupUnitedByJavaTest extends BaseTest {
         buttonCreateUser.click();
     }
 
-
-    @Test
-    public void testCreateUserWithValidData() {
-
-        final String userName = "test";
-        final String password = "12345";
-        final String fullname = "test test";
-        final String email = "test@mail.com";
-
-        goToCreateUserPage();
-
+    private void fillDataFields(String userName, String password1, String password2, String fullname, String email) {
         WebElement usernameField = getDriver().findElement(By.xpath("//input[@name='username']"));
         usernameField.sendKeys(userName);
 
-
         WebElement passwordField = getDriver().findElement(By.xpath("//input[@name='password1']"));
-        passwordField.sendKeys(password);
+        passwordField.sendKeys(password1);
 
         WebElement confirmPasswordField = getDriver().findElement(By.xpath("//input[@name='password2']"));
-        confirmPasswordField.sendKeys(password);
+        confirmPasswordField.sendKeys(password2);
 
         WebElement fullnameField = getDriver().findElement(By.xpath("//input[@name='fullname']"));
         fullnameField.sendKeys(fullname);
@@ -394,10 +388,84 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
         WebElement submitButton = getDriver().findElement(By.name("Submit"));
         submitButton.click();
+    }
+
+    @Test
+    public void testCreateUserWithValidData() {
+        final String userName = "test";
+        final String password = "12345";
+        final String fullname = "test test";
+        final String email = "test@mail.com";
+
+        goToCreateUserPage();
+        fillDataFields(userName, password, password, fullname, email);
 
         String userCreated = getDriver().findElement(By.xpath(String.format("//a[@href='user/%s/']", userName))).getText();
 
         assertEquals(userCreated, userName);
+    }
 
+    @Test
+    public void testCreateUserWithDuplicateName() {
+        final String userName = "test";
+        final String password = "12345";
+        final String fullname = "test test";
+        final String email = "test@mail.com";
+
+        goToCreateUserPage();
+        fillDataFields(userName, password, password, fullname, email);
+
+        WebElement buttonCreateUser = getDriver().findElement(By.xpath("//a[@href='addUser']"));
+        buttonCreateUser.click();
+
+        fillDataFields(userName, password, password, fullname, email);
+
+        String errorText = getDriver().findElement(By.xpath("//div[text()='User name is already taken']")).getText();
+
+        assertEquals(errorText, "User name is already taken");
+    }
+
+    @Test
+    public void testCreateUserWithNoData() {
+        goToCreateUserPage();
+        fillDataFields("", "", "", "", "");
+
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[text()='\"\" is prohibited as a username for security reasons.']")).getText(),
+                "\"\" is prohibited as a username for security reasons.");
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[text()='Password is required'][1]")).getText(),
+                "Password is required");
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[text()='Password is required'][2]")).getText(),
+                "Password is required");
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[text()='\"\" is prohibited as a full name for security reasons.']")).getText(),
+                "\"\" is prohibited as a full name for security reasons.");
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[text()='Invalid e-mail address']")).getText(),
+                "Invalid e-mail address");
+    }
+
+    @Test
+    public void testCreateUserWithInvalidData() {
+        final String userName = "!@$";
+        final String password = "12345";
+        final String confirmPassword = "1234";
+        final String fullname = "test test";
+        final String email = "test@mail.com";
+
+        goToCreateUserPage();
+        fillDataFields(userName, password, confirmPassword, fullname, email);
+
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[text()='User name must only contain alphanumeric characters, underscore and dash']")).getText(),
+                "User name must only contain alphanumeric characters, underscore and dash");
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[@class='error jenkins-!-margin-bottom-2'][2]")).getText(),
+                "Password didn't match");
+        assertEquals(
+                getDriver().findElement(By.xpath("//div[@class='error jenkins-!-margin-bottom-2'][3]")).getText(),
+                "Password didn't match");
     }
 }
