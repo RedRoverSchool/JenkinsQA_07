@@ -143,7 +143,8 @@ public class LocomotiveGroupTest extends BaseTest {
 
     @Test
     public void testAddDescriptionJenkinsHomePage() {
-        String description = "My Jenkins home page description";
+        final String description = "My Jenkins home page description";
+
         By submitButton = By.id("description-link");
         By descriptionInputField = By.xpath("//textarea[@name='description']");
         By saveButton = By.xpath("//button[@name='Submit']");
