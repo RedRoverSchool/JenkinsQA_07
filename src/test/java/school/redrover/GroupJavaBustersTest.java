@@ -14,7 +14,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class GroupJavaBustersTest extends BaseTest {
-    @Ignore
 
     @Test
     public void testMovieSearch() {
