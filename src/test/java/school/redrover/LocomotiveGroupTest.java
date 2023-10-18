@@ -255,4 +255,13 @@ public class LocomotiveGroupTest extends BaseTest {
 
     }
 
+    @Test
+    public void testOpenBuildHistory() {
+
+        getDriver().findElement(By.xpath("//*[@href='/view/all/builds']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("jenkins-app-bar__content")).getText(), "Build History of Jenkins");
+
+    }
+
 }
