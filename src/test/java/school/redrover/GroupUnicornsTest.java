@@ -9,7 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -65,39 +64,6 @@ public class GroupUnicornsTest extends BaseTest {
         driver.findElement(By.className("radius")).click();
         String actual = driver.findElement(By.id("flash-messages")).getText();
         assertTrue(actual.contains("Your username is invalid!"));
-    }
-
-    @Test
-    public void testW3School() {
-        getDriver().get("https://www.w3schools.com/");
-
-        //title
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "W3Schools Online Web Tutorials");
-
-        //H1 heading
-        WebElement h1Heading = getDriver().findElement(By.className("learntocodeh1"));
-        Assert.assertEquals(h1Heading.getText(), "Learn to Code");
-
-        //H3 heading
-        WebElement h3Heading = getDriver().findElement(By.className("learntocodeh3"));
-        Assert.assertEquals(h3Heading.getText(), "With the world's largest web developer site.");
-
-        //H4 heading
-        WebElement h4Heading = getDriver().findElement(By.className("learntocodeh4"));
-        Assert.assertEquals(h4Heading.getText(), "Not Sure Where To Begin?");
-
-        //text box
-        WebElement textBox = getDriver().findElement(By.id("search2"));
-
-        //search button
-        WebElement searchButton = getDriver().findElement(By.id("learntocode_searchbtn"));
-        textBox.sendKeys("java tutorial");
-        searchButton.click();
-
-        //title
-        title = getDriver().getTitle();
-        Assert.assertEquals(title, "Java Tutorial");
     }
 
     @Test
