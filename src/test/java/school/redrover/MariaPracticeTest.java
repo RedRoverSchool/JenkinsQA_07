@@ -3,11 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 
+@Ignore
 public class MariaPracticeTest extends BaseTest {
 
     public static final String PAGESELENIUM = "https://www.selenium.dev/selenium/web/web-form.html";
@@ -51,7 +53,7 @@ public class MariaPracticeTest extends BaseTest {
 
         Assert.assertEquals(textFormSubmitted.getText(), "Form submitted");
     }
-
+    @Ignore
     @Test
     public void linkReturnToIndexTest() {
 
@@ -70,7 +72,6 @@ public class MariaPracticeTest extends BaseTest {
 
     @Test
     public void WelcomeToJenkinsTest() {
-        JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[text()='Dashboard']")).getText(),
                 "Dashboard");

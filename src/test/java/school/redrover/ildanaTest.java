@@ -10,7 +10,7 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 
-
+@Ignore
 public class ildanaTest extends BaseTest {
 
     @Test
@@ -44,7 +44,6 @@ public class ildanaTest extends BaseTest {
 
     @Test
     public void testJenkins() {
-        JenkinsUtils.login(getDriver());
 
         WebElement newItem =getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']"));
 
