@@ -345,7 +345,6 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void testDashboardItems()
     {
-        JenkinsUtils.login(getDriver());
         List<String> listOfExpectedItems = Arrays.asList("New Item", "People", "Build History", "Manage Jenkins", "My Views");
         List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
 
