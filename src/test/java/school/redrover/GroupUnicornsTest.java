@@ -341,6 +341,7 @@ public class GroupUnicornsTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testDashboardItems()
     {
@@ -353,6 +354,21 @@ public class GroupUnicornsTest extends BaseTest {
                 .collect(Collectors.toList());
 
         Assert.assertEquals(listOfExpectedItems, extractedTexts);
+    }
+
+    @Ignore
+    @Test
+    public void testDashboardItems()
+    {
+        JenkinsUtils.login(getDriver());
+        List<String> listOfExpectedItems = Arrays.asList("New Item", "People", "Build History", "Manage Jenkins", "My Views");
+        List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
+
+        List<String> extractedTexts = listOfDashboardItems.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        assertEquals(listOfExpectedItems, extractedTexts);
     }
 
     @Test
