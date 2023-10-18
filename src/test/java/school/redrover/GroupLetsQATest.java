@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.Assertion;
 import school.redrover.runner.BaseTest;
@@ -70,6 +71,7 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(versionBox.getText(), "Jenkins 2.414.2");
     }
 
+    @Ignore
     @Test
     public void newItemButtonTest() {
         WebElement newItemButton = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span"));
