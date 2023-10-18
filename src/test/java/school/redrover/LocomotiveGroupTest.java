@@ -215,7 +215,6 @@ public class LocomotiveGroupTest extends BaseTest {
         By locatorTextJenkinsVersion = By.cssSelector("p.app-about-version");
         final String expectedJenkinsVersionText = "Version 2.414.2";
 
-        JenkinsUtils.login(getDriver());
         WebElement buttonJenkinsVersion = driver.findElement(locatorButtonJenkinsVersion);
         buttonJenkinsVersion.click();
 
@@ -248,8 +247,6 @@ public class LocomotiveGroupTest extends BaseTest {
         By descriptionInputField = By.xpath("//textarea[@name='description']");
         By saveButton = By.xpath("//button[@name='Submit']");
 
-        JenkinsUtils.login(getDriver());
-
         getDriver().findElement(submitButton).click();
         getDriver().findElement(descriptionInputField).sendKeys(description);
         getDriver().findElement(saveButton).click();
@@ -262,4 +259,19 @@ public class LocomotiveGroupTest extends BaseTest {
         getDriver().findElement(descriptionInputField).clear();
         getDriver().findElement(saveButton).click();
     }
+
+    @Test
+    public void testMartspecGoPageBiorhythms () {
+        getDriver().get("https://martspec.com/ru/emotion");
+        WebElement buttonForBiorh = getDriver().findElement(By.xpath("//div[@class='col-lg-6 d-table mb-lg-0 mb-4']//a"));
+
+        buttonForBiorh.click();
+
+        //WebElement imageBiorh = getDriver().findElement(By.xpath("//div[@class='col']/img[1]"));
+        // learn how to find a picture on a page
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                "//div[@class='col']/h1")).getText(), "Биоритмы");
+
+    }
+
 }

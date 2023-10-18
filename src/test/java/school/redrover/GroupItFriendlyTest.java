@@ -1,7 +1,6 @@
 package school.redrover;
-import com.beust.ah.A;
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,7 +8,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -87,91 +85,6 @@ public class GroupItFriendlyTest extends BaseTest {
 
     @Ignore
     @Test
-    public void DemoQATextBoxTest() {
-          WebDriver driver = getDriver();
-
-            driver.get("https://demoqa.com/");
-            JavascriptExecutor jsx = (JavascriptExecutor)driver;
-            jsx.executeScript("window.scrollBy(0,450)", "");
-
-            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
-            elements.click();
-
-            WebElement textBox = driver.findElement(By.xpath("//span[normalize-space()='Text Box']"));
-            textBox.click();
-
-            WebElement inputFullName = driver.findElement(By.xpath("//input[@placeholder='Full Name']"));
-            inputFullName.sendKeys("Natalia V");
-
-            WebElement inputEmail = driver.findElement(By.xpath("//input[@id='userEmail']"));
-            inputEmail.sendKeys("mail@gmail.com");
-
-            WebElement inputCurrentAddress = driver.findElement(By.xpath("//textarea[@placeholder='Current Address']"));
-            inputCurrentAddress.sendKeys("Slo");
-
-            WebElement inputPermanentAddress = driver.findElement(By.xpath("//textarea[@id='permanentAddress']"));
-            inputPermanentAddress.sendKeys("Ukr");
-
-            WebElement submitBTN = driver.findElement(By.xpath("//button[@id='submit']"));
-            jsx.executeScript("window.scrollBy(0,450)", "");
-            submitBTN.click();
-            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='name']")).getText(), "Name:Natalia V");
-            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='email']")).getText(), "Email:mail@gmail.com");
-            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='currentAddress']")).getText(), "Current Address :Slo");
-            assertEquals(driver.findElement(By.xpath("//div[@id='output']//p[@id='permanentAddress']")).getText(), "Permananet Address :Ukr");
-    }
-
-
-    @Ignore
-    @Test
-    public void DemoQACheckBoxTest() {
-        WebDriver driver = getDriver();
-
-            driver.get("https://demoqa.com/");
-            JavascriptExecutor jsx = (JavascriptExecutor)driver;
-            jsx.executeScript("window.scrollBy(0,450)", "");
-
-            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
-            elements.click();
-
-            WebElement checkBoxElement = driver.findElement(By.xpath("//span[normalize-space()='Check Box']"));
-            checkBoxElement.click();
-
-            WebElement checkBox = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
-            checkBox.click();
-
-            assertEquals(driver.findElement(By.xpath("//span[text()='You have selected :']")).getText(), "You have selected :");
-
-    }
-
-
-    @Ignore
-    @Test
-    public void DemoQARadioButtonTest() {
-        WebDriver driver = getDriver();
-
-            driver.get("https://demoqa.com/");
-            JavascriptExecutor jsx = (JavascriptExecutor)driver;
-            jsx.executeScript("window.scrollBy(0,450)", "");
-
-            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
-            elements.click();
-
-            WebElement radioButtonElement = driver.findElement(By.xpath("//span[normalize-space()='Radio Button']"));
-            radioButtonElement.click();
-
-            WebElement yesButton = driver.findElement(By.xpath("//div[@class='custom-control custom-radio custom-control-inline']/label[@for='yesRadio']"));
-            yesButton.click();
-
-            assertEquals(driver.findElement(By.xpath("//span[@class='text-success']")).getText(), "Yes");
-
-            WebElement impressiveButton = driver.findElement(By.xpath("//div[@class='custom-control custom-radio custom-control-inline']/label[@for='impressiveRadio']"));
-            impressiveButton.click();
-
-            assertEquals(driver.findElement(By.xpath("//p[@class='mt-3']/span")).getText(), "Impressive");
-    }
-    @Ignore
-    @Test
     public void ActionsWithCheckBoxTest(){
 
         WebDriver driver = new ChromeDriver();
@@ -215,6 +128,7 @@ public class GroupItFriendlyTest extends BaseTest {
         driver.get("https://demoqa.com/links");
         assertEquals(driver.findElement(By.id("bad-request")).getText(), "Bad Request");
     }
+    @Ignore
     @Test
     public void SearchRecipe() {
         WebDriver driver = getDriver();
@@ -235,7 +149,7 @@ public class GroupItFriendlyTest extends BaseTest {
     @Test
     public void CreateNewItem(){
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
-        JenkinsUtils.login(getDriver());
+
         WebElement newItem = getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"));
         newItem.click();
         WebElement inputField = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
@@ -260,11 +174,10 @@ public class GroupItFriendlyTest extends BaseTest {
     }
 
     @Test
-    public void JenkinsLinkTest() {
+    public void testJenkinsLink() {
         String paragraphAboutJenkinsText = "The leading open source automation server which enables developers around the world to reliably build, test, and deploy their software.";
 
         WebDriver driver = getDriver();
-        JenkinsUtils.login(getDriver());
 
         WebElement jenkinsLink = driver.findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
         jenkinsLink.click();

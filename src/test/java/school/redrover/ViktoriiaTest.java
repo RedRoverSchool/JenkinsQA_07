@@ -13,8 +13,6 @@ public class ViktoriiaTest extends BaseTest {
     @Test
     public void testMyViewCreateJob() {
 
-        JenkinsUtils.login(getDriver());
-
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
         getDriver().findElement((By.xpath("//a[@href='newJob']"))).click();
         getDriver().findElement(By.cssSelector("input#name")).sendKeys("new project");

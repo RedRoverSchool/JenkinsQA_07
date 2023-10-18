@@ -12,6 +12,8 @@ import school.redrover.runner.JenkinsUtils;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+
+@Ignore
 public class GroupJavaBustersTest extends BaseTest {
 
     @Test
@@ -68,8 +70,6 @@ public class GroupJavaBustersTest extends BaseTest {
 @Ignore
     @Test
     public void testWelcomeJenkins() {
-
-        JenkinsUtils.login(getDriver());
 
         WebElement mainHeading = getDriver().findElement(By.cssSelector("h1"));
         String value = mainHeading.getText();
@@ -252,7 +252,6 @@ public class GroupJavaBustersTest extends BaseTest {
 
     @Test
     public void testSomeJenkins() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
 
     }

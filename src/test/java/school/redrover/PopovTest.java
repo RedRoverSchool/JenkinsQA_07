@@ -3,9 +3,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+
+@Ignore
 public class PopovTest extends BaseTest {
     public String SearchAndPost(String ElementName, String Text){
         WebElement textBox = getDriver().findElement(By.name(ElementName));

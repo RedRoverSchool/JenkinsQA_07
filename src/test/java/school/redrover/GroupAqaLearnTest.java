@@ -15,7 +15,6 @@ public class GroupAqaLearnTest extends BaseTest {
     @Test
     public void testFirstJenkins() {
 
-        JenkinsUtils.login(getDriver());
         getDriver().findElement(By.xpath("//*[@id='tasks']//span//span")).click();
 
         Assert.assertEquals(

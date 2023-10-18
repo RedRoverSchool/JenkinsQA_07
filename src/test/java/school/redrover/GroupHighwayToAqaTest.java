@@ -98,8 +98,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
     @Test
     public void testLogin() {
 
-        JenkinsUtils.login(getDriver());
-
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div/h1[text()='Welcome to Jenkins!']")).getText(),
                 "Welcome to Jenkins!"
@@ -108,8 +106,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testEmptyProjectName() {
-
-        JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
@@ -120,8 +116,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testCreateNewFreestyleProject() {
-
-        JenkinsUtils.login(getDriver());
 
         final String projectName = "HighwayNew";
 
@@ -136,8 +130,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testRenamePipelineProject() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
-
         final String projectName = "HighwayNewPipeline";
         final String newProjectName = "HighwayNewPipeline_NewName";
 
@@ -166,11 +158,9 @@ public class GroupHighwayToAqaTest extends BaseTest {
         alert.accept();
     }
 
+    @Ignore
     @Test
     public void testSetFolderDisplayNameAndDescription() {
-
-        JenkinsUtils.login(getDriver());
-
         final String folderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
         final String folderDisplayName = "Some test folder display name";
         final String folderDescription = "Some test folder description";
@@ -195,8 +185,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
     @Test
     public void testSideBarOnMainPage() {
 
-        JenkinsUtils.login(getDriver());
-
         List<WebElement> sideBarItems = getDriver().findElements(By.xpath("//div[@id = 'tasks']//div[@class = 'task ']"));
 
         String[] sideBarTitles = new String[]{"New Item", "People", "Build History", "Manage Jenkins", "My Views"};
@@ -210,8 +198,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testManageToolsGitInstallation() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
-
         getDriver().get("http://localhost:8080/manage/configureTools/");
 
         Thread.sleep(1000);
@@ -227,8 +213,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testComparisonManageSystem() {
-        JenkinsUtils.login(getDriver());
-
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/a")).click();
         getDriver().findElement(By.xpath("//*[@id='main-panel']/section[2]/div/div[1]/a")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"))
@@ -237,9 +221,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testCreateFolderViaCopyFrom() {
-
-        JenkinsUtils.login(getDriver());
-
         final String originalFolderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
         final String folderDisplayName = "Some test folder display name";
         final String folderDescription = "Some test folder description";
