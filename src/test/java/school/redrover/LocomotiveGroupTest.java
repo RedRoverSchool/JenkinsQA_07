@@ -11,6 +11,7 @@ import school.redrover.runner.BaseTest;
 import java.util.concurrent.TimeUnit;
 
 public class LocomotiveGroupTest extends BaseTest {
+
     @Ignore
     @Test
     public void checkRadioButton() throws InterruptedException {
