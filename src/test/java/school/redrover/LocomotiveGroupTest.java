@@ -100,25 +100,6 @@ public class LocomotiveGroupTest extends BaseTest {
         RadioButton.click();
     }
 
-    @Ignore
-    @Test
-
-    public void DashboardButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://refero.design/");
-            WebElement bentoBox = driver.findElement(By.xpath("//div[@class='xK9VF'][contains(text(),'Dashboard')]"));
-            Actions actions = new Actions(driver);
-            actions.moveToElement(bentoBox);
-            bentoBox.click();
-
-            Assert.assertEquals(driver.getCurrentUrl(), "https://refero.design/search?page_types[id][]=28&order=popular");
-        } finally {
-            driver.quit();
-        }
-      }
-
-
       @Test
     public void testYandexSearchBar(){
         String url = "https://ya.ru/";
