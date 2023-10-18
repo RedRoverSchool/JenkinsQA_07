@@ -9,8 +9,12 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.Assertion;
 import school.redrover.runner.BaseTest;
+
 import java.time.Duration;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class GroupLetsQATest extends BaseTest {
 
@@ -74,5 +78,30 @@ public class GroupLetsQATest extends BaseTest {
         WebElement newItemSpan = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label"));
 
         Assert.assertEquals(newItemSpan.getText().trim(), "Enter an item name");
+    }
+
+    @Test
+    public void testNewFolderCreation() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("123");
+
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        List<WebElement> itemsList = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside span"));
+        boolean result = false;
+        for (WebElement e : itemsList) {
+            if (e.getText().equals("123")) {
+                result = true;
+                break;
+            }
+        }
+
+        Assert.assertTrue(result);
     }
 }
