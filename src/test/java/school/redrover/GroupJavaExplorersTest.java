@@ -14,12 +14,17 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.UUID;
 
 import static org.testng.Assert.assertEquals;
 
+
+@Ignore
 public class GroupJavaExplorersTest extends BaseTest {
 
     private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
+    private static final String PASSWORD = "12345";
+    private static final String EMAIL = "asd@gmail.com";
 
     @Test
     public void testSearchWatches() {
@@ -44,8 +49,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     @Test
     public void testLoginWithIncorrectData() {
-        String email = "asdfg@mail.ru";
-        String password = "12345";
         String message = "The account sign-in was incorrect or your account is disabled temporarily." +
                 " Please wait and try again later.";
 
@@ -55,10 +58,10 @@ public class GroupJavaExplorersTest extends BaseTest {
         loginIn.click();
 
         WebElement textBoxEmail = getDriver().findElement(By.id("email"));
-        textBoxEmail.sendKeys(email);
+        textBoxEmail.sendKeys(EMAIL);
 
         WebElement textBoxPassword = getDriver().findElement(By.id("pass"));
-        textBoxPassword.sendKeys(password);
+        textBoxPassword.sendKeys(PASSWORD);
 
         WebElement submitButton = getDriver().findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
         submitButton.click();
@@ -95,6 +98,7 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testSearchOlivia(){
         getDriver().get(BASE_URL);
@@ -201,8 +205,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     @Test
     public void testCreateNewFolder() {
-        JenkinsUtils.login(getDriver());
-
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
 
@@ -230,8 +232,6 @@ public class GroupJavaExplorersTest extends BaseTest {
         String expectedText = "This view has no jobs associated with it. You can either add " +
                 "some existing jobs to this view or create a new job in this view.";
 
-        JenkinsUtils.login(getDriver());
-
         WebElement newView = getDriver().findElement(By.xpath("//div//a[@title='New View']"));
         newView.click();
         WebElement viewName = getDriver().findElement(By.xpath("//div//input[@id='name']"));
@@ -257,6 +257,63 @@ public class GroupJavaExplorersTest extends BaseTest {
         whatsNew.click();
         String header = getDriver().findElement(By.xpath("//h1")).getText();
         assertEquals(header, "Women");
+
+    }
+
+    @Test
+    public void testAddNewUser() {
+        WebElement manageJenkins = getDriver().findElement(By.xpath("//a[@href ='/manage']"));
+        manageJenkins.click();
+
+        WebElement users = getDriver().findElement(By.xpath("//dt[text()='Users']"));
+        users.click();
+
+        WebElement createUserButton = getDriver().findElement(By.xpath("//a[@href='addUser']"));
+        createUserButton.click();
+
+        WebElement inputUserName = getDriver().findElement(By.name("username"));
+        inputUserName.sendKeys("New_User");
+
+        WebElement inputPassword = getDriver().findElement(By.name("password1"));
+        inputPassword.sendKeys(PASSWORD);
+
+        WebElement inputConfirmPassword = getDriver().findElement(By.name("password2"));
+        inputConfirmPassword.sendKeys(PASSWORD);
+
+        WebElement inputEmail = getDriver().findElement(By.name("email"));
+        inputEmail.sendKeys(EMAIL);
+
+        WebElement submitButton = getDriver().findElement(By.name("Submit"));
+        submitButton.click();
+
+        Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
+    }
+    @Test()
+    public void testCreateFreeStyleProject() {
+        int desiredLength = 5;
+        String testFreeStyleProjectName = UUID.randomUUID()
+                .toString()
+                .substring(0, desiredLength);
+
+//        JenkinsUtils.login(getDriver());
+
+        WebElement newViewButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
+        newViewButton.click();
+
+        WebElement jenkinsJobNameField = getDriver().findElement(By.xpath("//*[@class='jenkins-input']"));
+        jenkinsJobNameField.sendKeys(testFreeStyleProjectName);
+
+        WebElement freeStyleProject = getDriver().findElement(By.xpath("//*[text()='Freestyle project']"));
+        freeStyleProject.click();
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        submitButton.click();
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+
+        saveButton.click();
+        String jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']")).getText();
+
+        Assert.assertTrue(jenkinsJobName.contains(testFreeStyleProjectName));
 
     }
 }

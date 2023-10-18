@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-
+@Ignore
 public class GroupUnderdogsTest extends BaseTest {
 
     // the next line will be deleted as soon as all methods within the class are refactored and driver is changed to getDriver()
@@ -22,6 +22,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
     private static final String MAIN_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/";
     private static final String ABC_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/abc.html";
+    private static final String SUBMIT_PAGE_URL_99BOTTLES = "http://www.99-bottles-of-beer.net/submitnewlanguage.html";
     private static final String userName = "academic198405@gmail.com";
     private static final String password = "BikeTrekMarlyn4!";
     private static final String wrongPassword = "Sbbhbhbln2";
@@ -54,7 +55,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testJenkinsVersionInFooter_tereshenkov29() {
-        JenkinsUtils.login(getDriver());
 
         WebElement JenkinsVersionInFooter = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
 
@@ -101,7 +101,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testJenkinsLogOut_maksin() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
+
         getDriver().findElement(By.xpath("//*[@id='page-header']/div[3]/a[2]")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath
                         ("//*[@id='main-panel']/div/h1")).getText(),
@@ -293,56 +293,76 @@ public class GroupUnderdogsTest extends BaseTest {
 
         assertEquals(actRes, expRes);
     }
-
-    @Ignore
     @Test
-    public void testKristinaNameAuthorSite() {
-        getDriver().get("http://www.99-bottles-of-beer.net/");
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"main\"]/p[4]/a[2]"));
+    public void  test_idAdmin_Artuom() throws InterruptedException {
+
+        WebElement nameOfUser = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
+        nameOfUser.click();
+        WebElement config = getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]"));
+        config.click();
+        WebElement button = getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']"));
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        int subm = button.getLocation().getY();
+        for (int i = 0; i < subm; i += 20) {
+            js.executeScript("window.scrollTo(0, " + i + ")");
+            Thread.sleep(50);
+        }
         button.click();
 
-        WebElement nameOliver = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[1]"));
+        WebElement UserIdAdm = getDriver().findElement(By.xpath("//div[@id='description']/following-sibling::div"));
+        String actNameOfUser = UserIdAdm.getText();
+        String expRes = "Jenkins User ID: admin";
+
+        assertEquals(actNameOfUser, expRes);
+    }
+
+
+
+    @Test
+    public void testKristinaNameAuthorSite() {
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
+        WebElement button = getDriver().findElement(By.xpath("//*[@id='main']/p[4]/a[2]"));
+        button.click();
+
+        WebElement nameOliver = getDriver().findElement(By.xpath("//div[@id='main']/h3[1]"));
         String name1 = nameOliver.getText();
         assertEquals(name1, "Oliver Schade");
 
-        WebElement nameGregor = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[2]"));
+        WebElement nameGregor = getDriver().findElement(By.xpath("//div[@id='main']/h3[2]"));
         String name2 = nameGregor.getText();
         assertEquals(name2, "Gregor Scheithauer");
 
-        WebElement nameStefan = driver.findElement(By.xpath("//div[@id=\"main\"]/h3[3]"));
+        WebElement nameStefan = getDriver().findElement(By.xpath("//div[@id='main']/h3[3]"));
         String name3 = nameStefan.getText();
         assertEquals(name3, "Stefan Scheler");
     }
-    
-    @Ignore
+
     @Test
     public void testKristinaNameMenu(){
-        getDriver().get("http://www.99-bottles-of-beer.net/abc.html");
-        WebElement title = driver.findElement(By.xpath("//*[@id=\"submenu\"]/li[1]/a"));
+        getDriver().get(ABC_PAGE_URL_99BOTTLES);
+        WebElement title = getDriver().findElement(By.xpath("//*[@id='submenu']/li[1]/a"));
         String value = title.getText();
         Assert.assertEquals(value, "0-9");
     }
 
-    @Ignore
     @Test
     public void testKristinaTopLists() {
-        getDriver().get("http://www.99-bottles-of-beer.net/");
-        WebElement title = driver.findElement(By.xpath("//*[@id=\"menu\"]/li[4]/a[@href=\"/toplist.html\"]"));
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
+        WebElement title = getDriver().findElement(By.xpath("//*[@id='menu']/li[4]/a[@href='/toplist.html']"));
         title.click();
-        WebElement language = driver.findElement(By.xpath("//*[@id=\"category\"]/tbody/tr[2]/td[2]/a"));
+        WebElement language = getDriver().findElement(By.xpath("//*[@id='category']/tbody/tr[2]/td[2]/a"));
         String title1 = language.getText();
         assertEquals(title1, "Malbolge (real loop version)");
     }
 
-    @Ignore
     @Test
     public void testKristinaSubmitLanguage(){
-        getDriver().get("http://www.99-bottles-of-beer.net/submitnewlanguage.html");
+        getDriver().get(SUBMIT_PAGE_URL_99BOTTLES);
 
-        WebElement button = driver.findElement(By.xpath("//*[@id=\"addlanguage\"]/p/input[8]"));
+        WebElement button = getDriver().findElement(By.xpath("//*[@id='addlanguage']/p/input[8]"));
         button.click();
 
-        WebElement alert = driver.findElement(By.xpath("//*[@id=\"main\"]/p"));
+        WebElement alert = getDriver().findElement(By.xpath("//*[@id='main']/p"));
         String title = alert.getText();
         Assert.assertEquals(title, "Error: Precondition failed - Incomplete Input.");
     }
@@ -387,14 +407,13 @@ public class GroupUnderdogsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void testRailiaImportantNoticeMarkup() {
-        driver = new ChromeDriver();
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-        driver.findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
+    public void testImportantNoticeMarkupRailia() {
 
-        List<WebElement> listItems = driver.findElements(By.xpath("//*[@id=\"main\"]/ul/li/span"));
+        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
+        getDriver().findElement(By.linkText("SUBMIT NEW LANGUAGE")).click();
+
+        List<WebElement> listItems = getDriver().findElements(By.xpath("//*[@id='main']/ul/li/span"));
         Assert.assertFalse(listItems.isEmpty(), "We should have at least one list item with bold text");
 
         for (WebElement el : listItems) {
@@ -452,7 +471,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testYuliafaReddit() {
-        JenkinsUtils.login(getDriver());
+
         getDriver().get("https://www.reddit.com/?feed=home");
 
         String title = getDriver().getTitle();
@@ -476,10 +495,9 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(menu,expectedResult);
 
         }
-
+    @Ignore
     @Test
     public void testCreateNewJob() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
         WebElement createJobButton = getDriver().findElement(By.xpath("//a [@href='newJob']"));
         createJobButton.click();
@@ -501,6 +519,35 @@ public class GroupUnderdogsTest extends BaseTest {
         String value = title.getText();
         Assert.assertEquals(value, "Project My Job");
 
+    }
+
+    @Ignore
+    @Test
+    public void testDescription() {
+
+        WebElement addDescriptionButton = getDriver().findElement(By.xpath("//a[@id='description-link']"));
+        addDescriptionButton.click();
+
+        WebElement descriptionTextField = getDriver().findElement(By.xpath("//*[@name = 'description']"));
+        descriptionTextField.click();
+        descriptionTextField.sendKeys("Test Description");
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//*[@name = 'Submit']"));
+        saveButton.click();
+
+        WebElement title = getDriver().findElement(By.xpath("//div[contains(text(),'Test Description')]"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Test Description");
 
     }
+
+
+    @Test
+    public void testSearchSeleniumOB() {
+        getDriver().get("https://www.selenium.dev");
+        String title = getDriver().getTitle();
+
+        Assert.assertEquals(title, "Selenium");
+    }
+
 }

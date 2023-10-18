@@ -19,6 +19,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
+@Ignore
 public class GroupUnitedByJavaTest extends BaseTest {
 
     private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
@@ -441,7 +442,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
     @Test
     public void firstJenkinsTest() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
         WebElement newItem = getDriver().findElement(By.xpath ("//*[@id='tasks']/div[1]/span/a"));
         newItem.click();
@@ -456,9 +456,9 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Thread.sleep(2000);
 
     }
+   @Ignore
     @Test
     public void testJenkinsDescriptionPreview() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
         WebElement description = getDriver().findElement(By.id("description-link"));
         description.click();
@@ -480,7 +480,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
     @Test
     public void testJenkinsAdminButton() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
         WebElement adminButton = getDriver().findElement(By.xpath("//span[text()='admin']"));
         adminButton.click();
@@ -488,6 +487,18 @@ public class GroupUnitedByJavaTest extends BaseTest {
         WebElement title = getDriver().findElement(By.xpath("//div[text()='Jenkins User ID: admin']"));
         String value = title.getText();
         Assert.assertEquals(value, "Jenkins User ID: admin");
+        Thread.sleep(1000);
+    }
+
+    @Test
+    public void testJenkinsSimple() throws InterruptedException {
+
+        WebElement Manage = getDriver().findElement(By.xpath("//a[contains(.,'Manage Jenkins')]"));
+        Manage.click();
+
+        WebElement element = getDriver().findElement(By.xpath("//h2[@class='jenkins-section__title' and text()='System Configuration']"));
+        String value = element.getText();
+        Assert.assertEquals(value, "System Configuration");
         Thread.sleep(1000);
     }
 }

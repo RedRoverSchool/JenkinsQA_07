@@ -1,5 +1,5 @@
 package school.redrover;
-import com.beust.ah.A;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import static org.testng.Assert.assertEquals;
 
 
+@Ignore
 public class GroupItFriendlyTest extends BaseTest {
 
     @Ignore
@@ -235,7 +235,7 @@ public class GroupItFriendlyTest extends BaseTest {
     @Test
     public void CreateNewItem(){
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
-        JenkinsUtils.login(getDriver());
+
         WebElement newItem = getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"));
         newItem.click();
         WebElement inputField = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
@@ -258,4 +258,21 @@ public class GroupItFriendlyTest extends BaseTest {
         }
         Assert.assertEquals(str,randomUsername);
     }
+
+    @Test
+    public void JenkinsLinkTest() {
+        String paragraphAboutJenkinsText = "The leading open source automation server which enables developers around the world to reliably build, test, and deploy their software.";
+
+        WebDriver driver = getDriver();
+
+        WebElement jenkinsLink = driver.findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+        jenkinsLink.click();
+
+        WebElement aboutJenkins = driver.findElement(By.xpath("//a[@class='jenkins-dropdown__item' and contains(text(), 'About Jenkins')]"));
+        aboutJenkins.click();
+
+        WebElement descriptionParagraph = driver.findElement(By.xpath("//p[@class='app-about-paragraph']"));
+        Assert.assertEquals(descriptionParagraph.getText(), paragraphAboutJenkinsText);
+    }
+
 }

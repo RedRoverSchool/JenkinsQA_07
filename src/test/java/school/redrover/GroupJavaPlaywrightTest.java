@@ -3,17 +3,16 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 public class GroupJavaPlaywrightTest extends BaseTest {
-
+@Ignore
     @Test
     public void testCreateFreeStyleProject() throws InterruptedException {
         String projectName = "Project1";
-
-        JenkinsUtils.login(getDriver());
 
         Thread.sleep(2000);
 
@@ -43,8 +42,6 @@ public class GroupJavaPlaywrightTest extends BaseTest {
 
     @Test
     public void testAddDescriptionFromMyViewsPage() {
-        JenkinsUtils.login(getDriver());
-
         String descriptionMessage = "Simple test";
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();

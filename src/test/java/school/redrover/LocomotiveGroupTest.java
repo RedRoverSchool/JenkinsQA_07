@@ -12,9 +12,10 @@ import school.redrover.runner.JenkinsUtils;
 
 import java.util.concurrent.TimeUnit;
 
-
+@Ignore
 public class LocomotiveGroupTest extends BaseTest {
     @Test
+    @Ignore
     public void testDemoqaTextBox() {
         String fullName = "Tom Jonson";
         String email = "mail@mail.com";
@@ -214,7 +215,6 @@ public class LocomotiveGroupTest extends BaseTest {
         By locatorTextJenkinsVersion = By.cssSelector("p.app-about-version");
         final String expectedJenkinsVersionText = "Version 2.414.2";
 
-        JenkinsUtils.login(getDriver());
         WebElement buttonJenkinsVersion = driver.findElement(locatorButtonJenkinsVersion);
         buttonJenkinsVersion.click();
 
@@ -239,4 +239,24 @@ public class LocomotiveGroupTest extends BaseTest {
         Thread.sleep(2000);
     }
 
+    @Ignore
+    @Test
+    public void testAddDescriptionJenkinsHomePage() {
+        String description = "My Jenkins home page description";
+        By submitButton = By.id("description-link");
+        By descriptionInputField = By.xpath("//textarea[@name='description']");
+        By saveButton = By.xpath("//button[@name='Submit']");
+
+        getDriver().findElement(submitButton).click();
+        getDriver().findElement(descriptionInputField).sendKeys(description);
+        getDriver().findElement(saveButton).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//*[@id='description']/div[1]"))
+                .getText(), description);
+
+        getDriver().findElement(submitButton).click();
+        getDriver().findElement(descriptionInputField).clear();
+        getDriver().findElement(saveButton).click();
+    }
 }

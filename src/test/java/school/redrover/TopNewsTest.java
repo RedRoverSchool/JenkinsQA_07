@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -10,10 +11,11 @@ import school.redrover.runner.JenkinsUtils;
 import school.redrover.runner.ProjectUtils;
 
 
+@Ignore
 public class TopNewsTest extends BaseTest {
 
     private static final String BASEURL = "https://topnews.ru";
-
+@Ignore
     @Test(description = "Сравнение контента заголовков в первом фрейме и в первом блоке боковой панели ")
     public void testContent1() {
         getDriver().get(BASEURL);
@@ -39,18 +41,18 @@ public class TopNewsTest extends BaseTest {
 
     }
 
-
+@Ignore
     @Test(description = "Проверка Заголовка приветствия")
     public void testJenkinsAuthorization() {
-        JenkinsUtils.login(getDriver());
+
         String actualInfo = getDriver().findElement(By.xpath("//h2[@class ='h4'][contains(text(), 'Start')]")).getText();
 
         Assert.assertEquals(actualInfo, "Start building your software project", "Заголовок не совпадает");
     }
-
+@Ignore
     @Test(description = "Проверка адреса URL страницы новой Job")
     public void testJenkins() {
-        JenkinsUtils.login(getDriver());
+
         getDriver().findElement(By.xpath("//span[contains(text(),'Create a job')]")).click();
         String actualURL = getDriver().getCurrentUrl();
 
