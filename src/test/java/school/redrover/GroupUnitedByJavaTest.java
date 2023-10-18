@@ -10,22 +10,12 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
-
 import java.time.Duration;
-import java.util.List;
-
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 
-@Ignore
+
 public class GroupUnitedByJavaTest extends BaseTest {
-
-    private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
-    private static final String USERNAME_LOCATOR = "//input[@placeholder='Username']";
-    private static final String PASSWORD_LOCATOR = "//input[@placeholder='Password']";
-    private static final String SUBMIT_BUTTON = "//input[@type='submit']";
 
     @Test
     public void testDemoqaElementsRedirection() throws InterruptedException {
@@ -42,115 +32,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
         String elementsUrl = "https://demoqa.com/elements";
         Assert.assertEquals(currentUrl, elementsUrl);
         Thread.sleep(2000);
-    }
-
-    public static class DataProviders {
-
-        @DataProvider(name = "validPasswordAndName")
-        public static String[][] validPasswordAndName() {
-            return new String[][]{
-                    {"standard_user", "secret_sauce"},
-                    {"problem_user", "secret_sauce"}
-            };
-        }
-
-        @DataProvider(name = "inValidPasswordOrName")
-
-        public static String[][] inValidPasswordOrName() {
-            return new String[][]{
-                    {"user", "secret_sauce"},
-                    {"standard_user", "password"}
-            };
-        }
-
-        @DataProvider(name = "EmptyPasswordOrName")
-        public static String[][] EmptyPasswordOrName() {
-            return new String[][]{
-                    {"", "secret_sauce", "incorrect_username"},
-                    {"performance_glitch_user", "", "incorrect_password"}
-            };
-        }
-    }
-
-    @Test(dataProvider = "validPasswordAndName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
-    @Description("Login with correct username and password")
-    public void testLoginWithCorrectData(String username, String password) {
-
-        getDriver().get(SAUCEDEMO_URL);
-
-        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys(username);
-        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys(password);
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
-
-        assertEquals(getDriver().getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
-    }
-
-
-    @Test(dataProvider = "inValidPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
-    @Description("Login with incorrect username and password")
-    public void TestLoginWithIncorrectData(String username, String password) {
-
-        getDriver().get(SAUCEDEMO_URL);
-
-        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys(username);
-        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys(password);
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
-
-        String errorMessage = "Epic sadface: Username and password do not match any user in this service";
-
-        assertEquals(errorMessage, getDriver().findElement(By.xpath("//h3[@data-test='error']")).getText());
-    }
-
-
-    @Test(dataProvider = "EmptyPasswordOrName", dataProviderClass = GroupUnitedByJavaTest.DataProviders.class)
-    @Description("Login with empty username or password")
-    public void testLoginWithEmptyFields(String username, String password, String flag) {
-
-        getDriver().get(SAUCEDEMO_URL);
-
-        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys(username);
-        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys(password);
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
-
-        if (flag.equals("incorrect_username")) {
-            assertEquals(getDriver().findElement(By.xpath("//h3[@data-test='error']")).getText(), "Epic sadface: Username is required");
-        } else {
-            assertEquals(getDriver().findElement(By.xpath("//h3[@data-test='error']")).getText(), "Epic sadface: Password is required");
-        }
-    }
-
-    @Ignore
-    @Test
-    @Description("Check that the number of items on the home page is correct")
-    public void testCountItemsOnHomePage() {
-
-        getDriver().get(SAUCEDEMO_URL);
-
-        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys("standard_user");
-        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys("secret_sauce");
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
-
-        int numberOfItems = getDriver().findElements(By.xpath("//div[@class='inventory_item_name']")).size();
-
-        assertEquals(numberOfItems, 6);
-    }
-
-    @Test
-    @Description("Check that sotring by price is working properly")
-    public void testSortByPriceDesc() {
-
-        getDriver().get(SAUCEDEMO_URL);
-
-        getDriver().findElement(By.xpath(USERNAME_LOCATOR)).sendKeys("standard_user");
-        getDriver().findElement(By.xpath(PASSWORD_LOCATOR)).sendKeys("secret_sauce");
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
-
-        List<WebElement> listOfItems = getDriver().findElements(By.xpath("//div[@class='inventory_item']"));
-
-        double priceMax = Double.parseDouble(listOfItems.get(0).findElement(By.xpath(".//div[@class='inventory_item_price']")).getText().replace("$", ""));
-        double priceMin = Double.parseDouble(listOfItems.get(5).findElement(By.xpath(".//div[@class='inventory_item_price']")).getText().replace("$", ""));
-
-        assertTrue(priceMax > priceMin);
     }
 
     @Test
@@ -355,37 +236,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
         driver.quit();
     }
 
-    @Test
-    public void testAddItemFromCatalogueToCart() throws InterruptedException {
-        getDriver().get(SAUCEDEMO_URL);
-
-        WebElement usernameField = getDriver().findElement(By.id("user-name"));
-        usernameField.sendKeys("standard_user");
-
-        WebElement passwordField = getDriver().findElement(By.id("password"));
-        passwordField.sendKeys("secret_sauce");
-
-        WebElement login_button = getDriver().findElement(By.className("submit-button"));
-        login_button.click();
-
-        String item_name = "Sauce Labs Fleece Jacket";
-        String quantity = "1";
-
-        WebElement fleece_jacket_to_cart_button = getDriver().findElement(By.id(
-                "add-to-cart-sauce-labs-fleece-jacket"));
-        fleece_jacket_to_cart_button.click();
-
-        WebElement shopping_cart_button = getDriver().findElement(By.className("shopping_cart_container"));
-        shopping_cart_button.click();
-        Thread.sleep(2000);
-
-        String cart_item_name = getDriver().findElement(By.cssSelector(".cart_item_label .inventory_item_name"))
-                .getText();
-        String cart_item_quantity = getDriver().findElement(By.className("cart_quantity")).getText();
-        Assert.assertEquals(cart_item_name, item_name, "The cart does not have " + item_name);
-        Assert.assertEquals(cart_item_quantity, quantity, "The cart quantity is not " + quantity);
-    }
-
     @Ignore
     @Test
     public void testClickElementsLinkText() throws InterruptedException {
@@ -443,7 +293,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
     @Test
     public void firstJenkinsTest() throws InterruptedException {
 
-        WebElement newItem = getDriver().findElement(By.xpath ("//*[@id='tasks']/div[1]/span/a"));
+        WebElement newItem = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a"));
         newItem.click();
 
         String url = getDriver().getCurrentUrl();
@@ -456,7 +306,8 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Thread.sleep(2000);
 
     }
-   @Ignore
+
+    @Ignore
     @Test
     public void testJenkinsDescriptionPreview() throws InterruptedException {
 
@@ -474,7 +325,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         WebElement textPreview = getDriver().findElement(By.className("textarea-preview"));
 
         Assert.assertEquals(textPreview.getText(), descriptionText,
-                textPreview + " differs from " + descriptionText );
+                textPreview + " differs from " + descriptionText);
         Thread.sleep(1000);
     }
 
@@ -500,5 +351,53 @@ public class GroupUnitedByJavaTest extends BaseTest {
         String value = element.getText();
         Assert.assertEquals(value, "System Configuration");
         Thread.sleep(1000);
+    }
+
+    private void goToCreateUserPage() {
+        WebElement buttonManageJenkins = getDriver().findElement(
+                By.xpath("//a[@href = '/manage']"));
+        buttonManageJenkins.click();
+
+        WebElement users = getDriver().findElement(By.xpath("//dt[text()='Users']"));
+        users.click();
+
+        WebElement buttonCreateUser = getDriver().findElement(By.xpath("//a[@href='addUser']"));
+        buttonCreateUser.click();
+    }
+
+
+    @Test
+    public void testCreateUserWithValidData() {
+
+        final String userName = "test";
+        final String password = "12345";
+        final String fullname = "test test";
+        final String email = "test@mail.com";
+
+        goToCreateUserPage();
+
+        WebElement usernameField = getDriver().findElement(By.xpath("//input[@name='username']"));
+        usernameField.sendKeys(userName);
+
+
+        WebElement passwordField = getDriver().findElement(By.xpath("//input[@name='password1']"));
+        passwordField.sendKeys(password);
+
+        WebElement confirmPasswordField = getDriver().findElement(By.xpath("//input[@name='password2']"));
+        confirmPasswordField.sendKeys(password);
+
+        WebElement fullnameField = getDriver().findElement(By.xpath("//input[@name='fullname']"));
+        fullnameField.sendKeys(fullname);
+
+        WebElement emailField = getDriver().findElement(By.xpath("//input[@name='email']"));
+        emailField.sendKeys(email);
+
+        WebElement submitButton = getDriver().findElement(By.name("Submit"));
+        submitButton.click();
+
+        String userCreated = getDriver().findElement(By.xpath(String.format("//a[@href='user/%s/']", userName))).getText();
+
+        assertEquals(userCreated, userName);
+
     }
 }
