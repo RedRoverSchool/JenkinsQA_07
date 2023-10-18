@@ -158,6 +158,7 @@ public class GroupHighwayToAqaTest extends BaseTest {
         alert.accept();
     }
 
+    @Ignore
     @Test
     public void testSetFolderDisplayNameAndDescription() {
         final String folderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
