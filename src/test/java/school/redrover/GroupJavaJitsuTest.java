@@ -15,7 +15,7 @@ import school.redrover.runner.JenkinsUtils;
 public class GroupJavaJitsuTest  extends BaseTest {
     @Ignore
     @Test
-    public void testGetTile (){
+    public void testGetTile() {
         getDriver().get("https://www.saucedemo.com");
 
         String title = getDriver().getTitle();
@@ -23,7 +23,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
     }
 
     @Test
-    public void testFirst() throws InterruptedException{
+    public void testFirst() throws InterruptedException {
 
        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
        newItem.click();
@@ -39,7 +39,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
     }
 
     @Test
-    public void testNewFreestyleProject() throws InterruptedException{
+    public void testNewFreestyleProject() throws InterruptedException {
 
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
@@ -56,7 +56,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
     }
 
     @Test
-    public void testFreestyleProject(){
+    public void testFreestyleProject() {
         String projectName = "FreestyleProject";
 
         WebElement newItem = getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']"));
@@ -78,7 +78,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
     }
     @Ignore
     @Test
-    public void testEndToEnd(){
+    public void testEndToEnd() {
         getDriver().get("https://www.saucedemo.com/");
         WebElement userName = getDriver().findElement(By.cssSelector("input[placeholder='Username']"));
         userName.sendKeys("standard_user");
