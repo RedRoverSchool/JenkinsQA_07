@@ -11,7 +11,7 @@ import org.openqa.selenium.Keys;
 
 
 public class TopNewsTest extends BaseTest {
-    private static final String SEARCH = "ASDASDASD";
+    private static final String SEARCHSTRING = "ASDASDASD";
 
     @Test(description = "Проверка Заголовка приветствия")
     public void testJenkinsAuthorization() {
@@ -49,7 +49,7 @@ public class TopNewsTest extends BaseTest {
     @Test
     public void testSearchContext() {
 
-        getDriver().findElement(By.xpath("//input[@id= 'search-box']")).sendKeys(SEARCH);
+        getDriver().findElement(By.xpath("//input[@id= 'search-box']")).sendKeys(SEARCHSTRING);
         getDriver().findElement(By.xpath("//input[@id= 'search-box']")).sendKeys(Keys.ENTER);
 
         String expectedTextResultSearch = getDriver().findElement(By.className("error")).getText();
