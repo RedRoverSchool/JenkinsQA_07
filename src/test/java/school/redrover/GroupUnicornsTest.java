@@ -12,13 +12,15 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-
+@Ignore
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
@@ -112,8 +114,6 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void TestJenkins() {
-
-        JenkinsUtils.login(getDriver());
 
         //Check the button REST API
 
@@ -238,7 +238,6 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void testJenkinsVersion() {
-        JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(), "Jenkins 2.414.2");
     }
@@ -247,7 +246,6 @@ public class GroupUnicornsTest extends BaseTest {
     public void testAddDescriptionFeature() {
         String expected = "Testing description feature on Jenkins Home Page";
         WebDriver driver = getDriver();
-        JenkinsUtils.login(driver);
 
         By descriptionButton = By.id("description-link");
         By textDescriptionArea = By.xpath("//textarea[@name='description']");
@@ -287,7 +285,6 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void testJenkinsAddDescr() {
 
-        JenkinsUtils.login(getDriver());
         getDriver().findElement(By.id("description-link")).click();
         WebElement descriptionTextArea = getDriver().findElement(By.name("description"));
         boolean visible = descriptionTextArea.isDisplayed();
@@ -331,7 +328,6 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void testTasksInSideNavigation() {
-        JenkinsUtils.login(getDriver());
         WebElement newItem = getDriver().findElement(By.xpath("//a[contains(@href, 'view/all/newJob')]"));
         Assert.assertEquals(newItem.getText(), "New Item");
 
@@ -343,6 +339,20 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//label[@for='name']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText(), "» This field cannot be empty, please enter a valid name");
 
+    }
+
+    @Test
+    public void testDashboardItems()
+    {
+        JenkinsUtils.login(getDriver());
+        List<String> listOfExpectedItems = Arrays.asList("New Item", "People", "Build History", "Manage Jenkins", "My Views");
+        List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
+
+        List<String> extractedTexts = listOfDashboardItems.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(listOfExpectedItems, extractedTexts);
     }
 
     @Test

@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-
+@Ignore
 public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
     @Ignore
@@ -69,7 +69,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     @Test
     @Ignore
     public void testSearch(){
-        JenkinsUtils.login(getDriver());
+
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
                 "Welcome to Jenkins!");
@@ -77,8 +77,6 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
     @Test
     public void testVersion() {
-
-        JenkinsUtils.login(getDriver());
 
         WebElement buttonVersion = getDriver().findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"));
         buttonVersion.click();

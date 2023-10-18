@@ -16,7 +16,6 @@ public class LifantsovaTest extends BaseTest {
 
     @Test
     public void testJenkins() {
-        JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(getDriver().findElement(By.id("description-link")).getText(),
                 "Add description");

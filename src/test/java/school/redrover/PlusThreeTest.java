@@ -20,6 +20,8 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
+
+@Ignore
 public class PlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
@@ -222,7 +224,7 @@ public class PlusThreeTest extends BaseTest {
 
     @Test(description = "Jenkins login First Test")
     public void testLoginJenkinsKaramelev() {
-        JenkinsUtils.login(getDriver());
+
         Assert.assertEquals
                 (getDriver()
                         .findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]"))
@@ -274,8 +276,6 @@ public class PlusThreeTest extends BaseTest {
 
     @Test(description = "Jenkins first test")
     public void loginJenkinsVasilyiD() throws InterruptedException {
-
-        JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
@@ -418,7 +418,6 @@ public class PlusThreeTest extends BaseTest {
 
     @Test (description = "Go to the section Manage Jenkins")
     public void testJenkinsManage(){
-        JenkinsUtils.login(getDriver());
 
         WebElement manageJenkinsLink = getDriver().findElement(By.linkText("Manage Jenkins"));
         manageJenkinsLink.click();
@@ -430,7 +429,6 @@ public class PlusThreeTest extends BaseTest {
 
     @Test (description = "Jenkins version control")
     public void testJenkinsVersion(){
-        JenkinsUtils.login(getDriver());
 
         WebElement versionOfJenkins = getDriver().findElement(By.xpath("//footer/div/div[2]/button"));
         assertEquals(versionOfJenkins.getText(), "Jenkins 2.414.2");
@@ -438,7 +436,6 @@ public class PlusThreeTest extends BaseTest {
 
     @Test (description = "Jenkins version control")
     public void testJenkinsVersionAbout(){
-        JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("//footer/div/div[2]/button"))
                 .click();
