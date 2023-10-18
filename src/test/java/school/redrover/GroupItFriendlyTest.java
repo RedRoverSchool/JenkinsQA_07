@@ -227,4 +227,21 @@ public class GroupItFriendlyTest extends BaseTest {
 
         Assert.assertTrue(jobPageTitle.contains(NEWJOBNAME));
     }
+
+    @Test
+    public void testVerifyEmptyItemNameWarningMessage() {
+
+        final String WARNING_MESSAGE_TEXT_EXPECTED = "» This field cannot be empty, please enter a valid name";
+        final String CSS_COLOR_WARNING_MESSAGE_EXPECTED = "rgba(255, 0, 0, 1)";
+
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//ul[@class='j-item-options']/li[@class='hudson_model_FreeStyleProject']")).click();
+
+        String warningMessageTextActual = getDriver().findElement(By.xpath("//div[@id=\"itemname-required\"]")).getText();
+        String cssColorWarningMessageActual = getDriver().findElement(By.xpath("//div[@id=\"itemname-required\"]")).getCssValue("color");
+
+        Assert.assertEquals(cssColorWarningMessageActual, CSS_COLOR_WARNING_MESSAGE_EXPECTED);
+        Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
+    }
+
 }
