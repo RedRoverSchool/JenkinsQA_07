@@ -295,7 +295,7 @@ public class GroupJavaExplorersTest extends BaseTest {
                 .toString()
                 .substring(0, desiredLength);
 
-        JenkinsUtils.login(getDriver());
+//        JenkinsUtils.login(getDriver());
 
         WebElement newViewButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
         newViewButton.click();
