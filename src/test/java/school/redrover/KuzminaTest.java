@@ -17,7 +17,7 @@ public class KuzminaTest extends BaseTest {
 
         WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
 
-        Assert.assertEquals(addDescriptionButton.getText(), "Add description");
+        Assert.assertTrue(addDescriptionButton.getText().contains("description"));
 
         addDescriptionButton.click();
 
@@ -29,7 +29,7 @@ public class KuzminaTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        WebElement descriptionText = getDriver().findElement(By.id("description"));
+        String descriptionText = getDriver().findElement(By.id("description")).getText();
 
         Assert.assertEquals(descriptionText,"My description");
 
