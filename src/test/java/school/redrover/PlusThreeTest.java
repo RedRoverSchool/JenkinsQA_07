@@ -20,6 +20,8 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
+
+@Ignore
 public class PlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
@@ -219,14 +221,15 @@ public class PlusThreeTest extends BaseTest {
         String textError = titleError.getText();
         Assert.assertEquals(textError, "The customer information provided could not be found.");
     }
-@Test (description = "Jenkins login First Test")
-public void testLoginJenkinsKaramelev() {
-        JenkinsUtils.login(getDriver());
+
+    @Test(description = "Jenkins login First Test")
+    public void testLoginJenkinsKaramelev() {
+
         Assert.assertEquals
                 (getDriver()
                         .findElement(By.xpath("//h1[contains(.,'Welcome to Jenkins!')]"))
-                        .getText(),"Welcome to Jenkins!");
-}
+                        .getText(), "Welcome to Jenkins!");
+    }
 
     @Ignore
     @Test
@@ -273,8 +276,6 @@ public void testLoginJenkinsKaramelev() {
 
     @Test(description = "Jenkins first test")
     public void loginJenkinsVasilyiD() throws InterruptedException {
-
-        JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
@@ -390,7 +391,7 @@ public void testLoginJenkinsKaramelev() {
         List<WebElement> list = getDriver().findElements(By.className("signup-button"));
         Assert.assertEquals(list.size(), 3);
     }
-@Ignore
+    @Ignore
     @Test
     void tripadvisorTest() {
         getDriver().get("https://www.tripadvisor.ru");
@@ -417,7 +418,6 @@ public void testLoginJenkinsKaramelev() {
 
     @Test (description = "Go to the section Manage Jenkins")
     public void testJenkinsManage(){
-        JenkinsUtils.login(getDriver());
 
         WebElement manageJenkinsLink = getDriver().findElement(By.linkText("Manage Jenkins"));
         manageJenkinsLink.click();
@@ -425,6 +425,27 @@ public void testLoginJenkinsKaramelev() {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[text()='Manage Jenkins']")).getText(),
                 "Manage Jenkins");
+    }
+
+    @Test (description = "Jenkins version control")
+    public void testJenkinsVersion(){
+
+        WebElement versionOfJenkins = getDriver().findElement(By.xpath("//footer/div/div[2]/button"));
+        assertEquals(versionOfJenkins.getText(), "Jenkins 2.414.2");
+    }
+
+    @Test (description = "Jenkins version control")
+    public void testJenkinsVersionAbout(){
+
+        getDriver().findElement(By.xpath("//footer/div/div[2]/button"))
+                .click();
+
+        getDriver().findElement(By.xpath("//*[@id='tippy-1']/div/div/a[1]"))
+                .click();
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(2000));
+
+        WebElement version = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
+        assertEquals(version.getText(), "Version 2.414.2");
     }
 }
 

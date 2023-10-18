@@ -1,31 +1,37 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 
 @Ignore
-public class KuzminaTest {
+public class KuzminaTest extends BaseTest {
 
     @Test
     public void testParksOpening() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://parks.canada.ca/pn-np");
+        getDriver().get("https://parks.canada.ca/pn-np");
 
-        String firstTitle = driver.getTitle();
+        String firstTitle = getDriver().getTitle();
         Assert.assertEquals(firstTitle, "National parks");
 
-        WebElement findANationalParkButton = driver.findElement(By.xpath("//a[normalize-space()='Find a national park']"));
+        WebElement findANationalParkButton = getDriver().findElement(By.xpath("//a[normalize-space()='Find a national park']"));
         findANationalParkButton.click();
 
-        String secondTitle = driver.getTitle();
+        String secondTitle = getDriver().getTitle();
         Assert.assertEquals(secondTitle, "Find a national park");
 
-        driver.quit();
+        WebElement geoMapHelpButton = getDriver().findElement(By.className("geomap-help-btn"));
+        geoMapHelpButton.click();
+
+        WebElement panelTitle = getDriver().findElement(By.className("panel-title"));
+        String panelTitleText = panelTitle.getText();
+        Assert.assertEquals(panelTitleText, "Instructions: Map Navigation");
+        
+
+
     }
 }

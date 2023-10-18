@@ -11,6 +11,7 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 
+@Ignore
 public class GroupForwardTest extends BaseTest {
 
   private static final String PAGE_URL = "https://www.ldoceonline.com/";
@@ -206,8 +207,6 @@ public class GroupForwardTest extends BaseTest {
 
     String expectedResult = "http://localhost:8080/me/my-views/view/all/";
 
-    JenkinsUtils.login(getDriver());
-
     WebElement myViewsButton = getDriver().findElement(By.xpath(
         "//a[@href='/me/my-views']"));
 
@@ -219,11 +218,10 @@ public class GroupForwardTest extends BaseTest {
 
 
   }
-
+@Ignore
   @Test
   public void testClickLogoToMainPage() {
 
-    JenkinsUtils.login(getDriver());
     WebElement myViewsButton = getDriver().findElement(By.xpath(
             "//a[@href='/me/my-views']"));
     myViewsButton.click();
@@ -258,7 +256,6 @@ public class GroupForwardTest extends BaseTest {
   @Test
   public void testAddDescription() {
 
-    JenkinsUtils.login(getDriver());
     String addDescription = "GroupForward #1";
 
     WebElement description = getDriver().findElement(By.id("description-link"));

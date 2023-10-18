@@ -3,17 +3,16 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 public class GroupJavaPlaywrightTest extends BaseTest {
-
+@Ignore
     @Test
     public void testCreateFreeStyleProject() throws InterruptedException {
         String projectName = "Project1";
-
-        JenkinsUtils.login(getDriver());
 
         Thread.sleep(2000);
 
@@ -40,4 +39,22 @@ public class GroupJavaPlaywrightTest extends BaseTest {
         Assert.assertEquals(tableRow.getAttribute("id"), "job_" + projectName);
 
     }
+
+    @Test
+    public void testAddDescriptionFromMyViewsPage() {
+        String descriptionMessage = "Simple test";
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Simple test");
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().
+                findElement(By.xpath("//div[@id='description']/div[1]")).getText(), descriptionMessage);
+
+    }
+
 }

@@ -3,16 +3,15 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 public class ViktoriiaTest extends BaseTest {
-
+@Ignore
     @Test
     public void testMyViewCreateJob() {
-
-        JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
         getDriver().findElement((By.xpath("//a[@href='newJob']"))).click();

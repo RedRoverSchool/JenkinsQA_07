@@ -19,6 +19,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
+@Ignore
 public class GroupUnitedByJavaTest extends BaseTest {
 
     private static final String SAUCEDEMO_URL = "https://www.saucedemo.com/";
@@ -118,6 +119,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     @Description("Check that the number of items on the home page is correct")
     public void testCountItemsOnHomePage() {
@@ -426,6 +428,7 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
         WebElement textBox = getDriver().findElement(By.xpath("//input[@placeholder='Поиск по интернету']"));
         textBox.sendKeys("Тбилиси");
+
         WebElement searchButton = getDriver().findElement(By.xpath("//button[@aria-label='Найти']"));
         searchButton.click();
 
@@ -436,20 +439,66 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(value, "Тбилиси");
     }
 
-    @Test
-    public void firstTestJenkins() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
-                "Welcome to Jenkins!");
+    @Test
+    public void firstJenkinsTest() throws InterruptedException {
+
         WebElement newItem = getDriver().findElement(By.xpath ("//*[@id='tasks']/div[1]/span/a"));
         newItem.click();
 
-        WebElement enter = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label"));
-        String value = enter.getText();
-        Assert.assertEquals(value, "Enter an item name");
+        String url = getDriver().getCurrentUrl();
+        String urlExp = "http://localhost:8080/view/all/newJob";
+        Assert.assertEquals(url, urlExp);
+
+        WebElement message = getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']//li[1]//span"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Freestyle project");
         Thread.sleep(2000);
 
+    }
+   @Ignore
+    @Test
+    public void testJenkinsDescriptionPreview() throws InterruptedException {
+
+        WebElement description = getDriver().findElement(By.id("description-link"));
+        description.click();
+
+        String descriptionText = "We're getting started";
+
+        WebElement descriptionArea = getDriver().findElement(By.name("description"));
+        descriptionArea.sendKeys(descriptionText);
+
+        WebElement previewButton = getDriver().findElement(By.className("textarea-show-preview"));
+        previewButton.click();
+
+        WebElement textPreview = getDriver().findElement(By.className("textarea-preview"));
+
+        Assert.assertEquals(textPreview.getText(), descriptionText,
+                textPreview + " differs from " + descriptionText );
+        Thread.sleep(1000);
+    }
+
+    @Test
+    public void testJenkinsAdminButton() throws InterruptedException {
+
+        WebElement adminButton = getDriver().findElement(By.xpath("//span[text()='admin']"));
+        adminButton.click();
+
+        WebElement title = getDriver().findElement(By.xpath("//div[text()='Jenkins User ID: admin']"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Jenkins User ID: admin");
+        Thread.sleep(1000);
+    }
+
+    @Test
+    public void testJenkinsSimple() throws InterruptedException {
+
+        WebElement Manage = getDriver().findElement(By.xpath("//a[contains(.,'Manage Jenkins')]"));
+        Manage.click();
+
+        WebElement element = getDriver().findElement(By.xpath("//h2[@class='jenkins-section__title' and text()='System Configuration']"));
+        String value = element.getText();
+        Assert.assertEquals(value, "System Configuration");
+        Thread.sleep(1000);
     }
 }

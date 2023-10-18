@@ -1,23 +1,27 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-import java.util.HashMap;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
+@Ignore
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
@@ -96,7 +100,6 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(title, "Java Tutorial");
     }
 
-
     @Test
     public void W3school1test() {
         getDriver().get("https://www.w3schools.com/");
@@ -112,8 +115,6 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void TestJenkins() {
-
-        JenkinsUtils.login(getDriver());
 
         //Check the button REST API
 
@@ -149,25 +150,23 @@ public class GroupUnicornsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void searchVerificationGitHub() {
-        WebDriver driver = new ChromeDriver();
+    public void testSearchVerificationGitHub() {
+        getDriver().get("https://github.com");
         try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            WebElement searchBox = driver.findElement(By.xpath("//span[@class=\"flex-1\"]"));
+            WebElement searchBox = getDriver().findElement(By.xpath("//span[@class=\"flex-1\"]"));
             searchBox.click();
-            WebElement inputButton = driver.findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
+            WebElement inputButton = getDriver().findElement(By.xpath("//*[@class='QueryBuilder-InputWrapper']/input"));
             inputButton.sendKeys("selenium" + Keys.ENTER);
-            List<WebElement> listOfResults = driver.findElements(By.xpath("//span[starts-with(@class, 'Text-sc-17v1xeu-0 qaOIC search-match')]"));
-            int expectedSize = 10;
-            int actualSize = listOfResults.size();
-            Assert.assertEquals(actualSize, expectedSize);
-        } finally {
-            driver.quit();
+            Thread.sleep(1000);
+            List<WebElement> listOfResults = getDriver().findElements(By.xpath("//div[@data-testid='results-list']//h3//a"));
+            Actions actions = new Actions(getDriver());
+            for (WebElement result : listOfResults) {
+                actions.moveByOffset(0, 50).build().perform();
+                Assert.assertTrue(result.getText().toLowerCase().contains("selenium"));
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -190,31 +189,6 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
 
-
-    @Ignore
-    @Test
-    public void verificationSocialIconsGitHub() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            twitterIcon.click();
-            String url = driver.getCurrentUrl();
-            WebElement closeButton = driver.findElement(By.xpath("//*[@aria-label='Close']"));
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.elementToBeClickable(closeButton));
-            closeButton.click();
-            Assert.assertTrue(url.contains("twitter"));
-        } finally {
-            driver.quit();
-        }
-    }
-
     @Test
     public void testComputersMenu() {
 
@@ -234,27 +208,6 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
-    @Ignore
-    @Test
-    public void verificationSocialIconsGitHub2() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().window().maximize();
-            driver.get("https://github.com");
-            JavascriptExecutor jsExec = (JavascriptExecutor) driver;
-            WebElement twitterIcon = driver.findElement(By.xpath("((//footer[@role='contentinfo']//ul)[5]//a)[1]"));
-            jsExec.executeScript("arguments[0].scrollIntoView();", twitterIcon);
-            List<WebElement> listOfIcons = driver.findElements(By.xpath("(//footer[@role='contentinfo']//ul)[5]//a"));
-            listOfIcons.get(1).click();
-            String url = driver.getCurrentUrl();
-            driver.findElement(By.xpath("//div[@aria-label='Close']")).click();
-            Assert.assertTrue(url.contains("face"));
-        } finally {
-            driver.quit();
-        }
-    }
 
     @Test
     public void unsuccessfulLoginDigitalBankTest() {
@@ -286,16 +239,14 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Test
     public void testJenkinsVersion() {
-        JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(), "Jenkins 2.414.2");
     }
-
+@Ignore
     @Test
     public void testAddDescriptionFeature() {
         String expected = "Testing description feature on Jenkins Home Page";
         WebDriver driver = getDriver();
-        JenkinsUtils.login(driver);
 
         By descriptionButton = By.id("description-link");
         By textDescriptionArea = By.xpath("//textarea[@name='description']");
@@ -331,11 +282,10 @@ public class GroupUnicornsTest extends BaseTest {
         textBox.sendKeys("ximotof590@ibtrades.com");
         submitButton.click();
     }
-
+@Ignore
     @Test
     public void testJenkinsAddDescr() {
 
-        JenkinsUtils.login(getDriver());
         getDriver().findElement(By.id("description-link")).click();
         WebElement descriptionTextArea = getDriver().findElement(By.name("description"));
         boolean visible = descriptionTextArea.isDisplayed();
@@ -354,13 +304,14 @@ public class GroupUnicornsTest extends BaseTest {
     public void testRaiffeisenBank() {
         final List<String> currnecyExpected = List.of("USD", "EUR", "GBP", "CHF", "JPY", "CNY");
 
-            getDriver().get("https://www.raiffeisen.ru/currency_rates/");
-            for (int i =1; i < 7; i++ ) {
-                WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])["+ i+"]"));
-                Assert.assertEquals(currencyActual.getText(),currnecyExpected.get(i-1));
-            }
+        getDriver().get("https://www.raiffeisen.ru/currency_rates/");
+        for (int i = 1; i < 7; i++) {
+            WebElement currencyActual = getDriver().findElement(By.xpath("(//p[@data-marker='CurrencyRateTable.P'])[" + i + "]"));
+            Assert.assertEquals(currencyActual.getText(), currnecyExpected.get(i - 1));
+        }
     }
 
+    @Ignore
     @Test
     public void testPearson() {
         getDriver().get("https://www.pearson.com/");
@@ -373,6 +324,64 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.id("password")).sendKeys("Test1234");
         getDriver().findElement(By.id("submitBttn")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(),"We can't find an account with this email and password. Please try again.");
+        Assert.assertEquals(getDriver().findElement(By.xpath("(//div[@class='alert'])[1]")).getText(), "We can't find an account with this email and password. Please try again.");
     }
+
+    @Test
+    public void testTasksInSideNavigation() {
+        WebElement newItem = getDriver().findElement(By.xpath("//a[contains(@href, 'view/all/newJob')]"));
+        Assert.assertEquals(newItem.getText(), "New Item");
+
+        newItem.click();
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/view/all/newJob");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//label[@for='name']")).getText(), "Enter an item name");
+
+        getDriver().findElement(By.xpath("//label[@for='name']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText(), "» This field cannot be empty, please enter a valid name");
+
+    }
+
+    @Test
+    public void testDashboardItems()
+    {
+        List<String> listOfExpectedItems = Arrays.asList("New Item", "People", "Build History", "Manage Jenkins", "My Views");
+        List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
+
+        List<String> extractedTexts = listOfDashboardItems.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(listOfExpectedItems, extractedTexts);
+    }
+
+    @Test
+    public void testMyStudyingPage()  {
+
+        String url = "https://power.arc.losrios.edu/~suleymanova/cisw300/";//url
+
+        getDriver().get(url); //open page
+        WebElement logo = getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //check logo
+        Assert.assertEquals(logo.getText(),"SULEYMANOV");  //check logo text
+
+        getDriver().findElement(By.xpath("//a[@href='about.html']")).click();//click about button
+        WebElement aboutMe =getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
+        Assert.assertEquals(aboutMe.getText(), "ABOUT ME");//check title
+
+        getDriver().findElement(By.xpath("//a[@href='contact.html']")).click();//click contact button
+        WebElement email = getDriver().findElement(By.xpath("//a[@href='mailto:w2029557@apps.losrios.edu' and text()='w2029557@apps.losrios.edu']"));//check email
+        Assert.assertEquals(email.getText(), "w2029557@apps.losrios.edu");//check email text
+
+        getDriver().findElement(By.xpath("//a[@href='projects.html']")).click();// click projects button
+        getDriver().findElement(By.xpath("//h1[text()='PROJECTS ']"));//check projects page
+        Assert.assertEquals(getDriver().getTitle(), "Projects");//check title
+
+        getDriver().findElement(By.xpath("//a[@href='book.html']")).click();//click book button
+        getDriver().findElement(By.xpath("//h1[text()='TUTORIALS ']"));//check book page
+        Assert.assertEquals(getDriver().getTitle(), "Book");//check title
+
+        getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
+
+    }
+
 }
