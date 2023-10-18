@@ -1,12 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -178,6 +176,7 @@ public class GroupUnderdogsTest extends BaseTest {
         String text = incorrectUser.getText();
         assertEquals(text, "Incorrect username or password");
     }
+
     @Ignore
     @Test
     public void testMarlin4_Artuom() throws InterruptedException {
@@ -211,6 +210,7 @@ public class GroupUnderdogsTest extends BaseTest {
         String bikeName = marlin4.getText();
         assertEquals(bikeName, "Marlin 4 Gen 2");
     }
+
     public void closePromoDrawerIfVisible() {
         WebElement promoDrawer = getDriver().findElement(By.className("promo-drawer__drawer"));
         String drawerStatus = promoDrawer.getAttribute("data-drawer-status");
@@ -222,6 +222,7 @@ public class GroupUnderdogsTest extends BaseTest {
             }
         }
     }
+
     @Ignore
     @Test
     public void testEnd_to_End_Artuom() throws InterruptedException {
@@ -293,6 +294,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
         assertEquals(actRes, expRes);
     }
+
     @Test
     public void  test_idAdmin_Artuom() throws InterruptedException {
 
@@ -315,8 +317,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
         assertEquals(actNameOfUser, expRes);
     }
-
-
 
     @Test
     public void testKristinaNameAuthorSite() {
@@ -368,46 +368,6 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testBrowseLanguagesKotlin() {
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-
-        WebElement browseLanguagesBtn = getDriver().findElement(By.xpath("//li/a[text()='Browse Languages']"));
-        browseLanguagesBtn.click();
-
-        WebElement letterLink = getDriver().findElement(By.xpath("//li/a[text()='K']"));
-        letterLink.click();
-
-        WebElement languageLink = getDriver().findElement(By.xpath("//a[contains(@href, 2901)]"));
-        languageLink.click();
-
-        WebElement languagePageHeader = getDriver().findElement(By.xpath("//div[@id='main']/h2"));
-        String pageHeader = languagePageHeader.getText();
-
-        assertEquals(pageHeader, "Language Kotlin");
-    }
-
-    @Test
-    public void testSearchLanguages() {
-        final String partOfWordToSearch = "kot";
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-
-        WebElement searchLanguagesBtn = getDriver().findElement(By.xpath("//li/a[text()='Search Languages']"));
-        searchLanguagesBtn.click();
-
-        WebElement searchField = getDriver().findElement(By.xpath("//input[@name='search']"));
-        searchField.sendKeys(partOfWordToSearch);
-
-        WebElement goBtn = getDriver().findElement(By.xpath("//input[@name='submitsearch']"));
-        goBtn.click();
-
-        List<WebElement> searchResult = getDriver().findElements(By.xpath("//td/a[contains(@href,'language')]"));
-        for (WebElement element : searchResult) {
-            Assert.assertTrue(element.getText().toLowerCase().contains(partOfWordToSearch));
-            assertEquals(element.getTagName(), "a");
-        }
-    }
-
-    @Test
     public void testImportantNoticeMarkupRailia() {
 
         getDriver().get(MAIN_PAGE_URL_99BOTTLES);
@@ -425,24 +385,7 @@ public class GroupUnderdogsTest extends BaseTest {
                 assertEquals(textColor, "rgba(255, 255, 255, 1)");
                 assertEquals(notificationText, notificationText.toUpperCase());
             }
-
         }
-    }
-
-    @Test
-    public void testNamesOfCreatorsOfSite() {
-        List<String> teamMembers = Arrays.asList("Oliver Schade", "Gregor Scheithauer", "Stefan Scheler");
-        getDriver().get(MAIN_PAGE_URL_99BOTTLES);
-
-        WebElement teamLink = getDriver().findElement(By.xpath("//a[text()='Team']"));
-        teamLink.click();
-
-        List<WebElement> creators = getDriver().findElements(By.xpath("//h3"));
-        List<String> namesOfCreators = new ArrayList<>();
-        for (WebElement element : creators) {
-            namesOfCreators.add(element.getText());
-        }
-        assertEquals(namesOfCreators, teamMembers);
     }
 
     @Test
@@ -457,7 +400,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
         assertEquals(actualHeader, "Submit New Language");
     }
-
 
     @Test
     public void testTitle() {
@@ -482,6 +424,7 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().findElement(By.id("login-password")).sendKeys("12Qwerty");
 
     }
+
     @Test
     public void testTask4Kateryna1979() throws InterruptedException {
 
@@ -495,6 +438,7 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(menu,expectedResult);
 
         }
+
     @Ignore
     @Test
     public void testCreateNewJob() throws InterruptedException {
@@ -541,7 +485,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
     }
 
-
     @Test
     public void testSearchSeleniumOB() {
         getDriver().get("https://www.selenium.dev");
@@ -549,5 +492,4 @@ public class GroupUnderdogsTest extends BaseTest {
 
         Assert.assertEquals(title, "Selenium");
     }
-
 }
