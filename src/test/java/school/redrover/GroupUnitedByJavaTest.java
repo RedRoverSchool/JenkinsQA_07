@@ -352,4 +352,52 @@ public class GroupUnitedByJavaTest extends BaseTest {
         Assert.assertEquals(value, "System Configuration");
         Thread.sleep(1000);
     }
+
+    private void goToCreateUserPage() {
+        WebElement buttonManageJenkins = getDriver().findElement(
+                By.xpath("//a[@href = '/manage']"));
+        buttonManageJenkins.click();
+
+        WebElement users = getDriver().findElement(By.xpath("//dt[text()='Users']"));
+        users.click();
+
+        WebElement buttonCreateUser = getDriver().findElement(By.xpath("//a[@href='addUser']"));
+        buttonCreateUser.click();
+    }
+
+
+    @Test
+    public void testCreateUserWithValidData() {
+
+        final String userName = "test";
+        final String password = "12345";
+        final String fullname = "test test";
+        final String email = "test@mail.com";
+
+        goToCreateUserPage();
+
+        WebElement usernameField = getDriver().findElement(By.xpath("//input[@name='username']"));
+        usernameField.sendKeys(userName);
+
+
+        WebElement passwordField = getDriver().findElement(By.xpath("//input[@name='password1']"));
+        passwordField.sendKeys(password);
+
+        WebElement confirmPasswordField = getDriver().findElement(By.xpath("//input[@name='password2']"));
+        confirmPasswordField.sendKeys(password);
+
+        WebElement fullnameField = getDriver().findElement(By.xpath("//input[@name='fullname']"));
+        fullnameField.sendKeys(fullname);
+
+        WebElement emailField = getDriver().findElement(By.xpath("//input[@name='email']"));
+        emailField.sendKeys(email);
+
+        WebElement submitButton = getDriver().findElement(By.name("Submit"));
+        submitButton.click();
+
+        String userCreated = getDriver().findElement(By.xpath(String.format("//a[@href='user/%s/']", userName))).getText();
+
+        assertEquals(userCreated, userName);
+
+    }
 }
