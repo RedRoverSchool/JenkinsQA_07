@@ -190,7 +190,7 @@ public class GroupItFriendlyTest extends BaseTest {
     }
 
     @Test
-    public void testRenameFreeStyleProject() throws InterruptedException {
+    public void testRenameFreeStyleProject() {
         final String JOBNAME = "FreeStyleProjectJob";
         final String NEWJOBNAME = "FreeStyleProjectJobNew";
 
