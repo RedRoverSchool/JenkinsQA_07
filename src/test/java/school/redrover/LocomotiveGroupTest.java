@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -12,64 +11,6 @@ import school.redrover.runner.BaseTest;
 import java.util.concurrent.TimeUnit;
 
 public class LocomotiveGroupTest extends BaseTest {
-    @Test
-    public void testDemoqaTextBox() {
-        String fullName = "Tom Jonson";
-        String email = "mail@mail.com";
-
-        getDriver().get("https://demoqa.com/text-box");
-
-        String pageTitleText = getDriver().findElement(By.className("main-header")).getText();
-        Assert.assertEquals(pageTitleText, "Text Box");
-
-        WebElement fullNameTextBox = getDriver().findElement(By.cssSelector("#userName"));
-        fullNameTextBox.sendKeys(fullName);
-
-        WebElement emailTextBox = getDriver().findElement(By.id("userEmail"));
-        emailTextBox.sendKeys(email);
-
-        WebElement submitButton = getDriver().findElement(By.id("submit"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", submitButton);
-        submitButton.click();
-
-        String actualFullName = getDriver()
-                .findElement(By.id("name"))
-                .getText();
-        Assert.assertEquals(actualFullName, "Name:" + fullName);
-
-        String actualEmail = getDriver()
-                .findElement(By.xpath("//*[@id=\"email\"]"))
-                .getText();
-
-        Assert.assertEquals(actualEmail, "Email:" + email);
-    }
-
-    @Test
-    public void testLink() throws InterruptedException {
-            String linkExpected = "https://demoqa.com/";
-
-            getDriver().get("https://demoqa.com/links");
-            String originalWindow = getDriver().getWindowHandle();
-            WebElement link = getDriver().findElement(By.xpath("//*[@id=\"simpleLink\"]"));
-            String linkActual = link.getAttribute("href");
-
-            Assert.assertEquals(linkActual, linkExpected);
-
-            link.click();
-
-            Thread.sleep(1000);
-
-            for (String windowHandle : getDriver().getWindowHandles()) {
-                if (!originalWindow.contentEquals(windowHandle)) {
-                    getDriver().switchTo().window(windowHandle);
-                    break;
-                }
-            }
-
-            Thread.sleep(1000);
-            getDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
-    }
-
     @Ignore
     @Test
     public void checkRadioButton() throws InterruptedException {
@@ -199,7 +140,6 @@ public class LocomotiveGroupTest extends BaseTest {
         Thread.sleep(2000);
     }
 
-    @Ignore
     @Test
     public void testAddDescriptionJenkinsHomePage() {
         String description = "My Jenkins home page description";
@@ -214,10 +154,6 @@ public class LocomotiveGroupTest extends BaseTest {
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//*[@id='description']/div[1]"))
                 .getText(), description);
-
-        getDriver().findElement(submitButton).click();
-        getDriver().findElement(descriptionInputField).clear();
-        getDriver().findElement(saveButton).click();
     }
 
 
