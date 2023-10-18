@@ -157,7 +157,7 @@ public class GroupItFriendlyTest extends BaseTest {
     }
     // search item in list items
     private boolean isActualElement(List<WebElement> items, String expecting) {
-        return items.stream().anyMatch(n -> n.getText().compareTo(expecting) == 0);
+        return items.stream().anyMatch(item -> item.getText().compareTo(expecting) == 0);
     }
     //get Web elements
     private List<WebElement> getListElements(String xpath) {
