@@ -271,4 +271,5 @@ public class GroupJavaBustersTest extends BaseTest {
         getDriver().findElement(By.id("button-icon-legend")).click();
         WebElement descriptionText = getDriver().findElement(By.className("jenkins-modal__title"));
     }
+
 }
