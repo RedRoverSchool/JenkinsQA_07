@@ -18,7 +18,6 @@ public class AlexChTest extends BaseTest {
     
     @Test
     public void testJenkinsVersion(){
-        JenkinsUtils.login(getDriver());
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'page-footer__links']/button"))
                 .getText().trim(), "Jenkins 2.414.2");
@@ -27,7 +26,6 @@ public class AlexChTest extends BaseTest {
     @Test
     public void testCreatePipelineWithCorrectName(){
         String jobName = "correctName";
-        JenkinsUtils.login(getDriver());
 
         createNewPipeline(jobName);
         getDriver().findElement(By.xpath("//a[contains(text(), 'Dashboard')]")).click();
@@ -38,7 +36,6 @@ public class AlexChTest extends BaseTest {
 
     @Test
     public void testCreatePipelineWithEmptyName(){
-        JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
         getDriver().findElement(By.xpath("//li[contains(@class, 'FreeStyleProject')]")).click();
@@ -50,7 +47,6 @@ public class AlexChTest extends BaseTest {
     @Test
     public void testCreatePipelineWithDuplicateName(){
         String jobName = "duplicateName";
-        JenkinsUtils.login(getDriver());
 
         createNewPipeline(jobName);
         getDriver().findElement(By.xpath("//a[contains(text(), 'Dashboard')]")).click();

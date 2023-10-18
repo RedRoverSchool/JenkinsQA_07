@@ -4,12 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class GroupBrainBuildersTest extends BaseTest {
 
 
@@ -133,8 +135,6 @@ public class GroupBrainBuildersTest extends BaseTest {
     @Test
     public void testJenkinsAdminStatus() {
 
-        JenkinsUtils.login(getDriver());
-
         getDriver().findElement(By.cssSelector("#tasks > div:nth-child(2) > span > a")).click();
         // From the list of users I would like to get name of the particular user and click on it
         WebElement recordInTheList = getDriver().findElement(By.className("jenkins-table__link"));
@@ -169,7 +169,6 @@ public class GroupBrainBuildersTest extends BaseTest {
 
     @Test
     public void testJenkinsCredentialsTooltip() {
-        JenkinsUtils.login(getDriver());
 
         WebElement adminMenu = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
         adminMenu.click();

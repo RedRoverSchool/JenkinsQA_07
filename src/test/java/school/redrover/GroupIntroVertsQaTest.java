@@ -247,7 +247,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
     @Test (description = "Test of Jenkins Search field")
     public void testJenkinsSearchField () {
-        JenkinsUtils.login(getDriver());
+
         WebElement searchField = getDriver().findElement(By.id("search-box"));
         searchField.sendKeys("admin");
         searchField.sendKeys(Keys.ENTER);

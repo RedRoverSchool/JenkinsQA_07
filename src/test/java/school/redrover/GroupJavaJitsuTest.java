@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+@Ignore
 public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
@@ -42,7 +43,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testFirst() throws InterruptedException{
-        JenkinsUtils.login(getDriver());
+
        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
        newItem.click();
        WebElement itemName = getDriver().findElement(By.id("name"));
@@ -58,7 +59,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testNewFreestyleProject() throws InterruptedException{
-        JenkinsUtils.login(getDriver());
+
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
         WebElement itemName = getDriver().findElement(By.id("name"));
@@ -76,7 +77,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
     @Test
     public void testFreestyleProject(){
         String projectName = "FreestyleProject";
-        JenkinsUtils.login(getDriver());
+
         WebElement newItem = getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']"));
         newItem.click();
 

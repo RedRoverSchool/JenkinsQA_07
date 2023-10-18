@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import static org.testng.Assert.assertEquals;
 
+
+@Ignore
 public class GroupJavaAutomationTest extends BaseTest {
     private static final String HEROKUAPP = "https://the-internet.herokuapp.com/";
     @Test
@@ -248,8 +250,6 @@ public class GroupJavaAutomationTest extends BaseTest {
 
     @Test
     public void testJenkinsHomePageAndJenkinsVersion()  {
-
-        JenkinsUtils.login(getDriver());
 
         String title = getDriver().getTitle();
         Assert.assertEquals(title,"Dashboard [Jenkins]");

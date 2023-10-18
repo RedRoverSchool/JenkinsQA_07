@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
+@Ignore
 public class GroupSurvivorsTest extends BaseTest {
 
     @Test

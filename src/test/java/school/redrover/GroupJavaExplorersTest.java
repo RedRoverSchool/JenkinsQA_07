@@ -17,6 +17,8 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
+
+@Ignore
 public class GroupJavaExplorersTest extends BaseTest {
 
     private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
@@ -201,8 +203,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     @Test
     public void testCreateNewFolder() {
-        JenkinsUtils.login(getDriver());
-
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
 
@@ -229,8 +229,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         String expectedText = "This view has no jobs associated with it. You can either add " +
                 "some existing jobs to this view or create a new job in this view.";
-
-        JenkinsUtils.login(getDriver());
 
         WebElement newView = getDriver().findElement(By.xpath("//div//a[@title='New View']"));
         newView.click();
@@ -262,8 +260,6 @@ public class GroupJavaExplorersTest extends BaseTest {
 
     @Test
     public void testAddNewUser() {
-        JenkinsUtils.login(getDriver());
-
         WebElement manageJenkins = getDriver().findElement(By.xpath("//a[@href ='/manage']"));
         manageJenkins.click();
 

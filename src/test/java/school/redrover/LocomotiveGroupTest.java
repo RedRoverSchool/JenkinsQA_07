@@ -215,7 +215,6 @@ public class LocomotiveGroupTest extends BaseTest {
         By locatorTextJenkinsVersion = By.cssSelector("p.app-about-version");
         final String expectedJenkinsVersionText = "Version 2.414.2";
 
-        JenkinsUtils.login(getDriver());
         WebElement buttonJenkinsVersion = driver.findElement(locatorButtonJenkinsVersion);
         buttonJenkinsVersion.click();
 
@@ -247,8 +246,6 @@ public class LocomotiveGroupTest extends BaseTest {
         By submitButton = By.id("description-link");
         By descriptionInputField = By.xpath("//textarea[@name='description']");
         By saveButton = By.xpath("//button[@name='Submit']");
-
-        JenkinsUtils.login(getDriver());
 
         getDriver().findElement(submitButton).click();
         getDriver().findElement(descriptionInputField).sendKeys(description);
