@@ -54,7 +54,7 @@ public class TopNewsTest extends BaseTest {
 
         String expectedTextResultSearch = getDriver().findElement(By.className("error")).getText();
 
-        Assert.assertEquals(expectedTextResultSearch, "Ничего похожего не найдено", " context не совпадает");
+        Assert.assertEquals(expectedTextResultSearch, "Nothing seems to match", " context не совпадает");
 
     }
 
