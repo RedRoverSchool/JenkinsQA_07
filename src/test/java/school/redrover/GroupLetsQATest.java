@@ -78,7 +78,7 @@ public class GroupLetsQATest extends BaseTest {
 
         WebElement newItemSpan = getDriver().findElement(By.cssSelector(".h3"));
 
-        Assert.assertEquals(newItemSpan.getText().trim(), "Enter an item name");
+        Assert.assertEquals(newItemSpan.getText(), "Enter an item name");
     }
 
     @Test
