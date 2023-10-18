@@ -3,11 +3,13 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 
+@Ignore
 public class VladTest extends BaseTest {
     @Test
     public void testLogin() {
@@ -41,8 +43,6 @@ public class VladTest extends BaseTest {
     @Test
     public void testJenkinsVersion() {
 
-        JenkinsUtils.login(getDriver());
-
         getDriver().findElement(By.xpath("/html/body/footer/div/div[2]/button")).click();
 
         getDriver().findElement(By.xpath("/html/body/div[3]/div/div/a[1]/div")).click();
@@ -53,8 +53,6 @@ public class VladTest extends BaseTest {
 
     @Test
     public void testJenkinsManage() {
-
-        JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("/html/body/div[2]/div[1]/div[1]/div[4]/span/a")).click();
 

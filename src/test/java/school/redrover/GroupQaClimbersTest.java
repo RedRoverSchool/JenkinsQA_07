@@ -676,7 +676,6 @@ public class GroupQaClimbersTest extends BaseTest {
     @Test
     public void testClickOnCreateAJob() {
 
-        JenkinsUtils.login(getDriver());
         getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
 
         String actualResult = getDriver().findElement(By.xpath("//label[@for='name']"))
@@ -687,7 +686,6 @@ public class GroupQaClimbersTest extends BaseTest {
 
     @Test
     public void testSearchSettingsField() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
         getDriver().findElement(
                 By.xpath("//div[@id='tasks']/div[4]/span/a")).click();
         WebElement searchSettingsField = getDriver().findElement(
@@ -705,7 +703,6 @@ public class GroupQaClimbersTest extends BaseTest {
 
     @Test
     public void testManageJenkinsOption() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
         getDriver().findElement(By.xpath("(//a[@class='task-link '])[4]")).click();
         Thread.sleep(1000);
         String actualMessage=getDriver().findElement(By.xpath("//div/h1[text()='Manage Jenkins']")).getText();
@@ -715,7 +712,6 @@ public class GroupQaClimbersTest extends BaseTest {
 
     @Test
     public void testLoginJenkins() {
-        JenkinsUtils.login(getDriver());
         getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
         WebElement checkJenkinsVersion = getDriver().findElement(By.xpath("//button[@type='button']"));
         checkJenkinsVersion.click();

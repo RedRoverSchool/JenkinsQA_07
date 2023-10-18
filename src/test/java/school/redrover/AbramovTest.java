@@ -16,8 +16,6 @@ public class AbramovTest extends BaseTest {
 @Ignore
     @Test
     public void testNewFirstJenkinsFreestyleProject() {
-        JenkinsUtils.login(getDriver());
-
         WebElement newJob = getDriver().findElement(By.cssSelector("a[href='newJob']"));
         newJob.click();
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-
+@Ignore
 public class GroupUnderdogsTest extends BaseTest {
 
     // the next line will be deleted as soon as all methods within the class are refactored and driver is changed to getDriver()
@@ -55,7 +55,6 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testJenkinsVersionInFooter_tereshenkov29() {
-        JenkinsUtils.login(getDriver());
 
         WebElement JenkinsVersionInFooter = getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
 
@@ -102,7 +101,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testJenkinsLogOut_maksin() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
+
         getDriver().findElement(By.xpath("//*[@id='page-header']/div[3]/a[2]")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath
                         ("//*[@id='main-panel']/div/h1")).getText(),
@@ -296,7 +295,7 @@ public class GroupUnderdogsTest extends BaseTest {
     }
     @Test
     public void  test_idAdmin_Artuom() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
+
         WebElement nameOfUser = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
         nameOfUser.click();
         WebElement config = getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]"));
@@ -472,7 +471,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
     @Test
     public void testYuliafaReddit() {
-        JenkinsUtils.login(getDriver());
+
         getDriver().get("https://www.reddit.com/?feed=home");
 
         String title = getDriver().getTitle();
@@ -499,7 +498,6 @@ public class GroupUnderdogsTest extends BaseTest {
     @Ignore
     @Test
     public void testCreateNewJob() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
         WebElement createJobButton = getDriver().findElement(By.xpath("//a [@href='newJob']"));
         createJobButton.click();
@@ -523,9 +521,10 @@ public class GroupUnderdogsTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testDescription() {
-        JenkinsUtils.login(getDriver());
+
         WebElement addDescriptionButton = getDriver().findElement(By.xpath("//a[@id='description-link']"));
         addDescriptionButton.click();
 

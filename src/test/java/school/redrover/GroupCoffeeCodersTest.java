@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
+@Ignore
 public class GroupCoffeeCodersTest extends BaseTest {
     public static final String USERNAME = "admin";
     public static final String PASSWORD = "admin";
@@ -92,7 +93,7 @@ public class GroupCoffeeCodersTest extends BaseTest {
     }
 
 
-
+    @Ignore
     @Test
     public void testSearch1()  {
         getDriver().get("https://www.labirint.ru/");

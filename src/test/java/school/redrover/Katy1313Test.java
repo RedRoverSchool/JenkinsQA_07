@@ -13,8 +13,6 @@ public class Katy1313Test extends BaseTest {
     public void testCreateFreestyleProject() throws InterruptedException {
         final String expectedProjectName = "Project Freestyle Project";
 
-        JenkinsUtils.login(getDriver());
-
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
 
