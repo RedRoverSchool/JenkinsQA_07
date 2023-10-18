@@ -71,13 +71,12 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(versionBox.getText(), "Jenkins 2.414.2");
     }
 
-    @Ignore
     @Test
     public void newItemButtonTest() {
-        WebElement newItemButton = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span"));
+        WebElement newItemButton = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItemButton.click();
 
-        WebElement newItemSpan = getDriver().findElement(By.xpath("//*[@id='createItem']/div[1]/div/label"));
+        WebElement newItemSpan = getDriver().findElement(By.cssSelector(".h3"));
 
         Assert.assertEquals(newItemSpan.getText().trim(), "Enter an item name");
     }
@@ -105,5 +104,16 @@ public class GroupLetsQATest extends BaseTest {
         }
 
         Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testProceedAboutJenkins() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='about']")).click();
+
+        Assert.assertTrue(getDriver()
+                .findElement(By.className("app-about-paragraph"))
+                .getText().contains("The leading open source automation server"));
     }
 }
