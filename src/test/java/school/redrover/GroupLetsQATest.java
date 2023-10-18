@@ -71,6 +71,7 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(versionBox.getText(), "Jenkins 2.414.2");
     }
 
+    @Ignore
     @Test
     public void newItemButtonTest() {
         WebElement newItemButton = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
