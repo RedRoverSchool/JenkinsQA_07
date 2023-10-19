@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class MariaPracticeTest extends BaseTest {
+public class MariaTest extends BaseTest {
 
     @Test
     public void testWelcomeToJenkins() {
