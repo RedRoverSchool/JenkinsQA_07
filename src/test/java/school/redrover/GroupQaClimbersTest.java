@@ -88,7 +88,7 @@ public class GroupQaClimbersTest extends BaseTest {
     }
 
     @Test
-    public void testAddProfileDescription(){
+    public void testAddProfileDescription() {
         getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
 
         getDriver().findElement(By.id("description-link")).click();
