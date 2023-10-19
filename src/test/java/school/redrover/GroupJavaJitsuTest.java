@@ -93,4 +93,18 @@ public class GroupJavaJitsuTest  extends BaseTest {
         WebElement renamedProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
         Assert.assertEquals("Project " + RENAMEPROJECT, renamedProjectName.getText());
     }
+
+    @Test
+    public void testCreateFolder() {
+        final String FOLDERNAME = "NewFolder";
+
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDERNAME);
+
+        getDriver().findElement(By.cssSelector("li[class='com_cloudbees_hudson_plugins_folder_Folder'] span[class='label']")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div[id='main-panel'] h1")).getText(), FOLDERNAME);
+    }
 }
