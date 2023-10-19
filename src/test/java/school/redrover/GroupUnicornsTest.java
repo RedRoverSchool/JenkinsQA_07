@@ -499,7 +499,11 @@ public class GroupUnicornsTest extends BaseTest {
                 .perform();
 
         Thread.sleep(1000);
-        getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")))
+                .click()
+                .perform();
 
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(JOB_NAME_RENAMED);
