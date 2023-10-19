@@ -1,14 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 
 public class GroupForwardTest extends BaseTest {
@@ -74,6 +71,15 @@ public class GroupForwardTest extends BaseTest {
         Assert.assertEquals(innerText, copyInnerText);
 
     }
+
+    @Test
+    public void testJenkinsVersion() {
+        By locator = By.xpath("//button[contains(@class, 'jenkins-button--tertiary') and contains(text(), 'Jenkins 2.414.2')]");
+        WebElement element = getDriver().findElement(locator);
+
+        Assert.assertEquals(element.getText().trim(), "Jenkins 2.414.2");
+    }
+
 }
 
 
