@@ -10,17 +10,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Stream;
+
 
 public class GroupLetsQATest extends BaseTest {
 
     @Test
-    public void testDescriptionTextAreaAppearsJenkinsProject() {
+    public void testDescriptionTextAreaAppears() {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
@@ -35,7 +34,7 @@ public class GroupLetsQATest extends BaseTest {
     }
 
     @Test
-    public void testSaveDescriptionButtonAppearsJenkinsProject() {
+    public void testSaveDescriptionButtonAppears() {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         WebElement addDescriptionButton = getDriver().findElement(By.id("description-link"));
@@ -116,5 +115,51 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertTrue(getDriver()
                 .findElement(By.className("app-about-paragraph"))
                 .getText().contains("The leading open source automation server"));
+    }
+
+    @Test
+    public void testErrorMessageIsDisplay(){
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test
+    public void testOkButtonIsDisabled(){
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
+    }
+
+    @Test
+    public void testIsItemSelected(){
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        List<WebElement> items = getDriver().findElements(By.cssSelector("#items li"));
+        for (WebElement el : items){
+            String locator = el.getAttribute("class");
+            el.click();
+
+            Assert.assertEquals(getDriver().findElement(By.className(locator)).getAttribute("aria-checked"), "true");
+        }
+    }
+
+    @Test
+    public void testMyViewsLegendIconColor() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("123");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+
+        getDriver().findElement(By.id("button-icon-legend")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class = 'build-status-icon__wrapper icon-red icon-lg']")).getCssValue("color"), "rgba(230, 0, 31, 1)");
     }
 }

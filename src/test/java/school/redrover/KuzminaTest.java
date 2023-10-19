@@ -3,35 +3,26 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
-@Ignore
 public class KuzminaTest extends BaseTest {
 
     @Test
-    public void testParksOpening() {
-        getDriver().get("https://parks.canada.ca/pn-np");
+    public void testAddedDescription() {
 
-        String firstTitle = getDriver().getTitle();
-        Assert.assertEquals(firstTitle, "National parks");
+        String myInputText = "My description\nSecond Line";
 
-        WebElement findANationalParkButton = getDriver().findElement(By.xpath("//a[normalize-space()='Find a national park']"));
-        findANationalParkButton.click();
+        getDriver().findElement(By.id("description-link")).click();
 
-        String secondTitle = getDriver().getTitle();
-        Assert.assertEquals(secondTitle, "Find a national park");
+        WebElement textAreaDescription = getDriver().findElement(By.className("jenkins-input"));
+        textAreaDescription.sendKeys(myInputText);
+        getDriver().findElement(By.name("Submit")).click();
 
-        WebElement geoMapHelpButton = getDriver().findElement(By.className("geomap-help-btn"));
-        geoMapHelpButton.click();
+        String descriptionText = getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]")).getText();
 
-        WebElement panelTitle = getDriver().findElement(By.className("panel-title"));
-        String panelTitleText = panelTitle.getText();
-        Assert.assertEquals(panelTitleText, "Instructions: Map Navigation");
-        
-
+        Assert.assertEquals(descriptionText, myInputText);
 
     }
 }

@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -17,28 +16,30 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-
-//@Ignore
 public class GroupUnicornsTest extends BaseTest {
 
     @Test
-    public void testUsPsPageOpen() {
-        getDriver().get("https://www.usps.com/");
+    public void testVerifyRemoteDirectoryIsMandatoryForSetUpAnAgent() throws InterruptedException {
+        getDriver().findElement(By.xpath("//span[normalize-space()='Set up an agent']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys("PKTest");
+        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok']")).click();
 
-        Assert.assertEquals(getDriver().getTitle(), "Welcome | USPS");
+        // added  this wait until we implement implicit wait in our Base test
+        Thread.sleep(1000);
+        Assert.assertTrue(getDriver().
+                findElement(By.xpath("//div[contains(text(),'Remote directory is mandatory')]")).isDisplayed());
     }
 
-    @Ignore //putting ignore, it's failing during CI check
     @Test
-    public void testUsPsSendMailPackageOpen() {
-        getDriver().get("https://www.usps.com/");
+    public void testVerifyBuildHistoryTabOpens() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
 
-        WebElement send = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
-        send.click();
-
-        Assert.assertEquals(getDriver().getTitle(), "Send Mail & Packages | USPS");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[normalize-space()='Build History of Jenkins']"))
+                .getText(), "Build History of Jenkins");
     }
 
     @Ignore
@@ -69,27 +70,26 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual.contains("Your username is invalid!"));
     }
 
-    @Ignore
     @Test
     public void TestCreateNewFolderAndCheckDashboard() {
 
-       getDriver().findElement(By.linkText("New Item")).click();
-       getDriver().findElement(By.id("name")).sendKeys("FolderTest");
-       getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-       getDriver().findElement(By.id("ok-button")).click();
-       getDriver().findElement(By.name("Submit")).click();
-       getDriver().findElement(By.id("description-link")).click();
-       getDriver().findElement(By.className("jenkins-input")).sendKeys("Testing folder");
-       getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys("FolderTest");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("Testing folder");
+        getDriver().findElement(By.name("Submit")).click();
 
-       List<String> listOfExpectedItems = Arrays.asList("Status", "Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
-       List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
-       List<String> extractedTexts = listOfDashboardItems.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> listOfExpectedItems = Arrays.asList("Status", "Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
+        List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
+        List<String> extractedTexts = listOfDashboardItems.stream().map(WebElement::getText).collect(Collectors.toList());
 
-       assertEquals(extractedTexts,listOfExpectedItems);
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "FolderTest");
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "Testing folder");
-}
+        assertEquals(extractedTexts, listOfExpectedItems);
+        assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "FolderTest");
+        assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "Testing folder");
+    }
 
     @Test
     public void TestJenkins() {
@@ -168,34 +168,28 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
-    @Ignore
     @Test
-    public void unsuccessfulLoginDigitalBankTest() {
+    public void testVerifyHomePageJenkins() {
 
-        getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().manage().window().maximize();
-        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
-
-        getDriver().findElement(By.id("username")).sendKeys("tester1@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("1234Test");
-        getDriver().findElement(By.id("submit")).click();
-        WebElement errorMsg = getDriver().findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
-        Assert.assertTrue(errorMsg.isDisplayed(), "Error message is displayed");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//li/a[@class = 'model-link']")).isDisplayed());
     }
 
-    @Ignore
     @Test
-    public void successfulLoginDigitalBankTest() {
+    public void testCreateNewProjectJenkins() {
 
-        getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().manage().window().maximize();
-        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
+        final String jobName = "Unicorns22";
 
-        getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("Test1234");
-        getDriver().findElement(By.id("submit")).click();
-        WebElement avatar = getDriver().findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
-        Assert.assertTrue(avatar.isDisplayed(), "Avatar is displayed");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/']")).isDisplayed();
+
+        getDriver().findElement(By.name("name")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//img[@class = 'icon-freestyle-project icon-xlg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item'][2]")).getText(), jobName);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[text() = contains(.,'Project')]")).getText(), String.format("Project %s", jobName));
     }
 
     @Test
