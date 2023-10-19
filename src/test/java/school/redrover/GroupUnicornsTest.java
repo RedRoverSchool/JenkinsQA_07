@@ -490,9 +490,11 @@ public class GroupUnicornsTest extends BaseTest {
         WebElement jobLinkToRename = getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']"));
 
         new Actions(getDriver())
-                .moveToElement(jobLinkToRename).perform();
-        Thread.sleep(1000);
-        getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/job/Bayans_job/']")).click();
+                .moveToElement(jobLinkToRename)
+                .moveToElement(getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/job/Bayans_job/']")))
+                .click()
+                .perform();
+
         Thread.sleep(1000);
         getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")).click();
 
