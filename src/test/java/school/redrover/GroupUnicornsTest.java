@@ -71,25 +71,17 @@ public class GroupUnicornsTest extends BaseTest {
 
     @Ignore
     @Test
-    public void TestCreateNewFolderAndCheckDashboard() {
+    public void W3school1test() {
+        getDriver().get("https://www.w3schools.com/");
 
-       getDriver().findElement(By.linkText("New Item")).click();
-       getDriver().findElement(By.id("name")).sendKeys("FolderTest");
-       getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-       getDriver().findElement(By.id("ok-button")).click();
-       getDriver().findElement(By.name("Submit")).click();
-       getDriver().findElement(By.id("description-link")).click();
-       getDriver().findElement(By.className("jenkins-input")).sendKeys("Testing folder");
-       getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().getTitle(), "W3Schools Online Web Tutorials");
 
-       List<String> listOfExpectedItems = Arrays.asList("Status", "Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
-       List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
-       List<String> extractedTexts = listOfDashboardItems.stream().map(WebElement::getText).collect(Collectors.toList());
+        getDriver().findElement(By.id("search2")).sendKeys("HTML Tutorial");
 
-       assertEquals(extractedTexts,listOfExpectedItems);
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "FolderTest");
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "Testing folder");
-}
+        getDriver().findElement(By.id("learntocode_searchbtn")).click();
+
+        Assert.assertEquals(getDriver().getTitle(), "HTML Tutorial");
+    }
 
     @Test
     public void TestJenkins() {
