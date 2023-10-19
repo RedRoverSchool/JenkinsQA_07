@@ -11,8 +11,6 @@ public class FilterForTests implements IMethodInterceptor {
     @Override
     public List<IMethodInstance> intercept(List<IMethodInstance> methods, ITestContext context) {
 
-        System.out.println(System.getenv("LIST_OF_CHANGED_FILES"));
-
         String files = System.getenv("LIST_OF_CHANGED_FILES");
         if (files != null) {
             Set<String> fileSet = new HashSet<>(Arrays.asList(files.split(";")));
