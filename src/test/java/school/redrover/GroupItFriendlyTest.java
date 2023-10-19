@@ -17,7 +17,6 @@ import static org.testng.Assert.assertEquals;
 
 
 public class GroupItFriendlyTest extends BaseTest {
-    @Ignore
     @Test
     public void testDeleteFolder() {
         getDriver().findElement(By.className("task")).click();
@@ -32,7 +31,7 @@ public class GroupItFriendlyTest extends BaseTest {
         Actions action = new Actions(getDriver());
         action.moveToElement(folderName).build().perform();
 
-        getDriver().findElement(By.xpath("//*[@id=\"job_testFolder\"]/td[3]/a/button")).click();
+        getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/job/testFolder/']")).click();
         getDriver().findElement(By.xpath("//*[@id=\"tippy-5\"]/div/div/div/a[3]")).click();
         getDriver().findElement(By.xpath(" //*[@id=\"main-panel\"]/form/button")).click();
 
