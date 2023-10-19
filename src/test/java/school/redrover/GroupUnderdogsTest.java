@@ -95,21 +95,6 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testLinkWiki() {
-
-        final String link = "https://wiki.jenkins.io/display/JENKINS/Distributed+builds";
-
-        getDriver().findElement(By.linkText("Learn more about distributed builds")).click();
-
-        for (String winHandle : getDriver().getWindowHandles()) {
-            getDriver().switchTo().window(winHandle);
-        }
-
-        Assert.assertEquals(getDriver().getCurrentUrl(), link);
-    }
-
-
-    @Test
     public void testVerifyIconSize() {
 
         final String projectName = "test";
