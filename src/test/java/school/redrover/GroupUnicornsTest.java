@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -22,6 +19,32 @@ import static org.testng.Assert.*;
 
 //@Ignore
 public class GroupUnicornsTest extends BaseTest {
+
+    @Test
+    public void testTableSizes(){
+
+        //creating a new job
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("job");
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[.='OK']")).click();
+        getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
+
+        //check size when Small is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getSize(),
+                new Dimension(1044, 71));
+
+        //check size when Medium is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Medium']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getSize(),
+                new Dimension(1044, 86));
+
+        //check size when Large is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Large']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getSize(),
+                new Dimension(1044, 102));
+    }
 
     @Test
     public void testUsPsPageOpen() {
