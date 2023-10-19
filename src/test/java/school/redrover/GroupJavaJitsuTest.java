@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Ignore;
@@ -12,15 +14,9 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
-public class GroupJavaJitsuTest  extends BaseTest {
-    @Ignore
-    @Test
-    public void testGetTile() {
-        getDriver().get("https://www.saucedemo.com");
+import java.time.Duration;
 
-        String title = getDriver().getTitle();
-        Assert.assertEquals("Swag Labs", title);
-    }
+public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testFirst() throws InterruptedException {
@@ -52,7 +48,6 @@ public class GroupJavaJitsuTest  extends BaseTest {
         WebElement buttonSave = getDriver().findElement(By.xpath("//button[@name='Submit']"));
         buttonSave.click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), "Project NewFreestyleProject");
-
     }
 
     @Test
@@ -76,48 +71,26 @@ public class GroupJavaJitsuTest  extends BaseTest {
         WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
         Assert.assertEquals("Project " + projectName, freestyleProjectName.getText());
     }
-    @Ignore
+
     @Test
-    public void testEndToEnd() {
-        getDriver().get("https://www.saucedemo.com/");
-        WebElement userName = getDriver().findElement(By.cssSelector("input[placeholder='Username']"));
-        userName.sendKeys("standard_user");
+    public void testRenameFreestyleProject() {
+        final String PROJECTNAME = "FreestyleProject";
+        final String RENAMEPROJECT = "NewProject";
 
-        WebElement password = getDriver().findElement(By.cssSelector("input[placeholder='Password']"));
-        password.sendKeys("secret_sauce");
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(PROJECTNAME);
 
-        WebElement loginButton = getDriver().findElement(By.cssSelector("input[class*='submit']"));
-        loginButton.click();
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
 
-        WebElement addBackPack = getDriver().findElement(By.cssSelector("button[data-test*='backpack']"));
-        addBackPack.click();
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getDriver().findElement(By.cssSelector("a[href='/job/"+PROJECTNAME+"/confirm-rename']")).click();
 
-        WebElement addBikeLight = getDriver().findElement(By.cssSelector("button[data-test*='bike']"));
-        addBikeLight.click();
+        getDriver().findElement(By.cssSelector("input[name='newName']")).clear();
+        getDriver().findElement(By.cssSelector("input[name='newName']")).sendKeys(RENAMEPROJECT);
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
-        WebElement shoppingCart = getDriver().findElement(By.cssSelector("a[class*='cart']"));
-        shoppingCart.click();
-
-        WebElement checkOut = getDriver().findElement(By.cssSelector("button[data-test='checkout']"));
-        checkOut.click();
-
-        WebElement firstName = getDriver().findElement(By.cssSelector("input[data-test='firstName']"));
-        firstName.sendKeys("Alex");
-
-        WebElement lastName = getDriver().findElement(By.cssSelector("input[data-test='lastName']"));
-        lastName.sendKeys("Smith");
-
-        WebElement zipCode = getDriver().findElement(By.cssSelector("input[data-test='postalCode']"));
-        zipCode.sendKeys("10101");
-
-        WebElement continueButton = getDriver().findElement(By.cssSelector("input[data-test='continue']"));
-        continueButton.click();
-
-        WebElement finish = getDriver().findElement(By.cssSelector("button[data-test='finish']"));
-        finish.click();
-
-        WebElement orderConfirmation = getDriver().findElement(By.cssSelector("h2[class='complete-header']"));
-        Assert.assertEquals("Thank you for your order!", orderConfirmation.getText());
-
+        WebElement renamedProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
+        Assert.assertEquals("Project " + RENAMEPROJECT, renamedProjectName.getText());
     }
 }

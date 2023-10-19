@@ -20,13 +20,14 @@ public class GroupItFriendlyTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testDemoQaOpenPage()  {
+    public void testDemoQaOpenPage() {
         WebDriver driver = getDriver();
         driver.get("https://demoqa.com/");
         WebElement image = driver.findElement(By.xpath("//*[@id='app']/header/a/img"));
         image.click();
-        Assert.assertEquals(image,image);
+        Assert.assertEquals(image, image);
     }
+
     @Ignore
     @Test
     public void testDemoQaChangePage() {
@@ -38,6 +39,7 @@ public class GroupItFriendlyTest extends BaseTest {
         String value = text.getText();
         Assert.assertEquals(value, "Please select an item from left to start practice.");
     }
+
     @Ignore
     @Test
     public void testDemoQaTextBox() {
@@ -49,11 +51,13 @@ public class GroupItFriendlyTest extends BaseTest {
         fullNameField.sendKeys("Adam Adams");
         WebElement email = getDriver().findElement(By.id("userEmail"));
         email.click();
-        fullNameField.sendKeys("adam@gmail.com");;
+        fullNameField.sendKeys("adam@gmail.com");
+        ;
         WebElement submit = getDriver().findElement(By.id("submit"));
         submit.click();
-        Assert.assertEquals(submit,submit);
+        Assert.assertEquals(submit, submit);
     }
+
     @Ignore
     @Test
     public void testSearch() throws InterruptedException {
@@ -84,7 +88,7 @@ public class GroupItFriendlyTest extends BaseTest {
 
     @Ignore
     @Test
-    public void ActionsWithCheckBoxTest(){
+    public void ActionsWithCheckBoxTest() {
 
         WebDriver driver = new ChromeDriver();
         try {
@@ -115,7 +119,7 @@ public class GroupItFriendlyTest extends BaseTest {
                     "downloads\n" +
                     "wordFile\n" +
                     "excelFile");
-          } finally {
+        } finally {
             driver.quit();
         }
     }
@@ -188,7 +192,7 @@ public class GroupItFriendlyTest extends BaseTest {
              break;
             }
         }
-        Assert.assertEquals(str,randomUsername);
+        Assert.assertEquals(str, randomUsername);
     }
 
     @Test
@@ -262,4 +266,21 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
     }
 
+
+    @Test
+    public void testCreateNewItem() {
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//div/input[@class = 'jenkins-input']")).sendKeys("New Item Name1");
+        getDriver().findElement(By.xpath("//*[@id = 'j-add-item-type-standalone-projects']/ul/li[1]/div[1]")).click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@class = 'jenkins-input   ']")).sendKeys("Description for New created item");
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        WebElement newItemNameIsExist = getDriver().findElement(By.xpath("//*/div/h1[contains(text(),'Project New Item Name1')]"));
+
+       Assert.assertTrue(newItemNameIsExist.isDisplayed());
+
+    }
 }
