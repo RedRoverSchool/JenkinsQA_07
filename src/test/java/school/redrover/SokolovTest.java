@@ -10,19 +10,6 @@ import org.openqa.selenium.Keys;
 
 public class SokolovTest extends BaseTest {
 
-    private String findAndGetTexts(By element) {
-        return getDriver().findElement(element).getText();
-    }
-
-    private void findAndClick(By element) {
-        getDriver().findElement(element).click();
-
-    }
-
-    private void findAndSendKeys(By element, String name) {
-        getDriver().findElement(element).sendKeys(name);
-
-    }
 
     @Test(description = "Проверка Заголовка приветствия")
     public void testJenkinsAuthorization() {
@@ -68,6 +55,20 @@ public class SokolovTest extends BaseTest {
         findAndClick(Elements.icon_trailing);
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/doc/book/using/searchbox/", "URL не совпадает");
+    }
+
+    private String findAndGetTexts(By element) {
+        return getDriver().findElement(element).getText();
+    }
+
+    private void findAndClick(By element) {
+        getDriver().findElement(element).click();
+
+    }
+
+    private void findAndSendKeys(By element, String name) {
+        getDriver().findElement(element).sendKeys(name);
+
     }
 }
 
