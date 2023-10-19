@@ -71,7 +71,7 @@ public class SokolovTest extends BaseTest {
     }
 }
 
-class Elements extends BaseTest {
+class Elements {
 
     static final String SEARCHSTRING = "ASDASDASD";
 
@@ -80,7 +80,6 @@ class Elements extends BaseTest {
     static By myViews = By.xpath("//a[@href = '/me/my-views']");
     static By contentText = By.xpath("//h2[@class ='h4']");
     static By searchBox = By.xpath("//input[@id= 'search-box']");
-    static By el4 = By.className("main-search__icon-trailing");
     static By meContent = By.xpath("//a[@href = '/me/']");
     static By icon_trailing = By.className("main-search__icon-trailing");
     static By elError = By.className("error");
