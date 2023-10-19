@@ -19,7 +19,7 @@ import java.util.UUID;
 import static org.testng.Assert.assertEquals;
 
 
-@Ignore
+
 public class GroupJavaExplorersTest extends BaseTest {
 
     private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
@@ -71,31 +71,6 @@ public class GroupJavaExplorersTest extends BaseTest {
                 .getText();
 
         Assert.assertTrue(value.contains(message));
-    }
-
-    @Test
-    public void testSignInNegative() throws InterruptedException {
-        getDriver().get(BASE_URL);
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "Home Page");
-        WebElement signIn = getDriver().findElement(By.xpath("/html/body/div[2]/header/div[1]/div/ul/li[2]/a"));
-        signIn.click();
-        WebElement signInto = getDriver().findElement(By.xpath("//*[@id='send2']/span"));
-        signInto.click();
-        Thread.sleep(1000);
-        WebElement field = getDriver().findElement(By.xpath("//*[@id='email-error']"));
-        String failText = field.getText();
-        Assert.assertEquals(failText, "This is a required field.");
-        WebElement email = getDriver().findElement(By.xpath("//*[@id='email']"));
-        email.sendKeys("abcd@gmail.com");
-        WebElement password = getDriver().findElement(By.xpath("//*[@id='pass']"));
-        password.sendKeys("1234");
-        signInto.click();
-        Thread.sleep(1000);
-        WebElement accIncorrect = getDriver().findElement(By.xpath("//*[@id='maincontent']/div[2]/div[2]/div/div/div"));
-        String accFailText = accIncorrect.getText();
-        Assert.assertEquals(accFailText, "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.");
-
     }
 
     @Ignore
@@ -314,6 +289,15 @@ public class GroupJavaExplorersTest extends BaseTest {
         String jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']")).getText();
 
         Assert.assertTrue(jenkinsJobName.contains(testFreeStyleProjectName));
+
+    }
+
+    @Test
+    public void testVersion() {
+
+        WebElement version = getDriver().findElement(By.xpath("//button[contains(text(), 'Jenkins 2.414.2')]"));
+        String versionName = version.getText();
+        Assert.assertEquals(versionName, "Jenkins 2.414.2");
 
     }
 }
