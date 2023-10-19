@@ -13,9 +13,10 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
-@Ignore
+
 public class GroupJavaBustersTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testMovieSearch() {
 
@@ -38,6 +39,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "Merry Christmas, Mr. Lawrence");
     }
 
+    @Ignore
     @Test
     public void testSignInWithEmptyFields() {
 
@@ -67,7 +69,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "Your credentials don’t match. It’s probably attributable to human error.");
 
     }
-@Ignore
+    @Ignore
     @Test
     public void testWelcomeJenkins() {
 
@@ -77,6 +79,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
     }
 
+    @Ignore
     private WebElement findPopUp(By locator) {
         try {
             return getDriver().findElement(locator);
@@ -85,7 +88,7 @@ public class GroupJavaBustersTest extends BaseTest {
         }
     }
 
-
+    @Ignore
     @Test
     public void testFillUserName() {
 
@@ -103,6 +106,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testCancelFillingUserName() {
 
@@ -119,7 +123,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
     }
 
-
+    @Ignore
     @Test
     public void testAllFields() throws InterruptedException {
         String mainLink = "https://www.selenium.dev/selenium/web/web-form.html";
@@ -152,6 +156,7 @@ public class GroupJavaBustersTest extends BaseTest {
         dropDownSelectedValue.selectByValue("3");
     }
 
+    @Ignore
     @Test
     public void testFillInForm() {
         getDriver().get("https://automationintesting.online/");
@@ -176,7 +181,7 @@ public class GroupJavaBustersTest extends BaseTest {
         assertEquals(value, "Thanks for getting in touch Marta!");
     }
 
-
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
 
@@ -197,6 +202,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "macbook");
     }
 
+    @Ignore
     @Test
     public void testSearchCorrectProduct() {
         getDriver().get("https://shop.studiob3.pl/");
@@ -213,7 +219,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
         assertTrue(linkToProduct.contains("dress"));
     }
-@Ignore
+    @Ignore
     @Test
     public void testDeleteFromBim() {
         getDriver().get("https://shop.studiob3.pl/product/iola-beanie/");
@@ -239,6 +245,7 @@ public class GroupJavaBustersTest extends BaseTest {
         assertTrue(foundElement.getText().contains("Your cart is empty"));
     }
 
+    @Ignore
     @Test
     public void testNavigateToExpectedUrl() {
 
@@ -250,9 +257,15 @@ public class GroupJavaBustersTest extends BaseTest {
             ".pl/product-category/end-of-series/");
     }
 
+    @Ignore
     @Test
     public void testSomeJenkins() throws InterruptedException {
 
 
+    }
+    @Test
+    public void testSignInJenkins() {
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(3) > div > h1")).getText(),"Welcome to Jenkins!");
     }
 }
