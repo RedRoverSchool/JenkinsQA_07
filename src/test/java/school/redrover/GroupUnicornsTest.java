@@ -491,6 +491,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         new Actions(getDriver())
                 .moveToElement(jobLinkToRename).perform();
+        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/job/Bayans_job/']")).click();
         Thread.sleep(1000);
         getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")).click();
