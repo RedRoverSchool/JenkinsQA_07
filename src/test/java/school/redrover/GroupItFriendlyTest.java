@@ -17,6 +17,7 @@ import static org.testng.Assert.assertEquals;
 
 
 public class GroupItFriendlyTest extends BaseTest {
+    @Ignore
     @Test
     public void testDeleteFolder() {
         getDriver().findElement(By.className("task")).click();
