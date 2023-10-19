@@ -55,8 +55,6 @@ public class GroupAqaLearnTest extends BaseTest {
                 "New Item",
                 "People",
                 "Build History",
-                "Project Relationship",
-                "Check File Fingerprint",
                 "Manage Jenkins",
                 "My Views"
         );
