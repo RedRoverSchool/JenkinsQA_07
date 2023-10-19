@@ -147,7 +147,7 @@ public class JenkinsUtils {
     private static void deleteUsers() {
         String userPage = getPage("manage/securityRealm/");
         deleteByLink("manage/securityRealm/user/%s/doDelete",
-                getSubstringsFromPage(userPage, "href=\"user/", "/delete\"").stream()
+                getSubstringsFromPage(userPage, "href=\"user/", "/\"").stream()
                         .filter(user -> !user.equals(ProjectUtils.getUserName())).collect(Collectors.toSet()),
                 getCrumbFromPage(userPage));
     }
@@ -155,7 +155,7 @@ public class JenkinsUtils {
     private static void deleteNodes() {
         String mainPage = getPage("");
         deleteByLink("manage/computer/%s/doDelete",
-                getSubstringsFromPage(mainPage, "href=\"/manage/computer/", "/\""),
+                getSubstringsFromPage(mainPage, "href=\"/computer/", "/\""),
                 getCrumbFromPage(mainPage));
     }
 
