@@ -88,25 +88,22 @@ public class GroupQaClimbersTest extends BaseTest {
     }
 
     @Test
-    public void addProfileDescriptionTest(){
+    public void testAddProfileDescription(){
         getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
 
         getDriver().findElement(By.id("description-link")).click();
 
         getDriver().findElement(By.className("jenkins-input")).sendKeys("Test");
 
-
         getDriver().findElement(By.className("jenkins-button--primary")).click();
-
-        String description = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "Test");
 
         getDriver().findElement(By.id("description-link")).click();
+
         getDriver().findElement(By.className("jenkins-input")).clear();
+
         getDriver().findElement(By.className("jenkins-button--primary")).click();
+
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "");
-
-
-
     }
 }
