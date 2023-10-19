@@ -10,7 +10,7 @@ import school.redrover.runner.BaseTest;
 public class AfanasiukTest extends BaseTest {
 
     @Test
-    public void testCreateFreeStyleProject()  {
+    public void testCreateFreeStyleProject() {
 
         getDriver().findElement(By.xpath("//a [@href='newJob']")).click();
 
@@ -24,10 +24,11 @@ public class AfanasiukTest extends BaseTest {
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
-            "Project Freestyle Project");
-        }
+                "Project Freestyle Project");
+    }
+
     @Test
-        public void testCreatePipeline()  {
+    public void testCreatePipeline() {
 
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a/span[1]")).click();
 
@@ -42,7 +43,6 @@ public class AfanasiukTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
                 "Pipeline Pipeline");
-
     }
-   }
+}
 
