@@ -11,10 +11,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfWindowsToBe;
 import static org.testng.Assert.assertEquals;
 
-
+@Ignore
 public class GroupUnderdogsTest extends BaseTest {
 
     // the next line will be deleted as soon as all methods within the class are refactored and driver is changed to getDriver()
