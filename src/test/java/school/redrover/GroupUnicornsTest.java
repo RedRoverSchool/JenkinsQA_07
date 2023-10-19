@@ -467,4 +467,45 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(resultAfterSaving1, sendKeys);
         Assert.assertEquals(resultAfterSaving2, sendKeys);
     }
+
+    @Test
+    public void testCreateAndRenamingNewJob() throws InterruptedException
+    {
+
+        final String JOB_NAME = "Bayans_job";
+        final String JOB_NAME_RENAMED = "NEW_Bayans_job";
+
+        //creating a new job
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
+
+        boolean isOKButtonDisabled = getDriver().findElement(By.xpath("//button[.='OK']")).isEnabled();
+        Assert.assertFalse(isOKButtonDisabled, "Ok button should not be enabled until the category is selected");
+
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+
+        boolean isOKButtonEnabled = getDriver().findElement(By.xpath("//button[.='OK']")).isEnabled();
+        Assert.assertTrue(isOKButtonEnabled, "Ok button should be enabled after the category is selected");
+
+        getDriver().findElement(By.xpath("//button[.='OK']")).click();
+        getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
+
+        //renaming a created job
+        WebElement jobLinkToRename = getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']"));
+
+        new Actions(getDriver())
+                .moveToElement(jobLinkToRename).perform();
+        getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/job/Bayans_job/']")).click();
+        Thread.sleep(1000);
+        getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(JOB_NAME_RENAMED);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/NEW_Bayans_job/']")).getText(),
+                JOB_NAME_RENAMED);
+    }
 }
