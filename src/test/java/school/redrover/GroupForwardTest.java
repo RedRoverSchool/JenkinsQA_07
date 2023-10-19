@@ -80,6 +80,13 @@ public class GroupForwardTest extends BaseTest {
         Assert.assertEquals(element.getText().trim(), "Jenkins 2.414.2");
     }
 
+    @Test
+    public void testJenkins1Version() {
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'page-footer__links']/button"))
+                .getText().trim(), "Jenkins 2.414.2");
+    }
+
 }
 
 
