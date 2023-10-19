@@ -1,9 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -21,13 +20,14 @@ public class GroupItFriendlyTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testDemoQaOpenPage()  {
+    public void testDemoQaOpenPage() {
         WebDriver driver = getDriver();
         driver.get("https://demoqa.com/");
         WebElement image = driver.findElement(By.xpath("//*[@id='app']/header/a/img"));
         image.click();
-        Assert.assertEquals(image,image);
+        Assert.assertEquals(image, image);
     }
+
     @Ignore
     @Test
     public void testDemoQaChangePage() {
@@ -39,6 +39,7 @@ public class GroupItFriendlyTest extends BaseTest {
         String value = text.getText();
         Assert.assertEquals(value, "Please select an item from left to start practice.");
     }
+
     @Ignore
     @Test
     public void testDemoQaTextBox() {
@@ -50,11 +51,13 @@ public class GroupItFriendlyTest extends BaseTest {
         fullNameField.sendKeys("Adam Adams");
         WebElement email = getDriver().findElement(By.id("userEmail"));
         email.click();
-        fullNameField.sendKeys("adam@gmail.com");;
+        fullNameField.sendKeys("adam@gmail.com");
+        ;
         WebElement submit = getDriver().findElement(By.id("submit"));
         submit.click();
-        Assert.assertEquals(submit,submit);
+        Assert.assertEquals(submit, submit);
     }
+
     @Ignore
     @Test
     public void testSearch() throws InterruptedException {
@@ -85,7 +88,7 @@ public class GroupItFriendlyTest extends BaseTest {
 
     @Ignore
     @Test
-    public void ActionsWithCheckBoxTest(){
+    public void ActionsWithCheckBoxTest() {
 
         WebDriver driver = new ChromeDriver();
         try {
@@ -116,7 +119,7 @@ public class GroupItFriendlyTest extends BaseTest {
                     "downloads\n" +
                     "wordFile\n" +
                     "excelFile");
-          } finally {
+        } finally {
             driver.quit();
         }
     }
@@ -128,24 +131,43 @@ public class GroupItFriendlyTest extends BaseTest {
         driver.get("https://demoqa.com/links");
         assertEquals(driver.findElement(By.id("bad-request")).getText(), "Bad Request");
     }
-    @Ignore
+
     @Test
-    public void SearchRecipe() {
+    public void removeItemTest() {
         WebDriver driver = getDriver();
-        driver.get("https://allusrecipe.com/turkey-delight/");
+        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        //create item
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(randomUsername);
+        driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
 
-        WebElement boxSearch = driver.findElement(By.xpath("//*[@id=\"navbarNav\"]/form/div/input"));
-        WebElement clickSearch = driver.findElement(By.xpath("//*[@id=\"navbarNav\"]/form/div/div/button"));
+        // get list all items in main page
+        List <WebElement> listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
 
-        boxSearch.sendKeys("lokum");
-        clickSearch.click();
-
-        WebElement title = driver.findElement(By.xpath("/html/body/div[1]/div/div/div[1]/div/h1"));
-
-        String actual =  title.getText();
-
-        assertEquals(actual, "Lokum Recipes");
+        //search for an added item and delete this
+        Assert.assertTrue(isActualElement(listItems, randomUsername));
+        if (isActualElement(listItems, randomUsername)) {
+            driver.findElement(By.xpath("//*[@id=\"job_" + randomUsername + "\"]/td[3]/a")).click();
+            driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[6]/span/a")).click();
+            // accept alert to delete
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+        }
+        listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
+        Assert.assertFalse(isActualElement(listItems, randomUsername));
     }
+    // search item in list items
+    private boolean isActualElement(List<WebElement> items, String expecting) {
+        return items.stream().anyMatch(item -> item.getText().compareTo(expecting) == 0);
+    }
+    //get Web elements
+    private List<WebElement> getListElements(String xpath) {
+        return getDriver().findElements(By.xpath(xpath));
+    }
+
     @Test
     public void CreateNewItem(){
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
@@ -170,7 +192,7 @@ public class GroupItFriendlyTest extends BaseTest {
              break;
             }
         }
-        Assert.assertEquals(str,randomUsername);
+        Assert.assertEquals(str, randomUsername);
     }
 
     @Test
@@ -244,4 +266,21 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
     }
 
+
+    @Test
+    public void testCreateNewItem() {
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//div/input[@class = 'jenkins-input']")).sendKeys("New Item Name1");
+        getDriver().findElement(By.xpath("//*[@id = 'j-add-item-type-standalone-projects']/ul/li[1]/div[1]")).click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@class = 'jenkins-input   ']")).sendKeys("Description for New created item");
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        WebElement newItemNameIsExist = getDriver().findElement(By.xpath("//*/div/h1[contains(text(),'Project New Item Name1')]"));
+
+       Assert.assertTrue(newItemNameIsExist.isDisplayed());
+
+    }
 }

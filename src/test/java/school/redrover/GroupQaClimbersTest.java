@@ -65,20 +65,37 @@ public class GroupQaClimbersTest extends BaseTest {
     }
 
     @Test
-    public void testCreateProfileDescription() {
+    public void testCreateFolder() {
 
-        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        String folderName = "Progect_1";
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("/html/body/div[2]/div/div/form/div[2]/div[2]/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
 
-        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link']")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        String finalFolderName = getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/div[2]/div[2]/table/tbody/tr[1]/td[3]/a/span")).getText();
+        Assert.assertEquals(finalFolderName, folderName);
 
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+    }
 
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("The description of a person");
+    @Test
+    public void testAddProfileDescription() {
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
 
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.id("description-link")).click();
 
-        String actualDescription = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
-        Assert.assertEquals(actualDescription,"The description of a person");
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("Test");
 
+        getDriver().findElement(By.className("jenkins-button--primary")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "Test");
+
+        getDriver().findElement(By.id("description-link")).click();
+
+        getDriver().findElement(By.className("jenkins-input")).clear();
+
+        getDriver().findElement(By.className("jenkins-button--primary")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "");
     }
 }
