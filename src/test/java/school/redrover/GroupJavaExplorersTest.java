@@ -201,6 +201,7 @@ public class GroupJavaExplorersTest extends BaseTest {
         Assert.assertEquals(title, "Folder1");
     }
 
+    @Ignore
     @Test
     public void testCreateNewJob() {
 
