@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -64,32 +65,6 @@ public class GroupBrainBuildersTest extends BaseTest {
         Assert.assertEquals(resultName, "МИНИ ПОРТМОНЕ MODULE");
     }
 
-    @Ignore
-    @Test
-    public void testAlcobendasSearch() throws InterruptedException{
-
-        getDriver().get("https://www.alcobendas.org/es");
-
-        String title = getDriver().getTitle();
-        assertEquals(title, "Página Web del Ayuntamiento de Alcobendas");
-
-        Thread.sleep(2000);
-
-        WebElement lupaButton = getDriver().findElement(By.xpath("//*[@id='block-views-block-ayto-vista-lupa-header-block-1']/div/div"));
-        WebElement buscarButton = getDriver().findElement(By.xpath("//*[@id='edit-submit-ayto-resultados-de-busqueda-bloque']"));
-        WebElement searchInput = getDriver().findElement(By.xpath("//*[@id='edit-buscar']"));
-
-        lupaButton.click();
-        searchInput.sendKeys("yoga");
-        buscarButton.click();
-
-        WebElement resultOfSearch = getDriver().findElement(By.xpath("//*[@id='block-contenidoprincipaldelapagina-2']/div/div/div[1]/div[1]/h2"));
-        Thread.sleep(2000);
-        String value = resultOfSearch.getText();
-        Assert.assertEquals(value, "/2 resultados");
-    }
-
-
     @Test
     public void testJenkinsAdminStatus() {
 
@@ -143,5 +118,77 @@ public class GroupBrainBuildersTest extends BaseTest {
 
         WebElement tooltip = getDriver().findElement(By.xpath("//img[@aria-describedby = 'tippy-10']"));
         Assert.assertTrue(tooltip.isDisplayed());
+    }
+
+
+    private void createNewItemFreestyle(String freestyleName) {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(freestyleName);
+
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "Project " + freestyleName);
+    }
+
+    private void deleteItemFreestyle(String freestyleName) {
+
+        getDriver().findElement(By.xpath("//a[@href='job/" + freestyleName + "/']")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[6]/span/a/span[1]")).click();
+
+        Alert alert = getDriver().switchTo().alert();
+        alert.accept();
+    }
+
+    @Test
+    public void changeFreestyleName() throws InterruptedException {
+
+        final String freestyleProjectName = "Brains";
+        final String freestyleChangedProjectName = "NEW_Brains";
+
+        createNewItemFreestyle(freestyleProjectName);
+
+        getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='job/" + freestyleProjectName + "/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + freestyleProjectName + "/confirm-rename']")).click();
+
+        WebElement newNameField = getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input"));
+        newNameField.clear();
+        newNameField.sendKeys(freestyleChangedProjectName);
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/" + freestyleChangedProjectName + "/']")).getText(), freestyleChangedProjectName);
+
+        deleteItemFreestyle(freestyleChangedProjectName);
+    }
+
+    @Test
+    public void addFreestyleDescription() throws InterruptedException {
+
+        final String freeStyleProjectName = "New_brains";
+
+        createNewItemFreestyle(freeStyleProjectName);
+
+        getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='job/" + freeStyleProjectName + "/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='editDescription']")).click();
+
+        WebElement descriptionField = getDriver().findElement(By.xpath("//*[@id='description']/form/div[1]/div[1]/textarea"));
+        descriptionField.clear();
+        descriptionField.sendKeys("my_new_project");
+        getDriver().findElement(By.xpath("//*[@id='description']/form/div[2]/button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "my_new_project");
     }
 }

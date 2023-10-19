@@ -216,4 +216,18 @@ public class GroupCarlTheFogTest extends BaseTest {
 
         Assert.assertEquals("Welcome to Jenkins!", JenkinsGreetings);
     }
+
+    @Test
+    public void testCreateNewFreestyleProject() {
+        final String projectName = "FreestyleProject";
+
+        getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
+        getDriver().findElement(By.cssSelector("input[type='text']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("li.hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h1.job-index-headline")).getText(),
+                "Project " + projectName);
+    }
 }

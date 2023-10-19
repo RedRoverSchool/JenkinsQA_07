@@ -3,11 +3,9 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-//@Ignore
 public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
     private void utilsCreateFreestyleProject(String projectName) {
@@ -19,26 +17,28 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     }
 
     @Test
-    @Ignore
-    public void testSearch() {
+    public void testVersion() {
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
-                "Welcome to Jenkins!");
+        getDriver().findElement(By.xpath("//*[@id = 'jenkins']/footer/div/div[2]/button")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/manage/about']")).click();
+
+        WebElement version = getDriver().findElement(By.xpath("//p[@class = 'app-about-version']"));
+
+        Assert.assertEquals(version.getText(), "Version 2.414.2");
     }
 
     @Test
-    public void testVersion() {
+    public void testCreateNewPipelineProject() {
 
-        WebElement buttonVersion = getDriver().findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"));
-        buttonVersion.click();
+        final String projectName = "TestNew";
 
-        WebElement buttonVersionNext = getDriver().findElement(By.xpath("//a[@href='/manage/about']"));
-        buttonVersionNext.click();
-
-        WebElement version = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
-        String valueVersion = version.getText();
-        Assert.assertEquals(valueVersion, "Version 2.414.2");
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(),
+                String.format("Pipeline %s", projectName));
     }
 
     @Test
