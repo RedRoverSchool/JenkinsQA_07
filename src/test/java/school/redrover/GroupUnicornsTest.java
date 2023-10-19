@@ -168,43 +168,28 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
-    @Ignore
     @Test
-    public void testUnsuccessfulLoginDigitalBank() {
-        JenkinsUtils.login(getDriver());
-        getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
-        getDriver().findElement(By.id("username")).sendKeys("tester1@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("1234Test");
-        getDriver().findElement(By.id("submit")).click();
-        WebElement errorMsg = getDriver().findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
-        Assert.assertTrue(errorMsg.isDisplayed(), "Error message is displayed");
-    }
+    public void testVerifyHomePageJenkins() {
 
-    @Ignore
-    @Test
-    public void testSuccessfulLoginDigitalBank() {
-        JenkinsUtils.login(getDriver());
-        getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
-        getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("Test1234");
-        getDriver().findElement(By.id("submit")).click();
-        WebElement avatar = getDriver().findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
-        Assert.assertTrue(avatar.isDisplayed(), "Avatar is displayed");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//li/a[@class = 'model-link']")).isDisplayed());
     }
 
     @Test
-    public void testLogout(){
-        JenkinsUtils.login(getDriver());
-        getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("Test1234");
-        getDriver().findElement(By.id("submit")).click();
-        getDriver().findElement(By.xpath("//img[contains(@class, 'user-avatar')]")).click();
-        getDriver().findElement(By.xpath("//div/a[text() ='Logout']")).click();
-        Assert.assertTrue(getDriver().findElement(By.xpath("//div/span[text() ='Success']")).isDisplayed(), "Logout completed");
+    public void testCreateNewProjectJenkins() {
 
+        final String jobName = "Unicorns22";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/']")).isDisplayed();
+
+        getDriver().findElement(By.name("name")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//img[@class = 'icon-freestyle-project icon-xlg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item'][2]")).getText(), jobName);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[text() = contains(.,'Project')]")).getText(), String.format("Project %s", jobName));
     }
 
     @Test
