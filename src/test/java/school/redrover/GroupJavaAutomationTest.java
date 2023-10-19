@@ -21,36 +21,32 @@ public class GroupJavaAutomationTest extends BaseTest {
         String versionJenkins = versionJenkinsButton.getText();
         Assert.assertEquals(versionJenkins,"Jenkins 2.414.2");
     }
+
+    private void addNewItem(String nameProject) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameProject);
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    }
     @Test
-    public void testJenkinsAddNewItemAndSearch(){
-        WebElement buttonNewItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
-        buttonNewItem.click();
+    public void testJenkinsAddNewItemAndSearch() {
 
-        String nameProject = "Project_iod";
-        WebElement inputFieldName = getDriver().findElement(By.id("name"));
-        inputFieldName.sendKeys(nameProject);
-
-        WebElement freestyleProject = getDriver().findElement(By.xpath("//span[text()='Freestyle project']"));
-        freestyleProject.click();
-
-        WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
-        buttonOk.click();
-
-        WebElement buttonSave = getDriver().findElement(By.xpath("//button[@name='Submit']"));
-        buttonSave.click();
-
+        final String nameProject = "Project_iod";
+        addNewItem(nameProject);
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@id='skip2content']/following-sibling::*")).getText(),"Project " + nameProject);
 
     }
     @Ignore
     @Test
-    public void testJenkinsSearchItem(){
-        testJenkinsAddNewItemAndSearch();
+    public void testJenkinsSearchItem() {
+
+        final String nameProject = "Project_iod";
+        addNewItem(nameProject);
 
         WebElement inputSearch = getDriver().findElement(By.xpath("//input[@id='search-box']"));
         inputSearch.sendKeys("iod");
         inputSearch.submit();
-
 
     }
 }
