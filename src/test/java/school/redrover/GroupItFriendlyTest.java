@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -18,43 +19,30 @@ import static org.testng.Assert.assertEquals;
 
 
 public class GroupItFriendlyTest extends BaseTest {
+    @Test
+    public void testDeleteFolder() {
+        getDriver().findElement(By.className("task")).click();
+        getDriver().findElement(By.id("name")).sendKeys("testFolder");
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-    @Ignore
-    @Test
-    public void testDemoQaOpenPage()  {
-        WebDriver driver = getDriver();
-        driver.get("https://demoqa.com/");
-        WebElement image = driver.findElement(By.xpath("//*[@id='app']/header/a/img"));
-        image.click();
-        Assert.assertEquals(image,image);
+        WebElement folderName = getDriver().findElement(By.xpath("//*[@id='job_testFolder']/td[3]/a/span"));
+
+        Actions action = new Actions(getDriver());
+        action.moveToElement(folderName).build().perform();
+
+        getDriver().findElement(By.xpath("//*[@id=\"job_testFolder\"]/td[3]/a/button")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tippy-5\"]/div/div/div/a[3]")).click();
+        getDriver().findElement(By.xpath(" //*[@id=\"main-panel\"]/form/button")).click();
+
+        final String welcomeToJenkins = "Welcome to Jenkins!";
+        String text = getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/div[2]/div/h1")).getText();
+
+        Assert.assertEquals(welcomeToJenkins, text);
     }
-    @Ignore
-    @Test
-    public void testDemoQaChangePage() {
-        WebDriver driver = getDriver();
-        driver.get("https://demoqa.com/");
-        WebElement element = driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[1]/div/div[3]/h5"));
-        element.click();
-        WebElement text = driver.findElement(By.xpath("//*[.='Please select an item from left to start practice.']"));
-        String value = text.getText();
-        Assert.assertEquals(value, "Please select an item from left to start practice.");
-    }
-    @Ignore
-    @Test
-    public void testDemoQaTextBox() {
-        getDriver().get("https://demoqa.com/elements");
-        WebElement element = getDriver().findElement(By.xpath("//span[contains(text(),'Text Box')]"));
-        element.click();
-        WebElement fullNameField = getDriver().findElement(By.id("userName"));
-        fullNameField.click();
-        fullNameField.sendKeys("Adam Adams");
-        WebElement email = getDriver().findElement(By.id("userEmail"));
-        email.click();
-        fullNameField.sendKeys("adam@gmail.com");;
-        WebElement submit = getDriver().findElement(By.id("submit"));
-        submit.click();
-        Assert.assertEquals(submit,submit);
-    }
+
     @Ignore
     @Test
     public void testSearch() throws InterruptedException {
