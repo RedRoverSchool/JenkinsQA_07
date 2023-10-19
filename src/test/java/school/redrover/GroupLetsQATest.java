@@ -10,11 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -126,7 +124,7 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
 
         Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
-                "» This field cannot be empty, please enter a valid name"); ;
+                "» This field cannot be empty, please enter a valid name");
     }
 
     @Test
@@ -147,5 +145,21 @@ public class GroupLetsQATest extends BaseTest {
 
             Assert.assertEquals(getDriver().findElement(By.className(locator)).getAttribute("aria-checked"), "true");
         }
+    }
+
+    @Test
+    public void testMyViewsLegendIconColor() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("123");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+
+        getDriver().findElement(By.id("button-icon-legend")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class = 'build-status-icon__wrapper icon-red icon-lg']")).getCssValue("color"), "rgba(230, 0, 31, 1)");
     }
 }

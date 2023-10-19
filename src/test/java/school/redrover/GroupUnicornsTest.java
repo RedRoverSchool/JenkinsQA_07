@@ -168,34 +168,28 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
-    @Ignore
     @Test
-    public void unsuccessfulLoginDigitalBankTest() {
+    public void testVerifyHomePageJenkins() {
 
-        getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().manage().window().maximize();
-        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
-
-        getDriver().findElement(By.id("username")).sendKeys("tester1@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("1234Test");
-        getDriver().findElement(By.id("submit")).click();
-        WebElement errorMsg = getDriver().findElement(By.xpath("//div[contains(@class, 'sufee-alert')]"));
-        Assert.assertTrue(errorMsg.isDisplayed(), "Error message is displayed");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//li/a[@class = 'model-link']")).isDisplayed());
     }
 
-    @Ignore
     @Test
-    public void successfulLoginDigitalBankTest() {
+    public void testCreateNewProjectJenkins() {
 
-        getDriver().get("http://18.118.14.155:8080/bank/login");
-        getDriver().manage().window().maximize();
-        getDriver().findElement(By.xpath("//div//img[@class = 'align-content']")).isDisplayed();
+        final String jobName = "Unicorns22";
 
-        getDriver().findElement(By.id("username")).sendKeys("tester@gmail.com");
-        getDriver().findElement(By.id("password")).sendKeys("Test1234");
-        getDriver().findElement(By.id("submit")).click();
-        WebElement avatar = getDriver().findElement(By.xpath("//img[contains(@class, 'user-avatar')]"));
-        Assert.assertTrue(avatar.isDisplayed(), "Avatar is displayed");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/']")).isDisplayed();
+
+        getDriver().findElement(By.name("name")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//img[@class = 'icon-freestyle-project icon-xlg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item'][2]")).getText(), jobName);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[text() = contains(.,'Project')]")).getText(), String.format("Project %s", jobName));
     }
 
     @Test

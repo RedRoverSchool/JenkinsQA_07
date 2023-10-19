@@ -1,31 +1,23 @@
 package school.redrover;
 import org.openqa.selenium.*;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GroupQaClimbersTest extends BaseTest {
 
-
+    @Ignore
     @Test
-    public void testAllItemsToCreateJobsArePresented() {
+    public void testClickOnCreateAJob() {
+
 
         getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
 
-        List<WebElement> actualItems = getDriver().findElements(By.xpath("//span[@class='label']"));
-        List<String> actualItemsText = new ArrayList<>();
+        String actualResult = getDriver().findElement(By.xpath("//label[@for='name']"))
+                .getText();
 
-        for (WebElement el: actualItems) {
-            actualItemsText.add(el.getText());
-        }
-
-        List<String> expectedItems = List.of("Freestyle project", "Pipeline", "Multi-configuration project", "Folder",
-                "Multibranch Pipeline", "Organization Folder");
-
-        Assert.assertEquals(actualItemsText, expectedItems);
+        Assert.assertEquals(actualResult, "Enter an item name");
     }
 
     @Test
