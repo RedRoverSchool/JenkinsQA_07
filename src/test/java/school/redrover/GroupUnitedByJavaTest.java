@@ -10,51 +10,14 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
 import school.redrover.runner.BaseTest;
 import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
 
-
 public class GroupUnitedByJavaTest extends BaseTest {
-
-    @Ignore
-    @Test
-    public void testDemoqaElementsRedirection() throws InterruptedException {
-
-        getDriver().get("https://demoqa.com/");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "DEMOQA");
-
-        WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(1)"));
-        elementsButton.click();
-
-        String currentUrl = getDriver().getCurrentUrl();
-        String elementsUrl = "https://demoqa.com/elements";
-        Assert.assertEquals(currentUrl, elementsUrl);
-        Thread.sleep(2000);
-    }
-
-    @Ignore
-    @Test
-    public void testDemoqaFormsRedirection() {
-
-        getDriver().get("https://demoqa.com/");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "DEMOQA");
-
-        WebElement elementsButton = getDriver().findElement(By.cssSelector(".top-card:nth-child(2)"));
-        elementsButton.click();
-
-        String currentUrl = getDriver().getCurrentUrl();
-        String elementsUrl = "https://demoqa.com/forms";
-
-        Assert.assertEquals(currentUrl, elementsUrl, "The actual URL: " + currentUrl +
-                " differs from the expected one: " + elementsUrl);
-    }
 
     @Ignore
     @Test
@@ -150,24 +113,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
         String expectedHeading = "Teachers";
         String heading = getDriver().findElement(By.xpath("//h2[contains(text(), \"Teachers\")]")).getText();
         Assert.assertEquals(expectedHeading, heading);
-    }
-
-    @Ignore
-    @Test
-    @Description("WebTables: Test open the window Registration form")
-    public void testDemoqaAddNewRecordButton() {
-        getDriver().get("https://demoqa.com/webtables");
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-
-        Assert.assertEquals(getDriver().getTitle(), "DEMOQA");
-
-        WebElement main_header = getDriver().findElement(By.className("main-header"));
-        Assert.assertEquals(main_header.getText(), "Web Tables");
-
-        WebElement button_add = getDriver().findElement(By.xpath("//button[@id='addNewRecordButton']"));
-        button_add.click();
-        WebElement window_add = getDriver().findElement(By.xpath("//*[@id='registration-form-modal']"));
-        Assert.assertEquals(window_add.getText(), "Registration Form");
     }
 
     @Ignore
@@ -314,9 +259,8 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
     }
 
-    @Ignore
     @Test
-    public void testJenkinsDescriptionPreview() throws InterruptedException {
+    public void testJenkinsDescriptionPreview() {
 
         WebElement description = getDriver().findElement(By.id("description-link"));
         description.click();
@@ -333,7 +277,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
 
         Assert.assertEquals(textPreview.getText(), descriptionText,
                 textPreview + " differs from " + descriptionText);
-        Thread.sleep(1000);
     }
 
     @Test

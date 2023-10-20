@@ -279,4 +279,21 @@ public class GroupJavaBustersTest extends BaseTest {
                         By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button")).getText(),
                 "Jenkins 2.414.2");
     }
+
+    @Test
+    public void testCreateNewItemWithValidName() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                .sendKeys("Абра кадабра");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject"))
+                .click();
+        getDriver().findElement(By.id("ok-button"))
+                .click();
+        getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"))
+                .click();
+        assertEquals(getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3) > a"))
+                .getText(), "Абра кадабра");
+    }
 }

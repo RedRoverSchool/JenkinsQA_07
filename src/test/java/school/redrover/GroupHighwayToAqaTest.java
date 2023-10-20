@@ -125,10 +125,10 @@ public class GroupHighwayToAqaTest extends BaseTest {
     @Test
     public void testComparisonManageSystem() {
 
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/section[2]/div/div[1]/a")).click();
+        getDriver().findElement(By.cssSelector(".task:nth-child(4) .task-link")).click();
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"))
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1"))
                 .getText(), "System");
     }
 
@@ -155,5 +155,20 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.name("_.description")).getText(),
                 folderDescription);
+    }
+
+    @Test
+    public void testAddingDescriptionUser() {
+
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-table__link")).click();
+        getDriver().findElement(By.xpath("//*[(@id = 'description-link')]")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']"))
+                .sendKeys("Привет");
+        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='textarea-preview']"))
+                .getText(), "Привет");
     }
 }
