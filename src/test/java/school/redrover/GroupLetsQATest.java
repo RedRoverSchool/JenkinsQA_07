@@ -202,7 +202,8 @@ public class GroupLetsQATest extends BaseTest {
                 .click(clickable)
                 .perform();
 
-         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='tippy-content']")).isDisplayed());
+        String s =  getDriver().findElement(By.xpath("//div[@class='tippy-content']")).getAttribute("data-state");
+        Assert.assertEquals(s, "visible");
 
 
     }
