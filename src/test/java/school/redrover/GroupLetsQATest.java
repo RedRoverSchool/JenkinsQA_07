@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -161,5 +162,28 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.id("button-icon-legend")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class = 'build-status-icon__wrapper icon-red icon-lg']")).getCssValue("color"), "rgba(230, 0, 31, 1)");
+    }
+
+    @Test
+    public void testCreateRenameFolder() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("TestFolder01");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        Actions action = new Actions(getDriver());
+        WebElement myfolder = getDriver().findElement(By.xpath("//a[@href='job/TestFolder01/']"));
+        action.moveToElement(myfolder);
+
+        getDriver().findElement(By.xpath("//*[@id='job_TestFolder01']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/TestFolder01/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).sendKeys("-renamed");
+        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"job_TestFolder01-renamed\"]/td[3]/a/span")).getText(), "TestFolder01-renamed");
     }
 }
