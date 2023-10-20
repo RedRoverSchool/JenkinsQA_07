@@ -198,12 +198,14 @@ public class GroupLetsQATest extends BaseTest {
 
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
-        WebElement item = getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside span"));
+        WebElement item = getDriver().findElement(By.xpath("//span[normalize-space()='New Folder']"));
         actions.moveToElement(item).build().perform();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
+        WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']")));
+        actions.moveToElement(button).build().perform();
+        button.click();
 
-        Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
+         Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
 
 
     }
