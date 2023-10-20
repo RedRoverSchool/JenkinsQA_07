@@ -17,34 +17,27 @@ import java.util.ArrayList;
 
 
 public class GroupSevenTest extends BaseTest {
-    @Ignore
+
     @Test
-    public void testKylieTitle() {
-        getDriver().get("https://kyliecosmetics.com/");
+    public void testJobCreation() {
 
-        String title = getDriver().getTitle();
+        WebElement createJobButton = getDriver().findElement(By.xpath("//a[@href='newJob']"));
+        createJobButton.click();
 
-        Assert.assertEquals(title, "Kylie Cosmetics by Kylie Jenner | Kylie Skin | Kylie Baby");
-    }
+        WebElement itemName = getDriver().findElement(By.xpath("//input[@class='jenkins-input']"));
+        itemName.sendKeys("First test");
 
-    @Ignore
-    @Test
-    public void testSearchField() {
+        WebElement freestyleProject = getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']//label"));
+        freestyleProject.click();
 
-        getDriver().get("https://kyliecosmetics.com/collections/kylie-cosmetics");
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
+        submitButton.click();
 
-        WebElement searchButton = getDriver().findElement(By.xpath("//a[@title='Search']"));
-        searchButton.click();
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+        saveButton.click();
 
-        WebElement searchInput = getDriver().findElement(By.xpath("//input[@id='SearchForm-Header-Query']"));
-        searchInput.sendKeys("lip kit");
-
-        WebElement searchButtonNext = getDriver().findElement(By.xpath("//button[@id='SearchForm-Header-Submit']"));
-        searchButtonNext.click();
-
-        WebElement title = getDriver().findElement(By.xpath("//h1[normalize-space()='Search']"));
-        String value = title.getText();
-        Assert.assertEquals(value, "SEARCH");
+        WebElement projectTitle = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"));
+        Assert.assertTrue(projectTitle.isDisplayed());
     }
 
     @Ignore
