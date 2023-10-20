@@ -203,6 +203,7 @@ public class GroupLetsQATest extends BaseTest {
 
         WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-href='http://localhost:8080/job/New%20Folder/']")));
         actions.moveToElement(button).build().perform();
+        Assert.assertTrue(button.isDisplayed(),"Button is not displayed");
         button.click();
 
          Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
