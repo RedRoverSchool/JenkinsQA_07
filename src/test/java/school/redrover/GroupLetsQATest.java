@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -191,14 +192,17 @@ public class GroupLetsQATest extends BaseTest {
     }
 
     @Test
-    public void testMenuDropdownIconIsDisplayed(){
+    public void testMenuDropdownIconIsDisplayed() throws InterruptedException {
         Actions actions = new Actions(getDriver());
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         WebElement item = getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside span"));
-        actions.moveToElement(item).build().perform();
+        Action hover = actions.moveToElement(item).build();
+        Thread.sleep(1000);
+        hover.perform();
+
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
