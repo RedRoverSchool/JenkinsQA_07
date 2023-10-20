@@ -16,6 +16,15 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[contains(@id, 'ok-button')]")).click();
     }
 
+    private void utilsCreateFolder(String folderName) {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+
+        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+        getDriver().findElement(By.xpath("//img[@alt = 'Jenkins']")).click();
+    }
+
     @Test
     public void testVersion() {
 
@@ -103,20 +112,16 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
     @Test
     public void testCreateFolder() {
+        final String newFolderName = "Folder1";
 
-        String nameFolder = "Folder1";
+        utilsCreateFolder(newFolderName);
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
-
-        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(nameFolder);
-        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
-
-        getDriver().findElement(By.xpath("//img[@id = 'jenkins-name-icon']")).click();
+        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/job/Folder1/delete']")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+        getDriver().findElement(By.xpath("//input[@role = 'searchbox']")).sendKeys(newFolderName + "\n");
 
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']"))
-                .getText(), "Folder1");
-
+                .findElement(By.xpath("//div[@class = 'error']")).getText(), "Nothing seems to match.");
     }
 }
