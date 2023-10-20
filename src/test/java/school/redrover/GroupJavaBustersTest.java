@@ -7,10 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
-
-import java.util.Random;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -299,10 +295,14 @@ public class GroupJavaBustersTest extends BaseTest {
                 .getText(), "3451643561");
     }
 
+    @Test //negative test
+    public void testCreateNewItemWithNameFromSpecialCharacters() {
 
-
-
-
-
-
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                .sendKeys("@");
+        assertEquals(getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]"))
+                .getText(), "» ‘@’ is an unsafe character");
+    }
 }
