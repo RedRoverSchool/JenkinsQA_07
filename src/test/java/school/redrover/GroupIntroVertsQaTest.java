@@ -88,6 +88,7 @@ public class GroupIntroVertsQaTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']/parent::a")).click();
         getDriver().switchTo().alert().accept();
+
         Assert.assertFalse(getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']")).getText().contains(pipelineName));
     }
 }
