@@ -229,20 +229,15 @@ public class GroupLetsQATest extends BaseTest {
     }
 
     @Test
-    public void testMenuDropdownIconIsDisplayed(){
+    public void testCreatedFolderIsOpened(){
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        WebElement button = getDriver().findElement(By.cssSelector("[data-href='http://localhost:8080/job/New%20Folder/']"));
-        new Actions(getDriver())
-                .click(button)
-                .perform();
-        button.click();
+        getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link")).click();
 
-        getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href='/job/New%20Folder/configure']")).click();
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-app-bar__content h1")).getText(),"Configuration");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(),"New Folder");
 
 
     }
