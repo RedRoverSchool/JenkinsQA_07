@@ -192,16 +192,14 @@ public class GroupLetsQATest extends BaseTest {
     }
 
     @Test
-    public void testMenuDropdownIconIsDisplayed() throws InterruptedException {
+    public void testMenuDropdownIconIsDisplayed(){
         Actions actions = new Actions(getDriver());
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         WebElement item = getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside span"));
-        Action hover = actions.moveToElement(item).build();
-        Thread.sleep(1000);
-        hover.perform();
+        actions.moveToElement(item).build().perform();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
 
