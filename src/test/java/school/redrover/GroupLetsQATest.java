@@ -31,7 +31,6 @@ public class GroupLetsQATest extends BaseTest {
         } catch (Exception TimeoutException) {
             Assert.assertTrue(false);
         }
-
     }
 
     @Test
@@ -47,7 +46,6 @@ public class GroupLetsQATest extends BaseTest {
         } catch (Exception TimeoutException) {
             Assert.assertTrue(false);
         }
-
     }
 
     @Test
@@ -185,5 +183,23 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"job_TestFolder01-renamed\"]/td[3]/a/span")).getText(), "TestFolder01-renamed");
+    }
+
+    @Test
+    public void testTooltipSunIconText() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("123");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Actions action = new Actions(getDriver());
+        action.moveToElement(
+                getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']"))
+                )
+                .perform();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']/div/*")).getAttribute("tooltip"), "100%");
     }
 }
