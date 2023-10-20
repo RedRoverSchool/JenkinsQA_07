@@ -6,7 +6,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -74,29 +73,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
         WebElement message = getDriver().findElement(By.className("main-header"));
         String value = message.getText();
         Assert.assertEquals(value, "Book Store");
-    }
-
-    @Ignore
-    @Test
-    public void testDemoqaEdgeBookFlow() {
-        WebDriver driver = new EdgeDriver();
-
-        driver.get("https://demoqa.com/");
-
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "DEMOQA");
-
-        WebElement cardBookStore = driver.findElement(By.xpath("(//div[contains(@class, 'card mt-4 top-card')])[last()]"));
-        cardBookStore.click();
-
-        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books");
-
-        WebElement cardBook = driver.findElement(By.xpath("//*[@id='see-book-Git Pocket Guide']/a"));
-        cardBook.click();
-
-        Assert.assertEquals(driver.getCurrentUrl(), "https://demoqa.com/books?book=9781449325862");
-
-        driver.quit();
     }
 
     @Ignore
@@ -219,27 +195,6 @@ public class GroupUnitedByJavaTest extends BaseTest {
         WebElement button2 = driver.findElement(By.name("s"));
         button2.click();
 
-    }
-
-    @Ignore
-    @Test
-    public void testDemoqaEdgeExperiment() {
-        WebDriver driver = new EdgeDriver();
-
-        driver.get("http://restful-booker.herokuapp.com/");
-
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "Welcome to Restful-Booker");
-
-        WebElement cardBookStore = driver.findElement(By.xpath("//img[@src='/images/motpro.png']"));
-        cardBookStore.click();
-
-        driver.getWindowHandles().forEach(tab -> driver.switchTo().window(tab));
-
-        String title2 = driver.getTitle();
-        Assert.assertEquals(title2, "Ninja training for software testers | Ministry of Testing");
-
-        driver.quit();
     }
 
     @Ignore
@@ -470,5 +425,21 @@ public class GroupUnitedByJavaTest extends BaseTest {
         assertEquals(
                 getDriver().findElement(By.xpath("//div[@class='error jenkins-!-margin-bottom-2'][3]")).getText(),
                 "Password didn't match");
+    }
+
+    @Test
+    public void testCheckVersion() {
+        WebElement footer = getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+
+        String value = footer.getText();
+        Assert.assertEquals(value, "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void testCheckVersion2() {
+        WebElement footer = getDriver().findElement(By.xpath("//button[contains (@class, 'jenkins-button')]"));
+
+        String value = footer.getText();
+        Assert.assertEquals(value, "Jenkins 2.414.2");
     }
 }
