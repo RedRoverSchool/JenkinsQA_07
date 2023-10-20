@@ -22,8 +22,10 @@ import java.util.List;
 
 public class GroupLetsQATest extends BaseTest {
 
+
     public void createAnItem(String itemName) {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+
         String createdItemName = "New "+ itemName;
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -191,12 +193,13 @@ public class GroupLetsQATest extends BaseTest {
     @Test
     public void testMenuDropdownIconIsDisplayed(){
         Actions actions = new Actions(getDriver());
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         WebElement item = getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside span"));
         actions.moveToElement(item).build().perform();
-        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
 
