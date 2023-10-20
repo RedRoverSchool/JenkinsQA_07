@@ -20,6 +20,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     private static final String PROJECT_NAME = "FreestyleProject";
     private static final String RENAME_PROJECT = "NewProject";
+    private static final String FOLDER_NAME = "NewFolder";
 
     public void createFreestyleProject(String projectName) {
 
@@ -88,15 +89,13 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testCreateFolder() {
-        final String FOLDERNAME = "NewFolder";
 
         getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
-        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDERNAME);
-
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDER_NAME);
         getDriver().findElement(By.cssSelector("li[class='com_cloudbees_hudson_plugins_folder_Folder'] span[class='label']")).click();
         getDriver().findElement(By.cssSelector("button[type='submit']")).click();
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("div[id='main-panel'] h1")).getText(), FOLDERNAME);
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div[id='main-panel'] h1")).getText(), FOLDER_NAME);
     }
 }
