@@ -111,15 +111,14 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     }
 
     @Test
-    public void testCreateFolder() {
-        final String newFolderName = "Folder1";
+    public void testDeleteFolder() {
 
-        utilsCreateFolder(newFolderName);
+        utilsCreateFolder("Folder1");
 
         getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
         getDriver().findElement(By.xpath("//a[@href = '/job/Folder1/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
-        getDriver().findElement(By.xpath("//input[@role = 'searchbox']")).sendKeys(newFolderName + "\n");
+        getDriver().findElement(By.xpath("//input[@role = 'searchbox']")).sendKeys("Folder1" + "\n");
 
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//div[@class = 'error']")).getText(), "Nothing seems to match.");
