@@ -118,9 +118,5 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
                 .findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']"))
                 .getText(), "Folder1");
 
-        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
-        getDriver().findElement(By.xpath("//a[@href = '/job/Folder1/delete']")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
-
     }
 }
