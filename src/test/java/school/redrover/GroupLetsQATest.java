@@ -11,12 +11,37 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import org.openqa.selenium.interactions.Actions;
 
 import java.time.Duration;
 import java.util.List;
 
 
+
+
+
 public class GroupLetsQATest extends BaseTest {
+
+    public void createAnItem(String itemName) {
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        String createdItemName = "New "+ itemName;
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(createdItemName);
+    try {
+        List<WebElement> items = getDriver().findElements(By.cssSelector(".label"));
+        for (WebElement el : items){
+            if (itemName.equals(el.getText())){
+                el.click();
+                break;
+            }
+        }
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+
+        } catch (Exception timeoutException){
+            System.out.println("Error: Wrong Item name");
+        }
+    }
 
     @Test
     public void testDescriptionTextAreaAppears() {
@@ -162,4 +187,21 @@ public class GroupLetsQATest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class = 'build-status-icon__wrapper icon-red icon-lg']")).getCssValue("color"), "rgba(230, 0, 31, 1)");
     }
+
+    @Test
+    public void testMenuDropdownIconIsDisplayed(){
+        Actions actions = new Actions(getDriver());
+
+        createAnItem("Folder");
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        WebElement item = getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside span"));
+        actions.moveToElement(item).build().perform();
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
+
+
+    }
+
+
 }
