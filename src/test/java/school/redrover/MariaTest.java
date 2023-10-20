@@ -98,13 +98,6 @@ public class MariaTest extends BaseTest {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("About vegan food");
         getDriver().findElement(By.xpath("//label[text()='Discard old builds']")).click();
         getDriver().findElement(By.xpath("//label[@class='attach-previous '][1]")).click();
-
-//        getDriver().findElement(By.xpath("//div[@class='validation-error-area validation-error-area--visible']/..//textarea[@name='_.spec']")).click();
-//        getDriver().findElement(By.xpath("//div[@class='validation-error-area validation-error-area--visible']/..//textarea[@name='_.spec']"))
-//                .sendKeys("H/15 * * * *");
-//        getDriver().findElement(By.xpath("//*[text()='Build after other projects are built']")).checkedBox();
-//        getDriver().findElement(By.xpath("//div//label[text()='Trigger even if the build is unstable']")).click();
-
         getDriver().findElement(By.xpath("//div//*[@formnovalidate='formNoValidate']")).click();
         getDriver().findElement(By.xpath("//div//ol//li//a[@class='model-link']")).click();
         getDriver().findElement(By.xpath("//td//div//a[@class='jenkins-table__button jenkins-!-build-color']")).click();
