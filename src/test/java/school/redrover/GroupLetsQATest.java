@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -193,18 +192,15 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void testMenuDropdownIconIsDisplayed(){
-        Actions actions = new Actions(getDriver());
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
-//        WebElement item = getDriver().findElement(By.xpath("//span[normalize-space()='New Folder']"));
-//        actions.moveToElement(item).build().perform();
 
-        WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-href='http://localhost:8080/job/New%20Folder/']")));
-        actions.moveToElement(button).build().perform();
-        Assert.assertTrue(button.isDisplayed(),"Button is not displayed");
-        button.click();
+        WebElement clickable = getDriver().findElement(By.cssSelector("[data-href='http://localhost:8080/job/New%20Folder/']"));
+        new Actions(getDriver())
+                .click(clickable)
+                .perform();
 
          Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
 
