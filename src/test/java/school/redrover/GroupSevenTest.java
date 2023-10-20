@@ -168,81 +168,7 @@ public class GroupSevenTest extends BaseTest {
 
     }
 
-    @Ignore
-    @Test
-    public void testBestBrainsSearch() throws InterruptedException {
 
-        getDriver().get("https://bestbrains.com/");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "Best Brains: Be Your Best!");
-
-        // driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        WebElement textBox = getDriver().findElement(By.xpath("//input[@placeholder='Enter Your Zip/Postal Code']"));
-        WebElement submitButton = getDriver().findElement(By.xpath("//button[@class = 'btn btn-white']"));
-        textBox.sendKeys("29707");
-        submitButton.click();
-
-        Thread.sleep(5000);
-        WebElement message = getDriver().findElement(By.xpath("//p[@class = 'address']"));
-        String value = message.getText();
-        Assert.assertEquals(value, "17206 Lancaster Hwy, STE 504, Charlotte, NC-28277");
-
-
-        String title1 = getDriver().getTitle();
-        Assert.assertEquals(title1, "Best Brains Center Locations");
-
-
-        WebElement location = getDriver().findElement(By.xpath("//h1[@class = 'text-center']"));
-        Thread.sleep(1000);
-        String value1 = location.getText();
-        Assert.assertEquals(value1, "Find your nearest center to schedule a FREE placement test and orientation.");
-
-
-        WebElement ballantyneLink = getDriver().findElement(By.xpath("//a[@href = '/ballantyne']"));
-        ballantyneLink.click();
-        WebElement ballantyneText = getDriver().findElement(By.xpath("//span[@class = 'd-inline-block']"));
-        String valueBallantyneText = ballantyneText.getText();
-        Assert.assertEquals(valueBallantyneText, "Ballantyne");
-
-
-        WebElement registration = getDriver().findElement(By.xpath("//a[@href = '/new-registration']"));
-        Thread.sleep(1000);
-        registration.click();
-
-
-        String titleRegistration = getDriver().getTitle();
-        Assert.assertEquals(titleRegistration, "Student Registration | Best Brains");
-        Thread.sleep(1000);
-
-        WebElement zipCode = getDriver().findElement(By.xpath("//input[@id = 'zipcode' ]"));
-        zipCode.sendKeys("29707");
-
-
-        Select drpCenters = new Select(getDriver().findElement(By.name("locationId")));
-
-
-        boolean isMultiple = drpCenters.isMultiple();
-        Thread.sleep(5000);
-
-        if (isMultiple) {
-            System.out.println("The dropdown allows multiple selections.");
-        } else {
-            System.out.println("The dropdown allows only single selection.");
-        }
-        Thread.sleep(1000);
-
-        WebElement lastNameField = getDriver().findElement(By.name("lastName"));
-        Thread.sleep(1000);
-        String nameAttributeValue = lastNameField.getAttribute("name");
-
-        if (nameAttributeValue.equals("lastName")) {
-            System.out.println("Элемент представляет поле 'last name'.");
-        } else {
-            System.out.println("Элемент не представляет поле 'last name'.");
-        }
-    }
 
     @Ignore
     @Test
@@ -266,51 +192,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "CLICK HERE TO REGISTER ONLINE!");
     }
 
-    @Ignore
-    @Test
-    public void testKumon() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.kumon.com/");
 
-
-        WebElement locationButton = driver.findElement(By.xpath("//*[@href = '/locations']"));
-        locationButton.click();
-        Thread.sleep(1000);
-
-        String titleLocation = driver.getTitle();
-        Thread.sleep(1000);
-        Assert.assertEquals(titleLocation, "Find Kids' Learning Centers - Kumon Locations");
-
-
-        WebElement inputButton = driver.findElement(By.xpath("//input[@type = 'text']"));
-        inputButton.click();
-        Thread.sleep(1000);
-
-
-        WebElement locationText = driver.findElement(By.xpath("//h4[text()='INDIAN LAND']"));
-        String getText = locationText.getText();
-        Assert.assertEquals(getText, "INDIAN LAND");
-
-        WebElement schedulerButton = driver.findElement(By.xpath("//a[@href = '/indian-land/scheduler']"));
-        Thread.sleep(1000);
-        schedulerButton.click();
-        Thread.sleep(5000);
-        String parentWindowHandle = driver.getWindowHandle(); //это метод в библиотеке Selenium WebDriver,
-        // который используется для получения идентификатора (handle) текущего окна или вкладки браузера.
-        for (String windowHandle : driver.getWindowHandles()) {
-            if (!windowHandle.equals(parentWindowHandle)) {
-                driver.switchTo().window(windowHandle);
-                return; // Завершить метод и вернуться
-            }
-        }
-
-        String schedulerTitle = driver.getTitle();
-
-        Assert.assertEquals(schedulerTitle, "Book Appointment | Kumon of  INDIAN LAND");
-
-        driver.quit();
-
-    }
 
     @Ignore
     @Test
