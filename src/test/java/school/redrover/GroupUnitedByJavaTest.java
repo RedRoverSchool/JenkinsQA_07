@@ -17,7 +17,6 @@ import java.time.Duration;
 import static org.testng.Assert.assertEquals;
 
 
-
 public class GroupUnitedByJavaTest extends BaseTest {
 
     @Ignore
