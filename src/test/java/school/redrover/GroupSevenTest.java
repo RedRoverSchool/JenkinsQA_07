@@ -461,4 +461,26 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), PIPELINE_NAME);
     }
+
+    @Test
+    public void testDeletePipeline() {
+        final String PIPELINE_NAME = "New_Pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//span[text() = 'Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Delete')]")).click();
+
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
+    }
 }
