@@ -202,7 +202,7 @@ public class GroupLetsQATest extends BaseTest {
                 .click(clickable)
                 .perform();
 
-         Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
+         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@role='tooltip']")).isDisplayed());
 
 
     }
