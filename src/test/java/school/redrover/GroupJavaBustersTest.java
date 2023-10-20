@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+import java.util.Random;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -286,7 +288,7 @@ public class GroupJavaBustersTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
                 .click();
         getDriver().findElement(By.className("jenkins-input"))
-                .sendKeys("Абра кадабра");
+                .sendKeys("3451643561");
         getDriver().findElement(By.className("hudson_model_FreeStyleProject"))
                 .click();
         getDriver().findElement(By.id("ok-button"))
@@ -294,6 +296,13 @@ public class GroupJavaBustersTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"))
                 .click();
         assertEquals(getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3) > a"))
-                .getText(), "Абра кадабра");
+                .getText(), "3451643561");
     }
+
+
+
+
+
+
+
 }
