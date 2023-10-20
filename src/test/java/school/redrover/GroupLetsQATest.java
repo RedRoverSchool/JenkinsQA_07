@@ -199,7 +199,7 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         WebElement item = getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside span"));
         actions.moveToElement(item).build().perform();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']"))).click();
 
         Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
 
