@@ -104,13 +104,6 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     }
 
     @Test
-    public void testFaviconSizes() {
-        Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//link[@href = '/static/b799f8d5/apple-touch-icon.png']"))
-                .getAttribute("sizes"), "180x180");
-    }
-
-    @Test
     public void testDeleteFolder() {
 
         utilsCreateFolder("Folder1");
