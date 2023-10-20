@@ -289,8 +289,6 @@ public class GroupJavaBustersTest extends BaseTest {
                 .click();
         getDriver().findElement(By.id("ok-button"))
                 .click();
-        getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"))
-                .click();
         assertEquals(getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3) > a"))
                 .getText(), "3451643561");
     }
@@ -304,5 +302,25 @@ public class GroupJavaBustersTest extends BaseTest {
                 .sendKeys("@");
         assertEquals(getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]"))
                 .getText(), "» ‘@’ is an unsafe character");
+    }
+
+    @Test
+    public void testOutOfBoundNameLength() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                //252 symbols
+                .sendKeys("Далеко-далеко за словесными горами в стрчане " +
+                        "гласнцых и согласвных живут рыбные тексты. Вдали от всех живут они в " +
+                        "буквенных домах на берегу Семантика большого языкового океана. " +
+                        "Маленький ручеек Даль журчит по всей стране и обеспечивает ее всеми необходим");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject"))
+                .click();
+        getDriver().findElement(By.id("ok-button"))
+                .click();
+        assertEquals(getDriver().findElement(By.xpath("//*[@id=\"error-description\"]/h2"))
+                .getText(), "A problem occurred while processing the request.");
+
     }
 }
