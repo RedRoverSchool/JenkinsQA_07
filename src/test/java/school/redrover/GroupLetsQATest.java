@@ -201,8 +201,10 @@ public class GroupLetsQATest extends BaseTest {
         WebElement item = getDriver().findElement(By.xpath("//span[normalize-space()='New Folder']"));
         actions.moveToElement(item).build().perform();
 
-        WebElement button = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']")));
+        WebElement button = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@class='jenkins-table__link model-link inside']//button[@class='jenkins-menu-dropdown-chevron']")));
         actions.moveToElement(button).build().perform();
+        System.out.println("isEnabled() : " + button.isEnabled());
+        System.out.println("isDisplayed(): " + button.isDisplayed());
         button.click();
 
          Assert.assertTrue(getDriver().findElement(By.cssSelector(".tippy-box")).isDisplayed());
