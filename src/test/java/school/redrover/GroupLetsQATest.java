@@ -230,15 +230,11 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void testCreatedFolderIsOpened(){
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
-
         getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link")).click();
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(),"New Folder");
-
 
     }
 
