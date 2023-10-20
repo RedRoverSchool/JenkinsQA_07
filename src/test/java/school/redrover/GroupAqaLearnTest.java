@@ -10,6 +10,9 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GroupAqaLearnTest extends BaseTest {
     @Test
@@ -22,6 +25,7 @@ public class GroupAqaLearnTest extends BaseTest {
                 "Enter an item name");
 
     }
+
     @Ignore
     @Test
     public void testNameOfTitle() {
@@ -42,5 +46,29 @@ public class GroupAqaLearnTest extends BaseTest {
         Assert.assertEquals(actualResult, expectedResult);
 
         driver.quit();
+    }
+
+    @Test
+    public void testSecondJenkins() {
+
+        List<String> expectedResult = Arrays.asList(
+                "New Item",
+                "People",
+                "Build History",
+                "Manage Jenkins",
+                "My Views"
+        );
+
+        List<WebElement> sidePanel = getDriver().findElements(
+                By.xpath("//div/div[@class='task ']")
+        );
+
+        List<String> actualResult = new ArrayList<>();
+
+        for (WebElement task : sidePanel) {
+            actualResult.add(task.getText());
+        }
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }

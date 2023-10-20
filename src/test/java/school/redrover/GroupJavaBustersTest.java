@@ -263,9 +263,20 @@ public class GroupJavaBustersTest extends BaseTest {
 
 
     }
+    
     @Test
     public void testSignInJenkins() {
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(3) > div > h1")).getText(),"Welcome to Jenkins!");
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("#main-panel > div:nth-child(3) > div > h1")).getText(),
+                "Welcome to Jenkins!");
+    }
+
+    @Test
+    public void testCheckVersion() {
+
+        Assert.assertEquals(getDriver().findElement(
+                        By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button")).getText(),
+                "Jenkins 2.414.2");
     }
 }

@@ -18,6 +18,21 @@ import java.time.Duration;
 
 public class GroupJavaJitsuTest  extends BaseTest {
 
+    private static final String PROJECT_NAME = "FreestyleProject";
+    private static final String RENAME_PROJECT = "NewProject";
+    private static final String FOLDER_NAME = "NewFolder";
+
+    public void createFreestyleProject(String projectName) {
+
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(projectName);
+
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+    }
+
     @Test
     public void testFirst() throws InterruptedException {
 
@@ -52,45 +67,35 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testFreestyleProject() {
-        String projectName = "FreestyleProject";
 
-        WebElement newItem = getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']"));
-        newItem.click();
-
-        WebElement itemName = getDriver().findElement(By.cssSelector("input.jenkins-input"));
-        itemName.sendKeys(projectName);
-        WebElement freestyleProject = getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject"));
-        freestyleProject.click();
-
-        WebElement okButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
-        okButton.click();
-
-        WebElement saveButton = getDriver().findElement(By.cssSelector("button[name='Submit']"));
-        saveButton.click();
-
+        createFreestyleProject(PROJECT_NAME);
         WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
-        Assert.assertEquals("Project " + projectName, freestyleProjectName.getText());
+        Assert.assertEquals("Project " + PROJECT_NAME, freestyleProjectName.getText());
     }
 
     @Test
     public void testRenameFreestyleProject() {
-        final String PROJECTNAME = "FreestyleProject";
-        final String RENAMEPROJECT = "NewProject";
 
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
-        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(PROJECTNAME);
-
-        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
-
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
-        getDriver().findElement(By.cssSelector("a[href='/job/"+PROJECTNAME+"/confirm-rename']")).click();
+        createFreestyleProject(PROJECT_NAME);
+        getDriver().findElement(By.cssSelector("a[href*='rename']")).click();
 
         getDriver().findElement(By.cssSelector("input[name='newName']")).clear();
-        getDriver().findElement(By.cssSelector("input[name='newName']")).sendKeys(RENAMEPROJECT);
+        getDriver().findElement(By.cssSelector("input[name='newName']")).sendKeys(RENAME_PROJECT);
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
         WebElement renamedProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
-        Assert.assertEquals("Project " + RENAMEPROJECT, renamedProjectName.getText());
+        Assert.assertEquals("Project " + RENAME_PROJECT, renamedProjectName.getText());
+    }
+
+    @Test
+    public void testCreateFolder() {
+
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.cssSelector(".com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div[id='main-panel'] h1")).getText(), FOLDER_NAME);
     }
 }
