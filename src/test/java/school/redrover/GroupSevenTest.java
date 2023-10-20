@@ -450,4 +450,21 @@ public class GroupSevenTest extends BaseTest {
         String value = configureTitle.getText();
         Assert.assertEquals(value, "System");
     }
+
+    @Test
+    public void testCreateNewProject() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        WebElement itemName = getDriver().findElement(By.xpath("//input[@class='jenkins-input']"));
+
+        itemName.sendKeys("1st project");
+        getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        WebElement message = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"));
+        String value = message.getText();
+        Assert.assertEquals(value, "Project 1st project");
+    }
 }
