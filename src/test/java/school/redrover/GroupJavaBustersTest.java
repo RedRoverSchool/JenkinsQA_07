@@ -293,8 +293,6 @@ public class GroupJavaBustersTest extends BaseTest {
                 .click();
         getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"))
                 .click();
-        getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3) > a"))
-                .getText();
         assertEquals(getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3) > a"))
                 .getText(), "Абра кадабра");
     }
