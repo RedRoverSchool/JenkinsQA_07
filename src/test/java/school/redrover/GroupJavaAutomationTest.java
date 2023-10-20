@@ -6,6 +6,8 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 
 public class GroupJavaAutomationTest extends BaseTest {
 
@@ -37,17 +39,45 @@ public class GroupJavaAutomationTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@id='skip2content']/following-sibling::*")).getText(),"Project " + nameProject);
 
     }
-    @Ignore
     @Test
     public void testJenkinsSearchItem() {
+        final String searchSubString = "project";
 
-        final String nameProject = "Project_iod";
-        addNewItem(nameProject);
+        addNewItem("Project_1");
 
         WebElement inputSearch = getDriver().findElement(By.xpath("//input[@id='search-box']"));
-        inputSearch.sendKeys("iod");
+        inputSearch.sendKeys(searchSubString);
         inputSearch.submit();
 
+        List<WebElement> listSearchProjects = getDriver().findElements(By.xpath("//li[@id]"));
+        Assert.assertTrue(!listSearchProjects.isEmpty());
+        Assert.assertTrue(checkAllSearchMatches(listSearchProjects, searchSubString));
+    }
+    @Test
+    public void testJenkinsSearchItemWithEmptyList() {
+        final String searchSubString = "projekt";
+
+        addNewItem("Project_1");
+
+        WebElement inputSearch = getDriver().findElement(By.xpath("//input[@id='search-box']"));
+        inputSearch.sendKeys(searchSubString);
+        inputSearch.submit();
+
+        List<WebElement> listSearchProjects = getDriver().findElements(By.xpath("//li[@id]"));
+
+        WebElement textError = getDriver().findElement(By.xpath("//h1/following-sibling::*"));
+
+        Assert.assertTrue(listSearchProjects.isEmpty());
+        Assert.assertTrue(textError.getAttribute("class").contains("error"));
+
+    }
+    private boolean checkAllSearchMatches(List<WebElement> list, String searchSubString) {
+        for (WebElement item : list) {
+            if (item.getText().contains(searchSubString)){
+                return false;
+            }
+        }
+        return true;
     }
 }
 
