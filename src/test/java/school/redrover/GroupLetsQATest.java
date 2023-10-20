@@ -239,8 +239,10 @@ public class GroupLetsQATest extends BaseTest {
         new Actions(getDriver())
                 .click(button)
                 .perform();
+        button.click();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("#tippy-5 .tippy-box")).getAttribute("data-state"), "visible");
+        getDriver().findElement(By.cssSelector(".jenkins-dropdown a[href='/job/New%20Folder/configure']")).click();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-app-bar__content h1")).getText(),"Configuration");
 
 
     }
