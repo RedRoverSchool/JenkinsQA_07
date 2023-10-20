@@ -24,7 +24,7 @@ import java.util.List;
 public class GroupLetsQATest extends BaseTest {
 
 
-    public void createAnItem(String itemName) {
+    private void createAnItem(String itemName) {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
 
         String createdItemName = "New "+ itemName;
