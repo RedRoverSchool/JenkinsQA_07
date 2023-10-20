@@ -230,4 +230,21 @@ public class GroupCarlTheFogTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("h1.job-index-headline")).getText(),
                 "Project " + projectName);
     }
+    @Test
+    public void testCreateNewFolder() {
+        final String nameFolder = "Project Folder";
+
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(nameFolder);
+        getDriver().findElement(By.xpath("//*[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//*[@class='jenkins-input validated  ']")).sendKeys(nameFolder);
+        getDriver().findElement(By.xpath("//*[@class='jenkins-input   ']")).sendKeys("Project documentation");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        String getName = getDriver().findElement(By.xpath("//h1")).getText();
+        Assert.assertEquals(getName, nameFolder);
+    }
 }
