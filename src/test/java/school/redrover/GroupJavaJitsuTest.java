@@ -92,7 +92,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
         getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
         getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.cssSelector("li[class='com_cloudbees_hudson_plugins_folder_Folder'] span[class='label']")).click();
+        getDriver().findElement(By.cssSelector(".com_cloudbees_hudson_plugins_folder_Folder")).click();
         getDriver().findElement(By.cssSelector("button[type='submit']")).click();
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
