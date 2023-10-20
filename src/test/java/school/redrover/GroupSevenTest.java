@@ -16,8 +16,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 
-@Ignore
 public class GroupSevenTest extends BaseTest {
+    @Ignore
     @Test
     public void testKylieTitle() {
         getDriver().get("https://kyliecosmetics.com/");
@@ -26,7 +26,6 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(title, "Kylie Cosmetics by Kylie Jenner | Kylie Skin | Kylie Baby");
     }
-
 
     @Ignore
     @Test
@@ -48,6 +47,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "SEARCH");
     }
 
+    @Ignore
     @Test
     public void TestBddSearch() {
         WebDriver driver = getDriver();
@@ -62,6 +62,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertTrue(resultText.contains("Behavior-driven development"));
     }
 
+    @Ignore
     @Test
     public void testSearch() {
 
@@ -75,6 +76,7 @@ public class GroupSevenTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testTextInput()  {
 
@@ -92,7 +94,6 @@ public class GroupSevenTest extends BaseTest {
 
     @Ignore
     @Test
-
     public void testSearchAB() {
 
         WebDriver driver = new ChromeDriver();
@@ -136,7 +137,7 @@ public class GroupSevenTest extends BaseTest {
         driver.quit();
     }
 
-
+    @Ignore
     @Test
     public void testPricePageHeader() {
         getDriver().get("https://megagroup.by/");
@@ -148,7 +149,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(header.getText(), "Стоимость сайтов");
     }
 
-
+    @Ignore
     @Test
     public void testHPSearch() {
         getDriver().get("https://www.wizardingworld.com/");
@@ -169,7 +170,6 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(resultHeader.getText(), "Harry Potter");
     }
 
-    @Ignore
     @Test
     public void testJenkinsAbout() {
 
@@ -190,6 +190,7 @@ public class GroupSevenTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testBestBrainsSearch() throws InterruptedException {
 
@@ -267,24 +268,6 @@ public class GroupSevenTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testBooksSearch() {
-        getDriver().get("https://www.doylestownbookshop.com/");
-
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "The Doylestown Bookshop |");
-
-        WebElement textBox = getDriver().findElement(By.id("edit-search-block-form--2"));
-        WebElement searchButton = getDriver().findElement(By.id("edit-submit"));
-
-        textBox.sendKeys("Making it so");
-        searchButton.click();
-
-        WebElement message = getDriver().findElement(By.id("b-9781982167738"));
-        String value = message.getText();
-        Assert.assertEquals(value, "Making It So: A Memoir");
-    }
-
-    @Test
     public void TestYMCA() {
 
         getDriver().get("https://ymcacapecod.org/");
@@ -351,6 +334,7 @@ public class GroupSevenTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testTitle() {
 
@@ -366,6 +350,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(footer, expectedText);
     }
 
+    @Ignore
     @Test
     public void testDatalist() {
 
@@ -378,6 +363,7 @@ public class GroupSevenTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testDatePicker() {
 
@@ -409,6 +395,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "Tools");
     }
 
+    @Ignore
     @Test
     public void testInventoryPage() {
         getDriver().get("https://www.saucedemo.com/inventory.html");
@@ -436,6 +423,8 @@ public class GroupSevenTest extends BaseTest {
         String value = nameTitle.getText();
         Assert.assertEquals(value, "admin");
     }
+
+    @Ignore
     @Test
     public void testSY() throws InterruptedException {
         getDriver().get("https://animevost.org/");
