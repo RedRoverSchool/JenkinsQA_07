@@ -235,9 +235,9 @@ public class GroupLetsQATest extends BaseTest {
         createAnItem("Folder");
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        WebElement clickable = getDriver().findElement(By.cssSelector("[data-href='http://localhost:8080/job/New%20Folder/']"));
+        WebElement button = getDriver().findElement(By.cssSelector("[data-href='http://localhost:8080/job/New%20Folder/']"));
         new Actions(getDriver())
-                .click(clickable)
+                .click(button)
                 .perform();
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#tippy-5 .tippy-box")).getAttribute("data-state"), "visible");
