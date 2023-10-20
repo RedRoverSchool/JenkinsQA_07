@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import javax.imageio.plugins.tiff.TIFFImageReadParam;
+import java.time.Duration;
 
 public class MariaTest extends BaseTest {
 
@@ -80,5 +84,32 @@ public class MariaTest extends BaseTest {
                 .getText(), "Script Console");
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[text()='Prepare for Shutdown']"))
                 .getText(), "Prepare for Shutdown");
+    }
+
+    @Test
+    public void testCreateProjectOnlineStore() {
+
+        getDriver().findElement(By.xpath("//a[@class='task-link '][1]")).click();
+        getDriver().findElement(By.xpath("//input[@data-valid='false']")).click();
+        getDriver().findElement(By.xpath("//input[@data-valid='false']")).sendKeys("Online store");
+        getDriver().findElement(By.xpath("//span[@class='label'][1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("About vegan food");
+        getDriver().findElement(By.xpath("//label[text()='Discard old builds']")).click();
+        getDriver().findElement(By.xpath("//label[@class='attach-previous '][1]")).click();
+
+//        getDriver().findElement(By.xpath("//div[@class='validation-error-area validation-error-area--visible']/..//textarea[@name='_.spec']")).click();
+//        getDriver().findElement(By.xpath("//div[@class='validation-error-area validation-error-area--visible']/..//textarea[@name='_.spec']"))
+//                .sendKeys("H/15 * * * *");
+//        getDriver().findElement(By.xpath("//*[text()='Build after other projects are built']")).checkedBox();
+//        getDriver().findElement(By.xpath("//div//label[text()='Trigger even if the build is unstable']")).click();
+
+        getDriver().findElement(By.xpath("//div//*[@formnovalidate='formNoValidate']")).click();
+        getDriver().findElement(By.xpath("//div//ol//li//a[@class='model-link']")).click();
+        getDriver().findElement(By.xpath("//td//div//a[@class='jenkins-table__button jenkins-!-build-color']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Online store']"))
+                .getText(), "Online store");
     }
 }
