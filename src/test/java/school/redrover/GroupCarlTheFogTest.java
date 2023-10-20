@@ -2,18 +2,16 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -22,153 +20,44 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Ignore
-public class GroupCarlTheFogTest {
-    @Test
-    public void hireRightTest() {
+public class GroupCarlTheFogTest extends BaseTest {
 
+    private static final String PROJECT_NAME = "FreestyleProject";
+    private static final String NEW_PROJECT_NAME = "newFreestyleProject";
 
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
-
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "Employment Background Checks, Background Screening | HireRight");
-
-        WebElement cacheButton = driver.findElement(By.xpath("//div[@class='CookieConsent']//button[contains(text(), 'Continue')]"));
-
-        cacheButton.click();
-        driver.quit();
-
+    public void createNewFreestyleProject(String projectName) {
+        getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
+        getDriver().findElement(By.cssSelector("input[type='text']")).sendKeys(projectName);
+        getDriver().findElement(By.cssSelector("li.hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
     }
 
     @Test
-    public void registerNowDisplayTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
-        String expectedText = "Register Now";
-        String registerNow= "//a[@class = 'btn btn--primary btn--hover-red-dark btn-active-red-darker'][contains(text(),'Register Now')]";
-        WebElement registerNowBTN = driver.findElement(By.xpath(registerNow));
-        registerNowBTN.getText();
+    public void testJenkinsGreetings() {
+        String JenkinsGreetings = getDriver().findElement(By.tagName("h1")).getText();
 
-        Assert.assertEquals(registerNowBTN.getText(), expectedText);
-
-        driver.quit();
-
+        Assert.assertEquals("Welcome to Jenkins!", JenkinsGreetings);
     }
 
     @Test
-    public void testGoogleFinance() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.google.com/finance/");
+    public void testCreateNewFreestyleProject() {
+        createNewFreestyleProject(PROJECT_NAME);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-        WebElement searchTickerGoogl = driver.findElement(By.xpath("//div[@class = 'L6J0Pc ZB3Ebc nz7KN']/div/input[2]"));
-        searchTickerGoogl.sendKeys("GOOGL");
-        searchTickerGoogl.sendKeys(Keys.RETURN);
-        WebElement previousClosingPriceElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class = 'AHmHk']/span/div/div")));
-        String previousClosingPrice = previousClosingPriceElement.getText();
-
-        Assert.assertNotNull(previousClosingPrice);
-        driver.quit();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h1.job-index-headline")).getText(),
+                "Project " + PROJECT_NAME);
     }
 
     @Test
-    public void testDeadlinkPrinter() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    public void testRenameFreestyleProject() {
+        createNewFreestyleProject(PROJECT_NAME);
 
-        String pageToCheck = "https://stackoverflow.com/";
-        driver.get(pageToCheck);
-        Thread.sleep(5000);
+        getDriver().findElement(By.cssSelector("a[href*='rename']")).click();
+        getDriver().findElement(By.cssSelector("input[name=newName]")).clear();
+        getDriver().findElement(By.cssSelector("input[name=newName]")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
-        List<String> deadlinkList = new ArrayList<>();
-        List<WebElement> deadlinks = driver.findElements(By.tagName("a"));
-
-        for (int i = 0; i < deadlinks.size(); i++) {
-            String link = deadlinks.get(i).getAttribute("href");
-            if (link != null && link.startsWith(pageToCheck)) {
-                String result = testDeadLink(link);
-                if (result != null) {
-                    deadlinkList.add(result);
-                }
-            }
-        }
-
-        deadlinkList.forEach(link -> System.out.println(link));
-        driver.quit();
-    }
-
-    private String testDeadLink(String link) {
-        try {
-            URL url = new URL(link);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setConnectTimeout(5000);
-            httpURLConnection.setRequestMethod("HEAD");
-            httpURLConnection.connect();
-
-            if (httpURLConnection.getResponseCode() >= 400) {
-                return String.format("%s, response code - %d", link, httpURLConnection.getResponseCode());
-            }
-        } catch (Exception ignore) {}
-        return null;
-    }
-
-    @Test
-    public void testRadyShellCalendar()  {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.theshell.org/");
-
-        String title = driver.getTitle();
-        Assert.assertEquals("Home | Rady Shell at Jacobs Park", title);
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        driver.findElement(By.xpath("//button[@class='navtoggle']")).click();
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-
-        driver.findElement(By.xpath("//*[@id='site-menu']/li[3]/a")).click();
-
-        String performancesPage = driver.getTitle();
-        Assert.assertEquals("Performances | Rady Shell at Jacobs Park", performancesPage);
-
-        driver.quit();
-    }
-
-    @Test
-    public void menuItemsTest1() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
-        List<String> menuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
-
-        List<WebElement> foundMenuItems = driver.findElements(By.cssSelector("ul.hidden > li > button, ul.hidden > li > a"));
-
-        List<String> foundTexts = new ArrayList<>();
-        for (WebElement menuItem : foundMenuItems) {
-            foundTexts.add(menuItem.getText());
-        }
-
-        Assert.assertEquals(foundTexts, menuItems);
-
-        driver.quit();
-    }
-
-    @Test
-    public void menuItemsTest2() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.hireright.com");
-        List<String> expectedMenuItems = Arrays.asList("Services", "Industries", "Partners", "Resources", "Company", "Contact Us");
-        List<WebElement> foundMenuItems = driver.findElements(By.xpath("//ul[contains(@class, 'lg:flex')]//button/span | //ul[contains(@class, 'lg:flex')]//a"));
-
-        List<String> foundMenuTexts = foundMenuItems.stream().map(WebElement::getText).collect(Collectors.toList());
-
-        for (String expectedItem : expectedMenuItems) {
-            Assert.assertTrue(foundMenuTexts.contains(expectedItem), "Expected menu item '" + expectedItem + "' not found!");
-
-        }
-
-        driver.quit();
-
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h1.job-index-headline")).getText(),
+                "Project " + NEW_PROJECT_NAME);
     }
 }

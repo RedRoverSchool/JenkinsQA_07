@@ -1,75 +1,72 @@
 package school.redrover;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class GroupItFriendlyTest {
 
+public class GroupItFriendlyTest extends BaseTest {
+
+    @Ignore
     @Test
     public void testDemoQaOpenPage() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            WebElement image = driver.findElement(By.xpath("//*[@id=\"app\"]/header/a/img"));
-            image.click();
-        } finally {
-            driver.quit();
-        }
+        WebDriver driver = getDriver();
+        driver.get("https://demoqa.com/");
+        WebElement image = driver.findElement(By.xpath("//*[@id='app']/header/a/img"));
+        image.click();
+        Assert.assertEquals(image, image);
     }
 
+    @Ignore
     @Test
     public void testDemoQaChangePage() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            WebElement element = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div/div[1]/div/div[3]/h5"));
-            element.click();
-            driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-            WebElement text = driver.findElement(By.xpath("//*[.='Please select an item from left to start practice.']"));
-            String value = text.getText();
-            Assert.assertEquals(value, "Please select an item from left to start practice.");
-        } finally {
-            driver.quit();
-        }
+        WebDriver driver = getDriver();
+        driver.get("https://demoqa.com/");
+        WebElement element = driver.findElement(By.xpath("//*[@id='app']/div/div/div[2]/div/div[1]/div/div[3]/h5"));
+        element.click();
+        WebElement text = driver.findElement(By.xpath("//*[.='Please select an item from left to start practice.']"));
+        String value = text.getText();
+        Assert.assertEquals(value, "Please select an item from left to start practice.");
     }
 
+    @Ignore
     @Test
     public void testDemoQaTextBox() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/elements");
-            WebElement element = driver.findElement(By.xpath("//span[contains(text(),'Text Box')]"));
-            element.click();
-            WebElement fullNameField = driver.findElement(By.xpath("//*[@id='userName']"));
-            fullNameField.click();
-            fullNameField.sendKeys("Adam Adams");
-        } finally {
-          driver.quit();
-        }
+        getDriver().get("https://demoqa.com/elements");
+        WebElement element = getDriver().findElement(By.xpath("//span[contains(text(),'Text Box')]"));
+        element.click();
+        WebElement fullNameField = getDriver().findElement(By.id("userName"));
+        fullNameField.click();
+        fullNameField.sendKeys("Adam Adams");
+        WebElement email = getDriver().findElement(By.id("userEmail"));
+        email.click();
+        fullNameField.sendKeys("adam@gmail.com");
+        ;
+        WebElement submit = getDriver().findElement(By.id("submit"));
+        submit.click();
+        Assert.assertEquals(submit, submit);
     }
 
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = getDriver();
         driver.get("https://so-yummi-qa.netlify.app/register");
         String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
         String randomEmail = "test" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
 
-
-        Thread.sleep(1000);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         WebElement usernameInput = driver.findElement(By.name("username"));
         usernameInput.click();
         usernameInput.sendKeys(randomUsername);
@@ -80,116 +77,18 @@ public class GroupItFriendlyTest {
         passwordInput.click();
         passwordInput.sendKeys("Test@123456");
 
-
         WebElement searchButton2 = driver.findElement(By.xpath("//button[@type='submit']"));
         searchButton2.click();
 
         Thread.sleep(3000);
-
         String currentUrl = driver.getCurrentUrl();
         String expectedUrl = "https://so-yummi-qa.netlify.app/home";
         Assert.assertEquals(currentUrl, expectedUrl, "The current URL does not match the expected URL.");
-
-        driver.quit();
     }
 
+    @Ignore
     @Test
-    public void DemoQATextBoxTest() {
-          WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            driver.manage().window().maximize();
-            JavascriptExecutor jsx = (JavascriptExecutor)driver;
-            jsx.executeScript("window.scrollBy(0,450)", "");
-
-            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
-            elements.click();
-
-            WebElement textBox = driver.findElement(By.xpath("//span[normalize-space()='Text Box']"));
-            textBox.click();
-
-            WebElement inputFullName = driver.findElement(By.xpath("//input[@placeholder=\"Full Name\"]"));
-            inputFullName.sendKeys("Natalia V");
-
-            WebElement inputEmail = driver.findElement(By.xpath("//input[@id=\"userEmail\"]"));
-            inputEmail.sendKeys("mail@gmail.com");
-
-            WebElement inputCurrentAddress = driver.findElement(By.xpath("//textarea[@placeholder=\"Current Address\"]"));
-            inputCurrentAddress.sendKeys("Slo");
-
-            WebElement inputPermanentAddress = driver.findElement(By.xpath("//textarea[@id=\"permanentAddress\"]"));
-            inputPermanentAddress.sendKeys("Ukr");
-
-            WebElement submitBTN = driver.findElement(By.xpath("//button[@id='submit']"));
-            jsx.executeScript("window.scrollBy(0,450)", "");
-            submitBTN.click();
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"name\"]")).getText(), "Name:Natalia V");
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"email\"]")).getText(), "Email:mail@gmail.com");
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"currentAddress\"]")).getText(), "Current Address :Slo");
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"output\"]//p[@id=\"permanentAddress\"]")).getText(), "Permananet Address :Ukr");
-
-        } finally {
-            driver.quit();
-        }
-    }
-
-    @Test
-    public void DemoQACheckBoxTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            driver.manage().window().maximize();
-            JavascriptExecutor jsx = (JavascriptExecutor)driver;
-            jsx.executeScript("window.scrollBy(0,450)", "");
-
-            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
-            elements.click();
-
-            WebElement checkBoxElement = driver.findElement(By.xpath("//span[normalize-space()='Check Box']"));
-            checkBoxElement.click();
-
-            WebElement checkBox = driver.findElement(By.xpath("//span[@class=\"rct-checkbox\"]"));
-            checkBox.click();
-
-            assertEquals(driver.findElement(By.xpath("//div[@id=\"result\"]/span[1]")).getText(), "You have selected :");
-
-        } finally {
-            driver.quit();
-        }
-    }
-
-    @Test
-    public void DemoQARadioButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/");
-            driver.manage().window().maximize();
-            JavascriptExecutor jsx = (JavascriptExecutor)driver;
-            jsx.executeScript("window.scrollBy(0,450)", "");
-
-            WebElement elements = driver.findElement(By.xpath("//div[@class='category-cards']//div[1]//div[1]//div[2]//*[name()='svg']"));
-            elements.click();
-
-            WebElement radioButtonElement = driver.findElement(By.xpath("//span[normalize-space()='Radio Button']"));
-            radioButtonElement.click();
-
-            WebElement yesButton = driver.findElement(By.xpath("//div[@class=\"custom-control custom-radio custom-control-inline\"]/label[@for=\"yesRadio\"]"));
-            yesButton.click();
-
-            assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Yes");
-
-            WebElement impressiveButton = driver.findElement(By.xpath("//div[@class=\"custom-control custom-radio custom-control-inline\"]/label[@for=\"impressiveRadio\"]"));
-            impressiveButton.click();
-
-            assertEquals(driver.findElement(By.xpath("//p[@class=\"mt-3\"]/span")).getText(), "Impressive");
-
-        } finally {
-            driver.quit();
-        }
-    }
-
-    @Test
-    public void ActionsWithCheckBoxTest(){
+    public void ActionsWithCheckBoxTest() {
 
         WebDriver driver = new ChromeDriver();
         try {
@@ -220,25 +119,188 @@ public class GroupItFriendlyTest {
                     "downloads\n" +
                     "wordFile\n" +
                     "excelFile");
-          } finally {
+        } finally {
             driver.quit();
         }
     }
 
-  @Test
-  public void BadRequestButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://demoqa.com/links");
-            driver.manage().window().maximize();
+    @Ignore
+    @Test
+    public void BadRequestButtonTest() {
+        WebDriver driver = getDriver();
+        driver.get("https://demoqa.com/links");
+        assertEquals(driver.findElement(By.id("bad-request")).getText(), "Bad Request");
+    }
 
-            WebElement badRequestButton = driver.findElement(By.id("bad-request"));
+    @Test
+    public void removeItemTest() {
+        WebDriver driver = getDriver();
+        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        //create item
+        driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(randomUsername);
+        driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
+        driver.findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
+        driver.findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
 
-            assertEquals(badRequestButton.getText(), "Bad Request");
+        // get list all items in main page
+        List <WebElement> listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
 
-        } finally {
-            driver.quit();
+        //search for an added item and delete this
+        Assert.assertTrue(isActualElement(listItems, randomUsername));
+        if (isActualElement(listItems, randomUsername)) {
+            driver.findElement(By.xpath("//*[@id=\"job_" + randomUsername + "\"]/td[3]/a")).click();
+            driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[6]/span/a")).click();
+            // accept alert to delete
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
         }
+        listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
+        Assert.assertFalse(isActualElement(listItems, randomUsername));
+    }
+    // search item in list items
+    private boolean isActualElement(List<WebElement> items, String expecting) {
+        return items.stream().anyMatch(item -> item.getText().compareTo(expecting) == 0);
+    }
+    //get Web elements
+    private List<WebElement> getListElements(String xpath) {
+        return getDriver().findElements(By.xpath(xpath));
+    }
+
+    @Test
+    public void CreateNewItem(){
+        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+
+        WebElement newItem = getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"));
+        newItem.click();
+        WebElement inputField = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
+        inputField.click();
+        inputField.sendKeys(randomUsername);
+        WebElement freeStileProject = getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]"));
+        freeStileProject.click();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+        WebElement dashBoard = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a"));
+        dashBoard.click();
+        List <WebElement> list = getDriver().findElements(By.xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
+        String str = "";
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i).getText());
+            if (list.get(i).getText().contains(randomUsername)){
+                str=list.get(i).getText();
+             break;
+            }
+        }
+        Assert.assertEquals(str, randomUsername);
+    }
+
+    @Test
+    public void testJenkinsLink() {
+        String paragraphAboutJenkinsText = "The leading open source automation server which enables developers around the world to reliably build, test, and deploy their software.";
+
+        WebDriver driver = getDriver();
+
+        WebElement jenkinsLink = driver.findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"));
+        jenkinsLink.click();
+
+        WebElement aboutJenkins = driver.findElement(By.xpath("//a[@class='jenkins-dropdown__item' and contains(text(), 'About Jenkins')]"));
+        aboutJenkins.click();
+
+        WebElement descriptionParagraph = driver.findElement(By.xpath("//p[@class='app-about-paragraph']"));
+        Assert.assertEquals(descriptionParagraph.getText(), paragraphAboutJenkinsText);
+    }
+
+    @Test
+    public void testRenameFreeStyleProject() {
+        final String JOBNAME = "FreeStyleProjectJob";
+        final String NEWJOBNAME = "FreeStyleProjectJobNew";
+
+        WebElement newItemButton = getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a"));
+        newItemButton.click();
+
+        WebElement inputJobNameField = getDriver().findElement(By.xpath("//*[@id='name']"));
+        inputJobNameField.click();
+        inputJobNameField.sendKeys(JOBNAME);
+
+        WebElement freeStyleProject = getDriver().findElement(By.xpath("//ul[@class='j-item-options']/li[@class='hudson_model_FreeStyleProject']"));
+        freeStyleProject.click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+
+        WebElement jenkinsHomeLink = getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']"));
+        jenkinsHomeLink.click();
+
+        WebElement createdJob = getDriver().findElement(By.xpath("//span[normalize-space()='FreeStyleProjectJob']"));
+        createdJob.click();
+
+        WebElement renameTask = getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]"));
+        renameTask.click();
+
+        WebElement newNameInputField = getDriver().findElement(By.xpath("//input[@checkdependson=\"newName\"]"));
+        newNameInputField.clear();
+        newNameInputField.sendKeys(NEWJOBNAME);
+
+        WebElement confirmRenameButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
+        confirmRenameButton.click();
+
+        String jobPageTitle = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText();
+
+        Assert.assertTrue(jobPageTitle.contains(NEWJOBNAME));
+    }
+
+    @Test
+    public void testVerifyEmptyItemNameWarningMessage() {
+
+        final String WARNING_MESSAGE_TEXT_EXPECTED = "» This field cannot be empty, please enter a valid name";
+        final String CSS_COLOR_WARNING_MESSAGE_EXPECTED = "rgba(255, 0, 0, 1)";
+
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//ul[@class='j-item-options']/li[@class='hudson_model_FreeStyleProject']")).click();
+
+        String warningMessageTextActual = getDriver().findElement(By.xpath("//div[@id=\"itemname-required\"]")).getText();
+        String cssColorWarningMessageActual = getDriver().findElement(By.xpath("//div[@id=\"itemname-required\"]")).getCssValue("color");
+
+        Assert.assertEquals(cssColorWarningMessageActual, CSS_COLOR_WARNING_MESSAGE_EXPECTED);
+        Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
+    }
+
+
+    @Test
+    public void testCreateNewItemFteestyleProject() {
+        final String freestyleProjectName1 = "New Item Name1 Freestyle project";
+
+        getDriver().findElement(By.xpath("//*[@id= 'tasks']/div[1]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//div/input[@class = 'jenkins-input']")).sendKeys(freestyleProjectName1);
+        getDriver().findElement(By.xpath("//*[@id = 'j-add-item-type-standalone-projects']/ul/li[1]/div[1]")).click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@class = 'jenkins-input   ']")).sendKeys("Description for New created item");
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        getDriver().findElement(By.xpath("//*/div/h1[contains(text(),'Project New Item Name1')]"));
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*/div/h1[contains(text(),'Project New Item Name1')]")).isDisplayed());
+
+    }
+
+    @Test
+    public void testNewItemMultiConfiguration() {
+        final String pipelineName = "New Item Name2 MultiConfiguration";
+
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//div/input[@class = 'jenkins-input']")).sendKeys(pipelineName);
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[3]")).click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
+
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*/div/h1[contains(text(),'New Item Name2 MultiConfiguration')]")).isDisplayed(),"Everyrhing is working,dont forget to improve yout test");
+
+
+
     }
 
 }

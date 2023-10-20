@@ -1,77 +1,96 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
-import static org.testng.Assert.assertEquals;
+public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
-@Ignore
-public class GroupTestscriptCollaboratoriumTest {
-    @Test
-    public void getGuru() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.guru99.com/");
+    private void utilsCreateFreestyleProject(String projectName) {
 
-        String title = driver.getTitle();
-        assertEquals("Meet Guru99 – Free Training Tutorials & Video for IT Courses", title);
-
-
-        WebElement JUnitButton = driver.findElement(By.xpath("//*[@data-lasso-id='147439']"));
-        JUnitButton.click();
-
-        Thread.sleep(900);
-
-        WebElement textButton = driver.findElement(By.xpath("//*[@id='post-862']/div/div/h2[2]"));
-        Assert.assertEquals(textButton.getText(),"JUnit Tutorial Syllabus");
-
-        driver.quit();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
+        getDriver().findElement(By.xpath("//input[contains(@class, 'jenkins-input')]")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//li[contains(@class, 'FreeStyleProject')]")).click();
+        getDriver().findElement(By.xpath("//button[contains(@id, 'ok-button')]")).click();
     }
+
     @Test
-    public void testSubscription(){
+    public void testVersion() {
 
-        WebDriver driver = new ChromeDriver();
-        try {
+        getDriver().findElement(By.xpath("//*[@id = 'jenkins']/footer/div/div[2]/button")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/manage/about']")).click();
 
-            driver.get("https://murzilka.org/");
+        WebElement version = getDriver().findElement(By.xpath("//p[@class = 'app-about-version']"));
 
-            String title = driver.getTitle();
-            Assert.assertEquals(title, "Журнал \"Мурзилка\"");
-
-            WebElement textButton = driver.findElement(By.xpath("//*[@class=\"mrb-btn-item-text\"]"));
-            String valueButton = textButton.getText();
-            Assert.assertEquals(valueButton, "Подписаться на журнал");
-
-
-            textButton.click();
-            WebElement message = driver.findElement(By.xpath("//h1[@class=\"category-name\"]"));
-            String valueH1 = message.getText();
-            Assert.assertEquals(valueH1, "РЕДАКЦИОННАЯ ПОДПИСКА");
-
-        } finally {
-            driver.quit();
-        }
+        Assert.assertEquals(version.getText(), "Version 2.414.2");
     }
+
     @Test
-    public void testAddToBasket(){
+    public void testCreateNewPipelineProject() {
 
-        WebDriver driver = new ChromeDriver();
-        try {
+        final String projectName = "TestNew";
 
-            driver.get("https://murzilka.org/products/category/redaktsionnaya-podpiska");
-            WebElement addButton = driver.findElement(By.xpath("//button[@class=\"button product-item__button button_for_product-card cart-btn js-order-product js-cart-btn\"]"));
-            addButton.click();
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(),
+                String.format("Pipeline %s", projectName));
+    }
 
-            WebElement inBasket = driver.findElement(By.xpath("//*[@class=\"quantity-items top-cart__quantity\"]"));
-            String valueBasket = inBasket.getText();
-            Assert.assertEquals(valueBasket, "1");
+    @Test
+    public void testJenkinsGetVersionInAboutMenu() {
 
-        }finally {
-            driver.quit();
-        }
+        getDriver().findElement(By.className("page-footer__links")).findElement(By.tagName("button")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/manage/about']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("app-about-version")).getText(),
+                "Version 2.414.2");
+    }
+
+    @Test
+    public void testJenkinsFreestyleProjectIsCreatedCheckByH1() {
+
+        final String expectedProjectName = "testJenkinsFreestyleProjectIsCreatedCheckByH1()";
+
+        utilsCreateFreestyleProject(expectedProjectName);
+        getDriver().findElement(By.xpath("//button[contains(@name, 'Submit')]")).click();
+
+        String actualProjectName = getDriver().findElement(By
+                .xpath("//h1[@class = 'job-index-headline page-headline']")).getText();
+
+        Assert.assertEquals(actualProjectName, String.format("Project %s", expectedProjectName));
+    }
+
+    @Test
+    public void testJenkinsFreestyleProjectIsCreatedCheckByBreadcrumb() {
+
+        final String expectedProjectName = "testJenkinsFreestyleProjectIsCreatedCheckByBreadcrumb()";
+
+        utilsCreateFreestyleProject(expectedProjectName);
+
+        String actualProjectName = getDriver().findElement(By
+                .xpath(String.format("//a[contains(@href, 'job/%s/')]", expectedProjectName))).getText();
+
+        Assert.assertEquals(actualProjectName, expectedProjectName);
+    }
+
+    @Test
+    public void testJenkinsNewProjectIsDisplayedOnDashboard() {
+
+        final String expectedProjectName = "testJenkinsNewProjectIsDisplayedOnDashboard()";
+
+        utilsCreateFreestyleProject(expectedProjectName);
+
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+
+        String actualProjectName = getDriver().findElement(By.xpath("//div[contains(@class, 'dashboard')]"))
+                .findElement(By.xpath(String.format("//a[contains(@href, 'job/%s/')]/span", expectedProjectName)))
+                .getText();
+
+        Assert.assertEquals(actualProjectName, expectedProjectName);
     }
 }

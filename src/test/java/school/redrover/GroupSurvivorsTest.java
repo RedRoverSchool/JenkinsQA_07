@@ -1,39 +1,30 @@
 package school.redrover;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
 
 
-@Ignore
-public class GroupSurvivorsTest {
+public class GroupSurvivorsTest extends BaseTest {
 
     @Test
-    public void  evgenySSearchTest() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();
+    public void testEvgenyCheckJenkinsVersion() {
+        getDriver().findElement(By.cssSelector(".jenkins-button.jenkins-button--tertiary.jenkins_ver")).click();
+        getDriver().findElement(By.xpath("//*[@class = 'jenkins-dropdown__item'][1]")).click();
 
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://ru.wikipedia.org/wiki/");
-
-            WebElement textBox = driver.findElement(By.className("vector-search-box-input"));
-            textBox.sendKeys("Java");
-
-            Thread.sleep(600);
-
-            WebElement searchButton = driver.findElement(By.xpath("//input[@class='searchButton']"));
-            searchButton.click();
-
-            WebElement title = driver.findElement(By.className("mw-page-title-main"));
-            String value = title.getText();
-            Assert.assertEquals(value, "Java");
-        } finally {
-            driver.quit();
-        }
+        Assert.assertEquals(getDriver().findElement(By.className("app-about-version")).getText(), "Version 2.414.2");
     }
+
+    @Test
+    public void testEvgenyAddDescription() {
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//*[@name = 'description']")).sendKeys("Test description");
+        getDriver().findElement(By.xpath("//*[@id = 'description']/form/div[2]/button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id = 'description']/div")).getText(), "Test description");
+    }
+
 }
+
+

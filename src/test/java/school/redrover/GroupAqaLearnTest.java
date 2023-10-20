@@ -7,52 +7,26 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import school.redrover.runner.JenkinsUtils;
 
-@Ignore
-public class GroupAqaLearnTest {
-    protected WebDriver getDriver() {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-        return new ChromeDriver();
-    }
-
+public class GroupAqaLearnTest extends BaseTest {
     @Test
-    public void testH2TagText_WhenSearchingCityCountry() throws InterruptedException {
+    public void testFirstJenkins() {
 
-        String url = "https://openweathermap.org/";
-        String cityName = "Paris";
-        String expectedResult = "Paris, FR";
+        getDriver().findElement(By.xpath("//*[@id='tasks']//span//span")).click();
 
-        getDriver().get(url);
-        Thread.sleep(10000);
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@class='h3']")).getText(),
+                "Enter an item name");
 
-        WebElement searchCityField = getDriver().findElement(
-                By.xpath("//div[@id = 'weather-widget']/div/div/div/div[2]//input[@placeholder = 'Search city']")
-        );
-        searchCityField.click();
-        searchCityField.sendKeys(cityName);
-
-        WebElement searchButton = getDriver().findElement(
-                By.xpath("//div[@id = 'weather-widget']//button[@type = 'submit']")
-        );
-        searchButton.click();
-
-        Thread.sleep(2000);
-
-        WebElement parisFRChoiceInDropdownMenu = getDriver().findElement(
-                By.xpath("//ul[@class = 'search-dropdown-menu']/li/span[text() = 'Paris, FR ']")
-        );
-        parisFRChoiceInDropdownMenu.click();
-
-        WebElement h2CityNameHeader = getDriver().findElement(
-                By.xpath("//div[@id = 'weather-widget']//h2")
-        );
-
-        Thread.sleep(3000);
-        String actualResult = h2CityNameHeader.getText();
-
-        Assert.assertEquals(actualResult, expectedResult);
     }
 
+    @Ignore
     @Test
     public void testNameOfTitle() {
 
@@ -72,5 +46,29 @@ public class GroupAqaLearnTest {
         Assert.assertEquals(actualResult, expectedResult);
 
         driver.quit();
+    }
+
+    @Test
+    public void testSecondJenkins() {
+
+        List<String> expectedResult = Arrays.asList(
+                "New Item",
+                "People",
+                "Build History",
+                "Manage Jenkins",
+                "My Views"
+        );
+
+        List<WebElement> sidePanel = getDriver().findElements(
+                By.xpath("//div/div[@class='task ']")
+        );
+
+        List<String> actualResult = new ArrayList<>();
+
+        for (WebElement task : sidePanel) {
+            actualResult.add(task.getText());
+        }
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }

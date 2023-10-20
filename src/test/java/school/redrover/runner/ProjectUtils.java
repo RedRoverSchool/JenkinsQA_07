@@ -2,10 +2,12 @@ package school.redrover.runner;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Properties;
 
 
@@ -85,7 +87,18 @@ public final class ProjectUtils {
         return properties.getProperty(PROP_ADMIN_PAS);
     }
 
-    public static void get(WebDriver driver) {
+    static void get(WebDriver driver) {
         driver.get(getUrl());
+    }
+
+    static WebDriver createDriver() {
+        WebDriver driver = new ChromeDriver(ProjectUtils.chromeOptions);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+        return driver;
+    }
+
+    public static void log(String str) {
+        System.out.println(str);
     }
 }

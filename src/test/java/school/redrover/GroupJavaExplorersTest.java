@@ -1,232 +1,121 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
-import java.util.List;
-
+import school.redrover.runner.BaseTest;
+import java.util.UUID;
 import static org.testng.Assert.assertEquals;
 
-@Ignore
-public class GroupJavaExplorersTest {
+public class GroupJavaExplorersTest extends BaseTest {
 
-    private static final String BASE_URL = "https://magento.softwaretestingboard.com/";
+    private static final String FOLDER_NAME = "Folder1";
+    private static final String USER_NAME = "New_User";
+    private static final String PASSWORD = "12345";
+    private static final String EMAIL = "asd@gmail.com";
 
-    @Test
-    public void testSearchWatches() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
+    private void createNewFolder() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.xpath("//div[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
 
-        Thread.sleep(1000);
-
-        WebElement gear = driver.findElement(By.xpath("//a[@id='ui-id-6']/span[2]"));
-        gear.click();
-
-        WebElement watches = driver.
-                findElement(By.xpath("//*[@id='maincontent']/div[4]/div[2]/div[2]/div/ul/li[3]/a"));
-        watches.click();
-
-        WebElement clamberWatch = driver.
-                findElement(By.xpath("//*[@id='maincontent']/div[3]/div[1]/div[3]/ol/li[2]/div/div/strong/a"));
-        clamberWatch.click();
-
-        WebElement text = driver.findElement(By.xpath("//*[@class='base']"));
-        String value = text.getText();
-
-        Assert.assertEquals(value, "Clamber Watch");
-
-        driver.quit();
+    private void addNewUser() {
+        getDriver().findElement(By.xpath("//a[@href ='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text()='Users']")).click();
+        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        getDriver().findElement(By.name("username")).sendKeys(USER_NAME);
+        getDriver().findElement(By.name("password1")).sendKeys(PASSWORD);
+        getDriver().findElement(By.name("password2")).sendKeys(PASSWORD);
+        getDriver().findElement(By.name("email")).sendKeys(EMAIL);
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
-    public void testLoginWithIncorrectData() throws InterruptedException {
-        String email = "asdfg@mail.ru";
-        String password = "12345";
-        String message = "The account sign-in was incorrect or your account is disabled temporarily." +
-                " Please wait and try again later.";
+    public void testCreateNewFolder() {
+        createNewFolder();
 
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        Thread.sleep(1000);
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//*[@id='job_Folder1']/td[3]/a/span"))
+                .getText(), "Folder1");
+    }
 
-        WebElement loginIn = driver.
-                findElement(By.xpath("//header/div[1]/div/ul/li[2]/a"));
-        loginIn.click();
+    @Ignore
+    @Test
+    public void testCreateNewJob() {
 
-        WebElement textBoxEmail = driver.findElement(By.id("email"));
-        textBoxEmail.sendKeys(email);
+        String expectedText = "This view has no jobs associated with it. You can either add " +
+                "some existing jobs to this view or create a new job in this view.";
 
-        WebElement textBoxPassword = driver.findElement(By.id("pass"));
-        textBoxPassword.sendKeys(password);
+        WebElement newView = getDriver().findElement(By.xpath("//div//a[@title='New View']"));
+        newView.click();
+        WebElement viewName = getDriver().findElement(By.xpath("//div//input[@id='name']"));
+        viewName.sendKeys("MyView2");
+        WebElement viewTypeChckbx = getDriver().findElement(By.xpath("//div//label[@for='hudson.model.ListView']"));
+        viewTypeChckbx.click();
+        WebElement buttonSubmit = getDriver().findElement(By.xpath("//div//button[@name='Submit']"));
+        buttonSubmit.click();
+        WebElement buttonSubmitView = getDriver().findElement(By.xpath("//div//button[@name='Submit']"));
+        buttonSubmitView.click();
+        String actualText = getDriver().findElement(By.xpath("//div[@id='main-panel']")).getText();
 
-        WebElement submitButton = driver.
-                findElement(By.xpath("//fieldset/div[4]/div[1]/button"));
+        Assert.assertTrue(actualText.contains(expectedText));
+    }
+
+    @Test
+    public void testWelcomeToJenkins() {
+
+        String header = getDriver().findElement(By.xpath("//h1")).getText();
+        assertEquals(header, "Welcome to Jenkins!");
+    }
+
+    @Test
+    public void testAddNewUser() {
+        addNewUser();
+
+        Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
+    }
+
+    @Ignore
+    @Test()
+    public void testCreateFreeStyleProject() {
+        int desiredLength = 5;
+        String testFreeStyleProjectName = UUID.randomUUID()
+                .toString()
+                .substring(0, desiredLength);
+
+//        JenkinsUtils.login(getDriver());
+
+        WebElement newViewButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
+        newViewButton.click();
+
+        WebElement jenkinsJobNameField = getDriver().findElement(By.xpath("//*[@class='jenkins-input']"));
+        jenkinsJobNameField.sendKeys(testFreeStyleProjectName);
+
+        WebElement freeStyleProject = getDriver().findElement(By.xpath("//*[text()='Freestyle project']"));
+        freeStyleProject.click();
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
 
-        Thread.sleep(1000);
+        saveButton.click();
+        String jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']")).getText();
 
-        String value = driver.
-                findElement(By.xpath("//div[contains(text(), 'The account sign-in')]")).
-                getText();
-
-        Assert.assertTrue(value.contains(message));
-
-        driver.quit();
-    }
-    @Test
-    public void testSignInNegative() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
-        String title = driver.getTitle();
-        Assert.assertEquals(title, "Home Page");
-        WebElement signIn = driver.findElement(By.xpath("/html/body/div[2]/header/div[1]/div/ul/li[2]/a"));
-        signIn.click();
-        WebElement signInto = driver.findElement(By.xpath("//*[@id='send2']/span"));
-        signInto.click();
-        WebElement field = driver.findElement(By.xpath("//*[@id='email-error']"));
-        String failText = field.getText();
-        Assert.assertEquals(failText, "This is a required field.");
-        WebElement email = driver.findElement(By.xpath("//*[@id='email']"));
-        email.sendKeys("abcd@gmail.com");
-        WebElement password = driver.findElement(By.xpath("//*[@id='pass']"));
-        password.sendKeys("1234");
-        signInto.click();
-        WebElement accIncorrect = driver.findElement(By.xpath("//*[@id='maincontent']/div[2]/div[2]/div/div/div"));
-        String accFailText = accIncorrect.getText();
-        Thread.sleep(1000);
-        Assert.assertEquals(accFailText, "The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.");
-        driver.quit();
+        Assert.assertTrue(jenkinsJobName.contains(testFreeStyleProjectName));
     }
 
     @Test
-    public void testSearchOlivia() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
+    public void testVersion() {
 
-        WebElement textBox = driver.findElement(By.xpath("//input[@id='search']"));
-        textBox.sendKeys("Olivia");
-
-        WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
-        submitButton.click();
-
-        Thread.sleep(3000);
-
-        String title = driver.findElement(By.xpath("//h1")).getText();
-
-        assertEquals(title, "Search results for: 'Olivia'");
-
-        driver.quit();
+        WebElement version = getDriver().findElement(By.xpath("//button[contains(text(), 'Jenkins 2.414.2')]"));
+        String versionName = version.getText();
+        Assert.assertEquals(versionName, "Jenkins 2.414.2");
     }
-    @Test
-    public void testInvalidLoginWithNonExistedUser() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://magento.softwaretestingboard.com/");
-        WebElement signInElement = driver.findElement(By.className("authorization-link"));
-        signInElement.click();
-
-        WebElement emailInputField = driver.findElement(By.xpath("//input[@name='login[username]']"));
-        emailInputField.sendKeys("asd@gmail.com");
-        WebElement passwordInputField = driver.findElement(By.xpath("//input[@name='login[password]']"));
-        passwordInputField.sendKeys("TestRandomPassword");
-
-        WebElement signInButton = driver.findElement(By.id("send2"));
-        signInButton.click();
-
-        WebElement notificationMessage = driver.findElement(By.xpath("//div[@role='alert']"));
-        Thread.sleep(1000);
-        String notificationMessageText = notificationMessage.getText();
-
-        Assert.assertEquals("The account sign-in was incorrect or your account is disabled temporarily. Please wait and try again later.", notificationMessageText);
-        driver.quit();
-    }
-
-    @Test
-    public void testAddToCart() {
-
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().window().maximize();
-
-        driver.get(BASE_URL);
-        wait.until(ExpectedConditions.
-                elementToBeClickable(By.xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]")));
-        WebElement catalogueItem = driver.
-                findElement(By.xpath("//div//img[@class='product-image-photo']"));
-        catalogueItem.click();
-        wait.until(ExpectedConditions.
-                elementToBeClickable(By.xpath("//div//button[@id='product-addtocart-button']")));
-
-        WebElement item = driver.
-                findElement(By.xpath("//div//button[@id='product-addtocart-button']"));
-
-        List<WebElement> sizes = driver.
-                findElements(By.xpath("//div//div[@class='swatch-option text']"));
-        sizes.get((int) (Math.random() * sizes.size())).click();
-
-        List<WebElement> colors = driver.
-                findElements(By.xpath("//div//div[@class='swatch-option color']"));
-        colors.get((int) (Math.random() * colors.size())).click();
-
-        WebElement input = driver.findElement(By.xpath("//div/input[@id='qty']"));
-        input.clear();
-        input.sendKeys("2");
-        item.click();
-
-        WebElement cart = driver.findElement(By.xpath("//div//a[@class='action showcart']"));
-        wait.until(ExpectedConditions.
-                visibilityOfElementLocated(By.xpath("//div//div[@data-ui-id='message-success']")));
-        cart.click();
-
-        WebElement itemInCart = driver.findElement(By.xpath("//div//span[@class='count']"));
-
-        int actualResult = Integer.parseInt(itemInCart.getText());
-        Assert.assertEquals(actualResult, 2);
-        driver.quit();
-    }
-
-    @Test
-    public void testImages() {
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().window().maximize();
-
-        driver.get(BASE_URL);
-        wait.until(ExpectedConditions.
-                elementToBeClickable(By.xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]")));
-
-        WebElement whatsNew = driver.
-                findElement(By.xpath("//div//a[@id='ui-id-3']/span[contains(text(),'New')]"));
-        whatsNew.click();
-        List<WebElement> images = driver.
-                findElements(By.xpath("//div//img[@class='product-image-photo']"));
-        Assert.assertEquals(images.size(), 4);
-
-        driver.quit();
-    }
-
-    @Test
-    public void testTitle() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.get(BASE_URL);
-        Thread.sleep(2000);
-        WebElement whatsNew = driver
-                .findElement(By.xpath("//span[text()=\"What's New\"]"));
-        whatsNew.click();
-        String header = driver.findElement(By.xpath("//h1")).getText();
-        assertEquals(header, "What's New");
-
-        driver.quit();
-    }
-
 }
 

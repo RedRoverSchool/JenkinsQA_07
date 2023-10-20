@@ -1,73 +1,41 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class ArSaFirstTest extends BaseTest {
 
-    //Check if Title of the Website is correct..
+    private final static String folderName = "Artur Sabanadze";
+    private final static String expectedVersion = "Jenkins 2.414.2";
+
     @Test
-    public void testTitleCheck()
-    {
-            getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+    public void testCreateFolder() {
 
-            String title = getDriver().getTitle();
-            Assert.assertEquals(title, "Web form");
-    }
-    //Check if the form "Text Input" is working, try to input some text, check the input text.
-    @Test
-    public void testTextInput() {
+        final String actualVersion = getDriver().findElement(By.className("jenkins_ver")).getText();
 
-            getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-            WebElement nameInput = getDriver().findElement(By.id("my-text-id"));
-            nameInput.sendKeys("Artur Sabanadze");
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
 
-            String enteredText = nameInput.getAttribute("value");
-            Assert.assertEquals(enteredText, "Artur Sabanadze");
-        }
+        getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
 
-    //Check "my-disabled" element for the following functions: is disabled, is visible and the placeholder text is correct.
-    @Test
-    public void testDisabledTextInput() {
+        getDriver().findElement(By.id("ok-button")).click();
 
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+        getDriver().findElement(By.name("Submit")).click();
 
-        WebElement disabledInput = getDriver().findElement(By.name("my-disabled"));
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item a.model-link")).click();
+        getDriver().findElement(By.linkText(folderName)).click();
 
-        // Check if the input is disabled
-        Assert.assertEquals(disabledInput.getAttribute("disabled"), "true");
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.name("_.description")).sendKeys("Organization File of Artur Sabanadze. Student of Redrover School (7)");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
 
-        //Check if the element is visible
-        Assert.assertTrue(disabledInput.isDisplayed());
-
-        // Check the placeholder text in the disabled input
-        String placeholderText = disabledInput.getAttribute("placeholder");
-        Assert.assertEquals(placeholderText, "Disabled input");
-
-
-    }
-
-    //Check the color of "my-colors" element
-    @Test
-    public void testColorCheck() {
-
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
-
-
-        WebElement colorInputElement = getDriver().findElement(By.name("my-colors"));
-
-
-        String actualColor = colorInputElement.getAttribute("value");
-
-
-        String expectedColor = "#563d7c";
-
-
-        Assert.assertEquals(actualColor, expectedColor, "Element color is not as expected");
+        Assert.assertNotNull(getDriver().findElement(By.id("job_Artur Sabanadze")), "Artur Sabanadze folder not found on the Jenkins home page");
+        Assert.assertEquals(actualVersion, expectedVersion, "Jenkins version mismatch");
 
     }
 }
