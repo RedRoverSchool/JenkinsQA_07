@@ -93,4 +93,34 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
         Assert.assertEquals(actualProjectName, expectedProjectName);
     }
+
+    @Test
+    public void testFaviconSizes() {
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//link[@href = '/static/b799f8d5/apple-touch-icon.png']"))
+                .getAttribute("sizes"), "180x180");
+    }
+
+    @Test
+    public void testCreateFolder() {
+
+        String nameFolder = "Folder1";
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+
+        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(nameFolder);
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+
+        getDriver().findElement(By.xpath("//img[@id = 'jenkins-name-icon']")).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']"))
+                .getText(), "Folder1");
+
+        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/job/Folder1/delete']")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+
+    }
 }
