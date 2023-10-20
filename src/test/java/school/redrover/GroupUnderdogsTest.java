@@ -8,6 +8,8 @@ import static org.testng.Assert.assertEquals;
 
 public class GroupUnderdogsTest extends BaseTest {
 
+    private static final String STR_TEST = "test";
+
     @Test
     public void testJenkinsVersionInFooter_tereshenkov29() {
 
@@ -18,41 +20,48 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsLogOut_maksin() {
+    public void testJenkinsLogOut() {
 
-        getDriver().findElement(By.xpath("//*[@id='page-header']/div[3]/a[2]")).click();
+        getDriver().findElement(By.xpath("//span[normalize-space()='log out']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath
-                        ("//*[@id='main-panel']/div/h1")).getText(),
+                        ("//h1[normalize-space()='Sign in to Jenkins']")).getText(),
                 "Sign in to Jenkins");
+    }
+
+    private void createNewFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("(//input[@id='name'])[1]")).sendKeys(STR_TEST);
+
+        getDriver().findElement(By.xpath("//span[normalize-space()='Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 
     @Test
     public void testVerifyIconSize() {
 
-        final String projectName = "test";
         final String background = "rgba(175, 175, 207, 0.176)";
 
-        getDriver().findElement(By.xpath("(//a[@href='/view/all/newJob'])[1]")).click();
-        getDriver().findElement(By.xpath("(//input[@id='name'])[1]")).sendKeys(projectName);
-        getDriver().findElement(By.xpath("(//span[normalize-space()='Folder'])[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-        getDriver().findElement(By.xpath("(//a[normalize-space()='Dashboard'])[1]")).click();
+        createNewFolder();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-table__link > span")).getText(), projectName);
+        getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
 
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/div[2]/div[2]/div/div[1]/ol/li[2]")).click(); // M
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-table__link > span")).getText(), STR_TEST);
+
+        getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']")).click(); // M
 
         getDriver().findElement(By.linkText("People")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[3]/div[1]/ol[1]/li[2]"))
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']"))
                 .getCssValue("background-color"), background);
 
         getDriver().findElement(By.linkText("Build History")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[6]/div[1]/ol[1]/li[2]"))
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']"))
                 .getCssValue("background-color"), background);
 
         getDriver().findElement(By.linkText("My Views")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/ol[1]/li[2]"))
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']"))
                 .getCssValue("background-color"), background);
     }
 
