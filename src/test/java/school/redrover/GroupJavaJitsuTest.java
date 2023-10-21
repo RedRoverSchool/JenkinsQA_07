@@ -120,4 +120,23 @@ public class GroupJavaJitsuTest  extends BaseTest {
         getDriver().switchTo().alert().accept();
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(text(),'Welcome to Jenkins!')]")).getText(), "Welcome to Jenkins!");
     }
+
+    @Test
+    public void testDisableFreestyleProject() throws InterruptedException {
+        testNewFreestyleProject();
+
+        getDriver().findElement(By.xpath("//button[contains(text(),'Disable Project')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText(), "Enable");
+    }
+
+    @Test
+    public void testEnableFreestyleProject() throws InterruptedException {
+        testNewFreestyleProject();
+
+        getDriver().findElement(By.xpath("//button[contains(text(),'Disable Project')]")).click();
+        getDriver().findElement(By.xpath("//button[contains(text(),'Enable')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[contains(text(),'Disable Project')]")).getText(), "Disable Project");
+    }
 }
