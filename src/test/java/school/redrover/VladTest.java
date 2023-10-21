@@ -70,7 +70,7 @@ public class VladTest extends BaseTest {
 
         CreateNewJob("//li[@class='hudson_matrix_MatrixProject']");
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='matrix-project-headline page-headline']")).getText(),
                 "Project test123");
     }
     @Test
