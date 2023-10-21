@@ -15,7 +15,6 @@ enum ItemNames {
 public class FilipRahuliaDraftTest extends BaseTest {
     public  final String testProjectName = "Test";
 
-
     private static String itemNameXpath(ItemNames itemName) {
         String xpath = "";
         switch (itemName) {
