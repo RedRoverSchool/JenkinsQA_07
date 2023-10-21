@@ -4,22 +4,39 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class GroupUnicornsTest extends BaseTest {
+
+    public void goToDashboard() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+    }
+
+    public void sendKeysToSearchBar(String search) {
+        getDriver().findElement(By.id("settings-search-bar")).sendKeys(search);
+    }
+    @Test
+    public void testSuccessfulSearchResult() {
+
+        goToDashboard();
+        sendKeysToSearchBar("users");
+        WebElement searchResult = getDriver().findElement(By.xpath("//a[contains(text(),'Users')]"));
+        Assert.assertEquals(searchResult.getAttribute("text"), "Users");
+        searchResult.click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/manage/securityRealm/");
+    }
 
     @Test
     public void testVerifyRemoteDirectoryIsMandatoryForSetUpAnAgent() throws InterruptedException {
