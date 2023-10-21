@@ -105,4 +105,19 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     }
 
+    @Test
+    public void testDeleteFreestyleProject() throws InterruptedException{
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), "Project NewFreestyleProject");
+
+        getDriver().findElement(By.xpath("//li/a[@class='model-link']")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'NewFreestyleProject')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Delete Project')]")).click();
+        getDriver().switchTo().alert().accept();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(text(),'Welcome to Jenkins!')]")).getText(), "Welcome to Jenkins!");
+    }
 }
