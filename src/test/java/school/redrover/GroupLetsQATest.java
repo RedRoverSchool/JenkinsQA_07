@@ -22,12 +22,10 @@ import java.util.List;
 public class GroupLetsQATest extends BaseTest {
 
     private boolean isItemTitleExists(String itemName){
-        boolean res = false;
-
         List<WebElement> itemsList = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside span"));
-        boolean result = false;
+        boolean res = false;
         if(itemsList.isEmpty()){
-            return result;
+            return res;
         }else {
             for (WebElement e : itemsList) {
                 if (e.getText().equals(itemName)) {
