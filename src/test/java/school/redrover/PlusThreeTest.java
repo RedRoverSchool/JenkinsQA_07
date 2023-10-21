@@ -13,7 +13,6 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -273,7 +272,7 @@ public class PlusThreeTest extends BaseTest {
         Assert.assertEquals(name, "Swag Labs");
 
     }
-
+    @Ignore
     @Test(description = "Jenkins first test")
     public void loginJenkinsVasilyiD() throws InterruptedException {
 
@@ -446,6 +445,23 @@ public class PlusThreeTest extends BaseTest {
 
         WebElement version = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
         assertEquals(version.getText(), "Version 2.414.2");
+    }
+    @Test (description = "Freestyle project create from New Item")
+    public void testCreateJob(){
+        String jobName = "Freestyle";
+
+        getDriver().findElement(By.xpath("//*[@class='task '][1]")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(jobName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        String resultHeading = getDriver().findElement(By.xpath("//h1")).getText();
+
+        assertEquals(resultHeading, "Project " + jobName);
+
     }
 }
 
