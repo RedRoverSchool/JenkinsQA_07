@@ -116,7 +116,7 @@ public class GroupQaClimbersTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href = 'configureTools']")).click();
 
-        final String actualResult = getDriver().findElement(By.cssSelector(".jenkins-app-bar__content >h1")).getText();
+        String actualResult = getDriver().findElement(By.cssSelector(".jenkins-app-bar__content >h1")).getText();
 
         Assert.assertEquals(actualResult,"Tools");
     }
