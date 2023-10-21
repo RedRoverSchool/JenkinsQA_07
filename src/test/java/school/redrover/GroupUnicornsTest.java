@@ -489,16 +489,13 @@ public class GroupUnicornsTest extends BaseTest {
         Thread.sleep(1000);
 
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/job/Bayans_job/']")))
+                .moveToElement(getDriver().findElement(By.xpath("//button[contains(@data-href, '/job/Bayans_job/')]")))
                 .click()
                 .perform();
 
         Thread.sleep(1000);
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")))
-                .click()
-                .perform();
+        getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")).click();
 
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(JOB_NAME_RENAMED);
