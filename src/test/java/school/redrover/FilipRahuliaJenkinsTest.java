@@ -9,7 +9,6 @@ public class FilipRahuliaJenkinsTest extends BaseTest {
 
     @Test
     public void testEditDescription() {
-        getDriver().get("http://localhost:8080/");
         String testDescriptionText = "Test description";
 
         getDriver().findElement(By.id("description-link")).click();
