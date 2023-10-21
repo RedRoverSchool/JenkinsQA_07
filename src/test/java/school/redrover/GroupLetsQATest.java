@@ -270,7 +270,6 @@ public class GroupLetsQATest extends BaseTest {
     public void testJobAlreadyExists(){
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         createAnItem("Folder");
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("New Folder");
 
@@ -298,5 +297,20 @@ public class GroupLetsQATest extends BaseTest {
         WebElement description = getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]"));
 
         Assert.assertEquals(description.getText(), "abc");
+    }
+
+    @Test
+    public void testCreateNewItemFromExistingIsDisplayed(){
+        boolean res;
+        try {
+            createAnItem("Pipeline");
+            getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+            getDriver().findElement(By.xpath("//div[@class='add-item-copy yui-ac']//img")).isDisplayed();
+            res = true;
+        } catch (Exception NoSuchElementException){
+            res = false;
+        }
+
+        Assert.assertTrue(res, "'Copy from' is not appears.");
     }
 }
