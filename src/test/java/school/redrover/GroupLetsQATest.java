@@ -238,5 +238,19 @@ public class GroupLetsQATest extends BaseTest {
 
     }
 
+    @Test
+    public void testJobAlreadyExists(){
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        createAnItem("Folder");
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Folder");
+
+        Assert.assertEquals(wait.until(ExpectedConditions.
+                visibilityOfElementLocated(By.xpath("//div[@id='itemname-invalid']"))).getText(),
+                "» A job already exists with the name ‘New Folder’");
+
+    }
+
 
 }
