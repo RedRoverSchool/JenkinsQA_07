@@ -108,4 +108,17 @@ public class GroupQaClimbersTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "");
     }
+
+    @Test
+    public void testToolsHeaderInToolsMenu() {
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href = 'configureTools']")).click();
+
+        WebElement toolsHeader = getDriver().findElement(By.cssSelector(".jenkins-app-bar__content >h1"));
+        String actualResult = toolsHeader.getText();
+
+        Assert.assertEquals(actualResult,"Tools");
+    }
 }
