@@ -53,6 +53,7 @@ public class FilipRahuliaTest extends BaseTest {
     }
     @Test
     public void  testPipelineCreation () {
+
         createNewItem(ItemNames.PIPELINE);
         getDriver().findElement(By.xpath("//ol[@id = 'breadcrumbs'] //a[.='Dashboard']")).click();
 
@@ -82,12 +83,7 @@ public class FilipRahuliaTest extends BaseTest {
         Alert alert = getDriver().switchTo().alert();
         alert.accept();
 
-
-
-
-
+        WebElement emptyBlock = getDriver().findElement(By.xpath("//div[@class = 'empty-state-block']"));
+        Assert.assertTrue(emptyBlock.isDisplayed());
     }
-
-
-
 }
