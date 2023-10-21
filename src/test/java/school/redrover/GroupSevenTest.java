@@ -483,4 +483,27 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
     }
+
+    @Test
+    public void testCreatePipelineWithDisplayName() {
+        final String PIPELINE_NAME = "New_Pipeline";
+        final String NEW_NAME = "NewNamePipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//span[text() = 'Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//div[@id='advanced-project-options']/following-sibling::div//button[@class='jenkins-button advanced-button advancedButton']")).sendKeys(Keys.RETURN);
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(NEW_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String pipelineHeader = getDriver().findElement(By.xpath("//h1")).getText();
+
+        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), NEW_NAME);
+        Assert.assertTrue(pipelineHeader.contains(NEW_NAME));
+    }
 }
