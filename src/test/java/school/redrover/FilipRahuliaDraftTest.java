@@ -12,7 +12,7 @@ enum ItemNames {
     FREESTYLE_PROJECT, PIPELINE, MULTI_CONFIGURATION_PROJECT, FOLDER, MULTI_BRANCH_PIPELINE, ORGANIZATION_FOLDER
 }
 
-public class FilipRahuliaTest extends BaseTest {
+public class FilipRahuliaDraftTest extends BaseTest {
     public  final String testProjectName = "Test";
 
 
