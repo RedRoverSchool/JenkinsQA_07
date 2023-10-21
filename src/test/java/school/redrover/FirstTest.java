@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 
-public class  FirstTest extends BaseTest {
+public class   FirstTest extends BaseTest {
 @Ignore
     @Test
     public void testSearch() throws InterruptedException {

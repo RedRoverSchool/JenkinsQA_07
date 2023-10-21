@@ -7,15 +7,14 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
-@Ignore
+
 public class GroupJavaBustersTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testMovieSearch() {
 
@@ -38,6 +37,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "Merry Christmas, Mr. Lawrence");
     }
 
+    @Ignore
     @Test
     public void testSignInWithEmptyFields() {
 
@@ -67,7 +67,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "Your credentials don’t match. It’s probably attributable to human error.");
 
     }
-@Ignore
+    @Ignore
     @Test
     public void testWelcomeJenkins() {
 
@@ -77,6 +77,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
     }
 
+    @Ignore
     private WebElement findPopUp(By locator) {
         try {
             return getDriver().findElement(locator);
@@ -85,7 +86,7 @@ public class GroupJavaBustersTest extends BaseTest {
         }
     }
 
-
+    @Ignore
     @Test
     public void testFillUserName() {
 
@@ -103,6 +104,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testCancelFillingUserName() {
 
@@ -119,7 +121,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
     }
 
-
+    @Ignore
     @Test
     public void testAllFields() throws InterruptedException {
         String mainLink = "https://www.selenium.dev/selenium/web/web-form.html";
@@ -152,6 +154,7 @@ public class GroupJavaBustersTest extends BaseTest {
         dropDownSelectedValue.selectByValue("3");
     }
 
+    @Ignore
     @Test
     public void testFillInForm() {
         getDriver().get("https://automationintesting.online/");
@@ -176,7 +179,7 @@ public class GroupJavaBustersTest extends BaseTest {
         assertEquals(value, "Thanks for getting in touch Marta!");
     }
 
-
+    @Ignore
     @Test
     public void testSearch() throws InterruptedException {
 
@@ -197,6 +200,7 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(value, "macbook");
     }
 
+    @Ignore
     @Test
     public void testSearchCorrectProduct() {
         getDriver().get("https://shop.studiob3.pl/");
@@ -213,7 +217,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
         assertTrue(linkToProduct.contains("dress"));
     }
-@Ignore
+    @Ignore
     @Test
     public void testDeleteFromBim() {
         getDriver().get("https://shop.studiob3.pl/product/iola-beanie/");
@@ -239,6 +243,7 @@ public class GroupJavaBustersTest extends BaseTest {
         assertTrue(foundElement.getText().contains("Your cart is empty"));
     }
 
+    @Ignore
     @Test
     public void testNavigateToExpectedUrl() {
 
@@ -250,9 +255,72 @@ public class GroupJavaBustersTest extends BaseTest {
             ".pl/product-category/end-of-series/");
     }
 
+    @Ignore
     @Test
     public void testSomeJenkins() throws InterruptedException {
 
+
+    }
+    
+    @Test
+    public void testSignInJenkins() {
+
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("#main-panel > div:nth-child(3) > div > h1")).getText(),
+                "Welcome to Jenkins!");
+    }
+
+    @Test
+    public void testCheckVersion() {
+
+        Assert.assertEquals(getDriver().findElement(
+                        By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button")).getText(),
+                "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void testCreateNewItemWithValidName() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                .sendKeys("3451643561");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject"))
+                .click();
+        getDriver().findElement(By.id("ok-button"))
+                .click();
+        assertEquals(getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3) > a"))
+                .getText(), "3451643561");
+    }
+
+    @Test //negative test
+    public void testCreateNewItemWithNameFromSpecialCharacters() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                .sendKeys("@");
+        assertEquals(getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]"))
+                .getText(), "» ‘@’ is an unsafe character");
+    }
+
+    @Test
+    public void testOutOfBoundNameLength() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                //252 symbols
+                .sendKeys("Далеко-далеко за словесными горами в стрчане " +
+                        "гласнцых и согласвных живут рыбные тексты. Вдали от всех живут они в " +
+                        "буквенных домах на берегу Семантика большого языкового океана. " +
+                        "Маленький ручеек Даль журчит по всей стране и обеспечивает ее всеми необходим");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject"))
+                .click();
+        getDriver().findElement(By.id("ok-button"))
+                .click();
+        assertEquals(getDriver().findElement(By.xpath("//*[@id=\"error-description\"]/h2"))
+                .getText(), "A problem occurred while processing the request.");
 
     }
 }

@@ -5,27 +5,37 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
+import org.openqa.selenium.Keys;
+import java.time.Duration;
 
 public class GroupJavaJitsuTest  extends BaseTest {
-    @Ignore
-    @Test
-    public void testGetTile() {
-        getDriver().get("https://www.saucedemo.com");
 
-        String title = getDriver().getTitle();
-        Assert.assertEquals("Swag Labs", title);
+    private static final String PROJECT_NAME = "FreestyleProject";
+    private static final String RENAME_PROJECT = "NewProject";
+    private static final String FOLDER_NAME = "NewFolder";
+    private static final String DESCRIPTION_TEXT = "NewDescription";
+
+    private void createFreestyleProject(String projectName) {
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(projectName);
+
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
     }
 
     @Test
     public void testFirst() throws InterruptedException {
-
-       WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
        newItem.click();
        WebElement itemName = getDriver().findElement(By.id("name"));
        itemName.sendKeys("NewProject3");
@@ -40,84 +50,87 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testNewFreestyleProject() throws InterruptedException {
-
-        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
-        newItem.click();
-        WebElement itemName = getDriver().findElement(By.id("name"));
-        itemName.sendKeys("NewFreestyleProject");
-        WebElement freestyleProject = getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject"));
-        freestyleProject.click();
-        WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
-        buttonOk.click();
-        WebElement buttonSave = getDriver().findElement(By.xpath("//button[@name='Submit']"));
-        buttonSave.click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), "Project NewFreestyleProject");
-
     }
 
     @Test
     public void testFreestyleProject() {
-        String projectName = "FreestyleProject";
-
-        WebElement newItem = getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']"));
-        newItem.click();
-
-        WebElement itemName = getDriver().findElement(By.cssSelector("input.jenkins-input"));
-        itemName.sendKeys(projectName);
-        WebElement freestyleProject = getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject"));
-        freestyleProject.click();
-
-        WebElement okButton = getDriver().findElement(By.cssSelector("button[type='submit']"));
-        okButton.click();
-
-        WebElement saveButton = getDriver().findElement(By.cssSelector("button[name='Submit']"));
-        saveButton.click();
-
+        createFreestyleProject(PROJECT_NAME);
         WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
-        Assert.assertEquals("Project " + projectName, freestyleProjectName.getText());
+        Assert.assertEquals("Project " + PROJECT_NAME, freestyleProjectName.getText());
     }
-    @Ignore
+
     @Test
-    public void testEndToEnd() {
-        getDriver().get("https://www.saucedemo.com/");
-        WebElement userName = getDriver().findElement(By.cssSelector("input[placeholder='Username']"));
-        userName.sendKeys("standard_user");
+    public void testRenameFreestyleProject() {
+        createFreestyleProject(PROJECT_NAME);
+        getDriver().findElement(By.cssSelector("a[href*='rename']")).click();
 
-        WebElement password = getDriver().findElement(By.cssSelector("input[placeholder='Password']"));
-        password.sendKeys("secret_sauce");
+        getDriver().findElement(By.cssSelector("input[name='newName']")).clear();
+        getDriver().findElement(By.cssSelector("input[name='newName']")).sendKeys(RENAME_PROJECT);
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
-        WebElement loginButton = getDriver().findElement(By.cssSelector("input[class*='submit']"));
-        loginButton.click();
+        WebElement renamedProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
+        Assert.assertEquals("Project " + RENAME_PROJECT, renamedProjectName.getText());
+    }
 
-        WebElement addBackPack = getDriver().findElement(By.cssSelector("button[data-test*='backpack']"));
-        addBackPack.click();
+    @Test
+    public void testCreateFolder() {
+        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.cssSelector(".com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
-        WebElement addBikeLight = getDriver().findElement(By.cssSelector("button[data-test*='bike']"));
-        addBikeLight.click();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div[id='main-panel'] h1")).getText(), FOLDER_NAME);
+    }
+    @Test
+    public void testCreateDescriptionFreestyleProject() throws InterruptedException {
+        testNewFreestyleProject();
+        getDriver().findElement(By.cssSelector("#description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION_TEXT);
+        getDriver().findElement(By.cssSelector(".jenkins-button.jenkins-button--primary")).click();
 
-        WebElement shoppingCart = getDriver().findElement(By.cssSelector("a[class*='cart']"));
-        shoppingCart.click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), DESCRIPTION_TEXT);
 
-        WebElement checkOut = getDriver().findElement(By.cssSelector("button[data-test='checkout']"));
-        checkOut.click();
+    }
 
-        WebElement firstName = getDriver().findElement(By.cssSelector("input[data-test='firstName']"));
-        firstName.sendKeys("Alex");
+    @Test
+    public void testDeleteFreestyleProject() throws InterruptedException{
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), "Project NewFreestyleProject");
 
-        WebElement lastName = getDriver().findElement(By.cssSelector("input[data-test='lastName']"));
-        lastName.sendKeys("Smith");
+        getDriver().findElement(By.xpath("//li/a[@class='model-link']")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'NewFreestyleProject')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Delete Project')]")).click();
+        getDriver().switchTo().alert().accept();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(text(),'Welcome to Jenkins!')]")).getText(), "Welcome to Jenkins!");
+    }
 
-        WebElement zipCode = getDriver().findElement(By.cssSelector("input[data-test='postalCode']"));
-        zipCode.sendKeys("10101");
+    @Test
+    public void testDisableFreestyleProject() throws InterruptedException {
+        testNewFreestyleProject();
 
-        WebElement continueButton = getDriver().findElement(By.cssSelector("input[data-test='continue']"));
-        continueButton.click();
+        getDriver().findElement(By.xpath("//button[contains(text(),'Disable Project')]")).click();
 
-        WebElement finish = getDriver().findElement(By.cssSelector("button[data-test='finish']"));
-        finish.click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText(), "Enable");
+    }
 
-        WebElement orderConfirmation = getDriver().findElement(By.cssSelector("h2[class='complete-header']"));
-        Assert.assertEquals("Thank you for your order!", orderConfirmation.getText());
+    @Test
+    public void testEnableFreestyleProject() throws InterruptedException {
+        testNewFreestyleProject();
 
+        getDriver().findElement(By.xpath("//button[contains(text(),'Disable Project')]")).click();
+        getDriver().findElement(By.xpath("//button[contains(text(),'Enable')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[contains(text(),'Disable Project')]")).getText(), "Disable Project");
     }
 }

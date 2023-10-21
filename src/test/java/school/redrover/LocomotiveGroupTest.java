@@ -2,76 +2,15 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.util.concurrent.TimeUnit;
 
-@Ignore
 public class LocomotiveGroupTest extends BaseTest {
-    @Test
-    @Ignore
-    public void testDemoqaTextBox() {
-        String fullName = "Tom Jonson";
-        String email = "mail@mail.com";
-
-        getDriver().get("https://demoqa.com/text-box");
-
-        String pageTitleText = getDriver().findElement(By.className("main-header")).getText();
-        Assert.assertEquals(pageTitleText, "Text Box");
-
-        WebElement fullNameTextBox = getDriver().findElement(By.cssSelector("#userName"));
-        fullNameTextBox.sendKeys(fullName);
-
-        WebElement emailTextBox = getDriver().findElement(By.id("userEmail"));
-        emailTextBox.sendKeys(email);
-
-        WebElement submitButton = getDriver().findElement(By.id("submit"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", submitButton);
-        submitButton.click();
-
-        String actualFullName = getDriver()
-                .findElement(By.id("name"))
-                .getText();
-        Assert.assertEquals(actualFullName, "Name:" + fullName);
-
-        String actualEmail = getDriver()
-                .findElement(By.xpath("//*[@id=\"email\"]"))
-                .getText();
-
-        Assert.assertEquals(actualEmail, "Email:" + email);
-    }
-
-    @Test
-    public void testLink() throws InterruptedException {
-            String linkExpected = "https://demoqa.com/";
-
-            getDriver().get("https://demoqa.com/links");
-            String originalWindow = getDriver().getWindowHandle();
-            WebElement link = getDriver().findElement(By.xpath("//*[@id=\"simpleLink\"]"));
-            String linkActual = link.getAttribute("href");
-
-            Assert.assertEquals(linkActual, linkExpected);
-
-            link.click();
-
-            Thread.sleep(1000);
-
-            for (String windowHandle : getDriver().getWindowHandles()) {
-                if (!originalWindow.contentEquals(windowHandle)) {
-                    getDriver().switchTo().window(windowHandle);
-                    break;
-                }
-            }
-
-            Thread.sleep(1000);
-            getDriver().findElement(By.xpath("//*[@class=\"banner-image\"]")).isDisplayed();
-    }
 
     @Ignore
     @Test
@@ -102,25 +41,6 @@ public class LocomotiveGroupTest extends BaseTest {
         WebElement RadioButton = driver.findElement(By.xpath("//label[normalize-space()='" + value + "']"));
         RadioButton.click();
     }
-
-    @Ignore
-    @Test
-
-    public void DashboardButtonTest() {
-        WebDriver driver = new ChromeDriver();
-        try {
-            driver.get("https://refero.design/");
-            WebElement bentoBox = driver.findElement(By.xpath("//div[@class='xK9VF'][contains(text(),'Dashboard')]"));
-            Actions actions = new Actions(driver);
-            actions.moveToElement(bentoBox);
-            bentoBox.click();
-
-            Assert.assertEquals(driver.getCurrentUrl(), "https://refero.design/search?page_types[id][]=28&order=popular");
-        } finally {
-            driver.quit();
-        }
-      }
-
 
       @Test
     public void testYandexSearchBar(){
@@ -190,24 +110,6 @@ public class LocomotiveGroupTest extends BaseTest {
     }
 
     @Test
-    public void testHoverOver() {
-        By image = By.className("figure");
-        By captionInput = By.cssSelector("#content > div > div:nth-child(3) > div > h5");
-        int imageIndex = 0;
-        String captionExpected = "name: user" + (imageIndex + 1);
-
-        var driver = getDriver();
-        driver.get("https://the-internet.herokuapp.com/hovers");
-        var hoverElement = driver.findElements(image).get(imageIndex); // returns 1st image
-
-        var action = new Actions(driver);
-        action.moveToElement(hoverElement).perform();
-
-        var captionText = driver.findElements(captionInput).get(imageIndex);
-        Assert.assertEquals(captionText.getText(), captionExpected, "The caption text is wrong");
-    }
-
-    @Test
     public void testVerifyJenkinsVersion() {
         WebDriver driver = getDriver();
         By locatorButtonJenkinsVersion = By.cssSelector("button.jenkins_ver");
@@ -220,7 +122,7 @@ public class LocomotiveGroupTest extends BaseTest {
 
         Assert.assertEquals(buttonJenkinsVersion.getAttribute("data-dropdown"),
                 "true",
-                "Attribute ' for Jenkins Version button is incorrect");
+                "Attribute 'data-dropdown' for Jenkins Version button is incorrect");
 
         driver.findElement(locatorButtonAbout).click();
         Assert.assertEquals(driver.findElement(locatorTextJenkinsVersion).getText(),
@@ -239,10 +141,10 @@ public class LocomotiveGroupTest extends BaseTest {
         Thread.sleep(2000);
     }
 
-    @Ignore
     @Test
     public void testAddDescriptionJenkinsHomePage() {
-        String description = "My Jenkins home page description";
+        final String description = "My Jenkins home page description";
+
         By submitButton = By.id("description-link");
         By descriptionInputField = By.xpath("//textarea[@name='description']");
         By saveButton = By.xpath("//button[@name='Submit']");
@@ -254,9 +156,31 @@ public class LocomotiveGroupTest extends BaseTest {
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//*[@id='description']/div[1]"))
                 .getText(), description);
-
-        getDriver().findElement(submitButton).click();
-        getDriver().findElement(descriptionInputField).clear();
-        getDriver().findElement(saveButton).click();
     }
+
+
+    @Ignore
+    @Test
+    public void testMartspecGoPageBiorhythms () {
+        getDriver().get("https://martspec.com/ru/emotion");
+        WebElement buttonForBiorh = getDriver().findElement(By.xpath("//div[@class='col-lg-6 d-table mb-lg-0 mb-4']//a"));
+
+        buttonForBiorh.click();
+
+        //WebElement imageBiorh = getDriver().findElement(By.xpath("//div[@class='col']/img[1]"));
+        // learn how to find a picture on a page
+        Assert.assertEquals(getDriver().findElement(By.xpath(
+                "//div[@class='col']/h1")).getText(), "Биоритмы");
+
+    }
+
+    @Test
+    public void testOpenBuildHistory() {
+
+        getDriver().findElement(By.xpath("//*[@href='/view/all/builds']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("jenkins-app-bar__content")).getText(), "Build History of Jenkins");
+
+    }
+
 }
