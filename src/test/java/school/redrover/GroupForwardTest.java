@@ -87,6 +87,19 @@ public class GroupForwardTest extends BaseTest {
                 .getText().trim(), "Jenkins 2.414.2");
     }
 
+    @Test
+    public void testDropDownMenuTimespan() {
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
+        getDriver().findElement(By.xpath("//*[@id='node_']/td[2]/a")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/a")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//option[@value='min']"))
+                        .getText(),"Medium");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//option[@value='hour']"))
+                        .getText(),"Long");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//option[@value='sec10']"))
+                        .getText(),"Short");
+
+    }
 }
 
 
