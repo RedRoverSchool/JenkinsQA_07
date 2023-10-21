@@ -34,7 +34,7 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
         WebElement projectName = getDriver().findElement(By.xpath("//td[3]/a"));
         String actualProjectName = projectName.getText();
-        assertEquals(randomName, actualProjectName);
+        assertEquals(actualProjectName, randomName);
     }
 
     @Test
