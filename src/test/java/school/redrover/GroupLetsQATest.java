@@ -13,6 +13,8 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.List;
 
@@ -280,4 +282,23 @@ public class GroupLetsQATest extends BaseTest {
 
     }
 
+    @Test
+    public void testEditDescription() throws URISyntaxException {
+        String userPageUrl = new URI(getDriver().getCurrentUrl()).resolve("/user/admin/").toString();
+        getDriver().get(userPageUrl);
+
+        WebElement editDescription = getDriver().findElement(By.id("description-link"));
+        editDescription.click();
+
+        WebElement descriptionText = getDriver().findElement(By.className("jenkins-input"));
+        descriptionText.clear();
+        descriptionText.sendKeys("abc");
+
+        WebElement saveButton = getDriver().findElement(By.className("jenkins-button--primary"));
+        saveButton.click();
+
+        WebElement description = getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]"));
+
+        Assert.assertEquals(description.getText(), "abc");
+    }
 }
