@@ -12,7 +12,6 @@ import static org.testng.Assert.assertEquals;
 public class GroupUnderdogsTest extends BaseTest {
 
     private static final String STR_TEST = "test";
-    private static final String DASHBOARD_PAGE= "//a[text()='Dashboard']";
 
     @Test
     public void testNewProjectCreatedOlena() {
@@ -32,7 +31,7 @@ public class GroupUnderdogsTest extends BaseTest {
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
         okButton.click();
 
-        getDriver().findElement(By.xpath(DASHBOARD_PAGE)).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
         WebElement projectName = getDriver().findElement(By.xpath("//td[3]/a"));
         String actualProjectName = projectName.getText();
         assertEquals(randomName, actualProjectName);
