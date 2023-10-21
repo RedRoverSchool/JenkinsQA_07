@@ -13,7 +13,6 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 
-@Ignore
+
 public class PlusThreeTest extends BaseTest {
 
     public static final String USERNAME = "TestUser1";
@@ -64,7 +63,7 @@ public class PlusThreeTest extends BaseTest {
         WebElement loginButton = getDriver().findElement(By.id("login-button"));
         loginButton.click();
     }
-    
+    @Ignore
     @Test(dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
     public void TestAuthorizationPositive(String username, String password) {
 
@@ -74,7 +73,7 @@ public class PlusThreeTest extends BaseTest {
         Assert.assertEquals(currentURL, "https://www.saucedemo.com/inventory.html");
 
     }
-
+    @Ignore
     @Test(dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "invalidData")
     public void TestAuthorizationNegative(String username, String password) {
 
@@ -84,7 +83,7 @@ public class PlusThreeTest extends BaseTest {
         Assert.assertEquals(actualResult, "Epic sadface: Username and password do not match any user in this service");
 
     }
-
+    @Ignore
     @Test(description = "Add to cart via catalog", dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
     public void TestAddCart(String username, String password) {
 
@@ -98,7 +97,7 @@ public class PlusThreeTest extends BaseTest {
         Assert.assertNotNull(redIcon, "Элемент redIcon не найден на странице");
 
     }
-
+    @Ignore
     @Test(description = "Remove from cart via basket", dataProviderClass = PlusThreeTest.DataProviders.class, dataProvider = "validData")
     public void TestRemoveCart(String username, String password) {
 
@@ -114,7 +113,7 @@ public class PlusThreeTest extends BaseTest {
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
-
+    @Ignore
     public void cleanDataBaseAndCloseBrow() {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -181,7 +180,7 @@ public class PlusThreeTest extends BaseTest {
         cleanDataBaseAndCloseBrow();
     }
 
-
+    @Ignore
     @Test
     public void testForgotLoginTest() {
 
@@ -258,7 +257,7 @@ public class PlusThreeTest extends BaseTest {
 
         driver.quit();
     }
-
+    @Ignore
     @Test(description = "Swag labs login")
     public void loginSwagLabs() {
 
@@ -281,7 +280,7 @@ public class PlusThreeTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
                 "Welcome to Jenkins!");
     }
-
+    @Ignore
     @Test
     public  void testContactUs() {
 
@@ -382,7 +381,7 @@ public class PlusThreeTest extends BaseTest {
         signInButton.click();
         driver.quit();
     }
-
+    @Ignore
     @Test
     public void testSignUpButton() {
         getDriver().get("https://bandcamp.com/");
@@ -446,6 +445,23 @@ public class PlusThreeTest extends BaseTest {
 
         WebElement version = getDriver().findElement(By.xpath("//p[@class='app-about-version']"));
         assertEquals(version.getText(), "Version 2.414.2");
+    }
+    @Test
+    public void createFolderTest() {
+
+        getDriver().findElement(By.xpath("//*[@d = \"M256 112v288M400 256H112\"]")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys("TestFolder");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
+
+        getDriver().findElement(By.xpath("//*[@name=\"_.displayNameOrNull\"]")).sendKeys("TestName");
+        getDriver().findElement(By.xpath("//*[@name=\"_.description\"]")).sendKeys("TestDescription");
+        getDriver().findElement(By.xpath("//*[@class=\"jenkins-button advanced-button advancedButton\"]")).click();
+        getDriver().findElement(By.xpath("//*[@class=\"yui-button yui-menu-button\"]")).click();
+        getDriver().findElement(By.xpath("//*[@class=\"yuimenuitemlabel\"]")).click();
+        getDriver().findElement(By.xpath("//*[@class = \"jenkins-button apply-button\"]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id = \"notification-bar\"]")).getText(), "Saved");
     }
 }
 
