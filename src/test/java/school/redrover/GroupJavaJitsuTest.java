@@ -23,8 +23,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
     private static final String FOLDER_NAME = "NewFolder";
     private static final String DESCRIPTION_TEXT = "NewDescription";
 
-    public void createFreestyleProject(String projectName) {
-
+    private void createFreestyleProject(String projectName) {
         getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
         getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(projectName);
 
@@ -36,8 +35,7 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testFirst() throws InterruptedException {
-
-       WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
        newItem.click();
        WebElement itemName = getDriver().findElement(By.id("name"));
        itemName.sendKeys("NewProject3");
@@ -52,7 +50,6 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testNewFreestyleProject() throws InterruptedException {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
@@ -63,7 +60,6 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testFreestyleProject() {
-
         createFreestyleProject(PROJECT_NAME);
         WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
         Assert.assertEquals("Project " + PROJECT_NAME, freestyleProjectName.getText());
@@ -71,7 +67,6 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testRenameFreestyleProject() {
-
         createFreestyleProject(PROJECT_NAME);
         getDriver().findElement(By.cssSelector("a[href*='rename']")).click();
 
@@ -85,7 +80,6 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testCreateFolder() {
-
         getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
         getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDER_NAME);
         getDriver().findElement(By.cssSelector(".com_cloudbees_hudson_plugins_folder_Folder")).click();
