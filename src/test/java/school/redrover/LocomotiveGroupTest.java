@@ -183,4 +183,31 @@ public class LocomotiveGroupTest extends BaseTest {
 
     }
 
+
+    @Test
+    public void testCreateProject(){
+        WebElement newItem = getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"));
+        newItem.click();
+
+        WebElement inputName = getDriver().findElement(By.xpath("//*[@id=\"name\"]"));
+        inputName.sendKeys("Newproject");
+        WebElement setingproject = getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]"));
+        setingproject.click();
+
+        WebElement buttonClick = getDriver().findElement(By.xpath("//*[@id='ok-button']"));
+        buttonClick.click();
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"));
+        saveButton.click();
+
+        WebElement buttonDashboard = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a"));
+        buttonDashboard.click();
+
+        // Проверяем наличие элемента с текстом "Newproject" на странице
+        String projectName = "Newproject";
+        WebElement projectElement = getDriver().findElement(By.xpath("//*[contains(text(), '" + projectName + "')]"));
+        Assert.assertTrue(projectElement.isDisplayed());
+
+    }
+
 }
