@@ -117,5 +117,15 @@ public class GroupJavaExplorersTest extends BaseTest {
         String versionName = version.getText();
         Assert.assertEquals(versionName, "Jenkins 2.414.2");
     }
+
+    @Test
+    public void testJobEmptyName() {
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]")).click();
+        final String errorText = getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText();
+        Assert.assertEquals(errorText, "» This field cannot be empty, please enter a valid name");
+
+    }
 }
 
