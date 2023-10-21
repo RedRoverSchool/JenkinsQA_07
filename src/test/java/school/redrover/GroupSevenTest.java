@@ -495,7 +495,8 @@ public class GroupSevenTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text() = 'Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        getDriver().findElement(By.xpath("//div[@id='advanced-project-options']/following-sibling::div//button[@class='jenkins-button advanced-button advancedButton']")).sendKeys(Keys.RETURN);
+        getDriver().findElement(
+                By.xpath("//div[@id='advanced-project-options']/following-sibling::div//button[@class='jenkins-button advanced-button advancedButton']")).sendKeys(Keys.RETURN);
         getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(NEW_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
