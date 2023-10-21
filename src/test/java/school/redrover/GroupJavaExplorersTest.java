@@ -123,8 +123,7 @@ public class GroupJavaExplorersTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]")).click();
-        WebElement error = getDriver().findElement(By.xpath("//div[@id='itemname-required']"));
-        String errorText = error.getText();
+        final String errorText = getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText();
         Assert.assertEquals(errorText, "» This field cannot be empty, please enter a valid name");
 
     }
