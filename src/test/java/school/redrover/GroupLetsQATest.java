@@ -41,7 +41,7 @@ public class GroupLetsQATest extends BaseTest {
 
     private void createAnItem(String itemName) {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        String createdItemName = "New " + itemName;;
+        String createdItemName = "New " + itemName;
 
         if(isItemTitleExists(createdItemName)){
             int randInt =((int)(Math.random()*100));
