@@ -461,7 +461,7 @@ public class PlusThreeTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@class=\"yuimenuitemlabel\"]")).click();
         getDriver().findElement(By.xpath("//*[@class = \"jenkins-button apply-button\"]")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id = \"notification-bar\"]")).getText(), "Saved");
+        Assert.assertEquals(getDriver().findElement(By.id("notification-bar")).getText(), "Saved");
     }
 }
 
