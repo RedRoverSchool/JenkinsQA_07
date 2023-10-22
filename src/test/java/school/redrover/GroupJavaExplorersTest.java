@@ -81,7 +81,6 @@ public class GroupJavaExplorersTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
     }
 
-    @Ignore
     @Test()
     public void testCreateFreeStyleProject() {
         int desiredLength = 5;
@@ -89,10 +88,8 @@ public class GroupJavaExplorersTest extends BaseTest {
                 .toString()
                 .substring(0, desiredLength);
 
-//        JenkinsUtils.login(getDriver());
-
-        WebElement newViewButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
-        newViewButton.click();
+        WebElement addNewProjectButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
+        addNewProjectButton.click();
 
         WebElement jenkinsJobNameField = getDriver().findElement(By.xpath("//*[@class='jenkins-input']"));
         jenkinsJobNameField.sendKeys(testFreeStyleProjectName);
@@ -103,7 +100,6 @@ public class GroupJavaExplorersTest extends BaseTest {
         WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
         WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
-
         saveButton.click();
         String jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']")).getText();
 
