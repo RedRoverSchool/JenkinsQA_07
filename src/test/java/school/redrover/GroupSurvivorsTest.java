@@ -5,19 +5,24 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class GroupSurvivorsTest extends BaseTest {
-    @Test
-    public void testOlgaTransitionAnalysis() {
+  @Test
+    public void testOlgaEditDescription() {
 
+        getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(
-                By.xpath(("//*[@id='jenkins']/footer/div/div[2]/button"))).click();
+                By.xpath("//*[@name = 'description']")).sendKeys("Test description");
         getDriver().findElement(
-                By.className(("jenkins-dropdown__item"))).click();
-        getDriver().findElement(
-                By.xpath(("//*[@id='jenkins']/footer/div/div[2]/button"))).click();
+                By.xpath("//*[@id = 'description']/form/div[2]/button")).click();
+        getDriver().findElement(By.id("description-link")).click();
 
-        Assert.assertEquals(getDriver().getTitle(), "О Jenkins 2.414.3 [Jenkins]");
+        getDriver().findElement(By.xpath("//*[@name = 'description']")).clear();
+        getDriver().findElement(By.xpath("//*[@name = 'description']")).sendKeys("Test new");
+        getDriver().findElement(By.xpath("//*[@id = 'description']/form/div[2]/button")).click();
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//*[@id = 'description']/div")).getText(),"Test new");
+
     }
-
 }
 
 
