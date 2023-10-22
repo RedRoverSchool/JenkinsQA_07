@@ -481,6 +481,21 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
+    public void test() throws InterruptedException {
+        getDriver().get("https://jspaint.app/#local:8875ccaa7a2158");
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//div[@title = 'Pencil']/span[@class = 'tool-icon use-svg']")))
+                .pause(1000)
+                .moveToElement(getDriver().findElement(By.xpath("//div[@title = 'Brush']/span[@class = 'tool-icon use-svg']")), 10, 0)
+                .click()
+                .perform();
+
+        Thread.sleep(100);
+
+    }
+
+    @Test
     public void testCreateAndRenameNewJob() throws InterruptedException
     {
 
@@ -503,17 +518,22 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
 
         //renaming a created job
+
+        WebElement nameElement = getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']"));
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")))
+                .pause(1000)
+                .moveToElement(getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")), 10, 0)
+                .click()
                 .perform();
 
         Thread.sleep(1000);
 
-        WebElement menuArrow = getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"));
-        menuArrow.sendKeys(Keys.ENTER);
-        new Actions(getDriver())
-                .moveToElement(menuArrow)
-                .perform();
+//        WebElement menuArrow = getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"));
+//        menuArrow.sendKeys(Keys.ENTER);
+//        new Actions(getDriver())
+//                .moveToElement(menuArrow)
+//                .perform();
 
 //        menuArrow.sendKeys(Keys.ESCAPE);
 //        clickByJavaScript(getDriver(), menuArrow);
