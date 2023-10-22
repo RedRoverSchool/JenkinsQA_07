@@ -5,7 +5,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -388,5 +387,25 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), NEW_NAME);
         Assert.assertTrue(pipelineHeader.contains(NEW_NAME));
+    }
+
+    @Test
+    public void testCreateJob() {
+
+        final String PIPELINE_NAME = "new_pipeline";
+
+        WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']//span[@class='task-icon-link']//*[name()='svg']"));
+        createJob.click();
+        WebElement jobName = getDriver().findElement(By.xpath("//input[@name = 'name']"));
+        jobName.click();
+        jobName.sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//span[normalize-space() = 'Freestyle project']")).click();
+
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+
+        getDriver().findElement(By.xpath("//button[@name= 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().getTitle(), "new_pipeline [Jenkins]");
+
     }
 }
