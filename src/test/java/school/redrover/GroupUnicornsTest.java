@@ -5,6 +5,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -490,9 +493,8 @@ public class GroupUnicornsTest extends BaseTest {
 
         Thread.sleep(1000);
 
-        new Actions(getDriver())
-                .click(getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")))
-                .perform();
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(
+                ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"))).click();
 
         Thread.sleep(1000);
 
