@@ -364,7 +364,7 @@ public class GroupSevenTest extends BaseTest {
     @Test
     public void testCreateJob() {
 
-        final String PIPELINE_NAME = "new_pipeline";
+        final String pipelineName = "new_pipeline";
 
         WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']//span[@class='task-icon-link']//*[name()='svg']"));
         createJob.click();
