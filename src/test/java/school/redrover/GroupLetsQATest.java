@@ -38,9 +38,8 @@ public class GroupLetsQATest extends BaseTest {
         return res;
     }
 
-
     private void createAnItem(String itemName) {
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(1));
         String createdItemName = "New " + itemName;
 
         if(isItemTitleExists(createdItemName)){
@@ -49,7 +48,6 @@ public class GroupLetsQATest extends BaseTest {
 
         }else{
             createdItemName = createdItemName;
-
         }
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -82,7 +80,6 @@ public class GroupLetsQATest extends BaseTest {
         } catch (Exception TimeoutException) {
             Assert.assertTrue(false);
         }
-
     }
 
     @Test
@@ -201,12 +198,7 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void testMyViewsLegendIconColor() {
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("123");
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        createAnItem("Freestyle project");
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
 
@@ -240,12 +232,7 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void testTooltipSunIconText() {
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("123");
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        createAnItem("Freestyle project");
 
         Actions action = new Actions(getDriver());
         action.moveToElement(
@@ -253,7 +240,10 @@ public class GroupLetsQATest extends BaseTest {
                 )
                 .perform();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']/div/*")).getAttribute("tooltip"), "100%");
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']/div/*"))
+                        .getAttribute("tooltip"),
+                "100%");
     }
 
     @Test
