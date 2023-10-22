@@ -46,7 +46,7 @@ public class AikaTest extends BaseTest {
     }
 
     @Test
-    public void testRenameProject() throws InterruptedException {
+    public void testRenameProject() {
 
         final String projectName = "Test v2";
 
@@ -60,11 +60,9 @@ public class AikaTest extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(projectInList).perform();
 
-        Thread.sleep(1000);
-
-        getDriver().findElement(
-                By.xpath("//table[@id = 'projectstatus']//span[text() = '"+projectName+"']//following-sibling::button"))
-                .click();
+        actions.moveToElement(getDriver().findElement(By.xpath
+                        ("//table[@id = 'projectstatus']//span[text() = '"+projectName+"']//following-sibling::button")))
+                .click().build().perform();
 
         selectFromJenkinsMenuDropdown("Rename");
 
