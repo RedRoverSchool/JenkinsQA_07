@@ -183,4 +183,26 @@ public class LocomotiveGroupTest extends BaseTest {
 
     }
 
+    @Test
+    public void testJenkinsCreateNewJob() {
+
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/div[2]/div/section[1]/ul/li/a/span[1]")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("Locomotive Project");
+
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]")).click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[2]/div/div[2]/textarea"))
+                .sendKeys("This is first automation QAA project by Michael, from Locomotive group");
+
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+
+        WebElement title = getDriver().findElement(By.xpath("//*[@id='main-panel']/h1"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Project Locomotive Project");
+
+    }
+
 }

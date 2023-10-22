@@ -1,11 +1,15 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +27,7 @@ public class GroupPlusThreeTest extends BaseTest {
     }
 
     // Universal method for creating new different items
-    public String createNewItemTemplate(String name, String radioClassName) {
+    private String createNewItemTemplate(String name, String radioClassName) {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
 
@@ -120,7 +124,7 @@ public class GroupPlusThreeTest extends BaseTest {
         assertEquals(resultHeading, "Project " + jobName);
     }
 
-    public String universalCreateJobMethod(String name, String radioButtonClassName) {
+    private String universalCreateJobMethod(String name, String radioButtonClassName) {
         getDriver().findElement(By.xpath("//*[@class='task '][1]")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(name);
@@ -184,6 +188,29 @@ public class GroupPlusThreeTest extends BaseTest {
         String result = universalCreateJobMethod(jobName, "jenkins_branch_OrganizationFolder");
 
         assertEquals(result, jobName);
+    }
+
+    @Test
+    public void testSidePanel() {
+        List <String> sidePanel = List.of(
+                "New Item",
+                "People",
+                "Build History",
+                "Manage Jenkins",
+                "My Views"
+        );
+
+        List <WebElement> elementsListSidePanel = getDriver()
+                .findElements(By.cssSelector("#tasks .task"));
+
+        List <String> getElementsListSidePanel = new ArrayList<>();
+
+        for (WebElement task : elementsListSidePanel) {
+            getElementsListSidePanel.add(task.getText());
+        }
+
+        Assert.assertEquals(sidePanel, getElementsListSidePanel);
+
     }
 
     @Test

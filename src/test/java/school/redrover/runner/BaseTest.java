@@ -62,7 +62,13 @@ public abstract class BaseTest {
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
-        stopDriver();
+        if (!testResult.isSuccess() && ProjectUtils.isServerRun()) {
+            ProjectUtils.takeScreenshot(driver, method.getName(), this.getClass().getName());
+        }
+
+        if (!ProjectUtils.isServerRun() && (testResult.isSuccess() || ProjectUtils.closeBrowserIfError())) {
+            stopDriver();
+        }
     }
 
     protected WebDriver getDriver() {
