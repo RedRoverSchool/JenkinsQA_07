@@ -199,7 +199,6 @@ public class GroupPlusThreeTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#ok-button")).click();
         getDriver().findElement(By.xpath("//*[@class=\"jenkins-button jenkins-button--primary \"]")).click();
 
-
         getDriver().findElement(By.cssSelector("a[href=\"/job/Test/build?delay=0sec\"]")).click();
         getDriver().navigate().refresh();
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class =\"model-link inside build-link\"]")).getText(), date);
