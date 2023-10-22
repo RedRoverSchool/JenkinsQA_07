@@ -37,8 +37,7 @@ public class GroupPlusThreeTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        String resultHeading = getDriver().findElement(By.xpath("//h1")).getText();
-        return resultHeading;
+        return getDriver().findElement(By.xpath("//h1")).getText();
 
     }
 
