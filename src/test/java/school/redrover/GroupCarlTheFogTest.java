@@ -105,9 +105,9 @@ public class GroupCarlTheFogTest extends BaseTest {
         createNewPipeline(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//a[contains(@data-message, 'Delete the Pipeline')]")).click();
         alertAcceptDismiss(true);
-        String statPage = getDriver().findElement(By.xpath(emptyJenkins)).getText();
+        String startPage = getDriver().findElement(By.xpath(emptyJenkins)).getText();
 
-        Assert.assertEquals("Start building your software project", statPage);
+        Assert.assertEquals(startPage, "Start building your software project");
     }
 
     @Test
