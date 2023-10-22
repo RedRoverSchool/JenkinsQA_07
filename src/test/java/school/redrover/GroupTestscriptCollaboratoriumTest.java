@@ -8,6 +8,10 @@ import school.redrover.runner.BaseTest;
 
 public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
+    private void utilsGetJenkinsHomePage() {
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+    }
+
     private void utilsCreateFreestyleProject(String projectName) {
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'newJob')]")).click();
@@ -19,8 +23,10 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
     private void utilsDeleteProjectByItsName(String projectName) {
 
+        utilsGetJenkinsHomePage();
+
         getDriver().findElement(By.xpath("//div[contains(@class, 'dashboard')]"))
-                .findElement(By.xpath(String.format("//a[contains(@href, 'job/%s/')]/span", projectName)))
+                .findElement(By.xpath(String.format("//a[contains(@href, 'job/%s/')]", projectName)))
                 .click();
         getDriver().findElement(By.xpath(String.format("//a[@data-url = '/job/%s/doDelete']", projectName))).click();
         getDriver().switchTo().alert().accept();
@@ -84,7 +90,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
         Assert.assertEquals(actualProjectName, String.format("Project %s", expectedProjectName));
 
-        utilsDeleteProjectByItsName(actualProjectName);
+        utilsDeleteProjectByItsName(expectedProjectName);
     }
 
     @Test
@@ -109,7 +115,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
         utilsCreateFreestyleProject(expectedProjectName);
 
-        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+        utilsGetJenkinsHomePage();
 
         String actualProjectName = getDriver().findElement(By.xpath("//div[contains(@class, 'dashboard')]"))
                 .findElement(By.xpath(String.format("//a[contains(@href, 'job/%s/')]/span", expectedProjectName)))
