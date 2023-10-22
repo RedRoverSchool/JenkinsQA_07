@@ -488,7 +488,9 @@ public class GroupUnicornsTest extends BaseTest {
 
         Thread.sleep(1000);
 
-        getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")).click();
+        new Actions(getDriver())
+                .click(getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")))
+                .perform();
 
         Thread.sleep(1000);
 

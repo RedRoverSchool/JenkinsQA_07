@@ -65,7 +65,7 @@ public abstract class BaseTest {
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) {
-        if (!testResult.isSuccess()) {
+        if (!testResult.isSuccess() && ProjectUtils.isServerRun()) {
             ProjectUtils.takeScreenshot(driver, method.getName(), this.getClass().getName());
         }
 
