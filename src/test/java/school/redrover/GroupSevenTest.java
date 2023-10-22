@@ -55,34 +55,6 @@ public class GroupSevenTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testSearch() {
-
-        getDriver().get("https://elitetransit.com/");
-        WebElement buttonContact = getDriver().findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
-        buttonContact.click();
-
-        String title = getDriver().getTitle();
-
-        Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
-    }
-
-    @Ignore
-    @Test
-    public void testTextInput() {
-
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
-        WebElement input = getDriver().findElement(By.id("my-text-id"));
-        input.click();
-        input.sendKeys("Selenium");
-
-        WebElement submit = getDriver().findElement(By.tagName("button")); ////button[@type='submit']
-        submit.submit();
-        WebElement message = getDriver().findElement(By.id("message"));
-        Assert.assertEquals(message.getText(), "Received!");
-    }
-
-    @Ignore
-    @Test
     public void testSearchAB() {
 
         WebDriver driver = new ChromeDriver();
@@ -397,7 +369,6 @@ public class GroupSevenTest extends BaseTest {
         WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']//span[@class='task-icon-link']//*[name()='svg']"));
         createJob.click();
         WebElement jobName = getDriver().findElement(By.xpath("//input[@name = 'name']"));
-        jobName.click();
         jobName.sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//span[normalize-space() = 'Freestyle project']")).click();
 
@@ -405,7 +376,9 @@ public class GroupSevenTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@name= 'Submit']")).click();
 
-        Assert.assertEquals(getDriver().getTitle(), "new_pipeline [Jenkins]");
+        WebElement headerName = getDriver().findElement(By.xpath("//h1[@class = 'job-index-headline page-headline']"));
+
+        Assert.assertEquals(headerName.getText(), "Project new_pipeline");
 
     }
 }
