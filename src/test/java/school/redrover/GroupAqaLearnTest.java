@@ -84,7 +84,7 @@ public class GroupAqaLearnTest extends BaseTest {
         )).sendKeys("https://github.com/kriru/firstJava.git");
         scroll(2000);
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(
+        getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.id("yui-gen9-button")
         )).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(
