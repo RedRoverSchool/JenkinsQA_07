@@ -38,9 +38,8 @@ public class GroupLetsQATest extends BaseTest {
         return res;
     }
 
-
     private void createAnItem(String itemName) {
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(1));
         String createdItemName = "New " + itemName;
 
         if(isItemTitleExists(createdItemName)){
@@ -49,7 +48,6 @@ public class GroupLetsQATest extends BaseTest {
 
         }else{
             createdItemName = createdItemName;
-
         }
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -82,7 +80,6 @@ public class GroupLetsQATest extends BaseTest {
         } catch (Exception TimeoutException) {
             Assert.assertTrue(false);
         }
-
     }
 
     @Test
@@ -201,12 +198,7 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void testMyViewsLegendIconColor() {
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("123");
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        createAnItem("Freestyle project");
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
 
@@ -240,12 +232,7 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void testTooltipSunIconText() {
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("123");
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        createAnItem("Freestyle project");
 
         Actions action = new Actions(getDriver());
         action.moveToElement(
@@ -253,7 +240,10 @@ public class GroupLetsQATest extends BaseTest {
                 )
                 .perform();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']/div/*")).getAttribute("tooltip"), "100%");
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']/div/*"))
+                        .getAttribute("tooltip"),
+                "100%");
     }
 
     @Test
@@ -273,10 +263,10 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("New Folder");
+        String actualdMessageText = wait.until(ExpectedConditions.
+                visibilityOfElementLocated((By.id("itemname-invalid")))).getText();
 
-        Assert.assertEquals(wait.until(ExpectedConditions.
-                visibilityOfElementLocated(By.xpath("//div[@id='itemname-invalid']"))).getText(),
-                "» A job already exists with the name ‘New Folder’");
+        Assert.assertEquals(actualdMessageText,"» A job already exists with the name ‘New Folder’");
 
     }
 
@@ -314,4 +304,61 @@ public class GroupLetsQATest extends BaseTest {
 
         Assert.assertTrue(res, "'Copy from' is not appears.");
     }
+
+    @Test
+    public void testItemTitlesListForCopyByLetterIsDisplayed(){
+        createAnItem("Folder");
+        createAnItem("Folder");
+        createAnItem("Folder");
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Folder");
+        getDriver().findElement(By.id("from")).sendKeys("N");
+
+       Assert.assertTrue(getDriver().findElement(By.cssSelector(".yui-ac-content[style='width: 420px; height: 75px;']")).isDisplayed());
+    }
+
+    @Test
+    public void testItemFromOtherExistingListIsHighlighted(){
+        createAnItem("Folder");
+        createAnItem("Folder");
+        createAnItem("Folder");
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Folder");
+        getDriver().findElement(By.id("from")).sendKeys("N");
+        List<WebElement> s = getDriver().findElements(By.cssSelector(".yui-ac-content[style='width: 420px; height: 75px;'] .yui-ac-bd ul li"));
+        new Actions(getDriver())
+                .moveToElement(s.get(1))
+                .perform();
+        Assert.assertTrue(getDriver().findElement(By.cssSelector(".yui-ac-prehighlight")).isDisplayed());
+
+    }
+
+    @Test
+    public void testCreateNewItemFromOtherExisting(){
+        String newItem = "Item from New Folder";
+
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        getDriver().findElement(By.id("from")).sendKeys("N");
+        getDriver().findElement(By.xpath("//div[@class='yui-ac-content'][@style='width: 420px; height: 25px;'] //div //li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        List<WebElement> itemsList = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside span"));
+        boolean result = false;
+        for (WebElement e : itemsList) {
+            if (e.getText().equals(newItem)) {
+                result = true;
+                break;
+            }
+        }
+
+        Assert.assertTrue(result);
+    }
+
+
+
 }

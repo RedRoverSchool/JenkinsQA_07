@@ -1,11 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static org.testng.Assert.assertEquals;
 
@@ -29,8 +37,7 @@ public class GroupPlusThreeTest extends BaseTest {
 
         getDriver().findElement(By.name("Submit")).click();
 
-        String resultHeading = getDriver().findElement(By.xpath("//h1")).getText();
-        return resultHeading;
+        return getDriver().findElement(By.xpath("//h1")).getText();
 
     }
 
@@ -180,5 +187,46 @@ public class GroupPlusThreeTest extends BaseTest {
         String result = universalCreateJobMethod(jobName, "jenkins_branch_OrganizationFolder");
 
         assertEquals(result, jobName);
+    }
+
+    @Test
+    public void testSidePanel() {
+        List <String> sidePanel = List.of(
+                "New Item",
+                "People",
+                "Build History",
+                "Manage Jenkins",
+                "My Views"
+        );
+
+        List <WebElement> elementsListSidePanel = getDriver()
+                .findElements(By.cssSelector("#tasks .task"));
+
+        List <String> getElementsListSidePanel = new ArrayList<>();
+
+        for (WebElement task : elementsListSidePanel) {
+            getElementsListSidePanel.add(task.getText());
+        }
+
+        Assert.assertEquals(sidePanel, getElementsListSidePanel);
+
+    }
+
+    @Test
+    public void testCheckBuildHistory() {
+        Date dateNow = new Date();
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("MMM d, yyyy, h:mm aaa", Locale.ENGLISH);
+        String date = formatForDateNow.format(dateNow);
+
+        getDriver().findElement(By.className("content-block__link")).click();
+
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys("Test");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("#ok-button")).click();
+        getDriver().findElement(By.xpath("//*[@class=\"jenkins-button jenkins-button--primary \"]")).click();
+
+        getDriver().findElement(By.cssSelector("a[href=\"/job/Test/build?delay=0sec\"]")).click();
+        getDriver().navigate().refresh();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class =\"model-link inside build-link\"]")).getText(), date);
     }
 }

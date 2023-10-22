@@ -159,20 +159,6 @@ public class LocomotiveGroupTest extends BaseTest {
     }
 
 
-    @Ignore
-    @Test
-    public void testMartspecGoPageBiorhythms () {
-        getDriver().get("https://martspec.com/ru/emotion");
-        WebElement buttonForBiorh = getDriver().findElement(By.xpath("//div[@class='col-lg-6 d-table mb-lg-0 mb-4']//a"));
-
-        buttonForBiorh.click();
-
-        //WebElement imageBiorh = getDriver().findElement(By.xpath("//div[@class='col']/img[1]"));
-        // learn how to find a picture on a page
-        Assert.assertEquals(getDriver().findElement(By.xpath(
-                "//div[@class='col']/h1")).getText(), "Биоритмы");
-
-    }
 
     @Test
     public void testOpenBuildHistory() {
@@ -180,6 +166,28 @@ public class LocomotiveGroupTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='/view/all/builds']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.className("jenkins-app-bar__content")).getText(), "Build History of Jenkins");
+
+    }
+
+    @Test
+    public void testJenkinsCreateNewJob() {
+
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/div[2]/div/section[1]/ul/li/a/span[1]")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("Locomotive Project");
+
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]")).click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[2]/div/div[2]/textarea"))
+                .sendKeys("This is first automation QAA project by Michael, from Locomotive group");
+
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+
+        WebElement title = getDriver().findElement(By.xpath("//*[@id='main-panel']/h1"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Project Locomotive Project");
 
     }
 
