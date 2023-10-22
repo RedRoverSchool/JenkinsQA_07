@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -205,4 +206,17 @@ public class LocomotiveGroupTest extends BaseTest {
 
     }
 
+    @Test
+    public void testCreateOrganizationFolder() {
+
+        Actions action = new Actions(getDriver());
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys("Folder1");
+        getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/job/Folder1/' and @class='model-link']")).getText(),"Folder1");
+    }
 }
