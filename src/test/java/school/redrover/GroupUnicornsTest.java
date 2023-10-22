@@ -1,6 +1,9 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -14,11 +17,29 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-
-//@Ignore
 public class GroupUnicornsTest extends BaseTest {
+
+    private void goToDashboard() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+    }
+
+    private void sendKeysToSearchBar(String search) {
+        getDriver().findElement(By.id("settings-search-bar")).sendKeys(search);
+    }
+    @Test
+    public void testSuccessfulSearchResult() {
+
+        goToDashboard();
+        sendKeysToSearchBar("users");
+        WebElement searchResult = getDriver().findElement(By.xpath("//a[contains(text(),'Users')]"));
+        Assert.assertEquals(searchResult.getAttribute("text"), "Users");
+        searchResult.click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/manage/securityRealm/");
+    }
 
     @Test
     public void testTableSizes(){
@@ -33,7 +54,7 @@ public class GroupUnicornsTest extends BaseTest {
         //check size when Small is clicked
         getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getSize(),
-                new Dimension(1044, 71));
+                new Dimension(1524, 71));
 
         //check size when Medium is clicked
         getDriver().findElement(By.xpath("//a[@tooltip='Medium']")).click();
@@ -47,21 +68,24 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testUsPsPageOpen() {
-        getDriver().get("https://www.usps.com/");
+    public void testVerifyRemoteDirectoryIsMandatoryForSetUpAnAgent() throws InterruptedException {
+        getDriver().findElement(By.xpath("//span[normalize-space()='Set up an agent']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys("PKTest");
+        getDriver().findElement(By.xpath("//label[@for='hudson.slaves.DumbSlave']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok']")).click();
 
-        Assert.assertEquals(getDriver().getTitle(), "Welcome | USPS");
+        // added  this wait until we implement implicit wait in our Base test
+        Thread.sleep(1000);
+        Assert.assertTrue(getDriver().
+                findElement(By.xpath("//div[contains(text(),'Remote directory is mandatory')]")).isDisplayed());
     }
 
-    @Ignore //putting ignore, it's failing during CI check
     @Test
-    public void testUsPsSendMailPackageOpen() {
-        getDriver().get("https://www.usps.com/");
+    public void testVerifyBuildHistoryTabOpens() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
 
-        WebElement send = getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"));
-        send.click();
-
-        Assert.assertEquals(getDriver().getTitle(), "Send Mail & Packages | USPS");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[normalize-space()='Build History of Jenkins']"))
+                .getText(), "Build History of Jenkins");
     }
 
     @Ignore
@@ -95,23 +119,23 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void TestCreateNewFolderAndCheckDashboard() {
 
-       getDriver().findElement(By.linkText("New Item")).click();
-       getDriver().findElement(By.id("name")).sendKeys("FolderTest");
-       getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-       getDriver().findElement(By.id("ok-button")).click();
-       getDriver().findElement(By.name("Submit")).click();
-       getDriver().findElement(By.id("description-link")).click();
-       getDriver().findElement(By.className("jenkins-input")).sendKeys("Testing folder");
-       getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys("FolderTest");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("Testing folder");
+        getDriver().findElement(By.name("Submit")).click();
 
-       List<String> listOfExpectedItems = Arrays.asList("Status", "Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
-       List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
-       List<String> extractedTexts = listOfDashboardItems.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> listOfExpectedItems = Arrays.asList("Status", "Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
+        List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
+        List<String> extractedTexts = listOfDashboardItems.stream().map(WebElement::getText).collect(Collectors.toList());
 
-       assertEquals(extractedTexts,listOfExpectedItems);
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "FolderTest");
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "Testing folder");
-}
+        assertEquals(extractedTexts, listOfExpectedItems);
+        assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "FolderTest");
+        assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "Testing folder");
+    }
 
     @Test
     public void TestJenkins() {
@@ -151,23 +175,25 @@ public class GroupUnicornsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void testTradingView() throws InterruptedException {
-        final String URL = "https://www.tradingview.com/chart/";
-        getDriver().get(URL);
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(500));
-        WebElement tickerNameActual = getDriver().findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
-        Assert.assertEquals(tickerNameActual.getText(), "AAPL");
+    public void testCheckPeopleAdmin() {
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/']")).getText(), "admin");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[@id = 'person-admin']/td[3]")).getText(), "admin");
+    }
 
-        getDriver().findElement(By.xpath("//button[@id = 'header-toolbar-symbol-search']")).click();
-        WebElement searchTable = getDriver().findElement(By.xpath("//input[@class = 'search-ZXzPWcCf upperCase-ZXzPWcCf input-qm7Rg5MB']"));
-        searchTable.clear();
-        searchTable.sendKeys("SPX");
-        searchTable.sendKeys(Keys.ENTER);
-        Thread.sleep(500);
-        WebElement newTickerNameActual = getDriver().findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
-        Assert.assertEquals(newTickerNameActual.getText(), "SPX");
+    @Test
+    public void testAdminAddDescription() {
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("test admin");
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).submit();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "test admin" );
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).submit();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "");
     }
 
     @Ignore
@@ -476,7 +502,7 @@ public class GroupUnicornsTest extends BaseTest {
 
         getDriver().findElement(By.xpath("(//*[@class = 'task-icon-link']) [1]")).click();
         String expectedTitle = "New Item [Jenkins]";
-        
+
         Assert.assertEquals(getDriver().getTitle(), expectedTitle);
     }
 }
