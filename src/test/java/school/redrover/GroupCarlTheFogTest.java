@@ -25,7 +25,7 @@ public class GroupCarlTheFogTest extends BaseTest {
     private static final String PROJECT_NAME = "FreestyleProject";
     private static final String NEW_PROJECT_NAME = "newFreestyleProject";
 
-    public void createNewFreestyleProject(String projectName) {
+    private void createNewFreestyleProject(String projectName) {
         getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
         getDriver().findElement(By.cssSelector("input[type='text']")).sendKeys(projectName);
         getDriver().findElement(By.cssSelector("li.hudson_model_FreeStyleProject")).click();
@@ -59,5 +59,16 @@ public class GroupCarlTheFogTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("h1.job-index-headline")).getText(),
                 "Project " + NEW_PROJECT_NAME);
+    }
+
+    @Test
+    public void testDeleteFreestyleProjectFromSideMenu() {
+        createNewFreestyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.cssSelector("a[data-message*=Delete]")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("div.empty-state-block h1")).getText(),
+                "Welcome to Jenkins!");
     }
 }

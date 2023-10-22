@@ -1,14 +1,91 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 public class GroupPlusThreeTest extends BaseTest {
+    
+    @DataProvider(name = "nameForJobs")
+    public String[][] validCredentials() {
+        return new String[][] {
+                { "Akiko" }
+        };
+    }
+
+    // Universal method for creating new different items
+    private String createNewItemTemplate(String name, String radioClassName) {
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(name);
+        getDriver().findElement(By.className(radioClassName)).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        String resultHeading = getDriver().findElement(By.xpath("//h1")).getText();
+        return resultHeading;
+
+    }
+
+    @Test(description = "Test creating new Freestyle project", dataProvider = "nameForJobs")
+    public void testNewFreestyleProject(String name) {
+
+        String result = createNewItemTemplate(name, "hudson_model_FreeStyleProject");
+        Assert.assertEquals(result, "Project " + name);
+
+    }
+
+    @Test(description = "Test creating new Pipeline", dataProvider = "nameForJobs")
+    public void testNewPipeline(String name) {
+
+        String result = createNewItemTemplate(name, "org_jenkinsci_plugins_workflow_job_WorkflowJob");
+        Assert.assertEquals(result, "Pipeline " + name);
+
+    }
+
+    @Test(description = "Test creating new Multi-configuration project", dataProvider = "nameForJobs")
+    public void testNewMultiConfigurationProject(String name) {
+
+        String result = createNewItemTemplate(name, "hudson_matrix_MatrixProject");
+        Assert.assertEquals(result, "Project " + name);
+
+    }
+
+    @Test(description = "Test creating new Folder", dataProvider = "nameForJobs")
+    public void testNewFolder(String name) {
+
+        String result = createNewItemTemplate(name, "com_cloudbees_hudson_plugins_folder_Folder");
+        Assert.assertEquals(result, name);
+
+    }
+
+    @Test(description = "Test creating new Multibranch Pipeline", dataProvider = "nameForJobs")
+    public void testNewMultiBranchPipeline(String name) {
+
+        String result = createNewItemTemplate(name,
+                "org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject");
+        Assert.assertEquals(result, name);
+
+    }
+
+    @Test(description = "Test creating new Organization Folder", dataProvider = "nameForJobs")
+    public void testNewOrganizationFolder(String name) {
+
+        String result = createNewItemTemplate(name, "jenkins_branch_OrganizationFolder");
+        Assert.assertEquals(result, name);
+
+    }
     
     @Test (description = "Test creating new item")
     public void testNewItem () {
@@ -43,7 +120,7 @@ public class GroupPlusThreeTest extends BaseTest {
         assertEquals(resultHeading, "Project " + jobName);
     }
 
-    public String universalCreateJobMethod(String name, String radioButtonClassName) {
+    private String universalCreateJobMethod(String name, String radioButtonClassName) {
         getDriver().findElement(By.xpath("//*[@class='task '][1]")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(name);
@@ -107,5 +184,28 @@ public class GroupPlusThreeTest extends BaseTest {
         String result = universalCreateJobMethod(jobName, "jenkins_branch_OrganizationFolder");
 
         assertEquals(result, jobName);
+    }
+
+    @Test
+    public void testSidePanel() {
+        List <String> sidePanel = List.of(
+                "New Item",
+                "People",
+                "Build History",
+                "Manage Jenkins",
+                "My Views"
+        );
+
+        List <WebElement> elementsListSidePanel = getDriver()
+                .findElements(By.cssSelector("#tasks .task"));
+
+        List <String> getElementsListSidePanel = new ArrayList<>();
+
+        for (WebElement task : elementsListSidePanel) {
+            getElementsListSidePanel.add(task.getText());
+        }
+
+        Assert.assertEquals(sidePanel, getElementsListSidePanel);
+
     }
 }

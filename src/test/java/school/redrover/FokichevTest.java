@@ -1,44 +1,42 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.annotations.Ignore;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import static org.testng.Assert.assertEquals;
 
-@Ignore
 public class FokichevTest extends BaseTest {
 
-    private static final String PAGE_URL = "https://www.emu-land.net/";
+    private static final String NEW_ITEM_NAME = "first";
 
     @Test
-    public void testSearch() throws InterruptedException {
-        getDriver().get(PAGE_URL);
+    public void testLogin() {
 
-        WebElement textBox = getDriver().findElement(By.name("q"));
-        textBox.sendKeys("tekken");
-
-        WebElement submitButton = getDriver().findElement(By.xpath("//div[@class='gmenu']//button"));
-        submitButton.click();
-
-        WebElement textBox2 = getDriver().findElement(By.xpath("//div[@class='fcontainer'][1]//p/a"));
-        String value = textBox2.getText();
-        assertEquals(value, "Tekken Card Challenge");
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText(),
+                "Welcome to Jenkins!");
     }
 
     @Test
-    public void testSelectConsoles() {
-        getDriver().get(PAGE_URL);
+    public void testLogout() {
 
-        WebElement consolesButton = getDriver().findElement(By.xpath("//li/a[@href='/consoles']"));
-        consolesButton.click();
-
-        WebElement textBox = getDriver().findElement(By.xpath("//div[@class='path']"));
-        String value = textBox.getText();
-        assertEquals(value, "Консоли");
+        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//main[@id='main-panel']//h1")).getText(),
+                "Sign in to Jenkins");
     }
 
+    @Test
+    public void testCreateNewFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(NEW_ITEM_NAME);
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']/li[3]/a")).getText(),
+                NEW_ITEM_NAME);
+    }
 
 }
