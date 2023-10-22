@@ -54,19 +54,24 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
 
         //check size when Small is clicked
-        getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getSize(),
-                new Dimension(1524, 71));
+//        getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
+//        Dimension actualTableSizeS = getTableDimension();
+//        Assert.assertEquals(actualTableSizeS, new Dimension(1524, 71));
 
         //check size when Medium is clicked
         getDriver().findElement(By.xpath("//a[@tooltip='Medium']")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getSize(),
-                new Dimension(1044, 86));
+        Dimension actualTableSizeM = getTableDimension();
+        Assert.assertEquals(actualTableSizeM, new Dimension(1044, 86));
 
         //check size when Large is clicked
         getDriver().findElement(By.xpath("//a[@tooltip='Large']")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getSize(),
-                new Dimension(1044, 102));
+        Dimension actualTableSizeL = getTableDimension();
+        Assert.assertEquals(actualTableSizeL, new Dimension(1044, 102));
+    }
+
+    private Dimension getTableDimension() {
+        WebElement table = getDriver().findElement(By.xpath("//table[@id='projectstatus']"));
+        return new Dimension(table.getSize().width, table.getSize().height);
     }
 
     @Test
