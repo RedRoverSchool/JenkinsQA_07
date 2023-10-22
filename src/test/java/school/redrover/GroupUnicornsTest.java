@@ -466,6 +466,20 @@ public class GroupUnicornsTest extends BaseTest {
         executor.executeScript("arguments[0].click();", element);
     }
 
+    private void overByJavaScript(WebDriver driver, WebElement element) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+
+        executor.executeScript("""
+            if (document.createEvent) {
+                let evObj = document.createEvent('MouseEvents');
+                evObj.initEvent('mouseover', true, false);
+                arguments[0].dispatchEvent(evObj);
+            } else if (document.createEventObject) {
+                arguments[0].fireEvent('onmouseover');
+            }
+            """, element);
+    }
+
     @Test
     public void testCreateAndRenameNewJob() throws InterruptedException
     {
@@ -488,20 +502,9 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[.='OK']")).click();
         getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
 
-        //renaming a created job
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")))
-                .perform();
-
-        Thread.sleep(1000);
-
-        WebElement menuElement = getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"));
-
-        clickByJavaScript(getDriver(), menuElement);
-
-        new Actions(getDriver())
-                .moveToElement(menuElement)
-                .perform();
+        getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")).sendKeys(Keys.ENTER);
+        getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")).click();
+        getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")).sendKeys(Keys.ENTER);
 
         Thread.sleep(1000);
 
