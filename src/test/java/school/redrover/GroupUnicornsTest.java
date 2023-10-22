@@ -497,13 +497,11 @@ public class GroupUnicornsTest extends BaseTest {
 
         WebElement menuElement = getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"));
 
+        clickByJavaScript(getDriver(), menuElement);
+
         new Actions(getDriver())
                 .moveToElement(menuElement)
                 .perform();
-
-        Thread.sleep(500);
-
-        clickByJavaScript(getDriver(), menuElement);
 
         Thread.sleep(1000);
 
