@@ -1,43 +1,52 @@
 package school.redrover;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-
-@Ignore
 public class PopovTest extends BaseTest {
-    public String SearchAndPost(String ElementName, String Text){
-        WebElement textBox = getDriver().findElement(By.name(ElementName));
-        textBox.sendKeys(Text);
-        WebElement submitButton = getDriver().findElement(By.cssSelector("button"));
-        submitButton.click();
-        WebElement message = getDriver().findElement(By.id("message"));
-        return message.getText();
-    }
-
-    @BeforeMethod
-    public void WebsiteOpen() {
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+    private void createProject(){
+        getDriver().findElement(By.linkText("Create a job")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test");
+        getDriver().findElement(By.className("label")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("description")).sendKeys("Test Project");
+        getDriver().findElement(By.cssSelector("#bottom-sticker > div > button.jenkins-button.jenkins-button--primary")).click();
     }
 
     @Test
-    public void TestTitle() {
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "Web form");
+    public void testMainHeading() {
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(3) > div > h1")).getText(),
+                "Welcome to Jenkins!");
     }
 
     @Test
-    public void TestInputBox() {
-        Assert.assertEquals(SearchAndPost("my-text","Selenium"),"Received!");
+    public void testLogout(){
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
+                "Welcome to Jenkins!");
     }
 
     @Test
-    public void TestTextArea() {
-        Assert.assertEquals(SearchAndPost("my-textarea","Maven"),"Received!");
+    public void testCreateProject() {
+        createProject();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
+                "Project Test");
+    }
+
+    @Test
+    public void testDeleteProject() {
+        createProject();
+        getDriver().findElement(By.linkText("Delete Project")).click();
+        getDriver().switchTo().alert().accept();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".empty-state-block > h1")).getText(),
+                "Welcome to Jenkins!");
+    }
+
+    @Test
+    public void testUserID() {
+        getDriver().findElement(By.linkText("People")).click();
+        getDriver().findElement(By.linkText("admin")).click();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel > div:nth-child(4)")).getText(),
+                "Jenkins User ID: admin");
     }
 }
-

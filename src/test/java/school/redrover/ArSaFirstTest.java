@@ -1,81 +1,41 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-@Ignore
 public class ArSaFirstTest extends BaseTest {
 
+    private final static String folderName = "Artur Sabanadze";
+    private final static String expectedVersion = "Jenkins 2.414.2";
 
-    String initialURL = "https://www.selenium.dev/selenium/web/web-form.html";
-    String redirectedURL = "https://www.selenium.dev/selenium/web/submitted-form.html?my-text=&my-password=&my-textarea=&my-readonly=Readonly+input&my-select=Open+this+select+menu&my-datalist=&my-file=&my-check=on&my-radio=on&my-colors=%23563d7c&my-date=&my-range=5&my-hidden=";
-
-    //Check if Title of the Website is correct..
     @Test
-    public void testTitleCheck()
-    {
-        getDriver().get(initialURL);
+    public void testCreateFolder() {
 
-        String title = getDriver().getTitle();
-        Assert.assertEquals(title, "Web form");
-    }
+        final String actualVersion = getDriver().findElement(By.className("jenkins_ver")).getText();
 
-    //Check if the form "Text Input" is working, try to input some text, check the input text.
-    @Test
-    public void testTextInput()
-    {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        getDriver().get(initialURL);
-        WebElement nameInput = getDriver().findElement(By.id("my-text-id"));
-        nameInput.sendKeys("Artur Sabanadze");
-        String enteredText = nameInput.getAttribute("value");
-        Assert.assertEquals(enteredText, "Artur Sabanadze");
-    }
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
 
-    //Check "my-disabled" element for the following functions: is disabled, is visible and the placeholder text is correct.
-    @Test
-    public void testDisabledTextInput()
-    {
+        getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
 
-        getDriver().get(initialURL);
-        WebElement disabledInput = getDriver().findElement(By.name("my-disabled"));
-        Assert.assertEquals(disabledInput.getAttribute("disabled"), "true");
-        Assert.assertTrue(disabledInput.isDisplayed());
-        String placeholderText = disabledInput.getAttribute("placeholder");
-        Assert.assertEquals(placeholderText, "Disabled input");
-    }
+        getDriver().findElement(By.id("ok-button")).click();
 
-    //Check the color of "my-colors" element
-    @Test
-    public void testColorCheck()
-    {
+        getDriver().findElement(By.name("Submit")).click();
 
-        getDriver().get(initialURL);
-        WebElement colorInputElement = getDriver().findElement(By.name("my-colors"));
-        String actualColor = colorInputElement.getAttribute("value");
-        String expectedColor = "#563d7c";
-        Assert.assertEquals(actualColor, expectedColor, "Element color is not as expected");
-    }
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item a.model-link")).click();
+        getDriver().findElement(By.linkText(folderName)).click();
 
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.name("_.description")).sendKeys("Organization File of Artur Sabanadze. Student of Redrover School (7)");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
 
-    //Check the functionality of submit button and some elements on redirected url.
-    @Test
-    public void testSubmitButton() {
-        getDriver().get(initialURL);
+        Assert.assertNotNull(getDriver().findElement(By.id("job_Artur Sabanadze")), "Artur Sabanadze folder not found on the Jenkins home page");
+        Assert.assertEquals(actualVersion, expectedVersion, "Jenkins version mismatch");
 
-        WebElement submitButton = getDriver().findElement(By.className("btn-outline-primary"));
-        submitButton.click();
-
-        String currentUrl = getDriver().getCurrentUrl();
-        Assert.assertEquals(currentUrl, redirectedURL, "Incorrect URL after submission");
-
-        WebElement headerElement = getDriver().findElement(By.className("display-6"));
-        WebElement messageElement = getDriver().findElement(By.id("message"));
-
-        Assert.assertEquals(headerElement.getText(), "Form submitted", "Incorrect header text");
-        Assert.assertEquals(messageElement.getText(), "Received!", "Incorrect message text");
     }
 }

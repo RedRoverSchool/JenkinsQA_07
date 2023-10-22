@@ -60,34 +60,6 @@ public class GroupItFriendlyTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testSearch() throws InterruptedException {
-        WebDriver driver = getDriver();
-        driver.get("https://so-yummi-qa.netlify.app/register");
-        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
-        String randomEmail = "test" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        WebElement usernameInput = driver.findElement(By.name("username"));
-        usernameInput.click();
-        usernameInput.sendKeys(randomUsername);
-        WebElement emailInput = driver.findElement(By.id("emailInput"));
-        emailInput.click();
-        emailInput.sendKeys(randomEmail);
-        WebElement passwordInput = driver.findElement(By.id("passwordInput"));
-        passwordInput.click();
-        passwordInput.sendKeys("Test@123456");
-
-        WebElement searchButton2 = driver.findElement(By.xpath("//button[@type='submit']"));
-        searchButton2.click();
-
-        Thread.sleep(3000);
-        String currentUrl = driver.getCurrentUrl();
-        String expectedUrl = "https://so-yummi-qa.netlify.app/home";
-        Assert.assertEquals(currentUrl, expectedUrl, "The current URL does not match the expected URL.");
-    }
-
-    @Ignore
-    @Test
     public void ActionsWithCheckBoxTest() {
 
         WebDriver driver = new ChromeDriver();
@@ -301,6 +273,21 @@ public class GroupItFriendlyTest extends BaseTest {
 
 
 
+    }
+
+    @Test
+    public void testNewFolder() {
+        final String folderName = "Test";
+        final String folderDescription = "Test folder";
+
+        getDriver().findElement(By.xpath("//span[normalize-space()='Create a job']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//span[normalize-space()='Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderDescription);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h2[@class='h4']")).isDisplayed(), "This folder is empty");
     }
 
 }
