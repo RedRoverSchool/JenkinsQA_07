@@ -493,8 +493,10 @@ public class GroupUnicornsTest extends BaseTest {
 
         Thread.sleep(1000);
 
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(
-                ExpectedConditions.elementToBeClickable(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"))).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")))
+                .click()
+                .perform();
 
         Thread.sleep(1000);
 
