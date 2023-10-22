@@ -23,6 +23,8 @@ public final class ProjectUtils {
     private static final String PROP_ADMIN_USERNAME = PREFIX_PROP + "admin.username";
     private static final String PROP_ADMIN_PAS = PREFIX_PROP + "admin.password";
 
+    private static final String CLOSE_BROWSER_IF_ERROR = PREFIX_PROP + "closeBrowserIfError";
+
     private static final String ENV_CHROME_OPTIONS = "CHROME_OPTIONS";
     private static final String ENV_APP_OPTIONS = "APP_OPTIONS";
 
@@ -75,6 +77,10 @@ public final class ProjectUtils {
 
     static boolean isServerRun() {
         return System.getenv("CI_RUN") != null;
+    }
+
+    static boolean closeBrowserIfError() {
+        return Boolean.getBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR, "true"));
     }
 
     static String getUrl() {

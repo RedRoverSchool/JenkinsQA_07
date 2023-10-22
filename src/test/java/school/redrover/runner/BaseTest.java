@@ -66,7 +66,9 @@ public abstract class BaseTest {
             ProjectUtils.takeScreenshot(driver, method.getName(), this.getClass().getName());
         }
 
-        stopDriver();
+        if (!ProjectUtils.isServerRun() && (testResult.isSuccess() || ProjectUtils.closeBrowserIfError())) {
+            stopDriver();
+        }
     }
 
     protected WebDriver getDriver() {
