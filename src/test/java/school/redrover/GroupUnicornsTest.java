@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import java.awt.Dimension;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
