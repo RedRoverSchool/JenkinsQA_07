@@ -54,19 +54,19 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
 
         //check size when Small is clicked
-//        getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
-//        Dimension actualTableSizeS = getTableDimension();
-//        Assert.assertEquals(actualTableSizeS, new Dimension(1524, 71));
+        getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
+        Dimension actualTableSizeS = getTableDimension();
+        Assert.assertEquals(actualTableSizeS, new Dimension(1524, 71));
 
         //check size when Medium is clicked
         getDriver().findElement(By.xpath("//a[@tooltip='Medium']")).click();
         Dimension actualTableSizeM = getTableDimension();
-        Assert.assertEquals(actualTableSizeM, new Dimension(1044, 86));
+        Assert.assertEquals(actualTableSizeM, new Dimension(1524, 86));
 
         //check size when Large is clicked
         getDriver().findElement(By.xpath("//a[@tooltip='Large']")).click();
         Dimension actualTableSizeL = getTableDimension();
-        Assert.assertEquals(actualTableSizeL, new Dimension(1044, 102));
+        Assert.assertEquals(actualTableSizeL, new Dimension(1524, 102));
     }
 
     private Dimension getTableDimension() {
