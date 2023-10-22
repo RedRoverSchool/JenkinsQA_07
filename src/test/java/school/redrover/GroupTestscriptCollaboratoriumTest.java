@@ -16,6 +16,14 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[contains(@id, 'ok-button')]")).click();
     }
 
+    private void utilsDeleteProjectByItsName(String projectName) {
+        getDriver().findElement(By.xpath("//div[contains(@class, 'dashboard')]"))
+                .findElement(By.xpath(String.format("//a[contains(@href, 'job/%s/')]/span", projectName)))
+                .click();
+        getDriver().findElement(By.xpath(String.format("//a[@data-url = '/job/%s/doDelete']", projectName))).click();
+        getDriver().switchTo().alert().accept();
+    }
+
     @Test
     public void testVersion() {
 
@@ -63,6 +71,8 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
                 .xpath("//h1[@class = 'job-index-headline page-headline']")).getText();
 
         Assert.assertEquals(actualProjectName, String.format("Project %s", expectedProjectName));
+
+        utilsDeleteProjectByItsName(actualProjectName);
     }
 
     @Test
@@ -76,6 +86,8 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
                 .xpath(String.format("//a[contains(@href, 'job/%s/')]", expectedProjectName))).getText();
 
         Assert.assertEquals(actualProjectName, expectedProjectName);
+
+        utilsDeleteProjectByItsName(actualProjectName);
     }
 
     @Test
@@ -92,5 +104,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
                 .getText();
 
         Assert.assertEquals(actualProjectName, expectedProjectName);
+
+        utilsDeleteProjectByItsName(actualProjectName);
     }
 }
