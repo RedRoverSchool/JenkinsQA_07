@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
@@ -464,6 +461,11 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), expectedTitle);
     }
 
+    private void clickByJavaScript(WebDriver driver, WebElement element) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click();", element);
+    }
+
     @Test
     public void testCreateAndRenameNewJob() throws InterruptedException
     {
@@ -489,13 +491,21 @@ public class GroupUnicornsTest extends BaseTest {
         //renaming a created job
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")))
-                .pause(1000)
                 .perform();
 
+        Thread.sleep(1000);
+
+        WebElement menuElement = getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"));
+
         new Actions(getDriver())
-                .click(getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")))
-                .pause(1000)
+                .moveToElement(menuElement)
                 .perform();
+
+        Thread.sleep(500);
+
+        clickByJavaScript(getDriver(), menuElement);
+
+        Thread.sleep(1000);
 
         getDriver().findElement(By.xpath("//a[@href='/job/Bayans_job/confirm-rename']")).click();
 
