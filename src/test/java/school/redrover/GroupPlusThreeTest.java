@@ -26,7 +26,7 @@ public class GroupPlusThreeTest extends BaseTest {
         };
     }
 
-    // Universal method for creating new different items
+    // Universal method for creating new different items <3
     private String createNewItemTemplate(String name, String radioClassName) {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
