@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 
@@ -187,7 +186,7 @@ public class GroupPlusThreeTest extends BaseTest {
         assertEquals(result, jobName);
     }
 
-    @Test (description = "")
+    @Test (description = "Check Build History")
     public void testCheck() {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("MMM d, yyyy, h:mm aaa", Locale.ENGLISH);
