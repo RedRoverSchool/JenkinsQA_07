@@ -34,7 +34,7 @@ public class GroupPlusThreeTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         return getDriver().findElement(By.xpath("//h1")).getText();
-
+        
     }
 
     @Test(description = "Test creating new Freestyle project", dataProvider = "nameForJobs")
