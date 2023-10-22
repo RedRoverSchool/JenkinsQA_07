@@ -46,7 +46,7 @@ public class AikaTest extends BaseTest {
     }
 
     @Test
-    public void testRenameProject() {
+    public void testRenameProject() throws InterruptedException {
 
         final String projectName = "Test v2";
 
@@ -59,6 +59,8 @@ public class AikaTest extends BaseTest {
         //hover over first to make dropdown element to be visible
         Actions actions = new Actions(getDriver());
         actions.moveToElement(projectInList).perform();
+
+        Thread.sleep(1000);
 
         getDriver().findElement(
                 By.xpath("//table[@id = 'projectstatus']//span[text() = '"+projectName+"']//following-sibling::button"))
@@ -110,7 +112,6 @@ public class AikaTest extends BaseTest {
         for(WebElement el : allChildElements) {
             if(el.getText().equalsIgnoreCase(dropdownOption)){
                 el.click();
-                break;
             }
         }
     }
