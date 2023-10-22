@@ -154,11 +154,28 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testKristinaSearchID(){
+    public void testKristinaSearchID() {
 
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/asynchPeople/']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(),"User ID");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(), "User ID");
+    }
+
+    @Test
+    public void testOlgaBrest() throws InterruptedException {
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        newItem.click();
+        WebElement itemName = getDriver().findElement(By.id("name"));
+        itemName.sendKeys("MyProject");
+        WebElement pipeLine = getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']"));
+        pipeLine.click();
+        WebElement button = getDriver().findElement(By.id("ok-button"));
+        button.click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
+                "Configure");
     }
 
 }
+
+
