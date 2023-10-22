@@ -18,6 +18,7 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
 
 
     private void utilsDeleteProjectByItsName(String projectName) {
+
         getDriver().findElement(By.xpath("//div[contains(@class, 'dashboard')]"))
                 .findElement(By.xpath(String.format("//a[contains(@href, 'job/%s/')]/span", projectName)))
                 .click();
@@ -26,13 +27,13 @@ public class GroupTestscriptCollaboratoriumTest extends BaseTest {
     }
 
     private void utilsCreateFolder(String folderName) {
+
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
 
         getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
         getDriver().findElement(By.xpath("//img[@alt = 'Jenkins']")).click();
-
     }
 
     @Test
