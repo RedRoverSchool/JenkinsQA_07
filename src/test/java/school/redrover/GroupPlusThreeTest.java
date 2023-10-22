@@ -186,8 +186,8 @@ public class GroupPlusThreeTest extends BaseTest {
         assertEquals(result, jobName);
     }
 
-    @Test (description = "Check Build History")
-    public void testCheck() {
+    @Test
+    public void testCheckBuildHistory() {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("MMM d, yyyy, h:mm aaa", Locale.ENGLISH);
         String date = formatForDateNow.format(dateNow);
@@ -203,6 +203,5 @@ public class GroupPlusThreeTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a[href=\"/job/Test/build?delay=0sec\"]")).click();
         getDriver().navigate().refresh();
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class =\"model-link inside build-link\"]")).getText(), date);
-
     }
 }
