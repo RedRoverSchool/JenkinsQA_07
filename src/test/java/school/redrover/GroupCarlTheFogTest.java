@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -29,6 +30,15 @@ public class GroupCarlTheFogTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
+    }
+
+    public void alertAcceptDismiss(boolean accept) {
+        Alert alert = getDriver().switchTo().alert();
+        if (accept) {
+            alert.accept();
+        } else {
+            alert.dismiss();
+        }
     }
 
     @Test
@@ -87,5 +97,27 @@ public class GroupCarlTheFogTest extends BaseTest {
         String savedDescription = getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText();
 
         Assert.assertEquals(savedDescription, PIPELINE_DESCRIPTION);
+    }
+
+    @Test
+    public void testDeletePipeline() {
+        String emptyJenkins = "//h2[text()='Start building your software project']";
+        createNewPipeline(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[contains(@data-message, 'Delete the Pipeline')]")).click();
+        alertAcceptDismiss(true);
+        String statPage = getDriver().findElement(By.xpath(emptyJenkins)).getText();
+
+        Assert.assertEquals("Start building your software project", statPage);
+    }
+
+    @Test
+    public void testCancelPipelineDelete() {
+        String emptyJenkins = "//h2[text()='Start building your software project']";
+        createNewPipeline(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//a[contains(@data-message, 'Delete the Pipeline')]")).click();
+        alertAcceptDismiss(false);
+        String createdPipelineName = getDriver().findElement(By.tagName("h1")).getText();
+
+        Assert.assertEquals(createdPipelineName, String.format("Pipeline %s", PIPELINE_NAME));
     }
 }
