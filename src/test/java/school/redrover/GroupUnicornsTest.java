@@ -502,9 +502,21 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[.='OK']")).click();
         getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
 
-        getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")).sendKeys(Keys.ENTER);
-        getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")).click();
-        getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]")).sendKeys(Keys.ENTER);
+        //renaming a created job
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")))
+                .perform();
+
+        Thread.sleep(1000);
+
+        WebElement menuArrow = getDriver().findElement(By.xpath("//*[contains(@data-href, '/job/Bayans_job/')]"));
+        menuArrow.sendKeys(Keys.ENTER);
+        new Actions(getDriver())
+                .moveToElement(menuArrow)
+                .perform();
+
+//        menuArrow.sendKeys(Keys.ESCAPE);
+//        clickByJavaScript(getDriver(), menuArrow);
 
         Thread.sleep(1000);
 
