@@ -63,7 +63,8 @@ public class GroupCarlTheFogTest extends BaseTest {
     public void testCreateNewPipeline() {
         createNewPipeline(PIPELINE_NAME);
         String createdPipelineName = getDriver().findElement(By.tagName("h1")).getText();
-        Assert.assertEquals(createdPipelineName, "Pipeline " + PIPELINE_NAME);
+        Assert.assertEquals(createdPipelineName, String.format("Pipeline %s", PIPELINE_NAME));
+
     }
 
     @Test
