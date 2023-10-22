@@ -129,23 +129,25 @@ public class GroupUnicornsTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
-    public void testTradingView() throws InterruptedException {
-        final String URL = "https://www.tradingview.com/chart/";
-        getDriver().get(URL);
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(500));
-        WebElement tickerNameActual = getDriver().findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
-        Assert.assertEquals(tickerNameActual.getText(), "AAPL");
+    public void testCheckPeopleAdmin() {
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/']")).getText(), "admin");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[@id = 'person-admin']/td[3]")).getText(), "admin");
+    }
 
-        getDriver().findElement(By.xpath("//button[@id = 'header-toolbar-symbol-search']")).click();
-        WebElement searchTable = getDriver().findElement(By.xpath("//input[@class = 'search-ZXzPWcCf upperCase-ZXzPWcCf input-qm7Rg5MB']"));
-        searchTable.clear();
-        searchTable.sendKeys("SPX");
-        searchTable.sendKeys(Keys.ENTER);
-        Thread.sleep(500);
-        WebElement newTickerNameActual = getDriver().findElement(By.xpath("(//div[@class = 'js-button-text text-GwQQdU8S text-cq__ntSC'])[3]"));
-        Assert.assertEquals(newTickerNameActual.getText(), "SPX");
+    @Test
+    public void testAdminAddDescription() {
+        getDriver().findElement(By.xpath("//a[@href='/user/admin']")).click();
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("test admin");
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).submit();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "test admin" );
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).submit();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "");
     }
 
     @Ignore
