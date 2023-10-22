@@ -42,6 +42,14 @@ public class GroupCoffeeCodersTest extends BaseTest {
         Assert.assertEquals(value, "My new folder");
 
     }
+
+    @Test
+    public void testBuildHistory() {
+        getDriver().findElement(By.linkText("Build History")).click();
+
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//h1")).getText(),"Build History of Jenkins");
+    }
 }
 
 
