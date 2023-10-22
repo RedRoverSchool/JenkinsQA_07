@@ -6,7 +6,7 @@ import school.redrover.runner.BaseTest;
 
 public class GroupSurvivorsTest extends BaseTest {
     @Test
-    public void testOlgaTransitionAnalysis() {
+    public void testTransitionGal() {
 
         getDriver().findElement(
                 By.xpath(("//*[@id='jenkins']/footer/div/div[2]/button"))).click();
@@ -19,5 +19,4 @@ public class GroupSurvivorsTest extends BaseTest {
     }
 
 }
-
 
