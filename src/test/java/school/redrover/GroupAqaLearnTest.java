@@ -85,7 +85,7 @@ public class GroupAqaLearnTest extends BaseTest {
         scroll(2000);
 
         getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.id("yui-gen9-button")
+                By.id("yui-gen9")
         )).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(
                 By.id("yui-gen16")
