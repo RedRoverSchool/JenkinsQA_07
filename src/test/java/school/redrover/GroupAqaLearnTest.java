@@ -85,10 +85,10 @@ public class GroupAqaLearnTest extends BaseTest {
         scroll(2000);
 
         getWait2().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//*[@id='yui-gen9-button']")
+                By.id("yui-gen9-button")
         )).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//*[@id=\"yui-gen16\"]")
+                By.id("yui-gen16")
         )).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//*[@name='description']")
