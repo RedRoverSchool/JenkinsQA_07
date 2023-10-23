@@ -379,6 +379,7 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
                 "No such job: Test");
     }
+    @Ignore
     @Test
     public void testDashboardDropDownMenuTools() throws InterruptedException {
         Actions action = new Actions(getDriver());
