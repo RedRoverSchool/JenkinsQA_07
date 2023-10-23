@@ -76,9 +76,9 @@ public class ArSaFirstTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys("Test Organization Folder");
         getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
 
     }
+  
     @Test
     public void testTC_00_001_01() {
 

@@ -3,12 +3,43 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.collections.Sets;
 import school.redrover.runner.BaseTest;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import static org.testng.Assert.assertEquals;
 
 public class GroupUnderdogsTest extends BaseTest {
 
     private static final String STR_TEST = "test";
+
+    @Test
+    public void testNewProjectCreatedOlena() {
+        String randomName = UUID.randomUUID()
+                .toString()
+                .substring(0, 5);
+        WebElement newItem = getDriver().findElement(By.linkText("New Item"));
+        newItem.click();
+
+        WebElement projectNameField = getDriver().findElement(By.id("name"));
+        projectNameField.click();
+        projectNameField.sendKeys(randomName);
+
+        WebElement selectProjectType = getDriver().findElement(By.xpath("//span[text()='Freestyle project']"));
+        selectProjectType.click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        WebElement projectName = getDriver().findElement(By.xpath("//td[3]/a"));
+        String actualProjectName = projectName.getText();
+        assertEquals(actualProjectName, randomName);
+    }
 
     @Test
     public void testJenkinsVersionInFooter_tereshenkov29() {
@@ -124,5 +155,78 @@ public class GroupUnderdogsTest extends BaseTest {
         String value = title.getText();
         Assert.assertEquals(value, "Test Description");
 
+    }
+
+    @Test
+    public void testRestApiPageOpensAndHas3ApiOptions() {
+        getDriver().findElement(
+                By.xpath(
+                        "//*[@id='jenkins']/footer/div/div[contains(@class, 'page-footer__links')]/a[contains(@class, 'rest-api')]"
+                )
+        ).click();
+
+        List<WebElement> apiTypes = getDriver().findElements(By.xpath("//div[@id='main-panel']/dl/dt/a"));
+        Assert.assertEquals(apiTypes.size(), 3, "REST API page should always have 3 API types");
+
+        Set<String> apiTypeText = new HashSet<>();
+        for (WebElement el : apiTypes) {
+            apiTypeText.add(el.getText());
+        }
+        Set<String> expected = Sets.newHashSet("XML API", "JSON API", "Python API");
+        Assert.assertEquals(apiTypeText, expected);
+    }
+
+    @Test
+    public void testKristinaSearchID() {
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/asynchPeople/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(), "User ID");
+    }
+
+    @Test
+    public void testCreateNewItemKristina() {
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys("My project");
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.xpath("//div[@class='footer']//button")).click();
+
+        String name = "First project";
+        getDriver().findElement(By.xpath("//div[@id='main-panel']//div[@class='setting-main']/input")).sendKeys(name);
+        getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']")).click();
+
+        WebElement findObject = getDriver().findElement(By.xpath("//div[@id='main-panel']//h1"));
+        String actualResult = findObject.getText();
+        Assert.assertEquals(actualResult, name);
+
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[text()='Dashboard']")).click();
+
+        String table = getDriver().findElement(By.xpath("//table[@id='projectstatus']/tbody")).getText();
+        String[] wordTable = table.split(" ");
+
+        for (int i = 0; i < wordTable.length; i++) {
+            String result = " ";
+            if (result == name) {
+                result = name;
+                assertEquals(result, name);
+            }
+        }
+    }
+
+
+    @Test
+    public void testOlgaBrest() throws InterruptedException {
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        newItem.click();
+        WebElement itemName = getDriver().findElement(By.id("name"));
+        itemName.sendKeys("MyProject");
+        WebElement pipeLine = getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']"));
+        pipeLine.click();
+        WebElement button = getDriver().findElement(By.id("ok-button"));
+        button.click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
+                "Configure");
     }
 }

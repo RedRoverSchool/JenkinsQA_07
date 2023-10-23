@@ -70,4 +70,42 @@ public class GroupIntroVertsQaTest extends BaseTest {
     }
     // endregion
 
+    @Test
+    public void testCreateNewJob() {
+        String jobName = "TestJob";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//li[contains(@class, 'jenkins_branch_OrganizationFolder')]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), jobName);
+    }
+
+    @Test
+    public void testAddDescription() {
+        String description = "Test description for jenkins";
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='description']")).getText().contains(description));
+    }
+
+    @Test
+    public void testDeletePipeline(){
+        String pipelineName = "Jenkins test pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(pipelineName);
+        getDriver().findElement(By.xpath("//li[contains(@class, 'org_jenkinsci_plugins_workflow_job_WorkflowJob')]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']/parent::a")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']")).getText().contains(pipelineName));
+    }
 }

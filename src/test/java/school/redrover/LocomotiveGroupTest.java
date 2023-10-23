@@ -2,45 +2,14 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
 
-import java.util.concurrent.TimeUnit;
-
 public class LocomotiveGroupTest extends BaseTest {
-
-    @Ignore
-    @Test
-    public void checkRadioButton() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("https://demoqa.com/radio-button");
-
-
-        selectRadioButton(driver, "Yes");
-        WebElement textRadioButton = driver.findElement(By.xpath("//p[@class='mt-3']"));
-        Assert.assertEquals(textRadioButton.getText(), "You have selected Yes");
-
-        Thread.sleep(3000);
-
-        selectRadioButton(driver, "Impressive");
-        Assert.assertEquals(textRadioButton.getText(), "You have selected Impressive");
-
-        Thread.sleep(3000);
-
-        driver.close();
-    }
-
-    @Ignore
-    public static void selectRadioButton(WebDriver driver, String value) {
-        WebElement RadioButton = driver.findElement(By.xpath("//label[normalize-space()='" + value + "']"));
-        RadioButton.click();
-    }
 
       @Test
     public void testYandexSearchBar(){
@@ -159,20 +128,6 @@ public class LocomotiveGroupTest extends BaseTest {
     }
 
 
-    @Ignore
-    @Test
-    public void testMartspecGoPageBiorhythms () {
-        getDriver().get("https://martspec.com/ru/emotion");
-        WebElement buttonForBiorh = getDriver().findElement(By.xpath("//div[@class='col-lg-6 d-table mb-lg-0 mb-4']//a"));
-
-        buttonForBiorh.click();
-
-        //WebElement imageBiorh = getDriver().findElement(By.xpath("//div[@class='col']/img[1]"));
-        // learn how to find a picture on a page
-        Assert.assertEquals(getDriver().findElement(By.xpath(
-                "//div[@class='col']/h1")).getText(), "Биоритмы");
-
-    }
 
     @Test
     public void testOpenBuildHistory() {
@@ -180,6 +135,55 @@ public class LocomotiveGroupTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='/view/all/builds']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.className("jenkins-app-bar__content")).getText(), "Build History of Jenkins");
+
+    }
+
+    @Test
+    public void testJenkinsCreateNewJob() {
+
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/div[2]/div/section[1]/ul/li/a/span[1]")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("Locomotive Project");
+
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[1]")).click();
+
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[2]/div/div[2]/textarea"))
+                .sendKeys("This is first automation QAA project by Michael, from Locomotive group");
+
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+
+        WebElement title = getDriver().findElement(By.xpath("//*[@id='main-panel']/h1"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Project Locomotive Project");
+
+    }
+
+    @Test
+    public void testCreateOrganizationFolder() {
+
+        Actions action = new Actions(getDriver());
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys("Folder1");
+        getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/job/Folder1/' and @class='model-link']")).getText(),"Folder1");
+    }
+
+    @Test
+    public void testSearchDocumentationAboutJenkins () {
+        getDriver().findElement(By.xpath
+                ("//div[@class='page-footer__links']/a[@href='api/']")).click();
+        getDriver().findElement(By.xpath
+                ("//a[@href='https://www.jenkins.io/redirect/remote-api']")).click();
+        WebElement searchText = getDriver().findElement(By.xpath("//a[contains(text(),'> User Documentation Home')]"));
+        String ExpectedDocument = searchText.getText();
+
+        Assert.assertEquals(ExpectedDocument, "> User Documentation Home");
 
     }
 

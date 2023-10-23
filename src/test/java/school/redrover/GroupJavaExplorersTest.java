@@ -1,11 +1,15 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 import java.util.UUID;
+
 import static org.testng.Assert.assertEquals;
 
 public class GroupJavaExplorersTest extends BaseTest {
@@ -81,7 +85,6 @@ public class GroupJavaExplorersTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.linkText("New_User")).isDisplayed());
     }
 
-    @Ignore
     @Test()
     public void testCreateFreeStyleProject() {
         int desiredLength = 5;
@@ -89,10 +92,8 @@ public class GroupJavaExplorersTest extends BaseTest {
                 .toString()
                 .substring(0, desiredLength);
 
-//        JenkinsUtils.login(getDriver());
-
-        WebElement newViewButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
-        newViewButton.click();
+        WebElement addNewProjectButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
+        addNewProjectButton.click();
 
         WebElement jenkinsJobNameField = getDriver().findElement(By.xpath("//*[@class='jenkins-input']"));
         jenkinsJobNameField.sendKeys(testFreeStyleProjectName);
@@ -103,7 +104,6 @@ public class GroupJavaExplorersTest extends BaseTest {
         WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
         submitButton.click();
         WebElement saveButton = getDriver().findElement(By.xpath("//button[@name='Submit']"));
-
         saveButton.click();
         String jenkinsJobName = getDriver().findElement(By.xpath("//*[@class='job-index-headline page-headline']")).getText();
 
@@ -116,6 +116,57 @@ public class GroupJavaExplorersTest extends BaseTest {
         WebElement version = getDriver().findElement(By.xpath("//button[contains(text(), 'Jenkins 2.414.2')]"));
         String versionName = version.getText();
         Assert.assertEquals(versionName, "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void testJobEmptyName() {
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]")).click();
+        final String errorText = getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText();
+        Assert.assertEquals(errorText, "» This field cannot be empty, please enter a valid name");
+
+    }
+
+    @Test
+    public void testCreateItemWithInvalidName() {
+        List<String> listOfSpecialCharacters =
+                List.of("!", "#", "$", "%", "&", "*", "/", ":", ";", "<", ">", "?", "@", "[", "]", "|", "\\", "^");
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        for (String listOfSpecialCharacter : listOfSpecialCharacters) {
+            String errorMessage = "» ‘" + listOfSpecialCharacter + "’ is an unsafe character";
+
+            WebElement fieldInputName = getDriver().findElement(By.id("name"));
+            fieldInputName.clear();
+            fieldInputName.sendKeys(listOfSpecialCharacter);
+
+            String resultMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
+
+            Assert.assertEquals(resultMessage, errorMessage);
+        }
+    }
+
+    @Test
+    public void testAddDescription() {
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("some text");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        final String description = getDriver().findElement(By.xpath("//div[@id='description']")).getText();
+        Assert.assertEquals(description, "some text\nEdit description");
+    }
+
+    @Test
+    public void testDescriptionPreview() {
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("some text");
+        getDriver().findElement(By.xpath("//a[contains(text(),'Preview')]")).click();
+        final String previewText = getDriver().findElement(By.xpath("//div[@class='textarea-preview']")).getText();
+        Assert.assertEquals(previewText, "some text");
+        getDriver().findElement(By.xpath("//a[@class='textarea-hide-preview']")).click();
     }
 }
 

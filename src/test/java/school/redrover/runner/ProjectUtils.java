@@ -1,10 +1,14 @@
 package school.redrover.runner;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
@@ -18,6 +22,8 @@ public final class ProjectUtils {
     private static final String PROP_PORT = PREFIX_PROP + "port";
     private static final String PROP_ADMIN_USERNAME = PREFIX_PROP + "admin.username";
     private static final String PROP_ADMIN_PAS = PREFIX_PROP + "admin.password";
+
+    private static final String CLOSE_BROWSER_IF_ERROR = PREFIX_PROP + "closeBrowserIfError";
 
     private static final String ENV_CHROME_OPTIONS = "CHROME_OPTIONS";
     private static final String ENV_APP_OPTIONS = "APP_OPTIONS";
@@ -73,6 +79,10 @@ public final class ProjectUtils {
         return System.getenv("CI_RUN") != null;
     }
 
+    static boolean closeBrowserIfError() {
+        return Boolean.getBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR, "true"));
+    }
+
     static String getUrl() {
         return String.format("http://%s:%s/",
                 properties.getProperty(PROP_HOST),
@@ -100,5 +110,15 @@ public final class ProjectUtils {
 
     public static void log(String str) {
         System.out.println(str);
+    }
+
+    static File takeScreenshot(WebDriver driver, String methodName, String className) {
+        File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(file, new File(String.format("screenshots/%s.%s.png", className, methodName)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }
