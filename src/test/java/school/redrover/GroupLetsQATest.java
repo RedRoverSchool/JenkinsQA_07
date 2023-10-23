@@ -387,7 +387,7 @@ public class GroupLetsQATest extends BaseTest {
                 .perform();
 
         Thread.sleep(100);
-        getDriver().findElement(By.xpath("//a[@href = '/']/button[@class = 'jenkins-menu-dropdown-chevron']")).click();
+        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']//button[@class = 'jenkins-menu-dropdown-chevron']")).click();
 
         action.moveToElement(
                 getDriver().findElement(By.xpath("//a[@class = 'jenkins-dropdown__item' and @href = '/manage']")))
