@@ -203,7 +203,7 @@ public class GroupSevenTest extends BaseTest {
 
     }
     @Test
-    public void addDescription() {
+    public void testAddDescription() {
 
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
 
