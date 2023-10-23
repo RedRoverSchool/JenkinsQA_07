@@ -441,4 +441,28 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div/h1")).getText(), "Sign in to Jenkins");
     }
+
+    @Test
+    public void testRenameItem() {
+
+        createAnItem("Freestyle project");
+
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/New%20Freestyle%20project/confirm-rename']")).click();
+
+        WebElement inputField = getDriver().findElement(By.xpath("//input[@checkdependson='newName']"));
+
+        inputField.clear();
+        inputField.sendKeys("NewNameItem");
+
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        Assert.assertEquals(getDriver().
+                findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(),
+                "NewNameItem");
+
+    }
 }
