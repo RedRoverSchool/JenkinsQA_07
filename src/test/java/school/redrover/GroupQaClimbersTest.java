@@ -146,7 +146,6 @@ public class GroupQaClimbersTest extends BaseTest {
                 By.xpath("//ol[@class='jenkins-breadcrumbs__list']/li[1]/a")
         );
         action.moveToElement(dashboard).perform();
-        action.moveByOffset(20, 0);
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(200));
         wait.until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//div[@id='breadcrumbBar']//button[@class='jenkins-menu-dropdown-chevron']")))
