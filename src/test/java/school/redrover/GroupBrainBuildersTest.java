@@ -78,7 +78,7 @@ public class GroupBrainBuildersTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsFolderCreation() {
+    public void testJenkinsFolderCreationWithValidName() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Folder1");
@@ -92,6 +92,15 @@ public class GroupBrainBuildersTest extends BaseTest {
         String folderNameActual = tableInTheListOfJobs.getText();
 
         Assert.assertEquals(folderNameActual, "My_Folder_Number_1");
+    }
+
+    @Test
+    public void testJenkinsFolderCreationWithEmptyName() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='input-validation-message']")).isDisplayed());
     }
 
     @Ignore
