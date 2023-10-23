@@ -191,6 +191,7 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(headerName.getText(), "Project new_pipeline");
     }
+
     @Test
     public void testAdminUser() {
 
@@ -201,5 +202,26 @@ public class GroupSevenTest extends BaseTest {
         String value = nameTitle.getText();
         Assert.assertEquals(value, "admin");
 
+    }
+
+    private static final String FOLDER_NAME = "New Folder";
+    private static final String DISPLAY_NAME = "General";
+
+    @Test
+    public void testCreateFolder() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(DISPLAY_NAME);
+
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'General')]")).getText(),
+                "General");
     }
 }
