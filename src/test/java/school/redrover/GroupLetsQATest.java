@@ -426,7 +426,7 @@ public class GroupLetsQATest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
-//        getDriver().findElement(By.xpath("//input[@name = 'item_New Freestyle project']")).click();
+//        getDriver().findElement(By.xpath("//input[@name = 'item_New Freestyle project']")).click(); - the line will be discussed during our team meeting, that's why I left it commented in the code
 
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
