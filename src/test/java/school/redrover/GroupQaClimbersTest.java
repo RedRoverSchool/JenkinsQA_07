@@ -1,6 +1,8 @@
 package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -144,11 +146,11 @@ public class GroupQaClimbersTest extends BaseTest {
                 By.xpath("//ol[@class='jenkins-breadcrumbs__list']/li[1]/a")
         ))
                 .perform();
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        getDriver().findElement(
-                By.xpath("//div[@id='breadcrumbBar']//button[@class='jenkins-menu-dropdown-chevron']"))
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(200));
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//div[@id='breadcrumbBar']//button[@class='jenkins-menu-dropdown-chevron']")))
                 .click();
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         List<WebElement> dashboardListInUpperMenu = getDriver().findElements(
                 By.xpath("//a[@class='jenkins-dropdown__item']")
         );
