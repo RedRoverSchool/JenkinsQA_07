@@ -9,12 +9,10 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 public class GroupJavaPlaywrightTest extends BaseTest {
-@Ignore
+
     @Test
     public void testCreateFreeStyleProject() throws InterruptedException {
         String projectName = "Project1";
-
-        JenkinsUtils.login(getDriver());
 
         Thread.sleep(2000);
 
@@ -44,14 +42,13 @@ public class GroupJavaPlaywrightTest extends BaseTest {
 
     @Test
     public void testAddDescriptionFromMyViewsPage() {
-        JenkinsUtils.login(getDriver());
-
         String descriptionMessage = "Simple test";
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
 
         getDriver().findElement(By.id("description-link")).click();
 
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Simple test");
 
         getDriver().findElement(By.name("Submit")).click();

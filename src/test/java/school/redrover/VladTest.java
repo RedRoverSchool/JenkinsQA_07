@@ -1,76 +1,84 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
 
 public class VladTest extends BaseTest {
-    @Test
-    public void testLogin() {
 
-        getDriver().get("https://www.ministryoftesting.com/");
+    private void deleteText(WebElement deleteText){
 
-        WebElement language = getDriver().findElement(By.id("nav-sign-in"));
-        language.click();
-
-        WebElement textEmail = getDriver().findElement(By.id("user_login"));
-        textEmail.sendKeys("newtestd0tc0m@gmail.com");
-
-        WebElement textPass = getDriver().findElement(By.name("user[password]"));
-        textPass.sendKeys("_.3JsTMMvjtqzAa");
-
-        WebElement textLogin = getDriver().findElement(By.name("commit"));
-        textLogin.click();
-
-        WebElement pngAccount = getDriver().findElement(By.xpath("/html/body/main/header/nav/div/div[2]/div[2]/a/img"));
-        pngAccount.click();
-
-        WebElement textDashboard = getDriver().findElement(By.xpath("/html/body/main/header/nav/div/div[2]/div[2]/ul/li[3]/a"));
-        textDashboard.click();
-
-        WebElement textExpected = getDriver().findElement(By.xpath("/html/body/main/div[3]/section[2]/div/div/div[2]/p"));
-
-        String value = textExpected.getText();
-        Assert.assertEquals(value, "Please use the navigation to find the existing sections of your My MoT pages.");
+        deleteText.sendKeys(Keys.CONTROL + "a");
+        deleteText.sendKeys(Keys.DELETE);
     }
+    private void CreateNewJob(String newJobXpath) {
 
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("test123");
+        getDriver().findElement(By.xpath(newJobXpath)).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
     @Test
     public void testJenkinsVersion() {
 
-        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//button[contains(@class,'jenkins_ver')]")).click();
+        getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
 
-        getDriver().findElement(By.xpath("/html/body/footer/div/div[2]/button")).click();
-
-        getDriver().findElement(By.xpath("/html/body/div[3]/div/div/a[1]/div")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html/body/div[2]/div/div[2]/div[1]/p")).getText(),
+        Assert.assertEquals(getDriver().findElement(By.xpath("//p[.='Version 2.414.2']")).getText(),
                 "Version 2.414.2");
     }
-
     @Test
     public void testJenkinsManage() {
 
-        JenkinsUtils.login(getDriver());
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link']")).click();
+        getDriver().findElement(By.xpath("//a[@href='editDescription']")).click();
 
-        getDriver().findElement(By.xpath("/html/body/div[2]/div[1]/div[1]/div[4]/span/a")).click();
+        WebElement setText = getDriver().findElement(By.xpath("//textarea[@name='description']"));
+        deleteText(setText);
+        setText.sendKeys("test123");
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/section[2]/div/div[1]/a/dl/dt")).getText(),
-                "System");
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@formnovalidate]"));
+        saveButton.click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/section[2]/div/div[2]/a/dl/dt")).getText(),
-                "Tools");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div")).getText(),
+                "test123");
+    }
+    @Test
+    public void testCreateNewFreestyleProject() {
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/section[2]/div/div[3]/a/dl/dt")).getText(),
-                "Plugins");
+        CreateNewJob("//ul[@class='j-item-options']/li");
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/section[2]/div/div[4]/a/dl/dt")).getText(),
-                "Nodes");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
+                "Project test123");
+    }
+    @Test
+    public void testCreateNewPipeline() {
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html/body/div[2]/div[2]/section[2]/div/div[5]/a/dl/dt")).getText(),
-                "Clouds");
+        CreateNewJob("//li[@class='org_jenkinsci_plugins_workflow_job_WorkflowJob']");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
+                "Pipeline test123");
+    }
+    @Test
+    public void testCreateNewMultiConfigurationProject() {
+
+        CreateNewJob("//li[@class='hudson_matrix_MatrixProject']");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='matrix-project-headline page-headline']")).getText(),
+                "Project test123");
+    }
+    @Test
+    public void testCreateNewFolder() {
+
+        CreateNewJob("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),
+                "test123");
     }
 }

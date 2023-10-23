@@ -1,115 +1,27 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class GroupHighwayToAqaTest extends BaseTest {
 
-    @Ignore
-    @Test
-    public void testInvalidCreds() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-
-        driver.get("https://demo.prestashop.com/#/en/front");
-
-        Thread.sleep(11000);
-
-        driver.switchTo().frame("framelive");
-
-        WebElement signInLink = driver.findElement(By.xpath("//span[text()='Sign in']"));
-
-        signInLink.click();
-
-        WebElement emailInput = driver.findElement(By.xpath("//input[@autocomplete='email']"));
-        WebElement passwordInput = driver.findElement(By.xpath("//input[@aria-label='Password input']"));
-        WebElement submitBtn = driver.findElement(By.xpath("//button[@type='submit']"));
-
-        emailInput.sendKeys("test@test.com");
-        passwordInput.sendKeys("Qwerty123$");
-        submitBtn.click();
-
-        WebElement alertMessage = driver.findElement(By.className("alert-danger"));
-
-        Assert.assertEquals(alertMessage.getText(), "Authentication failed.");
-
-        driver.quit();
-    }
-
-    @Ignore
-    @Test
-    public void testCreateAcc() throws InterruptedException {
-        String firstName = "firstName";
-        String lastName = "LastName";
-        String password = "Qwe123!@#ASD";
-        String email = "test@mail.com";
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://demo.prestashop.com/#/en/front");
-
-        driver.switchTo().frame("framelive");
-
-        WebElement signInLink = driver.findElement(By.xpath("//span[text()='Sign in']"));
-        signInLink.click();
-
-        WebElement createAccLink = driver.findElement(By.xpath("//a[contains(.,'No account? Create one here')]"));
-        createAccLink.click();
-
-        WebElement genderMr = driver.findElement(By.xpath("//label[contains(.,'Mrs.')]"));
-        genderMr.click();
-
-        WebElement firstnameInput = driver.findElement(By.xpath("//input[@id='field-firstname']"));
-        WebElement lastnameInput = driver.findElement(By.xpath("//input[@id='field-lastname']"));
-        WebElement emailInput = driver.findElement(By.xpath("//input[@id='field-email']"));
-        WebElement passwordInput = driver.findElement(By.xpath("//input[@id='field-password']"));
-        WebElement ifReceiveOffers = driver.findElement(By.xpath("//input[@name='optin']"));
-        WebElement ifAgreeTerms = driver.findElement(By.xpath("//input[@name='psgdpr']"));
-        WebElement ifGetNewsLetters = driver.findElement(By.xpath("//input[@name='newsletter']"));
-        WebElement ifCustomer_privacy = driver.findElement(By.xpath("//input[@name='customer_privacy']"));
-        WebElement saveBtn = driver.findElement(By.cssSelector(".form-control-submit"));
-
-        firstnameInput.sendKeys(firstName);
-        lastnameInput.sendKeys(lastName);
-        emailInput.sendKeys(email);
-        passwordInput.sendKeys(password);
-        ifReceiveOffers.click();
-        ifAgreeTerms.click();
-        ifGetNewsLetters.click();
-        ifCustomer_privacy.click();
-        saveBtn.click();
-
-        WebElement ifRegistered = driver.findElement(By.cssSelector(".account > .hidden-sm-down"));
-
-        Assert.assertEquals(ifRegistered.getText(), firstName + " " + lastName);
-
-        driver.quit();
-    }
-
-    @Ignore
     @Test
     public void testLogin() {
 
-        JenkinsUtils.login(getDriver());
-
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div/h1[text()='Welcome to Jenkins!']")).getText(),
-                "Welcome to Jenkins!"
-        );
+                "Welcome to Jenkins!");
     }
 
     @Test
     public void testEmptyProjectName() {
-
-        JenkinsUtils.login(getDriver());
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
@@ -120,8 +32,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testCreateNewFreestyleProject() {
-
-        JenkinsUtils.login(getDriver());
 
         final String projectName = "HighwayNew";
 
@@ -135,8 +45,7 @@ public class GroupHighwayToAqaTest extends BaseTest {
     }
 
     @Test
-    public void testRenamePipelineProject() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
+    public void testRenamePipelineProject() {
 
         final String projectName = "HighwayNewPipeline";
         final String newProjectName = "HighwayNewPipeline_NewName";
@@ -144,32 +53,22 @@ public class GroupHighwayToAqaTest extends BaseTest {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(projectName);
         getDriver().findElement(By.xpath("//span[.='Pipeline']")).click();
-
-        WebElement okBtnIsEnabled = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
-        Assert.assertTrue(okBtnIsEnabled.isEnabled());
-        okBtnIsEnabled.click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//a[contains(.,'Rename')]")).click();
-
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(newProjectName);
-
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         WebElement newTitle = getDriver().findElement(By.cssSelector(".job-index-headline"));
-        assert newTitle.getText().contains("Pipeline " + newProjectName);
 
-        getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']")).click();
-
-        Alert alert = getDriver().switchTo().alert();
-        alert.accept();
+        assert newTitle.getText().contains("Pipeline " + projectName);
     }
+
 
     @Test
     public void testSetFolderDisplayNameAndDescription() {
-
-        JenkinsUtils.login(getDriver());
 
         final String folderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
         final String folderDisplayName = "Some test folder display name";
@@ -195,11 +94,10 @@ public class GroupHighwayToAqaTest extends BaseTest {
     @Test
     public void testSideBarOnMainPage() {
 
-        JenkinsUtils.login(getDriver());
+        final String[] sideBarTitles = {"New Item", "People", "Build History", "Manage Jenkins", "My Views"};
 
-        List<WebElement> sideBarItems = getDriver().findElements(By.xpath("//div[@id = 'tasks']//div[@class = 'task ']"));
-
-        String[] sideBarTitles = new String[]{"New Item", "People", "Build History", "Manage Jenkins", "My Views"};
+        List<WebElement> sideBarItems = getDriver()
+                .findElements(By.xpath("//div[@id = 'tasks']//div[@class = 'task ']"));
 
         Assert.assertEquals(sideBarTitles.length, sideBarItems.size());
 
@@ -210,9 +108,9 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testManageToolsGitInstallation() throws InterruptedException {
-        JenkinsUtils.login(getDriver());
 
-        getDriver().get("http://localhost:8080/manage/configureTools/");
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='configureTools']")).click();
 
         Thread.sleep(1000);
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -227,21 +125,18 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
     @Test
     public void testComparisonManageSystem() {
-        JenkinsUtils.login(getDriver());
 
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[4]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/section[2]/div/div[1]/a")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div[1]/div[1]/h1"))
+        getDriver().findElement(By.cssSelector(".task:nth-child(4) .task-link")).click();
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1"))
                 .getText(), "System");
     }
 
     @Test
     public void testCreateFolderViaCopyFrom() {
 
-        JenkinsUtils.login(getDriver());
-
         final String originalFolderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
-        final String folderDisplayName = "Some test folder display name";
         final String folderDescription = "Some test folder description";
         final String newFolderName = String.format("Some test folder name %3d", (int) (Math.random() * 1000));
 
@@ -250,7 +145,6 @@ public class GroupHighwayToAqaTest extends BaseTest {
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-        getDriver().findElement(By.name("_.displayNameOrNull")).sendKeys(folderDisplayName);
         getDriver().findElement(By.name("_.description")).sendKeys(folderDescription);
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
@@ -263,4 +157,111 @@ public class GroupHighwayToAqaTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.name("_.description")).getText(),
                 folderDescription);
     }
+
+    @Test
+    public void testAddingDescriptionUser() {
+
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-table__link")).click();
+        getDriver().findElement(By.xpath("//*[(@id = 'description-link')]")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']"))
+                .sendKeys("Привет");
+        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='textarea-preview']"))
+                .getText(), "Привет");
+    }
+
+    @Test
+    public void testCreatedProjectOnDashboard() {
+
+        final String projectName = "HighwayNew";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        List<WebElement> projectsList = getDriver().findElements(By
+                .xpath("//a[@class='jenkins-table__link model-link inside']"));
+        List<String> projectNamesList = new ArrayList<>();
+
+        for (WebElement webElement : projectsList) {
+            projectNamesList.add(webElement.getText());
+        }
+
+        Assert.assertTrue(projectNamesList.contains(projectName));
+    }
+
+    @Test
+    public void testAddBooleanParametr() throws InterruptedException {
+
+        final String projectName = "HighwayNew";
+        final String parameterName = "Name Boolean Parameter";
+        final String parameterDescription = "Description text";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")).click();
+
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.id("yui-gen5-button")).click();
+        getDriver().findElement(By.xpath("//li/a[text()='Boolean Parameter']")).click();
+        getDriver().findElement(By.name("parameter.name")).sendKeys(parameterName);
+        getDriver().findElement(By.xpath("//label[text()='Set by Default']")).click();
+        getDriver().findElement(By.name("parameter.description")).sendKeys(parameterDescription);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement submit = getDriver().findElement(By.name("Submit"));
+        js.executeScript("arguments[0].scrollIntoView();", submit);
+        submit.click();
+
+        getDriver().findElement(By.xpath("//a[contains(@href, 'build?')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//input[@name='value']")).
+                        getAttribute("checked"),"true");
+        Assert.assertEquals(getDriver().findElement(By.className("attach-previous")).getText(), parameterName);
+        Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-description")).getText(), parameterDescription);
+    }
+
+    @Test
+    public void testPermalinksList() throws InterruptedException {
+
+        final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
+                "Last completed build"};
+
+        final String projectName = "MultiConfigJob";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.partialLinkText("Build Now")).click();
+        Thread.sleep(5000);
+        WebElement buildStatusIcon = getDriver().findElement(
+                By.xpath("//span/span/*[name()='svg' and (contains(@tooltip, 'Success'))]"));
+
+        Assert.assertTrue(buildStatusIcon.isDisplayed());
+
+        getDriver().navigate().refresh();
+
+        List<WebElement> permalinks = getDriver().findElements(
+                By.xpath("//ul[@class='permalinks-list']/li"));
+
+        ArrayList<String> permalinksTexts = new ArrayList<>();
+
+        for (int i = 0; i < permalinks.size(); i++) {
+            permalinksTexts.add(permalinks.get(i).getText());
+            Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
+        }
+    }
+
 }

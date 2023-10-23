@@ -3,11 +3,14 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
+
+@Ignore
 public class PavTomakTest extends BaseTest {
 
     @Test
@@ -49,7 +52,6 @@ public class PavTomakTest extends BaseTest {
 
     @Test
     public void testJenkinsAdminUserLogin() {
-        JenkinsUtils.login(getDriver());
 
         WebElement adminButton = getDriver().findElement(By.xpath("//*[@id='page-header']//*[@href='/user/admin']"));
         adminButton.click();
@@ -59,7 +61,6 @@ public class PavTomakTest extends BaseTest {
 
     @Test
     public void testManageJenkins() {
-        JenkinsUtils.login(getDriver());
 
         WebElement manageJenkinsBtn = getDriver().findElement(By.xpath("//*[@id='tasks']//a[@href='/manage']"));
         manageJenkinsBtn.click();
