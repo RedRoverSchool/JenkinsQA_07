@@ -134,4 +134,22 @@ public class GroupQaClimbersTest extends BaseTest {
 
         Assert.assertEquals(actualResult,"test");
     }
+
+    @Test
+    public void testCreateProfileDescription() {
+
+        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link']")).click();
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("The description of a person");
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        String actualDescription = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
+        Assert.assertEquals(actualDescription,"The description of a person");
+
+    }
 }
