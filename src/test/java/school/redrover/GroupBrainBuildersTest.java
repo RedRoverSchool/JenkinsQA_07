@@ -92,7 +92,7 @@ public class GroupBrainBuildersTest extends BaseTest {
 
         String folderName= "Folder1";
         folderCreation(folderName);
-        getDriver().findElement(By.xpath("//a[@href='/' and @class='model-link']")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
 
@@ -113,7 +113,7 @@ public class GroupBrainBuildersTest extends BaseTest {
         String folderName = "Folder1";
         String renamedFolder = "Folder111";
         folderCreation(folderName);
-        getDriver().findElement(By.xpath("//a[@href='/' and @class='model-link']")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
 
         getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
         getDriver().findElement(By.linkText("Rename")).click();
