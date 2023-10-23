@@ -14,15 +14,10 @@ public class ArSaFirstTest extends BaseTest {
     public void testCreateFolder() {
 
         final String actualVersion = getDriver().findElement(By.className("jenkins_ver")).getText();
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
         getDriver().findElement(By.id("name")).sendKeys(folderName);
-
         getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
-
         getDriver().findElement(By.id("ok-button")).click();
-
         getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.linkText("Dashboard")).click();

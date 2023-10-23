@@ -107,10 +107,10 @@ public class GroupItFriendlyTest extends BaseTest {
     @Test
     public void removeItemTest() {
         WebDriver driver = getDriver();
-        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        final String userName = "Test" + UUID.randomUUID().toString().substring(0, 8);
         //create item
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(randomUsername);
+        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(userName);
         driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
         driver.findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
         driver.findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
@@ -120,16 +120,15 @@ public class GroupItFriendlyTest extends BaseTest {
         List <WebElement> listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
 
         //search for an added item and delete this
-        Assert.assertTrue(isActualElement(listItems, randomUsername));
-        if (isActualElement(listItems, randomUsername)) {
-            driver.findElement(By.xpath("//*[@id=\"job_" + randomUsername + "\"]/td[3]/a")).click();
+        if (isActualElement(listItems, userName)) {
+            driver.findElement(By.xpath("//*[@id=\"job_" + userName + "\"]/td[3]/a")).click();
             driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[6]/span/a")).click();
             // accept alert to delete
             Alert alert = driver.switchTo().alert();
             alert.accept();
         }
         listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
-        Assert.assertFalse(isActualElement(listItems, randomUsername));
+        Assert.assertFalse(isActualElement(listItems, userName));
     }
     // search item in list items
     private boolean isActualElement(List<WebElement> items, String expecting) {

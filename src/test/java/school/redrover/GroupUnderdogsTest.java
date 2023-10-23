@@ -3,12 +3,43 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.collections.Sets;
 import school.redrover.runner.BaseTest;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import static org.testng.Assert.assertEquals;
 
 public class GroupUnderdogsTest extends BaseTest {
 
     private static final String STR_TEST = "test";
+
+    @Test
+    public void testNewProjectCreatedOlena() {
+        String randomName = UUID.randomUUID()
+                .toString()
+                .substring(0, 5);
+        WebElement newItem = getDriver().findElement(By.linkText("New Item"));
+        newItem.click();
+
+        WebElement projectNameField = getDriver().findElement(By.id("name"));
+        projectNameField.click();
+        projectNameField.sendKeys(randomName);
+
+        WebElement selectProjectType = getDriver().findElement(By.xpath("//span[text()='Freestyle project']"));
+        selectProjectType.click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        WebElement projectName = getDriver().findElement(By.xpath("//td[3]/a"));
+        String actualProjectName = projectName.getText();
+        assertEquals(actualProjectName, randomName);
+    }
 
     @Test
     public void testJenkinsVersionInFooter_tereshenkov29() {
@@ -125,4 +156,32 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(value, "Test Description");
 
     }
+
+    @Test
+    public void testRestApiPageOpensAndHas3ApiOptions() {
+        getDriver().findElement(
+                By.xpath(
+                        "//*[@id='jenkins']/footer/div/div[contains(@class, 'page-footer__links')]/a[contains(@class, 'rest-api')]"
+                )
+        ).click();
+
+        List<WebElement> apiTypes = getDriver().findElements(By.xpath("//div[@id='main-panel']/dl/dt/a"));
+        Assert.assertEquals(apiTypes.size(), 3, "REST API page should always have 3 API types");
+
+        Set<String> apiTypeText = new HashSet<>();
+        for(WebElement el: apiTypes){
+            apiTypeText.add(el.getText());
+        }
+        Set<String> expected = Sets.newHashSet("XML API", "JSON API", "Python API");
+        Assert.assertEquals(apiTypeText, expected);
+    }
+
+    @Test
+    public void testKristinaSearchID(){
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/asynchPeople/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(),"User ID");
+    }
+
 }

@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupHighwayToAqaTest extends BaseTest {
@@ -170,5 +171,62 @@ public class GroupHighwayToAqaTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='textarea-preview']"))
                 .getText(), "Привет");
+    }
+
+    @Test
+    public void testCreatedProjectOnDashboard() {
+
+        final String projectName = "HighwayNew";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        List<WebElement> projectsList = getDriver().findElements(By
+                .xpath("//a[@class='jenkins-table__link model-link inside']"));
+        List<String> projectNamesList = new ArrayList<>();
+
+        for (WebElement webElement : projectsList) {
+            projectNamesList.add(webElement.getText());
+        }
+
+        Assert.assertTrue(projectNamesList.contains(projectName));
+    }
+
+    @Test
+    public void testAddBooleanParametr() throws InterruptedException {
+
+        final String projectName = "HighwayNew";
+        final String parameterName = "Name Boolean Parameter";
+        final String parameterDescription = "Description text";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")).click();
+
+        Thread.sleep(2000);
+
+        getDriver().findElement(By.id("yui-gen5-button")).click();
+        getDriver().findElement(By.xpath("//li/a[text()='Boolean Parameter']")).click();
+        getDriver().findElement(By.name("parameter.name")).sendKeys(parameterName);
+        getDriver().findElement(By.xpath("//label[text()='Set by Default']")).click();
+        getDriver().findElement(By.name("parameter.description")).sendKeys(parameterDescription);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement submit = getDriver().findElement(By.name("Submit"));
+        js.executeScript("arguments[0].scrollIntoView();", submit);
+        submit.click();
+
+        getDriver().findElement(By.xpath("//a[contains(@href, 'build?')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//input[@name='value']")).
+                        getAttribute("checked"),"true");
+        Assert.assertEquals(getDriver().findElement(By.className("attach-previous")).getText(), parameterName);
+        Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-description")).getText(), parameterDescription);
     }
 }
