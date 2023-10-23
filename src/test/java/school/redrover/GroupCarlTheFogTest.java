@@ -1,10 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 
 
 public class GroupCarlTheFogTest extends BaseTest {
@@ -92,5 +96,20 @@ public class GroupCarlTheFogTest extends BaseTest {
         String savedDescription = getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText();
 
         Assert.assertEquals(savedDescription, PIPELINE_DESCRIPTION);
+    }
+
+    @Test
+    public void testHamburgerMenu() {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        Actions actions = new Actions(getDriver());
+        By hamburgerMenu = By.xpath("//button[not(ancestor::li)][contains(@class, 'jenkins-menu-dropdown-chevron')]");
+        By configureSubmenu = By.xpath("//div[@class = 'tippy-content']//a[contains(@href, 'configure')]");
+        By tokenListItem = By.xpath("//div[contains(concat(' ',normalize-space(@class),' '),' token-list-item ')]");
+
+        actions.moveToElement(getDriver().findElement(hamburgerMenu)).click().perform();
+        wait.until(ExpectedConditions.elementToBeClickable(configureSubmenu)).click();
+
+        Assert.assertEquals(getDriver().findElement(tokenListItem).getText(),
+                "There are no registered tokens for this user.");
     }
 }
