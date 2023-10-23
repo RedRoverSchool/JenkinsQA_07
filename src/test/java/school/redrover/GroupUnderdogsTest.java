@@ -184,4 +184,66 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(),"User ID");
     }
 
+    @Test
+    public void testCreatePipeline(){
+
+        WebElement createJobButton = getDriver().findElement(By.xpath("//a [@href='newJob']"));
+        createJobButton.click();
+
+        WebElement descriptionField = getDriver().findElement(By.xpath("//input[@id='name']"));
+        descriptionField.click();
+        descriptionField.sendKeys("First Pipeline");
+
+        WebElement pipelineOption = getDriver().findElement(By.xpath("//div[contains(text(),'Orchestrates long-running activities that can span')]"));
+        pipelineOption.click();
+
+        WebElement okButton = getDriver().findElement(By.xpath("//button[@id='ok-button']"));
+        okButton.click();
+
+        WebElement pipelineDescription = getDriver().findElement(By.xpath("//textarea[@name = 'description']"));
+        pipelineDescription.sendKeys("Testing pipeline");
+
+        WebElement discardOldBuildsOPtion = getDriver().findElement(By.xpath("//label[contains(text(),'Discard old builds')]"));
+        discardOldBuildsOPtion.click();
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//button[@name = 'Submit']"));
+        saveButton.click();
+
+        WebElement title = getDriver().findElement(By.xpath("//div[@id = 'main-panel']/h1"));
+        String value = title.getText();
+
+        Assert.assertEquals(value, "Pipeline First Pipeline");
+
+    }
+    private void createProject(){
+        getDriver().findElement(By.xpath("//a [@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys("My Job");
+        getDriver().findElement(By.xpath("//div[contains(text(),'This is the central feature of Jenkins. Jenkins wi')]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+
+    }
+    @Test
+    public void deleteJob() {
+        createProject();
+
+        WebElement jenkinsTitle = getDriver().findElement(By.xpath("//img[@id='jenkins-name-icon']"));
+        jenkinsTitle.click();
+
+        WebElement actionsButton = getDriver().findElement(By.xpath("//span[contains(text(),'My Job')]"));
+        actionsButton.click();
+
+        WebElement deleteButton = getDriver().findElement(By.xpath("//button[@class = 'jenkins-dropdown__item'][@href = '/job/My%20Job/doDelete']"));
+        deleteButton.click();
+
+        getDriver().switchTo().alert().accept();
+
+
+        WebElement title = getDriver().findElement(By.xpath("//div[@class = 'empty-state-block']/h1"));
+        String value = title.getText();
+        Assert.assertEquals(value, "Welcome to Jenkins!");
+
+
+    }
+
 }
