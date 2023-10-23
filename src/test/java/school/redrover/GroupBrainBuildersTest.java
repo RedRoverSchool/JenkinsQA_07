@@ -77,6 +77,23 @@ public class GroupBrainBuildersTest extends BaseTest {
         Assert.assertTrue(getDriver().getPageSource().contains(userName));
     }
 
+    @Test
+    public void testJenkinsFolderCreation() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Folder1");
+        getDriver().findElement(By.xpath("//span[@class='label' and text()='Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys("My_Folder_Number_1");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/' and @class='model-link']")).click();
+        getDriver().findElement(By.xpath("//tr[@id='job_Folder1']")).isDisplayed();
+        WebElement tableInTheListOfJobs = getDriver().findElement(By.xpath("//*[@id='job_Folder1']/td[3]/a/span"));
+        String folderNameActual = tableInTheListOfJobs.getText();
+
+        Assert.assertEquals(folderNameActual, "My_Folder_Number_1");
+    }
+
     @Ignore
     @Test
     public void testAskentSearch() {
@@ -119,7 +136,6 @@ public class GroupBrainBuildersTest extends BaseTest {
         WebElement tooltip = getDriver().findElement(By.xpath("//img[@aria-describedby = 'tippy-10']"));
         Assert.assertTrue(tooltip.isDisplayed());
     }
-
 
     private void createNewItemFreestyle(String freestyleName) {
 
