@@ -417,8 +417,6 @@ public class GroupLetsQATest extends BaseTest {
     public void testNewStyleCreation() {
         createAnItem("Freestyle project");
 
-        //Actions action = new Actions(getDriver());
-
         getDriver().findElement(By.xpath("//a[@href = '/newView']")).click();
 
         String styleNameInput = "My new style";
