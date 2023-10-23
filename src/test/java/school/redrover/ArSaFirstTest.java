@@ -1,36 +1,94 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.testng.Assert;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import java.util.List;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
+
 
 public class ArSaFirstTest extends BaseTest {
 
-    private final static String folderName = "Artur Sabanadze";
-    private final static String expectedVersion = "Jenkins 2.414.2";
+    private static final String itemName1 = "Test Freestyle Project";
+    private static final String encodedItemName = itemName1.replace(" ", "%20");
 
     @Test
-    public void testCreateFolder() {
+    public void createFreeStyleProject() {
 
-        final String actualVersion = getDriver().findElement(By.className("jenkins_ver")).getText();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.id("name")).sendKeys(itemName1);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+    }
+
+    @Test
+    public void createPipeline() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test Pipeline");
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+    }
+
+    @Test
+    public void createMultiConfigurationProject() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test Multi-configuration Project");
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+    }
+
+    @Test
+    public void createFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test Folder");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+    }
+
+    @Test
+    public void createMultiBranchPipeline() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test Multibranch Pipeline");
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+    }
+
+    @Test
+    public void createOrganizationFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Test Organization Folder");
         getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-        getDriver().findElement(By.linkText("Dashboard")).click();
-        getDriver().findElement(By.cssSelector("li.jenkins-breadcrumbs__list-item a.model-link")).click();
-        getDriver().findElement(By.linkText(folderName)).click();
+    }
+    @Test
+    public void testTC_00_001_01() {
 
-        getDriver().findElement(By.linkText("Configure")).click();
-        getDriver().findElement(By.name("_.description")).sendKeys("Organization File of Artur Sabanadze. Student of Redrover School (7)");
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.linkText("Dashboard")).click();
+        createFreeStyleProject();
+        assertFalse("Created project link is not present", getDriver().findElements(By.cssSelector("a.model-link[href='/job/" + encodedItemName + "/']")).isEmpty());
+        getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
 
-        Assert.assertNotNull(getDriver().findElement(By.id("job_Artur Sabanadze")), "Artur Sabanadze folder not found on the Jenkins home page");
-        Assert.assertEquals(actualVersion, expectedVersion, "Jenkins version mismatch");
+        List<WebElement> projectList = getDriver().findElements(By.cssSelector("a.jenkins-table__link.model-link.inside span"));
+        boolean isProjectInList = projectList.stream().anyMatch(project -> project.getText().equals(itemName1));
 
+        assertTrue("Project is present not in the list", isProjectInList);
     }
 }
