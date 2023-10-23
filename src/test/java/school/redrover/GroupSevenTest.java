@@ -443,4 +443,17 @@ public class GroupSevenTest extends BaseTest {
         String value = configureTitle.getText();
         Assert.assertEquals(value, "System");
     }
+
+    @Test
+    public void testAddDescription() {
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description about my first project will be here");
+
+        getDriver().findElement(By.xpath("//button[normalize-space()='Save']")).click();
+
+        Assert.assertTrue(getDriver().
+                findElement(By.xpath("//div[normalize-space()='Description about my first project will be here']")).isDisplayed());
+    }
 }
