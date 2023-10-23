@@ -380,12 +380,13 @@ public class GroupLetsQATest extends BaseTest {
                 "No such job: Test");
     }
     @Test
-    public void testDashboardDropDownMenuTools() {
+    public void testDashboardDropDownMenuTools() throws InterruptedException {
         Actions action = new Actions(getDriver());
         action.moveToElement(
                 getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href = '/']")))
                 .perform();
 
+        Thread.sleep(100);
         getDriver().findElement(By.xpath("//a[@href = '/']/button[@class = 'jenkins-menu-dropdown-chevron']")).click();
 
         action.moveToElement(
