@@ -92,12 +92,11 @@ public class GroupJavaAutomationTest extends BaseTest {
         Assert.assertEquals(getDriver()
                         .findElement(By.xpath("//a[@id = 'skip2content']/following-sibling::*"))
                         .getText(),
-                         nameProject);
+                nameProject);
         Assert.assertEquals(getDriver()
                         .findElement(By.xpath("//h2[@class = 'h4']")).getText(),
                 "This folder is empty");
     }
-
 
 
     private void addNewItemFolder(String nameProject) {
@@ -106,6 +105,48 @@ public class GroupJavaAutomationTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    }
+
+    @Test
+    public void testIncreaseNumberExecutors() {
+        WebElement inputExecutors = getInputExecutors();
+        int currentNumberExecutors = Integer.parseInt(inputExecutors.getAttribute("value"));
+        inputExecutors.sendKeys(Keys.ARROW_UP);
+        Assert.assertEquals(currentNumberExecutors + 1, Integer.parseInt(inputExecutors.getAttribute("value")));
+    }
+    private WebElement getInputExecutors() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+        WebElement inputExecutors = getDriver().findElement(By.name("_.numExecutors"));
+        return inputExecutors;
+    }
+    @Test
+    public void testNegativeNumberExecutors() {
+        WebElement inputExecutors = getInputExecutors();
+        inputExecutors.clear();
+        inputExecutors.sendKeys("-1");
+        inputExecutors.submit();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error");
+    }
+    @Test
+    public void testGetNumberExecutorsOnMainPage() {
+        final String INPUT_VALUE = "2";
+        WebElement inputExecutors = getInputExecutors();
+        inputExecutors.clear();
+        inputExecutors.sendKeys(INPUT_VALUE);
+        getDriver().findElement(By.name("Submit")).click();
+        List<WebElement> listStringsTable = getDriver().findElements(By.xpath("//div[@id='executors']//table//tr"));
+        Assert.assertEquals(getSizeTableExecutors(listStringsTable), Integer.parseInt(INPUT_VALUE));
+
+    }
+    private int getSizeTableExecutors(List<WebElement> list) {
+        int sizeTable = 0;
+        for (WebElement eachString: list) {
+            if (eachString.getSize().getHeight() != 0) {
+                sizeTable++;
+            }
+        }
+        return sizeTable;
     }
 }
 
