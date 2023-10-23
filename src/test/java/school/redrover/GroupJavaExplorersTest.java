@@ -151,5 +151,26 @@ public class GroupJavaExplorersTest extends BaseTest {
             Assert.assertEquals(resultMessage, errorMessage);
         }
     }
+
+    @Test
+    public void testAddDescription() {
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("some text");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        final String description = getDriver().findElement(By.xpath("//div[@id='description']")).getText();
+        Assert.assertEquals(description, "some text\nEdit description");
+    }
+
+    @Test
+    public void testDescriptionPreview() {
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("some text");
+        getDriver().findElement(By.xpath("//a[contains(text(),'Preview')]")).click();
+        final String previewText = getDriver().findElement(By.xpath("//div[@class='textarea-preview']")).getText();
+        Assert.assertEquals(previewText, "some text");
+        getDriver().findElement(By.xpath("//a[@class='textarea-hide-preview']")).click();
+    }
 }
 
