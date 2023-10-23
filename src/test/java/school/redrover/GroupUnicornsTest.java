@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -16,10 +17,62 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import java.awt.Dimension;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class GroupUnicornsTest extends BaseTest {
+
+    private void goToDashboard() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+    }
+
+    private void sendKeysToSearchBar(String search) {
+        getDriver().findElement(By.id("settings-search-bar")).sendKeys(search);
+    }
+    @Test
+    public void testSuccessfulSearchResult() {
+
+        goToDashboard();
+        sendKeysToSearchBar("users");
+        WebElement searchResult = getDriver().findElement(By.xpath("//a[contains(text(),'Users')]"));
+        Assert.assertEquals(searchResult.getAttribute("text"), "Users");
+        searchResult.click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/manage/securityRealm/");
+    }
+
+    @Test
+    public void testTableSizes(){
+
+        //creating a new job
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("job");
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[.='OK']")).click();
+        getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
+
+        //check size when Small is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
+        Dimension actualTableSizeS = getTableDimension();
+        Assert.assertEquals(actualTableSizeS, new Dimension(1524, 71));
+
+        //check size when Medium is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Medium']")).click();
+        Dimension actualTableSizeM = getTableDimension();
+        Assert.assertEquals(actualTableSizeM, new Dimension(1524, 86));
+
+        //check size when Large is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Large']")).click();
+        Dimension actualTableSizeL = getTableDimension();
+        Assert.assertEquals(actualTableSizeL, new Dimension(1524, 102));
+    }
+
+    private Dimension getTableDimension() {
+        WebElement table = getDriver().findElement(By.xpath("//table[@id='projectstatus']"));
+        return new Dimension(table.getSize().width, table.getSize().height);
+    }
 
     @Test
     public void testVerifyRemoteDirectoryIsMandatoryForSetUpAnAgent() throws InterruptedException {

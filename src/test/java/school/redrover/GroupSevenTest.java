@@ -5,7 +5,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -52,34 +51,6 @@ public class GroupSevenTest extends BaseTest {
         WebElement searchResult = driver.findElement(By.xpath("//h2[@class = 'Ee2e63EzQ9F3xq9wsGDY']"));
         String resultText = searchResult.getText();
         Assert.assertTrue(resultText.contains("Behavior-driven development"));
-    }
-
-    @Ignore
-    @Test
-    public void testSearch() {
-
-        getDriver().get("https://elitetransit.com/");
-        WebElement buttonContact = getDriver().findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
-        buttonContact.click();
-
-        String title = getDriver().getTitle();
-
-        Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
-    }
-
-    @Ignore
-    @Test
-    public void testTextInput() {
-
-        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
-        WebElement input = getDriver().findElement(By.id("my-text-id"));
-        input.click();
-        input.sendKeys("Selenium");
-
-        WebElement submit = getDriver().findElement(By.tagName("button")); ////button[@type='submit']
-        submit.submit();
-        WebElement message = getDriver().findElement(By.id("message"));
-        Assert.assertEquals(message.getText(), "Received!");
     }
 
     @Ignore
@@ -388,5 +359,26 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), NEW_NAME);
         Assert.assertTrue(pipelineHeader.contains(NEW_NAME));
+    }
+
+    @Test
+    public void testCreateJob() {
+
+        final String pipelineName = "new_pipeline";
+
+        WebElement createJob = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']//span[@class='task-icon-link']//*[name()='svg']"));
+        createJob.click();
+        WebElement jobName = getDriver().findElement(By.xpath("//input[@name = 'name']"));
+        jobName.sendKeys(pipelineName);
+        getDriver().findElement(By.xpath("//span[normalize-space() = 'Freestyle project']")).click();
+
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+
+        getDriver().findElement(By.xpath("//button[@name= 'Submit']")).click();
+
+        WebElement headerName = getDriver().findElement(By.xpath("//h1[@class = 'job-index-headline page-headline']"));
+
+        Assert.assertEquals(headerName.getText(), "Project new_pipeline");
+
     }
 }

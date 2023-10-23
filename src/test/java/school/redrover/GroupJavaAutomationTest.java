@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.*;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -13,15 +12,15 @@ public class GroupJavaAutomationTest extends BaseTest {
 
 
     @Test
-    public void testJenkinsHomePageAndJenkinsVersion()  {
+    public void testJenkinsHomePageAndJenkinsVersion() {
 
         String title = getDriver().getTitle();
-        Assert.assertEquals(title,"Dashboard [Jenkins]");
+        Assert.assertEquals(title, "Dashboard [Jenkins]");
 
         WebElement versionJenkinsButton = getDriver().findElement
-        (By.xpath("//button[@type='button']"));
+                (By.xpath("//button[@type='button']"));
         String versionJenkins = versionJenkinsButton.getText();
-        Assert.assertEquals(versionJenkins,"Jenkins 2.414.2");
+        Assert.assertEquals(versionJenkins, "Jenkins 2.414.2");
     }
 
     private void addNewItem(String nameProject) {
@@ -31,14 +30,16 @@ public class GroupJavaAutomationTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
+
     @Test
     public void testJenkinsAddNewItemAndSearch() {
 
         final String nameProject = "Project_iod";
         addNewItem(nameProject);
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@id='skip2content']/following-sibling::*")).getText(),"Project " + nameProject);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@id='skip2content']/following-sibling::*")).getText(), "Project " + nameProject);
 
     }
+
     @Test
     public void testJenkinsSearchItem() {
         final String searchSubString = "project";
@@ -53,6 +54,7 @@ public class GroupJavaAutomationTest extends BaseTest {
         Assert.assertTrue(!listSearchProjects.isEmpty());
         Assert.assertTrue(checkAllSearchMatches(listSearchProjects, searchSubString));
     }
+
     @Test
     public void testJenkinsSearchItemWithEmptyList() {
         final String searchSubString = "projekt";
@@ -71,13 +73,39 @@ public class GroupJavaAutomationTest extends BaseTest {
         Assert.assertTrue(textError.getAttribute("class").contains("error"));
 
     }
+
     private boolean checkAllSearchMatches(List<WebElement> list, String searchSubString) {
         for (WebElement item : list) {
-            if (item.getText().contains(searchSubString)){
+            if (item.getText().contains(searchSubString)) {
                 return false;
             }
         }
         return true;
+    }
+
+    @Test
+    public void testCreatedNewFolder() {
+        final String nameProject = "Folder_1";
+
+        addNewItemFolder(nameProject);
+
+        Assert.assertEquals(getDriver()
+                        .findElement(By.xpath("//a[@id = 'skip2content']/following-sibling::*"))
+                        .getText(),
+                         nameProject);
+        Assert.assertEquals(getDriver()
+                        .findElement(By.xpath("//h2[@class = 'h4']")).getText(),
+                "This folder is empty");
+    }
+
+
+
+    private void addNewItemFolder(String nameProject) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameProject);
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 }
 
