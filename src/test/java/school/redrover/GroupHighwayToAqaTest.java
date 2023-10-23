@@ -229,4 +229,39 @@ public class GroupHighwayToAqaTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("attach-previous")).getText(), parameterName);
         Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-description")).getText(), parameterDescription);
     }
+
+    @Test
+    public void testPermalinksList() throws InterruptedException {
+
+        final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
+                "Last completed build"};
+
+        final String projectName = "MultiConfigJob";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.partialLinkText("Build Now")).click();
+        Thread.sleep(5000);
+        WebElement buildStatusIcon = getDriver().findElement(
+                By.xpath("//span/span/*[name()='svg' and (contains(@tooltip, 'Success'))]"));
+
+        Assert.assertTrue(buildStatusIcon.isDisplayed());
+
+        getDriver().navigate().refresh();
+
+        List<WebElement> permalinks = getDriver().findElements(
+                By.xpath("//ul[@class='permalinks-list']/li"));
+
+        ArrayList<String> permalinksTexts = new ArrayList<>();
+
+        for (int i = 0; i < permalinks.size(); i++) {
+            permalinksTexts.add(permalinks.get(i).getText());
+            Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
+        }
+    }
+
 }
