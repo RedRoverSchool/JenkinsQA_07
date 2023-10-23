@@ -76,6 +76,5 @@ public class GroupCarlTheFogTest extends BaseTest {
 
         String title = getDriver().getTitle();
         Assert.assertEquals(title, "Dashboard [Jenkins]");
-        getDriver().quit();
     }
 }
