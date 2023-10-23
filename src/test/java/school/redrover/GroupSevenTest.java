@@ -191,4 +191,15 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(headerName.getText(), "Project new_pipeline");
     }
+    @Test
+    public void testAdminUser() {
+
+        WebElement userIcon = getDriver().findElement(By.xpath("//a[@href='/user/admin']"));
+        userIcon.click();
+
+        WebElement nameTitle = getDriver().findElement(By.xpath("//h1[normalize-space()='admin']"));
+        String value = nameTitle.getText();
+        Assert.assertEquals(value, "admin");
+
+    }
 }
