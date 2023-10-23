@@ -347,18 +347,38 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        List<WebElement> itemsList = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside span"));
-        boolean result = false;
-        for (WebElement e : itemsList) {
-            if (e.getText().equals(newItem)) {
-                result = true;
-                break;
-            }
-        }
+        Assert.assertTrue(isItemTitleExists(newItem));
+    }
+    @Test
+    public void testErrorSpecifyWhichJobToCopyRedirect(){
+        String newItem = "Item from New Folder";
 
-        Assert.assertTrue(result);
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        WebElement copyFromField = getDriver().findElement(By.id("from"));
+        copyFromField.sendKeys("N");
+        copyFromField.clear();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                "Specify which job to copy");
     }
 
+    @Test
+    public void testErrorNoSucJobRedirect(){
+        String newItem = "Item from New Folder";
+
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        WebElement copyFromField = getDriver().findElement(By.id("from"));
+        copyFromField.sendKeys("Test");
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                "No such job: Test");
+    }
 
 
 }
