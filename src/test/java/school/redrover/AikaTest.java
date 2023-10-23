@@ -59,8 +59,7 @@ public class AikaTest extends BaseTest {
                 ("//table[@id = 'projectstatus']//span[text() = '"+projectName+"']//following-sibling::button"));
         //hover over first to make dropdown element to be visible
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(projectInList).perform();
-        button.click();
+        actions.moveToElement(projectInList).moveToElement(button).click().perform();
 
         selectFromJenkinsMenuDropdown("Rename");
 
