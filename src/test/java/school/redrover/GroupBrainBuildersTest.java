@@ -82,7 +82,7 @@ public class GroupBrainBuildersTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Folder1");
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys("My_Folder_Number_1");
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
