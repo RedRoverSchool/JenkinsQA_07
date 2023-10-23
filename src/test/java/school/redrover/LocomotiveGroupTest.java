@@ -173,4 +173,18 @@ public class LocomotiveGroupTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/job/Folder1/' and @class='model-link']")).getText(),"Folder1");
     }
+
+    @Test
+    public void testSearchDocumentationAboutJenkins () {
+        getDriver().findElement(By.xpath
+                ("//div[@class='page-footer__links']/a[@href='api/']")).click();
+        getDriver().findElement(By.xpath
+                ("//a[@href='https://www.jenkins.io/redirect/remote-api']")).click();
+        WebElement searchText = getDriver().findElement(By.xpath("//a[contains(text(),'> User Documentation Home')]"));
+        String ExpectedDocument = searchText.getText();
+
+        Assert.assertEquals(ExpectedDocument, "> User Documentation Home");
+
+    }
+
 }

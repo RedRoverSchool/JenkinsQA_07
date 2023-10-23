@@ -169,7 +169,7 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(apiTypes.size(), 3, "REST API page should always have 3 API types");
 
         Set<String> apiTypeText = new HashSet<>();
-        for(WebElement el: apiTypes){
+        for (WebElement el : apiTypes) {
             apiTypeText.add(el.getText());
         }
         Set<String> expected = Sets.newHashSet("XML API", "JSON API", "Python API");
@@ -177,15 +177,15 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testKristinaSearchID(){
+    public void testKristinaSearchID() {
 
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/asynchPeople/']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(),"User ID");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(), "User ID");
     }
 
     @Test
-    public void testCreateNewItemKristina(){
+    public void testCreateNewItemKristina() {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
 
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys("My project");
@@ -205,13 +205,28 @@ public class GroupUnderdogsTest extends BaseTest {
         String table = getDriver().findElement(By.xpath("//table[@id='projectstatus']/tbody")).getText();
         String[] wordTable = table.split(" ");
 
-        for (int i = 0; i < wordTable.length; i++){
+        for (int i = 0; i < wordTable.length; i++) {
             String result = " ";
-            if (result == name){
+            if (result == name) {
                 result = name;
                 assertEquals(result, name);
             }
         }
     }
 
+
+    @Test
+    public void testOlgaBrest() throws InterruptedException {
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        newItem.click();
+        WebElement itemName = getDriver().findElement(By.id("name"));
+        itemName.sendKeys("MyProject");
+        WebElement pipeLine = getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']"));
+        pipeLine.click();
+        WebElement button = getDriver().findElement(By.id("ok-button"));
+        button.click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
+                "Configure");
+    }
 }
