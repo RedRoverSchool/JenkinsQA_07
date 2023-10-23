@@ -359,6 +359,10 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertTrue(result);
     }
 
-
+    @Test
+    public void testLogout() {
+        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div/h1")).getText(), "Sign in to Jenkins");
+    }
 
 }
