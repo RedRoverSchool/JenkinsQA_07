@@ -72,23 +72,23 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void TestCreateNewFolderAndCheckDashboard() {
 
-       getDriver().findElement(By.linkText("New Item")).click();
-       getDriver().findElement(By.id("name")).sendKeys("FolderTest");
-       getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-       getDriver().findElement(By.id("ok-button")).click();
-       getDriver().findElement(By.name("Submit")).click();
-       getDriver().findElement(By.id("description-link")).click();
-       getDriver().findElement(By.className("jenkins-input")).sendKeys("Testing folder");
-       getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys("FolderTest");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("Testing folder");
+        getDriver().findElement(By.name("Submit")).click();
 
-       List<String> listOfExpectedItems = Arrays.asList("Status", "Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
-       List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
-       List<String> extractedTexts = listOfDashboardItems.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> listOfExpectedItems = Arrays.asList("Status", "Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
+        List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//span[@class='task-link-text' and contains(., '')]"));
+        List<String> extractedTexts = listOfDashboardItems.stream().map(WebElement::getText).collect(Collectors.toList());
 
-       assertEquals(extractedTexts,listOfExpectedItems);
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "FolderTest");
-       assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "Testing folder");
-}
+        assertEquals(extractedTexts, listOfExpectedItems);
+        assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), "FolderTest");
+        assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), "Testing folder");
+    }
 
     @Test
     public void TestJenkins() {
@@ -312,35 +312,22 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(listOfExpectedItems, extractedTexts);
     }
 
-    @Ignore
+
     @Test
-    public void testMyStudyingPage() {
 
-        String url = "https://power.arc.losrios.edu/~suleymanova/cisw300/";//url
+    public void testVerifyProjectIsDeleted() {
+        createNewProject();
+        getDriver().findElement(By.xpath("//a[text()='Delete Project']")).click();
+        getDriver().findElement(By.xpath("//button[text()='Yes']")).click();
 
-        getDriver().get(url); //open page
-        WebElement logo = getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //check logo
-        Assert.assertEquals(logo.getText(), "SULEYMANOV");  //check logo text
-
-        getDriver().findElement(By.xpath("//a[@href='about.html']")).click();//click about button
-        WebElement aboutMe = getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
-        Assert.assertEquals(aboutMe.getText(), "ABOUT ME");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='contact.html']")).click();//click contact button
-        WebElement email = getDriver().findElement(By.xpath("//a[@href='mailto:w2029557@apps.losrios.edu' and text()='w2029557@apps.losrios.edu']"));//check email
-        Assert.assertEquals(email.getText(), "w2029557@apps.losrios.edu");//check email text
-
-        getDriver().findElement(By.xpath("//a[@href='projects.html']")).click();// click projects button
-        getDriver().findElement(By.xpath("//h1[text()='PROJECTS ']"));//check projects page
-        Assert.assertEquals(getDriver().getTitle(), "Projects");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='book.html']")).click();//click book button
-        getDriver().findElement(By.xpath("//h1[text()='TUTORIALS ']"));//check book page
-        Assert.assertEquals(getDriver().getTitle(), "Book");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
-
+        try {
+            getDriver().findElement(By.xpath("//a[text()='" + PROJECTNAME + "']"));
+            Assert.fail("Project was not deleted");
+        } catch (NoSuchElementException e) {
+            Assert.assertTrue(true);
+        }
     }
+
 
     @Test
     public void testSearchFieldWithoutResultsExpected() {
@@ -453,7 +440,36 @@ public class GroupUnicornsTest extends BaseTest {
 
         getDriver().findElement(By.xpath("(//*[@class = 'task-icon-link']) [1]")).click();
         String expectedTitle = "New Item [Jenkins]";
-        
+
         Assert.assertEquals(getDriver().getTitle(), expectedTitle);
     }
+
+    @Test
+    public void testJenkinsCreateProject() {
+
+        getDriver().findElement(By.xpath("(//*[@href = 'newJob'])")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MyFirstTestProject");
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).sendKeys("This is my first test project");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[text()='This is my first test project']")).getText(), "This is my first test project");
+
+    }
+
+    @Test
+    public void testJenkinsDeleteProject() {
+
+        testJenkinsCreateProject();
+
+        getDriver().findElement(By.xpath("//span[text()='Delete Project']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertTrue(getDriver().findElements(By.xpath("//a[text()='MyFirstTestProject']")).isEmpty());
+
+    }
+
 }
+
+
