@@ -202,4 +202,17 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(value, "admin");
 
     }
+    @Test
+    public void addDescription() {
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Description about my first project will be here");
+
+        getDriver().findElement(By.xpath("//button[normalize-space()='Save']")).click();
+
+        Assert.assertTrue(getDriver().
+                findElement(By.xpath("//div[normalize-space()='Description about my first project will be here']")).isDisplayed());
+    }
+
 }
