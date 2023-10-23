@@ -412,13 +412,13 @@ public class GroupLetsQATest extends BaseTest {
     }
 
     @Test
-    public void testSmth() {
+    public void testNewStyleCreation() {
         createAnItem("Freestyle project");
 
         getDriver().findElement(By.xpath("//a[@href = '/newView']")).click();
 
-        String styleInput = "My new style";
-        getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(styleInput);
+        String styleNameInput = "My new style";
+        getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(styleNameInput);
 
         getDriver().findElement(By.xpath("//fieldset[@class = 'jenkins-fieldset']//label[@for = 'hudson.model.ListView']")).click();
 
@@ -428,6 +428,6 @@ public class GroupLetsQATest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tabBar']//a[@href = '/view/My%20new%20style/']")).getText(), styleInput);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tabBar']//a[@href = '/view/My%20new%20style/']")).getText(), styleNameInput);
     }
 }
