@@ -1,16 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.security.Key;
-import java.time.Duration;
 import java.util.List;
 
 public class AikaTest extends BaseTest {
@@ -59,19 +55,12 @@ public class AikaTest extends BaseTest {
 
         WebElement projectInList = getDriver().findElement(
                 By.xpath("//table[@id = 'projectstatus']//span[text() = '"+projectName+"']"));
-
+        WebElement button = getDriver().findElement(By.xpath
+                ("//table[@id = 'projectstatus']//span[text() = '"+projectName+"']//following-sibling::button"));
         //hover over first to make dropdown element to be visible
         Actions actions = new Actions(getDriver());
         actions.moveToElement(projectInList).perform();
-
-        Thread.sleep(2000);
-
-        WebElement button = getDriver().findElement(By.xpath
-                ("//table[@id = 'projectstatus']//span[text() = '"+projectName+"']//following-sibling::button"));
-
-        actions.moveToElement(button).pause(Duration.ofSeconds(2));
-                button.click();
-        Thread.sleep(2000);
+        button.click();
 
         selectFromJenkinsMenuDropdown("Rename");
 
