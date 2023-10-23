@@ -133,9 +133,9 @@ public class GroupBrainBuildersTest extends BaseTest {
         String renamedFolder = "Folder111";
         folderCreation(folderName);
         getDriver().findElement(By.linkText("Dashboard")).click();
-        getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']")).click();
-        getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']")).click();
-        getDriver().findElement(By.linkText("/job/'" + folderName + "'/confirm-rename"));
+        getDriver().findElement(By.xpath("//a[@href='job/" + folderName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/confirm-rename']"));
+
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(renamedFolder);
         getDriver().findElement(By.name("Submit")).click();
