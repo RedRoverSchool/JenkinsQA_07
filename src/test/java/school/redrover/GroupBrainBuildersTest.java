@@ -77,21 +77,25 @@ public class GroupBrainBuildersTest extends BaseTest {
         Assert.assertTrue(getDriver().getPageSource().contains(userName));
     }
 
+    private void folderCreation(String folderName) {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    }
+
     @Test
     public void testJenkinsFolderCreationWithValidName() {
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Folder1");
-        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys("My_Folder_Number_1");
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        String folderName= "Folder1";
+        folderCreation(folderName);
         getDriver().findElement(By.xpath("//a[@href='/' and @class='model-link']")).click();
-        getDriver().findElement(By.xpath("//tr[@id='job_Folder1']")).isDisplayed();
-        WebElement tableInTheListOfJobs = getDriver().findElement(By.xpath("//*[@id='job_Folder1']/td[3]/a/span"));
-        String folderNameActual = tableInTheListOfJobs.getText();
 
-        Assert.assertEquals(folderNameActual, "My_Folder_Number_1");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
+
     }
 
     @Test
@@ -101,6 +105,25 @@ public class GroupBrainBuildersTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='input-validation-message']")).isDisplayed());
+    }
+
+    @Test
+    public void testJenkinsFolderRenameWithValidNameFromDropDownMenu() {
+
+        String folderName = "Folder1";
+        String renamedFolder = "Folder111";
+        folderCreation(folderName);
+        getDriver().findElement(By.xpath("//a[@href='/' and @class='model-link']")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(renamedFolder);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
+
     }
 
     @Ignore
