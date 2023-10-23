@@ -5,7 +5,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -428,7 +427,6 @@ public class GroupSevenTest extends BaseTest {
          getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
 
          Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Yuliya Project1']")).getText(), "Yuliya Project1");
-
 
 
     }
