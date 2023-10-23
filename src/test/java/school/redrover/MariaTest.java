@@ -18,12 +18,10 @@ public class MariaTest extends BaseTest {
     public void testCreateProjectQA() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys("QA");
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//label[@class='attach-previous ']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).click();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("About Java languages");
         getDriver().findElement(By.xpath("//*[@class='jenkins-button jenkins-button--primary ']")).click();
 
@@ -80,5 +78,23 @@ public class MariaTest extends BaseTest {
                 .getText(), "Script Console");
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[text()='Prepare for Shutdown']"))
                 .getText(), "Prepare for Shutdown");
+    }
+
+    @Test
+    public void testCreateProjectOnlineStore() {
+
+        getDriver().findElement(By.xpath("//a[@class='task-link '][1]")).click();
+        getDriver().findElement(By.xpath("//input[@data-valid='false']")).sendKeys("Online store");
+        getDriver().findElement(By.xpath("//span[@class='label'][1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("About vegan food");
+        getDriver().findElement(By.xpath("//label[text()='Discard old builds']")).click();
+        getDriver().findElement(By.xpath("//label[@class='attach-previous '][1]")).click();
+        getDriver().findElement(By.xpath("//div//*[@formnovalidate='formNoValidate']")).click();
+        getDriver().findElement(By.xpath("//div//ol//li//a[@class='model-link']")).click();
+        getDriver().findElement(By.xpath("//td//div//a[@class='jenkins-table__button jenkins-!-build-color']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Online store']"))
+                .getText(), "Online store");
     }
 }

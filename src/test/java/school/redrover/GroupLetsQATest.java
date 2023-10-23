@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,11 +13,60 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.List;
 
 
 public class GroupLetsQATest extends BaseTest {
+
+    private boolean isItemTitleExists(String itemName){
+        List<WebElement> itemsList = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside span"));
+        boolean res = false;
+        if(itemsList.isEmpty()){
+            return res;
+        }else {
+            for (WebElement e : itemsList) {
+                if (e.getText().equals(itemName)) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private void createAnItem(String itemName) {
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(1));
+        String createdItemName = "New " + itemName;
+
+        if(isItemTitleExists(createdItemName)){
+            int randInt =((int)(Math.random()*100));
+            createdItemName = createdItemName +randInt;
+
+        }else{
+            createdItemName = createdItemName;
+        }
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(createdItemName);
+    try {
+        List<WebElement> items = getDriver().findElements(By.cssSelector(".label"));
+        for (WebElement el : items){
+            if (itemName.equals(el.getText())){
+                el.click();
+                break;
+            }
+        }
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        } catch (Exception timeoutException){
+            System.out.println("Error: Wrong Item name");
+        }
+    }
 
     @Test
     public void testDescriptionTextAreaAppears() {
@@ -30,7 +80,6 @@ public class GroupLetsQATest extends BaseTest {
         } catch (Exception TimeoutException) {
             Assert.assertTrue(false);
         }
-
     }
 
     @Test
@@ -149,12 +198,7 @@ public class GroupLetsQATest extends BaseTest {
 
     @Test
     public void testMyViewsLegendIconColor() {
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("123");
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        createAnItem("Freestyle project");
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
 
@@ -162,4 +206,179 @@ public class GroupLetsQATest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class = 'build-status-icon__wrapper icon-red icon-lg']")).getCssValue("color"), "rgba(230, 0, 31, 1)");
     }
+
+    @Test
+    public void testCreateRenameFolder() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("TestFolder01");
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        Actions action = new Actions(getDriver());
+        WebElement myfolder = getDriver().findElement(By.xpath("//a[@href='job/TestFolder01/']"));
+        action.moveToElement(myfolder);
+
+        getDriver().findElement(By.xpath("//*[@id='job_TestFolder01']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/TestFolder01/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")).sendKeys("-renamed");
+        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"job_TestFolder01-renamed\"]/td[3]/a/span")).getText(), "TestFolder01-renamed");
+    }
+
+    @Test
+    public void testTooltipSunIconText() {
+        createAnItem("Freestyle project");
+
+        Actions action = new Actions(getDriver());
+        action.moveToElement(
+                getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']"))
+                )
+                .perform();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon healthReport']/div/*"))
+                        .getAttribute("tooltip"),
+                "100%");
+    }
+
+    @Test
+    public void testCreatedFolderIsOpened(){
+        createAnItem("Folder");
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel h1")).getText(),"New Folder");
+
+    }
+
+    @Test
+    public void testJobAlreadyExists(){
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        createAnItem("Folder");
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Folder");
+        String actualdMessageText = wait.until(ExpectedConditions.
+                visibilityOfElementLocated((By.id("itemname-invalid")))).getText();
+
+        Assert.assertEquals(actualdMessageText,"» A job already exists with the name ‘New Folder’");
+
+    }
+
+    @Test
+    public void testEditDescription() throws URISyntaxException {
+        String userPageUrl = new URI(getDriver().getCurrentUrl()).resolve("/user/admin/").toString();
+        getDriver().get(userPageUrl);
+
+        WebElement editDescription = getDriver().findElement(By.id("description-link"));
+        editDescription.click();
+
+        WebElement descriptionText = getDriver().findElement(By.className("jenkins-input"));
+        descriptionText.clear();
+        descriptionText.sendKeys("abc");
+
+        WebElement saveButton = getDriver().findElement(By.className("jenkins-button--primary"));
+        saveButton.click();
+
+        WebElement description = getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]"));
+
+        Assert.assertEquals(description.getText(), "abc");
+    }
+
+    @Test
+    public void testCreateNewItemFromExistingIsDisplayed(){
+        boolean res;
+        try {
+            createAnItem("Pipeline");
+            getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+            getDriver().findElement(By.xpath("//div[@class='add-item-copy yui-ac']//img")).isDisplayed();
+            res = true;
+        } catch (Exception NoSuchElementException){
+            res = false;
+        }
+
+        Assert.assertTrue(res, "'Copy from' is not appears.");
+    }
+
+    @Test
+    public void testItemTitlesListForCopyByLetterIsDisplayed(){
+        createAnItem("Folder");
+        createAnItem("Folder");
+        createAnItem("Folder");
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Folder");
+        getDriver().findElement(By.id("from")).sendKeys("N");
+
+       Assert.assertTrue(getDriver().findElement(By.cssSelector(".yui-ac-content[style='width: 420px; height: 75px;']")).isDisplayed());
+    }
+
+    @Test
+    public void testItemFromOtherExistingListIsHighlighted(){
+        createAnItem("Folder");
+        createAnItem("Folder");
+        createAnItem("Folder");
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("New Folder");
+        getDriver().findElement(By.id("from")).sendKeys("N");
+        List<WebElement> s = getDriver().findElements(By.cssSelector(".yui-ac-content[style='width: 420px; height: 75px;'] .yui-ac-bd ul li"));
+        new Actions(getDriver())
+                .moveToElement(s.get(1))
+                .perform();
+        Assert.assertTrue(getDriver().findElement(By.cssSelector(".yui-ac-prehighlight")).isDisplayed());
+
+    }
+
+    @Test
+    public void testCreateNewItemFromOtherExisting(){
+        String newItem = "Item from New Folder";
+
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        getDriver().findElement(By.id("from")).sendKeys("N");
+        getDriver().findElement(By.xpath("//div[@class='yui-ac-content'][@style='width: 420px; height: 25px;'] //div //li[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Assert.assertTrue(isItemTitleExists(newItem));
+    }
+    @Test
+    public void testErrorSpecifyWhichJobToCopyRedirect(){
+        String newItem = "Item from New Folder";
+
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        WebElement copyFromField = getDriver().findElement(By.id("from"));
+        copyFromField.sendKeys("N");
+        copyFromField.clear();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                "Specify which job to copy");
+    }
+
+    @Test
+    public void testErrorNoSucJobRedirect(){
+        String newItem = "Item from New Folder";
+
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        WebElement copyFromField = getDriver().findElement(By.id("from"));
+        copyFromField.sendKeys("Test");
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                "No such job: Test");
+    }
+
+
 }

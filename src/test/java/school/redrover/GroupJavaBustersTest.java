@@ -7,8 +7,6 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -278,5 +276,51 @@ public class GroupJavaBustersTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                         By.xpath("//*[@id=\"jenkins\"]/footer/div/div[2]/button")).getText(),
                 "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void testCreateNewItemWithValidName() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                .sendKeys("3451643561");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject"))
+                .click();
+        getDriver().findElement(By.id("ok-button"))
+                .click();
+        assertEquals(getDriver().findElement(By.cssSelector("#breadcrumbs > li:nth-child(3) > a"))
+                .getText(), "3451643561");
+    }
+
+    @Test //negative test
+    public void testCreateNewItemWithNameFromSpecialCharacters() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                .sendKeys("@");
+        assertEquals(getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]"))
+                .getText(), "» ‘@’ is an unsafe character");
+    }
+
+    @Test
+    public void testOutOfBoundNameLength() {
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a"))
+                .click();
+        getDriver().findElement(By.className("jenkins-input"))
+                //252 symbols
+                .sendKeys("Далеко-далеко за словесными горами в стрчане " +
+                        "гласнцых и согласвных живут рыбные тексты. Вдали от всех живут они в " +
+                        "буквенных домах на берегу Семантика большого языкового океана. " +
+                        "Маленький ручеек Даль журчит по всей стране и обеспечивает ее всеми необходим");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject"))
+                .click();
+        getDriver().findElement(By.id("ok-button"))
+                .click();
+        assertEquals(getDriver().findElement(By.xpath("//*[@id=\"error-description\"]/h2"))
+                .getText(), "A problem occurred while processing the request.");
+
     }
 }

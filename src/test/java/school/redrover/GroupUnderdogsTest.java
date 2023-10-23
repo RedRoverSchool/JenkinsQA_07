@@ -3,10 +3,43 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.collections.Sets;
 import school.redrover.runner.BaseTest;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import static org.testng.Assert.assertEquals;
 
 public class GroupUnderdogsTest extends BaseTest {
+
+    private static final String STR_TEST = "test";
+
+    @Test
+    public void testNewProjectCreatedOlena() {
+        String randomName = UUID.randomUUID()
+                .toString()
+                .substring(0, 5);
+        WebElement newItem = getDriver().findElement(By.linkText("New Item"));
+        newItem.click();
+
+        WebElement projectNameField = getDriver().findElement(By.id("name"));
+        projectNameField.click();
+        projectNameField.sendKeys(randomName);
+
+        WebElement selectProjectType = getDriver().findElement(By.xpath("//span[text()='Freestyle project']"));
+        selectProjectType.click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        WebElement projectName = getDriver().findElement(By.xpath("//td[3]/a"));
+        String actualProjectName = projectName.getText();
+        assertEquals(actualProjectName, randomName);
+    }
 
     @Test
     public void testJenkinsVersionInFooter_tereshenkov29() {
@@ -18,41 +51,48 @@ public class GroupUnderdogsTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsLogOut_maksin() {
+    public void testJenkinsLogOut() {
 
-        getDriver().findElement(By.xpath("//*[@id='page-header']/div[3]/a[2]")).click();
+        getDriver().findElement(By.xpath("//span[normalize-space()='log out']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath
-                        ("//*[@id='main-panel']/div/h1")).getText(),
+                        ("//h1[normalize-space()='Sign in to Jenkins']")).getText(),
                 "Sign in to Jenkins");
+    }
+
+    private void createNewFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("(//input[@id='name'])[1]")).sendKeys(STR_TEST);
+
+        getDriver().findElement(By.xpath("//span[normalize-space()='Folder']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 
     @Test
     public void testVerifyIconSize() {
 
-        final String projectName = "test";
         final String background = "rgba(175, 175, 207, 0.176)";
 
-        getDriver().findElement(By.xpath("(//a[@href='/view/all/newJob'])[1]")).click();
-        getDriver().findElement(By.xpath("(//input[@id='name'])[1]")).sendKeys(projectName);
-        getDriver().findElement(By.xpath("(//span[normalize-space()='Folder'])[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
-        getDriver().findElement(By.xpath("(//a[normalize-space()='Dashboard'])[1]")).click();
+        createNewFolder();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-table__link > span")).getText(), projectName);
+        getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
 
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/div[2]/div[2]/div/div[1]/ol/li[2]")).click(); // M
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".jenkins-table__link > span")).getText(), STR_TEST);
+
+        getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']")).click(); // M
 
         getDriver().findElement(By.linkText("People")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[3]/div[1]/ol[1]/li[2]"))
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']"))
                 .getCssValue("background-color"), background);
 
         getDriver().findElement(By.linkText("Build History")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[6]/div[1]/ol[1]/li[2]"))
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']"))
                 .getCssValue("background-color"), background);
 
         getDriver().findElement(By.linkText("My Views")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("/html[1]/body[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/ol[1]/li[2]"))
+        Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class='jenkins-icon-size__items-item']"))
                 .getCssValue("background-color"), background);
     }
 
@@ -116,4 +156,32 @@ public class GroupUnderdogsTest extends BaseTest {
         Assert.assertEquals(value, "Test Description");
 
     }
+
+    @Test
+    public void testRestApiPageOpensAndHas3ApiOptions() {
+        getDriver().findElement(
+                By.xpath(
+                        "//*[@id='jenkins']/footer/div/div[contains(@class, 'page-footer__links')]/a[contains(@class, 'rest-api')]"
+                )
+        ).click();
+
+        List<WebElement> apiTypes = getDriver().findElements(By.xpath("//div[@id='main-panel']/dl/dt/a"));
+        Assert.assertEquals(apiTypes.size(), 3, "REST API page should always have 3 API types");
+
+        Set<String> apiTypeText = new HashSet<>();
+        for(WebElement el: apiTypes){
+            apiTypeText.add(el.getText());
+        }
+        Set<String> expected = Sets.newHashSet("XML API", "JSON API", "Python API");
+        Assert.assertEquals(apiTypeText, expected);
+    }
+
+    @Test
+    public void testKristinaSearchID(){
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/asynchPeople/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/thead/tr/th[2]/a")).getText(),"User ID");
+    }
+
 }

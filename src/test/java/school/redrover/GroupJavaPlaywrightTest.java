@@ -9,7 +9,7 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 
 public class GroupJavaPlaywrightTest extends BaseTest {
-@Ignore
+
     @Test
     public void testCreateFreeStyleProject() throws InterruptedException {
         String projectName = "Project1";
@@ -48,6 +48,7 @@ public class GroupJavaPlaywrightTest extends BaseTest {
 
         getDriver().findElement(By.id("description-link")).click();
 
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Simple test");
 
         getDriver().findElement(By.name("Submit")).click();
