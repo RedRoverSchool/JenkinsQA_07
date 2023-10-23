@@ -347,18 +347,98 @@ public class GroupLetsQATest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        List<WebElement> itemsList = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside span"));
-        boolean result = false;
-        for (WebElement e : itemsList) {
-            if (e.getText().equals(newItem)) {
-                result = true;
-                break;
-            }
-        }
+        Assert.assertTrue(isItemTitleExists(newItem));
+    }
+    @Test
+    public void testErrorSpecifyWhichJobToCopyRedirect(){
+        String newItem = "Item from New Folder";
 
-        Assert.assertTrue(result);
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        WebElement copyFromField = getDriver().findElement(By.id("from"));
+        copyFromField.sendKeys("N");
+        copyFromField.clear();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                "Specify which job to copy");
     }
 
+    @Test
+    public void testErrorNoSucJobRedirect(){
+        String newItem = "Item from New Folder";
 
+        createAnItem("Folder");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newItem);
+        WebElement copyFromField = getDriver().findElement(By.id("from"));
+        copyFromField.sendKeys("Test");
+        getDriver().findElement(By.id("ok-button")).click();
 
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("#main-panel p")).getText(),
+                "No such job: Test");
+    }
+    @Ignore
+    @Test
+    public void testDashboardDropDownMenuTools() throws InterruptedException {
+        Actions action = new Actions(getDriver());
+        action.moveToElement(
+                getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href = '/']")))
+                .perform();
+
+        Thread.sleep(100);
+        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']//button[@class = 'jenkins-menu-dropdown-chevron']")).click();
+
+        action.moveToElement(
+                getDriver().findElement(By.xpath("//a[@class = 'jenkins-dropdown__item' and @href = '/manage']")))
+                .perform();
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage/configureTools']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h1")).getText(),"Tools");
+    }
+
+    @Ignore
+    @Test
+    public void testUseSearchForCreatedJob() {
+        createAnItem("Freestyle project");
+        String tooltipExpected = getDriver().findElement(By.xpath("//td/a[@class = 'jenkins-table__link model-link inside']")).getText();
+
+        getDriver()
+                .findElement(By.xpath("//input[@role = 'searchbox']"))
+                .sendKeys("new");
+
+        String tooltipActual = getDriver().findElement(By.xpath("//div[@id = 'search-box-completion']//li[1]")).getText();
+        Assert.assertEquals(tooltipActual, tooltipExpected);
+    }
+
+    @Test
+    public void testNewStyleCreation() {
+        createAnItem("Freestyle project");
+
+        getDriver().findElement(By.xpath("//a[@href = '/newView']")).click();
+
+        String styleNameInput = "My new style";
+        getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(styleNameInput);
+
+        getDriver().findElement(By.xpath("//fieldset[@class = 'jenkins-fieldset']//label[@for = 'hudson.model.ListView']")).click();
+
+        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//input[@name = 'item_New Freestyle project']")))
+                .click()
+                .perform();
+
+        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tabBar']//a[@href = '/view/My%20new%20style/']")).getText(), styleNameInput);
+    }
+
+    @Test
+    public void testLogout() {
+        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div/h1")).getText(), "Sign in to Jenkins");
+    }
 }
