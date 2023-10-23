@@ -417,6 +417,8 @@ public class GroupLetsQATest extends BaseTest {
     public void testNewStyleCreation() {
         createAnItem("Freestyle project");
 
+        //Actions action = new Actions(getDriver());
+
         getDriver().findElement(By.xpath("//a[@href = '/newView']")).click();
 
         String styleNameInput = "My new style";
@@ -426,10 +428,19 @@ public class GroupLetsQATest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
-//        getDriver().findElement(By.xpath("//input[@name = 'item_New Freestyle project']")).click(); - the line will be discussed during our team meeting, that's why I left it commented in the code
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//input[@name = 'item_New Freestyle project']")))
+                .click()
+                .perform();
 
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tabBar']//a[@href = '/view/My%20new%20style/']")).getText(), styleNameInput);
+    }
+
+    @Test
+    public void testLogout() {
+        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div/h1")).getText(), "Sign in to Jenkins");
     }
 }
