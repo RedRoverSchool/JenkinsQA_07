@@ -127,15 +127,15 @@ public class LocomotiveGroupTest extends BaseTest {
         Assert.assertEquals(toolTipForArchitect.getAttribute("aria-describedby"), "tippy-6", "Параметры различаются");
 
         action.moveToElement(toolTipForAnswerTime).perform();
-        Assert.assertEquals(toolTipForAnswerTime.getAttribute("aria-describedby"), "tippy-7", "Параметры различаются");
+        Assert.assertEquals(toolTipForAnswerTime.getAttribute("aria-describedby"), "tippy-12", "Параметры различаются");
 
         action.moveToElement(toolDiffForSystemTime).perform();
-        Assert.assertEquals(toolDiffForSystemTime.getAttribute("aria-describedby"), "tippy-8", "Параметры различаются");
+        Assert.assertEquals(toolDiffForSystemTime.getAttribute("aria-describedby"), "tippy-13", "Параметры различаются");
 
         action.moveToElement(toolFreeTimeSpace).perform();
-        Assert.assertEquals(toolFreeTimeSpace.getAttribute("aria-describedby"), "tippy-9", "Параметры различаются");
+        Assert.assertEquals(toolFreeTimeSpace.getAttribute("aria-describedby"), "tippy-14", "Параметры различаются");
 
         action.moveToElement(toolFreeDiscSpace).perform();
-        Assert.assertEquals(toolFreeDiscSpace.getAttribute("aria-describedby"), "tippy-11", "Параметры различаются");
+        Assert.assertEquals(toolFreeDiscSpace.getAttribute("aria-describedby"), "tippy-16", "Параметры различаются");
     }
 }
