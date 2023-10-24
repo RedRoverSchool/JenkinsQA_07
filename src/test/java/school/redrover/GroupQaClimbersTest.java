@@ -191,13 +191,19 @@ public class GroupQaClimbersTest extends BaseTest {
                 .build()
                 .perform();
 
-        List<WebElement> dashboardListInUpperMenu = getDriver().findElements(
-                By.xpath("//a[@class='jenkins-dropdown__item']")
-        );
-        List<WebElement> dashboardListInSideMenu = getDriver().findElements(
-                By.xpath("//div[@class='task ']")
-        );
+        getDriver().findElement(
+                By.xpath("(//a[@class='jenkins-dropdown__item'])[1]")).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@class='add-item-name']/label")).getText(),
+                "Enter an item name");
 
-        Assert.assertEquals(dashboardListInSideMenu.size(), dashboardListInUpperMenu.size());
+//        List<WebElement> dashboardListInUpperMenu = getDriver().findElements(
+//                By.xpath("//a[@class='jenkins-dropdown__item']")
+//        );
+//        List<WebElement> dashboardListInSideMenu = getDriver().findElements(
+//                By.xpath("//div[@class='task ']")
+//        );
+//
+//        Assert.assertEquals(dashboardListInSideMenu.size(), dashboardListInUpperMenu.size());
     }
 }
