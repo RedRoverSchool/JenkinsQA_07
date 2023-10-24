@@ -13,7 +13,7 @@ public class ArSaFirstTest extends BaseTest {
     private static final String itemName = "Test Freestyle Project";
     private static final String encodedItemName = itemName.replace(" ", "%20");
 
-    public void createFreeStyleProject() {
+    private void createFreeStyleProject() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(itemName);
@@ -23,7 +23,7 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    public void createPipeline() {
+    private void createPipeline() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test Pipeline");
@@ -33,7 +33,7 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    public void createMultiConfigurationProject() {
+    private void createMultiConfigurationProject() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test Multi-configuration Project");
@@ -43,7 +43,7 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    public void createFolder() {
+    private void createFolder() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test Folder");
@@ -53,7 +53,7 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    public void createMultiBranchPipeline() {
+    private void createMultiBranchPipeline() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test Multibranch Pipeline");
@@ -63,7 +63,7 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    public void createOrganizationFolder() {
+    private void createOrganizationFolder() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("Test Organization Folder");
