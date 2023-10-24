@@ -26,12 +26,12 @@ public class GroupJavaBustersTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleJobCorrectName() {
-        final String JOB_NAME = "JobTest";
+        final String jobName = "JobTest";
 
-        createFreestyleJob(JOB_NAME);
+        createFreestyleJob(jobName);
         getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath
-                ("//a[contains(@href, 'JobTest')]/span[text() = 'JobTest']")).getText(), JOB_NAME);
+                ("//a[contains(@href, 'JobTest')]/span[text() = 'JobTest']")).getText(), jobName);
 
     }
 
