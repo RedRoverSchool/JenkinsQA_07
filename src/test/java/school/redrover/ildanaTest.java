@@ -44,20 +44,42 @@ public class ildanaTest extends BaseTest {
     @Test
     public void testSameItemCreate(){
 
-        WebElement newSameItem = getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']"));
+        WebElement newItem = getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']"));
+        newItem.click();
+
+        WebElement itemName = getDriver().findElement(By.xpath("//div[@class='add-item-name']//input[@name='name']"));
+        itemName.sendKeys("Ildana Frolova");
+
+        WebElement projectType = getDriver().findElement(By.xpath("//ul[@class='j-item-options']/li[@class='hudson_model_FreeStyleProject']"));
+        projectType.click();
+
+        JavascriptExecutor js = (JavascriptExecutor)getDriver();
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+        WebElement submitButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
+        submitButton.click();
+
+        WebElement saveButton = getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']"));
+        saveButton.click();
+
+        WebElement daschbord = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[text()='Dashboard']"));
+        daschbord.click();
+
+        WebElement newSameItem = getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']"));
         newSameItem.click();
 
-        WebElement itemSameName = getDriver().findElement(By.xpath("//div[@class='add-item-name']//input[@name='name']"));
+        WebElement itemSameName = getDriver().findElement(By.xpath("//input[@name='name']"));
         itemSameName.sendKeys("Ildana Frolova");
 
         Assert.assertEquals(
-        getDriver().findElement(By.xpath("//div[@class='add-item-name']//div[@id='itemname-invalid']"))
-                .getText(),"» A job already exists with the name ‘Ildana Frolova’"
+                getDriver().findElement(By.xpath("//div[@class='add-item-name']//div[@id='itemname-invalid']"))
+                        .getText(),"» A job already exists with the name ‘Ildana Frolova’"
         );
 
     }
 
 }
+
 
 
 
