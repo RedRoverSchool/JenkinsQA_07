@@ -1,5 +1,6 @@
 package school.redrover;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -175,5 +176,28 @@ public class GroupQaClimbersTest extends BaseTest {
         );
 
         Assert.assertEquals(projectsName.getText(), "project-2");
+    }
+
+    @Test
+    public void testDashboardList() {
+        Actions action = new Actions(getDriver());
+        WebElement dashboard = getDriver().findElement(
+                By.xpath("//ol[@class='jenkins-breadcrumbs__list']/li[1]/a")
+        );
+        action.moveToElement(dashboard)
+                .moveToElement(getDriver().findElement(
+                        By.xpath("//div[@id='breadcrumbBar']//button[@class='jenkins-menu-dropdown-chevron']")))
+                .click()
+                .build()
+                .perform();
+
+        List<WebElement> dashboardListInUpperMenu = getDriver().findElements(
+                By.xpath("//a[@class='jenkins-dropdown__item']")
+        );
+        List<WebElement> dashboardListInSideMenu = getDriver().findElements(
+                By.xpath("//div[@class='task ']")
+        );
+
+        Assert.assertEquals(dashboardListInSideMenu.size(), dashboardListInUpperMenu.size());
     }
 }
