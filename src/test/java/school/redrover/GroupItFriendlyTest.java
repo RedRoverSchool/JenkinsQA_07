@@ -289,4 +289,30 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h2[@class='h4']")).isDisplayed(), "This folder is empty");
     }
 
+
+    /**
+     * CreateNewSimpeItem - создаёт пустой и без настроек New Item из
+     * Freesstyle project c именем Test+random name и возвращет на DashBoard.
+     * @param ranmdName - Имя (название) Item.
+     */
+    public void createNewSimpeItem(String ranmdName) {
+       // String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(ranmdName);
+        getDriver().findElement(By.xpath("//span[normalize-space()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        getDriver().getCurrentUrl();
+    }
+    @Test
+    public void testUrlIsContainsNameProgect () {
+        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        createNewSimpeItem(randomUsername);
+        System.out.println(getDriver().getCurrentUrl());
+        List <WebElement> list = getDriver()
+                .findElements(By.xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
+        list.get(0).click();
+        String currentUrl = getDriver().getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains(randomUsername));
+    }
 }

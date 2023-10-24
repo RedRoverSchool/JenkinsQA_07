@@ -32,6 +32,19 @@ public class GroupIntroVertsQaTest extends BaseTest {
         String logoutButton = getDriver().findElement(By.xpath("//*/main/div/h1")).getText();
         Assert.assertEquals(logoutButton, "Sign in to Jenkins");
     }
+
+    @Test(description = "Create new job")
+    public void testNewFreeJob(){
+        getDriver().findElement(By.xpath("//*[@href = 'newJob']")).click();
+        WebElement setJobNames = getDriver().findElement(By.xpath("//input[@name = 'name']"));
+        String nameJob = "My first job";
+        setJobNames.sendKeys(nameJob);
+        getDriver().findElement(By.xpath("//li[@class = 'hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).submit();
+        getDriver().findElement(By.xpath("//div[@* = 'rowSetStart28']/div[1]/div/span/label")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).submit();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class = 'job-index-headline page-headline']")).getText(), "Project " + nameJob);
+    }
     // endregion
 
     // region AkiMiraTest

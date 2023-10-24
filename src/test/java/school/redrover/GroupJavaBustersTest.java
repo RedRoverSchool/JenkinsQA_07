@@ -7,83 +7,32 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 
-
 public class GroupJavaBustersTest extends BaseTest {
 
-    @Ignore
-    @Test
-    public void testMovieSearch() {
 
-        getDriver().get("https://letterboxd.com");
-
-        WebElement popupButton = findPopUp(By.xpath("//button[@aria-label='Consent']"));
-
-        if (popupButton != null) {
-            popupButton.click();
-        }
-
-        WebElement searchField = getDriver().findElement(By.id("search-q"));
-        WebElement submitButton = getDriver().findElement(By.xpath("//input[@class='action']"));
-
-        searchField.sendKeys("Merry Christmas, Mr. Lawrence");
-        submitButton.click();
-
-        WebElement movie = getDriver().findElement(By.xpath("//span[@class='film-title-wrapper']/a[contains(@href, 'lawrence')]"));
-        String value = movie.getText();
-        Assert.assertEquals(value, "Merry Christmas, Mr. Lawrence");
-    }
-
-    @Ignore
-    @Test
-    public void testSignInWithEmptyFields() {
-
-        String fieldValue = "";
-
-        getDriver().get("https://letterboxd.com");
-
-        WebElement popupButton = findPopUp(By.xpath("//button[@aria-label='Consent']"));
-
-        if (popupButton != null) {
-            popupButton.click();
-        }
-
-        WebElement signInButton = getDriver().findElement(By.xpath("//a[@href='/sign-in/']"));
-        signInButton.click();
-
-        WebElement usernameForm = getDriver().findElement(By.id("username"));
-        WebElement passwordForm = getDriver().findElement(By.id("password"));
-        WebElement signInButtonForm = getDriver().findElement(By.xpath("//input[@class='button -action button-green']"));
-
-        usernameForm.sendKeys(fieldValue);
-        passwordForm.sendKeys(fieldValue);
-        signInButtonForm.click();
-
-        WebElement message = getDriver().findElement(By.xpath("//div[@class='errormessage']//p"));
-        String value = message.getText();
-        Assert.assertEquals(value, "Your credentials don’t match. It’s probably attributable to human error.");
-
-    }
-    @Ignore
-    @Test
-    public void testWelcomeJenkins() {
-
-        WebElement mainHeading = getDriver().findElement(By.cssSelector("h1"));
-        String value = mainHeading.getText();
-        Assert.assertEquals(value, "Welcome to Jenkins!");
+    private void createFreestyleJob(String jobName) {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id = 'name']")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//li[contains (@class, 'FreeStyleProject')]")).click();
+        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
 
     }
 
-    @Ignore
-    private WebElement findPopUp(By locator) {
-        try {
-            return getDriver().findElement(locator);
-        } catch (org.openqa.selenium.NoSuchElementException e) {
-            return null;
-        }
+    @Test
+    public void testCreateFreestyleJobCorrectName() {
+        final String jobName = "JobTest";
+
+        createFreestyleJob(jobName);
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath
+                ("//a[contains(@href, 'JobTest')]/span[text() = 'JobTest']")).getText(), jobName);
+
     }
 
     @Ignore
@@ -212,11 +161,12 @@ public class GroupJavaBustersTest extends BaseTest {
         typeSearch.submit();
 
         String linkToProduct = getDriver()
-            .findElement(By.xpath("//*[@id='search-shop-grid']/div[1]/div/div[3]/h5/a"))
-            .getAttribute("href");
+                .findElement(By.xpath("//*[@id='search-shop-grid']/div[1]/div/div[3]/h5/a"))
+                .getAttribute("href");
 
         assertTrue(linkToProduct.contains("dress"));
     }
+
     @Ignore
     @Test
     public void testDeleteFromBim() {
@@ -235,10 +185,10 @@ public class GroupJavaBustersTest extends BaseTest {
 
         getDriver().findElement(By.className("pseudo-add-to-cart")).click();
         getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div[1]/form/table/tbody/tr/td[2" +
-            "]/div/span[2]")).click();
+                "]/div/span[2]")).click();
 
         WebElement foundElement = getDriver().findElement(By.xpath("//*[@id=\"mini-cart\"]/div/div" +
-            "/div[2]/strong"));
+                "/div[2]/strong"));
 
         assertTrue(foundElement.getText().contains("Your cart is empty"));
     }
@@ -252,7 +202,7 @@ public class GroupJavaBustersTest extends BaseTest {
         getDriver().findElement(By.linkText("End of Series")).click();
 
         assertEquals(getDriver().getCurrentUrl(), "https://shop.studiob3" +
-            ".pl/product-category/end-of-series/");
+                ".pl/product-category/end-of-series/");
     }
 
     @Ignore
@@ -261,7 +211,7 @@ public class GroupJavaBustersTest extends BaseTest {
 
 
     }
-    
+
     @Test
     public void testSignInJenkins() {
 
