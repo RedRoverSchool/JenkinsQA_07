@@ -5,65 +5,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
-
-import static org.testng.Assert.assertEquals;
 
 
 public class GroupBrainBuildersTest extends BaseTest {
-
-    @Ignore
-    @Test
-    public void testAskentLogIn() throws InterruptedException {
-        getDriver().get("https://www.askent.ru/cabinet/order/?show_all=Y");
-
-        String title = getDriver().getTitle();
-        assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
-
-        WebElement emailField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div/input"));
-        emailField.click();
-        emailField.sendKeys("testaccaskenttest@gmail.com");
-
-        WebElement passwordField = getDriver().findElement(By.xpath("//form[@id='loginform']/div[3]/div[2]/input"));
-        passwordField.click();
-        passwordField.sendKeys("testpasswordaskent123!");
-
-        WebElement submitButtonLogIn = getDriver().findElement(By.xpath("//form[@id='loginform']/a"));
-        submitButtonLogIn.click();
-        Thread.sleep(1000);
-
-        WebElement personalAccountTitle = getDriver().findElement(By.cssSelector("h1"));
-        String resultTitle = personalAccountTitle.getText();
-        Assert.assertEquals(resultTitle, "Личный кабинет");
-    }
-
-    @Ignore
-    @Test
-    public void testAskentAddToCart() throws InterruptedException {
-        getDriver().get("https://www.askent.ru/cat/bumazhniki/portmone_308/");
-
-        String title = getDriver().getTitle();
-        assertEquals(title, "МИНИ ПОРТМОНЕ MODULE , пол: Женский, цвет: breen, размер: 100х080х035. Купить в интернет-магазине ASKENT. Цена 4 490 руб.");
-
-        if (getDriver().findElement(By.xpath("//*[@id = 'cookie_accept']")).isDisplayed()) {
-            WebElement cookieButton = getDriver().findElement(By.xpath("//*[@id = 'cookie_accept']"));
-            cookieButton.click();
-        }
-
-        WebElement addToCartButton = getDriver().findElement(By.xpath("//*[@class = 'optionsBlock__add add-cart-statistics']"));
-        addToCartButton.click();
-
-        WebElement cartIcon = getDriver().findElement(By.xpath("//*[@class = 'cart_icon']"));
-        cartIcon.click();
-        Thread.sleep(2000);
-
-        WebElement itemName = getDriver().findElement(By.xpath("//*[@href = '/cat/bumazhniki/portmone_308/']"));
-        String resultName = itemName.getText();
-        Assert.assertEquals(resultName, "МИНИ ПОРТМОНЕ MODULE");
-    }
 
     @Test
     public void testJenkinsAdminStatus() {
@@ -77,28 +23,89 @@ public class GroupBrainBuildersTest extends BaseTest {
         Assert.assertTrue(getDriver().getPageSource().contains(userName));
     }
 
-    @Ignore
-    @Test
-    public void testAskentSearch() {
-        getDriver().get("https://www.askent.ru/");
+    private void folderCreation(String folderName) {
 
-        String title = getDriver().getTitle();
-        assertEquals(title, "ASKENT - российский бренд аксессуаров из натуральной кожи");
-
-        WebElement magnifierIcon = getDriver().findElement(By.className("search_icon"));
-        magnifierIcon.click();
-
-        WebElement searchTextField = getDriver().findElement(By.name("q"));
-        searchTextField.click();
-        searchTextField.sendKeys("сумка");
-
-        WebElement magnifierButton = getDriver().findElement(By.xpath("//button[@type='submit']"));
-        magnifierButton.click();
-
-        WebElement searchResult = getDriver().findElement(By.cssSelector("h1"));
-        String result = searchResult.getText();
-        Assert.assertEquals(result, "Результаты поиска");
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
+
+    @Test
+    public void testJenkinsFolderCreationWithValidName() {
+
+        String folderName= "Folder1";
+        folderCreation(folderName);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
+
+    }
+
+    @Test
+    public void testJenkinsFolderCreationWithEmptyName() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='input-validation-message']")).isDisplayed());
+    }
+
+    @Test
+    public void testJenkinsFolderRenameWithValidNameFromDropDownMenu() {
+
+        String folderName = "Folder1";
+        String renamedFolder = "Folder111";
+        folderCreation(folderName);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(renamedFolder);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
+
+    }
+
+    @Test
+    public void testJenkinsFolderRenameWithValidNameFromLeftMenu() {
+
+        String folderName = "Folder1";
+        String renamedFolder = "Folder111";
+        folderCreation(folderName);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + folderName + "/']")).click();
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(renamedFolder);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
+
+    }
+
+    @Test
+    public void testJenkinsTwoFoldersCreationWithValidNames() {
+
+        String folderName1= "Folder11";
+        folderCreation(folderName1);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        String folderName2= "Folder22";
+        folderCreation(folderName2);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName1 + "']")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName2 + "']")).isDisplayed());
+
+    }
+
 
     @Test
     public void testJenkinsCredentialsTooltip() {

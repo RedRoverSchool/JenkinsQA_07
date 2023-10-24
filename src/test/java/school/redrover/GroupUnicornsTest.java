@@ -512,4 +512,14 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getTitle(), expectedTitle);
     }
+
+    @Test
+    public void testJenkinsSearchButton () {
+
+        getDriver().findElement(By.className("main-search__icon-trailing")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='search-box']")).getText(),"Search Box");
+    }
+
+
 }

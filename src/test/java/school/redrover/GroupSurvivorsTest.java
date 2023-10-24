@@ -26,11 +26,15 @@ public class GroupSurvivorsTest extends BaseTest {
     }
 
     @Test
-    public void testIuliaFindIconLegend() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
-        getDriver().findElement(By.xpath("//*[@id='button-icon-legend']")).click();
+    public void testEvgenyCreateFirstProject() {
+        getDriver().findElement(By.xpath("//*[@href = 'newJob']")).click();
+        getDriver().findElement(By.xpath("//*[@name = 'name']")).sendKeys("First project test");
+        getDriver().findElement(By.xpath("//*[@class = 'category'][1]//li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id = 'ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[contains(text(), 'Save')]")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='jenkins-modal__title']")).getText(), "Icon legend");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".job-index-headline.page-headline")).getText(),
+                "Project First project test");
     }
 }
 

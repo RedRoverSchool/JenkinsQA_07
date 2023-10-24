@@ -9,39 +9,7 @@ import org.testng.annotations.Test;
 
 import school.redrover.runner.BaseTest;
 
-import java.util.concurrent.TimeUnit;
-
 public class LocomotiveGroupTest extends BaseTest {
-
-    @Ignore
-    @Test
-    public void checkRadioButton() throws InterruptedException {
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("https://demoqa.com/radio-button");
-
-
-        selectRadioButton(driver, "Yes");
-        WebElement textRadioButton = driver.findElement(By.xpath("//p[@class='mt-3']"));
-        Assert.assertEquals(textRadioButton.getText(), "You have selected Yes");
-
-        Thread.sleep(3000);
-
-        selectRadioButton(driver, "Impressive");
-        Assert.assertEquals(textRadioButton.getText(), "You have selected Impressive");
-
-        Thread.sleep(3000);
-
-        driver.close();
-    }
-
-    @Ignore
-    public static void selectRadioButton(WebDriver driver, String value) {
-        WebElement RadioButton = driver.findElement(By.xpath("//label[normalize-space()='" + value + "']"));
-        RadioButton.click();
-    }
 
       @Test
     public void testYandexSearchBar(){
@@ -205,4 +173,18 @@ public class LocomotiveGroupTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/job/Folder1/' and @class='model-link']")).getText(),"Folder1");
     }
+
+    @Test
+    public void testSearchDocumentationAboutJenkins () {
+        getDriver().findElement(By.xpath
+                ("//div[@class='page-footer__links']/a[@href='api/']")).click();
+        getDriver().findElement(By.xpath
+                ("//a[@href='https://www.jenkins.io/redirect/remote-api']")).click();
+        WebElement searchText = getDriver().findElement(By.xpath("//a[contains(text(),'> User Documentation Home')]"));
+        String ExpectedDocument = searchText.getText();
+
+        Assert.assertEquals(ExpectedDocument, "> User Documentation Home");
+
+    }
+
 }
