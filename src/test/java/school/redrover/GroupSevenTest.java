@@ -272,7 +272,7 @@ public class GroupSevenTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Yuliya Project1']")).getText(), JOB_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Yuliya Project2']")).getText(), JOB_NAME);
     }
 }
 
