@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -107,5 +108,34 @@ public class LocomotiveGroupTest extends BaseTest {
           String pageNewJobUrl = "http://localhost:8080/view/all/newJob";
 
           Assert.assertEquals(pageCurrentUrl, pageNewJobUrl);
+    }
+
+    @Test
+    public void testForToolTipInNodeMonitoringPage() {
+        Actions action = new Actions(getDriver());
+
+        getDriver().findElement(By.xpath("//a[text()='Состояние сборщиков']//parent::*")).click();
+        getDriver().findElement(By.xpath("//span[text()='Node Monitoring']/ancestor::span")).click();
+
+        WebElement toolTipForArchitect = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Архитектура']"));
+        WebElement toolTipForAnswerTime = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Время ответа']"));
+        WebElement toolDiffForSystemTime = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Разница в настройке системного времени']"));
+        WebElement toolFreeTimeSpace = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Свободное временное пространство']"));
+        WebElement toolFreeDiscSpace = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Свободное дисковое пространство']"));
+
+        action.moveToElement(toolTipForArchitect).perform();
+        Assert.assertEquals(toolTipForArchitect.getAttribute("aria-describedby"), "tippy-6", "Параметры различаются");
+
+        action.moveToElement(toolTipForAnswerTime).perform();
+        Assert.assertEquals(toolTipForAnswerTime.getAttribute("aria-describedby"), "tippy-7", "Параметры различаются");
+
+        action.moveToElement(toolDiffForSystemTime).perform();
+        Assert.assertEquals(toolDiffForSystemTime.getAttribute("aria-describedby"), "tippy-8", "Параметры различаются");
+
+        action.moveToElement(toolFreeTimeSpace).perform();
+        Assert.assertEquals(toolFreeTimeSpace.getAttribute("aria-describedby"), "tippy-9", "Параметры различаются");
+
+        action.moveToElement(toolFreeDiscSpace).perform();
+        Assert.assertEquals(toolFreeDiscSpace.getAttribute("aria-describedby"), "tippy-11", "Параметры различаются");
     }
 }
