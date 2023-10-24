@@ -146,6 +146,7 @@ public class GroupQaClimbersTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
+
     @Test
     public void testNewJobIsSuccessfullyBuilt() {
         createNewFreestyleProject("project-1");
