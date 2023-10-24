@@ -23,21 +23,19 @@ public class GroupJavaJitsuTest  extends BaseTest {
     private static final String FOLDER_NAME = "NewFolder";
     private static final String DESCRIPTION_TEXT = "NewDescription";
 
-    public void createFreestyleProject(String projectName) {
-
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
+    private void createFreestyleProject(String projectName) {
+        getDriver().findElement(By.cssSelector("a[href = '/view/all/newJob']")).click();
         getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(projectName);
 
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.cssSelector("button[type='submit']")).click();
+        getDriver().findElement(By.cssSelector("button[type = 'submit']")).click();
 
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
     }
 
     @Test
     public void testFirst() throws InterruptedException {
-
-       WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
        newItem.click();
        WebElement itemName = getDriver().findElement(By.id("name"));
        itemName.sendKeys("NewProject3");
@@ -52,7 +50,6 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testNewFreestyleProject() throws InterruptedException {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys("NewFreestyleProject");
         getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
@@ -63,29 +60,26 @@ public class GroupJavaJitsuTest  extends BaseTest {
 
     @Test
     public void testFreestyleProject() {
-
         createFreestyleProject(PROJECT_NAME);
-        WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
+        WebElement freestyleProjectName = getDriver().findElement(By.cssSelector("h1[class*= 'headline']"));
         Assert.assertEquals("Project " + PROJECT_NAME, freestyleProjectName.getText());
     }
 
     @Test
     public void testRenameFreestyleProject() {
-
         createFreestyleProject(PROJECT_NAME);
-        getDriver().findElement(By.cssSelector("a[href*='rename']")).click();
+        getDriver().findElement(By.cssSelector("a[href*= 'rename']")).click();
 
-        getDriver().findElement(By.cssSelector("input[name='newName']")).clear();
-        getDriver().findElement(By.cssSelector("input[name='newName']")).sendKeys(RENAME_PROJECT);
-        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+        getDriver().findElement(By.cssSelector("input[name = 'newName']")).clear();
+        getDriver().findElement(By.cssSelector("input[name = 'newName']")).sendKeys(RENAME_PROJECT);
+        getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
 
-        WebElement renamedProjectName = getDriver().findElement(By.cssSelector("h1[class*='headline']"));
+        WebElement renamedProjectName = getDriver().findElement(By.cssSelector("h1[class*= 'headline']"));
         Assert.assertEquals("Project " + RENAME_PROJECT, renamedProjectName.getText());
     }
 
     @Test
     public void testCreateFolder() {
-
         getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
         getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(FOLDER_NAME);
         getDriver().findElement(By.cssSelector(".com_cloudbees_hudson_plugins_folder_Folder")).click();
@@ -138,5 +132,15 @@ public class GroupJavaJitsuTest  extends BaseTest {
         getDriver().findElement(By.xpath("//button[contains(text(),'Enable')]")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[contains(text(),'Disable Project')]")).getText(), "Disable Project");
+    }
+    @Test
+    public void testAddDescriptionFreestyleProject() {
+        createFreestyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.cssSelector("a[href*= 'configure']")).click();
+        getDriver().findElement(By.cssSelector("textarea[name = 'description']")).sendKeys(DESCRIPTION_TEXT);
+        getDriver().findElement(By.cssSelector("button[class = 'jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), DESCRIPTION_TEXT);
     }
 }

@@ -10,18 +10,19 @@ import school.redrover.runner.BaseTest;
 
 public class GroupForwardTest extends BaseTest {
 
-    @Ignore
+
     @Test
-    public void test_URL_WhenClickingOnMyViewsButton() {
+    public void testH1BeforeClickingOnLogOutButton() {
 
-        String expectedResult = "http://localhost:8080/me/my-views/view/all/";
+        String expectedResult = "Sign in to Jenkins";
 
-        WebElement myViewsButton = getDriver().findElement(By.xpath(
-                "//a[@href='/me/my-views']"));
+        WebElement logOutButton = getDriver().findElement(By.xpath(
+                "//a[ @href = '/logout']"));
+        logOutButton.click();
 
-        myViewsButton.click();
+        WebElement h1OnStartPage = getDriver().findElement(By.xpath("//h1"));
 
-        String actualResult = getDriver().getCurrentUrl();
+        String actualResult = h1OnStartPage.getText();
 
         Assert.assertEquals(actualResult, expectedResult);
     }

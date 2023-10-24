@@ -42,6 +42,27 @@ public class GroupCoffeeCodersTest extends BaseTest {
         Assert.assertEquals(value, "My new folder");
 
     }
+
+    @Test
+    public void testBuildHistory() {
+        getDriver().findElement(By.linkText("Build History")).click();
+
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//h1")).getText(),"Build History of Jenkins");
+    }
+
+    @Test
+    public void testCreateFreestyleProject() {
+        getDriver().findElement(By.xpath("//a[@class='task-link '][1]")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("asdf");
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//div[@id='main-panel']/h1")).getText(),"Project asdf");
+
+    }
 }
 
 

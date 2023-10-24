@@ -1,9 +1,12 @@
 package school.redrover;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,5 +110,70 @@ public class GroupQaClimbersTest extends BaseTest {
         getDriver().findElement(By.className("jenkins-button--primary")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "");
+    }
+
+    @Test
+    public void testToolsHeaderInToolsMenu() {
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href = 'configureTools']")).click();
+
+        String actualResult = getDriver().findElement(By.cssSelector(".jenkins-app-bar__content >h1")).getText();
+
+        Assert.assertEquals(actualResult,"Tools");
+    }
+
+    @Test
+    public void testDashboardAddDescription (){
+
+        getDriver().findElement(By.xpath("//*[@id='description-link']")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='description']/form/div[1]/div[1]/textarea")).sendKeys("test");
+
+        getDriver().findElement(By.xpath("//*[@id='description']/form/div[2]/button")).click();
+
+        String actualResult = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
+
+        Assert.assertEquals(actualResult,"test");
+    }
+
+    private void createNewFreestyleProject(String projectName) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
+                .sendKeys(projectName);
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    }
+
+    @Test
+    public void testNewJobIsSuccessfullyBuilt() {
+        createNewFreestyleProject("project-1");
+
+        getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]"))
+                .click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[@class='model-link inside build-link display-name']")))
+                        .click();
+        String title = getDriver().findElement(
+                By.xpath("//span[@class='build-status-icon__outer']/*[name()='svg']"))
+                .getAttribute("title");
+        String expectedTitle = "Success";
+
+        Assert.assertEquals(title, expectedTitle);
+    }
+
+    @Test
+    public void testProjectsNameOnMainPage() {
+        createNewFreestyleProject("project-2");
+
+        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+        WebElement projectsName = getDriver().findElement(
+                By.xpath("//a[@class='jenkins-table__link model-link inside']/span")
+        );
+
+        Assert.assertEquals(projectsName.getText(), "project-2");
     }
 }

@@ -32,6 +32,19 @@ public class GroupIntroVertsQaTest extends BaseTest {
         String logoutButton = getDriver().findElement(By.xpath("//*/main/div/h1")).getText();
         Assert.assertEquals(logoutButton, "Sign in to Jenkins");
     }
+
+    @Test(description = "Create new job")
+    public void testNewFreeJob(){
+        getDriver().findElement(By.xpath("//*[@href = 'newJob']")).click();
+        WebElement setJobNames = getDriver().findElement(By.xpath("//input[@name = 'name']"));
+        String nameJob = "My first job";
+        setJobNames.sendKeys(nameJob);
+        getDriver().findElement(By.xpath("//li[@class = 'hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).submit();
+        getDriver().findElement(By.xpath("//div[@* = 'rowSetStart28']/div[1]/div/span/label")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).submit();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@class = 'job-index-headline page-headline']")).getText(), "Project " + nameJob);
+    }
     // endregion
 
     // region AkiMiraTest
@@ -70,4 +83,42 @@ public class GroupIntroVertsQaTest extends BaseTest {
     }
     // endregion
 
+    @Test
+    public void testCreateNewJob() {
+        String jobName = "TestJob";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//li[contains(@class, 'jenkins_branch_OrganizationFolder')]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), jobName);
+    }
+
+    @Test
+    public void testAddDescription() {
+        String description = "Test description for jenkins";
+
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='description']")).getText().contains(description));
+    }
+
+    @Test
+    public void testDeletePipeline(){
+        String pipelineName = "Jenkins test pipeline";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(pipelineName);
+        getDriver().findElement(By.xpath("//li[contains(@class, 'org_jenkinsci_plugins_workflow_job_WorkflowJob')]")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']/parent::a")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']")).getText().contains(pipelineName));
+    }
 }

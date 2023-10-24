@@ -10,6 +10,7 @@ import static org.testng.AssertJUnit.assertTrue;
 
 
 public class ArSaFirstTest extends BaseTest {
+  
     private static final String itemName = "Test Freestyle Project";
     private static final String encodedItemName = itemName.replace(" ", "%20");
 
@@ -72,6 +73,7 @@ public class ArSaFirstTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
     }
+  
     @Test
     public void testTC_00_001_01() {
 

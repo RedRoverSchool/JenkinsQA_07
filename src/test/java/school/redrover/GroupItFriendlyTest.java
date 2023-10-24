@@ -107,10 +107,10 @@ public class GroupItFriendlyTest extends BaseTest {
     @Test
     public void removeItemTest() {
         WebDriver driver = getDriver();
-        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        final String userName = "Test" + UUID.randomUUID().toString().substring(0, 8);
         //create item
         driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
-        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(randomUsername);
+        driver.findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(userName);
         driver.findElement(By.xpath("//*[@id=\"j-add-item-type-standalone-projects\"]/ul/li[1]")).click();
         driver.findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
         driver.findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
@@ -120,16 +120,15 @@ public class GroupItFriendlyTest extends BaseTest {
         List <WebElement> listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
 
         //search for an added item and delete this
-        Assert.assertTrue(isActualElement(listItems, randomUsername));
-        if (isActualElement(listItems, randomUsername)) {
-            driver.findElement(By.xpath("//*[@id=\"job_" + randomUsername + "\"]/td[3]/a")).click();
+        if (isActualElement(listItems, userName)) {
+            driver.findElement(By.xpath("//*[@id=\"job_" + userName + "\"]/td[3]/a")).click();
             driver.findElement(By.xpath("//*[@id=\"tasks\"]/div[6]/span/a")).click();
             // accept alert to delete
             Alert alert = driver.switchTo().alert();
             alert.accept();
         }
         listItems = getListElements("//*[@class=\"jenkins-table__link model-link inside\"]");
-        Assert.assertFalse(isActualElement(listItems, randomUsername));
+        Assert.assertFalse(isActualElement(listItems, userName));
     }
     // search item in list items
     private boolean isActualElement(List<WebElement> items, String expecting) {
@@ -290,4 +289,30 @@ public class GroupItFriendlyTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h2[@class='h4']")).isDisplayed(), "This folder is empty");
     }
 
+
+    /**
+     * CreateNewSimpeItem - создаёт пустой и без настроек New Item из
+     * Freesstyle project c именем Test+random name и возвращет на DashBoard.
+     * @param ranmdName - Имя (название) Item.
+     */
+    public void createNewSimpeItem(String ranmdName) {
+       // String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(ranmdName);
+        getDriver().findElement(By.xpath("//span[normalize-space()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        getDriver().getCurrentUrl();
+    }
+    @Test
+    public void testUrlIsContainsNameProgect () {
+        String randomUsername = "Test" + UUID.randomUUID().toString().substring(0, 8);
+        createNewSimpeItem(randomUsername);
+        System.out.println(getDriver().getCurrentUrl());
+        List <WebElement> list = getDriver()
+                .findElements(By.xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
+        list.get(0).click();
+        String currentUrl = getDriver().getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains(randomUsername));
+    }
 }

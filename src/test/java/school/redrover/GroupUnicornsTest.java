@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -16,10 +17,62 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import java.awt.Dimension;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class GroupUnicornsTest extends BaseTest {
+
+    private void goToDashboard() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+    }
+
+    private void sendKeysToSearchBar(String search) {
+        getDriver().findElement(By.id("settings-search-bar")).sendKeys(search);
+    }
+    @Test
+    public void testSuccessfulSearchResult() {
+
+        goToDashboard();
+        sendKeysToSearchBar("users");
+        WebElement searchResult = getDriver().findElement(By.xpath("//a[contains(text(),'Users')]"));
+        Assert.assertEquals(searchResult.getAttribute("text"), "Users");
+        searchResult.click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/manage/securityRealm/");
+    }
+
+    @Test
+    public void testTableSizes(){
+
+        //creating a new job
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("job");
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[.='OK']")).click();
+        getDriver().findElement(By.xpath("//li[contains(.,'Dashboard')]")).click();
+
+        //check size when Small is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Small']")).click();
+        Dimension actualTableSizeS = getTableDimension();
+        Assert.assertEquals(actualTableSizeS, new Dimension(1524, 71));
+
+        //check size when Medium is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Medium']")).click();
+        Dimension actualTableSizeM = getTableDimension();
+        Assert.assertEquals(actualTableSizeM, new Dimension(1524, 86));
+
+        //check size when Large is clicked
+        getDriver().findElement(By.xpath("//a[@tooltip='Large']")).click();
+        Dimension actualTableSizeL = getTableDimension();
+        Assert.assertEquals(actualTableSizeL, new Dimension(1524, 102));
+    }
+
+    private Dimension getTableDimension() {
+        WebElement table = getDriver().findElement(By.xpath("//table[@id='projectstatus']"));
+        return new Dimension(table.getSize().width, table.getSize().height);
+    }
 
     @Test
     public void testVerifyRemoteDirectoryIsMandatoryForSetUpAnAgent() throws InterruptedException {
@@ -315,35 +368,32 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(listOfExpectedItems, extractedTexts);
     }
 
-    @Ignore
     @Test
-    public void testMyStudyingPage() {
+    public void testJenkinsCreateProject() {
 
-        String url = "https://power.arc.losrios.edu/~suleymanova/cisw300/";//url
+        getDriver().findElement(By.xpath("(//*[@href = 'newJob'])")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MyFirstTestProject");
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).sendKeys("This is my first test project");
+        getDriver().findElement(By.name("Submit")).click();
 
-        getDriver().get(url); //open page
-        WebElement logo = getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //check logo
-        Assert.assertEquals(logo.getText(), "SULEYMANOV");  //check logo text
-
-        getDriver().findElement(By.xpath("//a[@href='about.html']")).click();//click about button
-        WebElement aboutMe = getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
-        Assert.assertEquals(aboutMe.getText(), "ABOUT ME");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='contact.html']")).click();//click contact button
-        WebElement email = getDriver().findElement(By.xpath("//a[@href='mailto:w2029557@apps.losrios.edu' and text()='w2029557@apps.losrios.edu']"));//check email
-        Assert.assertEquals(email.getText(), "w2029557@apps.losrios.edu");//check email text
-
-        getDriver().findElement(By.xpath("//a[@href='projects.html']")).click();// click projects button
-        getDriver().findElement(By.xpath("//h1[text()='PROJECTS ']"));//check projects page
-        Assert.assertEquals(getDriver().getTitle(), "Projects");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='book.html']")).click();//click book button
-        getDriver().findElement(By.xpath("//h1[text()='TUTORIALS ']"));//check book page
-        Assert.assertEquals(getDriver().getTitle(), "Book");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[text()='This is my first test project']")).getText(), "This is my first test project");
 
     }
+
+    @Test
+    public void testJenkinsDeleteProject() {
+
+        testJenkinsCreateProject();
+
+        getDriver().findElement(By.xpath("//span[text()='Delete Project']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertTrue(getDriver().findElements(By.xpath("//a[text()='MyFirstTestProject']")).isEmpty());
+
+    }
+
 
     @Test
     public void testSearchFieldWithoutResultsExpected() {
@@ -459,4 +509,14 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getTitle(), expectedTitle);
     }
+
+    @Test
+    public void testJenkinsSearchButton () {
+
+        getDriver().findElement(By.className("main-search__icon-trailing")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='search-box']")).getText(),"Search Box");
+    }
+
+
 }
