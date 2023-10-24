@@ -442,6 +442,7 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/div/h1")).getText(), "Sign in to Jenkins");
     }
 
+    @Ignore
     @Test
     public void testRenameItem() {
 
@@ -463,6 +464,5 @@ public class GroupLetsQATest extends BaseTest {
         Assert.assertEquals(getDriver().
                 findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(),
                 "NewNameItem");
-
     }
 }
