@@ -114,14 +114,14 @@ public class LocomotiveGroupTest extends BaseTest {
     public void testForToolTipInNodeMonitoringPage() {
         Actions action = new Actions(getDriver());
 
-        getDriver().findElement(By.xpath("//a[text()='Состояние сборщиков']//parent::*")).click();
+        getDriver().findElement(By.xpath("//div[@id='executors']/div[@class='pane-header']")).click();
         getDriver().findElement(By.xpath("//span[text()='Node Monitoring']/ancestor::span")).click();
 
-        WebElement toolTipForArchitect = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Архитектура']"));
-        WebElement toolTipForAnswerTime = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Время ответа']"));
-        WebElement toolDiffForSystemTime = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Разница в настройке системного времени']"));
-        WebElement toolFreeTimeSpace = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Свободное временное пространство']"));
-        WebElement toolFreeDiscSpace = getDriver().findElement(By.xpath("//a[@tooltip='Помощь для: Свободное дисковое пространство']"));
+        WebElement toolTipForArchitect = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.node_monitors.ArchitectureMonitor/help']"));
+        WebElement toolTipForAnswerTime = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.node_monitors.ResponseTimeMonitor/help']"));
+        WebElement toolDiffForSystemTime = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.node_monitors.ClockMonitor/help']"));
+        WebElement toolFreeTimeSpace = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.node_monitors.TemporarySpaceMonitor/help']"));
+        WebElement toolFreeDiscSpace = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.node_monitors.DiskSpaceMonitor/help']"));
 
         action.moveToElement(toolTipForArchitect).perform();
         Assert.assertEquals(toolTipForArchitect.getAttribute("aria-describedby"), "tippy-6", "Параметры различаются");
