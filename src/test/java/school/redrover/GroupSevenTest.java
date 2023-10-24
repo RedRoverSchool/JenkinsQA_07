@@ -259,7 +259,7 @@ public class GroupSevenTest extends BaseTest {
     @Test
     public void testCreateJenkinsJobJob() {
 
-        final String JOB_NAME = "Yuliya Project1";
+        final String JOB_NAME = "Yuliya Project2";
 
         getDriver().findElement(By.xpath("//a[@href ='newJob']")).click();
 
