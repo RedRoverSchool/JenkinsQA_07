@@ -25,6 +25,13 @@ public class GroupSurvivorsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id = 'description']/div")).getText(), "Test description");
     }
 
+    @Test
+    public void testIuliaFindIconLegend() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
+        getDriver().findElement(By.xpath("//*[@id='button-icon-legend']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='jenkins-modal__title']")).getText(), "Icon legend");
+    }
 }
 
 
