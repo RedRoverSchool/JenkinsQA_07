@@ -368,35 +368,32 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(listOfExpectedItems, extractedTexts);
     }
 
-    @Ignore
     @Test
-    public void testMyStudyingPage() {
+    public void testJenkinsCreateProject() {
 
-        String url = "https://power.arc.losrios.edu/~suleymanova/cisw300/";//url
+        getDriver().findElement(By.xpath("(//*[@href = 'newJob'])")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MyFirstTestProject");
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).sendKeys("This is my first test project");
+        getDriver().findElement(By.name("Submit")).click();
 
-        getDriver().get(url); //open page
-        WebElement logo = getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //check logo
-        Assert.assertEquals(logo.getText(), "SULEYMANOV");  //check logo text
-
-        getDriver().findElement(By.xpath("//a[@href='about.html']")).click();//click about button
-        WebElement aboutMe = getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
-        Assert.assertEquals(aboutMe.getText(), "ABOUT ME");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='contact.html']")).click();//click contact button
-        WebElement email = getDriver().findElement(By.xpath("//a[@href='mailto:w2029557@apps.losrios.edu' and text()='w2029557@apps.losrios.edu']"));//check email
-        Assert.assertEquals(email.getText(), "w2029557@apps.losrios.edu");//check email text
-
-        getDriver().findElement(By.xpath("//a[@href='projects.html']")).click();// click projects button
-        getDriver().findElement(By.xpath("//h1[text()='PROJECTS ']"));//check projects page
-        Assert.assertEquals(getDriver().getTitle(), "Projects");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='book.html']")).click();//click book button
-        getDriver().findElement(By.xpath("//h1[text()='TUTORIALS ']"));//check book page
-        Assert.assertEquals(getDriver().getTitle(), "Book");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[text()='This is my first test project']")).getText(), "This is my first test project");
 
     }
+
+    @Test
+    public void testJenkinsDeleteProject() {
+
+        testJenkinsCreateProject();
+
+        getDriver().findElement(By.xpath("//span[text()='Delete Project']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertTrue(getDriver().findElements(By.xpath("//a[text()='MyFirstTestProject']")).isEmpty());
+
+    }
+
 
     @Test
     public void testSearchFieldWithoutResultsExpected() {
