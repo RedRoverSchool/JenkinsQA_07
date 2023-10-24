@@ -10,22 +10,19 @@ import static org.testng.AssertJUnit.assertTrue;
 
 
 public class ArSaFirstTest extends BaseTest {
+    private static final String itemName = "Test Freestyle Project";
+    private static final String encodedItemName = itemName.replace(" ", "%20");
 
-    private static final String itemName1 = "Test Freestyle Project";
-    private static final String encodedItemName = itemName1.replace(" ", "%20");
-
-    @Test
     public void createFreeStyleProject() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName1);
+        getDriver().findElement(By.id("name")).sendKeys(itemName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
     }
 
-    @Test
     public void createPipeline() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -36,7 +33,6 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    @Test
     public void createMultiConfigurationProject() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -47,7 +43,6 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    @Test
     public void createFolder() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -58,7 +53,6 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    @Test
     public void createMultiBranchPipeline() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -69,7 +63,6 @@ public class ArSaFirstTest extends BaseTest {
 
     }
 
-    @Test
     public void createOrganizationFolder() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -83,12 +76,13 @@ public class ArSaFirstTest extends BaseTest {
     public void testTC_00_001_01() {
 
         createFreeStyleProject();
+
         assertFalse("Created project link is not present", getDriver().findElements(By.cssSelector("a.model-link[href='/job/" + encodedItemName + "/']")).isEmpty());
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
 
         List<WebElement> projectList = getDriver().findElements(By.cssSelector("a.jenkins-table__link.model-link.inside span"));
-        boolean isProjectInList = projectList.stream().anyMatch(project -> project.getText().equals(itemName1));
-
+        boolean isProjectInList = projectList.stream().anyMatch(project -> project.getText().equals(itemName));
         assertTrue("Project is present not in the list", isProjectInList);
+
     }
 }
