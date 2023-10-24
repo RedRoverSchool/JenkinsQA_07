@@ -1,17 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
-
-import java.time.Duration;
 
 
-public class ildanaTest extends BaseTest {
+public class IldanaTest extends BaseTest {
 
     @Test
     public void testNewItemCreate() {
