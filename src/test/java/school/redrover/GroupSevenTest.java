@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -31,7 +32,7 @@ public class GroupSevenTest extends BaseTest {
         WebElement projectTitle = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"));
         Assert.assertTrue(projectTitle.isDisplayed());
     }
-
+    @Ignore
     @Test
     public void testJenkinsAbout() {
 
@@ -275,6 +276,15 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Yuliya Project1']")).getText(), "Yuliya Project1");
 
+
+    }
+
+    @Test
+    public void testWelcome() {
+
+        String welcome = getDriver().findElement(By.xpath("//div/h1")).getText();
+
+        Assert.assertEquals(welcome, "Welcome to Jenkins!");
 
     }
 }

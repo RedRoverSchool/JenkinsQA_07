@@ -8,20 +8,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 
 public class GroupBrainBuildersTest extends BaseTest {
-
-    @Test
-    public void testJenkinsAdminStatus() {
-
-        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(2) > span > a")).click();
-        // From the list of users I would like to get name of the particular user and click on it
-        WebElement recordInTheList = getDriver().findElement(By.className("jenkins-table__link"));
-        String userName = recordInTheList.getText();
-        recordInTheList.click();
-        // And to verify that on the next page userID match with the name
-        Assert.assertTrue(getDriver().getPageSource().contains(userName));
-    }
 
     private void folderCreation(String folderName) {
 
@@ -41,7 +31,6 @@ public class GroupBrainBuildersTest extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
-
     }
 
     @Test
@@ -69,7 +58,6 @@ public class GroupBrainBuildersTest extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
-
     }
 
     @Test
@@ -87,7 +75,6 @@ public class GroupBrainBuildersTest extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
-
     }
 
     @Test
@@ -103,9 +90,63 @@ public class GroupBrainBuildersTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName1 + "']")).isDisplayed());
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName2 + "']")).isDisplayed());
-
     }
 
+    @Test
+    public void testJenkinsMoveFolderInsideAnotherFolderMovedFolderIsNotPresentOnDashboard() {
+
+        String folderName1= "ParentFolder";
+        folderCreation(folderName1);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        String folderName2= "NestedFolder";
+        folderCreation(folderName2);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + folderName2 + "']/td[3]/a")).click();
+        getDriver().findElement(By.linkText("Move")).click();
+        getDriver().findElement(By.xpath("//select[@name='destination']")).click();
+        getDriver().findElement(By.xpath("//option[text() = 'Jenkins » " + folderName1 + "']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        List<WebElement> elements = getDriver().findElements(By.xpath("//tr[@id='job_" + folderName2 + "']"));
+        Assert.assertTrue(elements.size() == 0);
+    }
+
+    @Test
+    public void testJenkinsMoveFolderInsideAnotherFolderMovedFolderIsPresentInParentsFolder() {
+
+        String folderName1= "ParentFolder";
+        folderCreation(folderName1);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        String folderName2= "NestedFolder";
+        folderCreation(folderName2);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + folderName2 + "']/td[3]/a")).click();
+        getDriver().findElement(By.linkText("Move")).click();
+        getDriver().findElement(By.xpath("//select[@name='destination']")).click();
+        getDriver().findElement(By.xpath("//option[text() = 'Jenkins » " + folderName1 + "']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + folderName1 + "/']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + folderName2 + "']")).isDisplayed());
+    }
+
+    @Test
+    public void testJenkinsAdminStatus() {
+
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(2) > span > a")).click();
+        // From the list of users I would like to get name of the particular user and click on it
+        WebElement recordInTheList = getDriver().findElement(By.className("jenkins-table__link"));
+        String userName = recordInTheList.getText();
+        recordInTheList.click();
+        // And to verify that on the next page userID match with the name
+        Assert.assertTrue(getDriver().getPageSource().contains(userName));
+    }
 
     @Test
     public void testJenkinsCredentialsTooltip() {
