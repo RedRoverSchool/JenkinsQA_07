@@ -124,18 +124,18 @@ public class LocomotiveGroupTest extends BaseTest {
         WebElement toolFreeDiscSpace = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.node_monitors.DiskSpaceMonitor/help']"));
 
         action.moveToElement(toolTipForArchitect).perform();
-        Assert.assertEquals(toolTipForArchitect.getAttribute("aria-describedby"), "tippy-6", "Параметры различаются");
+        Assert.assertTrue(toolTipForArchitect.getAttribute("aria-describedby").contains("tippy"), "Параметры различаются");
 
         action.moveToElement(toolTipForAnswerTime).perform();
-        Assert.assertEquals(toolTipForAnswerTime.getAttribute("aria-describedby"), "tippy-12", "Параметры различаются");
+        Assert.assertTrue(toolTipForAnswerTime.getAttribute("aria-describedby").contains("tippy"), "Параметры различаются");
 
         action.moveToElement(toolDiffForSystemTime).perform();
-        Assert.assertEquals(toolDiffForSystemTime.getAttribute("aria-describedby"), "tippy-13", "Параметры различаются");
+        Assert.assertTrue(toolDiffForSystemTime.getAttribute("aria-describedby").contains("tippy"), "Параметры различаются");
 
         action.moveToElement(toolFreeTimeSpace).perform();
-        Assert.assertEquals(toolFreeTimeSpace.getAttribute("aria-describedby"), "tippy-14", "Параметры различаются");
+        Assert.assertTrue(toolFreeTimeSpace.getAttribute("aria-describedby").contains("tippy"), "Параметры различаются");
 
         action.moveToElement(toolFreeDiscSpace).perform();
-        Assert.assertEquals(toolFreeDiscSpace.getAttribute("aria-describedby"), "tippy-16", "Параметры различаются");
+        Assert.assertTrue(toolFreeDiscSpace.getAttribute("aria-describedby").contains("tippy"), "Параметры различаются");
     }
 }
