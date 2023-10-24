@@ -257,6 +257,26 @@ public class GroupSevenTest extends BaseTest {
 
 
     }
+    @Test
+    public void testCreateJenkinsJob1() {
+
+        final String JOB_NAME = "Yuliya Project1";
+
+        getDriver().findElement(By.xpath("//a[@href ='newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(JOB_NAME);
+        getDriver().findElement(By.xpath("//span[text() = 'Freestyle project']")).click();
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name = 'description' ]")).sendKeys("learning Project");
+        getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate' ]")).click();
+
+        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Yuliya Project1']")).getText(), "Yuliya Project1");
+
+
+    }
 }
 
 
