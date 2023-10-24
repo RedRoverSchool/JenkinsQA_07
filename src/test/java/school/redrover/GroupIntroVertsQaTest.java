@@ -121,4 +121,14 @@ public class GroupIntroVertsQaTest extends BaseTest {
 
         Assert.assertFalse(getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']")).getText().contains(pipelineName));
     }
+    // region AnkaTest
+
+    @Test(description = "Checking users in Jenkins")
+    public void testCheckingUsers() {
+
+        WebElement checkingUsers = getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[2]/span/a"));
+        checkingUsers.click();
+        getDriver().findElement(By.xpath("//*[@id=\"person-admin\"]/td[2]")).click();
+
+    }
 }
