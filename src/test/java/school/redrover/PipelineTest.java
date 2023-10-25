@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -43,11 +42,12 @@ public class PipelineTest extends BaseTest {
 
         createPipeline(pipelineNameForCreate);
 
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//td/a[@href = 'job/" + pipelineNameForCreate + "/']")))
-                .perform();
+//        new Actions(getDriver())
+//                .moveToElement(getDriver().findElement(By.xpath("//td/a[@href = 'job/" + pipelineNameForCreate + "/']")))
+//                .perform();
+//        getDriver().findElement(By.xpath("//button[@data-href = 'http://localhost:8080/job/" + pipelineNameForCreate + "/']")).click();
 
-        getDriver().findElement(By.xpath("//button[@data-href = 'http://localhost:8080/job/" + pipelineNameForCreate + "/']")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_" + pipelineNameForCreate+"']/td[3]/a")).click();
         getDriver().findElement(By.xpath("//a[@href = '/job/" + pipelineNameForCreate + "/confirm-rename']")).click();
 
         getDriver().findElement(By.cssSelector(".jenkins-input.validated")).clear();
