@@ -7,40 +7,39 @@ import school.redrover.runner.BaseTest;
 
 public class OrganizationFolderTest extends BaseTest {
 
-    private void creationNewOrganizationFolder(String folderName) {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+    public void createOrganizationFolder() {
+
+        final String folderName = "OrganizationFolder";
+
+        getDriver().findElement(By.cssSelector("a[href='newJob']")).click();
+        getDriver().findElement(By.xpath("//span[text() = 'Organization Folder']")).click();
         getDriver().findElement(By.id("name")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[text()='Organization Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-    }
-
-    @Test
-    public void testCreatedNewOrganizationFolder() {
-        final String folderName = "Organization_Folder";
-
-        creationNewOrganizationFolder(folderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
-
-    }
-
-    @Test
-    public void testCreateWithValidName() {
-        final String validName = "MyOrganization";
-
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob'")).click();
-        getDriver().findElement(By.id("name")).sendKeys(validName);
-        getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
 
         getDriver().findElement(By.id("jenkins-head-icon")).click();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("td a[href='job/" + validName + "/'] span")).getText(),
-                validName,
-                "Created organization name is incorrect");
+        getDriver().findElement(By.cssSelector("td a[href='job/" + folderName + "/'] span")).click();
+
     }
+
+    @Test
+    public void renameOrganizationFolder() {
+
+
+        createOrganizationFolder();
+
+        final String newFolderName = "OrganizationFolderRenamed";
+
+        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/confirm-rename']")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(newFolderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath
+                ("//h1[contains(text(), 'OrganizationFolderRenamed')]")).getText(),newFolderName);
+
+    }
+
 }
