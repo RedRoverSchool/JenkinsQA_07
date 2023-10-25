@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -16,6 +17,14 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    }
+
+    private void getDashboardLink() {
+        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+    }
+
+    private WebElement findJobByName(String name) {
+        return getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']"));
     }
 
     @Test
@@ -34,6 +43,31 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
+    }
+
+    @Test
+    public void testRenameFolder() {
+
+        final String oldFolderName = "FolderToRename";
+        final String newFolderName = "RenamedFolder";
+
+        creationNewFolder(oldFolderName);
+
+        getDashboardLink();
+
+        findJobByName(oldFolderName).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + oldFolderName + "/confirm-rename']")).click();
+        WebElement inputName = getDriver().findElement(By.name("newName"));
+        inputName.clear();
+        inputName.sendKeys(newFolderName);
+        getDriver().findElement(By.name("Submit")).click();
+        getDashboardLink();
+
+        Assert.assertEquals(findJobByName(newFolderName).getText(),
+                newFolderName);
+
+
     }
 
 }
