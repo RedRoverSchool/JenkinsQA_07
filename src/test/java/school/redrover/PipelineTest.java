@@ -58,4 +58,23 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//td/a[@href='job/"+ pipelineNameForRename +"/']")).isDisplayed());
     }
+    @Test
+    public void testCreatingPipeline() {
+        final String pipelineName = "newPipelineName";
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'New Item')]/parent::a")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(pipelineName);
+        getDriver().findElement(By.xpath("//img[@src = '/plugin/workflow-job/images/pipelinejob.svg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        String xpathOpenProject = "//span[contains(text(), '%s')]/parent::a".formatted(pipelineName);
+
+        getDriver().findElement(By.xpath(xpathOpenProject)).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
+                "Pipeline " + pipelineName
+        );
+    }
 }
