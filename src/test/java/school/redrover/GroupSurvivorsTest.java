@@ -61,9 +61,16 @@ public class GroupSurvivorsTest extends BaseTest {
         getDriver().findElement(By.className("jenkins-table__link")).click();
 
         Assert.assertEquals(getDriver().getTitle(), "All Jenkins Logs [Jenkins]");
-
     }
 
+    @Test
+    public void testIuliaFindIconLegend() throws InterruptedException {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/builds']")).click();
+        getDriver().findElement(By.xpath("//*[@id='button-icon-legend']")).click();
+        Thread.sleep(300);
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='jenkins-modal__title']")).getText(), "Icon legend");
+    }
 }
 
 
