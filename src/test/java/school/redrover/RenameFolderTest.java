@@ -20,7 +20,7 @@ public class RenameFolderTest extends BaseTest {
 
     }
 
-    @Test(description = "Переименование папки")
+    @Test(description = "Rename Folder")
     public void testRename() {
         String renewNameFolder = "NewFolderTest";
 
