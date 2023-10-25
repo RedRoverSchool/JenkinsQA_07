@@ -181,7 +181,8 @@ public class GroupJavaJitsuTest  extends BaseTest {
         List<WebElement> listOfProjectName = getDriver().findElements(
                 By.cssSelector("a[class = 'jenkins-table__link model-link inside']"));
         for (WebElement webElement : listOfProjectName) {
-            if (!webElement.equals("FreestyleProject1")) {
+            if (!webElement.getText().equals("FreestyleProject1"))
+                if (webElement.getText().equals("FreestyleProject1")){
                 isFreestyleProjectPresent = true;
                 break;
             }
