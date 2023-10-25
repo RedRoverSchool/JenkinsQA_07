@@ -172,17 +172,22 @@ public class GroupJavaJitsuTest  extends BaseTest {
         WebElement dropDownMenue = getDriver().findElement(By.cssSelector("button[data-href*='FreestyleProject1']"));
         mouseOver.moveToElement(dropDownMenue).click().perform();
 
-        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(15));
+
         wait.until(ExpectedConditions.elementToBeClickable(
                 By.cssSelector("button[href*='FreestyleProject1/doDelete']"))).click();
 
         getDriver().switchTo().alert().accept();
 
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.cssSelector("a[class='jenkins-table__link model-link inside']")));
+
         List<WebElement> listOfProjectName = getDriver().findElements(
                 By.cssSelector("a[class = 'jenkins-table__link model-link inside']"));
+
         for (WebElement webElement : listOfProjectName) {
-            if (!webElement.getText().equals("FreestyleProject1"))
-                if (webElement.getText().equals("FreestyleProject1")){
+            if (!webElement.getText().equals("FreestyleProject1")) {
+                    System.out.println(webElement);
                 isFreestyleProjectPresent = true;
                 break;
             }
