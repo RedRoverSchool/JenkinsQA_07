@@ -2,10 +2,15 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
+import java.util.ArrayList;
 
 
 public class GroupSevenTest extends BaseTest {
@@ -30,6 +35,71 @@ public class GroupSevenTest extends BaseTest {
 
         WebElement projectTitle = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"));
         Assert.assertTrue(projectTitle.isDisplayed());
+    }
+
+    @Ignore
+    @Test
+    public void TestBddSearch() {
+        WebDriver driver = getDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(1000));
+        driver.get("https://duckduckgo.com/");
+        WebElement searchBox = driver.findElement(By.xpath("//input[@class = 'searchbox_input__bEGm3']"));
+        searchBox.sendKeys("bdd");
+        WebElement searchButton = driver.findElement(By.xpath("//button[@class = 'searchbox_searchButton__F5Bwq iconButton_button__6x_9C']"));
+        searchButton.click();
+        WebElement searchResult = driver.findElement(By.xpath("//h2[@class = 'Ee2e63EzQ9F3xq9wsGDY']"));
+        String resultText = searchResult.getText();
+        Assert.assertTrue(resultText.contains("Behavior-driven development"));
+    }
+
+    @Ignore
+    @Test
+    public void testSearch() {
+
+        getDriver().get("https://elitetransit.com/");
+        WebElement buttonContact = getDriver().findElement(By.xpath("//ul[@id='top-menu']//a[normalize-space()='Contact']"));
+        buttonContact.click();
+
+        String title = getDriver().getTitle();
+
+        Assert.assertEquals(title, "Contact | ELITE Transit Solutions");
+    }
+
+    @Ignore
+    @Test
+    public void testTextInput() {
+
+        getDriver().get("https://www.selenium.dev/selenium/web/web-form.html");
+        WebElement input = getDriver().findElement(By.id("my-text-id"));
+        input.click();
+        input.sendKeys("Selenium");
+
+        WebElement submit = getDriver().findElement(By.tagName("button")); ////button[@type='submit']
+        submit.submit();
+        WebElement message = getDriver().findElement(By.id("message"));
+        Assert.assertEquals(message.getText(), "Received!");
+    }
+
+
+    @Ignore
+    @Test
+    public void testHPSearch() {
+        getDriver().get("https://www.wizardingworld.com/");
+
+        WebElement searchActivation = getDriver().findElement(By.xpath("//button[@name='search']"));
+        searchActivation.click();
+
+        WebElement searchField = getDriver().findElement(By.xpath("//input[@placeholder='Search']"));
+        searchField.sendKeys("Harry Potter", Keys.RETURN);
+
+        WebElement searchResults = getDriver().findElement(By.xpath("//h3[text()='Harry Potter']"));
+        searchResults.click();
+
+        ArrayList<String> wid = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(wid.get(1));
+
+        WebElement resultHeader = getDriver().findElement(By.xpath("//h1"));
+        Assert.assertEquals(resultHeader.getText(), "Harry Potter");
     }
 
     @Test
@@ -224,8 +294,8 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'General')]")).getText(),
                 "General");
     }
-  
-      @Test
+
+    @Test
     public void testAddDescription() {
 
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
@@ -237,6 +307,7 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertTrue(getDriver().
                 findElement(By.xpath("//div[normalize-space()='Description about my first project will be here']")).isDisplayed());
     }
+
     @Test
     public void testCreateJenkinsJob() {
 
@@ -257,6 +328,7 @@ public class GroupSevenTest extends BaseTest {
 
 
     }
+
     @Test
     public void testCreateJenkinsJob1() {
 
@@ -275,6 +347,15 @@ public class GroupSevenTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[text()='Yuliya Project1']")).getText(), "Yuliya Project1");
 
+
+    }
+
+    @Test
+    public void testWelcome() {
+
+        String welcome = getDriver().findElement(By.xpath("//div/h1")).getText();
+
+        Assert.assertEquals(welcome, "Welcome to Jenkins!");
 
     }
 }

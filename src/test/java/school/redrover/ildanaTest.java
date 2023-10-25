@@ -1,58 +1,59 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.JenkinsUtils;
 
-import java.time.Duration;
 
-@Ignore
 public class ildanaTest extends BaseTest {
-
     @Test
-    public void testSearch() {
+    public void testNewItemCreate() {
 
-        getDriver().get("https://www.coursera.org/");
+        getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//div[@class='add-item-name']//input[@name='name']")).sendKeys("Ildana Frolova");
+        getDriver().findElement(By.xpath("//ul[@class='j-item-options']/li[@class='hudson_model_FreeStyleProject']")).click();
 
-        WebElement input = getDriver().findElement(By.xpath("//input[@placeholder='What do you want to learn?']"));
-        input.sendKeys("Automation", Keys.ENTER);
+        JavascriptExecutor js = (JavascriptExecutor)getDriver();
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
-        WebElement text = getDriver().findElement(By.xpath("//div[@class='cds-9 css-1cs9i33']//div//h3"));
-        String value = text.getText();
-        Assert.assertEquals(value, "Filter by");
-
-    }
-
-    @Test
-    public void testFilter() {
-
-        getDriver().get("https://www.coursera.org/search?query=Automation&");
-
-        WebElement filter = getDriver().findElement(By.xpath("//span[text()='Computer Science']"));
-        filter.click();
-
-        WebElement clearbutton = getDriver().findElement(By.xpath("//div[@data-testid='active-filter-items']//button[@aria-label='Clear Computer Science filter']"));
-        String buttonText = clearbutton.getText();
-
-        Assert.assertEquals(buttonText, "Computer Science\n" + ",delete");
-
-    }
-
-    @Test
-    public void testJenkins() {
-
-        WebElement newItem =getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']"));
-
-        newItem.click();
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+        getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']")).click();
 
         Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@class='add-item-name']//label[@for='name']")).getText(), "Enter an item name");
+                getDriver().findElement(By.xpath("//div[@id='main-panel']//h1"))
+                        .getText(),"Project Ildana Frolova"
+        );
+
     }
+
+    @Test
+    public void testSameItemCreate(){
+
+        getDriver().findElement(By.xpath("//span[@ class='task-link-wrapper ']//a[@ href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//div[@class='add-item-name']//input[@name='name']")).sendKeys("Ildana Frolova");
+        getDriver().findElement(By.xpath("//ul[@class='j-item-options']/li[@class='hudson_model_FreeStyleProject']")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor)getDriver();
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+        getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[text()='Dashboard']")).click();
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys("Ildana Frolova");
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@class='add-item-name']//div[@id='itemname-invalid']"))
+                        .getText(),"» A job already exists with the name ‘Ildana Frolova’"
+        );
+
+    }
+
 }
+
+
+
 
 
 

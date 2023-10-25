@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,7 @@ public class GroupUnicornsTest extends BaseTest {
     private void sendKeysToSearchBar(String search) {
         getDriver().findElement(By.id("settings-search-bar")).sendKeys(search);
     }
+
     @Test
     public void testSuccessfulSearchResult() {
 
@@ -43,7 +45,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testTableSizes(){
+    public void testTableSizes() {
 
         //creating a new job
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
@@ -194,7 +196,7 @@ public class GroupUnicornsTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("test admin");
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).submit();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "test admin" );
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(), "test admin");
 
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).clear();
@@ -222,6 +224,30 @@ public class GroupUnicornsTest extends BaseTest {
         assertTrue(actual);
     }
 
+    final String jobName = "Unicorns22";
+
+    public void createNewJob() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/']")).isDisplayed();
+        getDriver().findElement(By.name("name")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//img[@class = 'icon-freestyle-project icon-xlg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    public void deleteJob() {
+
+        WebElement jobNameJenkins = getDriver().findElement(By.xpath("//h1[text() = contains(.,'Project')]"));
+        if (jobNameJenkins.getText().equals(String.format("Project %s", jobName))) {
+            jobNameJenkins.click();
+            getDriver().findElement(By.xpath("//span[text() = 'Delete Project']")).click();
+            Alert alert = getDriver().switchTo().alert();
+            //String alertText = alert.getText();
+            alert.accept();
+        }
+    }
+
     @Test
     public void testVerifyHomePageJenkins() {
 
@@ -231,19 +257,19 @@ public class GroupUnicornsTest extends BaseTest {
     @Test
     public void testCreateNewProjectJenkins() {
 
-        final String jobName = "Unicorns22";
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/']")).isDisplayed();
-
-        getDriver().findElement(By.name("name")).sendKeys(jobName);
-        getDriver().findElement(By.xpath("//img[@class = 'icon-freestyle-project icon-xlg']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        createNewJob();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item'][2]")).getText(), jobName);
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[text() = contains(.,'Project')]")).getText(), String.format("Project %s", jobName));
+    }
+
+    @Test
+    public void testDeleteNewJobJenkins() {
+
+        createNewJob();
+        deleteJob();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[text() = 'Welcome to Jenkins!']")).getText(), "Welcome to Jenkins!");
     }
 
     @Test
@@ -367,35 +393,32 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(listOfExpectedItems, extractedTexts);
     }
 
-    @Ignore
     @Test
-    public void testMyStudyingPage() {
+    public void testJenkinsCreateProject() {
 
-        String url = "https://power.arc.losrios.edu/~suleymanova/cisw300/";//url
+        getDriver().findElement(By.xpath("(//*[@href = 'newJob'])")).click();
+        getDriver().findElement(By.id("name")).sendKeys("MyFirstTestProject");
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).sendKeys("This is my first test project");
+        getDriver().findElement(By.name("Submit")).click();
 
-        getDriver().get(url); //open page
-        WebElement logo = getDriver().findElement(By.xpath("//span[@class='light' and text()='SULEYMANOV']")); //check logo
-        Assert.assertEquals(logo.getText(), "SULEYMANOV");  //check logo text
-
-        getDriver().findElement(By.xpath("//a[@href='about.html']")).click();//click about button
-        WebElement aboutMe = getDriver().findElement(By.xpath("//h3[@class='footer-header' and text()='ABOUT ME']"));//check about page
-        Assert.assertEquals(aboutMe.getText(), "ABOUT ME");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='contact.html']")).click();//click contact button
-        WebElement email = getDriver().findElement(By.xpath("//a[@href='mailto:w2029557@apps.losrios.edu' and text()='w2029557@apps.losrios.edu']"));//check email
-        Assert.assertEquals(email.getText(), "w2029557@apps.losrios.edu");//check email text
-
-        getDriver().findElement(By.xpath("//a[@href='projects.html']")).click();// click projects button
-        getDriver().findElement(By.xpath("//h1[text()='PROJECTS ']"));//check projects page
-        Assert.assertEquals(getDriver().getTitle(), "Projects");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='book.html']")).click();//click book button
-        getDriver().findElement(By.xpath("//h1[text()='TUTORIALS ']"));//check book page
-        Assert.assertEquals(getDriver().getTitle(), "Book");//check title
-
-        getDriver().findElement(By.xpath("//a[@href='https://arc.losrios.edu']")).click();// click ARC button
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[text()='This is my first test project']")).getText(), "This is my first test project");
 
     }
+
+    @Test
+    public void testJenkinsDeleteProject() {
+
+        testJenkinsCreateProject();
+
+        getDriver().findElement(By.xpath("//span[text()='Delete Project']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertTrue(getDriver().findElements(By.xpath("//a[text()='MyFirstTestProject']")).isEmpty());
+
+    }
+
 
     @Test
     public void testSearchFieldWithoutResultsExpected() {
@@ -513,11 +536,11 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testJenkinsSearchButton () {
+    public void testJenkinsSearchButton() {
 
         getDriver().findElement(By.className("main-search__icon-trailing")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='search-box']")).getText(),"Search Box");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='search-box']")).getText(), "Search Box");
     }
 
     @Test
@@ -535,4 +558,6 @@ public class GroupUnicornsTest extends BaseTest {
         String welcome = getDriver().findElement(By.xpath("//h1")).getText();
         Assert.assertEquals(welcome, "Welcome to Jenkins!");
     }
+
+  
 }

@@ -214,7 +214,6 @@ public class GroupUnderdogsTest extends BaseTest {
         }
     }
 
-
     @Test
     public void testOlgaBrest() throws InterruptedException {
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
