@@ -451,12 +451,12 @@ public class GroupUnicornsTest extends BaseTest {
         Assert.assertEquals(createdJobName, String.format("Project %s", JOB_NAME));
     }
 
-    final String PROJECTNAME = "Project 07";
+    private final String PROJECT_NAME = "Project 07";
 
     private void createNewProject() {
         getDriver().findElement(By.xpath("(//a[@href = '/view/all/newJob'])")).click();
 
-        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(PROJECTNAME);
+        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//span[contains(text(), 'Freestyle project')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
     }
@@ -469,21 +469,21 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testNewFreestyleProjectIsCreated() throws InterruptedException {
+    public void testNewFreestyleProjectIsCreated() {
         createNewProject();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@class='model-link']")).click();
         WebElement projectsList = getDriver().findElement(By.xpath("//table[@id='projectstatus']"));
         String[] array = projectsList.getText().split("\n");
 
-        boolean isCreated = Arrays.asList(array).contains(PROJECTNAME);
+        boolean isCreated = Arrays.asList(array).contains(PROJECT_NAME);
         Assert.assertTrue(isCreated);
     }
 
     @Test
-    public void testDescriptionPreviewHidePreview() throws InterruptedException {
+    public void testDescriptionPreviewHidePreview() {
         createNewProject();
-        String projectDescription = "Project Description of " + PROJECTNAME;
+        String projectDescription = "Project Description of " + PROJECT_NAME;
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(projectDescription);
         getDriver().findElement(By.xpath("//a[@class = 'textarea-show-preview']")).click();
         String previewProjectDescription = getDriver().findElement(By.className("textarea-preview")).getText();
@@ -492,7 +492,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testDiscardOldBuildsCheckStrategyVisible() throws InterruptedException {
+    public void testDiscardOldBuildsCheckStrategyVisible() {
         createNewProject();
         getDriver().findElement(By.xpath("//input[@id='cb4']/parent::span")).click();
 
@@ -501,7 +501,7 @@ public class GroupUnicornsTest extends BaseTest {
     }
 
     @Test
-    public void testDiscardOldBuildsCheckDaysToKeepBuildsClickableAndSaves() throws InterruptedException {
+    public void testDiscardOldBuildsCheckDaysToKeepBuildsClickableAndSaves() {
 
         String sendKeys = "120";
 
@@ -537,4 +537,21 @@ public class GroupUnicornsTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='search-box']")).getText(), "Search Box");
     }
+
+    @Test
+    public void testDeletingProject() {
+        createNewProject();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.className("jenkins-breadcrumbs__list-item")).click();
+
+        String xpath = String.format("//span [contains(text(), '%s')]/..", PROJECT_NAME);
+        getDriver().findElement(By.xpath("//span [contains(text(), 'Project 07')]/..")).click();
+        getDriver().findElement(By.xpath("//span [contains(text(), 'Delete Project')]")).click();
+
+        getDriver().switchTo().alert().accept();
+
+        String welcome = getDriver().findElement(By.xpath("//h1")).getText();
+        Assert.assertEquals(welcome, "Welcome to Jenkins!");
+    }
+
 }
