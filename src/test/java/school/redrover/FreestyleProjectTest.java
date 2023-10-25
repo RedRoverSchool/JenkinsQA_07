@@ -1,19 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import java.util.List;
-import java.util.stream.Collectors;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import static org.testng.Assert.*;
 
 
 public class FreestyleProjectTest extends BaseTest {
+
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
@@ -36,7 +36,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
     }
-
 
     @Test
     public void testCreate() {
@@ -80,9 +79,9 @@ public class FreestyleProjectTest extends BaseTest {
         String actualProjectName = projectName.getText();
         assertEquals(actualProjectName, randomName);
     }
-  
-  @Test
-    public void testDelete() {
+
+    @Test
+    public void testDeleteProject() {
         final String projectName = "Test Project";
         int initialProjectsAmount = getAllProjectsNames().size();
         createFreeStyleProject(projectName);
@@ -96,6 +95,24 @@ public class FreestyleProjectTest extends BaseTest {
         int resultingProjectsAmount = getAllProjectsNames().size();
         assertEquals(initialProjectsAmount, resultingProjectsAmount);
         assertFalse(isProjectExist(projectName));
-}
-  
+    }
+
+    @Test
+    public void testRenameProject() {
+        final String initialProjectName = "Test Project";
+        final String newProjectName = "New Test Project";
+        createFreeStyleProject(initialProjectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + initialProjectName + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
+        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL+"a");
+        getDriver().findElement(By.name("newName")).sendKeys(newProjectName);
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertTrue(isProjectExist(newProjectName));
+        assertFalse(isProjectExist(initialProjectName));
+    }
+
 }
