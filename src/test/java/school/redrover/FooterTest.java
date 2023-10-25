@@ -7,6 +7,10 @@ import school.redrover.runner.BaseTest;
 
 public class FooterTest extends BaseTest {
 
+    private void clickRestApi() {
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+    }
+
     @Test
     public void testVersionJenkins() {
         Assert.assertEquals(
@@ -18,8 +22,15 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testVerifyClickabilityOfRestAPILink() {
-        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+        clickRestApi();
 
         Assert.assertEquals(getDriver().getTitle(), "Remote API [Jenkins]");
+    }
+
+    @Test
+    public void testVerifyRedirectedRestApi() {
+        clickRestApi();
+
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("api"));
     }
 }
