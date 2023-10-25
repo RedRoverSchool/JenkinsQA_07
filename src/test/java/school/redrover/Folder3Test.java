@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class RenameFolderTest extends BaseTest {
+public class Folder3Test extends BaseTest {
     final String nameFolder = "NewFolder";
 
     private void createFolder() {
