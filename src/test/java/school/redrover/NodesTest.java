@@ -7,6 +7,15 @@ import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
 
+    private void createNewNode(String nodeName) {
+        getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nodeName);
+        getDriver().findElement(By.xpath("//label")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+    }
+
     @Test
     public void createNewNodeWithValidNameFromMainPanel() {
         final String NODE_NAME = "new node";
@@ -20,6 +29,23 @@ public class NodesTest extends BaseTest {
         String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + NODE_NAME + "']//a")).getText();
 
         Assert.assertEquals(actualNodeName, NODE_NAME);
+
+    }
+
+    @Test
+    public void testRenameNodeValidName() {
+        final String newNodeName = "TestNodeRename";
+
+        createNewNode("TestNode");
+
+        getDriver().findElement(By.partialLinkText("TestNode")).click();
+        getDriver().findElement(By.xpath("//a[contains (@href, 'TestNode/configure')]")).click();
+
+        getDriver().findElement(By.name("_.name")).sendKeys(newNodeName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement
+                (By.tagName("h1")).getText().contains(newNodeName));
 
     }
 
