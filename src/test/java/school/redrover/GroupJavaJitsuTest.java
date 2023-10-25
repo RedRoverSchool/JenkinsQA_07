@@ -15,6 +15,8 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.JenkinsUtils;
 import org.openqa.selenium.Keys;
 import java.time.Duration;
+import java.util.List;
+import org.openqa.selenium.interactions.Actions;
 
 public class GroupJavaJitsuTest  extends BaseTest {
 
@@ -31,6 +33,23 @@ public class GroupJavaJitsuTest  extends BaseTest {
         getDriver().findElement(By.cssSelector("button[type = 'submit']")).click();
 
         getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
+    }
+
+    private void createMultipleFreestyleProjects(String multipleProjects) {
+        String [] arrProjectNames = new String [5];
+        for(int i =0; i < arrProjectNames.length;i++){
+            arrProjectNames[i] = multipleProjects + i;
+        }
+        for(String name : arrProjectNames) {
+            getDriver().findElement(By.cssSelector("a[href = '/view/all/newJob']")).click();
+            getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(name);
+
+            getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+            getDriver().findElement(By.cssSelector("button[type = 'submit']")).click();
+
+            getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
+            getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
+        }
     }
 
     @Test
@@ -142,5 +161,31 @@ public class GroupJavaJitsuTest  extends BaseTest {
         getDriver().findElement(By.cssSelector("button[class = 'jenkins-button jenkins-button--primary ']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), DESCRIPTION_TEXT);
+    }
+    @Test
+    public void testDeleteFreestyleProjectFromTheListOfProject() {
+        createMultipleFreestyleProjects(PROJECT_NAME);
+        boolean isFreestyleProjectPresent = false;
+
+        Actions mouseOver = new Actions(getDriver());
+
+        WebElement dropDownMenue = getDriver().findElement(By.cssSelector("button[data-href*='FreestyleProject1']"));
+        mouseOver.moveToElement(dropDownMenue).click().perform();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(),Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector("button[href*='FreestyleProject1/doDelete']"))).click();
+
+        getDriver().switchTo().alert().accept();
+
+        List<WebElement> listOfProjectName = getDriver().findElements(
+                By.cssSelector("a[class = 'jenkins-table__link model-link inside']"));
+        for (WebElement webElement : listOfProjectName) {
+            if (!webElement.equals("FreestyleProject1")) {
+                isFreestyleProjectPresent = true;
+                break;
+            }
+        }
+        Assert.assertTrue(isFreestyleProjectPresent);
     }
 }
