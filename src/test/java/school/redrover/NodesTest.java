@@ -20,8 +20,18 @@ public class NodesTest extends BaseTest {
         String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + NODE_NAME + "']//a")).getText();
 
         Assert.assertEquals(actualNodeName, NODE_NAME);
-
     }
 
+    @Test
+    public void createNewNodeWithInvalidNameFromMainPanel() {
+        final String NODE_NAME = "!";
 
+        getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector(".error")).getText(),
+                "‘!’ is an unsafe character");
+    }
 }
