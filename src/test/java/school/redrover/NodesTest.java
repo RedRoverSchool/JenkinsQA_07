@@ -34,12 +34,13 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testRenameNodeValidName() {
+        final String nodeName = "TestNode";
         final String newNodeName = "TestNodeRename";
 
-        createNewNode("TestNode");
+        createNewNode(nodeName);
 
-        getDriver().findElement(By.partialLinkText("TestNode")).click();
-        getDriver().findElement(By.xpath("//a[contains (@href, 'TestNode/configure')]")).click();
+        getDriver().findElement(By.xpath("//tr[@id = 'node_" + nodeName + "']//a")).click();
+        getDriver().findElement(By.xpath("//a[@href= '/computer/" + nodeName + "/configure']")).click();
 
         getDriver().findElement(By.name("_.name")).sendKeys(newNodeName);
         getDriver().findElement(By.name("Submit")).click();
