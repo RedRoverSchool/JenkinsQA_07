@@ -21,8 +21,8 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     private void createFreeStyleProject(String projectName) {
-        getDriver().findElement(By.linkText("New Item"));
-        getDriver().findElement(By.xpath("//li[contains(@class, 'FreeStyleProject')]")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.id("ok-button")).click();
     }
@@ -64,6 +64,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@data-message,'Delete')]")).click();
+        getDriver().switchTo().alert().accept();
         goToJenkinsHomePage();
 
         int resultingProjectsAmount = getAllProjectsNames().size();
