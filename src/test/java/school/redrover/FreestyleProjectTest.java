@@ -2,14 +2,16 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.Test;
-import school.redrover.runner.BaseTest;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import school.redrover.runner.BaseTest;
+import java.util.UUID;
+
+
 
 public class FreestyleProjectTest extends BaseTest {
     private void goToJenkinsHomePage() {
@@ -56,6 +58,30 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testNewProjectCreatedOlena() {
+        String randomName = UUID.randomUUID()
+                .toString()
+                .substring(0, 5);
+        WebElement newItem = getDriver().findElement(By.linkText("New Item"));
+        newItem.click();
+
+        WebElement projectNameField = getDriver().findElement(By.id("name"));
+        projectNameField.click();
+        projectNameField.sendKeys(randomName);
+
+        WebElement selectProjectType = getDriver().findElement(By.xpath("//span[text()='Freestyle project']"));
+        selectProjectType.click();
+
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        okButton.click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        WebElement projectName = getDriver().findElement(By.xpath("//td[3]/a"));
+        String actualProjectName = projectName.getText();
+        assertEquals(actualProjectName, randomName);
+    }
+  
+  @Test
     public void testDelete() {
         final String projectName = "Test Project";
         int initialProjectsAmount = getAllProjectsNames().size();
@@ -70,5 +96,6 @@ public class FreestyleProjectTest extends BaseTest {
         int resultingProjectsAmount = getAllProjectsNames().size();
         assertEquals(initialProjectsAmount, resultingProjectsAmount);
         assertFalse(isProjectExist(projectName));
-    }
+}
+  
 }
