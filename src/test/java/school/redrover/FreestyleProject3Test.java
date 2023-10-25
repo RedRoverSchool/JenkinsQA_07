@@ -1,6 +1,4 @@
 package school.redrover;
-
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -8,7 +6,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import static org.testng.Assert.assertFalse;
 
 public class FreestyleProject3Test extends BaseTest {
 
