@@ -10,7 +10,7 @@ public class Pipeline2Test extends BaseTest {
     private static final String JOB_NAME = "New_Pipeline";
 
     @Test
-    public void testCreatePipeline() {
+    public void testCreate() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(JOB_NAME);
