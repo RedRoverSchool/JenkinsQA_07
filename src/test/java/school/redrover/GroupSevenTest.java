@@ -358,6 +358,15 @@ public class GroupSevenTest extends BaseTest {
         Assert.assertEquals(welcome, "Welcome to Jenkins!");
 
     }
+
+    @Test
+    public void testCheckPeople(){
+
+        getDriver().findElement(By.xpath("/html/body/div[2]/div[1]/div[1]/div[2]/span/a")).click();
+        String people = getDriver().findElement(By.xpath("//div[@class = 'jenkins-app-bar__content']")).getText();
+
+        Assert.assertEquals(people, "People");
+    }
 }
 
 
