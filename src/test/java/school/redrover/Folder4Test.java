@@ -6,7 +6,7 @@ import school.redrover.runner.BaseTest;
 
 import static org.testng.Assert.assertTrue;
 
-public class Folder2Test extends BaseTest {
+public class Folder4Test extends BaseTest {
 
     @Test
     public void testMoveFolderToFolder() {
