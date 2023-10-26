@@ -6,7 +6,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import static java.sql.DriverManager.getDriver;
 import static org.testng.AssertJUnit.assertEquals;
 
 
@@ -81,6 +80,26 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
+
+    @Test
+    public void testRenameWithInvalidName() {
+        final String oldFolderName = "Old folder";
+        final String invalidFolderName = "*";
+
+        creationNewFolder(oldFolderName);
+
+        getDashboardLink();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + oldFolderName + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[7]/span/a")).click();
+
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(invalidFolderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/p")).getText(), "‘" + invalidFolderName + "’ is an unsafe character");
+    }
+
     @Test
     public void TestMoveFolder() {
         final String firstFolderName = "Original Folder";
