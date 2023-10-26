@@ -193,6 +193,25 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionEditText);
 
     }
+    @Test
+    public void testDeleteTheExistingDescription() {
+        String projectName = "Hello";
+        String descriptionText = "Project freestyle";
+
+        createFreeStyleProject(projectName);
+
+        addDescriptionInConfiguration(descriptionText);
+
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
+        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+
+        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
+    }
 
     @Test
     public  void testTooltipDiscardOldBuildsIsVisible() {
