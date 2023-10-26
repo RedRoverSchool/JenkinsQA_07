@@ -115,4 +115,15 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectExist(initialProjectName));
     }
 
+    @Test
+    public void testCreateNew() {
+        final String projectName = "New Test Project1";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        assertEquals(
+                getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(),
+                 projectName);
+    }
+
 }
