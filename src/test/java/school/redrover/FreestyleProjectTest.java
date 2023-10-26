@@ -31,6 +31,18 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
+    private void addDescriptionInConfiguration(String text) {
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
+        getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
+    }
+
+    private void changeDescriptionTextInStatus(String text) {
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
+        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+    }
+
     private List<String> getAllProjectsNames() {
         return getDriver()
                 .findElements(By.xpath("//a[@class='jenkins-table__link model-link inside']"))
@@ -164,26 +176,21 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testEditDescription() {
         String projectName = "Hello";
-        String description = "Project freestyle";
-        String descriptionAfterEdit = "Welcome";
+        String descriptionText = "Project freestyle";
+        String descriptionEditText = "Welcome";
+
         createFreeStyleProject(projectName);
 
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(description);
-        getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
+        addDescriptionInConfiguration(descriptionText);
 
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        goToJenkinsHomePage();
 
         getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
 
-        getDriver().findElement(By.id("description-link")).click();
-
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(descriptionAfterEdit);
-
-        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+        changeDescriptionTextInStatus(descriptionEditText);
 
         assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), descriptionAfterEdit)]")).isDisplayed());
-        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionAfterEdit);
+        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionEditText);
 
     }
 
