@@ -5,10 +5,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class MoveFolderToFolderTest extends BaseTest {
+public class Folder5Test extends BaseTest {
 
     @Test
-    public void testMoveFolder() {
+    public void testMoveFolderToFolder() {
         createFolder("Main");
         navigateToJenkinsHome();
 
