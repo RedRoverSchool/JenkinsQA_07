@@ -323,4 +323,24 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(buttonOk.isEnabled());
     }
+
+    @Test(description = "Creating Freestyle project using duplicative name")
+    public void testFreestyleProjectWithDublicativeName() {
+
+        final String name = "Akiko";
+
+        createFreeStyleProject(name);
+
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(name);
+
+        String textResult = getDriver().findElement(By.id("itemname-invalid")).getText();
+        WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertEquals(textResult, "» A job already exists with the name ‘" + name + "’");
+        Assert.assertFalse(buttonOk.isEnabled());
+
+    }
 }
