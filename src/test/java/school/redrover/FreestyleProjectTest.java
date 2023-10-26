@@ -255,4 +255,26 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(result, name);
 
     }
+
+    @DataProvider(name = "InvalidName")
+    public String[][] invalidCredentials() {
+        return new String[][] {
+                { "!" }, { "@" }, { "#" }, { "$" }, { "%" }, { "^" }, { "&" }, { "*" }, { "?" }, { "|" }, { "/" },
+                { "[" }
+        };
+    }
+
+    @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
+    public void testFreestyleProjectWithInvalidData(String name) {
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(name);
+
+        String textRessult = getDriver().findElement(By.id("itemname-invalid")).getText();
+        WebElement buttonOK = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertEquals(textRessult, "» ‘" + name + "’ is an unsafe character");
+        Assert.assertFalse(buttonOK.isEnabled());
+
+    }
 }
