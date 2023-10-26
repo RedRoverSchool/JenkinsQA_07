@@ -59,7 +59,6 @@ public class FolderTest extends BaseTest {
 
         findJobByName(oldFolderName).click();
 
-        //getDriver().findElement(By.xpath("//a[@href='/job/" + oldFolderName + "/confirm-rename']")).click();
         getDriver().findElement(By.xpath(String.format("//a[@href='/job/%s/confirm-rename']",oldFolderName))).click();
         WebElement inputName = getDriver().findElement(By.name("newName"));
         inputName.clear();
