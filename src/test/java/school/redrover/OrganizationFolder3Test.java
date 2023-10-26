@@ -41,4 +41,16 @@ public class OrganizationFolder3Test extends BaseTest {
         Assert.assertEquals(errorMessage, "» ‘" + invalidData + "’ is an unsafe character");
 
     }
+
+    @Test
+    public void testCreateProjectWithSpaceInsteadOfName() {
+        final String space = " ";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.name("name")).sendKeys(space);
+        getDriver().findElement(By.xpath("//li//span[text()='Organization Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error");
+    }
 }
