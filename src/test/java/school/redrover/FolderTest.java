@@ -6,6 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import static org.testng.AssertJUnit.assertEquals;
+
 
 public class FolderTest extends BaseTest {
 
@@ -24,7 +26,7 @@ public class FolderTest extends BaseTest {
     }
 
     private WebElement findJobByName(String name) {
-        return getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']"));
+        return getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", name)));
     }
 
     @Test
@@ -36,7 +38,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
 
         getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
-        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/Folder1/confirm-rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(renamedFolder);
         getDriver().findElement(By.name("Submit")).click();
@@ -57,7 +59,7 @@ public class FolderTest extends BaseTest {
 
         findJobByName(oldFolderName).click();
 
-        getDriver().findElement(By.xpath("//a[@href='/job/" + oldFolderName + "/confirm-rename']")).click();
+        getDriver().findElement(By.xpath(String.format("//a[@href='/job/%s/confirm-rename']",oldFolderName))).click();
         WebElement inputName = getDriver().findElement(By.name("newName"));
         inputName.clear();
         inputName.sendKeys(newFolderName);
@@ -70,5 +72,55 @@ public class FolderTest extends BaseTest {
 
     }
 
+    private void creatNewFolder(String folderName) {
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    @Test
+    public void testRenameWithInvalidName() {
+        final String oldFolderName = "Old folder";
+        final String invalidFolderName = "*";
+
+        creationNewFolder(oldFolderName);
+
+        getDashboardLink();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + oldFolderName + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[7]/span/a")).click();
+
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(invalidFolderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/p")).getText(), "‘" + invalidFolderName + "’ is an unsafe character");
+    }
+
+    @Test
+    public void TestMoveFolder() {
+        final String firstFolderName = "Original Folder";
+        final String secondFolderName = "Inserted Folder";
+
+        creatNewFolder(firstFolderName);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        creatNewFolder(secondFolderName);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//*[@href='/job/Inserted%20Folder/move']")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/select")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/select/option[2]")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/button")).click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.xpath("//*[@id= 'job_" + firstFolderName + "']/td[3]/a")).click();
+
+        assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a/span")).getText(), secondFolderName);
+    }
 }
 
