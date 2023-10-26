@@ -37,6 +37,19 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
+    public void testCreateWithEmptyName() {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id=\"itemname-required\"]")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+        Assert.assertTrue(
+                getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
+    }
+
+    @Test
     public void testRenamePipeline() {
         String pipelineNameForCreate = "Hello";
         String pipelineNameForRename = "HaveAGoodDay";
