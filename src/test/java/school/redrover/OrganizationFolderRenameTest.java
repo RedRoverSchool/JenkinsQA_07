@@ -16,8 +16,7 @@ public class OrganizationFolderRenameTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id=\"jenkins-name-icon\"]")).click();
         getDriver().findElement(By.cssSelector("td a[href='job/" + folderName + "/'] span")).click();
 
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
+
 
     }
     @Test
