@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class FreestyleProject3Test extends BaseTest {
-
     @Test
     public void testCreateFreestyleProject() {
         final String projectName = "Test Project";
@@ -25,5 +24,4 @@ public class FreestyleProject3Test extends BaseTest {
                 getDriver().findElement(By.xpath("//h1")).getText(),
                 "Project " + projectName);
     }
-
 }
