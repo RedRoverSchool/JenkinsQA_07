@@ -159,6 +159,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), description)]")).isDisplayed());
         assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), description);
+
     }
 
     @Test
