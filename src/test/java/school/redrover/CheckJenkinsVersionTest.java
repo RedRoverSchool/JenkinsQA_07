@@ -20,6 +20,14 @@ public class CheckJenkinsVersionTest extends BaseTest {
 
         Assert.assertEquals(
                 getDriver().findElement(By.className("page-footer__links")).getText(),
-                        "Jenkins 2.414.2");
+                "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void testJenkinsVersion() {
+
+        Assert.assertEquals(getDriver().findElement
+                        (By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(),
+                "Jenkins 2.414.2");
     }
 }
