@@ -10,7 +10,7 @@ import school.redrover.runner.BaseTest;
 
 public class OrganizationFolderRenameTest extends BaseTest {
 
-    private void createOrgFolder(String name) {
+    private void createOrgFolder() {
         String folderName = "Test";
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.name("name")).sendKeys(folderName);
@@ -22,12 +22,11 @@ public class OrganizationFolderRenameTest extends BaseTest {
         Assert.assertTrue(getDriver()
                 .findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
 
-
     }
     @Test
     public void folderRename() {
         final String folderName = "Test";
-        createOrgFolder(folderName);
+        createOrgFolder();
         final String newFolderName =  "New name";
         getDriver().findElement(By.xpath("//td/a[@href = 'job/" + folderName + "/']")).click();
         getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[8]/span/a")).click();
