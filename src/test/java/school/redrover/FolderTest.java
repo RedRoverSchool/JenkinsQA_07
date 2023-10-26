@@ -124,7 +124,7 @@ public class FolderTest extends BaseTest {
     }
     @Test
     public void testCreatingNewFolder() {
-        final String FolderName = "TestFolder";
+        final String folderName = "TestFolder";
 
         getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
 
