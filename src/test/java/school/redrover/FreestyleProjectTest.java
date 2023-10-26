@@ -3,6 +3,8 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.List;
@@ -157,5 +159,25 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), description)]")).isDisplayed());
         assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), description);
+    }
+
+    @Test
+    public  void testTooltipDiscardOldBuildsIsVisible() {
+        createFreeStyleProject("New Freestyle Project");
+        WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
+
+       boolean tioltopIsVisible = true;
+        new Actions(getDriver())
+                .moveToElement(helpButton)
+                .perform();
+
+       if(helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
+           tioltopIsVisible = false;
+       }
+
+       Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
+
+
+
     }
 }
