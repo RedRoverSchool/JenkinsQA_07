@@ -26,7 +26,7 @@ public class FolderTest extends BaseTest {
     }
 
     private WebElement findJobByName(String name) {
-        return getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']"));
+        return getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", name)));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class FolderTest extends BaseTest {
 
         findJobByName(oldFolderName).click();
 
-        getDriver().findElement(By.xpath("//a[@href='/job/" + oldFolderName + "/confirm-rename']")).click();
+        getDriver().findElement(By.xpath(String.format("//a[@href='/job/%s/confirm-rename']",oldFolderName))).click();
         WebElement inputName = getDriver().findElement(By.name("newName"));
         inputName.clear();
         inputName.sendKeys(newFolderName);
@@ -121,6 +121,23 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id= 'job_" + firstFolderName + "']/td[3]/a")).click();
 
         assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a/span")).getText(), secondFolderName);
+    }
+    @Test
+    public void testCreatingNewFolder() {
+        final String folderName = "TestFolder";
+
+        getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
+
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//img[@class='icon-folder icon-xlg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@class='jenkins-table__link model-link inside']")).getText(),
+                folderName);
+
     }
 }
 

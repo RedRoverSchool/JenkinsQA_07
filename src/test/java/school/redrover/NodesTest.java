@@ -19,7 +19,7 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void createNewNodeWithValidNameFromMainPanel() {
+    public void testCreateNewNodeWithValidNameFromMainPanel() {
 
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
@@ -52,7 +52,7 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void createNewNodeWithInvalidNameFromMainPanel() {
+    public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
 
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
@@ -64,7 +64,7 @@ public class NodesTest extends BaseTest {
                 "‘!’ is an unsafe character");
     }
     @Test
-    public void createNewNodeByBuildExecutorInSidePanelMenu() {
+    public void testCreateNewNodeByBuildExecutorInSidePanelMenu() {
         getDriver().findElement(By.linkText("Build Executor Status")).click();
         getDriver().findElement(By.linkText("New Node")).click();
         getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("NewTEST2023");
@@ -77,7 +77,7 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void createNewNodeWithValidNameFromManageJenkinsPage() {
+    public void testCreateNewNodeWithValidNameFromManageJenkinsPage() {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
