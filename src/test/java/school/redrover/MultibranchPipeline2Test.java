@@ -17,9 +17,10 @@ public class MultibranchPipeline2Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains(text(),'Multibranch Pipeline')]")).click();
         getDriver().findElement(By.xpath("//button[@type='submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
         String pipelineNameExpected =  getDriver().findElement(By.xpath("//a[contains(text(),'" + pipelineName + "')]")).getText();
         Assert.assertEquals(pipelineNameExpected, pipelineName);
-        
+
     }
 
 
