@@ -62,8 +62,5 @@ public class Pipeline2Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//div[@class = 'jenkins-buttons-row jenkins-buttons-row--invert']/preceding-sibling :: div")).getText(), description + jobName);
-
-
-
     }
 }
