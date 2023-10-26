@@ -89,14 +89,15 @@ public class Pipeline2Test extends BaseTest {
         createAPipeline(jobName);
         goDashboardByBreadcrumb();
 
-        getDriver().findElement(By.xpath("//td//a[@title='Schedule a Build for Pipeline2']")).click();
+        getDriver().findElement(By.xpath("//td//a[@title='Schedule a Build for " + jobName + "']")).click();
 
-        Thread.sleep(1000);
+        Thread.sleep(1500);
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
 
         List<WebElement> permalinks = getDriver().findElements(By.cssSelector(".permalink-item"));
 
+        Assert.assertEquals(permalinks.size(), 4);
         Assert.assertTrue(permalinks.get(0).getText().contains("Last build"));
         Assert.assertTrue(permalinks.get(1).getText().contains("Last stable build"));
         Assert.assertTrue(permalinks.get(2).getText().contains("Last successful build"));
