@@ -1,17 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class DeleteProjectTest extends BaseTest {
-
     private static final String NAMEFOLDER = "MyFolder";
 
-
-    public void createProject(String name) {
+    private void createProject(String name) {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys(name);
@@ -24,7 +21,8 @@ public class DeleteProjectTest extends BaseTest {
 
     @Test
     public void testProject() {
-        createProject("MyFolder");
+
+        createProject(NAMEFOLDER);
         getDriver().findElement(By.xpath("//a[contains(@class, 'confirmation-link')]")).click();
         getDriver().switchTo().alert().accept();
 
