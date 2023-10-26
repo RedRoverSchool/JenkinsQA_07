@@ -7,6 +7,8 @@ import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
 
+    public static final String NODE_NAME = "new node";
+
     private void createNewNode(String nodeName) {
         getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(nodeName);
@@ -18,7 +20,6 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void createNewNodeWithValidNameFromMainPanel() {
-        final String NODE_NAME = "new node";
 
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
@@ -73,5 +74,22 @@ public class NodesTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(
               By.xpath("//*[@id='node_NewTEST2023']/td[2]/a")).getText().contains("NewTEST2023"));
+    }
+
+    @Test
+    public void createNewNodeWithValidNameFromManageJenkinsPage() {
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + NODE_NAME + "']//a")).getText();
+
+        Assert.assertEquals(actualNodeName, NODE_NAME);
+
     }
 }
