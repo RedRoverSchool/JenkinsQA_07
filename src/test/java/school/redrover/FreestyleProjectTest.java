@@ -3,6 +3,8 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -48,6 +50,18 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void addDescriptionInConfiguration(String text) {
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
+        getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
+    }
+
+    private void changeDescriptionTextInStatus(String text) {
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
+        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
     }
 
     private List<String> getAllProjectsNames() {
@@ -163,6 +177,82 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testAddDescription() {
+        String projectName = "Hello";
+        String description = "My description";
+        createFreeStyleProject(projectName);
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+
+        getDriver().findElement(By.cssSelector("#description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name ='description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+
+        assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), description)]")).isDisplayed());
+        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), description);
+    }
+
+    @Test
+    public void testEditDescription() {
+        String projectName = "Hello";
+        String descriptionText = "Project freestyle";
+        String descriptionEditText = "Welcome";
+
+        createFreeStyleProject(projectName);
+
+        addDescriptionInConfiguration(descriptionText);
+
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+
+        changeDescriptionTextInStatus(descriptionEditText);
+
+        assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), descriptionAfterEdit)]")).isDisplayed());
+        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionEditText);
+
+    }
+  
+    @Test
+    public void testDeleteTheExistingDescription() {
+        String projectName = "Hello";
+        String descriptionText = "Project freestyle";
+
+        createFreeStyleProject(projectName);
+
+        addDescriptionInConfiguration(descriptionText);
+
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
+        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+
+        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
+    }
+
+    @Test
+    public  void testTooltipDiscardOldBuildsIsVisible() {
+        createFreeStyleProject("New Freestyle Project");
+        WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
+
+       boolean tioltopIsVisible = true;
+        new Actions(getDriver())
+                .moveToElement(helpButton)
+                .perform();
+
+       if(helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
+           tioltopIsVisible = false;
+       }
+
+       Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
+    }
+  
+   @Test
     public void testDisableProjectFromStatusPage() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
@@ -174,6 +264,5 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertFalse(isProjectEnabledOnDashBoard(projectName));
         assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
-
     }
 }

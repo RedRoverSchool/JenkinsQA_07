@@ -43,4 +43,16 @@ public class OrganizationFolderTest extends BaseTest {
                 validName,
                 "Created organization name is incorrect");
     }
+
+    @Test
+    public void testDisableOrganizationFolder() {
+
+        creationNewOrganizationFolder("New Folder");
+
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+
+        Assert.assertEquals(getDriver()
+                        .findElement(By.xpath("//button[@name='Submit']")).getText(),
+                "Enable");
+    }
 }
