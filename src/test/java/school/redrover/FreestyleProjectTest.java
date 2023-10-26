@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,6 +21,26 @@ public class FreestyleProjectTest extends BaseTest {
 
     private boolean isProjectExist(String projectName) {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
+    }
+
+    private boolean isProjectEnabledOnDashBoard(String projectName) {
+        if (!isProjectExist(projectName)) return false;
+
+        return !getDriver()
+                .findElement(By.id("job_" + projectName))
+                .findElement(By.className("svg-icon"))
+                .getAttribute("title").equals("Disabled");
+    }
+
+    private boolean isProjectEnabledOnProjectStatusPage(String projectName) {
+        if (!isProjectExist(projectName)) return false;
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+
+        return !getDriver()
+                .findElement(By.xpath("//div[@class='warning']"))
+                .getText()
+                .contains("This project is currently disabled");
     }
 
     private void createFreeStyleProject(String projectName) {
@@ -106,7 +127,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + initialProjectName + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
-        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL+"a");
+        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL + "a");
         getDriver().findElement(By.name("newName")).sendKeys(newProjectName);
         getDriver().findElement(By.name("Submit")).click();
         goToJenkinsHomePage();
@@ -139,5 +160,20 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(
                 getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(),
                 projectName);
+    }
+
+    @Test
+    public void testDisableProjectFromStatusPage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertFalse(isProjectEnabledOnDashBoard(projectName));
+        assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
+
     }
 }
