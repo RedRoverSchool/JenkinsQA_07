@@ -1,9 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class Pipeline2Test extends BaseTest {
 
@@ -77,5 +80,26 @@ public class Pipeline2Test extends BaseTest {
         String permalinksInfo = getDriver().findElement(By.xpath("//ul[@class= 'permalinks-list']")).getText();
 
         Assert.assertTrue(permalinksInfo.isEmpty());
+    }
+
+    @Test
+    public void testPermalinksContainBuildInformation() throws InterruptedException {
+        final String jobName = "Pipeline2";
+
+        createAPipeline(jobName);
+        goDashboardByBreadcrumb();
+
+        getDriver().findElement(By.xpath("//td//a[@title='Schedule a Build for Pipeline2']")).click();
+
+        Thread.sleep(1000);
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
+
+        List<WebElement> permalinks = getDriver().findElements(By.cssSelector(".permalink-item"));
+
+        Assert.assertTrue(permalinks.get(0).getText().contains("Last build"));
+        Assert.assertTrue(permalinks.get(1).getText().contains("Last stable build"));
+        Assert.assertTrue(permalinks.get(2).getText().contains("Last successful build"));
+        Assert.assertTrue(permalinks.get(3).getText().contains("Last completed build"));
     }
 }
