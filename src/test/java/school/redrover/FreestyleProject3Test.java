@@ -24,6 +24,5 @@ public class FreestyleProject3Test extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'"+ pipelineName + "')]")).isDisplayed(), "Everyrhing is working,dont forget to improve yout test");
 
-
     }
 }
