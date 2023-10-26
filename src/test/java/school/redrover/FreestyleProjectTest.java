@@ -159,6 +159,31 @@ public class FreestyleProjectTest extends BaseTest {
 
         assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), description)]")).isDisplayed());
         assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), description);
+    }
+
+    @Test
+    public void testEditDescription() {
+        String projectName = "Hello";
+        String description = "Project freestyle";
+        String descriptionAfterEdit = "Welcome";
+        createFreeStyleProject(projectName);
+
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(description);
+        getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(descriptionAfterEdit);
+
+        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+
+        assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), descriptionAfterEdit)]")).isDisplayed());
+        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionAfterEdit);
 
     }
 
