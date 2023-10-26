@@ -16,7 +16,6 @@ public class FreestyleProject3Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains(text(),'Freestyle project')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
-
         getDriver().findElement(By.name("description")).sendKeys(pipelineName + "description");
         getDriver().findElement(By.name("Submit")).click();
 
