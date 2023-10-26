@@ -261,7 +261,7 @@ public class GroupItFriendlyTest extends BaseTest {
     public void testNewItemMultiConfiguration() {
         final String pipelineName = "New Item Name2 MultiConfiguration";
 
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[1]/span/a")).click();
+        getDriver().findElement(By.linkText("New Item")).click();
 
         getDriver().findElement(By.xpath("//div/input[@class = 'jenkins-input']")).sendKeys(pipelineName);
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[3]")).click();
