@@ -62,4 +62,16 @@ public class NodesTest extends BaseTest {
                 getDriver().findElement(By.cssSelector(".error")).getText(),
                 "‘!’ is an unsafe character");
     }
+    @Test
+    public void createNewNodeByBuildExecutorInSidePanelMenu() {
+        getDriver().findElement(By.linkText("Build Executor Status")).click();
+        getDriver().findElement(By.linkText("New Node")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("NewTEST2023");
+        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+
+        Assert.assertTrue(getDriver().findElement(
+              By.xpath("//*[@id='node_NewTEST2023']/td[2]/a")).getText().contains("NewTEST2023"));
+    }
 }
