@@ -124,11 +124,11 @@ public class FolderTest extends BaseTest {
     }
     @Test
     public void testCreatingNewFolder() {
-        final String newFolderName = "TestFolder";
+        final String folderName = "TestFolder";
 
         getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
 
-        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(FolderName);
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//img[@class='icon-folder icon-xlg']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
@@ -136,7 +136,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@class='jenkins-table__link model-link inside']")).getText(),
-                FolderName);
+                folderName);
 
     }
 }
