@@ -51,7 +51,7 @@ public class ViewTest extends BaseTest {
         getDriver().findElement(By.xpath("//label[@for='hudson.model.MyView']")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"projectstatus-tabBar\"]/div/div[1]/div[2]/a")).getText(),  NewViewName);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id= 'projectstatus-tabBar']/div/div[1]/div[2]/a")).getText(),  NewViewName);
     }
 
 }
