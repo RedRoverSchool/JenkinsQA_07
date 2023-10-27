@@ -310,8 +310,20 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertFalse(buttonOK.isEnabled());
 
     }
-  
-  <<<<<<< ech/TC_01.004.01
+
+    @Test(description = "Creating Freestyle project using an empty name")
+    public void testFreestyleProjectWithEmptyName() {
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        String textResult = getDriver().findElement(By.id("itemname-required")).getText();
+        WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
+
+        Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(buttonOk.isEnabled());
+    }
+    
     @Test
     public void testDisable() {
         //Create project
@@ -340,6 +352,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
     }
-  =======
-  >>>>>>> main
 }
