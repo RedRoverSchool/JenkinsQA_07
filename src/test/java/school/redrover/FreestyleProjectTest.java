@@ -323,4 +323,21 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(buttonOk.isEnabled());
     }
+
+    @Test
+    public void testCreateFreestyleProject() {
+        final String projectName = "FreestyleProjectNameRandom";
+
+        getDriver().findElement(By.cssSelector("a[href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(projectName);
+
+        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.cssSelector("button[type = 'submit']")).click();
+
+        getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
+        getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
+
+        Assert.assertEquals(projectName,
+                getDriver().findElement(By.cssSelector("a[href = 'job/FreestyleProjectNameRandom/']")).getText());
+    }
 }
