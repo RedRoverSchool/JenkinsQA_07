@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrganizationFolder2Test extends BaseTest {
 
@@ -37,5 +41,34 @@ public class OrganizationFolder2Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath
                 ("//h1[contains(text(), 'OrganizationFolderRenamed')]")).getText(), newFolderName);
+    }
+
+    @Test
+    public void testDeleteOrganizationFolder() {
+        final String folderName = "OrganizationFolder";
+        boolean deletetOK = true;
+
+        createOrganizationFolder();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.linkText(folderName)).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        try {
+            if (getDriver().findElement(By.xpath("//table[@id ='projectstatus']")).isDisplayed()) {
+                List<WebElement> elements = getDriver().findElements(By.xpath("//td/a"));
+                List<String> jobs = new ArrayList<>();
+                for (WebElement element : elements) {
+                    jobs.add(element.getText());
+                }
+                deletetOK = jobs.contains(folderName);
+            }
+        } catch (Exception e) {
+            deletetOK = false;
+        }
+
+        Assert.assertTrue(getDriver().getTitle().equals("Dashboard [Jenkins]"));
+        Assert.assertFalse(deletetOK);
     }
 }
