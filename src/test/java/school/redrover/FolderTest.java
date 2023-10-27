@@ -122,5 +122,41 @@ public class FolderTest extends BaseTest {
 
         assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a/span")).getText(), secondFolderName);
     }
+    @Test
+    public void testCreatingNewFolder() {
+        final String folderName = "TestFolder";
+
+        getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
+
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//img[@class='icon-folder icon-xlg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@class='jenkins-table__link model-link inside']")).getText(),
+                folderName);
+
+    }
+
+
+
+    @Test
+    public void testCreatingNewFolder1 () {
+       final String folderName = "My new project";
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
+                getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"));
+
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        Assert.assertEquals
+                (getDriver().findElement(By.xpath("//span[text()='My new project']")).getText(),
+                        folderName);
+
+    }
 }
 
