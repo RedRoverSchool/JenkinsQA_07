@@ -18,6 +18,8 @@ import static org.testng.Assert.*;
 
 public class FreestyleProjectTest extends BaseTest {
 
+    private final String PROJECT_NAME = "New Freestyle Project";
+
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
@@ -185,7 +187,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/" + projectName + "/']")).click();
 
         getDriver().findElement(By.cssSelector("#description-link")).click();
         getDriver().findElement(By.xpath("//textarea[@name ='description']")).sendKeys(description);
@@ -207,7 +209,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         goToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/" + projectName + "/']")).click();
 
         changeDescriptionTextInStatus(descriptionEditText);
 
@@ -215,7 +217,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionEditText);
 
     }
-  
+
     @Test
     public void testDeleteTheExistingDescription() {
         String projectName = "Hello";
@@ -227,7 +229,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         goToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/" + projectName + "/']")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
@@ -237,23 +239,23 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public  void testTooltipDiscardOldBuildsIsVisible() {
+    public void testTooltipDiscardOldBuildsIsVisible() {
         createFreeStyleProject("New Freestyle Project");
         WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
 
-       boolean tioltopIsVisible = true;
+        boolean tioltopIsVisible = true;
         new Actions(getDriver())
                 .moveToElement(helpButton)
                 .perform();
 
-       if(helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
-           tioltopIsVisible = false;
-       }
+        if (helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
+            tioltopIsVisible = false;
+        }
 
-       Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
+        Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
     }
-  
-   @Test
+
+    @Test
     public void testDisableProjectFromStatusPage() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
@@ -269,8 +271,8 @@ public class FreestyleProjectTest extends BaseTest {
 
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
-        return new String[][] {
-                { "\'Акико\'" }, { "Ак,ко" }, { "Акико" }, { "Akiko" }, { "12345`67890" }
+        return new String[][]{
+                {"\'Акико\'"}, {"Ак,ко"}, {"Акико"}, {"Akiko"}, {"12345`67890"}
         };
     }
 
@@ -291,9 +293,9 @@ public class FreestyleProjectTest extends BaseTest {
 
     @DataProvider(name = "InvalidName")
     public String[][] invalidCredentials() {
-        return new String[][] {
-                { "!" }, { "@" }, { "#" }, { "$" }, { "%" }, { "^" }, { "&" }, { "*" }, { "?" }, { "|" }, { "/" },
-                { "[" }
+        return new String[][]{
+                {"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {"/"},
+                {"["}
         };
     }
 
@@ -350,10 +352,25 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
-        getDriver().findElement(By.xpath("//span[text()='" + projectName +"']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + projectName + "']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("h1")).getText(),
                 "Project " + projectName);
+    }
+
+
+    @Test
+    public void testRenameToEmptyName() {
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item'][2]")).click();
+        getDriver().findElement(By.xpath(
+                "//a[@class='task-link ' and contains(@href, 'confirm-rename')]")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
+                "No name is specified");
     }
 }
