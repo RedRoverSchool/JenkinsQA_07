@@ -65,7 +65,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
         getDriver().findElement(By.xpath("(//input[@id='name'])[1]")).sendKeys(STR_TEST);
 
-        getDriver().findElement(By.xpath("//span[normalize-space()='Folder']")).click();
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
@@ -189,7 +189,7 @@ public class GroupUnderdogsTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
 
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys("My project");
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
         getDriver().findElement(By.xpath("//div[@class='footer']//button")).click();
 
         String name = "First project";

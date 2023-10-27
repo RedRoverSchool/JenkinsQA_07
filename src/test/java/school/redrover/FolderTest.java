@@ -129,7 +129,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='newJob']")).click();
 
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//img[@class='icon-folder icon-xlg']")).click();
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
 
