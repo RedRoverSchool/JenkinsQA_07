@@ -22,5 +22,70 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
     }
 
+    @Test
+    public void testVerifyWarningMessageWithDotName() {
+        final String WARNING_MESSAGE_TEXT_EXPECTED = "» A name cannot end with ‘.’";
+        final String CSS_COLOR_WARNING_MESSAGE_EXPECTED = "rgba(255, 0, 0, 1)";
+        final String ORGANIZATION_FOLDER_WITH_DOT_NAME = "Organization Folder.";
 
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(ORGANIZATION_FOLDER_WITH_DOT_NAME);
+
+        String warningMessageTextActual = getDriver().findElement(By.cssSelector("#itemname-invalid")).getText();
+        String cssColorWarningMessageActual = getDriver().findElement(By.cssSelector("#itemname-invalid")).getCssValue("color");
+
+        Assert.assertEquals(cssColorWarningMessageActual, CSS_COLOR_WARNING_MESSAGE_EXPECTED);
+        Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
+    }
+
+    private void returnHomeJenkins() {
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithValidName() {
+        String organizationFolderValidName = "Organization Folder";
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(organizationFolderValidName);
+        getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        returnHomeJenkins();
+
+        boolean isDisplayedOnDashboard = getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderValidName + "']/td/a/span")).isDisplayed();
+        Assert.assertTrue(isDisplayedOnDashboard);
+    }
+
+    private void createOrganizationFolder(String organizationFolderName) {
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(organizationFolderName);
+        getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        returnHomeJenkins();
+    }
+
+    @Test
+    public void RenameOrganizationFolderNameUsingSideBar() {
+        String organizationFolderName = "Organization Folder";
+        String organizationFolderNameNew = "Organization Folder New";
+
+        createOrganizationFolder(organizationFolderName);
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'confirm-rename')]")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-input")).clear();
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(organizationFolderNameNew);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String organizationFolderNameNewActual = getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText();
+
+        Assert.assertEquals(organizationFolderNameNewActual, organizationFolderNameNew);
+
+        returnHomeJenkins();
+        boolean isDisplayedOnDashboard = getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderNameNew + "']/td/a/span")).isDisplayed();
+        Assert.assertTrue(isDisplayedOnDashboard);
+    }
 }

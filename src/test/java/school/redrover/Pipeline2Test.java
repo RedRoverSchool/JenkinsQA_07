@@ -11,10 +11,10 @@ import java.util.List;
 public class Pipeline2Test extends BaseTest {
 
     private void createAPipeline(String jobName) {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(jobName);
-        getDriver().findElement(By.xpath("//span[text() = 'Pipeline']")).click();
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
         getDriver().findElement(By.name("Submit")).click();
@@ -103,4 +103,19 @@ public class Pipeline2Test extends BaseTest {
         Assert.assertTrue(permalinks.get(2).getText().contains("Last successful build"));
         Assert.assertTrue(permalinks.get(3).getText().contains("Last completed build"));
     }
+
+    @Test
+    public void testStageViewBeforeBuild() {
+        final String jobName = "Pipeline3";
+
+        createAPipeline(jobName);
+        goDashboardByBreadcrumb();
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
+
+        String stageViewInfo = getDriver().findElement(By.xpath("//div[@id = 'pipeline-box']/div")).getText();
+
+        Assert.assertEquals(stageViewInfo, "No data available. This Pipeline has not yet run.");
+    }
+
 }
