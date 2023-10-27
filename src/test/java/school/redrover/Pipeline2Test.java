@@ -103,4 +103,19 @@ public class Pipeline2Test extends BaseTest {
         Assert.assertTrue(permalinks.get(2).getText().contains("Last successful build"));
         Assert.assertTrue(permalinks.get(3).getText().contains("Last completed build"));
     }
+
+    @Test
+    public void testStageViewBeforeBuild() {
+        final String jobName = "Pipeline3";
+
+        createAPipeline(jobName);
+        goDashboardByBreadcrumb();
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
+
+        String stageViewInfo = getDriver().findElement(By.xpath("//div[@id = 'pipeline-box']/div")).getText();
+
+        Assert.assertEquals(stageViewInfo, "No data available. This Pipeline has not yet run.");
+    }
+
 }
