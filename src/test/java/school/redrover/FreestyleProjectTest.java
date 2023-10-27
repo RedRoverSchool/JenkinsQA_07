@@ -35,15 +35,17 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("title").equals("Disabled");
     }
 
-    private boolean isProjectEnabledOnProjectStatusPage(String projectName) {
-        if (!isProjectExist(projectName)) return false;
-
+    private void disableProjectByName(String projectName) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
 
-        return !getDriver()
-                .findElement(By.xpath("//div[@class='warning']"))
+    private boolean isProjectEnabledOnProjectStatusPage(String projectName) {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        return getDriver()
+                .findElement(By.name("Submit"))
                 .getText()
-                .contains("This project is currently disabled");
+                .contains("Disable Project");
     }
 
     private void createFreeStyleProject(String projectName) {
@@ -185,7 +187,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
-        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/" + projectName + "/']")).click();
 
         getDriver().findElement(By.cssSelector("#description-link")).click();
         getDriver().findElement(By.xpath("//textarea[@name ='description']")).sendKeys(description);
@@ -207,7 +209,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         goToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/" + projectName + "/']")).click();
 
         changeDescriptionTextInStatus(descriptionEditText);
 
@@ -215,7 +217,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionEditText);
 
     }
-  
+
     @Test
     public void testDeleteTheExistingDescription() {
         String projectName = "Hello";
@@ -227,7 +229,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         goToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//td/a[@href= 'job/"+ projectName +"/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href= 'job/" + projectName + "/']")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
@@ -237,23 +239,23 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public  void testTooltipDiscardOldBuildsIsVisible() {
+    public void testTooltipDiscardOldBuildsIsVisible() {
         createFreeStyleProject("New Freestyle Project");
         WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
 
-       boolean tioltopIsVisible = true;
+        boolean tioltopIsVisible = true;
         new Actions(getDriver())
                 .moveToElement(helpButton)
                 .perform();
 
-       if(helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
-           tioltopIsVisible = false;
-       }
+        if (helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
+            tioltopIsVisible = false;
+        }
 
-       Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
+        Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
     }
-  
-   @Test
+
+    @Test
     public void testDisableProjectFromStatusPage() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
@@ -266,11 +268,40 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectEnabledOnDashBoard(projectName));
         assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
     }
+    @Test
+    public void testEnableProjectFromStatusPage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        disableProjectByName(projectName);
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertTrue(isProjectEnabledOnDashBoard(projectName));
+        assertTrue(isProjectEnabledOnProjectStatusPage(projectName));
+    }
+
+    @Test
+    public void testEnableProjectFromConfigurePage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        disableProjectByName(projectName);
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertTrue(isProjectEnabledOnDashBoard(projectName));
+        assertTrue(isProjectEnabledOnProjectStatusPage(projectName));
+    }
 
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
-        return new String[][] {
-                { "\'Акико\'" }, { "Ак,ко" }, { "Акико" }, { "Akiko" }, { "12345`67890" }
+        return new String[][]{
+                {"\'Акико\'"}, {"Ак,ко"}, {"Акико"}, {"Akiko"}, {"12345`67890"}
         };
     }
 
@@ -291,9 +322,9 @@ public class FreestyleProjectTest extends BaseTest {
 
     @DataProvider(name = "InvalidName")
     public String[][] invalidCredentials() {
-        return new String[][] {
-                { "!" }, { "@" }, { "#" }, { "$" }, { "%" }, { "^" }, { "&" }, { "*" }, { "?" }, { "|" }, { "/" },
-                { "[" }
+        return new String[][]{
+                {"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {"/"},
+                {"["}
         };
     }
 
