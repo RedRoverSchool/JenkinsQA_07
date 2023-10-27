@@ -14,7 +14,7 @@ public class Folder3Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
         getDriver().findElement(By.cssSelector("#name")).sendKeys(folderName);
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.xpath("//li[@Class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();

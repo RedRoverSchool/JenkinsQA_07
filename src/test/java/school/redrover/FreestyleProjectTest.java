@@ -26,19 +26,19 @@ public class FreestyleProjectTest extends BaseTest {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-    private boolean isProjectEnabledOnDashBoard(String projectName) {
-        if (!isProjectExist(projectName)) return false;
+    private boolean isProjectEnabledOnDashBoard() {
+        if (!isProjectExist("Test Project")) return false;
 
         return !getDriver()
-                .findElement(By.id("job_" + projectName))
+                .findElement(By.id("job_" + "Test Project"))
                 .findElement(By.className("svg-icon"))
                 .getAttribute("title").equals("Disabled");
     }
 
-    private boolean isProjectEnabledOnProjectStatusPage(String projectName) {
-        if (!isProjectExist(projectName)) return false;
+    private boolean isProjectEnabledOnProjectStatusPage() {
+        if (!isProjectExist("Test Project")) return false;
 
-        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + "Test Project" + "')]")).click();
 
         return !getDriver()
                 .findElement(By.xpath("//div[@class='warning']"))
@@ -241,13 +241,13 @@ public class FreestyleProjectTest extends BaseTest {
         createFreeStyleProject("New Freestyle Project");
         WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
 
-       boolean tioltopIsVisible = true;
+       boolean tioltopIsVisible = false;
         new Actions(getDriver())
                 .moveToElement(helpButton)
                 .perform();
 
        if(helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
-           tioltopIsVisible = false;
+           tioltopIsVisible = true;
        }
 
        Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
@@ -263,14 +263,14 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         goToJenkinsHomePage();
 
-        assertFalse(isProjectEnabledOnDashBoard(projectName));
-        assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
+        assertFalse(isProjectEnabledOnDashBoard());
+        assertFalse(isProjectEnabledOnProjectStatusPage());
     }
 
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
         return new String[][] {
-                { "\'Акико\'" }, { "Ак,ко" }, { "Акико" }, { "Akiko" }, { "12345`67890" }
+                {"'Акико'"}, { "Ак,ко" }, { "Акико" }, { "Akiko" }, { "12345`67890" }
         };
     }
 
