@@ -396,28 +396,20 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDisable() {
-        //Create project
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@tabindex='0']")).sendKeys("FSProject");
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        //Disable project
+        createFreeStyleProject("FSProject");
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='enable']")).isEnabled());
+        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='enable']/button")).isEnabled());
     }
 
     @Test
     public void testEnable() {
-        //Create project
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@tabindex='0']")).sendKeys("FSProject");
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+        createFreeStyleProject("FSProject");
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        //Disable and enable project
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
         getDriver().findElement(By.xpath("//form[@action='enable']/button")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
