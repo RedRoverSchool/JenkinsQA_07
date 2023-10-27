@@ -267,6 +267,22 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
     }
 
+    @Test
+    public void testDisableProjectFromConfigurePage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertFalse(isProjectEnabledOnDashBoard(projectName));
+        assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
+    }
+
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
         return new String[][] {
