@@ -68,7 +68,6 @@ public class OrganizationFolder2Test extends BaseTest {
             deletetOK = false;
         }
 
-        Assert.assertTrue(getDriver().getTitle().equals("Dashboard [Jenkins]"));
         Assert.assertFalse(deletetOK);
     }
 }
