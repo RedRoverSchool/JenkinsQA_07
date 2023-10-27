@@ -25,6 +25,5 @@ public class Pipeline5Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
                 "Configure");
-
     }
 }
