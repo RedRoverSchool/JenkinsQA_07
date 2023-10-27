@@ -139,5 +139,24 @@ public class FolderTest extends BaseTest {
                 folderName);
 
     }
+
+
+
+    @Test
+    public void testCreatingNewFolder1 () {
+       final String folderName = "My new project";
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"name\"]")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
+                getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]"));
+
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        Assert.assertEquals
+                (getDriver().findElement(By.xpath("//span[text()='My new project']")).getText(),
+                        folderName);
+
+    }
 }
 
