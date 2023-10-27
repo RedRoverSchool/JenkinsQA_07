@@ -54,6 +54,20 @@ public class FolderBayanTest extends BaseTest
     }
 
     @Test
+    //https://trello.com/c/tm5ILS4l/190-tc04002034-folder-move-folder-to-folder-through-context-menu
+    public void testRenameThroughContextMenu() {
+        create(MAIN_FOLDER_NAME);
+        goToDashboard();
+
+        getDriver().findElement(By.xpath("//*[@id='job_" + MAIN_FOLDER_NAME + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + MAIN_FOLDER_NAME + "/confirm-rename']")).click();
+
+        rename(RENAMED_FOLDER_NAME);
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'" + RENAMED_FOLDER_NAME + "')]")).getText(),
+                RENAMED_FOLDER_NAME, "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
+    }
+    @Test
     //https://trello.com/c/HpLFOFj4/112-tc0400105-folder-rename-folder-check-error-when-no-name-is-specified
     public void testRenameErrorNoNameSpecified() {
         create(MAIN_FOLDER_NAME);
