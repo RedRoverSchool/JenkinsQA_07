@@ -28,6 +28,19 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
+    public void testDeleteOrganizationFolder() {
+        final String folderName = "Organization_Folder";
+
+        creationNewOrganizationFolder(folderName);
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.linkText(folderName)).click();
+        getDriver().findElement(By.xpath("//span/a[@href='/job/Organization_Folder/delete']")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
+    }
+
+    @Test
     public void testCreateWithValidName() {
         final String validName = "MyOrganization";
 

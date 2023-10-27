@@ -9,6 +9,7 @@ import school.redrover.runner.BaseTest;
 public class OrganizationFolder3Test extends BaseTest {
 
     private static final String PROJECT_NAME = "Organization Folder";
+    private static final String NEW_PROJECT_NAME = "Organization Folder Renamed";
 
     private void createProject() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -60,5 +61,17 @@ public class OrganizationFolder3Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
                 "» This field cannot be empty, please enter a valid name");
+    }
+
+    @Test
+    public void testRenameProjectFromProjectPage() {
+        createProject();
+
+        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
     }
 }
