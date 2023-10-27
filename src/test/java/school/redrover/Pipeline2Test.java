@@ -11,10 +11,10 @@ import java.util.List;
 public class Pipeline2Test extends BaseTest {
 
     private void createAPipeline(String jobName) {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(jobName);
-        getDriver().findElement(By.xpath("//span[text() = 'Pipeline']")).click();
+        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.id("ok-button")).click();
 
         getDriver().findElement(By.name("Submit")).click();
