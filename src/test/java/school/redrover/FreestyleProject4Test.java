@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-@Test
+
 public class FreestyleProject4Test extends BaseTest {
 
 
