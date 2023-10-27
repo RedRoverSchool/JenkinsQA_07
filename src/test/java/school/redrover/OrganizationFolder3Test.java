@@ -66,6 +66,7 @@ public class OrganizationFolder3Test extends BaseTest {
     @Test
     public void testRenameProjectFromProjectPage() {
         createProject();
+
         getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
