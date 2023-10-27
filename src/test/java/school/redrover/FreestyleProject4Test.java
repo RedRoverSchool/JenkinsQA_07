@@ -11,7 +11,7 @@ public class FreestyleProject4Test extends BaseTest {
 
 
     @Test
-    public void testFreestyleProject() {
+    public void testCreateFreestyleProject() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys("FreestyleProject");
