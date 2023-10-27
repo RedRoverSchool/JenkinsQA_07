@@ -38,4 +38,23 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
     }
 
+    private void returnHomeJenkins() {
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithValidName() {
+        String organizationFolderValidName = "Organization Folder";
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(organizationFolderValidName);
+        getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        returnHomeJenkins();
+
+        boolean isDisplayedOnDashboard = getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderValidName + "']/td/a/span")).isDisplayed();
+        Assert.assertTrue(isDisplayedOnDashboard);
+    }
+
 }
