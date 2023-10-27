@@ -76,11 +76,11 @@ public class ViewTest extends BaseTest {
     @Test
     public void testCreateNewView2() {
 
-        final String MyProjectName = "My new freestyle project name";
-        final String NewViewName = "My new view name";
+        final String myProjectName = "My new freestyle project name";
+        final String newViewName = "My new view name";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(MyProjectName);
+        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(myProjectName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
 
@@ -89,7 +89,7 @@ public class ViewTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@tooltip = 'New View']")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(NewViewName);
+        getDriver().findElement(By.id("name")).sendKeys(newViewName);
         getDriver().findElement(By.xpath("//label[@for='hudson.model.MyView']")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
 
