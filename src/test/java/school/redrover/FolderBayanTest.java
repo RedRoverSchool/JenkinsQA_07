@@ -102,7 +102,7 @@ public class FolderBayanTest extends BaseTest
 
     @Test
     //https://trello.com/c/Iq7pi6KS/186-tc0400203-folder-move-folder-to-folder-through-the-side-panel
-    public void testMoveThroughSidePanel() throws InterruptedException
+    public void testMoveThroughSidePanel()
     {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
