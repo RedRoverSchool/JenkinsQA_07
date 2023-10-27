@@ -393,4 +393,17 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
                 "No name is specified");
     }
+
+    @Test
+    public void testNewFreestyleProjectWithEmptyName() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+
+        String expectedNotice = "» This field cannot be empty, please enter a valid name";
+        WebElement actualNotice = getDriver().findElement(By.xpath("//div[@id='itemname-required']"));
+
+        Assert.assertEquals(actualNotice.getText(), expectedNotice);
+        Assert.assertFalse(getDriver().findElement(By.xpath("//button[@id='ok-button']"))
+                .isEnabled());
+    }
 }
