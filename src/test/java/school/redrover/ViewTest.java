@@ -54,16 +54,14 @@ public class ViewTest extends BaseTest {
 
     @Test
     public void testRenameView() {
-        final String projectName = "My New Freestyle Project";
-        final String viewName = "Test View";
         final String newViewName = "New Test View";
 
-        createNewFreestyleProject(projectName);
-        createMyNewListView(viewName);
+        createNewFreestyleProject();
+        createMyNewListView();
         goHome();
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'/configure')]")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).clear();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newViewName);
@@ -73,9 +71,9 @@ public class ViewTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[contains(@class,'active')]/a")).getText(),
                 newViewName);
     }
+
     @Test
     public void testCreateNewView2() {
-
         final String myProjectName = "My new freestyle project name";
         final String newViewName = "My new view name";
 
@@ -119,4 +117,21 @@ public class ViewTest extends BaseTest {
 
     }
 
+
+    @Test
+    public void testAddJobToTheView() {
+        createNewFreestyleProject();
+        createMyNewListView();
+        goHome();
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'/configure')]")).click();
+        getDriver().findElement(By.xpath(String.format("//label[@title='%s']", PROJECT_NAME))).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        String projectName = getDriver().findElement(By.xpath("//span[text()='My New Freestyle Project']")).getText();
+
+        Assert.assertEquals(projectName, PROJECT_NAME);
+    }
 }
