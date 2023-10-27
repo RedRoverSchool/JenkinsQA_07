@@ -241,13 +241,13 @@ public class FreestyleProjectTest extends BaseTest {
         createFreeStyleProject("New Freestyle Project");
         WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
 
-       boolean tioltopIsVisible = true;
+       boolean tioltopIsVisible = false;
         new Actions(getDriver())
                 .moveToElement(helpButton)
                 .perform();
 
        if(helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
-           tioltopIsVisible = false;
+           tioltopIsVisible = true;
        }
 
        Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
