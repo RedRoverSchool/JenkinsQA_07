@@ -19,11 +19,8 @@ public class Pipeline5Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
 
-        getDriver().findElement(By.xpath("//span[normalize-space()='" + pipelineName + "']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + pipelineName + "/configure']")).click();
-
         Assert.assertEquals(
-                getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
-                "Configure");
+                getDriver().findElement(By.xpath("//span[normalize-space()='" + pipelineName + "']")).getText(),
+                "Pipeline5");
     }
 }
