@@ -96,4 +96,27 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id= 'projectstatus-tabBar']/div/div[1]/div[2]/a")).getText(),  newViewName);
     }
 
+    @Test
+    public void testCreateNewView3(){
+        /*
+        As a User, I want to create view, so that I can group jobs into tabbed categories.
+        This will allow to quickly find the project and track its status in the future.
+        Ensure the User able to:
+        create view
+        sees created view in Dashboard tab bar
+         */
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("Bob");
+        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+
+        getDriver().findElement(By.xpath("//*[@id=\"job_Bob\"]/td[3]"));
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"job_Bob\"]/td[3]")).getText(),"Bob");
+
+
+
+    }
+
 }
