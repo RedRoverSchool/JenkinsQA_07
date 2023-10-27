@@ -57,4 +57,35 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertTrue(isDisplayedOnDashboard);
     }
 
+    private void createOrganizationFolder(String organizationFolderName) {
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(organizationFolderName);
+        getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        returnHomeJenkins();
+    }
+
+    @Test
+    public void RenameOrganizationFolderNameUsingSideBar() {
+        String organizationFolderName = "Organization Folder";
+        String organizationFolderNameNew = "Organization Folder New";
+
+        createOrganizationFolder(organizationFolderName);
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'confirm-rename')]")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-input")).clear();
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(organizationFolderNameNew);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String organizationFolderNameNewActual = getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText();
+
+        Assert.assertEquals(organizationFolderNameNewActual, organizationFolderNameNew);
+
+        returnHomeJenkins();
+        boolean isDisplayedOnDashboard = getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderNameNew + "']/td/a/span")).isDisplayed();
+        Assert.assertTrue(isDisplayedOnDashboard);
+    }
 }
