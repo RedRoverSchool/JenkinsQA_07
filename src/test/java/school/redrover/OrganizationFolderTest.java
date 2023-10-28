@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -67,5 +68,20 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver()
                         .findElement(By.xpath("//button[@name='Submit']")).getText(),
                 "Enable");
+    }
+
+    @Test
+    public void testDisableExistingOrganizationFolder() {
+
+        final String folderName = "OrganizationFolder";
+
+        creationNewOrganizationFolder(folderName);
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", folderName))).click();
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement submitEnable = getDriver().findElement(By.name("Submit"));
+
+        Assert.assertTrue(submitEnable.isDisplayed() && submitEnable.getText().contains("Enable"), "Folder is enable!");
     }
 }
