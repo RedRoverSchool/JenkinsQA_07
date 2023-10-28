@@ -11,6 +11,7 @@ public class OrganizationFolder7Test extends BaseTest {
     public void testCreateOrganizationFolder() {
 
         final String folderNameToFind = "OrganizationFolder";
+
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys("OrganizationFolder");
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
