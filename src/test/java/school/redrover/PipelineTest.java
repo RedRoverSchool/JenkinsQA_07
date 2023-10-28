@@ -128,7 +128,7 @@ public class PipelineTest extends BaseTest {
                         PIPELINE_NAME, buildStatus))).isDisplayed());
     }
     @Test
-    public void testCreatePipeline()  {
+    public void testCreatePipeline() {
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
         WebElement itemName = getDriver().findElement(By.id("name"));
