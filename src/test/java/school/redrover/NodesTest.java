@@ -67,15 +67,15 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCreateNewNodeByBuildExecutorInSidePanelMenu() {
-        getDriver().findElement(By.linkText("Build Executor Status")).click();
+        goToNodesPage();
         getDriver().findElement(By.linkText("New Node")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys("NewTEST2023");
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
         getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
         getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
 
         Assert.assertTrue(getDriver().findElement(
-                By.xpath("//*[@id='node_NewTEST2023']/td[2]/a")).getText().contains("NewTEST2023"));
+                By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).getText().contains(NODE_NAME));
     }
 
     @Test
