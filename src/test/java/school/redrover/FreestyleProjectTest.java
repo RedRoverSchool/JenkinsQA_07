@@ -150,7 +150,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .moveToElement(getDriver().findElement(By.xpath("(//*[@class = 'jenkins-menu-dropdown-chevron'])[3]")))
                 .click()
                 .perform();
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         getDriver().findElement(By.xpath("//button[contains(@href,'doDelete')]")).click();
         getDriver().switchTo().alert().accept();
 
