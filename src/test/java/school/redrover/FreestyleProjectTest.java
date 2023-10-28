@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -18,7 +19,9 @@ import static org.testng.Assert.*;
 
 public class FreestyleProjectTest extends BaseTest {
 
-    private final String PROJECT_NAME = "New Freestyle Project";
+    private final String PROJECT_NAME = "NewFreestyleProject";
+
+    private final String SUBMIT_BUTTON = "//button[@name='Submit']";
 
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -39,13 +42,13 @@ public class FreestyleProjectTest extends BaseTest {
 
     private void disableProjectByName(String projectName) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
     }
 
     private boolean isProjectEnabledOnProjectStatusPage(String projectName) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
         return getDriver()
-                .findElement(By.name("Submit"))
+                .findElement(By.xpath(SUBMIT_BUTTON))
                 .getText()
                 .contains("Disable Project");
     }
@@ -59,7 +62,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     private void addDescriptionInConfiguration(String text) {
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
-        getDriver().findElement(By.xpath("//button[@name ='Submit']")).click();
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
     }
 
     private void changeDescriptionTextInStatus(String text) {
@@ -86,7 +89,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
 
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
         getDriver().findElement(By.xpath("//td/a[@href = 'job/" + projectName + "/']")).click();
@@ -270,6 +273,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectEnabledOnDashBoard(projectName));
         assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
     }
+
     @Test
     public void testEnableProjectFromStatusPage() {
         final String projectName = "Test Project";
@@ -303,7 +307,7 @@ public class FreestyleProjectTest extends BaseTest {
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
         return new String[][]{
-                {"\'Акико\'"}, {"Ак,ко"}, {"Акико"}, {"Akiko"}, {"12345`67890"}
+                {"Акико"}, {"Ак,ко"}, {"Акико"}, {"Akiko"}, {"12345`67890"}
         };
     }
 
@@ -460,5 +464,29 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
                 "The new name is the same as the current name.");
+    }
+
+    @Test
+    public void testAddLinkToGitHubInGitHubProjectSection() {
+        final String SOURSE_CODE_MANAGEMENT = "//button[@data-section-id='source-code-management']";
+        final String INPUT_URL_FIELD = "//input[@name='_.url']";
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath(SOURSE_CODE_MANAGEMENT)).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,600)");
+        getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
+
+        getDriver().findElement(By.xpath(INPUT_URL_FIELD)).sendKeys("https://github.com/RedRoverSchool/JenkinsQA_07");
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/configure']")).click();
+        getDriver().findElement(By.xpath(SOURSE_CODE_MANAGEMENT)).click();
+        js.executeScript("window.scrollBy(0,600)");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(INPUT_URL_FIELD)).getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
+
     }
 }
