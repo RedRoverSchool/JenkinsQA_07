@@ -8,9 +8,9 @@ import school.redrover.runner.BaseTest;
 
 public class FreestyleProjectVDTest extends BaseTest {
 
-    private final String PROJECT_NAME = "NewFreestyleProject";
+    private static final String PROJECT_NAME = "NewFreestyleProject";
 
-    private final String SUBMIT_BUTTON = "//button[@name='Submit']";
+    private static final String SUBMIT_BUTTON = "//button[@name='Submit']";
 
     private void createFreeStyleProject(String projectName) {
         getDriver().findElement(By.linkText("New Item")).click();
