@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -125,5 +126,19 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath(
                 String.format("//td/a/span[text()='%s']/../../../td/div/span/span/*[name()='svg' and @tooltip='%s']",
                         PIPELINE_NAME, buildStatus))).isDisplayed());
+    }
+    @Test
+    public void testCreatePipeline()  {
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        newItem.click();
+        WebElement itemName = getDriver().findElement(By.id("name"));
+        itemName.sendKeys("MyPipeline");
+        WebElement pipeLine = getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']"));
+        pipeLine.click();
+        WebElement button = getDriver().findElement(By.id("ok-button"));
+        button.click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[normalize-space()='Configure']")).getText(),
+                "Configure");
     }
 }
