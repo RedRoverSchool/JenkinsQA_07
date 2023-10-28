@@ -96,13 +96,7 @@ public class ViewTest extends BaseTest {
 
     @Test
     public void testCreateNewView3(){
-        /*
-        As a User, I want to create view, so that I can group jobs into tabbed categories.
-        This will allow to quickly find the project and track its status in the future.
-        Ensure the User able to:
-        create view
-        sees created view in Dashboard tab bar
-         */
+
         getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
         getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys("Bob");
@@ -112,8 +106,6 @@ public class ViewTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//*[@id=\"job_Bob\"]/td[3]"));
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"job_Bob\"]/td[3]")).getText(),"Bob");
-
-
 
     }
 
