@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -432,7 +433,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='enable']/button")).isEnabled());
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//form[@action='enable']/button")).isEnabled());
     }
 
     @Test
@@ -443,7 +445,8 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
         getDriver().findElement(By.xpath("//form[@action='enable']/button")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//form[@action='disable']/button")).isEnabled());
     }
 
     @Test()
@@ -460,5 +463,24 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
                 "The new name is the same as the current name.");
+    }
+
+    @Test
+    public void testChangeSourceCodeManagementToGit() {
+        final String projectName = "FSProject";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
+
+        Actions action = new Actions(getDriver());
+        action
+                .moveToElement(getDriver()
+                        .findElement(By.xpath("//input[@name='scm' and @id='radio-block-1']")))
+                .click()
+                .perform();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='form-container tr']")).isEnabled());
+
     }
 }
