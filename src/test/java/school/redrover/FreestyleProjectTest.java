@@ -487,6 +487,5 @@ public class FreestyleProjectTest extends BaseTest {
         js.executeScript("window.scrollBy(0,600)");
 
         Assert.assertEquals(getDriver().findElement(By.xpath(INPUT_URL_FIELD)).getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
-
     }
 }
