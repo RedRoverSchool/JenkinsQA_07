@@ -1,5 +1,4 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -9,6 +8,7 @@ import school.redrover.runner.BaseTest;
 public class FreestyleProject7Test extends BaseTest {
 
     @Test
+
     public void testCreateFreestyleProjectFromNewItem() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
