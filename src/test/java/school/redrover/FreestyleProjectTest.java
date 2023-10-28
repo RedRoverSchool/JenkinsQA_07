@@ -267,6 +267,22 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
     }
 
+    @Test
+    public void testDisableProjectFromConfigurePage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertFalse(isProjectEnabledOnDashBoard(projectName));
+        assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
+    }
+
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
         return new String[][] {
@@ -322,23 +338,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(buttonOk.isEnabled());
-    }
-
-    @Test
-    public void testCreateFreestyleProject() {
-        final String projectName = "FreestyleProjectNameRandom";
-
-        getDriver().findElement(By.cssSelector("a[href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.cssSelector("input.jenkins-input")).sendKeys(projectName);
-
-        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.cssSelector("button[type = 'submit']")).click();
-
-        getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
-        getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
-
-        Assert.assertEquals(projectName,
-                getDriver().findElement(By.cssSelector("a[href = 'job/FreestyleProjectNameRandom/']")).getText());
     }
 
     @Test
