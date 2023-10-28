@@ -468,24 +468,24 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddLinkToGitHubInGitHubProjectSection() {
-        final String SOURSE_CODE_MANAGEMENT = "//button[@data-section-id='source-code-management']";
-        final String INPUT_URL_FIELD = "//input[@name='_.url']";
+        final String sourseCodeManagement = "//button[@data-section-id='source-code-management']";
+        final String inputUrlField = "//input[@name='_.url']";
 
         createFreeStyleProject(PROJECT_NAME);
 
-        getDriver().findElement(By.xpath(SOURSE_CODE_MANAGEMENT)).click();
+        getDriver().findElement(By.xpath(sourseCodeManagement)).click();
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollBy(0,600)");
         getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
 
-        getDriver().findElement(By.xpath(INPUT_URL_FIELD)).sendKeys("https://github.com/RedRoverSchool/JenkinsQA_07");
+        getDriver().findElement(By.xpath(inputUrlField)).sendKeys("https://github.com/RedRoverSchool/JenkinsQA_07");
         getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
 
         getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/configure']")).click();
-        getDriver().findElement(By.xpath(SOURSE_CODE_MANAGEMENT)).click();
+        getDriver().findElement(By.xpath(sourseCodeManagement)).click();
         js.executeScript("window.scrollBy(0,600)");
 
-        Assert.assertEquals(getDriver().findElement(By.xpath(INPUT_URL_FIELD)).getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
+        Assert.assertEquals(getDriver().findElement(By.xpath(inputUrlField)).getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
     }
 }
