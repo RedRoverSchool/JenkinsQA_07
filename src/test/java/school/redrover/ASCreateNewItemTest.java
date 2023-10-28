@@ -7,10 +7,23 @@ import school.redrover.runner.BaseTest;
 
 
 public class ASCreateNewItemTest extends BaseTest {
+
     private static final String itemName = "AS Test File";
     private static final String encodedItemName = itemName.replace(" ", "%20");
     private static final String expectedMessage = "» This field cannot be empty, please enter a valid name";
     private static final String validationMessage = "Validation message does not match expected text";
+    private static final String notFoundMessage = "Item does not exist";
+    private static final String createdItem = "a[href='job/" + encodedItemName + "/'] span";
+
+    private void Submit(){
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void InputName(){
+        getDriver().findElement(By.id("name")).sendKeys(itemName);
+    }
+
 
     @Test
     public void testCreateFreeStyleProject() {
@@ -21,17 +34,16 @@ public class ASCreateNewItemTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        Submit();
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
-        Assert.assertNotNull(getDriver().findElement(By.cssSelector("a[href='job/" + encodedItemName + "/'] span")), validationMessage);
+        Assert.assertNotNull(getDriver().findElement(By.cssSelector(createdItem)), notFoundMessage);
 
     }
 
@@ -44,18 +56,16 @@ public class ASCreateNewItemTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        Submit();
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
-        Assert.assertNotNull(getDriver().findElement(By.cssSelector("a[href='job/" + encodedItemName + "/'] span")),
-                validationMessage);
+        Assert.assertNotNull(getDriver().findElement(By.cssSelector(createdItem)), notFoundMessage);
 
     }
 
@@ -68,18 +78,16 @@ public class ASCreateNewItemTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        Submit();
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
-        Assert.assertNotNull(getDriver().findElement(By.cssSelector("a[href='job/" + encodedItemName + "/'] span")),
-                validationMessage);
+        Assert.assertNotNull(getDriver().findElement(By.cssSelector(createdItem)), notFoundMessage);
 
     }
 
@@ -92,18 +100,16 @@ public class ASCreateNewItemTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        Submit();
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
-        Assert.assertNotNull(getDriver().findElement(By.cssSelector("a[href='job/" + encodedItemName + "/'] span")),
-                validationMessage);
+        Assert.assertNotNull(getDriver().findElement(By.cssSelector(createdItem)), notFoundMessage);
 
     }
 
@@ -116,18 +122,16 @@ public class ASCreateNewItemTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        Submit();
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
-        Assert.assertNotNull(getDriver().findElement(By.cssSelector("a[href='job/" + encodedItemName + "/'] span")),
-                validationMessage);
+        Assert.assertNotNull(getDriver().findElement(By.cssSelector(createdItem)), notFoundMessage);
 
     }
 
@@ -140,18 +144,16 @@ public class ASCreateNewItemTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        InputName();
         getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        Submit();
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
-        Assert.assertNotNull(getDriver().findElement(By.cssSelector("a[href='job/" + encodedItemName + "/'] span")),
-                validationMessage);
+        Assert.assertNotNull(getDriver().findElement(By.cssSelector(createdItem)), notFoundMessage);
 
     }
 
