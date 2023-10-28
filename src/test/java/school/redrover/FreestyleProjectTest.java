@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -138,19 +139,15 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteProjectFromDropDownOnBreadCrumbs() throws InterruptedException {
+    public void testDeleteProjectFromDropDownOnBreadCrumbs()  {
         final String projectName = "Test Project";
         int initialProjectsAmount = getAllProjectsNames().size();
         createFreeStyleProject(projectName);
         goToJenkinsHomePage();
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.linkText(projectName)))
-                .moveToElement(getDriver().findElement(By.xpath("(//*[@class = 'jenkins-menu-dropdown-chevron'])[3]")))
-                .click()
-                .perform();
-        Thread.sleep(10000);
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.linkText(projectName))).perform();
+        getDriver().findElement(By.xpath("//button[contains(@data-href,'"+projectName.replace(" ","%20")+"')]")).click();
         getDriver().findElement(By.xpath("//button[contains(@href,'doDelete')]")).click();
         getDriver().switchTo().alert().accept();
 
