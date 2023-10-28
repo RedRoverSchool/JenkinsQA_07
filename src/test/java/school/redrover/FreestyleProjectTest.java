@@ -138,6 +138,28 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testDeleteProjectFromDropDownOnBreadCrumbs() throws InterruptedException {
+        final String projectName = "Test Project";
+        int initialProjectsAmount = getAllProjectsNames().size();
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.linkText(projectName)))
+                .moveToElement(getDriver().findElement(By.xpath("(//*[@class = 'jenkins-menu-dropdown-chevron'])[3]")))
+                .click()
+                .perform();
+        Thread.sleep(1000);
+        getDriver().findElement(By.xpath("//button[contains(@href,'doDelete')]")).click();
+        getDriver().switchTo().alert().accept();
+
+        int resultingProjectsAmount = getAllProjectsNames().size();
+        assertEquals(initialProjectsAmount, resultingProjectsAmount);
+        assertFalse(isProjectExist(projectName));
+    }
+
+    @Test
     public void testRenameProject() {
         final String initialProjectName = "Test Project";
         final String newProjectName = "New Test Project";
@@ -270,6 +292,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectEnabledOnDashBoard(projectName));
         assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
     }
+
     @Test
     public void testEnableProjectFromStatusPage() {
         final String projectName = "Test Project";
