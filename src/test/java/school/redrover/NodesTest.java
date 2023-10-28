@@ -7,7 +7,7 @@ import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
 
-    public static final String NODE_NAME = "new node";
+    private static final String NODE_NAME = "new node";
 
     private void createNewNode(String nodeName) {
         getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
@@ -110,6 +110,22 @@ public class NodesTest extends BaseTest {
         String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_copy']//a")).getText();
 
         Assert.assertEquals(actualNodeName, "copy");
+    }
+
+    @Test
+    public void testCreateNewNodeFromNodesSectionInManageJenkinsPage() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
+        getDriver().findElement(By.linkText("New Node")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).click();
+
+        Assert.assertTrue(getDriver().findElement(
+                By.xpath("//h1")).getText().contains(NODE_NAME));
+
     }
 }
 
