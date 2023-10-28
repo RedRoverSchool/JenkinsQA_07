@@ -24,10 +24,6 @@ public class OrganizationFolder7Test extends BaseTest {
         String createdFolderName = getDriver().findElement(By.xpath("//h1")).getText();
         Assert.assertEquals(createdFolderName,folderNameToFind);
 
-
-
-
-
     }
 
 }
