@@ -31,4 +31,16 @@ public class DeleteProjectTest extends BaseTest {
         Assert.assertEquals(actualTitle, "Start building your software project");
 
     }
+
+    @Test
+    public void testProject1() {
+
+        createProject(NAMEFOLDER);
+        getDriver().findElement(By.xpath("//a[contains(@class, 'confirmation-link')]")).click();
+        getDriver().switchTo().alert().accept();
+
+        String actualTitle = getDriver().findElement(By.xpath("//h2[contains(text(),'Start building your software project')]")).getText();
+
+        Assert.assertEquals(actualTitle, "Start building your software project");
+    }
 }
