@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
-public class FreestyleProject4Test extends BaseTest {
+public class FreestyleProject12Test extends BaseTest {
 
 
     @Test
