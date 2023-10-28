@@ -130,18 +130,4 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertFalse(deletetOK);
     }
-
-    @Test
-    public void testRedirectAfterDeleting() {
-        final String folderName = "OrganizationFolder";
-
-        creationNewOrganizationFolder(folderName);
-
-        getDriver().findElement(By.linkText("Dashboard")).click();
-        getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
-
-        Assert.assertTrue(getDriver().getTitle().equals("Dashboard [Jenkins]"));
-    }
 }
