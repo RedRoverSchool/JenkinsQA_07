@@ -57,4 +57,24 @@ public class View3Test extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@class = 'tab active']/a")).getText(),
                 renamedListViewName);
     }
+
+    @Test
+    public void testAddingDescriptionForTheView() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+        final String newDescriptionForTheView = "Test description for the List View";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithoutAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(newDescriptionForTheView);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),
+                newDescriptionForTheView);
+    }
 }
