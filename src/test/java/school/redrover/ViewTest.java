@@ -53,7 +53,6 @@ public class ViewTest extends BaseTest {
     }
 
     @Ignore
-    @Test
     public void testRenameView() {
         final String newViewName = "New Test View";
 
@@ -111,7 +110,6 @@ public class ViewTest extends BaseTest {
     }
 
     @Ignore
-    @Test
     public void testAddJobToTheView() {
         createNewFreestyleProject();
         createMyNewListView();
