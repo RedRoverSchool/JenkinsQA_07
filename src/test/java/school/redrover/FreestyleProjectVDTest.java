@@ -64,4 +64,28 @@ public class FreestyleProjectVDTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath(inputDaysToKeepBuildsField)).getAttribute("value"), "2");
         Assert.assertEquals(getDriver().findElement(By.xpath(inputMaxNumberOfBuildsToKeepField)).getAttribute("value"), "3");
     }
+
+    @Test
+    public void testCheckThrottleBuildsCheckbox() {
+
+        final String numberOfBuilds = "//input[@name='_.count']";
+        final String timePeriod = "//select[@name='_.durationName']";
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//label[normalize-space()='Throttle builds']")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,600)");
+
+        getDriver().findElement(By.xpath(numberOfBuilds)).clear();
+        getDriver().findElement(By.xpath(numberOfBuilds)).sendKeys("4");
+        getDriver().findElement(By.xpath(timePeriod)).click();
+        getDriver().findElement(By.xpath("//option[@value='day']")).click();
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
+        getDriver().findElement(By.xpath(CONFIGURE_LINK)).click();
+        js.executeScript("window.scrollBy(0,600)");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(numberOfBuilds)).getAttribute("value"), "4");
+        Assert.assertEquals(getDriver().findElement(By.xpath(timePeriod)).getAttribute("value"), "day");
+    }
 }

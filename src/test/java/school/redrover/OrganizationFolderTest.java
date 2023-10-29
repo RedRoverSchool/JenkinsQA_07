@@ -6,6 +6,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrganizationFolderTest extends BaseTest {
 
     private void creationNewOrganizationFolder(String folderName) {
@@ -102,6 +105,33 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
+    public void testOnDeletingOrganizationFolder() {
+        final String folderName = "OrganizationFolder";
+        boolean deletetOK = true;
+
+        creationNewOrganizationFolder(folderName);
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.linkText(folderName)).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        try {
+            if (getDriver().findElement(By.xpath("//table[@id ='projectstatus']")).isDisplayed()) {
+                List<WebElement> elements = getDriver().findElements(By.xpath("//td/a"));
+                List<String> jobs = new ArrayList<>();
+                for (WebElement element : elements) {
+                    jobs.add(element.getText());
+                }
+                deletetOK = jobs.contains(folderName);
+            }
+        } catch (Exception e) {
+            deletetOK = false;
+        }
+
+        Assert.assertFalse(deletetOK);
+    }
+    @Test
     public void testRedirectAfterDeleting() {
         final String folderName = "OrganizationFolder";
 
@@ -128,5 +158,21 @@ public class OrganizationFolderTest extends BaseTest {
         WebElement submitEnable = getDriver().findElement(By.name("Submit"));
 
         Assert.assertTrue(submitEnable.isDisplayed() && submitEnable.getText().contains("Enable"), "Folder is enable!");
+    }
+
+    @Test
+    public void testDisableByButton() {
+        final String folderName = "OrganizationFolderEnable";
+
+        creationNewOrganizationFolder(folderName);
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        getDriver().findElement(By.xpath("//span[text()='OrganizationFolderEnable']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText(),
+                "Enable");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@method='post']")).getText().contains("This Organization Folder is currently disabled"));
     }
 }

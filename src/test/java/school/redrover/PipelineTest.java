@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -151,4 +152,22 @@ public class PipelineTest extends BaseTest {
                 getDriver().findElement(By.xpath("//p")).getText(),
                 "No name is specified");
     }
+    @Test
+    public void testCreatePipeline() {
+        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
+        newItem.click();
+        WebElement itemName = getDriver().findElement(By.id("name"));
+        itemName.sendKeys("MyPipeline");
+        WebElement pipeLine = getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"));
+        pipeLine.click();
+        WebElement button = getDriver().findElement(By.id("ok-button"));
+        button.click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.xpath("//td/a[@href = 'job/MyPipeline/']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
+                "Pipeline MyPipeline");
+    }
+
 }
