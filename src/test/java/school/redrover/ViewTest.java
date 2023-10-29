@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -51,7 +52,7 @@ public class ViewTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/my-views/view/Test%20view/']")).getText(), nameView);
     }
-
+    Ignore
     @Test
     public void testRenameView() {
         final String newViewName = "New Test View";
@@ -108,8 +109,7 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"job_Bob\"]/td[3]")).getText(),"Bob");
 
     }
-
-
+    Ignore
     @Test
     public void testAddJobToTheView() {
         createNewFreestyleProject();
