@@ -19,6 +19,6 @@ public class Node2Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//td/a[text()='"+nodeName+"']"))!=null);
+        Assert.assertNotNull(getDriver().findElement(By.xpath("//td/a[text()='"+nodeName+"']"))!=null);
     }
 }
