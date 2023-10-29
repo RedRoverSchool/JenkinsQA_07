@@ -5,10 +5,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class FreestyleProject7Test extends BaseTest {
+public class FreestyleProject10Test extends BaseTest {
 
     @Test
-    public void CreatingFreestyleProject() {
+    public void testCreatingFreestyleProject() {
         final String projectName = "NewFreestyleProject";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
