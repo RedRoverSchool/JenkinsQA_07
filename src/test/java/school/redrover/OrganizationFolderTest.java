@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -67,5 +68,36 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver()
                         .findElement(By.xpath("//button[@name='Submit']")).getText(),
                 "Enable");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithValidName() {
+
+        final String name = "Project";
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//span[text()='Organization Folder']")).click();
+        getDriver().findElement(By.xpath("//div[@class='footer']//button")).click();
+        getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']")).click();
+        WebElement findObject = getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']/li[3]/a"));
+        String actualResult = findObject.getText();
+
+        Assert.assertEquals(actualResult, name);
+    }
+
+    @Test
+    public void testVerifyWarningMessageEmptyName() {
+
+        final String expectedResultWarningMessage = "» This field cannot be empty, please enter a valid name";
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Organization Folder']")).click();
+
+        WebElement findWarning = getDriver().findElement(By.xpath("//div[@id='itemname-required']"));
+        String actualResult = findWarning.getText();
+
+        Assert.assertEquals(actualResult, expectedResultWarningMessage);
     }
 }

@@ -61,11 +61,7 @@ public class BreadcrumbTest extends BaseTest {
         "//button[@name='Submit' and contains(@class, 'jenkins-button jenkins-button--primary')]")).click();
 
 
-    //Assert.assertTrue(newDescriprtion.contains(addDescription));
-    //Assert.assertTrue(getDriver().findElement(By.id("description")).contains(addDescription));
 
-
-    getDriver().findElement(By.xpath("//a[@href = 'newJob']")).click();
     searchDashboardOnBreadcrumbBarAndClick();
     Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(mainPageLocator));
 

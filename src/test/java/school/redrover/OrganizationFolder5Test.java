@@ -88,4 +88,24 @@ public class OrganizationFolder5Test extends BaseTest {
         boolean isDisplayedOnDashboard = getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderNameNew + "']/td/a/span")).isDisplayed();
         Assert.assertTrue(isDisplayedOnDashboard);
     }
+
+    @Test
+    public void testVerifyErrorMessageRenameWithSameName() {
+        String organizationFolderName = "Organization Folder";
+        final String ERROR_MESSAGE_RENAME_WITH_SAME_NAME_EXPECTED = "The new name is the same as the current name.";
+        final String ERROR_EXPECTED = "Error";
+        createOrganizationFolder(organizationFolderName);
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, 'confirm-rename')]")).click();
+        getDriver().findElement(By.cssSelector(".jenkins-input")).clear();
+        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(organizationFolderName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String errorActual = getDriver().findElement(By.cssSelector("#main-panel h1")).getText();
+        String errorMessageRenameWithSameNameActual = getDriver().findElement(By.cssSelector("#main-panel p")).getText();
+
+        Assert.assertEquals(errorMessageRenameWithSameNameActual, ERROR_MESSAGE_RENAME_WITH_SAME_NAME_EXPECTED);
+        Assert.assertEquals(errorActual, ERROR_EXPECTED);
+    }
 }

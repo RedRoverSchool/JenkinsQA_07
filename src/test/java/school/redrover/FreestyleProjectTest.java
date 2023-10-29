@@ -37,15 +37,17 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("title").equals("Disabled");
     }
 
-    private boolean isProjectEnabledOnProjectStatusPage(String projectName) {
-        if (!isProjectExist(projectName)) return false;
-
+    private void disableProjectByName(String projectName) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
 
-        return !getDriver()
-                .findElement(By.xpath("//div[@class='warning']"))
+    private boolean isProjectEnabledOnProjectStatusPage(String projectName) {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        return getDriver()
+                .findElement(By.name("Submit"))
                 .getText()
-                .contains("This project is currently disabled");
+                .contains("Disable Project");
     }
 
     private void createFreeStyleProject(String projectName) {
@@ -268,6 +270,35 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectEnabledOnDashBoard(projectName));
         assertFalse(isProjectEnabledOnProjectStatusPage(projectName));
     }
+    @Test
+    public void testEnableProjectFromStatusPage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        disableProjectByName(projectName);
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertTrue(isProjectEnabledOnDashBoard(projectName));
+        assertTrue(isProjectEnabledOnProjectStatusPage(projectName));
+    }
+
+    @Test
+    public void testEnableProjectFromConfigurePage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        disableProjectByName(projectName);
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertTrue(isProjectEnabledOnDashBoard(projectName));
+        assertTrue(isProjectEnabledOnProjectStatusPage(projectName));
+    }
 
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
@@ -405,5 +436,42 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(actualNotice.getText(), expectedNotice);
         Assert.assertFalse(getDriver().findElement(By.xpath("//button[@id='ok-button']"))
                 .isEnabled());
+    }
+
+    @Test
+    public void testDisable() {
+        createFreeStyleProject("FSProject");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='enable']/button")).isEnabled());
+    }
+
+    @Test
+    public void testEnable() {
+        createFreeStyleProject("FSProject");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
+        getDriver().findElement(By.xpath("//form[@action='enable']/button")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
+    }
+
+    @Test()
+    public void testErrorWhenRenameWithExistingName() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage(); //New Freestyle Project
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
+        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL + "a");
+        getDriver().findElement(By.name("newName")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
+                "The new name is the same as the current name.");
     }
 }
