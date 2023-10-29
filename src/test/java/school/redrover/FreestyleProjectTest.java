@@ -474,4 +474,16 @@ public class FreestyleProjectTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
                 "The new name is the same as the current name.");
     }
+
+    @Test()
+    public void testDisableProjectFromStatus() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.cssSelector("#disable-project .jenkins-button")).click();
+
+        goToJenkinsHomePage();
+        assertFalse(isProjectEnabledOnDashBoard(PROJECT_NAME));
+    }
 }
