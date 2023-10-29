@@ -25,7 +25,6 @@ public class Pipeline2Test extends BaseTest {
         getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
     }
 
-    @Test
     private void runHelloWorldBuildInPipeline(String jobName) throws InterruptedException {
         createAPipeline(jobName);
 
