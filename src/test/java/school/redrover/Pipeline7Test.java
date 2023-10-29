@@ -1,13 +1,11 @@
 package school.redrover;
 
-import com.beust.ah.A;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import school.redrover.runner.BaseTest;
 
-public class PipelineRenameProject extends BaseTest {
+public class Pipeline7Test extends BaseTest {
 
     public void createProject() {
 
