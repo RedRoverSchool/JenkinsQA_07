@@ -159,4 +159,19 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertTrue(submitEnable.isDisplayed() && submitEnable.getText().contains("Enable"), "Folder is enable!");
     }
+
+    @Test
+    public void testDisableByButton() {
+        final String folderName = "OrganizationFolderEnable";
+
+        creationNewOrganizationFolder(folderName);
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        getDriver().findElement(By.xpath("//span[text()='OrganizationFolderEnable']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText(),
+                "Enable");
+    }
 }
