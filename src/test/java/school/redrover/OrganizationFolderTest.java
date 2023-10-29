@@ -175,4 +175,20 @@ public class OrganizationFolderTest extends BaseTest {
                 "Enable");
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@method='post']")).getText().contains("This Organization Folder is currently disabled"));
     }
+
+    @Test
+    public void testVerifyWarningMessageInvalidName() {
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+
+        List<String> specialCharacters = List.of("!", ":", "#", "*", "/", "&", "?", ";", "@", "%", "^", "[", "]",
+                "<", ">", "|", "$");
+
+        for (String element : specialCharacters) {
+            getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(element);
+            String actualResult = getDriver().findElement(By.xpath("//div[@id='itemname-invalid']")).getText();
+
+            Assert.assertEquals(actualResult, "» ‘" + element + "’ is an unsafe character");
+            getDriver().findElement(By.xpath("//input[@id='name']")).clear();
+        }
+    }
 }
