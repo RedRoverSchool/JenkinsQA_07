@@ -52,7 +52,8 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/my-views/view/Test%20view/']")).getText(), nameView);
     }
 
-    /*@Test
+    @Ignore
+    @Test
     public void testRenameView() {
         final String newViewName = "New Test View";
 
@@ -71,7 +72,7 @@ public class ViewTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[contains(@class,'active')]/a")).getText(),
                 newViewName);
     }
-*/
+
     @Test
     public void testCreateNewView2() {
         final String myProjectName = "My new freestyle project name";
@@ -109,7 +110,8 @@ public class ViewTest extends BaseTest {
 
     }
 
-    /*@Test
+    @Ignore
+    @Test
     public void testAddJobToTheView() {
         createNewFreestyleProject();
         createMyNewListView();
@@ -124,5 +126,5 @@ public class ViewTest extends BaseTest {
         String projectName = getDriver().findElement(By.xpath("//span[text()='My New Freestyle Project']")).getText();
 
         Assert.assertEquals(projectName, PROJECT_NAME);
-    }*/
+    }
 }
