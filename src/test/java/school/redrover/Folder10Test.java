@@ -19,6 +19,5 @@ public class Folder10Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//td/a[@href='job/" + folderName + "/']")).getText(),
                 folderName);
-
     }
 }
