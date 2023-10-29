@@ -459,7 +459,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
     }
 
-    @Test()
+    @Test
     public void testErrorWhenRenameWithExistingName() {
         createFreeStyleProject(PROJECT_NAME);
         goToJenkinsHomePage(); //New Freestyle Project
@@ -483,5 +483,17 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
                 .getAttribute("style"), "display: block;");
+    }
+
+    @Test
+    public void testDisableProjectFromStatus() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.cssSelector("#disable-project .jenkins-button")).click();
+
+        goToJenkinsHomePage();
+        assertFalse(isProjectEnabledOnDashBoard(PROJECT_NAME));
     }
 }
