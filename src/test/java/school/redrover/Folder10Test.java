@@ -16,12 +16,9 @@ public class Folder10Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
         getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
-
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//td/a[@href='job/" + folderName + "/']")).getText(),
                 folderName);
 
     }
 }
-
-
