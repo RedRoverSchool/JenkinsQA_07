@@ -5,9 +5,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 
-public class FreestyleProject10Test extends BaseTest {
+public class Pipeline7Test extends BaseTest {
     @Test
-    public void createPipeline() {
+    public void testCreatePipeline() {
         final String pipelineName = "FirstPipeline";
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
