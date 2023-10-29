@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class Folder8Test extends BaseTest {
+public class Folder10Test extends BaseTest {
     @Test
     public void testCreateFolderWithValidName() {
         final String folderName = "MyFolder";
