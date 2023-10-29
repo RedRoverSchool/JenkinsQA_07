@@ -126,4 +126,29 @@ public class PipelineTest extends BaseTest {
                 String.format("//td/a/span[text()='%s']/../../../td/div/span/span/*[name()='svg' and @tooltip='%s']",
                         PIPELINE_NAME, buildStatus))).isDisplayed());
     }
+
+    @Test
+    public void testPipelineNoNameError() {
+        final String pipelineName = "My_Pipline_project1";
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(pipelineName);
+        getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        getDriver().findElement(By.xpath("//img[@id='jenkins-name-icon']")).click();
+        getDriver().findElement(By.xpath("//span[normalize-space()='" + pipelineName + "']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/My_Pipline_project1/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        getDriver().findElement(By.xpath("//button[normalize-space()='Rename']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1")).getText(),
+                "Error");
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//p")).getText(),
+                "No name is specified");
+    }
 }

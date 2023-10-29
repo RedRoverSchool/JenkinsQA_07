@@ -114,4 +114,19 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertTrue(getDriver().getTitle().equals("Dashboard [Jenkins]"));
     }
+
+    @Test
+    public void testDisableExistingOrganizationFolder() {
+
+        final String folderName = "OrganizationFolder";
+
+        creationNewOrganizationFolder(folderName);
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']", folderName))).click();
+        getDriver().findElement(By.name("Submit")).click();
+        WebElement submitEnable = getDriver().findElement(By.name("Submit"));
+
+        Assert.assertTrue(submitEnable.isDisplayed() && submitEnable.getText().contains("Enable"), "Folder is enable!");
+    }
 }
