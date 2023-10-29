@@ -461,4 +461,16 @@ public class FreestyleProjectTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
                 "The new name is the same as the current name.");
     }
+
+    @Test
+    public void testHelpDescriptionOfDiscardOldBuildsIsVisible() {
+        createFreeStyleProject("New Freestyle Project");
+        getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"))
+                .click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
+                .getAttribute("style"), "display: block;");
+
+
+    }
 }
