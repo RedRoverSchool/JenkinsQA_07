@@ -117,6 +117,7 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertTrue(getDriver().getTitle().equals("Dashboard [Jenkins]"));
     }
+
     @Test
     public void testOnDeletingOrganizationFolder() {
         final String folderName = "OrganizationFolder";
