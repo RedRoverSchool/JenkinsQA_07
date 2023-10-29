@@ -1,97 +1,82 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.testng.Assert;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.util.Random;
+import static org.testng.AssertJUnit.assertTrue;
 
 public class Breadcrumb2Test extends BaseTest {
-    final String jobName = "Unicorns" + getRandomNumber();
-
-    private static String getRandomNumber() {
-
-        Random random = new Random();
-        return String.valueOf(100000000 + random.nextInt(900000000));
+    private boolean isBreadcrumbPresent() {
+        try {
+            WebElement breadcrumb = getDriver().findElement(By.xpath("//div[@id=\"breadcrumbBar\"]"));
+            return breadcrumb.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
-
-    private void searchDashboardBtnAndClick() {
-
-        getDriver().findElement(By.xpath("//li/a[@class = 'model-link']")).click();
+    private boolean thisIsDashboardPage() {
+        try {
+            WebElement dashboard = getDriver().findElement(By.xpath("//div[@class=\"dashboard\"]"));
+            return dashboard.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
-
-    private void createNewFreestyleProject() {
-
+    private void createTask() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/']")).isDisplayed();
-        getDriver().findElement(By.name("name")).sendKeys(jobName);
-        getDriver().findElement(By.xpath("//img[@class = 'icon-freestyle-project icon-xlg']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"name\"]")).sendKeys("Test");
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']//label")).click();
+        getDriver().findElement(By.xpath("//button[@id=\"ok-button\"]")).click();
     }
+@Test
+    public void testBreadcrumbOnDifferentPages() {
 
-    @Test
-    public void testReturnOnMainPageFromNewItem() {
 
-        createNewFreestyleProject();
-        searchDashboardBtnAndClick();
+        createTask();
+        assertTrue(isBreadcrumbPresent());
+        getDriver().findElement(By.xpath("//button[@name=\"Submit\"]")).click();
+        assertTrue(isBreadcrumbPresent());
 
-        Assert.assertTrue(getDriver().findElement(By.id("tasks")).isDisplayed());
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[2]/span/a")).click();
+        assertTrue(isBreadcrumbPresent());
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a")).click();
+        assertTrue(isBreadcrumbPresent());
+
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[4]/span/a")).click();
+        assertTrue(isBreadcrumbPresent());
+
+        getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[1]")).click();
+        assertTrue(isBreadcrumbPresent());
+
     }
-
     @Test
-    public void testReturnOnMainPageFromPeople() {
+    public void testReturnToDashboardOnDifferentPages() {
+        createTask();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        assertTrue(thisIsDashboardPage());
 
-        createNewFreestyleProject();
-        searchDashboardBtnAndClick();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[2]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        assertTrue(thisIsDashboardPage());
 
-        getDriver().findElement(By.xpath("//a[@href = '/asynchPeople/']")).click();
-        if (getDriver().findElement(By.xpath("//h1")).isDisplayed()) {
-            searchDashboardBtnAndClick();
-        }
-        Assert.assertTrue(getDriver().findElement(By.id("breadcrumbBar")).isDisplayed());
-        Assert.assertTrue(getDriver().findElement(By.id("tasks")).isDisplayed());
-    }
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[3]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        assertTrue(thisIsDashboardPage());
 
-    @Test
-    public void testReturnOnMainPageFromBuildHistory() {
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[4]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        assertTrue(thisIsDashboardPage());
 
-        createNewFreestyleProject();
-        searchDashboardBtnAndClick();
+        getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
+        assertTrue(thisIsDashboardPage());
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/builds']")).click();
-        if (getDriver().findElement(By.xpath("//h1")).isDisplayed()) {
-            searchDashboardBtnAndClick();
-        }
-        Assert.assertTrue(getDriver().findElement(By.id("breadcrumbBar")).isDisplayed());
-        Assert.assertTrue(getDriver().findElement(By.id("tasks")).isDisplayed());
-    }
 
-    @Test
-    public void testReturnOnMainPageFromManageJenkins() {
 
-        createNewFreestyleProject();
-        searchDashboardBtnAndClick();
 
-        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
-        if (getDriver().findElement(By.xpath("//h1")).isDisplayed()) {
-            searchDashboardBtnAndClick();
-        }
-        Assert.assertTrue(getDriver().findElement(By.id("breadcrumbBar")).isDisplayed());
-        Assert.assertTrue(getDriver().findElement(By.id("tasks")).isDisplayed());
-    }
-
-    @Test
-    public void testReturnOnMainPageFromMyViews() {
-
-        createNewFreestyleProject();
-        searchDashboardBtnAndClick();
-
-        getDriver().findElement(By.xpath("//a[@href = '/me/my-views']")).click();
-        searchDashboardBtnAndClick();
-
-        Assert.assertTrue(getDriver().findElement(By.id("breadcrumbBar")).isDisplayed());
-        Assert.assertTrue(getDriver().findElement(By.id("tasks")).isDisplayed());
     }
 }
