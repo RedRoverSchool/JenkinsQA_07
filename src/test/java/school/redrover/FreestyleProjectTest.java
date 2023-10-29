@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -356,7 +357,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(buttonOk.isEnabled());
     }
-
     @Test(description = "Creating Freestyle project using duplicative name")
     public void testFreestyleProjectWithDublicativeName() {
 
@@ -473,5 +473,15 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
                 "The new name is the same as the current name.");
+    }
+
+    @Test
+    public void testHelpDescriptionOfDiscardOldBuildsIsVisible() {
+        createFreeStyleProject("New Freestyle Project");
+        getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"))
+                .click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
+                .getAttribute("style"), "display: block;");
     }
 }
