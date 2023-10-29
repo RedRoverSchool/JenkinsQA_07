@@ -104,6 +104,7 @@ public class ViewTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id=\'ok-button\']")).click();
         getDriver().findElement(By.xpath("//*[@id=\'breadcrumbs\']/li[1]/a")).click();
         getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]"));
+
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]")).getText(),"Bob");
 
     }
