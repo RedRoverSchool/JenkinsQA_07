@@ -10,7 +10,7 @@ import static java.sql.DriverManager.getDriver;
 public class FreestyleProject1Test extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     @Test
-    public void testCreateFreestyleProject() {
+    public void testCreateFreestyle1Project() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
