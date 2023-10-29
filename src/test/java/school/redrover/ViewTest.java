@@ -53,12 +53,15 @@ public class ViewTest extends BaseTest {
     }
 
     @Ignore
+    @Test
     public void testRenameView() {
         final String newViewName = "New Test View";
+        final String VIEW_NAME = "New name";
 
-        createNewFreestyleProject();
-        createMyNewListView();
+        createNewFreestyleProject(newViewName);
+        createMyNewListView(newViewName);
         goHome();
+
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
         getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
@@ -108,12 +111,17 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]")).getText(),"Bob");
 
     }
-
     @Ignore
+    @Test
     public void testAddJobToTheView() {
-        createNewFreestyleProject();
-        createMyNewListView();
+        final String newViewName = "New Test View";
+        final String VIEW_NAME = "New name";
+
+        createNewFreestyleProject(newViewName);
+        createMyNewListView(newViewName);
         goHome();
+
+        String PROJECT_NAME = "project name";
 
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
         getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
