@@ -173,5 +173,6 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText(),
                 "Enable");
+        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@method='post']")).getText().contains("This Organization Folder is currently disabled"));
     }
 }
