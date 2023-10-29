@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class Node2Test extends BaseTest {
     @Test
     public void testCreateNodeFromMainPanel() {
-        final String nodeName = "Test node";
+        final String nodeName = "Test node from main panel";
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
 
         getDriver().findElement(By.xpath("//a[@href='computer']")).click();
@@ -20,5 +20,18 @@ public class Node2Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         Assert.assertNotNull(getDriver().findElement(By.xpath("//td/a[text()='"+nodeName+"']")));
+    }
+
+    @Test
+    public void testCreateNodeFromBuildExecutorStatus(){
+        final String nodeName = "Test node from build executor status";
+        getDriver().findElement(By.xpath("//a[text()='Build Executor Status']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nodeName);
+        getDriver().findElement(By.xpath("//label[text()='Permanent Agent']")).click();
+        getDriver().findElement(By.id("ok")).click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 }
