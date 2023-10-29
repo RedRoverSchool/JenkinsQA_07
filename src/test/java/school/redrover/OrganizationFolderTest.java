@@ -139,6 +139,7 @@ public class OrganizationFolderTest extends BaseTest {
                 }
                 deletetOK = jobs.contains(folderName);
             }
+
         } catch (Exception e) {
             deletetOK = false;
         }
