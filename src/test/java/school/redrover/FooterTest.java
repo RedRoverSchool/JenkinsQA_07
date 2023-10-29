@@ -33,4 +33,10 @@ public class FooterTest extends BaseTest {
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("api"));
     }
+    @Test
+    public void testJenkinsVersionMainPage() {
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"))
+                .getText(),"Jenkins 2.414.2");
+    }
 }
