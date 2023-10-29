@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -356,7 +357,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(buttonOk.isEnabled());
     }
-
     @Test(description = "Creating Freestyle project using duplicative name")
     public void testFreestyleProjectWithDublicativeName() {
 
@@ -426,6 +426,19 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testNewFreestyleProjectWithEmptyName() {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+
+        String expectedNotice = "» This field cannot be empty, please enter a valid name";
+        WebElement actualNotice = getDriver().findElement(By.xpath("//div[@id='itemname-required']"));
+
+        Assert.assertEquals(actualNotice.getText(), expectedNotice);
+        Assert.assertFalse(getDriver().findElement(By.xpath("//button[@id='ok-button']"))
+                .isEnabled());
+    }
+
+    @Test
     public void testDisable() {
         createFreeStyleProject("FSProject");
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
@@ -460,5 +473,15 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
                 "The new name is the same as the current name.");
+    }
+
+    @Test
+    public void testHelpDescriptionOfDiscardOldBuildsIsVisible() {
+        createFreeStyleProject("New Freestyle Project");
+        getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"))
+                .click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
+                .getAttribute("style"), "display: block;");
     }
 }
