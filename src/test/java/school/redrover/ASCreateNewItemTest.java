@@ -13,6 +13,7 @@ public class ASCreateNewItemTest extends BaseTest {
     private static final String expectedMessage = "» This field cannot be empty, please enter a valid name";
     private static final String validationMessage = "Validation message does not match expected text";
     private static final String notFoundMessage = "Item does not exist";
+    private static final String notDisabled = "OK button is not disabled";
     private static final String createdItem = "a[href='job/" + encodedItemName + "/'] span";
 
     private void Submit(){
@@ -35,7 +36,7 @@ public class ASCreateNewItemTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         InputName();
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
+        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), notDisabled);
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -57,7 +58,7 @@ public class ASCreateNewItemTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         InputName();
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
+        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), notDisabled);
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -79,7 +80,7 @@ public class ASCreateNewItemTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         InputName();
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
+        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), notDisabled);
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -101,7 +102,7 @@ public class ASCreateNewItemTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         InputName();
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
+        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), notDisabled);
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -123,7 +124,7 @@ public class ASCreateNewItemTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         InputName();
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
+        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), notDisabled);
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -145,7 +146,7 @@ public class ASCreateNewItemTest extends BaseTest {
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         InputName();
-        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "OK button is not disabled");
+        Assert.assertNotNull(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), notDisabled);
 
         getDriver().findElement(By.cssSelector("a.model-link[href='/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
