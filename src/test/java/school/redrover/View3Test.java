@@ -129,4 +129,21 @@ public class View3Test extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),
                 "");
     }
+    @Test
+    public void testNoJobsShownForTheViewWithoutAssociatedJob() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+        final String noAssociatedJobsForTheViewMessage = "This view has no jobs associated with it. " +
+                "You can either add some existing jobs to this view or create a new job in this view.";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithoutAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//div[@id = 'main-panel']")).getText().
+                        contains(noAssociatedJobsForTheViewMessage));
+    }
 }
