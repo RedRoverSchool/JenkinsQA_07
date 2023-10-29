@@ -484,4 +484,23 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
                 .getAttribute("style"), "display: block;");
     }
+
+    @Test
+    public void testRenameFreestyleProjectSideMenu() {
+        final String NEW_PROJECT_NAME = "New Freestyle project name";
+
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']//button")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("h1")).getText(),
+                "Project " + NEW_PROJECT_NAME
+        );
+    }
 }
