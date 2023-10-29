@@ -14,7 +14,6 @@ public class Folder10Test extends BaseTest {
         getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
         getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
 
