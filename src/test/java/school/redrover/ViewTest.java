@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -52,8 +51,8 @@ public class ViewTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/my-views/view/Test%20view/']")).getText(), nameView);
     }
-    Ignore
-    @Test
+
+    /*@Test
     public void testRenameView() {
         final String newViewName = "New Test View";
 
@@ -72,7 +71,7 @@ public class ViewTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[contains(@class,'active')]/a")).getText(),
                 newViewName);
     }
-
+*/
     @Test
     public void testCreateNewView2() {
         final String myProjectName = "My new freestyle project name";
@@ -98,19 +97,18 @@ public class ViewTest extends BaseTest {
     @Test
     public void testCreateNewView3(){
 
-        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\'tasks\']/div[5]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\'tasks\']/div[1]/span/a")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys("Bob");
-        getDriver().findElement(By.xpath("//*[@id=\"j-add-item-type-nested-projects\"]/ul/li[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id=\"ok-button\"]")).click();
-        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
-
-        getDriver().findElement(By.xpath("//*[@id=\"job_Bob\"]/td[3]"));
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"job_Bob\"]/td[3]")).getText(),"Bob");
+        getDriver().findElement(By.xpath("//*[@id=\'j-add-item-type-nested-projects\']/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id=\'ok-button\']")).click();
+        getDriver().findElement(By.xpath("//*[@id=\'breadcrumbs\']/li[1]/a")).click();
+        getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]"));
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]")).getText(),"Bob");
 
     }
-    Ignore
-    @Test
+
+    /*@Test
     public void testAddJobToTheView() {
         createNewFreestyleProject();
         createMyNewListView();
@@ -125,5 +123,5 @@ public class ViewTest extends BaseTest {
         String projectName = getDriver().findElement(By.xpath("//span[text()='My New Freestyle Project']")).getText();
 
         Assert.assertEquals(projectName, PROJECT_NAME);
-    }
+    }*/
 }
