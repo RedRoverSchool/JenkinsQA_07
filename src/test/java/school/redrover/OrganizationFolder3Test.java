@@ -4,10 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 
 public class OrganizationFolder3Test extends BaseTest {
 
@@ -89,6 +93,8 @@ public class OrganizationFolder3Test extends BaseTest {
         new Actions(getDriver()).moveToElement(dropDownButton).perform();
         dropDownButton.sendKeys(Keys.RETURN);
 
+        WebDriverWait getWait2 = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        getWait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-5")));
         getDriver().findElement(By.xpath("//a[contains(@href,'confirm-rename')]")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
