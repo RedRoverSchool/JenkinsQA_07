@@ -43,20 +43,20 @@ public class Folder8Test extends BaseTest {
         createFolder(nestedFolderName);
         goToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//tr[@id='job_Nested Folder']/td[3]/a")).click();//как вставить константу?
-        getDriver().findElement(By.xpath("//a[@href='/job/Nested%20Folder/move']")).click();
-        getDriver().findElement(By.xpath("//div[@class='task '][7]")).click();
+        getDriver().findElement(By.xpath("//tr[@id = 'job_Nested Folder']/td[3]/a")).click();//как вставить константу?
+        getDriver().findElement(By.xpath("//a[@href = '/job/Nested%20Folder/move']")).click();
+        getDriver().findElement(By.xpath("//div[@class = 'task '][7]")).click();
         getDriver().findElement(By.xpath("//select[@name = 'destination']")).click();
         getDriver().findElement(By.xpath("//option[@value = '/Main Folder']")).click();
         getDriver().findElement(By.name("Submit")).click();
         goToJenkinsHomePage();
 
-        List elementList = getDriver().findElements(By.xpath("//table[@id='projectstatus']//*[contains(text(), 'Nested Folder')]"));
+        List elementList = getDriver().findElements(By.xpath("//table[@id = 'projectstatus']//*[contains(text(), 'Nested Folder')]"));
         Assert.assertTrue(elementList.size() == 0);
 
-        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//tr[@id='job_Nested Folder']//a//span")).getText(),
+                By.xpath("//tr[@id = 'job_Nested Folder']//a//span")).getText(),
                 nestedFolderName);
     }
 }
