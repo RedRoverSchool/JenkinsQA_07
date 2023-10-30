@@ -31,27 +31,6 @@ public class View4Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok']")).click();
     }
 
-    private void createNewMyView(String viewName) {
-        goToHomepage();
-        getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
-                .sendKeys(viewName);
-        getDriver().findElement(By.xpath("//input[@id='hudson.model.MyView']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok']")).click();
-    }
-
-    private void createNewListViewWithAllJobs(String viewName) {
-        goToHomepage();
-        getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
-                .sendKeys(viewName);
-        getDriver().findElement(By.xpath("//input[@id='hudson.model.ListView']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok']")).click();
-        getDriver().findElement(
-                By.xpath("//div[@class='listview-jobs']//input[@type='checkbox']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-    }
-
     @Test
     public void testCreateNewView() {
      createNewFreestyleProject();
