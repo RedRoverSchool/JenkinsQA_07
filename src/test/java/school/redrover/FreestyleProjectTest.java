@@ -515,7 +515,7 @@ public class FreestyleProjectTest extends BaseTest {
             getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']")).click();
 
             Assert.assertTrue(
-                    getDriver().findElement(By.id("yui-gen5")).isDisplayed()
+                    getDriver().findElement(By.xpath("//button[contains( text(), 'Add Parameter')]")).isDisplayed()
             );
     }
 }
