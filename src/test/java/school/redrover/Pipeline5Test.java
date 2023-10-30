@@ -36,7 +36,6 @@ public class Pipeline5Test extends BaseTest {
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(aNewName);
         getDriver().findElement(By.name("Submit")).click();
-
         getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
 
         Assert.assertEquals(
