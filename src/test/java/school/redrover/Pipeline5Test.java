@@ -7,6 +7,16 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class Pipeline5Test extends BaseTest {
+    private void createPipeline(String pipelineName) {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys(pipelineName);
+        getDriver().findElement(By.xpath("//li[@class='org_jenkinsci_plugins_workflow_job_WorkflowJob']")).click();
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
+    }
 
     @Test
     public void testCreate() {
@@ -27,7 +37,8 @@ public class Pipeline5Test extends BaseTest {
 
     @Test
     public void testRename() {
-        testCreate();
+        final String pipelineName = "Pipeline5";
+        createPipeline(pipelineName);
         String aNewName = "MyPipeline10";
 
         getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
