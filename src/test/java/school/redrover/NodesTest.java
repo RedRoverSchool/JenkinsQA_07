@@ -25,6 +25,10 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
+    private void goToConfigureNodePage(String nodeName) {
+        getDriver().findElement(By.xpath("//span[text()='" + nodeName +"']")).click();
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
+    }
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
@@ -145,6 +149,24 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.className("message")).getText(),
                 "Disconnected by admin"
+        );
+    }
+
+    @Test
+    public void testRenameNodeWithValidName() {
+        final String NEW_NAME = "renamed node";
+
+        createNewNode(NODE_NAME);
+        goToMainPage();
+        goToConfigureNodePage(NODE_NAME);
+
+        getDriver().findElement(By.name("_.name")).clear();
+        getDriver().findElement(By.name("_.name")).sendKeys(NEW_NAME);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")).getText(),
+                String.format("Agent %s", NEW_NAME)
         );
     }
 }
