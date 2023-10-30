@@ -490,21 +490,17 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testChangeSourceCodeManagementToGit() {
+    public void testChangeSourceCodeManagementToGit(){
         final String projectName = "FSProject";
         createFreeStyleProject(projectName);
         goToJenkinsHomePage();
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
+        getDriver().findElement(By.xpath("//button[@data-section-id='source-code-management']")).click();
 
-        Actions action = new Actions(getDriver());
-        action
-                .moveToElement(getDriver()
-                        .findElement(By.xpath("//input[@name='scm' and @id='radio-block-1']")))
-                .click()
-                .perform();
+        getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='form-container tr']")).isEnabled());
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='form-container tr']")).isDisplayed());
 
     }
 }
