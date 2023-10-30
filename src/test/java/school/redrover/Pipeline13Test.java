@@ -18,11 +18,11 @@ public class Pipeline13Test extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[contains(text(), 'Dashboard')]")).click();
-        getDriver().findElement(By.xpath("//span[text() = 'PipeLineProject1']")).click();
+        getDriver().findElement(By.xpath("//span[text() = 'PipeLineProject']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[contains(text() ,'Pipeline PipeLineProject')]")).getText(),
-                "Pipeline PipeLineProject1");
+                "Pipeline PipeLineProject");
     }
 }
 
