@@ -170,4 +170,27 @@ public class PipelineTest extends BaseTest {
                 "Pipeline MyPipeline");
     }
 
+    @Test
+    public void testCreatePipelineProject() {
+         String pipelineName = "MyPipeline";
+         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+         WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
+         nameField.clear();
+         nameField.sendKeys(pipelineName);
+
+         getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+
+
+         Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyPipeline/']")).isDisplayed());
+
+
+
+
+    }
+
 }
