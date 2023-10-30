@@ -2,27 +2,28 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
-import static java.sql.DriverManager.getDriver;
-
 public class FreestyleProject1Test extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String HOME_PAGE = "jenkins-home-link";
     private final static String NAME_SEARCH = "//span[text()='FreestyleProject']";
 
-    private void createJobAndGoToHomePage() {
+    private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
         getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//span[text()='Freestyle project']/..")).click();
+                .sendKeys(nameOfProject);
+        getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        getDriver().findElement(By.id(HOME_PAGE)).click();
+        if(goToHomePage) {
+            getDriver().findElement(By.id(HOME_PAGE)).click();
+        }
     }
 
     @Test
@@ -59,7 +60,7 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testConfigureBuildEnvironmentSettingsAddTimestamp() throws InterruptedException {
-        createJobAndGoToHomePage();
+        createProject("Freestyle project", PROJECT_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
         getDriver().findElement(By.xpath("//span[text()='Configure']/..")).click();
@@ -80,5 +81,26 @@ public class FreestyleProject1Test extends BaseTest {
         for (WebElement timestamp : timestamps) {
             Assert.assertTrue(timestamp.getText().trim().matches("[0-9]{2}:[0-9]{2}:[0-9]{2}"));
         }
+    }
+
+    @Test
+    public void testMoveJobToFolder() {
+        final String folderName = "FolderWrapper";
+        final String destinationOption = "Jenkins » " + folderName;
+
+        createProject("Freestyle project", PROJECT_NAME, true);
+        createProject("Folder", folderName, true);
+
+        getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
+        getDriver().findElement(By.xpath("//span[text()='Move']/..")).click();
+
+        Select destinationDropdown = new Select(getDriver().findElement(By.xpath("//select[@name='destination']")));
+        destinationDropdown.selectByVisibleText(destinationOption);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.id(HOME_PAGE)).click();
+
+        getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).isDisplayed());
     }
 }
