@@ -11,6 +11,18 @@ import java.util.ArrayList;
 public class FooterTest extends BaseTest {
 
     @Test
+    //https://trello.com/c/3ie7dy8O/403-tc1200108-footer-jenkins-version-about-jenkins
+    public void testAboutJenkins() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
+                getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")));
+
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
+
+        Assert.assertEquals(getDriver().getTitle(), "About Jenkins 2.414.2 [Jenkins]");
+    }
+
+    @Test
     //https://trello.com/c/y8Xzp86w/405-tc1200109-footer-jenkins-version-website
     public void testWebsite() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
