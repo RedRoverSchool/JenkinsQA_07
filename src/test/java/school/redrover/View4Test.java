@@ -7,10 +7,12 @@ import school.redrover.runner.BaseTest;
 
 public class View4Test extends BaseTest {
 
-    private void createNewFreestyleProject(String projectName) {
+    private void createNewFreestyleProject() {
+        final String jobName = "FreestyleProject-1";
+
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(projectName);
+                .sendKeys(jobName);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
     }
@@ -19,7 +21,8 @@ public class View4Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
-    private void createNewListView(String viewName) {
+    private void createNewListView() {
+        final String viewName = "ListView-1";
         goToHomepage();
         getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
@@ -51,15 +54,13 @@ public class View4Test extends BaseTest {
 
     @Test
     public void testCreateNewView() {
-     final String freestyleProjectName = "FreestyleProject-1";
-     final String viewName = "View-1";
-
-     createNewFreestyleProject(freestyleProjectName);
+     createNewFreestyleProject();
      goToHomepage();
-     createNewListView(viewName);
+     createNewListView();
      goToHomepage();
 
      Assert.assertEquals(getDriver().findElement(
-             By.xpath("//div[@class='tab']/a[@href='/view/View-1/']")).getText(), viewName);
+             By.xpath("//div[@class='tab']/a[@href='/view/ListView-1/']")).getText(),
+             "ListView-1");
     }
 }
