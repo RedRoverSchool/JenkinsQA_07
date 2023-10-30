@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.UUID;
 
-public class FreeStyleProjectCreationTest extends BaseTest {
+public class FreeStyleProject8Test extends BaseTest {
     @Test()
     public void testCreateFreeStyleProject() {
         int desiredLength = 5;
