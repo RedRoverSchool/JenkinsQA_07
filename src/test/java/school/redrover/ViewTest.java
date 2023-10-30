@@ -52,19 +52,18 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/my-views/view/Test%20view/']")).getText(), nameView);
     }
 
-    @Ignore
     @Test
     public void testRenameView() {
+        final String projectName = "My New Freestyle Project";
+        final String viewName = "Test View";
         final String newViewName = "New Test View";
-        final String VIEW_NAME = "New name";
 
-        createNewFreestyleProject(newViewName);
-        createMyNewListView(newViewName);
+        createNewFreestyleProject(projectName);
+        createMyNewListView(viewName);
         goHome();
 
-
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'/configure')]")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).clear();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newViewName);
