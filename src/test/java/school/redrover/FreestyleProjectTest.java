@@ -495,4 +495,5 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
                 .getAttribute("style"), "display: none;");
     }
+
 }
