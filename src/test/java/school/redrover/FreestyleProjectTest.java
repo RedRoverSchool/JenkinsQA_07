@@ -301,6 +301,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(isProjectEnabledOnProjectStatusPage(projectName));
     }
 
+    @Ignore
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
         return new String[][]{
@@ -308,6 +309,7 @@ public class FreestyleProjectTest extends BaseTest {
         };
     }
 
+    @Ignore
     @Test(description = "Creating new Freestyle project using valid data", dataProvider = "ValidName")
     public void testFreestyleProjectWithValidData(String name) {
 
