@@ -17,6 +17,7 @@ public class Pipeline13Test extends BaseTest {
         getDriver().findElement(By.xpath("//li[@class = 'org_jenkinsci_plugins_workflow_job_WorkflowJob']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
+
         getDriver().findElement(By.xpath("//a[contains(text(), 'Dashboard')]")).click();
         getDriver().findElement(By.xpath("//span[text() = 'PipeLineProject']")).click();
 
