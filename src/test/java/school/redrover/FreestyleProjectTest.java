@@ -368,6 +368,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(name);
+        getDriver().findElement(By.id("ok-button")).click();
 
         String textResult = getDriver().findElement(By.id("itemname-invalid")).getText();
         WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
