@@ -188,8 +188,6 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyPipeline/']")).isDisplayed());
 
-
-
     }
 
 }
