@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class NewFolderNS extends BaseTest {
+public class NewFolderNSTest extends BaseTest {
     @Test
     public void createNewFolder() {
 
