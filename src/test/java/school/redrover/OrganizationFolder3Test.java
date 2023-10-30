@@ -1,6 +1,9 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -68,6 +71,25 @@ public class OrganizationFolder3Test extends BaseTest {
         createProject();
 
         getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
+    }
+
+    @Test
+    public void testRenameProjectFromDashboardDropdownMenu() {
+        createProject();
+
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.id("job_" + PROJECT_NAME))).perform();
+
+        WebElement dropDownButton = getDriver().findElement(By.xpath("//td/a/button[@class = 'jenkins-menu-dropdown-chevron']"));
+        new Actions(getDriver()).moveToElement(dropDownButton).perform();
+        dropDownButton.sendKeys(Keys.RETURN);
+
+        getDriver().findElement(By.xpath("//a[contains(@href,'confirm-rename')]")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
         getDriver().findElement(By.name("Submit")).click();
