@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -32,11 +31,6 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Folder']"))
                 .click();
         getDriver().findElement(By.id("ok-button")).click();
-//        String breadcrumbName = getDriver().findElement(
-//                By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).getText();
-//
-//        Assert.assertEquals(breadcrumbName, MULTIBRANCH_PIPELINE_NAME,
-//                breadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
     }
 
     private void getDashboardLink() {
@@ -140,6 +134,7 @@ public class FolderTest extends BaseTest {
 
         assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a/span")).getText(), secondFolderName);
     }
+
     @Test
     public void testCreatingNewFolder() {
         final String folderName = "TestFolder";
@@ -157,8 +152,6 @@ public class FolderTest extends BaseTest {
                 folderName);
 
     }
-
-
 
     @Test
     public void testCreatingNewFolder1 () {
