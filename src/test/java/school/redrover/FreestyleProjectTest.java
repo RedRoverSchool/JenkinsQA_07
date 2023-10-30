@@ -503,4 +503,19 @@ public class FreestyleProjectTest extends BaseTest {
                 "Project " + NEW_PROJECT_NAME
         );
     }
+
+        @Test
+        public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckbox() {
+
+            createFreeStyleProject(PROJECT_NAME);
+            goToJenkinsHomePage();
+            getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+            getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+
+            getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']")).click();
+
+            Assert.assertTrue(
+                    getDriver().findElement(By.id("yui-gen5")).isDisplayed()
+            );
+    }
 }
