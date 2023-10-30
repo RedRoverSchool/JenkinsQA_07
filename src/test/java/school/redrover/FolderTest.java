@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -11,6 +12,9 @@ import static org.testng.AssertJUnit.assertEquals;
 
 public class FolderTest extends BaseTest {
 
+    final String FOLDER_NAME = "Folder";
+    final String NEW_FOLDER_NAME = "FolderNew";
+
     private void creationNewFolder(String folderName) {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -19,6 +23,20 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    }
+
+    private void folderCreation(String FOLDER_NAME) {
+
+        getDriver().findElement(By.linkText("Create a job")).click();
+        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
+        getDriver().findElement(By.xpath("//span[@class='label' and text()='Folder']"))
+                .click();
+        getDriver().findElement(By.id("ok-button")).click();
+//        String breadcrumbName = getDriver().findElement(
+//                By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).getText();
+//
+//        Assert.assertEquals(breadcrumbName, MULTIBRANCH_PIPELINE_NAME,
+//                breadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
     }
 
     private void getDashboardLink() {
@@ -157,6 +175,23 @@ public class FolderTest extends BaseTest {
                 (getDriver().findElement(By.xpath("//span[text()='My new project']")).getText(),
                         folderName);
 
+    }
+
+    @Test
+    public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
+
+        folderCreation(FOLDER_NAME);
+
+        getDriver().findElement(By.xpath("//*[@id='breadcrumbBar']//li[3]")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
+
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_FOLDER_NAME,
+                FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
     }
 }
 
