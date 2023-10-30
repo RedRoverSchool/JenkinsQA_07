@@ -164,7 +164,5 @@ public class ViewTest extends BaseTest {
 
         String checkDeletedViewName = getDriver().findElement(By.xpath("//*[@id='projectstatus-tabBar']/div/div[1]/div[2]/a")).getText();
         Assert.assertEquals(checkDeletedViewName,"");
-
     }
-
 }
