@@ -46,6 +46,6 @@ public class FreestyleProject10Test extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys(nameDescription);
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[.='" + nameDescription + "']")).getText(), nameDescription);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-!-margin-bottom-0']/div[1]")).getText(), nameDescription);
     }
 }
