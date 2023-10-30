@@ -11,8 +11,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 public class FolderTest extends BaseTest {
 
-    final String FOLDER_NAME = "Folder";
-    final String NEW_FOLDER_NAME = "FolderNew";
+    private static final String FOLDER_NAME = "Folder";
 
     private void creationNewFolder(String folderName) {
 
@@ -173,9 +172,11 @@ public class FolderTest extends BaseTest {
     @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
+        final String NEW_FOLDER_NAME = "FolderNew";
+
         folderCreation(FOLDER_NAME);
 
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbBar']//li[3]")).click();
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]")).click();
 
         getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
 
