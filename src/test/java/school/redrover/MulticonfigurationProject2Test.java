@@ -23,7 +23,5 @@ public class MulticonfigurationProject2Test extends BaseTest {
                 getDriver().findElement(By.cssSelector(".matrix-project-headline.page-headline")).getText(),
                 "Project " + ProjectName);
 
-
-
     }
 }
