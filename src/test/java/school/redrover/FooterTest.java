@@ -33,6 +33,7 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualMenu, expectedMenu, "Tippy box context menu doesn't macth");
     }
+
     private void clickRestApi() {
         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
     }
