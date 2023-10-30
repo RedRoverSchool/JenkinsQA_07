@@ -522,18 +522,18 @@ public class FreestyleProjectTest extends BaseTest {
                 .isDisplayed());
     }
 
-          @Test
-        public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckbox() {
+    @Test
+    public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckbox() {
 
-            createFreeStyleProject(PROJECT_NAME);
-            goToJenkinsHomePage();
-            getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
-            getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
 
-            getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']")).click();
+        getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']")).click();
 
-            Assert.assertTrue(
-                    getDriver().findElement(By.xpath("//button[contains( text(), 'Add Parameter')]")).isDisplayed()
-            );
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//button[contains( text(), 'Add Parameter')]")).isDisplayed()
+        );
     }
 }
