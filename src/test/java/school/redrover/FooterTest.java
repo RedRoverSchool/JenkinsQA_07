@@ -15,7 +15,8 @@ public class FooterTest extends BaseTest {
 
     @Test
     //https://trello.com/c/OOkxIvHX/402-tc1200107-footer-jenkins-version-check-the-tippy-box
-    public void checkTippyBox() {
+    public void checkTippyBox() throws InterruptedException
+    {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
                 getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")));
 
@@ -23,6 +24,7 @@ public class FooterTest extends BaseTest {
         List<String> actualMenu = new ArrayList<>();
 
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+        Thread.sleep(1000);
         List<WebElement> tippyBoxElements = getDriver().findElements(By.xpath("//div[@class = 'tippy-content']/a"));
 
         for (WebElement tippyContectMenu : tippyBoxElements) {
