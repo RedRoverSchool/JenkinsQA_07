@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -240,6 +241,38 @@ public class FreestyleProjectTest extends BaseTest {
         goToJenkinsHomePage();
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        boolean isDisabled = getDriver()
+                .findElement(By.id("enable-project"))
+                .getText()
+                .contains("This project is currently disabled");
+        assertTrue(isDisabled);
+    }
+    @Test
+    public void testDisableProjectFromConfigurePage() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
+        getDriver().findElement(By.linkText("Configure")).click();
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        boolean isDisabled = getDriver()
+                .findElement(By.id("enable-project"))
+                .getText()
+                .contains("This project is currently disabled");
+        assertTrue(isDisabled);
+    }
+
+    @Test
+    public void testDisableProjectWhenCreating() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+
+        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         boolean isDisabled = getDriver()
