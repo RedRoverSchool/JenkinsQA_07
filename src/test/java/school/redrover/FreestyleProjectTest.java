@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import org.testng.annotations.Ignore;
 
 import java.util.UUID;
 
@@ -338,7 +338,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
-    @Ignore
+
     @DataProvider(name = "InvalidName")
     public String[][] invalidCredentials() {
         return new String[][]{
@@ -346,6 +346,7 @@ public class FreestyleProjectTest extends BaseTest {
                 {"["}
         };
     }
+    
     @Ignore
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
     public void testFreestyleProjectWithInvalidData(String name) {
@@ -385,6 +386,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(name);
+        getDriver().findElement(By.id("ok-button")).click();
 
         String textResult = getDriver().findElement(By.id("itemname-invalid")).getText();
         WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
