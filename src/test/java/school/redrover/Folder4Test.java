@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class Folder4Test extends BaseTest {
@@ -28,6 +29,23 @@ public class Folder4Test extends BaseTest {
 
         String nestedFolders = getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getText();
         assertTrue(nestedFolders.contains(folder2Name));
+    }
+
+    @Test
+    public void testAddDescriptionToFolder() {
+        final String folderName = "NewFolder";
+        final String descriptionText = "This is Folder's description";
+
+        createFolder(folderName);
+        navigateToDashboard();
+        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]",folderName))).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        assertEquals(actualDescription, descriptionText);
     }
 
     private void createFolder(String folderName) {
