@@ -21,6 +21,11 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.linkText("Build Executor Status")).click();
     }
 
+    private void goToMainPage() {
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
+    }
+
+
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
 
@@ -126,6 +131,21 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(
                 By.xpath("//h1")).getText().contains(NODE_NAME));
 
+    }
+
+    @Test
+    public void testMarkNodeTemporarilyOffline() {
+        createNewNode(NODE_NAME);
+        goToMainPage();
+
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.className("message")).getText(),
+                "Disconnected by admin"
+        );
     }
 }
 
