@@ -305,7 +305,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
-    @Ignore
+
     @DataProvider(name = "InvalidName")
     public String[][] invalidCredentials() {
         return new String[][]{
@@ -313,7 +313,7 @@ public class FreestyleProjectTest extends BaseTest {
                 {"["}
         };
     }
-    @Ignore
+
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
     public void testFreestyleProjectWithInvalidData(String name) {
 
