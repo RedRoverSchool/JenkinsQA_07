@@ -24,6 +24,7 @@ public class FooterTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
         List<WebElement> tippyBoxElements = getDriver().findElements(By.xpath("//div[@class = 'tippy-content']/a"));
+
         for (WebElement tippyContectMenu : tippyBoxElements) {
             actualMenu.add(tippyContectMenu.getText());
         }
