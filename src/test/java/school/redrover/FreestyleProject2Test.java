@@ -65,4 +65,29 @@ public class FreestyleProject2Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(),newJobName);
 
     }
+
+   public void testCreateNewItem(String itemName) {
+
+        getDriver().findElement(By.className("task-icon-link")).click();
+        getDriver().findElement(
+                By.xpath("//div/input[@class='jenkins-input']")).sendKeys(itemName);
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']/label[1]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().navigate().back();
+        getDriver().navigate().back();
+    }
+
+    @Test
+    public void testDeleteFreestyleProject() {
+        final String itemName = "Freestyle Project1";
+
+        testCreateNewItem(itemName);
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + itemName + "')]")).click();
+        getDriver().findElement(By.xpath(" //*[@id='tasks']/div[6]/span/a")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertEquals(getDriver().findElements(
+                By.xpath("//*[@id='breadcrumbs']/li[3]/a")).size(), 0);
+    }
 }
