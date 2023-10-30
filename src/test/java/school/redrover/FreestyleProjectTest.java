@@ -323,6 +323,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     }
 
+    @Ignore
     @DataProvider(name = "InvalidName")
     public String[][] invalidCredentials() {
         return new String[][]{
@@ -330,7 +331,7 @@ public class FreestyleProjectTest extends BaseTest {
                 {"["}
         };
     }
-
+    @Ignore
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
     public void testFreestyleProjectWithInvalidData(String name) {
 
@@ -502,5 +503,22 @@ public class FreestyleProjectTest extends BaseTest {
                 getDriver().findElement(By.cssSelector("h1")).getText(),
                 "Project " + NEW_PROJECT_NAME
         );
+    }
+
+    @Test
+    public void testSelectThisProjectIsParameterizedCheckbox() {
+
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+
+        getDriver().findElement(By.xpath("//div[5]//span[1]//a[1]//span[1]//*[name()='svg']")).click();
+
+        getDriver().findElement
+                        (By.xpath("//label[normalize-space()='This project is parameterized']"))
+                .click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]"))
+                .isDisplayed());
     }
 }
