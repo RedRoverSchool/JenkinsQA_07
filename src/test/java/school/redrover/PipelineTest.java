@@ -169,5 +169,25 @@ public class PipelineTest extends BaseTest {
                 getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
                 "Pipeline MyPipeline");
     }
+    @Test
+    public void testCreatePipelineValidName() {
+        final String validPipelineName = "NewPipeline";
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+
+        getDriver().findElement(By.xpath("//input[@id ='name']")).sendKeys(validPipelineName);
+        getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//img[@id='jenkins-name-icon']")).click();
+
+        getDriver().findElement(By.xpath("//td//a[@href = 'job/" + validPipelineName + "/']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id = 'main-panel']/h1")).getText(),
+                "Pipeline " + validPipelineName);
+
+    }
+
 
 }
