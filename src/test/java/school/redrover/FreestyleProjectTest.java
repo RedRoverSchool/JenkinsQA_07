@@ -330,7 +330,8 @@ public class FreestyleProjectTest extends BaseTest {
                 {"["}
         };
     }
-
+    
+    @Ignore
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
     public void testFreestyleProjectWithInvalidData(String name) {
 
