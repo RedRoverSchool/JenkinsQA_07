@@ -91,11 +91,12 @@ public class OrganizationFolder3Test extends BaseTest {
 
         WebElement dropDownButton = getDriver().findElement(By.xpath("//td/a/button[@class = 'jenkins-menu-dropdown-chevron']"));
         new Actions(getDriver()).moveToElement(dropDownButton).perform();
-        dropDownButton.sendKeys(Keys.RETURN);
+        dropDownButton.click();
+//        dropDownButton.sendKeys(Keys.RETURN);
 
         WebDriverWait getWait2 = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
         getWait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("tippy-5")));
-        getDriver().findElement(By.xpath("//a[contains(@href,'confirm-rename')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'/confirm-rename')]")).click();
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
         getDriver().findElement(By.name("Submit")).click();
