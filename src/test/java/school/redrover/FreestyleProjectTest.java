@@ -520,6 +520,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]"))
                 .isDisplayed());
+    }
 
           @Test
         public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckbox() {
