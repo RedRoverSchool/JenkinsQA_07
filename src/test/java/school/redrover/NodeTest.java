@@ -7,7 +7,7 @@ import school.redrover.runner.BaseTest;
 
 public class NodeTest extends BaseTest {
 
-    final void createNode(String nodeName) {
+    private void createNode(String nodeName) {
         getDriver().findElement(By.xpath("//span[contains(text(), 'Manage Jenkins')]/..")).click();
         getDriver().findElement(By.xpath("//a[@href = 'computer']")).click();
         getDriver().findElement(By.xpath("//a[contains(text(), 'New Node')]")).click();
@@ -17,7 +17,7 @@ public class NodeTest extends BaseTest {
         clickSubmitButton();
     }
 
-    final void renameNode(String initialNodeName, String newName) {
+    private void renameNode(String initialNodeName, String newName) {
         getDriver().findElement(By.xpath("//a[contains(text(), '" + initialNodeName + "')]")).click();
         getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
         getDriver().findElement(By.xpath("//input[@value = '" + initialNodeName + "']")).clear();
