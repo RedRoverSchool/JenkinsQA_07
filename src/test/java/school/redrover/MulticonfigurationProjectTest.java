@@ -27,4 +27,17 @@ public class MulticonfigurationProjectTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getTitle(),MulticonfigurationProjectName + " [Jenkins]");
     }
+
+    @Test
+    public void testCreateWithEmptyName() {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id=\"itemname-required\"]")).getText(),
+                "» This field cannot be empty, please enter a valid name");
+        Assert.assertTrue(
+                getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
+    }
 }
