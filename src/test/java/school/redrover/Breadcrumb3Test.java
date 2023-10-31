@@ -21,9 +21,8 @@ public class Breadcrumb3Test extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(dashboardChevron)
                 .pause(2000)
-                .click()
                 .perform();
-//        dashboardChevron.sendKeys(Keys.RETURN);
+        dashboardChevron.sendKeys(Keys.RETURN);
 
         List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.id("tippy-3"));
         List<String> nameListBreadcrumb = new ArrayList<>();
