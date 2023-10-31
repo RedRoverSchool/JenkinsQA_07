@@ -23,10 +23,11 @@ public class FreestyleProjectRenameTest extends BaseTest {
     }
 
     @Test
-    public void renameProject(){
+    public void renameProject() throws InterruptedException {
         createNewProject(name);
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']/span")).click();
+        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']/span")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
 
