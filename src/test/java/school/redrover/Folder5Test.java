@@ -43,6 +43,26 @@ public class Folder5Test extends BaseTest {
     }
 
     private void navigateToJenkinsHome() {
+
         getDriver().findElement(By.id("jenkins-home-link")).click();
+    }
+
+    @Test
+    public void testCreateJobInsideFolder() {
+
+        createFolder("Main");
+        getDriver().findElement(By.xpath("//a[@href='/job/Main/newJob']")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("NewProject");
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.cssSelector("li[data-href='/job/Main/']")).click();
+        getDriver().findElement(By.className("jenkins-dropdown__item")).click();
+
+        Assert.assertEquals(
+            getDriver()
+                .findElement(By.xpath("//a[@href='job/NewProject/']"))
+                .getText(), "NewProject");
     }
 }
