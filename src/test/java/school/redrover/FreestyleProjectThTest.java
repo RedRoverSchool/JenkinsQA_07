@@ -17,6 +17,7 @@ public class FreestyleProjectThTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a")).click();
     }
 
+
     @Test
     public void TestRenameFreestyleProject (){
 
