@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -27,14 +28,7 @@ public class FreestyleProjectTest extends BaseTest {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-    private boolean isProjectEnabledOnDashBoard(String projectName) {
-        return !getDriver()
-                .findElement(By.id("job_" + projectName))
-                .findElement(By.className("svg-icon"))
-                .getAttribute("title").equals("Disabled");
-    }
-
-    private void disableProjectByName(String projectName) {
+       private void disableProjectByName(String projectName) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
@@ -249,6 +243,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .contains("This project is currently disabled");
         assertTrue(isDisabled);
     }
+
     @Test
     public void testDisableProjectFromConfigurePage() {
         final String projectName = "Test Project";
@@ -316,6 +311,65 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(isEnabled);
     }
 
+    @Test
+    public void testWarningMessageOnStatusPageWhenDisabled() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+        disableProjectByName(projectName);
+
+        boolean isDisabled = getDriver()
+                .findElement(By.id("enable-project"))
+                .getText()
+                .contains("This project is currently disabled");
+        assertTrue(isDisabled);
+    }
+
+    @Test
+    public void testEnableButtonOnStatusPageWhenDisabled() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+        disableProjectByName(projectName);
+
+        boolean isVisible = getDriver().findElement(By.name("Submit")).isDisplayed();
+        String buttonName = getDriver().findElement(By.name("Submit")).getText();
+        assertTrue(isVisible);
+        assertTrue(buttonName.contains("Enable"));
+    }
+
+    @Test
+    public void testStatusDisabledOnDashboardWhenDisabled() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+        disableProjectByName(projectName);
+        goToJenkinsHomePage();
+
+        String actualProjectStatus = getDriver()
+                .findElement(By.id("job_" + projectName))
+                .findElement(By.className("svg-icon"))
+                .getAttribute("title");
+        assertEquals(actualProjectStatus, "Disabled");
+    }
+
+    @Test
+    public void testScheduleBuildButtonOnDashboardWhenDisabled() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+        disableProjectByName(projectName);
+        goToJenkinsHomePage();
+
+        try {
+            getDriver().findElement(By.xpath("//*[@id='job_" + projectName + "']//*[@class='jenkins-table__cell--tight']//a"));
+        } catch (NoSuchElementException e) {
+            return;
+        }
+        Assert.fail();
+    }
+
+
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
         return new String[][]{
@@ -346,7 +400,7 @@ public class FreestyleProjectTest extends BaseTest {
                 {"["}
         };
     }
-    
+
     @Ignore
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
     public void testFreestyleProjectWithInvalidData(String name) {
@@ -515,7 +569,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
-   @Test
+    @Test
     public void testRenameFreestyleProjectSideMenu() {
         final String NEW_PROJECT_NAME = "New Freestyle project name";
 

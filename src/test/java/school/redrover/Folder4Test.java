@@ -25,10 +25,27 @@ public class Folder4Test extends BaseTest {
 
         navigateToDashboard();
 
-        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]", folder1Name))).click();
+        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]",folder1Name))).click();
 
         String nestedFolders = getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getText();
         assertTrue(nestedFolders.contains(folder2Name));
+    }
+
+    @Test
+    public void testAddDescriptionToFolder() {
+        final String folderName = "NewFolder";
+        final String descriptionText = "This is Folder's description";
+
+        createFolder(folderName);
+        navigateToDashboard();
+        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]",folderName))).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        assertEquals(actualDescription, descriptionText);
     }
 
     @Test
