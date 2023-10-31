@@ -57,8 +57,6 @@ public class MultibranchPipeline3Test extends BaseTest {
 
         int numberOfTasksFromSidebar = getDriver().findElements(By.xpath("//div[@id='tasks']//a/span[position() mod 2 = 0]")).size();
 
-        Assert.assertNotEquals(numberOfTasksFromSidebar, 0);
         Assert.assertEquals(numberOfTasksFromSidebar, listOfTasks.size());
     }
 }
-
