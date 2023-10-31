@@ -8,16 +8,16 @@ import school.redrover.runner.BaseTest;
 
 public class Folder6Test extends BaseTest {
 
-    final String VALID_NAME = "Folder1";
-    final String EMPTY_NAME = "";
-    final String INVALID_NAME = "&";
-    final String NEW_VALID_NAME = "Folder2";
+    private static final String VALID_NAME = "Folder1";
+    private static final String EMPTY_NAME = "";
+    private static final String INVALID_NAME = "&";
+    private static final String NEW_VALID_NAME = "Folder2";
 
-    private void utilsCreate(String nameFolder) {
+    private void utilsCreate(String folderName) {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(nameFolder);
+        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(folderName);
         getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
     }
@@ -27,10 +27,10 @@ public class Folder6Test extends BaseTest {
         getDriver().findElement(By.xpath("//img[@alt = 'Jenkins']")).click();
     }
 
-    private void utilsDelete(String nameFolder) {
+    private void utilsDelete(String folderName) {
 
-        getDriver().findElement(By.xpath("//span[text() = '" + nameFolder + "']")).click();
-        getDriver().findElement(By.xpath("//a[@href = '/job/" + nameFolder + "/delete']")).click();
+        getDriver().findElement(By.xpath("//span[text() = '" + folderName + "']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/job/" + folderName + "/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
     }
 
