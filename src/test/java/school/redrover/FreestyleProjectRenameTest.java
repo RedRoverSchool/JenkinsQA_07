@@ -1,13 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import javax.swing.*;
 
 public class FreestyleProjectRenameTest extends BaseTest {
 
@@ -37,11 +34,8 @@ public class FreestyleProjectRenameTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(newName);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1")).getText().equals("Project " + newName));
 
-
     }
-
 
 }
