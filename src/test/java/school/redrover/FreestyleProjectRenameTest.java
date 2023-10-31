@@ -27,9 +27,6 @@ public class FreestyleProjectRenameTest extends BaseTest {
         createNewProject(name);
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']/span")).click();
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']/span")).click();
-        Thread.sleep(2000);
         getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
 
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
