@@ -37,5 +37,4 @@ public class FreestyleProjectRenameTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1")).getText().equals("Project " + newName));
 
     }
-
 }
