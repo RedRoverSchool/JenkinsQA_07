@@ -164,4 +164,17 @@ public class ViewTest extends BaseTest {
         String checkDeletedViewName = getDriver().findElement(By.xpath("//*[@id='projectstatus-tabBar']/div/div[1]/div[2]/a")).getText();
         Assert.assertEquals(checkDeletedViewName,"");
     }
+
+    @Test
+    public void testDeleteViewOnDashboard() {
+
+        createNewFreestyleProject("New View");
+        createMyNewListView("NewView");
+
+        getDriver().findElement(By.xpath("//span[text()='Delete View']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//div[@class='tabBar']"))
+                .getText().contains("NewView"));
+    }
 }
