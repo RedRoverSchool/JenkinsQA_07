@@ -89,6 +89,27 @@ public class Folder4Test extends BaseTest {
         assertEquals(actualNewDescription, newDescriptionText);
     }
 
+    @Test
+    public void testDeleteDescriptionOfFolder() {
+        final String folderName = "TestFolder";
+        final String descriptionText = "Folder's description";
+
+        createFolder(folderName);
+        addDescription(descriptionText);
+        navigateToDashboard();
+
+        navigateToItem(folderName);
+        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
+        getDriver().findElement(By.className("jenkins-input")).clear();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String textOfDescriptionField = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        assertEquals(textOfDescriptionField, "");
+
+        String appearanceOfAddDescriptionButton = getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
+        assertEquals(appearanceOfAddDescriptionButton, "Add description");
+    }
+
     private void navigateToItem(String itemName) {
         getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]", itemName))).click();
     }
