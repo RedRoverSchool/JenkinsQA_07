@@ -625,7 +625,7 @@ public class FreestyleProjectTest extends BaseTest {
         createFreeStyleProject(PROJECT_NAME);
         goToJenkinsHomePage();
         getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
         getDriver().findElement(By.xpath("//label[contains(text(), 'This project is parameterized')]")).click();
 
         Assert.assertTrue(
