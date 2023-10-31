@@ -145,20 +145,15 @@ public class Pipeline2Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class = 'table-box']")).isDisplayed());
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@class = 'jobsTable']//th[@class = 'stage-header-name-0']")).getText(),"Hello");
     }
+
     @Test
-    public void testCreatingFreestyleProject() throws InterruptedException {
+    public void testCreatingFreestyleProject() {
         String pipeline = "ArtusomPipeline";
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
-        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//div[@id='add-item-panel']//input[@id='name']")).sendKeys(pipeline);
-        Thread.sleep(1000);
         getDriver().findElement((By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"))).click();
-        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
-        Thread.sleep(1000);
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),pipeline);
-        Thread.sleep(3000);
     }
 }
