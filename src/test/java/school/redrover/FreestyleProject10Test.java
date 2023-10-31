@@ -68,4 +68,15 @@ public class FreestyleProject10Test extends BaseTest {
                 getDriver().findElement(By.xpath("//tr[@class=' job-status-nobuilt']/td[3]/a")).getText(),
                 newName);
     }
+
+    @Test
+    public void testDeleteFreestyleProject() {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + NAME_FREESTYLE_PROJECT + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@data-message='Delete the Project ‘" + NAME_FREESTYLE_PROJECT + "’?']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertEquals(getDriver().findElements(By.id("job_" + NAME_FREESTYLE_PROJECT)).size(), 0);
+    }
 }
