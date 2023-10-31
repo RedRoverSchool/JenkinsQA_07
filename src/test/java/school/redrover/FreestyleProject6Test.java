@@ -1,7 +1,5 @@
 package school.redrover;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -56,5 +54,28 @@ public class FreestyleProject6Test extends BaseTest {
 
         Assert.assertFalse(isElementPresent);
 
+    }
+    @Test
+    public void testDiscardOldBuildsCheckbox() {
+        final String projectName = "Starlight";
+        final String configureLink = "//a[@href='/job/" + projectName + "/configure']";
+        final String daysToKeepBuildsField = "//input[@name = '_.daysToKeepStr']";
+        final String daysToKeepBuildsFieldValue = "5";
+        final String maxOfBuildsToKeepField = "//input[@name = '_.numToKeepStr']";
+        final String maxOfBuildsToKeepFieldValue = "7";
+
+        createFreestyleProject(projectName);
+        getDriver().findElement(By.xpath("//*[@class = 'jenkins-button jenkins-button--primary ']")).click();
+        getDriver().findElement(By.xpath(configureLink)).click();
+        getDriver().findElement(By.xpath("//label[normalize-space()='Discard old builds']")).click();
+        getDriver().findElement(By.xpath(daysToKeepBuildsField)).sendKeys(daysToKeepBuildsFieldValue);
+        getDriver().findElement(By.xpath(maxOfBuildsToKeepField)).sendKeys(maxOfBuildsToKeepFieldValue);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath(configureLink)).click();
+        boolean isCheckBoxElementPresent = isElementPresent(getDriver(), By.xpath("//div[@class='rowvg-start tr']"));
+
+        Assert.assertTrue(isCheckBoxElementPresent,"Check-box is not selected");
+        Assert.assertEquals(getDriver().findElement(By.xpath(daysToKeepBuildsField)).getAttribute("value"),daysToKeepBuildsFieldValue);
+        Assert.assertEquals(getDriver().findElement(By.xpath(maxOfBuildsToKeepField)).getAttribute("value"),maxOfBuildsToKeepFieldValue);
     }
 }
