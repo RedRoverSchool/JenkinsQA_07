@@ -11,11 +11,6 @@ public class FreestyleProject14Test extends BaseTest {
 
     public void testCreate () {
 
-        /*
-        Create a freestyle project with valid name
-See created project on a Dashboard
-Can go to created project configuration page
-         */
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class= 'jenkins-input']")).sendKeys("FreestyleProject1");
         getDriver().findElement(By.xpath("//li[@class= 'hudson_model_FreeStyleProject']")).click();
@@ -25,9 +20,9 @@ Can go to created project configuration page
         getDriver().findElement(By.xpath("//li/a[@class= 'model-link']")).click();
         getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject1/']")).click();
 
-
         Assert.assertEquals
-                (getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(), "Project FreestyleProject1");
+                (getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
+                        "Project FreestyleProject1");
 
 
 
