@@ -23,6 +23,7 @@ public class Folder8Test extends BaseTest {
 
     @Test
     public void testCreate() {
+
         final String folderName = "NewFolder";
         createFolder(folderName);
         goToJenkinsHomePage();
@@ -43,11 +44,11 @@ public class Folder8Test extends BaseTest {
         createFolder(nestedFolderName);
         goToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//tr[@id = 'job_Nested Folder']/td[3]/a")).click();//как вставить константу?
+        getDriver().findElement(By.xpath("//tr[@id = 'job_" + nestedFolderName + "']/td[3]/a")).click();
         getDriver().findElement(By.xpath("//a[@href = '/job/Nested%20Folder/move']")).click();
         getDriver().findElement(By.xpath("//div[@class = 'task '][7]")).click();
         getDriver().findElement(By.xpath("//select[@name = 'destination']")).click();
-        getDriver().findElement(By.xpath("//option[@value = '/Main Folder']")).click();
+        getDriver().findElement(By.xpath("//option[@value = '/" + mainFolderName + "']")).click();
         getDriver().findElement(By.name("Submit")).click();
         goToJenkinsHomePage();
 
@@ -56,7 +57,7 @@ public class Folder8Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//tr[@id = 'job_Nested Folder']//a//span")).getText(),
+                By.xpath("//tr[@id = 'job_" + nestedFolderName + "']//a//span")).getText(),
                 nestedFolderName);
     }
 }
