@@ -20,7 +20,7 @@ public class MultibranchPipeline3Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        if(goToHomePage) {
+        if (goToHomePage) {
             getDriver().findElement(By.id(HOME_PAGE)).click();
         }
     }
@@ -56,6 +56,7 @@ public class MultibranchPipeline3Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
 
         int numberOfTasksFromSidebar = getDriver().findElements(By.xpath("//div[@id='tasks']//a/span[position() mod 2 = 0]")).size();
+
         Assert.assertNotEquals(numberOfTasksFromSidebar, 0);
         Assert.assertEquals(numberOfTasksFromSidebar, listOfTasks.size());
     }
