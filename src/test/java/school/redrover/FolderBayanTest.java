@@ -15,8 +15,7 @@ public class FolderBayanTest extends BaseTest
     private final String NESTED_FOLDER_NAME = "Nested_folder_name";
     private final String RENAMED_FOLDER_NAME = "Renamed_folder_name";
 
-    private void create(String nameFolder)
-    {
+    private void create(String nameFolder) {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(nameFolder);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
@@ -39,8 +38,7 @@ public class FolderBayanTest extends BaseTest
 
     @Test
     //https://trello.com/c/AZlAR8HB/109-tc0400104-us04001-folder-rename-folder
-    public void testRenameThroughSidePanel()
-    {
+    public void testRenameThroughSidePanel() {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
 
@@ -67,6 +65,7 @@ public class FolderBayanTest extends BaseTest
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'" + RENAMED_FOLDER_NAME + "')]")).getText(),
                 RENAMED_FOLDER_NAME, "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
     }
+
     @Test
     //https://trello.com/c/HpLFOFj4/112-tc0400105-folder-rename-folder-check-error-when-no-name-is-specified
     public void testRenameErrorNoNameSpecified() {
@@ -116,8 +115,7 @@ public class FolderBayanTest extends BaseTest
 
     @Test
     //https://trello.com/c/Iq7pi6KS/186-tc0400203-folder-move-folder-to-folder-through-the-side-panel
-    public void testMoveThroughSidePanel()
-    {
+    public void testMoveThroughSidePanel() {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
 
@@ -147,5 +145,11 @@ public class FolderBayanTest extends BaseTest
         }
 
         Assert.assertEquals(actualBreadcrumbs, expectedBreadcrumbs, "Breadcrumbs don't match");
+    }
+
+    @Test
+    //https://trello.com/c/Iq7pi6KS/186-tc0400203-folder-move-folder-to-folder-through-the-side-panel
+    public void testMoveThroughContextMenu() {
+        
     }
 }

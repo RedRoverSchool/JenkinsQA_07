@@ -26,6 +26,15 @@ public class FooterTest extends BaseTest {
     }
 
     @Test
+    //https://trello.com/c/taPPdMEU/400-tc1200105-footer-jenkins-version-viewing-the-jenkins-version
+    public void testJenkinsVersion() {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
+                getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")));
+        Assert.assertEquals(getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).getText(),
+                "Jenkins 2.414.2");
+    }
+
+    @Test
     //https://trello.com/c/OOkxIvHX/402-tc1200107-footer-jenkins-version-check-the-tippy-box
     public void checkTippyBox() throws InterruptedException
     {
