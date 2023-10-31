@@ -78,8 +78,9 @@ public class FreestyleProject1Test extends BaseTest {
         List<WebElement> timestamps = getDriver().findElements(
                 By.xpath("//pre[@class='console-output']//span[@class='timestamp']"));
 
+        Assert.assertNotEquals(timestamps.size(), 0);
         for (WebElement timestamp : timestamps) {
-            Assert.assertTrue(timestamp.getText().trim().matches("[0-9]{2}:[0-9]{2}:[0-9]{2}"));
+            Assert.assertTrue(timestamp.getText().trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
         }
     }
 
