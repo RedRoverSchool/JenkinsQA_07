@@ -1,10 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import org.openqa.selenium.Alert;
 
 public class ViewTest extends BaseTest {
 
@@ -131,5 +133,35 @@ public class ViewTest extends BaseTest {
         String projectName = getDriver().findElement(By.xpath("//span[text()='My New Freestyle Project']")).getText();
 
         Assert.assertEquals(projectName, PROJECT_NAME);
+    }
+    @Test
+    public void testEditView() {
+        final String myProjectName = "My new freestyle project name";
+        final String newViewName = "My new view name";
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(myProjectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//a[@tooltip = 'New View']")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(newViewName);
+        getDriver().findElement(By.xpath("//label[@for='hudson.model.MyView']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='projectstatus-tabBar']/div/div[1]/div[2]/a")).click();
+        getDriver().findElement(By.xpath("//a[@data-post = 'true']")).click();
+
+        Alert alert = getDriver().switchTo().alert();
+        alert.accept();
+
+        String checkDeletedViewName = getDriver().findElement(By.xpath("//*[@id='projectstatus-tabBar']/div/div[1]/div[2]/a")).getText();
+        Assert.assertEquals(checkDeletedViewName,"");
     }
 }
