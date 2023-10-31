@@ -38,19 +38,15 @@ public class FreestyleProject2Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Online store']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']"))
-                .getText(),"Project Online store");
+                .getText(), "Project Online store");
     }
 
     @Test
     public void testGiveNewNameProject() {
-
         String jobName = "freestyleJob";
         String newJobName = "freestyleJob-2";
 
-        getDriver().findElement(By.className("task-icon-link")).click();
-        getDriver().findElement(By.xpath("//div/input[@class='jenkins-input']")).sendKeys(jobName);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']/label[1]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        CreateNewItem(jobName);
         getDriver().navigate().back();
         getDriver().navigate().back();
 
@@ -58,30 +54,27 @@ public class FreestyleProject2Test extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[7]/span")).click();
         getDriver().findElement(By.xpath("//input[@value='" + jobName + "']")).clear();
         getDriver().findElement(By.xpath("//input[@value='" + jobName + "']")).sendKeys(newJobName);
-        //getDriver().findElement(By.xpath("//div[@id='bottom-sticker']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(),newJobName);
-
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(), newJobName);
     }
 
-   public void testCreateNewItem(String itemName) {
-
+    private void CreateNewItem(String itemName) {
         getDriver().findElement(By.className("task-icon-link")).click();
         getDriver().findElement(
                 By.xpath("//div/input[@class='jenkins-input']")).sendKeys(itemName);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']/label[1]")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().navigate().back();
-        getDriver().navigate().back();
     }
 
     @Test
     public void testDeleteFreestyleProject() {
         final String itemName = "Freestyle Project1";
 
-        testCreateNewItem(itemName);
+        CreateNewItem(itemName);
+        getDriver().navigate().back();
+        getDriver().navigate().back();
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + itemName + "')]")).click();
         getDriver().findElement(By.xpath(" //*[@id='tasks']/div[6]/span/a")).click();

@@ -36,34 +36,29 @@ public class FreestyleProjectSeTest extends BaseTest {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         String createdItemName = "New " + itemName;
 
-        if(isItemTitleExists(createdItemName)){
-            int randInt =((int)(Math.random()*100));
-            createdItemName = createdItemName +randInt;
+        if (isItemTitleExists(createdItemName)) {
+            int randInt = ((int) (Math.random() * 100));
+            createdItemName = createdItemName + randInt;
 
-        }else{
+        } else {
             createdItemName = createdItemName;
         }
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(createdItemName);
-        try {
-            List<WebElement> items = getDriver().findElements(By.cssSelector(".label"));
-            for (WebElement el : items){
-                if (itemName.equals(el.getText())){
-                    el.click();
-                    break;
-                }
+        List<WebElement> items = getDriver().findElements(By.cssSelector(".label"));
+        for (WebElement el : items) {
+            if (itemName.equals(el.getText())) {
+                el.click();
+                break;
             }
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-//            getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        } catch (Exception timeoutException){
-            System.out.println("Error: Wrong Item name");
         }
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
     }
 
+
     @Test
-    public void testHelpDescriptionOfDiscardOldBuildsIsClosed() {
+    public void testSettingsOfDiscardOldBuildsIsDisplayed() {
         createAnItem("Freestyle project");
         WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
         new Actions(getDriver())
@@ -71,6 +66,17 @@ public class FreestyleProjectSeTest extends BaseTest {
                 .perform();
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .form-container.tr"))
+                .getAttribute("style"), "");
+    }
+    @Test
+    public void testSettingsGitIsOpened() {
+        createAnItem("Freestyle project");
+        WebElement radioGit = getDriver().findElement(By.cssSelector("label[for='radio-block-1']"));
+        new Actions(getDriver())
+                .click(radioGit)
+                .perform();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
                 .getAttribute("style"), "");
     }
 }

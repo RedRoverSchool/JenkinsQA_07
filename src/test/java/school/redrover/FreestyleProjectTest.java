@@ -619,6 +619,19 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
+    public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckboxSelected() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+        getDriver().findElement(By.xpath("//label[contains(text(), 'This project is parameterized')]")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//label[contains(text(), 'This project is parameterized')]/../input"))
+                        .isSelected());
+    }
+
+    @Test
     public void testEditDescriptionFreestyleProject() {
         final String editedDescriptionText = "New description text";
 
