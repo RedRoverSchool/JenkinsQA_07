@@ -147,7 +147,7 @@ public class Pipeline2Test extends BaseTest {
     }
 
     @Test
-    public void testCreatingPipline() {
+    public void testCreatingPipeline() {
         String pipeline = "ArtusomPipeline";
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//div[@id='add-item-panel']//input[@id='name']")).sendKeys(pipeline);
