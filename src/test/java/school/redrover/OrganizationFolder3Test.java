@@ -1,10 +1,17 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 
 public class OrganizationFolder3Test extends BaseTest {
 
@@ -73,5 +80,31 @@ public class OrganizationFolder3Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
+    }
+
+    @Test
+    public void testRenameProjectFromDashboardDropdownMenu() {
+        createProject();
+
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']/td[3]/a")).click();
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
+    }
+
+    @Test
+    public void testRenameProjectWithSameName() {
+        createProject();
+
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']/td[3]/a")).click();
+        getDriver().findElement(By.linkText("Rename")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div//p")).getText(), "The new name is the same as the current name.");
     }
 }

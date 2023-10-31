@@ -25,7 +25,7 @@ public class Folder4Test extends BaseTest {
 
         navigateToDashboard();
 
-        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]", folder1Name))).click();
+        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]",folder1Name))).click();
 
         String nestedFolders = getDriver().findElement(By.xpath("//table[@id='projectstatus']")).getText();
         assertTrue(nestedFolders.contains(folder2Name));
@@ -50,6 +50,53 @@ public class Folder4Test extends BaseTest {
 
         String jobNameInFolder = getDriver().findElement((By.xpath("//table[@id='projectstatus']//td[3]"))).getText();
         assertEquals(jobNameInFolder, jobName);
+    }
+
+    @Test
+    public void testAddDescriptionToFolder() {
+        final String folderName = "NewFolder";
+        final String descriptionText = "This is Folder's description";
+
+        createFolder(folderName);
+        navigateToDashboard();
+        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]",folderName))).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        assertEquals(actualDescription, descriptionText);
+    }
+
+    @Test
+    public void testEditDescriptionOfFolder() {
+        final String folderName = "NewFolder";
+        final String descriptionText = "This is Folder's description";
+        final String newDescriptionText = "This is new Folder's description";
+
+        createFolder(folderName);
+        addDescription(descriptionText);
+        navigateToDashboard();
+
+        navigateToItem(folderName);
+        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
+        getDriver().findElement(By.className("jenkins-input")).clear();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(newDescriptionText);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String actualNewDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        assertEquals(actualNewDescription, newDescriptionText);
+    }
+
+    private void navigateToItem(String itemName) {
+        getDriver().findElement(By.xpath(String.format("//span[contains(text(),'%s')]", itemName))).click();
+    }
+
+    private void addDescription(String text) {
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(text);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
     private void createFolder(String folderName) {
