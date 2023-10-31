@@ -4,10 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,10 @@ public class Breadcrumb3Test extends BaseTest {
 
     @Test
     public void testBreadcrumbDashboardMenuItemsSameAsSideMenu() {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[text()='Dashboard']"))).perform();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//a[text()='Dashboard']")))
+                .pause(Duration.ofMillis(300))
+                .perform();
 
         WebElement dashboardChevron = getDriver().findElement(By.xpath("//a[text()='Dashboard']/button"));
         new Actions(getDriver())
