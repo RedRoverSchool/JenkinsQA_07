@@ -19,6 +19,7 @@ import static org.testng.Assert.*;
 public class FreestyleProjectTest extends BaseTest {
 
     private final String PROJECT_NAME = "New Freestyle Project";
+    private final String DESCRIPTION_TEXT = "Description";
 
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -128,17 +129,14 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddDescriptionFreestyleProject() {
-        final String projectName = "FreestyleProject";
-        final String descriptionText = "Description";
-
-        createFreeStyleProject(projectName);
+        createFreeStyleProject(PROJECT_NAME);
 
         getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).click();
-        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(descriptionText);
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(DESCRIPTION_TEXT);
         getDriver().findElement(By.cssSelector("button[class='jenkins-button jenkins-button--primary ']")).click();
 
         assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(),
-                descriptionText);
+                DESCRIPTION_TEXT);
     }
 
     @Test
@@ -618,5 +616,22 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//button[contains( text(), 'Add Parameter')]")).isDisplayed()
         );
+    }
+
+    @Test
+    public void testEditDescriptionFreestyleProject() {
+        final String editedDescriptionText = "New description text";
+
+        createFreeStyleProject(PROJECT_NAME);
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).click();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(DESCRIPTION_TEXT);
+        getDriver().findElement(By.cssSelector("button[class='jenkins-button jenkins-button--primary ']")).click();
+        getDriver().findElement(By.cssSelector("a[id='description-link']")).click();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(editedDescriptionText);
+        getDriver().findElement(By.cssSelector("button[class='jenkins-button jenkins-button--primary ']")).click();
+
+        assertEquals(getDriver().findElement(By.xpath("//div[@id='description']//div[1]")).getText(),
+                editedDescriptionText);
     }
 }
