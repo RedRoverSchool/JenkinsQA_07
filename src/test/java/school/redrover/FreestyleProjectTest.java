@@ -28,7 +28,7 @@ public class FreestyleProjectTest extends BaseTest {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-       private void disableProjectByName(String projectName) {
+    private void disableProjectByName(String projectName) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
@@ -367,6 +367,23 @@ public class FreestyleProjectTest extends BaseTest {
             return;
         }
         Assert.fail();
+    }
+
+    @Test
+    public void testDeleteProjectUsingDropdownMenuOnDashboard() {
+        final String projectName = "Test Project";
+        createFreeStyleProject(projectName);
+        goToJenkinsHomePage();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//a[contains(@href,'" + projectName.replace(" ", "%20") + "')]")))
+                .perform();
+        getDriver()
+                .findElement(By.id("job_" + projectName))
+                .findElement(By.className("jenkins-menu-dropdown-chevron"))
+                .click();
+        getDriver().findElement(By.xpath("//button[contains(@href,'doDelete')]")).click();
+        getDriver().switchTo().alert().accept();
+        assertFalse(isProjectExist(projectName));
     }
 
 
