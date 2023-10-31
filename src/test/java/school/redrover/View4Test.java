@@ -64,5 +64,27 @@ public class View4Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tab active']/a")).getText(),
                 viewNameNew);
     }
+
+    @Test
+    public void testAddJobsToView_fromMainSectionLink(){
+        createNewFreestyleProject(JOB_NAME);
+        createNewListView(VIEW_NAME);
+        goToHomepage();
+
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("main-panel")).getText()
+                .contains("This view has no jobs associated with it. You can either add some existing jobs to this " +
+                        "view or create a new job in this view."));
+
+        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,600)");
+        getDriver().findElement(By.xpath("//label[@title='" + JOB_NAME + "']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[@id='job_" + JOB_NAME +"']/td/a")).getText(),
+                JOB_NAME);
+    }
 }
 
