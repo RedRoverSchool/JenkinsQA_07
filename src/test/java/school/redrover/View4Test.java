@@ -121,10 +121,11 @@ public class View4Test extends BaseTest {
         createNewListView_withJobs(VIEW_NAME);
 
         List<String> jobNames = List.of(JOB_NAME, JOB_NAME_1, JOB_NAME_2);
-        List<WebElement> dashboardItems = getDriver().findElements(By.xpath("//table[@id='projectstatus']/tbody/tr/td"));
+        List<WebElement> dashboardItems = getDriver().findElements(
+                By.xpath("//table[@id='projectstatus']/tbody/tr/td"));
         List<String> jobNamesDashboard = new ArrayList<>();
         for (WebElement item : dashboardItems) {
-            if (item.getText().contains("Freestyle")) {
+            if (item.getText().contains("FreestyleProject")) {
                 jobNamesDashboard.add(item.getText());
             }
         }
