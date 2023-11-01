@@ -43,7 +43,8 @@ public class View4Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/view/" + viewName +"/configure']")).click();
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollBy(0,600)");
-        List<WebElement> listOfJobs = getDriver().findElements(By.xpath("//div[@class='listview-jobs']/span/span/label"));
+        List<WebElement> listOfJobs = getDriver().findElements(
+                By.xpath("//div[@class='listview-jobs']/span/span/label"));
         for (WebElement job : listOfJobs) {
             job.click();
         }
@@ -58,7 +59,8 @@ public class View4Test extends BaseTest {
         goToHomepage();
 
         Assert.assertEquals(getDriver().findElement(
-                        By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']")).getText(),
+                        By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']"))
+                        .getText(),
                 VIEW_NAME);
     }
 
@@ -71,13 +73,15 @@ public class View4Test extends BaseTest {
         createNewListView_withoutJobs(VIEW_NAME);
         goToHomepage();
 
-        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']")).click();
+        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']"))
+                .click();
         getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME+ "/configure']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).clear();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(viewNameNew);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tab active']/a")).getText(),
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tab active']/a"))
+                        .getText(),
                 viewNameNew);
     }
 
@@ -88,7 +92,8 @@ public class View4Test extends BaseTest {
         createNewListView_withoutJobs(VIEW_NAME);
         goToHomepage();
 
-        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']"))
+                .click();
 
         Assert.assertTrue(getDriver().findElement(By.id("main-panel")).getText()
                 .contains("This view has no jobs associated with it. You can either add some existing jobs to this " +
@@ -100,7 +105,8 @@ public class View4Test extends BaseTest {
         getDriver().findElement(By.xpath("//label[@title='" + JOB_NAME + "']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']/tbody/tr/td[3]")).getText(),
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']/tbody/tr/td[3]"))
+                        .getText(),
                 JOB_NAME);
     }
 
@@ -117,14 +123,14 @@ public class View4Test extends BaseTest {
         List<String> jobNames = List.of(JOB_NAME, JOB_NAME_1, JOB_NAME_2);
         List<WebElement> dashboardItems = getDriver().findElements(By.xpath("//table[@id='projectstatus']/tbody/tr/td"));
         List<String> jobNamesDashboard = new ArrayList<>();
-        for (WebElement items : dashboardItems) {
-            if (items.getText().contains("FreestyleProject")) {
-                jobNamesDashboard.add(items.getText());
+        for (WebElement item : dashboardItems) {
+            if (item.getText().contains("Freestyle")) {
+                jobNamesDashboard.add(item.getText());
             }
         }
 
         Assert.assertEquals(jobNamesDashboard.size(), jobNames.size());
-        for (int i = 0; i < jobNamesDashboard.size() - 1; i++) {
+        for (int i = 0; i < jobNamesDashboard.size(); i++) {
             Assert.assertTrue(jobNamesDashboard.get(i).contains(jobNames.get(i)));
         }
     }
