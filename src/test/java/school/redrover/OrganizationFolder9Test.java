@@ -7,7 +7,7 @@ import school.redrover.runner.BaseTest;
 
 public class OrganizationFolder9Test extends BaseTest {
 
-    private final String NAME_OF_ORGANIZATION = "QAQAQA";
+    private static final String NAME_OF_ORGANIZATION = "QAQAQA";
 
     private void createOrganization() {
 
