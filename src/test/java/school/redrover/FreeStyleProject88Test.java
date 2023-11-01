@@ -15,19 +15,36 @@ public class FreeStyleProject88Test extends BaseTest {
 
         createFreestyleProject();
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
-        String actualDescription = createUniqueProjectName();
+        String actualDescription = createUniqueTextValue();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(actualDescription);
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
         getDriver().navigate().refresh();
         String expectedDescription = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
-        System.out.println(expectedDescription);
+        Assert.assertEquals(expectedDescription, actualDescription);
+
+    }
+
+    @Test
+    public void testEditDescription() {
+        final String expectedDescription = "New freestyle Description text";
+        createFreestyleProject();
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        String newDescription = createUniqueTextValue();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(newDescription);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+        getDriver().navigate().refresh();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(expectedDescription);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+        String text = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
+        String actualDescription = text.replaceAll(newDescription, "");
         Assert.assertEquals(expectedDescription, actualDescription);
 
     }
 
     private void createFreestyleProject() {
 
-        String testFreeStyleProjectName = createUniqueProjectName();
+        String testFreeStyleProjectName = createUniqueTextValue();
 
         WebElement addNewProjectButton = getDriver().findElement(By.xpath("//span[@class='task-icon-link']"));
         addNewProjectButton.click();
@@ -42,7 +59,7 @@ public class FreeStyleProject88Test extends BaseTest {
     }
 
 
-    private String createUniqueProjectName() {
+    private String createUniqueTextValue() {
         int desiredLength = 5;
 
         String testFreeStyleProjectName = UUID.randomUUID()
