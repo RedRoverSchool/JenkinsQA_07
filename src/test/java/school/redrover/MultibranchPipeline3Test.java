@@ -49,8 +49,7 @@ public class MultibranchPipeline3Test extends BaseTest {
 
     @Test
     public void testSidebarMenuConsistingOfTenTasks() {
-        final int quantityOfTasks = List.of("Status", "Configure", "Scan Multibranch pipeline Log", "Multibranch pipeline Events",
-                "Delete Multibranch pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials").size();
+        final int quantityOfTasks = 10;
 
         createProject("Multibranch Pipeline", PROJECT_NAME, true);
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
