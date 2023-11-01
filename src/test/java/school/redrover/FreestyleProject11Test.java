@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
-public class FreestyleProjectRenameTest extends BaseTest {
+public class FreestyleProject11Test extends BaseTest {
 
     final String name = "Test";
     final String newName = "newTest";
