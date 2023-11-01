@@ -2,14 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import org.testng.annotations.Ignore;
 
 import java.util.UUID;
 
@@ -25,15 +24,18 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     private boolean isProjectExist(String projectName) {
+        goToJenkinsHomePage();
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
     private void disableProjectByName(String projectName) {
+        goToJenkinsHomePage();
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
 
     private void createFreeStyleProject(String projectName) {
+        goToJenkinsHomePage();
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
@@ -117,13 +119,28 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + initialProjectName + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
-        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL + "a");
+        getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(newProjectName);
         getDriver().findElement(By.name("Submit")).click();
         goToJenkinsHomePage();
 
         assertTrue(isProjectExist(newProjectName));
         assertFalse(isProjectExist(initialProjectName));
+    }
+
+    @Test
+    public void testErrorMessageWhenNewNameFieldEmpty() {
+        final String initialProjectName = "Test Project";
+        createFreeStyleProject(initialProjectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + initialProjectName + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().switchTo().defaultContent();
+
+        String errorMessage = getDriver().findElement(By.className("error")).getText();
+        assertEquals(errorMessage, "No name is specified");
     }
 
     @Test
@@ -281,7 +298,6 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEnableProjectFromStatusPage() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
-        goToJenkinsHomePage();
         disableProjectByName(projectName);
 
         getDriver().findElement(By.name("Submit")).click();
@@ -297,10 +313,9 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEnableProjectFromConfigurePage() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
-        goToJenkinsHomePage();
         disableProjectByName(projectName);
-        getDriver().findElement(By.linkText("Configure")).click();
 
+        getDriver().findElement(By.linkText("Configure")).click();
         getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
         getDriver().findElement(By.name("Submit")).click();
 
@@ -315,7 +330,6 @@ public class FreestyleProjectTest extends BaseTest {
     public void testWarningMessageOnStatusPageWhenDisabled() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
-        goToJenkinsHomePage();
         disableProjectByName(projectName);
 
         boolean isDisabled = getDriver()
@@ -329,7 +343,6 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEnableButtonOnStatusPageWhenDisabled() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
-        goToJenkinsHomePage();
         disableProjectByName(projectName);
 
         boolean isVisible = getDriver().findElement(By.name("Submit")).isDisplayed();
@@ -342,7 +355,6 @@ public class FreestyleProjectTest extends BaseTest {
     public void testStatusDisabledOnDashboardWhenDisabled() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
-        goToJenkinsHomePage();
         disableProjectByName(projectName);
         goToJenkinsHomePage();
 
@@ -357,16 +369,11 @@ public class FreestyleProjectTest extends BaseTest {
     public void testScheduleBuildButtonOnDashboardWhenDisabled() {
         final String projectName = "Test Project";
         createFreeStyleProject(projectName);
-        goToJenkinsHomePage();
         disableProjectByName(projectName);
         goToJenkinsHomePage();
 
-        try {
-            getDriver().findElement(By.xpath("//*[@id='job_" + projectName + "']//*[@class='jenkins-table__cell--tight']//a"));
-        } catch (NoSuchElementException e) {
-            return;
-        }
-        Assert.fail();
+        boolean isDisabled = getDriver().findElements(By.xpath("//*[@id='job_" + projectName + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
+        assertTrue(isDisabled);
     }
 
     @Test
