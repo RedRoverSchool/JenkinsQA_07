@@ -40,6 +40,7 @@ public class MultibranchPipeline4Test extends BaseTest {
         Thread.sleep(1000);
 
         getDriver().findElement(By.xpath("//li[3]/a/button")).click();
+        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//div/a[6]")).click();
 
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
