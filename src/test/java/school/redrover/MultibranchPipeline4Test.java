@@ -34,10 +34,11 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDashboardLink();
         goMultibranchPipelinePage();
 
-        WebElement clickable = getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item'][2]"));
-        new Actions(getDriver()).contextClick(clickable).perform();
+        WebElement hoverable = getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item'][2]"));
+        new Actions(getDriver()).moveToElement(hoverable)
+                .perform();
 
-        getDriver().findElement(By.xpath("//html[1]/body[1]/div[1]/ol[1]/li[3]/a[1]/button[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a/button")).click();
         getDriver().findElement(By.xpath("//div/a[6]")).click();
 
 
