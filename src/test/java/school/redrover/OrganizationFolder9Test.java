@@ -41,7 +41,7 @@ public class OrganizationFolder9Test extends BaseTest {
                 .getText();
 
         Assert.assertEquals(message, "» This field cannot be empty, please enter a valid name");
-        Assert.assertEquals(error, "Ошибка");
+        Assert.assertEquals(error, "Error");
         Assert.assertEquals(nameOrganizationOnDashBoard, NAME_OF_ORGANIZATION);
 
 
