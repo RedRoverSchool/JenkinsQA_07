@@ -39,6 +39,14 @@ public class Pipeline2Test extends BaseTest {
         Thread.sleep(2000);
     }
 
+    private void checkAGeneralSettingsCheckbox(String jobName, String checkboxText) {
+        getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
+        getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + jobName + "/configure']")).click();
+        getDriver().findElement(By.xpath("//label[contains(text(), '" + checkboxText + "')]")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        goDashboardByBreadcrumb();
+    }
+
     @Test
     public void testCreate() {
         final String jobName = "New_Pipeline";
@@ -143,7 +151,7 @@ public class Pipeline2Test extends BaseTest {
         getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class = 'table-box']")).isDisplayed());
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@class = 'jobsTable']//th[@class = 'stage-header-name-0']")).getText(),"Hello");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@class = 'jobsTable']//th[@class = 'stage-header-name-0']")).getText(), "Hello");
     }
 
     @Test
@@ -173,6 +181,29 @@ public class Pipeline2Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),pipeline);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(), pipeline);
+    }
+
+    @Test
+    public void testUnsavedSettingsWhileConfigure() {
+        final String jobName = "AnyPipeline";
+        final String checkboxText = "Do not allow concurrent builds";
+
+        createAPipeline(jobName);
+        goDashboardByBreadcrumb();
+        checkAGeneralSettingsCheckbox(jobName, checkboxText);
+
+        getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
+        getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + jobName + "/configure']")).click();
+        getDriver().findElement(By.xpath("//label[contains(text(), '" + checkboxText + "')]")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().switchTo().alert().accept();
+
+        getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
+        getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + jobName + "/configure']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//label[contains(text(), '" + checkboxText + "')]/../input")).isSelected(),
+                "Box is unchecked");
     }
 }
