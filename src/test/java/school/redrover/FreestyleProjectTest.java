@@ -659,7 +659,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testOldBuildsAreDiscarded() {
+    public void testOldBuildsAreDiscarded() throws InterruptedException {
 
         final int numOfBuildNowClicks = 2;
 
@@ -668,10 +668,11 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(String.valueOf(numOfBuildNowClicks));
         getDriver().findElement(By.name("Submit")).click();
 
-        for (int i = 0; i <= numOfBuildNowClicks + 1; i++) {
+        for (int i = 0; i < numOfBuildNowClicks + 1; i++) {
             clickBuildNow();
         }
 
+        Thread.sleep(1000);
         getDriver().navigate().refresh();
 
         List<String> buildsList = getDriver().findElements(
