@@ -20,7 +20,7 @@ public class FreeStyleProject88Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
         getDriver().navigate().refresh();
         String expectedDescription = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
-        Assert.assertEquals(expectedDescription, actualDescription);
+        Assert.assertEquals(actualDescription, expectedDescription);
 
     }
 
@@ -38,7 +38,7 @@ public class FreeStyleProject88Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
         String text = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
         String actualDescription = text.replaceAll(newDescription, "");
-        Assert.assertEquals(expectedDescription, actualDescription);
+        Assert.assertEquals(actualDescription, expectedDescription);
 
     }
 
