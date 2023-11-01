@@ -63,7 +63,7 @@ public class OrganizationFolder8Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
                 "» This field cannot be empty, please enter a valid name");
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should be not enabled");
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
     @Test
@@ -74,7 +74,7 @@ public class OrganizationFolder8Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
                 "» ‘!’ is an unsafe character");
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should be not enabled");
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
     @Test
@@ -85,7 +85,7 @@ public class OrganizationFolder8Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
                 "» “..” is not an allowed name");
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should be not enabled");
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
     @Test
