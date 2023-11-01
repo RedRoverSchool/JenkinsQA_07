@@ -22,20 +22,26 @@ public class Breadcrumb3Test extends BaseTest {
                 .pause(Duration.ofMillis(300))
                 .perform();
 
-        WebElement dashboardChevron = getDriver().findElement(By.xpath("//a[text()='Dashboard']/button"));
+        WebElement dashboardChevron = getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']//a[text()='Dashboard']/button"));
         new Actions(getDriver())
                 .moveToElement(dashboardChevron)
-                .pause(2000)
+                .pause(500)
+                .click()
                 .perform();
-        dashboardChevron.sendKeys(Keys.RETURN);
 
         List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.id("tippy-3"));
+
+        Assert.assertTrue(itemsListBreadcrumb.size() > 0);
+
         List<String> nameListBreadcrumb = new ArrayList<>();
         for(WebElement element : itemsListBreadcrumb) {
             nameListBreadcrumb.add(element.getText());
         }
 
         List<WebElement> itemsListSideMenu = getDriver().findElements(By.id("tasks"));
+
+        Assert.assertTrue(itemsListSideMenu.size() > 0);
+
         List<String> nameListSideMenu = new ArrayList<>();
         for(WebElement element : itemsListSideMenu) {
             nameListSideMenu.add(element.getText());
