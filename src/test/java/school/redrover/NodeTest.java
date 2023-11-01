@@ -7,6 +7,9 @@ import school.redrover.runner.BaseTest;
 
 public class NodeTest extends BaseTest {
 
+    private static final String INITIAL_NAME = "nodeName";
+
+
     private void createNode(String nodeName) {
         getDriver().findElement(By.xpath("//span[contains(text(), 'Manage Jenkins')]/..")).click();
         getDriver().findElement(By.xpath("//a[@href = 'computer']")).click();
@@ -30,12 +33,11 @@ public class NodeTest extends BaseTest {
     }
 
     @Test
-    public void testRenameNode() {
-        final String initialNodeName = "nodeName";
+    public void testRename() {
         final String resultNodeName = "newNodeName";
 
-        createNode(initialNodeName);
-        renameNode(initialNodeName, resultNodeName);
+        createNode(INITIAL_NAME);
+        renameNode(INITIAL_NAME, resultNodeName);
 
         getDriver().findElement(By.xpath("//a[contains(text(), 'Nodes')]")).click();
 
@@ -43,13 +45,26 @@ public class NodeTest extends BaseTest {
     }
 
     @Test
-    public void testRenameNodeWithIncorrectName() {
-        final String initialNodeName = "nodeName2";
+    public void testRenameWithIncorrectName() {
         final String incorrectNodeName = "@";
 
-        createNode(initialNodeName);
-        renameNode(initialNodeName, incorrectNodeName);
+        createNode(INITIAL_NAME);
+        renameNode(INITIAL_NAME, incorrectNodeName);
 
         Assert.assertEquals(getDriver().findElement(By.id("main-panel")).getText(), "Error\n‘" + incorrectNodeName + "’ is an unsafe character");
+    }
+
+    @Test
+    public void testAddDescription() {
+        createNode(INITIAL_NAME);
+        final String descriptionText = "description";
+
+        getDriver().findElement(By.xpath("//a[contains(text(), '" + INITIAL_NAME + "')]")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(descriptionText);
+        getDriver().findElement(By.xpath("//div/button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id= 'description']/div[1]")).getText()
+                , descriptionText);
     }
 }
