@@ -5,9 +5,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class Freestyle99Test extends BaseTest {
+public class FreestyleOmegakotTest extends BaseTest {
 
-    private static final String NAME_OF_FOLDER = "MyFolder";
+    private static final String NAMEFOLDER = "MyFolder";
 
     private void createProject(String name) {
 
@@ -20,11 +20,11 @@ public class Freestyle99Test extends BaseTest {
     }
 
     @Test
-    public void testAddDescription() {
+    public void testaddDescription() {
 
         String description = "New Description";
 
-        createProject(NAME_OF_FOLDER);
+        createProject(NAMEFOLDER);
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(description);
         getDriver().findElement(By.xpath("//button[@name='Submit'][contains(text(), 'Save')]")).click();

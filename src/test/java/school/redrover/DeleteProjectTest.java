@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class DeleteProjectTest extends BaseTest {
-    private static final String NAME_OF_FOLDER = "MyFolder";
+    private static final String NAMEFOLDER = "MyFolder";
 
     private void createProject(String name) {
 
@@ -22,7 +22,7 @@ public class DeleteProjectTest extends BaseTest {
     @Test
     public void testProject() {
 
-        createProject(NAME_OF_FOLDER);
+        createProject(NAMEFOLDER);
         getDriver().findElement(By.xpath("//a[contains(@class, 'confirmation-link')]")).click();
         getDriver().switchTo().alert().accept();
 
@@ -31,5 +31,4 @@ public class DeleteProjectTest extends BaseTest {
         Assert.assertEquals(actualTitle, "Start building your software project");
 
     }
-
 }

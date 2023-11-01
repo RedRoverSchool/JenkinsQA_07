@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class RestApiLlinkTest extends BaseTest {
 
     @Test(description = "Кликабельность ссылки и отображение страницы REST API")
-    public void testVisabilityAndClickabilityRestApiLink() {
+    public void testvisabilityAndClickabilityRestApiLink() {
 
         String link = getDriver().findElement(By.xpath("//a[@href='api/']")).getText();
         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
