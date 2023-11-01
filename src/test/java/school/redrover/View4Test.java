@@ -2,61 +2,77 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class View4Test extends BaseTest {
 
-    private static final String VIEW_NAME = "ListView-1";
     private static final String JOB_NAME = "FreestyleProject-1";
-
+    private static final String JOB_NAME_1 = "FreestyleProject-2";
+    private static final String JOB_NAME_2 = "FreestyleProject-3";
+    private static final String VIEW_NAME = "ListView-1";
 
     private void createNewFreestyleProject(String jobName) {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(JOB_NAME);
+                .sendKeys(jobName);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
     }
 
     private void goToHomepage() {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
-    private void createNewListView(String viewName) {
-
+    private void createNewListView_withoutJobs(String viewName) {
         goToHomepage();
         getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
                 .sendKeys(viewName);
         getDriver().findElement(By.xpath("//label[@for='hudson.model.ListView']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok']")).click();
+        getDriver().findElement(By.id("ok")).click();
+    }
+
+    private void createNewListView_withJobs(String viewName) {
+        createNewListView_withoutJobs(viewName);
+        getDriver().findElement(By.xpath("//a[@href='/view/" + viewName +"/configure']")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,600)");
+        List<WebElement> listOfJobs = getDriver().findElements(By.xpath("//div[@class='listview-jobs']/span/span/label"));
+        for (WebElement job : listOfJobs) {
+            job.click();
+        }
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
-    public void testCreateNewView() {
-
+    public void testCreateNewListView() {
         createNewFreestyleProject(JOB_NAME);
-        createNewListView(VIEW_NAME);
+        goToHomepage();
+        createNewListView_withoutJobs(VIEW_NAME);
         goToHomepage();
 
         Assert.assertEquals(getDriver().findElement(
-                        By.xpath("//div[@class='tab']/a[@href='/view/ListView-1/']")).getText(),
-                "ListView-1");
+                        By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']")).getText(),
+                VIEW_NAME);
     }
 
     @Test
-    public void testRenameView() {
+    public void testRenameListView() {
         final String viewNameNew = "ListView-new";
 
         createNewFreestyleProject(JOB_NAME);
-        createNewListView(VIEW_NAME);
+        goToHomepage();
+        createNewListView_withoutJobs(VIEW_NAME);
         goToHomepage();
 
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/view/ListView-1/configure']")).click();
+        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME+ "/configure']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).clear();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(viewNameNew);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
@@ -66,12 +82,13 @@ public class View4Test extends BaseTest {
     }
 
     @Test
-    public void testAddJobsToView_fromMainSectionLink(){
+    public void testAddJobToViewWithoutJobs_fromMainSectionLink(){
         createNewFreestyleProject(JOB_NAME);
-        createNewListView(VIEW_NAME);
+        goToHomepage();
+        createNewListView_withoutJobs(VIEW_NAME);
         goToHomepage();
 
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']")).click();
 
         Assert.assertTrue(getDriver().findElement(By.id("main-panel")).getText()
                 .contains("This view has no jobs associated with it. You can either add some existing jobs to this " +
@@ -83,8 +100,33 @@ public class View4Test extends BaseTest {
         getDriver().findElement(By.xpath("//label[@title='" + JOB_NAME + "']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[@id='job_" + JOB_NAME +"']/td/a")).getText(),
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']/tbody/tr/td[3]")).getText(),
                 JOB_NAME);
+    }
+
+    @Test
+    public void testAddAllJobsToView(){
+        createNewFreestyleProject(JOB_NAME);
+        goToHomepage();
+        createNewFreestyleProject(JOB_NAME_1);
+        goToHomepage();
+        createNewFreestyleProject(JOB_NAME_2);
+        goToHomepage();
+        createNewListView_withJobs(VIEW_NAME);
+
+        List<String> jobNames = List.of(JOB_NAME, JOB_NAME_1, JOB_NAME_2);
+        List<WebElement> dashboardItems = getDriver().findElements(By.xpath("//table[@id='projectstatus']/tbody/tr/td"));
+        List<String> jobNamesDashboard = new ArrayList<>();
+        for (WebElement items : dashboardItems) {
+            if (items.getText().contains("FreestyleProject")) {
+                jobNamesDashboard.add(items.getText());
+            }
+        }
+
+        Assert.assertEquals(jobNamesDashboard.size(), jobNames.size());
+        for (int i = 0; i < jobNamesDashboard.size() - 1; i++) {
+            Assert.assertTrue(jobNamesDashboard.get(i).contains(jobNames.get(i)));
+        }
     }
 }
 
