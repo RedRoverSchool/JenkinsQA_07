@@ -1,11 +1,15 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MultibranchPipeline4Test extends BaseTest {
     private static final String NAME = "Multibranch Pipeline";
@@ -34,13 +38,13 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDashboardLink();
         goMultibranchPipelinePage();
 
-        WebElement hoverable = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]"));
+        WebElement hoverable = getDriver().findElement(By.xpath("//li[3]/a/button"));
         new Actions(getDriver()).moveToElement(hoverable)
                 .perform();
-        Thread.sleep(1000);
+
+        Thread.sleep(1000); //aria-expanded="true"
 
         getDriver().findElement(By.xpath("//li[3]/a/button")).click();
-        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//div/a[6]")).click();
 
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
