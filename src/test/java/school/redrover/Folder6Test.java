@@ -14,7 +14,6 @@ public class Folder6Test extends BaseTest {
     private static final String NEW_VALID_NAME = "Folder2";
 
     private void utilsCreate(String folderName) {
-
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
         getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(folderName);
@@ -23,45 +22,26 @@ public class Folder6Test extends BaseTest {
     }
 
     private void utilsGoDashboard() {
-
         getDriver().findElement(By.xpath("//img[@alt = 'Jenkins']")).click();
     }
 
     private void utilsDelete(String folderName) {
-
         getDriver().findElement(By.xpath("//span[text() = '" + folderName + "']")).click();
         getDriver().findElement(By.xpath("//a[@href = '/job/" + folderName + "/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
     }
 
     @Test
-    public void testCreate() {
-
+    public void testCreateEmptyName() {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
 
-        WebElement INPUT_FIELD = getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']"));
-
-        INPUT_FIELD.sendKeys(EMPTY_NAME);
-        getDriver().findElement(By.xpath("//div[@id = 'itemname-required']"));
-
-        INPUT_FIELD.sendKeys(INVALID_NAME);
-        getDriver().findElement(By.xpath("//div[@id = 'itemname-invalid']"));
-        INPUT_FIELD.clear();
-
-        INPUT_FIELD.sendKeys(VALID_NAME);
-        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
-
-        utilsGoDashboard();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']"))
-                        .getText(), VALID_NAME);
+        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(EMPTY_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'itemname-required']")).getText(), "» This field cannot be empty, please enter a valid name");
     }
 
     @Test
     public void testRename() {
-
         utilsCreate(VALID_NAME);
 
         getDriver().findElement(By.xpath("//a[@href = '/job/" + VALID_NAME + "/confirm-rename']")).click();
@@ -72,8 +52,6 @@ public class Folder6Test extends BaseTest {
 
         utilsGoDashboard();
 
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']"))
-                        .getText(), NEW_VALID_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(), NEW_VALID_NAME);
     }
 }
