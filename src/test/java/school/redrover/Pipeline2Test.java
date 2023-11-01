@@ -172,6 +172,7 @@ public class Pipeline2Test extends BaseTest {
         getDriver().findElement((By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"))).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
+
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),pipeline);
     }
 }
