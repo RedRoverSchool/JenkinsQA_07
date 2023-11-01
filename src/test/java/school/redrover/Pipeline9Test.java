@@ -44,5 +44,27 @@ public class Pipeline9Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//div[@class = 'jenkins-!-margin-bottom-0']//child::div[1]")).getText(), description);
     }
+
+    @Test
+    public void testStageViewBeforeBuild() {
+        final String pipelineName = "Test Pipeline";
+        createPipeline(pipelineName);
+
+        getDriver().findElement(By.xpath("//td//a[@href = 'job/Test%20Pipeline/']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id = 'pipeline-box']//child::div")).getText(),
+                "No data available. This Pipeline has not yet run.");
+    }
+
+    @Test
+    public void testPermalinksIsEmpty() {
+        final String pipelineName = "Pipeline1";
+        createPipeline(pipelineName);
+
+        getDriver().findElement(By.xpath("//td//a[@href = 'job/"+ pipelineName +"/']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//ul[@class = 'permalinks-list']")).getText().isEmpty());
+    }
 }
 

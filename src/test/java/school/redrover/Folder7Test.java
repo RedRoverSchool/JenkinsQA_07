@@ -13,6 +13,7 @@ public class Folder7Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
+
     @Test
     public void testMoveFolder () {
         final String nameSecondFolder = "Folder2";

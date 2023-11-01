@@ -15,8 +15,8 @@ public class OrganizationFolder5Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
 
-        String warningMessageTextActual = getDriver().findElement(By.xpath("//div[@id=\"itemname-required\"]")).getText();
-        String cssColorWarningMessageActual = getDriver().findElement(By.xpath("//div[@id=\"itemname-required\"]")).getCssValue("color");
+        String warningMessageTextActual = getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getText();
+        String cssColorWarningMessageActual = getDriver().findElement(By.xpath("//div[@id='itemname-required']")).getCssValue("color");
 
         Assert.assertEquals(cssColorWarningMessageActual, CSS_COLOR_WARNING_MESSAGE_EXPECTED);
         Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
@@ -107,5 +107,23 @@ public class OrganizationFolder5Test extends BaseTest {
 
         Assert.assertEquals(errorMessageRenameWithSameNameActual, ERROR_MESSAGE_RENAME_WITH_SAME_NAME_EXPECTED);
         Assert.assertEquals(errorActual, ERROR_EXPECTED);
+    }
+
+    @Test
+    public void testDisableOrganizationFolder() {
+        String organizationFolderName = "Organization Folder";
+        final String MESSAGE_FOLDER_DISABLED_EXPECTED = "This Organization Folder is currently disabled";
+        final String CSS_COLOR_MESSAGE_FOLDER_DISABLED_EXPECTED = "rgba(254, 130, 10, 1)";
+
+        createOrganizationFolder(organizationFolderName);
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.xpath("//button[@name=\"Submit\"]")).click();
+
+        String messageFolderDisabledActual = getDriver().findElement(By.cssSelector("form#enable-project")).getText();
+        String cssColorMessageFolderDisabledActual = getDriver().findElement(By.id("enable-project")).getCssValue("color");
+
+        Assert.assertTrue(messageFolderDisabledActual.contains(MESSAGE_FOLDER_DISABLED_EXPECTED));
+        Assert.assertEquals(cssColorMessageFolderDisabledActual, CSS_COLOR_MESSAGE_FOLDER_DISABLED_EXPECTED);
     }
 }

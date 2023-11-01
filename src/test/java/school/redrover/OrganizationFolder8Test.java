@@ -62,4 +62,14 @@ public class OrganizationFolder8Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
+    @Test
+    public void testCreateOrganizationFolderWithInvalidNameWithUnsafeCharacter() {
+        clickNewJobButton();
+        setFolderName("!");
+        clickOrganizationFolderButton();
+
+        Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
+                "» ‘!’ is an unsafe character");
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
+    }
 }
