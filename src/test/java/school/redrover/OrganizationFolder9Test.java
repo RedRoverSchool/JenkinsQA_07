@@ -44,7 +44,6 @@ public class OrganizationFolder9Test extends BaseTest {
         Assert.assertEquals(error, "Error");
         Assert.assertEquals(nameOrganizationOnDashBoard, NAME_OF_ORGANIZATION);
 
-
     }
 
 }
