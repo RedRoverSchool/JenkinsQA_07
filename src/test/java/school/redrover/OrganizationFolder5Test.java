@@ -126,4 +126,22 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertTrue(messageFolderDisabledActual.contains(MESSAGE_FOLDER_DISABLED_EXPECTED));
         Assert.assertEquals(cssColorMessageFolderDisabledActual, CSS_COLOR_MESSAGE_FOLDER_DISABLED_EXPECTED);
     }
+
+    @Test
+    public void testEnableOrganizationFolder() {
+        String organizationFolderName = "Organization Folder";
+        final String MESSAGE_FOLDER_DISABLED_EXPECTED = "This Organization Folder is currently disabled";
+        String disableButtonText = "Disable Organization Folder";
+
+        createOrganizationFolder(organizationFolderName);
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        boolean isMessageDisplayed = getDriver().findElement(By.id("main-panel")).getText().contains(MESSAGE_FOLDER_DISABLED_EXPECTED);
+
+        Assert.assertFalse(isMessageDisplayed);
+        Assert.assertTrue(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText().contains(disableButtonText));
+    }
 }
