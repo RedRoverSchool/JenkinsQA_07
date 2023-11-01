@@ -11,6 +11,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,8 +55,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     private void clickBuildNow() {
-        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]"))
-                .click();
+        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
     }
 
     @Test
@@ -659,7 +659,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testOldBuildsAreDiscarded() throws InterruptedException {
+    public void testOldBuildsAreDiscarded() {
 
         final int numOfBuildNowClicks = 2;
 
@@ -672,7 +672,7 @@ public class FreestyleProjectTest extends BaseTest {
             clickBuildNow();
         }
 
-        Thread.sleep(5000);
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         getDriver().navigate().refresh();
 
         List<String> buildsList = getDriver().findElements(
