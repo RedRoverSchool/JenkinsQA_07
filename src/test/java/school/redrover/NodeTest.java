@@ -9,15 +9,14 @@ public class NodeTest extends BaseTest {
 
     private static final String INITIAL_NAME = "nodeName";
 
-
     private void createNode(String nodeName) {
         getDriver().findElement(By.xpath("//span[contains(text(), 'Manage Jenkins')]/..")).click();
         getDriver().findElement(By.xpath("//a[@href = 'computer']")).click();
         getDriver().findElement(By.xpath("//a[contains(text(), 'New Node')]")).click();
         getDriver().findElement(By.id("name")).sendKeys(nodeName);
         getDriver().findElement(By.xpath("//label[@class ='jenkins-radio__label']")).click();
-        clickSubmitButton();
-        clickSubmitButton();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
     private void renameNode(String initialNodeName, String newName) {
@@ -25,10 +24,6 @@ public class NodeTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
         getDriver().findElement(By.xpath("//input[@value = '" + initialNodeName + "']")).clear();
         getDriver().findElement(By.xpath("//input[@value = '" + initialNodeName + "']")).sendKeys(newName);
-        clickSubmitButton();
-    }
-
-    private void clickSubmitButton() {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
@@ -41,7 +36,8 @@ public class NodeTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[contains(text(), 'Nodes')]")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[contains(text(), '" + resultNodeName + "')]")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.xpath("//a[contains(text(), '" + resultNodeName + "')]"))
+                .isDisplayed());
     }
 
     @Test
@@ -56,8 +52,9 @@ public class NodeTest extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        createNode(INITIAL_NAME);
         final String descriptionText = "description";
+
+        createNode(INITIAL_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(text(), '" + INITIAL_NAME + "')]")).click();
         getDriver().findElement(By.id("description-link")).click();
@@ -66,5 +63,20 @@ public class NodeTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id= 'description']/div[1]")).getText()
                 , descriptionText);
+    }
+
+    @Test
+    public void testAddLabel() {
+        final String labelName = "label";
+
+        createNode(INITIAL_NAME);
+
+        getDriver().findElement(By.xpath("//a[contains(text(), '" + INITIAL_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+        getDriver().findElement(By.xpath("//input[@name = '_.labelString']")).sendKeys(labelName);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h2[contains(text(), 'Labels')]/..")).getText(),
+                "Labels\n" + labelName);
     }
 }
