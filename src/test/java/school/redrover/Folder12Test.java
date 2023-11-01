@@ -9,7 +9,7 @@ import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderBayanTest extends BaseTest
+public class Folder12Test extends BaseTest
 {
     private final String MAIN_FOLDER_NAME = "Main_folder_name";
     private final String NESTED_FOLDER_NAME = "Nested_folder_name";
@@ -37,7 +37,6 @@ public class FolderBayanTest extends BaseTest
     }
 
     @Test
-    //https://trello.com/c/AZlAR8HB/109-tc0400104-us04001-folder-rename-folder
     public void testRenameThroughSidePanel() {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
@@ -47,12 +46,13 @@ public class FolderBayanTest extends BaseTest
 
         rename(RENAMED_FOLDER_NAME);
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'" + RENAMED_FOLDER_NAME + "')]")).getText(),
-                RENAMED_FOLDER_NAME, "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[contains(.,'" + RENAMED_FOLDER_NAME + "')]")).getText(),
+                RENAMED_FOLDER_NAME,
+                "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
     }
 
     @Test
-    //https://trello.com/c/tm5ILS4l/190-tc04002034-folder-move-folder-to-folder-through-context-menu
     public void testRenameThroughContextMenu() {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
@@ -62,12 +62,13 @@ public class FolderBayanTest extends BaseTest
 
         rename(RENAMED_FOLDER_NAME);
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'" + RENAMED_FOLDER_NAME + "')]")).getText(),
-                RENAMED_FOLDER_NAME, "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//h1[contains(.,'" + RENAMED_FOLDER_NAME + "')]")).getText(),
+                RENAMED_FOLDER_NAME,
+                "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
     }
 
     @Test
-    //https://trello.com/c/HpLFOFj4/112-tc0400105-folder-rename-folder-check-error-when-no-name-is-specified
     public void testRenameErrorNoNameSpecified() {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
@@ -78,11 +79,9 @@ public class FolderBayanTest extends BaseTest
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//p")).getText(),
                 "No name is specified");
-
     }
 
     @Test
-    //https://trello.com/c/qKuYXV9W/180-tc0400107-folder-rename-folder-check-error-unsafe-character
     public void testRenameWithUnsafeCharacter() {
         char unsafeCharacter = '*'; // $ # / : ? [ \
 
@@ -98,7 +97,6 @@ public class FolderBayanTest extends BaseTest
     }
 
     @Test
-    //https://trello.com/c/2lI25hTY/184-tc0400108-folder-rename-folder-check-error-for-an-ending-period
     public void testRenameWithEndingPeriod() {
         char period = '.';
 
@@ -114,7 +112,6 @@ public class FolderBayanTest extends BaseTest
     }
 
     @Test
-    //https://trello.com/c/Iq7pi6KS/186-tc0400203-folder-move-folder-to-folder-through-the-side-panel
     public void testMoveThroughSidePanel() {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
@@ -145,11 +142,5 @@ public class FolderBayanTest extends BaseTest
         }
 
         Assert.assertEquals(actualBreadcrumbs, expectedBreadcrumbs, "Breadcrumbs don't match");
-    }
-
-    @Test
-    //https://trello.com/c/Iq7pi6KS/186-tc0400203-folder-move-folder-to-folder-through-the-side-panel
-    public void testMoveThroughContextMenu() {
-        
     }
 }
