@@ -28,7 +28,7 @@ public class FreestyleProjectTest extends BaseTest {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-       private void disableProjectByName(String projectName) {
+    private void disableProjectByName(String projectName) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + projectName + "')]")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
@@ -369,6 +369,25 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.fail();
     }
 
+    @Test
+    public void testRedirectionToStatusPageAfterRenaming() {
+        final String initialProjectName = "Test Project";
+        final String newProjectName = "New Test Project";
+        createFreeStyleProject(initialProjectName);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + initialProjectName + "')]")).click();
+        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
+        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL + "a");
+        getDriver().findElement(By.name("newName")).sendKeys(newProjectName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        boolean isStatusPageSelected = getDriver()
+                .findElement(By.linkText("Status"))
+                .getAttribute("class")
+                .contains("active");
+        assertTrue(isStatusPageSelected);
+    }
 
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
