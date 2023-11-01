@@ -24,7 +24,7 @@ public class Breadcrumb3Test extends BaseTest {
 
         WebElement dashboardChevron = getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']//a[text()='Dashboard']/button"));
         new Actions(getDriver())
-                .moveToElement(dashboardChevron)
+                .moveToElement(dashboardChevron, 7, 7)
                 .pause(500)
                 .click()
                 .perform();
