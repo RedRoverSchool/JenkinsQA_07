@@ -56,6 +56,12 @@ public class FreestyleProjectSeTest extends BaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
     }
 
+    private void createFreeStyleProject(String projectName) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.id("ok-button")).click();
+    }
 
     @Test
     public void testSettingsOfDiscardOldBuildsIsDisplayed() {
@@ -82,7 +88,36 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     @Test
     public void testAddBuildStep() {
-        createAnItem("Freestyle project");
+        final String projectName = "FSproject";
 
+        By buildStepInputLocator = By
+                .xpath("//div[@class='CodeMirror-scroll cm-s-default']");
+
+        createFreeStyleProject(projectName);
+        getDriver().findElement(By.xpath("//button[@data-section-id='build-steps']")).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//div[@id='build-steps']/following-sibling::div//button"))).
+                perform();
+        getDriver().findElement(By.xpath("//div[@id='build-steps']/following-sibling::div//button")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//a[contains(text(), 'Execute shell')]")))
+                .click()
+                .perform();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(buildStepInputLocator))
+                .click()
+                .sendKeys("buildStep")
+                .perform();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
+        getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
+
+        Assert.assertEquals(getDriver().findElement(buildStepInputLocator).getText(), "buildStep");
     }
 }
