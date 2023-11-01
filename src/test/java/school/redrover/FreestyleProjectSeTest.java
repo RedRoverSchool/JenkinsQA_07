@@ -97,9 +97,9 @@ public class FreestyleProjectSeTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@data-section-id='build-steps']")).click();
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath("//div[@id='build-steps']/following-sibling::div//button"))).
-                perform();
-        getDriver().findElement(By.xpath("//div[@id='build-steps']/following-sibling::div//button")).click();
+                .findElement(By.xpath("//button[contains(text(), 'Add build step')]")))
+                .click()
+                .perform();
 
         new Actions(getDriver())
                 .moveToElement(getDriver()
