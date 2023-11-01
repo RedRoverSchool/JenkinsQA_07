@@ -5,6 +5,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -56,6 +58,10 @@ public class FreestyleProjectTest extends BaseTest {
 
     private void clickBuildNow() {
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
+        new WebDriverWait(getDriver(), Duration.ofSeconds(3))
+                .until(ExpectedConditions.visibilityOfAllElements(
+                        getDriver().findElements(By.xpath("//a[@class='model-link inside build-link display-name']"))
+                ));
     }
 
     @Test
@@ -672,7 +678,6 @@ public class FreestyleProjectTest extends BaseTest {
             clickBuildNow();
         }
 
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         getDriver().navigate().refresh();
 
         List<String> buildsList = getDriver().findElements(
