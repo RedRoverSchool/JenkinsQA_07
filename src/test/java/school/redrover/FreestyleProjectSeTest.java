@@ -80,7 +80,7 @@ public class FreestyleProjectSeTest extends BaseTest {
                 .getAttribute("style"), "");
     }
     @Test
-    public void testDaysToKeepBuildsMustBePositive() {
+    public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         createAnItem("Freestyle project");
         WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
         new Actions(getDriver())
