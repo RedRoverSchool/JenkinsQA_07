@@ -13,7 +13,7 @@ public class Folder11Test extends BaseTest {
     private void itemName(String name){
         getDriver().findElement(By.id("name")).sendKeys(name);
     }
-    private  void createMainFolder(String folderName) {
+    private void createMainFolder(String folderName) {
         clickElement(By.xpath("//a[@href='/view/all/newJob']"));
         itemName(folderName);
         clickElement(By.className("com_cloudbees_hudson_plugins_folder_Folder"));
