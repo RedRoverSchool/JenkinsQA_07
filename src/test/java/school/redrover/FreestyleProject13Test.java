@@ -46,4 +46,20 @@ public class FreestyleProject13Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(), DESCRIPTION);
     }
+
+    @Test
+    public void testEditExistingDescription() {
+        createFreestyleProject();
+        addDescription();
+
+        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Edit description ");
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText(),
+                "Edit description " + DESCRIPTION);
+    }
 }
