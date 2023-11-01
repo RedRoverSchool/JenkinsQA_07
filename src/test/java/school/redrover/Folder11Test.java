@@ -10,22 +10,16 @@ public class Folder11Test extends BaseTest {
     private void clickElement(By locator) {
         getDriver().findElement(locator).click();
     }
-    private  void createMainFolder() {
+    private void itemName(String name){
+        getDriver().findElement(By.id("name")).sendKeys(name);
+    }
+    private  void createMainFolder(String folderName) {
         clickElement(By.xpath("//a[@href='/view/all/newJob']"));
-        getDriver().findElement(By.id("name")).sendKeys("Main Folder");
+        itemName(folderName);
         clickElement(By.className("com_cloudbees_hudson_plugins_folder_Folder"));
         clickElement(By.id("ok-button"));
         clickElement(By.name("Submit"));
         goToDashboard();
-    }
-    private void createNestedFolder() {
-        clickElement(By.xpath("//a[@href='/view/all/newJob']"));
-        getDriver().findElement(By.id("name")).sendKeys("Nested Folder");
-        clickElement(By.className("jenkins_branch_OrganizationFolder"));
-        clickElement(By.id("ok-button"));
-        clickElement(By.name("Submit"));
-        goToDashboard();
-
     }
     private void goToDashboard() {
         clickElement(By.cssSelector("a.model-link[href='/']"));
@@ -33,9 +27,8 @@ public class Folder11Test extends BaseTest {
 
     @Test
     public void testMoveFolder() {
-        createMainFolder();
-        createNestedFolder();
-
+        createMainFolder("Main Folder");
+        createMainFolder("Nested Folder");
         clickElement(By.cssSelector("a[href='job/Nested%20Folder/']"));
         clickElement(By.cssSelector("a[href='/job/Nested%20Folder/move']"));
         clickElement(By.cssSelector("select[name='destination']"));
