@@ -21,7 +21,7 @@ public class OrganizationFolder9Test extends BaseTest {
     }
 
     @Test
-    public void createOrganizationFolder() {
+    public void testCreateOrganizationFolder() {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.className("jenkins_branch_OrganizationFolder")).click();
