@@ -49,14 +49,14 @@ public class MultibranchPipeline3Test extends BaseTest {
 
     @Test
     public void testSidebarMenuConsistingOfTenTasks() {
-        List<String> listOfTasks = List.of("Status", "Configure", "Scan Multibranch pipeline Log", "Multibranch pipeline Events",
-                "Delete Multibranch pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+        final int quantityOfTasks = List.of("Status", "Configure", "Scan Multibranch pipeline Log", "Multibranch pipeline Events",
+                "Delete Multibranch pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials").size();
 
         createProject("Multibranch Pipeline", PROJECT_NAME, true);
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
 
-        int numberOfTasksFromSidebar = getDriver().findElements(By.xpath("//div[@id='tasks']//a/span[position() mod 2 = 0]")).size();
-
-        Assert.assertEquals(numberOfTasksFromSidebar, listOfTasks.size());
+        Assert.assertEquals(
+                getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']")).size(),
+                quantityOfTasks);
     }
 }
