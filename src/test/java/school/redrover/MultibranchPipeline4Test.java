@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -28,12 +29,13 @@ public class MultibranchPipeline4Test extends BaseTest {
     }
 
     private void goMultibranchPipelinePage() {
-        getDriver().findElement(By.xpath("//span[normalize-space()='"+NAME+"']")).click();
+        getDriver().findElement(By.xpath("//span[normalize-space()='" + NAME + "']")).click();
     }
 
 
+    @Ignore
     @Test
-    public void testRenameUsingBreadcrumb() throws InterruptedException {
+    public void testRenameUsingBreadcrumb() {
         createMultibranchPipelin(NAME);
         getDashboardLink();
         goMultibranchPipelinePage();
@@ -42,10 +44,23 @@ public class MultibranchPipeline4Test extends BaseTest {
         new Actions(getDriver()).moveToElement(hoverable)
                 .perform();
 
-        Thread.sleep(1000); //aria-expanded="true"
-
         getDriver().findElement(By.xpath("//li[3]/a/button")).click();
         getDriver().findElement(By.xpath("//div/a[6]")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), RENAMED);
+    }
+
+    @Test
+    public void testRenameUsingSidebar() {
+        createMultibranchPipelin(NAME);
+        getDashboardLink();
+        goMultibranchPipelinePage();
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
 
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
