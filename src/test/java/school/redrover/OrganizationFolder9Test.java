@@ -48,7 +48,7 @@ public class OrganizationFolder9Test extends BaseTest {
 
     @Test
     public void testCreateOrganizationFolderWithValidName () {
-        final String OrganizationFolderName = "NewOrganizationFolder55";
+        final String OrganizationFolderName = "NewOrganizationFolder555";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(OrganizationFolderName);
