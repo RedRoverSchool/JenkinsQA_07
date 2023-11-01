@@ -672,7 +672,7 @@ public class FreestyleProjectTest extends BaseTest {
             clickBuildNow();
         }
 
-        Thread.sleep(1000);
+        Thread.sleep(5000);
         getDriver().navigate().refresh();
 
         List<String> buildsList = getDriver().findElements(
