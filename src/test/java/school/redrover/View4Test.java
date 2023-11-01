@@ -131,7 +131,7 @@ public class View4Test extends BaseTest {
 
         Assert.assertEquals(jobNamesDashboard.size(), jobNames.size());
         for (int i = 0; i < jobNamesDashboard.size(); i++) {
-            Assert.assertTrue(jobNamesDashboard.get(i).contains(jobNames.get(i)));
+            Assert.assertTrue(jobNamesDashboard.get(i).equals(jobNames.get(i)));
         }
     }
 }
