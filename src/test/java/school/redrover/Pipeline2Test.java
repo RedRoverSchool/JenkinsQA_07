@@ -163,4 +163,15 @@ public class Pipeline2Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//label[contains(text(), 'Do not allow concurrent builds')]/../input")).isSelected(),
                 "Box is not checked");
     }
+
+    @Test
+    public void testCreatingPipeline() {
+        String pipeline = "ArtusomPipeline";
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//div[@id='add-item-panel']//input[@id='name']")).sendKeys(pipeline);
+        getDriver().findElement((By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"))).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),pipeline);
+    }
 }
