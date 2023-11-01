@@ -29,18 +29,18 @@ public class MultibranchPipeline4Test extends BaseTest {
 
 
     @Test
-    public void testRenameUsingBreadcrumb() {
+    public void testRenameUsingBreadcrumb() throws InterruptedException {
         createMultibranchPipelin(NAME);
         getDashboardLink();
         goMultibranchPipelinePage();
 
-        WebElement hoverable = getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item'][2]"));
+        WebElement hoverable = getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]"));
         new Actions(getDriver()).moveToElement(hoverable)
                 .perform();
+        Thread.sleep(1000);
 
-        getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[3]/a/button")).click();
+        getDriver().findElement(By.xpath("//li[3]/a/button")).click();
         getDriver().findElement(By.xpath("//div/a[6]")).click();
-
 
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
