@@ -31,8 +31,7 @@ public class Folder11Test extends BaseTest {
         createMainFolder("Nested Folder");
         clickElement(By.cssSelector("a[href='job/Nested%20Folder/']"));
         clickElement(By.cssSelector("a[href='/job/Nested%20Folder/move']"));
-        clickElement(By.cssSelector("select[name='destination']"));
-        clickElement(By.cssSelector("option[value='/Main Folder']"));
+        clickElement(By.cssSelector("select[name='destination'] option[value='/Main Folder']"));
         clickElement(By.name("Submit"));
         goToDashboard();
         clickElement(By.cssSelector("a[href='job/Main%20Folder/']"));
