@@ -31,4 +31,5 @@ public class DeleteProjectTest2 extends BaseTest {
         Assert.assertEquals(welcome,"Welcome to Jenkins!");
     }
 
+
 }
