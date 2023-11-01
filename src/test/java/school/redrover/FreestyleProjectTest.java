@@ -651,4 +651,20 @@ public class FreestyleProjectTest extends BaseTest {
                 getDriver().findElement(By.xpath("//label[contains(text(), 'This project is parameterized')]/../input"))
                         .isSelected());
     }
+
+    @Test
+    public void testDisableProjectFromStatus() {
+        createFreeStyleProject(PROJECT_NAME);
+
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.cssSelector("#disable-project .jenkins-button")).click();
+
+        goToJenkinsHomePage();
+
+        String fromStatus = getDriver().findElement(By.id("job_" + PROJECT_NAME)).findElement(By.className("svg-icon"))
+                .getAttribute("title");
+        Assert.assertEquals(fromStatus, "Disabled");
+    }
 }
