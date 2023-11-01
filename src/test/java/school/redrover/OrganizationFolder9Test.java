@@ -40,7 +40,7 @@ public class OrganizationFolder9Test extends BaseTest {
                 .findElement(By.xpath("//a[@href = 'job/" + NAME_OF_ORGANIZATION + "/']"))
                 .getText();
 
-        Assert.assertEquals(message, "» Поле не может быть пустым, введите имя");
+        Assert.assertEquals(message, "» This field cannot be empty, please enter a valid name");
         Assert.assertEquals(error, "Ошибка");
         Assert.assertEquals(nameOrganizationOnDashBoard, NAME_OF_ORGANIZATION);
 
