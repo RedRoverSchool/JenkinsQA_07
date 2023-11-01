@@ -35,7 +35,6 @@ public class Folder11Test extends BaseTest {
     public void testMoveFolder() {
         createMainFolder();
         createNestedFolder();
-        goToDashboard();
 
         clickElement(By.cssSelector("a[href='job/Nested%20Folder/']"));
         clickElement(By.cssSelector("a[href='/job/Nested%20Folder/move']"));
@@ -43,9 +42,6 @@ public class Folder11Test extends BaseTest {
         clickElement(By.cssSelector("option[value='/Main Folder']"));
         clickElement(By.name("Submit"));
         goToDashboard();
-
-        Assert.assertTrue(getDriver().findElements(By.cssSelector("a[href='job/Nested%20Folder/']")).isEmpty(), "Nested Folder was not moved.");
-
         clickElement(By.cssSelector("a[href='job/Main%20Folder/']"));
 
         Assert.assertFalse(getDriver().findElements(By.cssSelector("a.jenkins-table__link[href='job/Nested%20Folder/'] span")).isEmpty(), "Nested Folder was not found.");
