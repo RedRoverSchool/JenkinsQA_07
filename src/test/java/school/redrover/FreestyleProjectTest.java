@@ -11,7 +11,9 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import org.testng.annotations.Ignore;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.testng.Assert.*;
 
@@ -50,6 +52,11 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
         getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+    }
+
+    private void clickBuildNow() {
+        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]"))
+                .click();
     }
 
     @Test
@@ -650,5 +657,28 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//label[contains(text(), 'This project is parameterized')]/../input"))
                         .isSelected());
+    }
+
+    @Test
+    public void testOldBuildsAreDiscarded() {
+
+        final int numOfBuildNowClicks = 2;
+
+        createFreeStyleProject(PROJECT_NAME);
+        getDriver().findElement(By.xpath("//label[text()='Discard old builds']")).click();
+        getDriver().findElement(By.name("_.numToKeepStr")).sendKeys(String.valueOf(numOfBuildNowClicks));
+        getDriver().findElement(By.name("Submit")).click();
+
+        for (int i = 0; i <= numOfBuildNowClicks + 1; i++) {
+            clickBuildNow();
+        }
+
+        getDriver().navigate().refresh();
+
+        List<String> buildsList = getDriver().findElements(
+                        By.xpath("//a[@class='model-link inside build-link display-name']"))
+                .stream().map(WebElement::getText).toList();
+
+        Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
 }
