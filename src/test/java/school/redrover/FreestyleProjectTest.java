@@ -5,12 +5,15 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import org.testng.annotations.Ignore;
 
+import java.time.Duration;
 import java.util.UUID;
 
 import static org.testng.Assert.*;
@@ -377,10 +380,11 @@ public class FreestyleProjectTest extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.xpath("//a[contains(@href,'" + projectName.replace(" ", "%20") + "')]")))
                 .perform();
-        getDriver()
+        WebElement dropDownButton = getDriver()
                 .findElement(By.id("job_" + projectName))
-                .findElement(By.className("jenkins-menu-dropdown-chevron"))
-                .click();
+                .findElement(By.className("jenkins-menu-dropdown-chevron"));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(dropDownButton)).click();
         getDriver().findElement(By.xpath("//button[contains(@href,'doDelete')]")).click();
         getDriver().switchTo().alert().accept();
         assertFalse(isProjectExist(projectName));
