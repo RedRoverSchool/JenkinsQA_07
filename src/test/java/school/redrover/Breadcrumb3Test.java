@@ -23,10 +23,10 @@ public class Breadcrumb3Test extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(dashboardChevron, 7, 7)
                 .pause(500)
-                .click()
                 .perform();
+        dashboardChevron.sendKeys(Keys.RETURN);
 
-        List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.id("tippy-3"));
+        List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@id='tippy-3']//div[@class='tippy-content']"));
 
         Assert.assertTrue(itemsListBreadcrumb.size() > 0);
 
