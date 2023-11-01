@@ -6,24 +6,50 @@ import school.redrover.runner.BaseTest;
 
 
 public class FreestyleProject6Test extends BaseTest {
+    private final static String PROJECT_NAME = "FreestyleProject5";
+
+    private void createProject(String PROJECT_NAME) {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+    }
 
     @Test
     public void testCreate() {
-        final String projectName = "FreestyleProject5";
+        String projectName = PROJECT_NAME;
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + projectName + "/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/FreestyleProject5/']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//h1[normalize-space()='Project FreestyleProject5']")).getText(),
-                "Project " + projectName);
+                "Project " + PROJECT_NAME);
+    }
+
+    @Test
+    public void testAddDescription() {
+        createProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/FreestyleProject5/']")).click();
+        getDriver().findElement(By.xpath("(//a[@class='task-link '])[4]")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys("Here are the project description!");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[normalize-space()='Here are the project description!']")).getText(),
+                "Here are the project description!");
     }
 
 
