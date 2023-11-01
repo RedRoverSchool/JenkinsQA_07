@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class OrganizationFolder9Test extends BaseTest {
     @Test
     public void testCreateNewFolder () {
-        final String NewFolderName = "NewFolder0090";
+        final String NewFolderName = "NewFolder00900";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(NewFolderName);
