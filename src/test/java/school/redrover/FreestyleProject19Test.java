@@ -13,22 +13,20 @@ public class FreestyleProject19Test extends BaseTest {
     @Test
     public void testCreateProject() {
         final String projectName = "FreestyleProject19Test";
-        final WebDriver driver = getDriver();
 
-        driver.findElement(By.xpath("//div[@id='tasks']/div[1]/span/a")).click();
-        //*[@id="tasks"]/div[1]/span/a
-        driver.findElement(By.xpath("//input [@id='name']")).sendKeys(projectName);
-        driver.findElement(By
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[1]/span/a")).click();
+        getDriver().findElement(By.xpath("//input [@id='name']")).sendKeys(projectName);
+        getDriver().findElement(By
                 .xpath("//li[@class='hudson_model_FreeStyleProject']"))
                 .click();
-        driver.findElement(By.xpath("//button[@id='ok-button']")).click();
-        driver.findElement(By
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By
                         .xpath("//textarea[@name = 'description']"))
                 .sendKeys(projectName + " Description");
-        driver.findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        driver.findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
-        List<WebElement> listItems = driver
+        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+        List<WebElement> listItems = getDriver()
                 .findElements(By
                         .xpath("//a[@class='jenkins-table__link model-link inside']"));
 
