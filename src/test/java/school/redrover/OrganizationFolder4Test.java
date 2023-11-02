@@ -5,8 +5,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class Folder2Test extends BaseTest {
-    private void createNewOrganizationFolder(String organizationFolderName) {
+public class OrganizationFolder4Test extends BaseTest {
+
+    private void createOrganizationFolder(String organizationFolderName) {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(organizationFolderName);
         getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
@@ -15,9 +16,10 @@ public class Folder2Test extends BaseTest {
     }
 
     @Test
-    public void testCreateNewOrganizationFolder() {
+    public void testCreateOrganizationFolder() {
         final String organizationFolderName = "Folder1";
-        createNewOrganizationFolder(organizationFolderName);
+
+        createOrganizationFolder(organizationFolderName);
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
