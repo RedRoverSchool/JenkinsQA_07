@@ -2,17 +2,22 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProject1Test extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String HOME_PAGE = "jenkins-home-link";
     private final static String NAME_SEARCH = "//span[text()='FreestyleProject']";
+    private final static String RENAME_LINE = "//*[@name='newName']";
 
     private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
         getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
@@ -113,5 +118,28 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),projectName);
+    }
+    @Test
+    public void FreestyleProjectRenametest() {
+        Actions actions = new Actions(getDriver());
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+        createProject("Freestyle project", PROJECT_NAME, true);
+
+        getDriver().findElement(By.id(HOME_PAGE)).click();
+        WebElement elementToHover = getDriver()
+                .findElement(By.xpath("//*[@id='job_FreestyleProject']/td[3]/a/button"));
+        actions.moveToElement(elementToHover).perform();
+        elementToHover.click();
+        WebElement renameClick = wait
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='jenkins-dropdown__item'][4]")));
+        renameClick.click();
+
+        getDriver().findElement(By.xpath(RENAME_LINE)).clear();
+        getDriver().findElement(By.xpath(RENAME_LINE)).sendKeys("Test name");
+        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+
+        getDriver().findElement(By.id(HOME_PAGE)).click();
+        String actualRenameName = getDriver().findElement(By.xpath("//span[text()='Test name']")).getText();
+        Assert.assertEquals(actualRenameName,"Test name");
     }
 }
