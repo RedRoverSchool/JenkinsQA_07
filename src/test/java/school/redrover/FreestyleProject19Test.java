@@ -44,7 +44,7 @@ public class FreestyleProject19Test extends BaseTest {
                 .findElements(By
                         .xpath("//*[@class=\"jenkins-table__link model-link inside\"]"));
 
-        //Make sure that the project has been created and click on it in the project table
+        //Make sure that the project has been created
         Assert.assertTrue(listItems.stream().anyMatch(item -> item.getText().compareTo(projectName) == 0));
 
     }
