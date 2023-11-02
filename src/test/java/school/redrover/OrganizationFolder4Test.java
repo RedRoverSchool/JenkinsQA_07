@@ -7,9 +7,9 @@ import school.redrover.runner.BaseTest;
 
 public class OrganizationFolder4Test extends BaseTest {
 
-    private void createOrganizationFolder(String organizationFolderName) {
+    private void createOrganizationFolder(String folderName) {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(organizationFolderName);
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
         getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
