@@ -1,11 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -32,28 +29,6 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[normalize-space()='" + NAME + "']")).click();
     }
 
-
-    @Ignore
-    @Test
-    public void testRenameUsingBreadcrumb() {
-        createMultibranchPipelin(NAME);
-        getDashboardLink();
-        goMultibranchPipelinePage();
-
-        WebElement hoverable = getDriver().findElement(By.xpath("//li[3]/a/button"));
-        new Actions(getDriver()).moveToElement(hoverable)
-                .perform();
-
-        getDriver().findElement(By.xpath("//li[3]/a/button")).click();
-        getDriver().findElement(By.xpath("//div/a[6]")).click();
-
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), RENAMED);
-    }
-
     @Test
     public void testRenameUsingSidebar() {
         createMultibranchPipelin(NAME);
@@ -66,6 +41,27 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), RENAMED);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'"+RENAMED+"')]")).getText(), RENAMED);
+    }
+
+    @Test
+    public void testRenameResultInBreadcrumb() {
+        createMultibranchPipelin(NAME);
+        getDashboardLink();
+        goMultibranchPipelinePage();
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        List<WebElement> elements = getDriver().findElements(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"));
+        List<String> breadcrumb = new ArrayList<>();
+        for (WebElement element : elements) {
+            breadcrumb.add(element.getText());
+        }
+
+        Assert.assertTrue(breadcrumb.contains(RENAMED));
     }
 }
