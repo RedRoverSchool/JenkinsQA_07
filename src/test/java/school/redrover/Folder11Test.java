@@ -18,7 +18,6 @@ public class Folder11Test extends BaseTest {
         itemName(folderName);
         clickElement(By.className("com_cloudbees_hudson_plugins_folder_Folder"));
         clickElement(By.id("ok-button"));
-        clickElement(By.name("Submit"));
         goToDashboard();
     }
     private void goToDashboard() {
