@@ -95,4 +95,19 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.id("main-panel")).getText(),
                 "Error\nInvalid agent configuration for " + INITIAL_NAME + ". Invalid number of executors.");
     }
+
+    @Test
+    public void testSetEnormousNumberOfExecutes() {
+        createNode(INITIAL_NAME);
+
+        getDriver().findElement(By.xpath("//a[contains(text(), '" + INITIAL_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+        getDriver().findElement(By.xpath("//input[contains(@name, 'numExecutors')]"))
+                .sendKeys(String.valueOf(Integer.MAX_VALUE));
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText().trim(), "Oops!");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h2")).getText(),
+                "A problem occurred while processing the request.");
+    }
 }
