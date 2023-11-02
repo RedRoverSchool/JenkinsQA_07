@@ -144,4 +144,22 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertFalse(isMessageDisplayed);
         Assert.assertTrue(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText().contains(disableButtonText));
     }
+
+    @Test
+    public void testMessageBeforeDeleting() {
+        String organizationFolderName = "Organization Folder";
+        final String CONFIRMING_MESSAGE_EXPECTED = "Delete the Organization Folder ‘Organization Folder’?";
+        final String CONFIRMING_BUTTON_TEXT_EXPECTED = "Yes";
+
+        createOrganizationFolder(organizationFolderName);
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.cssSelector("#tasks a[href*=delete]")).click();
+
+        String confirmingMessageActual = getDriver().findElement(By.xpath("//form[@action=\"doDelete\"]")).getText();
+        String confirmingButtonActual = getDriver().findElement(By.cssSelector("button[name='Submit']")).getText();
+
+        Assert.assertTrue(confirmingMessageActual.contains(CONFIRMING_MESSAGE_EXPECTED));
+        Assert.assertTrue(confirmingButtonActual.contains(CONFIRMING_BUTTON_TEXT_EXPECTED));
+    }
+
 }
