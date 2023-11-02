@@ -8,7 +8,16 @@ import school.redrover.runner.BaseTest;
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
-    final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
+    private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
+
+    private void createMultibranchPipeline(String MULTIBRANCH_PIPELINE_NAME) {
+        getDriver().findElement(By.linkText("Create a job")).click();
+        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+    }
 
     private void createMultibranchPipelineWithCreateAJob() {
 
@@ -30,15 +39,11 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(breadcrumbName, MULTIBRANCH_PIPELINE_NAME,
                 breadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
     }
+
     @Test
     public void testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.linkText("Dashboard")).click();
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//span[contains(text(),'"+ MULTIBRANCH_PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
@@ -53,7 +58,6 @@ public class MultibranchPipelineTest extends BaseTest {
                 By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).getText();
         Assert.assertEquals(breadcrumbName, MULTIBRANCH_PIPELINE_NEW_NAME,
                 breadcrumbName +  MULTIBRANCH_PIPELINE_NEW_NAME);
-
     }
 
     @Test

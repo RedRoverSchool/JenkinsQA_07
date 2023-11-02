@@ -107,4 +107,12 @@ public class OrganizationFolder3Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div//p")).getText(), "The new name is the same as the current name.");
     }
+
+    @Test
+    public void testDisableProject() {
+        createProject();
+
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().findElement(By.id("enable-project")).getText().substring(0, 46), "This Organization Folder is currently disabled");
+    }
 }
