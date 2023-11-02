@@ -79,11 +79,11 @@ public class OrganizationFolderTest extends BaseTest {
         final String name = "Project";
 
         getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
-
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
         getDriver().findElement(By.xpath("//span[text()='Organization Folder']")).click();
         getDriver().findElement(By.xpath("//div[@class='footer']//button")).click();
         getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button[@name='Submit']")).click();
+
         WebElement findObject = getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']/li[3]/a"));
         String actualResult = findObject.getText();
 
@@ -189,6 +189,25 @@ public class OrganizationFolderTest extends BaseTest {
 
             Assert.assertEquals(actualResult, "» ‘" + element + "’ is an unsafe character");
             getDriver().findElement(By.xpath("//input[@id='name']")).clear();
+        }
+    }
+
+    @Test
+    public void testVerifyCreatedItem() {
+        final String name = "Project";
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//span[text()='Organization Folder']")).click();
+        getDriver().findElement(By.xpath("//div[@class='footer']//button")).click();
+        getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']/li[1]/a")).click();
+
+        List<WebElement> tableElement = getDriver().findElements(By.xpath("//tr[@id='job_" + name + "']"));
+
+        for (WebElement e : tableElement) {
+            if(e.getText().equals(name)) {
+                Assert.assertTrue(e.getText().equals(name));
+            }
         }
     }
 }

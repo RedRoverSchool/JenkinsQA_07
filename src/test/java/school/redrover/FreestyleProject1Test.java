@@ -114,4 +114,36 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),projectName);
     }
+
+    @Test
+    public void testThisProjectIsParameterizedCheckboxAddBooleanParameter() {
+
+        createProject("Freestyle project", PROJECT_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+
+        getDriver().findElement(By.
+                        xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"))
+                .click();
+        getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]")).click();
+
+        getDriver().findElement(By.xpath("//a[contains(text(), 'Boolean Parameter')]")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'parameter.name']"))
+                .sendKeys("Name");
+        getDriver().findElement(By.xpath("//textarea[@name = 'parameter.description']"))
+                .sendKeys("Description");
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+
+        Assert.assertEquals(getDriver().findElement(
+                                By.xpath("//input[@name = 'parameter.name']"))
+                        .getAttribute("value"),
+                "Name");
+        Assert.assertEquals(getDriver().findElement(
+                                By.xpath("//textarea[@name = 'parameter.description']"))
+                        .getAttribute("value"),
+                "Description");
+    }
 }

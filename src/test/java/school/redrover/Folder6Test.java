@@ -8,6 +8,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Folder6Test extends BaseTest {
 
     private static final String VALID_NAME = "Folder1";
@@ -53,9 +56,7 @@ public class Folder6Test extends BaseTest {
 
         utilsGoDashboard();
 
-        Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']"))
-                .getText(), VALID_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(), VALID_NAME);
     }
 
     @Test
@@ -71,5 +72,21 @@ public class Folder6Test extends BaseTest {
         utilsGoDashboard();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(), NEW_VALID_NAME);
+    }
+
+    @Test
+    public void testCreateNameSpecialCharacters() {
+        List<String> invalidNames = Arrays.asList("&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";");
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+
+        for (String invalidName: invalidNames) {
+            WebElement inputName = getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']"));
+            inputName.sendKeys(invalidName);
+
+            Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'itemname-invalid']")).getText(), "» ‘" + invalidName + "’ is an unsafe character");
+
+            inputName.clear();
+        }
     }
 }
