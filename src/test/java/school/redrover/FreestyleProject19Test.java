@@ -9,9 +9,9 @@ import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
-public class FreestyleProject19 extends BaseTest {
+public class FreestyleProject19Test extends BaseTest {
     @Test
-    public void createProjectTest() {
+    public void testCreateProject() {
         final String projectName = "FreestyleProject19Test";
         final WebDriver driver = getDriver();
 
