@@ -29,7 +29,7 @@ public class Folder13Test extends BaseTest {
     }
 
     @Test
-    public void createNewJobInsideFolder() {
+    public void testCreateNewJobInsideFolder() {
         createFolder();
         getDriver().findElement(By.xpath("//span[text()='" + FOLDER_NAME + "']")).click();
         getDriver().findElement(By.className("content-block__link")).click();
