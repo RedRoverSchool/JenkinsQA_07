@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -35,6 +36,10 @@ public class PipelineTest extends BaseTest {
 
     private void clickBuildNow() {
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
+    }
+
+    private void goToDashboard() {
+        getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
     @Test
@@ -260,5 +265,34 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//pre[@class='console-output']")).getText(),
                 "Hello World");
+    }
+
+    @Test
+    public void testBuildRunTriggeredByAnotherProject() {
+
+        final String upstreamPipelineName = "Upstream Pipe";
+
+        createPipeline(PIPELINE_NAME, true);
+        createPipeline(upstreamPipelineName, false);
+
+        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
+                .click();
+        WebElement buildAfterOtherProjectsCheckbox = getDriver()
+                .findElement(By.xpath("//label[text()='Build after other projects are built']"));
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//label[text()='Always trigger, even if the build is aborted']"))
+                .click();
+        saveConfiguration();
+
+        goToDashboard();
+        getDriver().findElement(
+                        By.xpath(String.format("//span[text()='%s']/../../..//a[contains(@href,'build?')]", PIPELINE_NAME)))
+                .click();
+        getDriver().navigate().refresh();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']/a")).getText(),
+                upstreamPipelineName);
     }
 }
