@@ -92,7 +92,6 @@ public class Folder6Test extends BaseTest {
 
     @Test
     public void testDelete() {
-
         utilsCreate(VALID_NAME);
         utilsGoDashboard();
         utilsDelete(VALID_NAME);
