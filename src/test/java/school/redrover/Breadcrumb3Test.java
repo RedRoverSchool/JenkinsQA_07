@@ -16,7 +16,7 @@ import java.util.List;
 public class Breadcrumb3Test extends BaseTest {
 
     @Test
-    public void testBreadcrumbDashboardMenuItemsSameAsSideMenu() {
+    public void testBreadcrumbDashboardMenuItemsSameAsSideMenuItems() {
         new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[text()='Dashboard']"))).perform();
 
         WebElement dashboardChevron = getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']//a[text()='Dashboard']/button"));
