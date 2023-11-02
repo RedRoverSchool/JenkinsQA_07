@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -67,5 +69,36 @@ public class FreestyleProject10Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//tr[@class=' job-status-nobuilt']/td[3]/a")).getText(),
                 newName);
+    }
+
+    @Test
+    public void testDeleteFreestyleProject() {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + NAME_FREESTYLE_PROJECT + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@data-message='Delete the Project ‘" + NAME_FREESTYLE_PROJECT + "’?']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertEquals(getDriver().findElements(By.id("job_" + NAME_FREESTYLE_PROJECT)).size(), 0);
+    }
+
+    @Test
+    public void testTooltipDiscardIsVisible() {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+        getDriver().findElement(By.xpath("//tr[@id='job_" + NAME_FREESTYLE_PROJECT + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[5]")).click();
+
+        WebElement helpButton = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.model.FreeStyleProject/help/concurrentBuild']"));
+
+        boolean toolTipIsVisible = true;
+        new Actions(getDriver()).
+                moveToElement(helpButton).
+                perform();
+
+        if (helpButton.getAttribute("title").equals("Help for feature: Execute concurrent builds if necessary")) {
+            toolTipIsVisible = false;
+        }
+
+        Assert.assertTrue(toolTipIsVisible, "The tooltip message is not visible");
     }
 }

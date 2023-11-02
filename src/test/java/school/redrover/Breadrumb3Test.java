@@ -4,10 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
 import java.util.List;
+
 import static org.testng.AssertJUnit.assertTrue;
 
-public class Breadcrumb2Test extends BaseTest {
+public class Breadrumb3Test extends BaseTest {
     private boolean isBreadcrumbPresent() {
         List<WebElement> breadcrumbs = getDriver().findElements(By.id("breadcrumbBar"));
         return !breadcrumbs.isEmpty() && breadcrumbs.get(0).isDisplayed();
@@ -63,4 +65,6 @@ public class Breadcrumb2Test extends BaseTest {
             assertTrue(thisIsDashboardPage());
         }
     }
+
+
 }

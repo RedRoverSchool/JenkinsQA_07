@@ -6,7 +6,24 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class MultibranchPipeline3Test extends BaseTest {
+
+    private final static String PROJECT_NAME = "MultibranchPipelineTest";
+    private final static String HOME_PAGE = "jenkins-home-link";
+
+    private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
+        getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
+                .sendKeys(nameOfProject);
+        getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        if (goToHomePage) {
+            getDriver().findElement(By.id(HOME_PAGE)).click();
+        }
+    }
 
     @Test
     public void testMultibranchPipelineCreation() {
@@ -28,5 +45,17 @@ public class MultibranchPipeline3Test extends BaseTest {
 
         Assert.assertEquals(actualPipelineName, expectedPipelineName);
 
+    }
+
+    @Test
+    public void testSidebarMenuConsistingOfTenTasks() {
+        final int quantityOfTasks = 10;
+
+        createProject("Multibranch Pipeline", PROJECT_NAME, true);
+        getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
+
+        Assert.assertEquals(
+                getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']")).size(),
+                quantityOfTasks);
     }
 }
