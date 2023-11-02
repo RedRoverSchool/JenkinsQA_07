@@ -686,4 +686,22 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
+
+    @Test
+    public void testEditDescriptionFreestyleProject() {
+        final String editedDescriptionText = "New description text";
+        final String descriptionText = "Description";
+
+        createFreeStyleProject(PROJECT_NAME);
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).click();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(descriptionText);
+        getDriver().findElement(By.cssSelector("button[class='jenkins-button jenkins-button--primary ']")).click();
+        getDriver().findElement(By.cssSelector("a[id='description-link']")).click();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).clear();
+        getDriver().findElement(By.cssSelector("textarea[name='description']")).sendKeys(editedDescriptionText);
+        getDriver().findElement(By.cssSelector("button[class='jenkins-button jenkins-button--primary ']")).click();
+
+        assertEquals(getDriver().findElement(By.xpath("//div[@id='description']//div[1]")).getText(),
+                editedDescriptionText);
+    }
 }
