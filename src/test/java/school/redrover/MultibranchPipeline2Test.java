@@ -7,9 +7,10 @@ import school.redrover.runner.BaseTest;
 
 public class MultibranchPipeline2Test extends BaseTest {
 
-    final String PIPELINE_NAME = "Multi";
+    private static final String PIPELINE_NAME = "Multi";
 
     public void multibranchCreation() {
+
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//span[contains(text(),'Multibranch Pipeline')]")).click();
