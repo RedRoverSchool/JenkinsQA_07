@@ -137,7 +137,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + initialProjectName + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
         getDriver().findElement(By.name("newName")).clear();
-        getDriver().switchTo().defaultContent();
+        getDriver().switchTo().parentFrame();
 
         String errorMessage = getDriver().findElement(By.className("error")).getText();
         assertEquals(errorMessage, "No name is specified");
