@@ -7,6 +7,8 @@ import school.redrover.runner.BaseTest;
 
 public class OrganizationFolder5Test extends BaseTest {
 
+    private static final String WELCOME_MESSAGE = "Welcome to Jenkins!";
+
     @Test
     public void testVerifyWarningMessageEmptyName() {
         final String WARNING_MESSAGE_TEXT_EXPECTED = "» This field cannot be empty, please enter a valid name";
@@ -144,4 +146,38 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertFalse(isMessageDisplayed);
         Assert.assertTrue(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText().contains(disableButtonText));
     }
+
+    @Test
+    public void testMessageBeforeDeleting() {
+        String organizationFolderName = "Organization Folder";
+        final String CONFIRMING_MESSAGE_EXPECTED = "Delete the Organization Folder ‘Organization Folder’?";
+        final String CONFIRMING_BUTTON_TEXT_EXPECTED = "Yes";
+
+        createOrganizationFolder(organizationFolderName);
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.cssSelector("#tasks a[href*=delete]")).click();
+
+        String confirmingMessageActual = getDriver().findElement(By.xpath("//form[@action=\"doDelete\"]")).getText();
+        String confirmingButtonActual = getDriver().findElement(By.cssSelector("button[name='Submit']")).getText();
+
+        Assert.assertTrue(confirmingMessageActual.contains(CONFIRMING_MESSAGE_EXPECTED));
+        Assert.assertTrue(confirmingButtonActual.contains(CONFIRMING_BUTTON_TEXT_EXPECTED));
+    }
+
+    @Test
+    public void testDeleteOrganizationFolder() {
+        String organizationFolderName = "Organization Folder";
+
+        createOrganizationFolder(organizationFolderName);
+        getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']/td/a/span")).click();
+        getDriver().findElement(By.cssSelector("#tasks a[href*=delete]")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        boolean isJobPresentOnDashboard = getDriver().findElement(By.id("main-panel")).getText().contains(organizationFolderName);
+        boolean isWelcomeMessageDisplayed = getDriver().findElement(By.xpath("//h1")).getText().matches(WELCOME_MESSAGE);
+
+        Assert.assertFalse(isJobPresentOnDashboard);
+        Assert.assertTrue(isWelcomeMessageDisplayed);
+    }
+
 }
