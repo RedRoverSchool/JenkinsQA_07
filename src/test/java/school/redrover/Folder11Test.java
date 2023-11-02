@@ -34,6 +34,7 @@ public class Folder11Test extends BaseTest {
         clickElement(By.name("Submit"));
         goToDashboard();
         clickElement(By.cssSelector("a[href='job/Main%20Folder/']"));
+
         Assert.assertFalse(getDriver().findElements(By.cssSelector("a.jenkins-table__link[href='job/Nested%20Folder/'] span")).isEmpty(), "Nested Folder was not found.");
     }
 }
