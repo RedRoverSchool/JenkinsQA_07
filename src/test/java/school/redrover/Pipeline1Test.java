@@ -13,6 +13,7 @@ public class Pipeline1Test extends BaseTest {
     private final static String HOME_PAGE = "jenkins-home-link";
     private final static String NEW_ITEM = "//a[@href='/view/all/newJob']";
     private final static String PIPELINE_BOARD_NAME = "//a[@class='jenkins-table__link model-link inside']";
+    private final static String DESCRIPTION_SEARCH = "//*[@name='description']";
 
     private void createProject() {
         getDriver().findElement(By.id(HOME_PAGE));
@@ -63,6 +64,23 @@ public class Pipeline1Test extends BaseTest {
         String actualMessage = getDriver()
                 .findElement(By.xpath("//span[@class='pipeline-new-node'][1]")).getText();
         Assert.assertEquals(actualMessage,"[Pipeline] Start of Pipeline");
+    }
+    @Test
+    public void testPipelineAddDescription() {
+        createProject();
+        getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
+
+        getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]")).click();
+        getDriver().findElement(By.xpath(DESCRIPTION_SEARCH))
+                .sendKeys("Test description");
+        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+
+        getDriver().findElement(By.id(HOME_PAGE)).click();
+        getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
+        String actualDescription = getDriver().findElement(By.xpath("//*[@id='description']/div[1]"))
+                .getText();
+
+        Assert.assertEquals(actualDescription,"Test description");
     }
 }
 
