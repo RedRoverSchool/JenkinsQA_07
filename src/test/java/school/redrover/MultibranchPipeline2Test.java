@@ -32,11 +32,14 @@ public class MultibranchPipeline2Test extends BaseTest {
         multibranchCreation();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         getDriver().findElement(By.className("task-link")).click();
+
         getDriver().findElement(By.id("name")).sendKeys("Multi2");
         getDriver().findElement(By.xpath("//input[@id='from']")).sendKeys(PIPELINE_NAME);
         getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
+
         String expectedName = getDriver().findElement(By.xpath("//span[text()='Multi2']")).getText();
         Assert.assertEquals(expectedName, "Multi2");
     }
