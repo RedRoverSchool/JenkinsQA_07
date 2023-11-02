@@ -40,4 +40,24 @@ public class MulticonfigurationProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
     }
+
+    @Test
+    public void testCreateWithDescription() {
+        String projectName = "MyMulticonfiguration project";
+        String description = "Description";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//li[@class='hudson_matrix_MatrixProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+        String actualProjectName = getDriver().findElement(By.tagName("h1")).getText();
+        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+
+        Assert.assertEquals(actualProjectName, String.format("Project %s", projectName));
+        Assert.assertEquals(actualDescription, description);
+
+
+    }
 }

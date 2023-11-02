@@ -1,9 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class Pipeline1Test extends BaseTest {
     private final static String PIPELINE_NAME = "Pipeline name test";
@@ -39,7 +42,18 @@ public class Pipeline1Test extends BaseTest {
                 .findElement(By.xpath(PIPELINE_BOARD_NAME)).getText();
         Assert.assertEquals(actualName, PIPELINE_NAME);
     }
+    @Test
+    public void testPipelineDelete() {
+        createProject();
+        getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
+        getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']")).click();
+        getDriver().switchTo().alert().accept();
+        List<WebElement> elements = getDriver().findElements(By.xpath(PIPELINE_BOARD_NAME));
+        boolean deleted = elements.isEmpty();
+        Assert.assertTrue(deleted, "Element is not present after deletion");
+    }
 }
+
 
 
 
