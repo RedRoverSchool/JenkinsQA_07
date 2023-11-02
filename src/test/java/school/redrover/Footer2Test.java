@@ -31,7 +31,6 @@ public class Footer2Test extends BaseTest {
             getDriver().navigate().back();
         }
     }
-
    @Test
    public void testRestApiLinkRedirectionUserArea() {
         List <By> userPages = List.of(
