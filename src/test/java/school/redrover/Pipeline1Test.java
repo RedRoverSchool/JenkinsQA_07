@@ -48,9 +48,21 @@ public class Pipeline1Test extends BaseTest {
         getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
         getDriver().findElement(By.xpath("//span[text()='Delete Pipeline']")).click();
         getDriver().switchTo().alert().accept();
+
         List<WebElement> elements = getDriver().findElements(By.xpath(PIPELINE_BOARD_NAME));
         boolean deleted = elements.isEmpty();
         Assert.assertTrue(deleted, "Element is not present after deletion");
+    }
+    @Test
+    public void testPipelineBuildNowLaunch() {
+        createProject();
+        getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
+        getDriver().findElement(By.xpath("(//span[@class='task-icon-link'])[3]")).click();
+        getDriver().findElement(By.xpath("//*[@class='build-status-link']")).click();
+
+        String actualMessage = getDriver()
+                .findElement(By.xpath("//span[@class='pipeline-new-node'][1]")).getText();
+        Assert.assertEquals(actualMessage,"[Pipeline] Start of Pipeline");
     }
 }
 
