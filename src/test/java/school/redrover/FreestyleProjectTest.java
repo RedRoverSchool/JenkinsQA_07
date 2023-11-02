@@ -696,7 +696,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains(text(), 'Delete Project')]/..")).click();
         getDriver().switchTo().alert().accept();
 
-        assertFalse(isProjectExist(PROJECT_NAME));
+        Assert.assertTrue(getDriver().findElements(By.id("job_" + PROJECT_NAME)).isEmpty());
         Assert.assertEquals(getDriver().findElement(By.cssSelector("h1")).getText(), "Welcome to Jenkins!");
     }
 }
