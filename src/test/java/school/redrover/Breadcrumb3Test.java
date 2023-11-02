@@ -26,7 +26,7 @@ public class Breadcrumb3Test extends BaseTest {
                 .perform();
         dashboardChevron.sendKeys(Keys.RETURN);
 
-        List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@id='tippy-3']//div[@class='tippy-content']"));
+        List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@id='tippy-3']//a"));
 
         Assert.assertTrue(itemsListBreadcrumb.size() > 0);
 
@@ -35,7 +35,7 @@ public class Breadcrumb3Test extends BaseTest {
             nameListBreadcrumb.add(element.getText());
         }
 
-        List<WebElement> itemsListSideMenu = getDriver().findElements(By.id("tasks"));
+        List<WebElement> itemsListSideMenu = getDriver().findElements(By.xpath("//div[@class='task ']"));
 
         Assert.assertTrue(itemsListSideMenu.size() > 0);
 
