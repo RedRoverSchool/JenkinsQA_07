@@ -112,28 +112,27 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]")).getText(),"Bob");
 
     }
-    @Ignore
+
     @Test
     public void testAddJobToTheView() {
-        final String newViewName = "New Test View";
-        final String VIEW_NAME = "New name";
+        final String PROJECT_NAME = "Freestyle Project";
+        final String VIEW_NAME = "View";
 
-        createNewFreestyleProject(newViewName);
-        createMyNewListView(newViewName);
+        createNewFreestyleProject(PROJECT_NAME);
+        createMyNewListView(VIEW_NAME);
         goHome();
 
-        String PROJECT_NAME = "project name";
-
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//div[@class='tab']/a[contains(text(), '" + VIEW_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'/configure')]")).click();
         getDriver().findElement(By.xpath(String.format("//label[@title='%s']", PROJECT_NAME))).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        String projectName = getDriver().findElement(By.xpath("//span[text()='My New Freestyle Project']")).getText();
+        String projectName = getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']")).getText();
 
         Assert.assertEquals(projectName, PROJECT_NAME);
     }
+
     @Test
     public void testEditView() {
         final String myProjectName = "My new freestyle project name";
