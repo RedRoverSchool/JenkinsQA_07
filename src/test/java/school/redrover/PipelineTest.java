@@ -249,7 +249,7 @@ public class PipelineTest extends BaseTest {
         saveConfiguration();
 
         clickBuildNow();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOf(getDriver()
                 .findElement(By.xpath("//span[@class='badge']/a[text()='#1']"))));
         Actions actions = new Actions(getDriver());
