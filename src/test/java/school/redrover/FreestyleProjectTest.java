@@ -699,7 +699,8 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElements(By.id("job_" + PROJECT_NAME)).isEmpty());
         Assert.assertEquals(getDriver().findElement(By.cssSelector("h1")).getText(), "Welcome to Jenkins!");
     }
-      
+
+    @Test
     public void testEditDescriptionFreestyleProject() {
         final String editedDescriptionText = "New description text";
         final String descriptionText = "Description";
