@@ -686,4 +686,17 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
+
+    @Test
+    public void testDeleteFreestyleProjectSideMenu() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Delete Project')]/..")).click();
+        getDriver().switchTo().alert().accept();
+
+        assertFalse(isProjectExist(PROJECT_NAME));
+        Assert.assertEquals(getDriver().findElement(By.cssSelector("h1")).getText(), "Welcome to Jenkins!");
+    }
 }
