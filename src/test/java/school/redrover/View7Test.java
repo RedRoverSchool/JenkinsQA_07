@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 
-public class CreateNevViewTest extends BaseTest {
+public class View7Test extends BaseTest {
 
     private void createFreestPro() {
         getDriver().findElement(By.xpath("//a [@href = '/view/all/newJob']")).click();
