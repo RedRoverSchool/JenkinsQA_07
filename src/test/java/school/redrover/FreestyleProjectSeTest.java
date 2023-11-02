@@ -95,6 +95,14 @@ public class FreestyleProjectSeTest extends BaseTest {
 
         createFreeStyleProject(projectName);
         getDriver().findElement(By.xpath("//button[@data-section-id='build-steps']")).click();
+
+        //needed to add sleep because this step is very flacky
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         new Actions(getDriver())
                 .moveToElement(getDriver()
                 .findElement(By.xpath("//button[contains(text(), 'Add build step')]")))
