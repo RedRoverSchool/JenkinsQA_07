@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class FolderNewTest2 extends BaseTest {
 
     @Test
-    public void createFolder1(){
+    public void createFolder1() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys("HSE");
@@ -17,6 +17,6 @@ public class FolderNewTest2 extends BaseTest {
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
         getDriver().findElement(By.xpath("//li//a[@href='/']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td//a//*[text()='HSE']")).getText(),"HSE");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//td//a//*[text()='HSE']")).getText(), "HSE");
     }
 }
