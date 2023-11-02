@@ -686,6 +686,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
+
     @Test
     public void testCreateFreestyleProjectFromExistingProject() {
         final String NEW_PROJECT_NAME = "New Freestyle project 2";
