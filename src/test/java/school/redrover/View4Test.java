@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -29,7 +30,7 @@ public class View4Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
-    private void createNewListView_withoutJobs(String viewName) {
+    private void createNewListViewWithoutJobs(String viewName) {
         goToHomepage();
         getDriver().findElement(By.xpath("//a[@href='/newView']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
@@ -38,9 +39,9 @@ public class View4Test extends BaseTest {
         getDriver().findElement(By.id("ok")).click();
     }
 
-    private void createNewListView_withJobs(String viewName) {
-        createNewListView_withoutJobs(viewName);
-        getDriver().findElement(By.xpath("//a[@href='/view/" + viewName +"/configure']")).click();
+    private void createNewListViewWithJobs(String viewName) {
+        createNewListViewWithoutJobs(viewName);
+        getDriver().findElement(By.xpath("//a[@href='/view/" + viewName + "/configure']")).click();
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollBy(0,600)");
         List<WebElement> listOfJobs = getDriver().findElements(
@@ -55,11 +56,11 @@ public class View4Test extends BaseTest {
     public void testCreateNewListView() {
         createNewFreestyleProject(JOB_NAME);
         goToHomepage();
-        createNewListView_withoutJobs(VIEW_NAME);
+        createNewListViewWithoutJobs(VIEW_NAME);
         goToHomepage();
 
         Assert.assertEquals(getDriver().findElement(
-                        By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']"))
+                                By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']"))
                         .getText(),
                 VIEW_NAME);
     }
@@ -70,12 +71,12 @@ public class View4Test extends BaseTest {
 
         createNewFreestyleProject(JOB_NAME);
         goToHomepage();
-        createNewListView_withoutJobs(VIEW_NAME);
+        createNewListViewWithoutJobs(VIEW_NAME);
         goToHomepage();
 
-        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME +"/']"))
+        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']"))
                 .click();
-        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME+ "/configure']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME + "/configure']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).clear();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(viewNameNew);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
@@ -86,10 +87,10 @@ public class View4Test extends BaseTest {
     }
 
     @Test
-    public void testAddJobToViewWithoutJobs_fromMainSectionLink(){
+    public void testAddJobToViewWithoutJobs_fromMainSectionLink() {
         createNewFreestyleProject(JOB_NAME);
         goToHomepage();
-        createNewListView_withoutJobs(VIEW_NAME);
+        createNewListViewWithoutJobs(VIEW_NAME);
         goToHomepage();
 
         getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']"))
@@ -111,14 +112,14 @@ public class View4Test extends BaseTest {
     }
 
     @Test
-    public void testAddAllJobsToView(){
+    public void testAddAllJobsToView() {
         createNewFreestyleProject(JOB_NAME);
         goToHomepage();
         createNewFreestyleProject(JOB_NAME_1);
         goToHomepage();
         createNewFreestyleProject(JOB_NAME_2);
         goToHomepage();
-        createNewListView_withJobs(VIEW_NAME);
+        createNewListViewWithJobs(VIEW_NAME);
 
         List<String> jobNames = List.of(JOB_NAME, JOB_NAME_1, JOB_NAME_2);
         List<WebElement> dashboardItems = getDriver().findElements(
@@ -134,6 +135,37 @@ public class View4Test extends BaseTest {
         for (int i = 0; i < jobNamesDashboard.size(); i++) {
             Assert.assertEquals(jobNames.get(i), jobNamesDashboard.get(i));
         }
+    }
+
+    @Test
+    public void testOrderColumns() {
+        createNewFreestyleProject(JOB_NAME);
+        goToHomepage();
+        createNewListViewWithJobs(VIEW_NAME);
+        goToHomepage();
+
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME + "/configure']")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,850)");
+        Actions action = new Actions(getDriver());
+        action.clickAndHold(getDriver().findElement(By.xpath("(//div[@class='dd-handle'])[3]")))
+                .moveToElement(getDriver().findElement(By.xpath("(//div[@class='dd-handle'])[5]")))
+                .release(getDriver().findElement(By.xpath("(//div[@class='dd-handle'])[5]")))
+                .build()
+                .perform();
+        getDriver().findElement(By.name("Submit")).click();
+
+        List<WebElement> columns = getDriver().findElements(By.xpath("//tr[@id='job_FreestyleProject-1']/td"));
+        int columnNumberAfterOrdering = 0;
+        for (WebElement element : columns) {
+            if (element.getText().contains(JOB_NAME)) {
+                columnNumberAfterOrdering = columns.indexOf(element) + 1;
+                break;
+            }
+        }
+
+        Assert.assertEquals(columnNumberAfterOrdering, 5);
     }
 }
 

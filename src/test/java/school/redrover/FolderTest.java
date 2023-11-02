@@ -187,5 +187,28 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_FOLDER_NAME,
                 FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
     }
+
+    @Test
+    public void testErrorMessageIsDisplayedWithoutFolderName() {
+        String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        boolean errorMessageDisplayed = getDriver().findElement(By.id("itemname-required")).isDisplayed();
+        String actualErrorMessage = getDriver().findElement(By.id("itemname-required")).getText();
+
+        Assert.assertTrue(errorMessageDisplayed, "Error message for empty name is not displayed!");
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "The error message does not match the expected message!");
+    }
+
+    @Test
+    public void testOKbuttonIsNotClickableWithoutFolderName() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        boolean okButtonDisabled = "true".equals(okButton.getAttribute("disabled"));
+
+        Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
+    }
 }
 
