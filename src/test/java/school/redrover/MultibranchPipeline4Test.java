@@ -79,4 +79,27 @@ public class MultibranchPipeline4Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), RENAMED);
     }
+
+    @Test
+    public void testRenameResultOnDashboard() {
+        createMultibranchPipelin(NAME);
+        getDashboardLink();
+        goMultibranchPipelinePage();
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        getDashboardLink();
+
+        List<WebElement> elements = getDriver().findElements(By.xpath("//td/a"));
+        List<String> jobs = new ArrayList<>();
+        for (WebElement element : elements) {
+            jobs.add(element.getText());
+        }
+
+        Assert.assertTrue(jobs.contains(RENAMED));
+    }
 }
