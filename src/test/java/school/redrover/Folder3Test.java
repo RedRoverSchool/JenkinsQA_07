@@ -61,8 +61,10 @@ public class Folder3Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         returnToJenkinsDashboard();
 
-        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
-        getDriver().findElement(By.xpath("//*[@id='job_Main']/td[3]/a/span")).click();
+        getDriver().findElement(By.xpath("//li[@class='children'][1]")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/']")).click();
+        getDriver().findElement(By.xpath("//li[@class='children'][2]")).click();
+        getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item']")).click();
 
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), "Nested");
