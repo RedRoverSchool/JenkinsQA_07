@@ -94,9 +94,7 @@ public class Folder6Test extends BaseTest {
     public void testDelete() {
 
         utilsCreate(VALID_NAME);
-
         utilsGoDashboard();
-
         utilsDelete(VALID_NAME);
 
         getDriver().findElement(By.xpath("//input[@role = 'searchbox']")).sendKeys(VALID_NAME + "\n");
