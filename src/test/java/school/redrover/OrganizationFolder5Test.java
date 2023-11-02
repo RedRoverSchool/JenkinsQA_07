@@ -180,4 +180,21 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertTrue(isWelcomeMessageDisplayed);
     }
 
+    @Test
+    public void testCloneNotExistingJob() {
+        String organizationFolderName = "Organization Folder";
+        String organizationFolderWrongName = "Organization Folder Wrong";
+        String organizationFolderCloneName = "Organization Folder Clone";
+        String errorTitle = "Error";
+        String errorMessage = "No such job:";
+
+        createOrganizationFolder(organizationFolderName);
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(organizationFolderCloneName);
+        getDriver().findElement(By.xpath("//input[@id='from']")).sendKeys(organizationFolderWrongName);
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), errorTitle);
+        Assert.assertTrue(getDriver().findElement(By.xpath("//p")).getText().contains(errorMessage));
+    }
 }
