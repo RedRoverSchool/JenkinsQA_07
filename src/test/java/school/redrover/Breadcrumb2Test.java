@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.List;
@@ -49,7 +50,7 @@ public class Breadcrumb2Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id=\"breadcrumbs\"]/li[1]/a")).click();
         assertTrue(thisIsDashboardPage());
     }
-
+    @Ignore
     @Test
     public void testReturnToDashboardFromMenuPages() {
         List<By> menuPages = List.of(

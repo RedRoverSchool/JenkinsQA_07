@@ -10,10 +10,6 @@ import java.util.List;
 
 public class HeaderTest extends BaseTest {
 
-    private void clickJenkinsLogo() {
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-    }
-
     @Test
     public void testReturnWithLogo() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
@@ -37,27 +33,18 @@ public class HeaderTest extends BaseTest {
     @Test
     public void testReturningBackToMainPageFromMainMenuPages() {
 
-        List<By> mainPageMenuItems = new ArrayList<>();
-
-        mainPageMenuItems.add(By.xpath("//a[@href='/view/all/newJob']"));
-        mainPageMenuItems.add(By.xpath("//a[@href='/asynchPeople/']"));
-        mainPageMenuItems.add(By.xpath("//a[@href='/view/all/builds']"));
-        mainPageMenuItems.add(By.xpath("//a[@href='/manage']"));
-        mainPageMenuItems.add(By.xpath("//a[@href='/me/my-views']"));
-
-        boolean isSuccess = true;
+        List<By> mainPageMenuItems = List.of(
+            By.xpath("//a[@href='/view/all/newJob']"),
+            By.xpath("//a[@href='/asynchPeople/']"),
+            By.xpath("//a[@href='/view/all/builds']"),
+            By.xpath("//a[@href='/manage']"),
+            By.xpath("//a[@href='/me/my-views']"));
 
         for (By locator : mainPageMenuItems) {
-
             getDriver().findElement(locator).click();
-            clickJenkinsLogo();
+            getDriver().findElement(By.id("jenkins-home-link")).click();
 
-            if (!getDriver().getTitle().equals("Dashboard [Jenkins]")) {
-                isSuccess = false;
-                break;
-            }
+            Assert.assertEquals(getDriver().getTitle(), "Dashboard [Jenkins]");
         }
-
-        Assert.assertTrue(isSuccess);
     }
 }

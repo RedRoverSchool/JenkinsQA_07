@@ -199,5 +199,23 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
         Assert.assertEquals(getDriver().findElement(By.cssSelector("a[href = 'job/PipelineProjectName/']")).getText(),PipelineName);
     }
+    @Test
+    public void testCreatePipelineProject() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
+        nameField.clear();
+        nameField.sendKeys("MyPipeline");
+
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+
+        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyPipeline/']")).isDisplayed());
+
+    }
 
 }
