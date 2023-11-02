@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -61,7 +62,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testErrorMessageRenamingWithDotAtTheEnd() {
+    public void testErrorMessageRenameWithDotAtTheEnd() {
 
         final String ERROR_MESSAGE = "A name cannot end with ‘.’";
 
@@ -71,6 +72,23 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
         getDriver().findElement(By.name("newName")).sendKeys(".");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(), ERROR_MESSAGE,
+                "There is no message " + ERROR_MESSAGE);
+    }
+
+    @Test
+    public void testErrorMessageRenameWithNoLessSign() {
+
+        final String ERROR_MESSAGE = "‘&lt;’ is an unsafe character";
+
+        createMultibranchPipelineWithCreateAJob();
+
+        getDriver().findElement(By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).click();
+        getDriver().findElement(
+                By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
+        getDriver().findElement(By.name("newName")).sendKeys(Keys.SHIFT + ",");
         getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(), ERROR_MESSAGE,
