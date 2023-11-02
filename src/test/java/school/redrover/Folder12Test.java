@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import static java.lang.Thread.*;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
 public class Folder12Test extends BaseTest
 {
     private final String MAIN_FOLDER_NAME = "Main_folder_name";
-    private final String NESTED_FOLDER_NAME = "Inserted Folder";
+    private final String NESTED_FOLDER_NAME = "Inserted_Folder";
     private final String RENAMED_FOLDER_NAME = "Renamed_folder_name";
     private final String FOLDER_NAME = "Original Folder";
     private final String FREESTYLE_PROJECT = "First Project";
@@ -111,7 +113,8 @@ public class Folder12Test extends BaseTest
     }
 
     @Test
-    public void testMoveThroughSidePanel() {
+    public void testMoveThroughSidePanel() throws InterruptedException
+    {
         create(MAIN_FOLDER_NAME);
         goToDashboard();
 
@@ -119,6 +122,7 @@ public class Folder12Test extends BaseTest
         goToDashboard();
 
         goTheFolderPage(NESTED_FOLDER_NAME);
+        Thread.sleep(1000);
         getDriver().findElement(By.linkText("Move")).click();
         getDriver().findElement(By.name("destination")).click();
         getDriver().findElement(By .xpath("//option[contains(text(),'Jenkins » " + MAIN_FOLDER_NAME + "')]")).click();
@@ -182,7 +186,7 @@ public class Folder12Test extends BaseTest
         goToDashboard();
 
         getDriver().findElement(By.xpath("//*[@id='job_" + NESTED_FOLDER_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//*[@href='/job/Inserted%20Folder/move']")).click();
+        getDriver().findElement(By.xpath("//*[@href='/job/" + NESTED_FOLDER_NAME+ "/move']")).click();
         getDriver().findElement(By.xpath("//*[@id='main-panel']/form/select")).click();
         getDriver().findElement(By.xpath("//*[@id='main-panel']/form/select/option[2]")).click();
         getDriver().findElement(By.xpath("//*[@id='main-panel']/form/button")).click();
