@@ -282,8 +282,9 @@ public class PipelineTest extends BaseTest {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
         getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//label[text()='Always trigger, even if the build is aborted']"))
-                .click();
+        WebElement alwaysTriggerRadio = getDriver().findElement(
+                By.xpath("//label[text()='Always trigger, even if the build is aborted']"));
+        js.executeScript("arguments[0].click();", alwaysTriggerRadio);
         saveConfiguration();
 
         goToDashboard();
