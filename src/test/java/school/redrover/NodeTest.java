@@ -79,4 +79,20 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[contains(text(), 'Labels')]/..")).getText(),
                 "Labels\n" + labelName);
     }
+
+    @Test
+    public void testSetIncorrectNumberOfExecutes() {
+        final int numberOfExecutes = -1;
+
+        createNode(INITIAL_NAME);
+
+        getDriver().findElement(By.xpath("//a[contains(text(), '" + INITIAL_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+        getDriver().findElement(By.xpath("//input[contains(@name, 'numExecutors')]"))
+                .sendKeys(String.valueOf(numberOfExecutes));
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("main-panel")).getText(),
+                "Error\nInvalid agent configuration for " + INITIAL_NAME + ". Invalid number of executors.");
+    }
 }
