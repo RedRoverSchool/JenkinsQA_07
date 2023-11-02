@@ -1,13 +1,10 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +12,7 @@ public class Folder6Test extends BaseTest {
 
     private static final String VALID_NAME = "Folder1";
     private static final String EMPTY_NAME = "";
-    private static final String INVALID_NAME = "&";
+    private static final String INVALID_NAME = ".";
     private static final String NEW_VALID_NAME = "Folder2";
 
     private void utilsCreate(String folderName) {
@@ -77,16 +74,33 @@ public class Folder6Test extends BaseTest {
     @Test
     public void testCreateNameSpecialCharacters() {
         List<String> invalidNames = Arrays.asList("&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";");
+
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
 
+        WebElement inputName = getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']"));
+
         for (String invalidName: invalidNames) {
-            WebElement inputName = getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']"));
+
             inputName.sendKeys(invalidName);
 
             Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'itemname-invalid']")).getText(), "» ‘" + invalidName + "’ is an unsafe character");
 
             inputName.clear();
         }
+    }
+
+    @Test
+    public void testDelete() {
+
+        utilsCreate(VALID_NAME);
+
+        utilsGoDashboard();
+
+        utilsDelete(VALID_NAME);
+
+        getDriver().findElement(By.xpath("//input[@role = 'searchbox']")).sendKeys(VALID_NAME + "\n");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'error']")).getText(), "Nothing seems to match.");
     }
 }
