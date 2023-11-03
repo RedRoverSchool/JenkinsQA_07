@@ -66,7 +66,7 @@ public class Pipeline1Test extends BaseTest {
         Assert.assertEquals(actualMessage,"[Pipeline] Start of Pipeline");
     }
     @Test
-    public void testPipelineAddDescription() {
+    public void testPipelineAddDescriptionInConfiguration() {
         createProject();
         getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
 
@@ -81,6 +81,26 @@ public class Pipeline1Test extends BaseTest {
                 .getText();
 
         Assert.assertEquals(actualDescription,"Test description");
+    }
+    @Test
+    public void testPipelineDeleteDescriptionInConfiguration() {
+        createProject();
+        getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
+
+        getDriver().findElement(By.xpath("(//span[@class='task-link-wrapper '])[4]")).click();
+        getDriver().findElement(By.xpath(DESCRIPTION_SEARCH))
+                .sendKeys("Test description");
+        getDriver().findElement(By.xpath("//*[@name='Submit']")).click();
+
+        getDriver().findElement(By.id(HOME_PAGE)).click();
+        getDriver().findElement(By.xpath(PIPELINE_BOARD_NAME)).click();
+        getDriver().findElement(By.xpath("//*[@href='editDescription']")).click();
+        getDriver().findElement(By.xpath(DESCRIPTION_SEARCH)).clear();
+        getDriver().findElement(By.xpath("//*[@name='Submit'][1]")).click();
+
+        List<WebElement> elements = getDriver().findElements(By.xpath(DESCRIPTION_SEARCH));
+        boolean deletedDescription = elements.isEmpty();
+        Assert.assertTrue(deletedDescription, "Element is not present after deletion");
     }
 }
 
