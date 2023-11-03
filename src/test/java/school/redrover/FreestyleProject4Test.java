@@ -1,15 +1,20 @@
 package school.redrover;
-
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class FreestyleProject4Test extends BaseTest {
 
     protected static final String PROJECT_NAME = "FREEStyle";
     protected static final String DESCRIPTION_FOR_FREESTYLE_PROJECT = "It s a description adding test";
     protected static final String ADDITIONAL_DESCRIPTION_FOR_FREESTYLE_PROJECT = "Additional description";
+    protected static final String RENAME_PROJECT = "Freestyle2";
 
     private void createFreestyleProject() {
 
@@ -31,7 +36,7 @@ public class FreestyleProject4Test extends BaseTest {
         createFreestyleProject();
 
         getDriver().findElement(By.id("jenkins-name-icon")).click();//click logo
-        getDriver().findElement(By.xpath("//span[contains(text(),'FR')]"));
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]"));
 
         getDriver().findElement(By.id("description-link")).click();
 
@@ -45,7 +50,7 @@ public class FreestyleProject4Test extends BaseTest {
 
     private void createDescriptionForFreestyleProject() {
 
-        getDriver().findElement(By.xpath("//span[contains(text(),'"+ PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
         getDriver().findElement(By.id("description-link")).click();
 
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION_FOR_FREESTYLE_PROJECT);
@@ -64,8 +69,40 @@ public class FreestyleProject4Test extends BaseTest {
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(ADDITIONAL_DESCRIPTION_FOR_FREESTYLE_PROJECT);
         getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='jenkins-buttons-row jenkins-buttons-row--invert']/preceding-sibling::div"))
-                .getText(),ADDITIONAL_DESCRIPTION_FOR_FREESTYLE_PROJECT + DESCRIPTION_FOR_FREESTYLE_PROJECT);
+                .getText(), ADDITIONAL_DESCRIPTION_FOR_FREESTYLE_PROJECT + DESCRIPTION_FOR_FREESTYLE_PROJECT);
+
+    }
+
+    @Test
+    private void testRenameExistingFProject() {
+        createFreestyleProject();
+        returnToTheHomePageJenkins();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/FREEStyle/confirm-rename']")).click();
+
+        getDriver().findElement(By.xpath("//input[@checkdependson='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@checkdependson='newName']")).sendKeys(RENAME_PROJECT);
+        WebElement renameBtn = getDriver().findElement(By.name("Submit"));
+        renameBtn.sendKeys(Keys.ENTER);
+
+        returnToTheHomePageJenkins();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id]//td[3]//span")).getText(), RENAME_PROJECT);
+
+    }
+
+    @Test
+    private void testDeleteExistingFProject() {
+        createFreestyleProject();
+        returnToTheHomePageJenkins();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@data-message='Delete the Project ‘" + PROJECT_NAME + "’?']")).click();
+        getDriver().switchTo().alert().accept();
+
+        WebElement wellcomeMessage = getDriver().findElement(By.xpath("//h2[contains(text(),'Start building your software project')]"));
+        Assert.assertEquals(wellcomeMessage.getText(),"Start building your software project");
 
     }
 }
-

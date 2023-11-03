@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MultibranchPipeline3Test extends BaseTest {
@@ -57,5 +58,21 @@ public class MultibranchPipeline3Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']")).size(),
                 quantityOfTasks);
+    }
+
+    @Test
+    public void testVisibilityTasksOfSidebarMenu() {
+        List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
+                "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+
+        createProject("Multibranch Pipeline", PROJECT_NAME, true);
+        getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
+
+        List<String> namesOfTasks = new ArrayList<>();
+        for (WebElement task : getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']"))) {
+            namesOfTasks.add(task.getText());
+        }
+
+        Assert.assertEquals(namesOfTasks, requiredNamesOfTasks);
     }
 }

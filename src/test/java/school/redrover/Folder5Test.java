@@ -65,4 +65,19 @@ public class Folder5Test extends BaseTest {
                 .findElement(By.xpath("//a[@href='job/NewProject/']"))
                 .getText(), "NewProject");
     }
+
+    @Test
+    public void testAddDescriptionFolder() {
+
+        createFolder("Main");
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("new description");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+            getDriver()
+                .findElement(By.xpath("//*[@id='description']/div[1]"))
+                .getText(),"new description"
+        );
+    }
 }
