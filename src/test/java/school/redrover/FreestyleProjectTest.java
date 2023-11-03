@@ -734,4 +734,17 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'" + NEW_PROJECT_NAME + "')]")).isDisplayed());
     }
+
+    @Test
+    public void testDeleteProjectDropDownMenu() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(), 'New Freestyle Project')]/.."))).perform();
+        getDriver().findElement(By.xpath("//tr[@id='job_" + PROJECT_NAME + "']//button")).click();
+        getDriver().findElement(By.xpath("//button[contains(@href,'/doDelete')]")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertTrue(getDriver().findElements(By.id("job_" + PROJECT_NAME)).isEmpty());
+    }
 }
