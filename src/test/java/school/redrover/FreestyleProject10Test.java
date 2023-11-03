@@ -3,10 +3,14 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Sleeper;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,7 +135,8 @@ public class FreestyleProject10Test extends BaseTest {
                 moveToElement(getDriver().findElement(By.cssSelector("a[href='lastBuild/']"))).
                 perform();
 
-        getDriver().findElement(By.xpath("//a[@href='lastBuild/']/button")).click();
+        new WebDriverWait(getDriver(), (Duration.ofSeconds(2))).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='lastBuild/']/button"))).click();
+
         getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']/a[4]")).click();
         getDriver().findElement(By.cssSelector("button[formnovalidate]")).click();
 
