@@ -79,4 +79,19 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
                 .getAttribute("style"), "");
     }
+    @Test
+    public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
+        createAnItem("Freestyle project");
+        WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
+        new Actions(getDriver())
+                .click(checkbox)
+                .perform();
+        WebElement daysToKeepBuildsField = getDriver().findElement(By.cssSelector("input[name='_.daysToKeepStr']"));
+        daysToKeepBuildsField.click();
+        daysToKeepBuildsField.sendKeys("-2");
+        getDriver().findElement(By.cssSelector("input[name='_.numToKeepStr']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']"))
+                .getText(), "Not a positive integer");
+    }
 }
