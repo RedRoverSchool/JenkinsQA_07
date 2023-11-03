@@ -1,10 +1,13 @@
 package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class FreestyleProject4Test extends BaseTest {
 
@@ -88,5 +91,18 @@ public class FreestyleProject4Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id]//td[3]//span")).getText(), RENAME_PROJECT);
 
     }
-}
 
+    @Test
+    private void testDeleteExistingFProject() {
+        createFreestyleProject();
+        returnToTheHomePageJenkins();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@data-message='Delete the Project ‘" + PROJECT_NAME + "’?']")).click();
+        getDriver().switchTo().alert().accept();
+
+        WebElement wellcomeMessage = getDriver().findElement(By.xpath("//h2[contains(text(),'Start building your software project')]"));
+        Assert.assertEquals(wellcomeMessage.getText(),"Start building your software project");
+
+    }
+}
