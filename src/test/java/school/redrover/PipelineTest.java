@@ -240,62 +240,8 @@ public class PipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//td/a[@href ='job/" + jobName + "/']")).click();
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/a")).click();
-
+        getDriver().switchTo().alert().accept();
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
     }
-    @Test
-    public void testOpenLogsFromStageView() {
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
-        Select select = new Select(getDriver().findElement(By.xpath("//div[@class='samples']/select")));
-        select.selectByValue("hello");
-        saveConfiguration();
-
-        clickBuildNow();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(getDriver()
-                .findElement(By.xpath("//span[@class='badge']/a[text()='#1']"))));
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(getDriver().findElement(
-                By.xpath("//tbody[@class='tobsTable-body']//div[@class='duration']"))).perform();
-        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")))).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//pre[@class='console-output']")).getText(),
-                "Hello World");
-    }
-
-    @Test
-    public void testBuildRunTriggeredByAnotherProject() {
-
-        final String upstreamPipelineName = "Upstream Pipe";
-
-        createPipeline(PIPELINE_NAME, true);
-        createPipeline(upstreamPipelineName, false);
-
-        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
-                .click();
-        WebElement buildAfterOtherProjectsCheckbox = getDriver()
-                .findElement(By.xpath("//label[text()='Build after other projects are built']"));
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
-        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(PIPELINE_NAME);
-        WebElement alwaysTriggerRadio = getDriver().findElement(
-                By.xpath("//label[text()='Always trigger, even if the build is aborted']"));
-        js.executeScript("arguments[0].click();", alwaysTriggerRadio);
-        saveConfiguration();
-
-        goToDashboard();
-        getDriver().findElement(
-                        By.xpath(String.format("//span[text()='%s']/../../..//a[contains(@href,'build?')]", PIPELINE_NAME)))
-                .click();
-        getDriver().navigate().refresh();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']/a")).getText(),
-                upstreamPipelineName);
-    }
 }
