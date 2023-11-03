@@ -6,9 +6,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import static java.lang.Thread.*;
-import static org.testng.AssertJUnit.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -194,7 +191,7 @@ public class Folder12Test extends BaseTest
         goToDashboard();
         getDriver().findElement(By.xpath("//*[@id= 'job_" + FOLDER_NAME + "']/td[3]/a")).click();
 
-        assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + NESTED_FOLDER_NAME + "']/td[3]/a/span")).getText(), NESTED_FOLDER_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + NESTED_FOLDER_NAME + "']/td[3]/a/span")).getText(), NESTED_FOLDER_NAME);
     }
 }
 
