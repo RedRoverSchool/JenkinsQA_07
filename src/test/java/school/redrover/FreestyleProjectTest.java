@@ -741,6 +741,7 @@ public class FreestyleProjectTest extends BaseTest {
         goToJenkinsHomePage();
 
         new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/.."))).perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//tr[@id='job_" + PROJECT_NAME + "']//button")));
         getDriver().findElement(By.xpath("//tr[@id='job_" + PROJECT_NAME + "']//button")).click();
         getDriver().findElement(By.xpath("//button[contains(@href,'/doDelete')]")).click();
         getDriver().switchTo().alert().accept();
