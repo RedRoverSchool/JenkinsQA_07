@@ -717,4 +717,21 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(getDriver().findElement(By.xpath("//div[@id='description']//div[1]")).getText(),
                 editedDescriptionText);
     }
+
+    @Test
+    public void testCreateFreestyleProjectFromExistingProject() {
+        final String NEW_PROJECT_NAME = "New Freestyle project 2";
+
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.id("from")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(By.xpath("//li[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        goToJenkinsHomePage();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'" + NEW_PROJECT_NAME + "')]")).isDisplayed());
+    }
 }
