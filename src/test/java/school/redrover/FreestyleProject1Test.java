@@ -118,6 +118,9 @@ public class FreestyleProject1Test extends BaseTest {
     @Test
     public void testThisProjectIsParameterizedCheckboxAddBooleanParameter() {
 
+        final String name = "Ņame";
+        final String description = "Description";
+
         createProject("Freestyle project", PROJECT_NAME, true);
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
@@ -130,20 +133,20 @@ public class FreestyleProject1Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[contains(text(), 'Boolean Parameter')]")).click();
         getDriver().findElement(By.xpath("//input[@name = 'parameter.name']"))
-                .sendKeys("Name");
+                .sendKeys(name);
         getDriver().findElement(By.xpath("//textarea[@name = 'parameter.description']"))
-                .sendKeys("Description");
+                .sendKeys(description);
         getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
 
         getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
 
-        Assert.assertEquals(getDriver().findElement(
-                                By.xpath("//input[@name = 'parameter.name']"))
-                        .getAttribute("value"),
-                "Name");
-        Assert.assertEquals(getDriver().findElement(
-                                By.xpath("//textarea[@name = 'parameter.description']"))
-                        .getAttribute("value"),
-                "Description");
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//input[@name = 'parameter.name']"))
+                .getAttribute("value"),
+                name);
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//textarea[@name = 'parameter.description']"))
+                .getAttribute("value"),
+                description);
     }
 }
