@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -197,4 +199,34 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), errorTitle);
         Assert.assertTrue(getDriver().findElement(By.xpath("//p")).getText().contains(errorMessage));
     }
+
+    @Test
+    public void testCloneOrganizationFolder() {
+        String organizationFolderName = "Organization Folder Parent";
+        String organizationFolderCloneName = "Organization Folder Clone";
+        Actions actions = new Actions(getDriver());
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(organizationFolderName);
+        getDriver().findElement(By.cssSelector(".jenkins_branch_OrganizationFolder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        WebElement checkBox = getDriver().findElement(By.xpath("//section[2]//label[contains(text(), 'Periodically if not otherwise run')]"));
+        actions.moveToElement(checkBox).click().build().perform();
+        getDriver().findElement(By.name("Submit")).click();
+        returnHomeJenkins();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(organizationFolderCloneName);
+        getDriver().findElement(By.xpath("//input[@id='from']")).sendKeys(organizationFolderName);
+        getDriver().findElement(By.id("ok-button")).click();
+        boolean isCheckBoxChecked = getDriver().findElement(By.xpath("//section[2]//input[@id=\"cb2\"]")).isSelected();
+        Assert.assertTrue(isCheckBoxChecked);
+        getDriver().findElement(By.name("Submit")).click();
+        returnHomeJenkins();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderName + "']//td//span")).getText(), organizationFolderName);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//tr[@id='job_" + organizationFolderCloneName + "']//td//span")).getText(), organizationFolderCloneName);
+    }
+
+
 }
