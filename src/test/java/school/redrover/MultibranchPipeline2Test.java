@@ -44,4 +44,19 @@ public class MultibranchPipeline2Test extends BaseTest {
         Assert.assertEquals(expectedName, "Multi2");
     }
 
+    @Test
+    public void testMultibranchCreationFromNonExisting() {
+
+        multibranchCreation();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.className("task-link")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("Multi3");
+        getDriver().findElement(By.xpath("//input[@id='from']")).sendKeys("Multi0");
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+
+        String error = getDriver().findElement(By.xpath("//h1")).getText();
+        Assert.assertEquals(error, "Error");
+    }
+
 }
