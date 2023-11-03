@@ -7,7 +7,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class PluginsTest extends BaseTest {
@@ -29,11 +31,12 @@ public class PluginsTest extends BaseTest {
                 "//a[@href = '/manage/pluginManager/installed']"));
         jsClick(installedPlugins);
 
-        List<WebElement> plugins = getDriver().findElements(By.xpath(
-                "//*[@id='main-panel']/section[2]/div/div[3]/a/dl/dd[1]"));
-        for (WebElement element : plugins) {
-            boolean isSelected = element.isSelected();
-            Assert.assertTrue(isSelected);
+        List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
+        Set<String> pluginsNames = new HashSet<>();
+        for (WebElement el : plugins) {
+            pluginsNames.add(el.getText());
+        }
+
+            Assert.assertTrue(pluginsNames.contains("Ant Plugin") );
         }
     }
-}
