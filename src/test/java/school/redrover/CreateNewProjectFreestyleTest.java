@@ -5,17 +5,16 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+public class CreateNewProjectFreestyleTest extends BaseTest {
 
-@Test
-public class FreestyleProject21Test extends BaseTest {
-    public void testCreate() {
+    @Test
+        public void testCreate() {
         final String projectName = "FreeStyleProjectName";
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys(projectName);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
 
