@@ -5,10 +5,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class FolderNewTest2 extends BaseTest {
+public class FolderNew2Test extends BaseTest {
 
     @Test
-    public void createFolder1() {
+    public void testCreateFolder1() {
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys("HSE");
