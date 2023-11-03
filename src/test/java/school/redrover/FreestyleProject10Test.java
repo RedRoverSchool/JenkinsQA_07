@@ -4,14 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Sleeper;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.time.Duration;
-import java.util.ArrayList;
+import java.time.Duration;;
 import java.util.List;
 
 public class FreestyleProject10Test extends BaseTest {
@@ -128,16 +126,11 @@ public class FreestyleProject10Test extends BaseTest {
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
 
         getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
-        getDriver().findElement(By.cssSelector("a[onclick^='return build_'")).click();
+        getDriver().findElement(By.cssSelector("a[onclick^='return build_']")).click();
         getDriver().navigate().refresh();
 
-        new Actions(getDriver()).
-                moveToElement(getDriver().findElement(By.cssSelector("a[href='lastBuild/']"))).
-                perform();
-
-        new WebDriverWait(getDriver(), (Duration.ofSeconds(2))).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@href='lastBuild/']/button"))).click();
-
-        getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']/a[4]")).click();
+        getDriver().findElement(By.cssSelector("a[href='lastBuild/']")).click();
+        getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
         getDriver().findElement(By.cssSelector("button[formnovalidate]")).click();
 
         List<By> permaLinks = List.of(
