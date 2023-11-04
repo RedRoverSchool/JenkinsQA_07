@@ -33,7 +33,6 @@ public class CreateUserTest extends BaseTest {
     public void testCreateUserEmptyName(){
         goToUsersTab();
 
-        getDriver().findElement(By.id("username")).sendKeys("");
         getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys("Test_Test");
         getDriver().findElement(By.xpath("//input[@name='password2']")).sendKeys("Test_Test");
         getDriver().findElement(By.xpath("//input[@name='fullname']")).sendKeys("TestName");
