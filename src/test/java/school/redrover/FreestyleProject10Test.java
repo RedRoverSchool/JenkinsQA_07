@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class FreestyleProject10Test extends BaseTest {
 
     private final static String NAME_FREESTYLE_PROJECT = "Freestyle Project 1 2 3";
@@ -86,6 +88,7 @@ public class FreestyleProject10Test extends BaseTest {
     @Test
     public void testTooltipDiscardIsVisible() {
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
         getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[5]")).click();
 
@@ -106,11 +109,37 @@ public class FreestyleProject10Test extends BaseTest {
     @Test
     public void testCheckTheBoxes() {
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
         getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[5]")).click();
 
         getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
 
         Assert.assertTrue(getDriver().findElement(By.id("cb5")).isSelected(), "Checkbox is not click");
+    }
+
+    @Test
+    public void testDeletePermalinksOnProjectsStatusPage() {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.cssSelector("a[onclick^='return build_']")).click();
+        getDriver().navigate().refresh();
+
+        getDriver().findElement(By.cssSelector("a[href='lastBuild/']")).click();
+        getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
+        getDriver().findElement(By.cssSelector("button[formnovalidate]")).click();
+
+        List<By> permaLinks = List.of(
+                By.xpath("//ul[@class='permalinks-list']/li[1]"),
+                By.xpath("//ul[@class='permalinks-list']/li[2]"),
+                By.xpath("//ul[@class='permalinks-list']/li[3]"),
+                By.xpath("//ul[@class='permalinks-list']/li[4]"));
+
+        for (By link : permaLinks) {
+        Assert.assertEquals(
+                getDriver().findElements(link).size(),
+                0);
+        }
     }
 }
