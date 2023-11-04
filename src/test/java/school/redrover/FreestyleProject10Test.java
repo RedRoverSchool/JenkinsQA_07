@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -140,6 +141,27 @@ public class FreestyleProject10Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElements(link).size(),
                 0);
+        }
+    }
+
+    @Test
+    public void testRenameUnsafeCharacters() throws InterruptedException {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.cssSelector("a[href$='confirm-rename']")).click();
+        WebElement newName = getDriver().findElement(By.name("newName"));
+
+        List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
+
+        for (String x : unsafeCharacters) {
+            newName.clear();
+            newName.sendKeys(x);
+            newName.sendKeys(Keys.TAB);
+            Thread.sleep(20);
+
+            Assert.assertEquals(getDriver().findElement(By.cssSelector("div[class='error']")).getText(),
+                    "‘" + x + "’ is an unsafe character");
         }
     }
 }

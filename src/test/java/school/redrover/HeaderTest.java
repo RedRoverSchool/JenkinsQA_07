@@ -47,4 +47,11 @@ public class HeaderTest extends BaseTest {
             Assert.assertEquals(getDriver().getTitle(), "Dashboard [Jenkins]");
         }
     }
+
+    @Test
+    public void testVerifyRedirectToHomepageByClickLogoImg() {
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
+
+        Assert.assertEquals(getDriver().getTitle().trim(), "Dashboard [Jenkins]");
+    }
 }
