@@ -126,7 +126,8 @@ public class MultibranchPipelineTest extends BaseTest {
                 "Scan Multibranch Pipeline Log",
                 "Multibranch Pipeline Events",
                 "Delete Multibranch Pipeline",
-                "People", "Build History",
+                "People",
+                "Build History",
                 "Rename",
                 "Pipeline Syntax" ,
                 "Credentials");
