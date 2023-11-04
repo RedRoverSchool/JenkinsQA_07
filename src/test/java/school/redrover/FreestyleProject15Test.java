@@ -4,12 +4,29 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class FreestyleProject15Test extends BaseTest {
 
     private void clickElement(By locator) {
         getDriver().findElement(locator).click();
     }
+    private void itemName(String name){
+        getDriver().findElement(By.id("name")).sendKeys(name);
+    }
+    private void addDescription(String descriptionText){
+        getDriver().findElement(By.name("description")).sendKeys(descriptionText);
+    }
+    private void clearDescription(){
+        getDriver().findElement(By.name("description")).clear();
+    }
+    private void createFreestyleProject(String projectName) {
+        clickElement(By.xpath("//a[@href='/view/all/newJob']"));
+        itemName(projectName);
+        clickElement(By.className("hudson_model_FreeStyleProject"));
+        clickElement(By.id("ok-button"));
+    }
+
 
     @Test
     public void testRenameProject() {
@@ -26,5 +43,33 @@ public class FreestyleProject15Test extends BaseTest {
 
         Assert.assertNotNull(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline' and text()='Project AS Test File new']")),
                 "Project title element is not present on the page");
+    }
+
+    @Test
+    public void testEditDescription() {
+        final String editedText = "Edited Description text";
+
+        createFreestyleProject("Test Project");
+        addDescription("Test Description text");
+        clickElement(By.name("Submit"));
+        clickElement(By.id("description-link"));
+        clearDescription();
+        addDescription(editedText);
+        clickElement(By.name("Submit"));
+
+        assertEquals("Description  description was not changed", editedText, getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText());
+
+    }
+
+    @Test
+    public void testDeleteDescription() {
+        createFreestyleProject("Test Project 2");
+        addDescription("Test Description text");
+        clickElement(By.name("Submit"));
+        clickElement(By.id("description-link"));
+        clearDescription();
+        clickElement(By.name("Submit"));
+
+        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
     }
 }
