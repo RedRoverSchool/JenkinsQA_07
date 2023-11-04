@@ -41,6 +41,14 @@ public class View3Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
+    private void associateJobToTheView(String listViewName, String jobName) {
+        returnToJenkinsHomepage();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/configure']")).click();
+        getDriver().findElement(By.xpath("//label[@title = '" + jobName + "']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+    }
+
     private void returnToJenkinsHomepage() {
         getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
     }
@@ -161,6 +169,23 @@ public class View3Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
         getDriver().findElement(By.xpath("//label[@title = '" + newFreeStyleProjectName + "']")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
+                newFreeStyleProjectName);
+    }
+
+    @Test
+    public void testAssociatedJobIsShownOnTheViewDashboard() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithoutAssociatedJob(newListViewName);
+        associateJobToTheView(newListViewName, newFreeStyleProjectName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
