@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class RestApiLink3Test extends BaseTest {
     @Test
     public void testVerifyRestApiLink() {
-        String apiLink = "REST API";
+        final String apiLink = "REST API";
 
         WebElement restApiLink = getDriver().findElement(By.xpath("//a[contains(@href,'api')]"));
         restApiLink.click();
