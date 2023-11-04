@@ -14,15 +14,19 @@ public class MulticonfigurationProject4Test extends BaseTest {
     private static final By SAVE_BUTTON = By.name("Submit");
     private static final By JENKINS_HOME_LINK = By.xpath("//a[@id='jenkins-home-link']");
     private static final By PROJECT_TITTLE = By.cssSelector(".matrix-project-headline.page-headline");
-    @Test
-    public void testCreateMulticonfigurationProject() {
+    private static final By ADD_DESCRIPTION_LINK = By.xpath("//a[@id='description-link']");
+    private static final By DESCRIPTION_INPUT = By.xpath("//textarea[@name='description']");
+    private static final By SAVE_DESCRIPTION_BUTTON = By.xpath("//button[@class='jenkins-button jenkins-button--primary ']");
+    private static final By DESCRIPTION = By.xpath("//div[@id='description']/div[1]");
+
+    private void createMulticonfigurationProject() {
         final String projectName = "MulticonfigurationProject";
 
         WebElement newItemLink = getDriver().findElement(NEW_ITEM_LINK);
         newItemLink.click();
         WebElement itemNameInput = getDriver().findElement(ITEM_NAME_INPUT);
         itemNameInput.click();
-        itemNameInput.sendKeys("MulticonfigurationProject");
+        itemNameInput.sendKeys(projectName);
         WebElement multiconfigurationProject = getDriver().findElement(MULTICONFIGURATION_PROJECT_TAB);
         multiconfigurationProject.click();
         WebElement okButton = getDriver().findElement(OK_BUTTON);
@@ -31,9 +35,33 @@ public class MulticonfigurationProject4Test extends BaseTest {
         saveButton.click();
         WebElement jenkinsHomeLink = getDriver().findElement(JENKINS_HOME_LINK);
         jenkinsHomeLink.click();
+    }
+
+    @Test
+    public void testCreateMulticonfigurationProject() {
+        createMulticonfigurationProject();
+        final String projectName = "MulticonfigurationProject";
+
         WebElement nameProject = getDriver().findElement(By.xpath("//td/a[@href='job/" + projectName + "/']"));
         nameProject.click();
 
-        Assert.assertEquals(getDriver().findElement(PROJECT_TITTLE).getText(), "Project " + projectName);
+        Assert.assertEquals(getDriver().findElement(PROJECT_TITTLE).getText(), String.format("Project %s", projectName));
+    }
+
+    @Test
+    public void testCreateMulticonfigurationProjectWithDesription() {
+        createMulticonfigurationProject();
+        final String desriptionText = "test";
+
+        WebElement addDescription = getDriver().findElement(ADD_DESCRIPTION_LINK);
+        addDescription.click();
+        WebElement descriptionInput = getDriver().findElement(DESCRIPTION_INPUT);
+        descriptionInput.click();
+        descriptionInput.sendKeys(desriptionText);
+        WebElement saveDescription = getDriver().findElement(SAVE_DESCRIPTION_BUTTON);
+        saveDescription.click();
+
+        Assert.assertEquals(getDriver().findElement(DESCRIPTION).getText(), desriptionText);
     }
 }
+
