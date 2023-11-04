@@ -46,6 +46,15 @@ public class FreestyleProject15Test extends BaseTest {
     }
 
     @Test
+    public void testAddDescription() {
+        createFreestyleProject("Test Project");
+        addDescription("Test Description text");
+        clickElement(By.name("Submit"));
+
+        assertEquals("Description  description was not changed", "Test Description text", getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText());
+    }
+
+    @Test
     public void testEditDescription() {
         final String editedText = "Edited Description text";
 
@@ -58,7 +67,6 @@ public class FreestyleProject15Test extends BaseTest {
         clickElement(By.name("Submit"));
 
         assertEquals("Description  description was not changed", editedText, getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText());
-
     }
 
     @Test
