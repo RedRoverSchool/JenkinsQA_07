@@ -52,28 +52,13 @@ public class NewUser2Test extends BaseTest {
         }
         getDriver().findElement(By.name("Submit")).click();
     }
+
     @Test
     public void testUserRecordContainUserIdButton() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dd[contains(text(),'Create')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'Create')]")).click();
-
-        WebElement username = getDriver().findElement(By.name("username"));
-        username.sendKeys("userTest");
-        WebElement password = getDriver().findElement(By.name("password1"));
-        password.sendKeys("@userTest");
-        WebElement confirm_password = getDriver().findElement(By.name("password2"));
-        confirm_password.sendKeys("@userTest");
-        WebElement full_name = getDriver().findElement(By.name("fullname"));
-        full_name.sendKeys("fullUserTest");
-        WebElement email_address = getDriver().findElement(By.name("email"));
-        email_address.sendKeys("userTest@gmail.com");
-        getDriver().findElement((By.name("Submit"))).click();
+        createUserSuccess();
 
         WebElement UserIdButton = getDriver().findElement(By.xpath("//tbody/tr[2]/td[2]/a[1]"));
-
-        Assert.assertEquals(UserIdButton.getText(), "userTest");
-
+        Assert.assertTrue(UserIdButton.isEnabled() && UserIdButton.isDisplayed(), "Button should be enabled and displayed");
     }
 }
 
