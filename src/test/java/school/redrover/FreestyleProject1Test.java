@@ -20,8 +20,8 @@ public class FreestyleProject1Test extends BaseTest {
 
     @Test
     public void testNewFreestyleProjectCreated() {
-
         final String projectName = AdditionalUtils.generateRandomName();
+
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
