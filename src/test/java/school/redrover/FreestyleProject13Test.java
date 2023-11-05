@@ -65,7 +65,7 @@ public class FreestyleProject13Test extends BaseTest {
     }
 
     private void createFolder() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(NEW_FOLDER);
         getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
         getDriver().findElement(By.xpath("//button[@type='submit']")).click();
@@ -79,7 +79,22 @@ public class FreestyleProject13Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='job/New%20folder/']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
-                NEW_FOLDER);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), NEW_FOLDER);
+    }
+
+    @Test
+    public void testMoveProject() {
+        createFreestyleProject();
+        createFolder();
+
+        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/FreestyleProject/move']")).click();
+        getDriver().findElement(By.xpath("//select[@name='destination']")).click();
+        getDriver().findElement(By.xpath("//option[@value='/New folder']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/New%20folder/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).getText(), PROJECT_NAME);
     }
 }
