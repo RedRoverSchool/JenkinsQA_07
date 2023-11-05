@@ -18,6 +18,8 @@ public class MulticonfigurationProject4Test extends BaseTest {
     private static final By DESCRIPTION_INPUT = By.xpath("//textarea[@name='description']");
     private static final By SAVE_DESCRIPTION_BUTTON = By.xpath("//button[@class='jenkins-button jenkins-button--primary ']");
     private static final By DESCRIPTION = By.xpath("//div[@id='description']/div[1]");
+    private static final By EDIT_DESCRIPTION_BUTTON = By.id("description-link");
+    private static final By DESCRIPTION_TEXT = By.tagName("textarea");
 
     private void createMulticonfigurationProject() {
         final String projectName = "MulticonfigurationProject";
@@ -63,5 +65,27 @@ public class MulticonfigurationProject4Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(DESCRIPTION).getText(), desriptionText);
     }
-}
 
+    @Test
+    public void testEditDesriptionMulticonfigurationProject() {
+        createMulticonfigurationProject();
+        final String desriptionText = "test";
+        final String editDescriptionText = "edit description test";
+
+        WebElement addDescription = getDriver().findElement(ADD_DESCRIPTION_LINK);
+        addDescription.click();
+        WebElement descriptionInput = getDriver().findElement(DESCRIPTION_INPUT);
+        descriptionInput.click();
+        descriptionInput.sendKeys(desriptionText);
+        WebElement saveDescription = getDriver().findElement(SAVE_DESCRIPTION_BUTTON);
+        saveDescription.click();
+        WebElement editDescription = getDriver().findElement(EDIT_DESCRIPTION_BUTTON);
+        editDescription.click();
+        WebElement descriptionText = getDriver().findElement(DESCRIPTION_TEXT);
+        descriptionText.clear();
+        descriptionText.sendKeys(editDescriptionText);
+        getDriver().findElement(SAVE_DESCRIPTION_BUTTON).click();
+
+        Assert.assertEquals(getDriver().findElement(DESCRIPTION).getText(), editDescriptionText);
+    }
+}
