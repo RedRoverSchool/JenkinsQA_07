@@ -225,7 +225,7 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testAddDisplayName() {
-        final String FOLDER_DISPLAY_NAME = "Best folder";
+        final String folderDisplayName = "Best folder";
 
         createFolderAddReturnToDashboard(FOLDER_NAME);
 
@@ -235,7 +235,7 @@ public class FolderTest extends BaseTest {
                 .click()
                 .perform();
         getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/configure']")).click();
-        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(FOLDER_DISPLAY_NAME);
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderDisplayName);
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
 
@@ -243,7 +243,7 @@ public class FolderTest extends BaseTest {
                 .findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a/span"))
                 .getText();
 
-        Assert.assertEquals(folderName, FOLDER_DISPLAY_NAME);
+        Assert.assertEquals(folderName, folderDisplayName);
     }
 }
 
