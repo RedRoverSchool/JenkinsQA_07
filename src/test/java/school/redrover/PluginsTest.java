@@ -8,9 +8,8 @@ import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
-
 public class PluginsTest extends BaseTest {
-
+AdditionalUtils additionalUtils = new AdditionalUtils();
     @Test
     public void testEnabledPluginsContainsAnt() {
         getDriver().findElement(By.xpath(
@@ -19,12 +18,12 @@ public class PluginsTest extends BaseTest {
 
         WebElement installedPlugins = getDriver().findElement(By.xpath(
                 "//a[@href = '/manage/pluginManager/installed']"));
-        AdditionalUtils.jsClick(installedPlugins);
+        additionalUtils.jsClick(installedPlugins);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
         boolean foundAntPlugin = false;
         for (WebElement plugin : plugins) {
-            String content = AdditionalUtils.findTextInPseudoElement(plugin, "::before");
+            String content = additionalUtils.findTextInPseudoElement(plugin, "::before");
             content = content.replaceAll("^\"|\"$", "");
 
             if ("Ant Plugin".contains(content)) {
