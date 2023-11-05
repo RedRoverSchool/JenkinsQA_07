@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CheckJenkinsVersionTest extends BaseTest {
@@ -73,6 +77,34 @@ public class CheckJenkinsVersionTest extends BaseTest {
         Assert.assertTrue(getDriver()
                 .findElement(By.xpath("//p[@class='app-about-version']"))
                 .getText().contains("Version 2.414.2"));
+    }
+    @Test
+    public void testJenkinsVersionButtonVisibilityCLikabilityFunctionality() {
+
+        getDriver().findElement(By.xpath("//a[@class]//span[@class='hidden-xs hidden-sm']")).click();
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+
+        List<WebElement> listJenkinsDropdownItem = getDriver().findElements(By.xpath("//a[@class='jenkins-dropdown__item']"));
+
+        Assert.assertEquals(listJenkinsDropdownItem.size(), 3);
+
+        for (WebElement e : listJenkinsDropdownItem) {
+            Assert.assertTrue(e.isDisplayed());
+        }
+        listJenkinsDropdownItem.get(0).click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(), "http://localhost:8080/manage/about/");
+
+        List<WebElement> actualListTabBar = getDriver()
+                .findElements(By.xpath("//div[@class='tabBar']//div[contains(@class,'tab')]"));
+        List<String> expectedListTabBar = List.of("Mavenized dependencies",
+                "Static resources", "License and dependency information for plugins");
+        List<String> actualListTabBarGetText = new ArrayList<>();
+
+        for (WebElement e : actualListTabBar) {
+            actualListTabBarGetText.add(e.getText());
+        }
+        Assert.assertTrue(actualListTabBarGetText.containsAll(expectedListTabBar));
     }
 }
 

@@ -43,4 +43,22 @@ public class CreateUserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//div[@id='main-panel']/form/div[1]/div[2]")).getText(), "\"\" is prohibited as a username for security reasons.");
     }
+
+    @Test
+    public void testCreateUserDifferentPassword() {
+        goToUsersTab();
+
+        getDriver().findElement(By.id("username")).sendKeys("USER_NAME_Test");
+        getDriver().findElement(By.name("password1")).sendKeys("123456_Test");
+        getDriver().findElement(By.name("password2")).sendKeys("123456");
+        getDriver().findElement(By.name("fullname")).sendKeys("TestName");
+        getDriver().findElement(By.name("email")).sendKeys("Test@mail.ru");
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[@id='main-panel']/form/div[1]/div[3]")).getText(), "Password didn't match");
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[@id='main-panel']/form/div[1]/div[5]")).getText(), "Password didn't match");
+    }
 }
