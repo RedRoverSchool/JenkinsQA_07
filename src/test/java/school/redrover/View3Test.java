@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class View3Test extends BaseTest {
 
@@ -190,5 +194,37 @@ public class View3Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
                 newFreeStyleProjectName);
+    }
+
+    @Test
+    public void testAddingNewColumnToTheView() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+        final String newColumnName = "Git Branches";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
+        JavascriptExecutor scriptForScrolling = (JavascriptExecutor) getDriver();
+        scriptForScrolling.executeScript("window.scrollBy(0,926)");
+        getDriver().findElement(By.xpath("//button[@id = 'yui-gen3-button']")).click();
+
+        List<WebElement> newColumnOptions = getDriver().findElements(By.xpath("//a[@class = 'yuimenuitemlabel']"));
+        for (WebElement newColumnOption : newColumnOptions) {
+            if (newColumnOption.getText().contains(newColumnName)) {
+                newColumnOption.click();
+            }
+        }
+
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        List<WebElement> dashboardColumnNames = getDriver().findElements(By.xpath("//table[@id = 'projectstatus']//th"));
+
+        Assert.assertEquals(
+                dashboardColumnNames.get(dashboardColumnNames.size()-1).getText(),
+                newColumnName);
     }
 }
