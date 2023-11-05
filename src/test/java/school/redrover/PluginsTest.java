@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -9,31 +8,29 @@ import school.redrover.runner.BaseTest;
 
 import java.util.List;
 
-
 public class PluginsTest extends BaseTest {
-    public void jsClick(WebElement element) throws InterruptedException {
-
-        JavascriptExecutor executor = (JavascriptExecutor) getDriver();
-        executor.executeScript("arguments[0].click();", element);
-    }
-
+    AdditionalUtils additionalUtils = new AdditionalUtils();
     @Test
-    public void testEnabledPluginsList() throws InterruptedException {
-        WebElement manageJenkins = getDriver().findElement(By.xpath("//*[@id='tasks']//a[@href='/manage']"));
-        manageJenkins.click();
-        getDriver().findElement(By.xpath("//dl/dt[text()='Plugins']"));
-        getDriver().findElement(By.className("task-link-text"));
+    public void testEnabledPluginsContainsAnt() {
         getDriver().findElement(By.xpath(
-                "//*[@id='main-panel']/section[2]/div/div[3]/a/dl/dd[1]")).click();
+                "//*[@id='tasks']//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//dl/dt[text()='Plugins']")).click();
+
         WebElement installedPlugins = getDriver().findElement(By.xpath(
                 "//a[@href = '/manage/pluginManager/installed']"));
-        jsClick(installedPlugins);
+        additionalUtils.jsClick(installedPlugins);
 
-        List<WebElement> plugins = getDriver().findElements(By.xpath(
-                "//*[@id='main-panel']/section[2]/div/div[3]/a/dl/dd[1]"));
-        for (WebElement element : plugins) {
-            boolean isSelected = element.isSelected();
-            Assert.assertTrue(isSelected);
+        List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
+        boolean foundAntPlugin = false;
+        for (WebElement plugin : plugins) {
+            String content = additionalUtils.findTextInPseudoElement(plugin, "::before");
+            content = content.replaceAll("^\"|\"$", "");
+
+            if ("Ant Plugin".contains(content)) {
+                foundAntPlugin = true;
+                break;
+            }
         }
+        Assert.assertTrue(foundAntPlugin, "ant");
     }
 }
