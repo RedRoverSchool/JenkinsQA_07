@@ -87,7 +87,7 @@ public class FreestyleProject13Test extends BaseTest {
         createFreestyleProject();
         createFolder();
 
-        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_FreestyleProject']/td[3]/a")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/FreestyleProject/move']")).click();
         getDriver().findElement(By.xpath("//select[@name='destination']")).click();
         getDriver().findElement(By.xpath("//option[@value='/New folder']")).click();
