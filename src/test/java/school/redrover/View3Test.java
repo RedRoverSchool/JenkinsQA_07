@@ -227,4 +227,27 @@ public class View3Test extends BaseTest {
                 dashboardColumnNames.get(dashboardColumnNames.size()-1).getText(),
                 newColumnName);
     }
+
+    @Test
+    public void testDeletingColumnFromTheView() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+        final String deletedColumnName = "Last Duration";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
+        JavascriptExecutor scriptForScrolling = (JavascriptExecutor) getDriver();
+        scriptForScrolling.executeScript("window.scrollBy(0,926)");
+        getDriver().findElement(By.xpath(
+                "//div[contains(text(), '" + deletedColumnName + "')]/button")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        List<WebElement> dashboardColumnNamesAfterColumnDeletion = getDriver().findElements(By.xpath(
+                "//table[@id = 'projectstatus']//th"));
+
+        Assert.assertFalse(dashboardColumnNamesAfterColumnDeletion.contains(deletedColumnName));
+    }
 }
