@@ -6,6 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
@@ -110,5 +112,31 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(), ERROR_MESSAGE,
                 "There is no message " + ERROR_MESSAGE);
+    }
+
+    @Test
+    public void testAllTaskTextInSidebar() {
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
+
+        List<String> taskText = List.of(
+                "Status",
+                "Configure",
+                "Scan Multibranch Pipeline Log",
+                "Multibranch Pipeline Events",
+                "Delete Multibranch Pipeline",
+                "People",
+                "Build History",
+                "Rename",
+                "Pipeline Syntax" ,
+                "Credentials");
+
+        int a = 1;
+        for (String expectedText: taskText) {
+            Assert.assertEquals(
+                    getDriver().findElement(By.xpath("//div[@id='tasks']/div[" + a++ + "]")).getText(),
+                    expectedText);
+        }
     }
 }

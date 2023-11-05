@@ -38,7 +38,7 @@ public class CheckJenkinsVersionTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
         getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".app-about-version")).getText(),"Version 2.414.2");
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".app-about-version")).getText(), "Version 2.414.2");
     }
 
     @Test
@@ -46,8 +46,8 @@ public class CheckJenkinsVersionTest extends BaseTest {
     public void testJenkinsVersionCheck() {
 
         Assert.assertEquals(
-        getDriver().findElement(By.xpath("//button[contains(text(),'Jenkins 2.414.2')]")).
-                getAttribute("innerText").trim(),
+                getDriver().findElement(By.xpath("//button[contains(text(),'Jenkins 2.414.2')]")).
+                        getAttribute("innerText").trim(),
                 "Jenkins 2.414.2");
 
         getDriver().findElement((By.className("page-footer__links"))).click();
@@ -61,6 +61,18 @@ public class CheckJenkinsVersionTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.className("page-footer__links")).getText(),
                 "Jenkins 2.414.2");
+    }
+
+    @Test
+    public void testJenkinsVersionCheck1() {
+        getDriver().findElement(By.xpath("//a[@class]//span[@class='hidden-xs hidden-sm']")).click();
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
+
+        Assert.assertEquals(getDriver().getCurrentUrl(),"http://localhost:8080/manage/about/");
+        Assert.assertTrue(getDriver()
+                .findElement(By.xpath("//p[@class='app-about-version']"))
+                .getText().contains("Version 2.414.2"));
     }
 }
 
