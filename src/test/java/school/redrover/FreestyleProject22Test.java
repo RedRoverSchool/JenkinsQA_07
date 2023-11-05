@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class FreestyleProject21Test extends BaseTest {
+public class FreestyleProject22Test extends BaseTest {
     private void CreateNewFreestyleProject(String projectName) {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
