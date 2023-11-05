@@ -36,4 +36,17 @@ public class Folder2Test extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),projectName);
     }
+
+    @Test
+    public void testAddDescription () {
+        final String description = "Тест123";
+
+        createNewOrganizationFolder("Test");
+
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/a")).click();
+        getDriver().findElement(By.name("_.description")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(),description);
+    }
 }
