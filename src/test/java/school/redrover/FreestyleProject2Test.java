@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -82,5 +83,33 @@ public class FreestyleProject2Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElements(
                 By.xpath("//*[@id='breadcrumbs']/li[3]/a")).size(), 0);
+    }
+
+    @Test
+    public void testConfigureGeneralProject() {
+        String itemName = "Project2";
+
+        CreateNewItem(itemName);
+        getDriver().navigate().back();
+        getDriver().navigate().back();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + itemName + "')]")).click();
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(6)")).click();
+        getDriver().findElement(
+                By.xpath("//*[@name = 'description']")).sendKeys("New job");
+        getDriver().findElement(By.xpath("//div[@nameref='rowSetStart26']")).click();
+        getDriver().findElement(
+                By.xpath("//*[@id='tasks']/div[5]/span/button/span[1]")).click();
+
+        JavascriptExecutor button = (JavascriptExecutor) getDriver();
+        button.executeScript("arguments[0].scrollIntoView();", getDriver().findElement(
+                By.cssSelector("#yui-gen11")));
+        getDriver().findElement(By.cssSelector("#yui-gen11")).click();
+        getDriver().findElement(By.id("yui-gen22")).click();
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']"))
+                .sendKeys("Hello Jenkins!");
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(4) > span ")).click();
+
+        Assert.assertNotEquals(getDriver().findElement(By.id("no-builds")).getText(), "No Builds");
     }
 }
