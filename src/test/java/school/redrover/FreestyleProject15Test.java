@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import static org.testng.AssertJUnit.assertEquals;
 
 public class FreestyleProject15Test extends BaseTest {
 
@@ -51,7 +50,7 @@ public class FreestyleProject15Test extends BaseTest {
         addDescription("Test Description text");
         clickElement(By.name("Submit"));
 
-        assertEquals("Description  description was not changed", "Test Description text", getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText());
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "Test Description text");
     }
 
     @Test
@@ -66,7 +65,7 @@ public class FreestyleProject15Test extends BaseTest {
         addDescription(editedText);
         clickElement(By.name("Submit"));
 
-        assertEquals("Description  description was not changed", editedText, getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText());
+        Assert.assertEquals(editedText, getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "Description  description was not changed");
     }
 
     @Test
@@ -78,6 +77,6 @@ public class FreestyleProject15Test extends BaseTest {
         clearDescription();
         clickElement(By.name("Submit"));
 
-        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
     }
 }
