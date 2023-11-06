@@ -741,4 +741,20 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'" + NEW_PROJECT_NAME + "')]")).isDisplayed());
     }
+
+    @Test
+    public void testFreestyleProjectAdvancedSetting() {
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
+        getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
+
+        getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(6) > span > a")).click();
+
+        getDriver().findElement(By.xpath("(//button[@type='button'][normalize-space()='Advanced'])[3]")).click();
+        getDriver().findElement(By.cssSelector("a[title='Help for feature: Quiet period']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='tbody dropdownList-container']//div[@class='help']//div")).isDisplayed());
+    }
 }
