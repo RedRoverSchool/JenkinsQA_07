@@ -17,6 +17,7 @@ public class MulticonfigurationProject4Test extends BaseTest {
 
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
         getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
         getDriver().findElement(By.cssSelector("#ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
