@@ -757,4 +757,16 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='tbody dropdownList-container']//div[@class='help']//div")).isDisplayed());
     }
+
+    @Test
+    public void testFreestyleProjectNavigateToStatusPage() {
+        String editedProjectName = PROJECT_NAME.replace(" ", "%20");
+
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
+
+        Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + editedProjectName));
+    }
 }
