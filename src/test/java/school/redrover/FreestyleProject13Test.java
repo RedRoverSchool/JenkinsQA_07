@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -12,9 +13,26 @@ public class FreestyleProject13Test extends BaseTest {
     private final static String NEW_FOLDER = "New folder";
 
     private void createFreestyleProject() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+    }
+
+    private void addDescription() {
+        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+    }
+
+    private void createFolder() {
+        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(NEW_FOLDER);
+        getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
         getDriver().findElement(By.xpath("//button[@type='submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -28,14 +46,6 @@ public class FreestyleProject13Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText(),
                 "Project " + PROJECT_NAME);
-    }
-
-    private void addDescription() {
-        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
     @Test
@@ -64,15 +74,6 @@ public class FreestyleProject13Test extends BaseTest {
                 "Edit description " + DESCRIPTION);
     }
 
-    private void createFolder() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(NEW_FOLDER);
-        getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
-
     @Test
     public void testCreateFolder() {
         createFolder();
@@ -83,28 +84,16 @@ public class FreestyleProject13Test extends BaseTest {
     }
 
     @Test
-    public void testMoveProject() throws InterruptedException {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(NEW_FOLDER);
-        getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+    public void testMoveProject() {
+        createFreestyleProject();
+        createFolder();
 
         getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
-
-        Thread.sleep(3000);
-
         getDriver().findElement(By.xpath("//a[@href='/job/FreestyleProject/move']")).click();
-        getDriver().findElement(By.xpath("//select[@name='destination']")).click();
-        getDriver().findElement(By.xpath("//option[@value='/New folder']")).click();
+
+        Select select = new Select(getDriver().findElement(By.xpath("//select[@name = 'destination']")));
+        select.selectByValue("/New folder");
+
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
         getDriver().findElement(By.xpath("//a[@href='job/New%20folder/']")).click();
