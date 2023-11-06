@@ -22,6 +22,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.linkText("Dashboard")).click();
     }
 
+
     private void createMultibranchPipelineWithCreateAJob() {
 
         getDriver().findElement(By.linkText("Create a job")).click();
@@ -29,6 +30,15 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']"))
                 .click();
         getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void createSecondMultibranchPipeline() {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
+        getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
     }
 
     @Test
@@ -138,5 +148,21 @@ public class MultibranchPipelineTest extends BaseTest {
                     getDriver().findElement(By.xpath("//div[@id='tasks']/div[" + a++ + "]")).getText(),
                     expectedText);
         }
+    }
+
+    @Test
+    public void testDeleteMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
+
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        createSecondMultibranchPipeline();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + MULTIBRANCH_PIPELINE_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/delete']")).click();
+        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/button")).click();
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertNotEquals(
+                getDriver().findElement(By.xpath("//td//a[@href]/span")).getText(),
+                MULTIBRANCH_PIPELINE_NAME);
     }
 }
