@@ -53,6 +53,26 @@ public class MulticonfigurationProjectTest extends BaseTest {
     }
 
     @Test
+    public void testCreateWithDublicateName() {
+        final String multiconfigurationProjectName = "MCProjectName";
+        createMulticonfigurationProject (multiconfigurationProjectName);
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(multiconfigurationProjectName);
+
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]")).getText(),
+                "» A job already exists with the name ‘" + multiconfigurationProjectName + "’");
+
+
+        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.cssSelector("#main-panel")).getText().contains("A job already exists with the name ‘" + multiconfigurationProjectName + "’"));
+
+    }
+
+    @Test
     public void testCreateWithDescription() {
         String projectName = "MyMulticonfiguration project";
         String description = "Description";
