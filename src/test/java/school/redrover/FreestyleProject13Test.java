@@ -70,13 +70,13 @@ public class FreestyleProject13Test extends BaseTest {
         getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
         getDriver().findElement(By.xpath("//button[@type='submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
     @Test
     public void testCreateFolder() {
         createFolder();
 
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
         getDriver().findElement(By.xpath("//a[@href='job/New%20folder/']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(), NEW_FOLDER);
@@ -85,6 +85,7 @@ public class FreestyleProject13Test extends BaseTest {
     @Test
     public void testMoveProject() {
         createFolder();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
         createFreestyleProject();
 
         getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
