@@ -769,5 +769,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + editedProjectName));
     }
-
 }
