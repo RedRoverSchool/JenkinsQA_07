@@ -49,6 +49,30 @@ import java.util.List;
 
             Assert.assertEquals(actualErrorMessagesText, expectedErrorMessagesText);
         }
+
+        public void createUser(String username, String password, String confirmPassword, String fullName, String eMailAddress){
+            getDriver().findElement(By.id("username")).sendKeys(username);
+            getDriver().findElement(By.name("password1")).sendKeys(password);
+            getDriver().findElement(By.name("password2")).sendKeys(confirmPassword);
+            getDriver().findElement(By.name("fullname")).sendKeys(fullName);
+            getDriver().findElement(By.name("email")).sendKeys(eMailAddress);
+            getDriver().findElement(By.name("Submit")).click();
+        }
+        @Test
+        public void testVerifyUserCreated() {
+            String username = "Username";
+            String password = "qwerty";
+            String confirmPassword = "qwerty";
+            String fullName = "User Full Name";
+            String eMailAddress = "user@mail.com";
+            String usersPageTitleActual = "Users";
+
+            goToUserCreatePage();
+            createUser(username, password, confirmPassword, fullName, eMailAddress);
+
+            Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), usersPageTitleActual);
+            Assert.assertTrue(getDriver().findElement(By.id("people")).getText().contains(username) && getDriver().findElement(By.id("people")).getText().contains(fullName));
+        }
 }
 
 
