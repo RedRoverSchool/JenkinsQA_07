@@ -117,11 +117,11 @@ public class FreestyleProjectSeTest extends BaseTest {
 //        js.executeScript("arguments[0].scrollIntoView;", getDriver().findElement(By.xpath("//button[contains(text(), 'Add build step')]")));
 
         //needed to add sleep because this step is very flacky
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         new Actions(getDriver())
                 .moveToElement(getDriver()
