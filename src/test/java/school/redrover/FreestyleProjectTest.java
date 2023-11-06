@@ -744,6 +744,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testFreestyleProjectAdvancedSetting() {
         createFreeStyleProject(PROJECT_NAME);
+
         getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
 
         getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
