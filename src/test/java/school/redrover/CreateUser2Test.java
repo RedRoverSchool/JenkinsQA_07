@@ -30,6 +30,25 @@ import java.util.List;
 
             Assert.assertEquals(actualListOfRequiredFieldsText, expectedListOfRequiredFields);
         }
+
+        @Test
+        public void testVerifyErrorMessagesEmptyFields() {
+            List<String> expectedErrorMessagesText = List.of("\"\" is prohibited as a username for security reasons.",
+                    "Password is required",
+                    "Password is required",
+                    "\"\" is prohibited as a full name for security reasons.",
+                    "Invalid e-mail address");
+
+            goToUserCreatePage();
+            getDriver().findElement(By.name("Submit")).click();
+            List <WebElement> actualListOfErrorMessages = getDriver().findElements(By.xpath("//div[@class='error jenkins-!-margin-bottom-2']"));
+            List<String> actualErrorMessagesText = new ArrayList<>();
+            for (int i = 0; i < actualListOfErrorMessages.size(); i++) {
+                actualErrorMessagesText.add(actualListOfErrorMessages.get(i).getText());
+            }
+
+            Assert.assertEquals(actualErrorMessagesText, expectedErrorMessagesText);
+        }
 }
 
 
