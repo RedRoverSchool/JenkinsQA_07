@@ -87,7 +87,6 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
                 .getAttribute("style"), "");
     }
-    @Ignore
     @Test
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         createAnItem("Freestyle project");
@@ -112,13 +111,8 @@ public class FreestyleProjectSeTest extends BaseTest {
                 .xpath("//div[@class='CodeMirror-scroll cm-s-default']");
 
         createFreeStyleProject(projectName);
-//        getDriver().findElement(By.xpath("//button[@data-section-id='build-steps']")).click();
         getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
 
-//        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-//        js.executeScript("arguments[0].scrollIntoView;", getDriver().findElement(By.xpath("//button[contains(text(), 'Add build step')]")));
-
-        //needed to add sleep because this step is very flacky
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
