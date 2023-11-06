@@ -12,7 +12,7 @@ public class FreestyleProject13Test extends BaseTest {
     private final static String NEW_FOLDER = "New folder";
 
     private void createFreestyleProject() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.xpath("//button[@type='submit']")).click();
@@ -84,10 +84,10 @@ public class FreestyleProject13Test extends BaseTest {
 
     @Test
     public void testMoveProject() {
-        createFreestyleProject();
         createFolder();
+        createFreestyleProject();
 
-        getDriver().findElement(By.xpath("//*[@id='job_FreestyleProject']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/FreestyleProject/move']")).click();
         getDriver().findElement(By.xpath("//select[@name='destination']")).click();
         getDriver().findElement(By.xpath("//option[@value='/New folder']")).click();
