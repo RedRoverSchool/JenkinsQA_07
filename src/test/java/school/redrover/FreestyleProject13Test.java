@@ -12,13 +12,13 @@ public class FreestyleProject13Test extends BaseTest {
     private final static String DESCRIPTION = "Add description";
     private final static String NEW_FOLDER = "New folder";
 
-    private void createFreestyleProject() {
-        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+    private void createProject(String itemType, String itemName) {
+        getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input']")).sendKeys(itemName);
+        getDriver().findElement(By.xpath("//span[text()='" + itemType + "']/..")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
     }
 
     private void addDescription() {
@@ -29,18 +29,9 @@ public class FreestyleProject13Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
-    private void createFolder() {
-        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(NEW_FOLDER);
-        getDriver().findElement(By.id("j-add-item-type-nested-projects")).click();
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
-
     @Test
     public void testCreateFreestyleProject() {
-        createFreestyleProject();
+        createProject("Freestyle project", PROJECT_NAME);
 
         getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
 
@@ -50,7 +41,7 @@ public class FreestyleProject13Test extends BaseTest {
 
     @Test
     public void testAddDescription() {
-        createFreestyleProject();
+        createProject("Freestyle project", PROJECT_NAME);
         addDescription();
 
         getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
@@ -60,7 +51,7 @@ public class FreestyleProject13Test extends BaseTest {
 
     @Test
     public void testEditExistingDescription() {
-        createFreestyleProject();
+        createProject("Freestyle project", PROJECT_NAME);
         addDescription();
 
         getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
@@ -76,7 +67,7 @@ public class FreestyleProject13Test extends BaseTest {
 
     @Test
     public void testCreateFolder() {
-        createFolder();
+        createProject("Folder", NEW_FOLDER);
 
         getDriver().findElement(By.xpath("//a[@href='job/New%20folder/']")).click();
 
@@ -85,17 +76,18 @@ public class FreestyleProject13Test extends BaseTest {
 
     @Test
     public void testMoveProject() {
-        createFreestyleProject();
-        createFolder();
+        createProject("Freestyle project", PROJECT_NAME);
+        createProject("Folder", NEW_FOLDER);
 
-        getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/FreestyleProject/move']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/job/" + PROJECT_NAME + "/move']")).click();
 
         Select select = new Select(getDriver().findElement(By.xpath("//select[@name = 'destination']")));
-        select.selectByValue("/New folder");
+        select.selectByValue("/" + NEW_FOLDER);
 
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
+
         getDriver().findElement(By.xpath("//a[@href='job/New%20folder/']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='job/FreestyleProject/']")).getText(), PROJECT_NAME);
