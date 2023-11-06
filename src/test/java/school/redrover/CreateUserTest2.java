@@ -22,7 +22,7 @@ public class CreateUserTest2 extends BaseTest {
         List <String> expectedListOfRequiredFields = List.of("Username", "Password", "Confirm password", "Full name", "E-mail address");
 
         goToUserCreatePage();
-        List <WebElement> actualListOfRequiredFields = getDriver().findElements(By.xpath("//div[@class=\"jenkins-form-item tr \"]/div[@class='jenkins-form-label help-sibling']"));
+        List <WebElement> actualListOfRequiredFields = getDriver().findElements(By.xpath("//div[@class='jenkins-form-item tr ']/div[@class='jenkins-form-label help-sibling']"));
         List<String> actualListOfRequiredFieldsText = new ArrayList<>();
         for (int i = 0; i < actualListOfRequiredFields.size(); i++) {
             actualListOfRequiredFieldsText.add(actualListOfRequiredFields.get(i).getText());
