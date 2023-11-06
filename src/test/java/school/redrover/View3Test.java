@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class View3Test extends BaseTest {
 
@@ -38,6 +42,14 @@ public class View3Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/']")).click();
         getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
         getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(newDescriptionForTheView);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+    }
+
+    private void associateJobToTheView(String listViewName, String jobName) {
+        returnToJenkinsHomepage();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/configure']")).click();
+        getDriver().findElement(By.xpath("//label[@title = '" + jobName + "']")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
@@ -129,6 +141,7 @@ public class View3Test extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),
                 "");
     }
+
     @Test
     public void testNoJobsShownForTheViewWithoutAssociatedJob() {
         final String newFreeStyleProjectName = "FreeStyleTestProject";
@@ -145,5 +158,96 @@ public class View3Test extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//div[@id = 'main-panel']")).getText().
                         contains(noAssociatedJobsForTheViewMessage));
+    }
+
+    @Test
+    public void testProjectCouldBeAddedToTheView() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithoutAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
+        getDriver().findElement(By.xpath("//label[@title = '" + newFreeStyleProjectName + "']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
+                newFreeStyleProjectName);
+    }
+
+    @Test
+    public void testAssociatedJobIsShownOnTheViewDashboard() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithoutAssociatedJob(newListViewName);
+        associateJobToTheView(newListViewName, newFreeStyleProjectName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
+                newFreeStyleProjectName);
+    }
+
+    @Test
+    public void testAddingNewColumnToTheView() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+        final String newColumnName = "Git Branches";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
+        JavascriptExecutor scriptForScrolling = (JavascriptExecutor) getDriver();
+        scriptForScrolling.executeScript("window.scrollBy(0,926)");
+        getDriver().findElement(By.xpath("//button[@id = 'yui-gen3-button']")).click();
+
+        List<WebElement> newColumnOptions = getDriver().findElements(By.xpath("//a[@class = 'yuimenuitemlabel']"));
+        for (WebElement newColumnOption : newColumnOptions) {
+            if (newColumnOption.getText().contains(newColumnName)) {
+                newColumnOption.click();
+            }
+        }
+
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        List<WebElement> dashboardColumnNames = getDriver().findElements(By.xpath("//table[@id = 'projectstatus']//th"));
+
+        Assert.assertEquals(
+                dashboardColumnNames.get(dashboardColumnNames.size()-1).getText(),
+                newColumnName);
+    }
+
+    @Test
+    public void testDeletingColumnFromTheView() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+        final String deletedColumnName = "Last Duration";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
+        JavascriptExecutor scriptForScrolling = (JavascriptExecutor) getDriver();
+        scriptForScrolling.executeScript("window.scrollBy(0,926)");
+        getDriver().findElement(By.xpath(
+                "//div[contains(text(), '" + deletedColumnName + "')]/button")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        List<WebElement> dashboardColumnNamesAfterColumnDeletion = getDriver().findElements(By.xpath(
+                "//table[@id = 'projectstatus']//th"));
+
+        Assert.assertFalse(dashboardColumnNamesAfterColumnDeletion.contains(deletedColumnName));
     }
 }
