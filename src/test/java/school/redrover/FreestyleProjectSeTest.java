@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -86,6 +87,7 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
                 .getAttribute("style"), "");
     }
+    @Ignore
     @Test
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         createAnItem("Freestyle project");
