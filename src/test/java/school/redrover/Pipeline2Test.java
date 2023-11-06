@@ -226,4 +226,27 @@ public class Pipeline2Test extends BaseTest {
             Assert.assertEquals("Help for feature: " + checkBoxesWithTooltips.get(i).getText(), toolTips.get(i).getAttribute("title"));
         }
     }
+
+    @Test
+    public void testPermalinksBuildData() throws InterruptedException {
+        final String jobName = "Pipeline1";
+
+        createAPipeline(jobName);
+        goDashboardByBreadcrumb();
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/build?delay=0sec']")).click();
+
+        Thread.sleep(1000);
+        getDriver().navigate().refresh();
+        List<WebElement> permalinksBuildHistory = getDriver().findElements(By.xpath("//li[@class='permalink-item']"));
+
+        Assert.assertEquals(permalinksBuildHistory.size(), 4);
+        Assert.assertTrue(permalinksBuildHistory.get(0).getText().contains("Last build"));
+        Assert.assertTrue(permalinksBuildHistory.get(1).getText().contains("Last stable build"));
+        Assert.assertTrue(permalinksBuildHistory.get(2).getText().contains("Last successful build"));
+        Assert.assertTrue(permalinksBuildHistory.get(3).getText().contains("Last completed build"));
+    }
 }
+
+
