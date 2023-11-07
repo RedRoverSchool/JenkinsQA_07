@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class Folder15Test extends BaseTest {
+    private final static String NEW_NAME_FOLDER = "TestFolder";
     private void createNewFolder(String folderName) {
 
         getDriver().findElement(By.xpath("//a [@href = '/view/all/newJob']")).click();
@@ -25,7 +26,7 @@ public class Folder15Test extends BaseTest {
     }
 
     @Test
-    public void testCreateView() {
+    public void testCreateNewFolder() {
         createNewFolder("WorkFolder");
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(), 'WorkFolder')]")).getText(), "WorkFolder");
@@ -44,7 +45,19 @@ public class Folder15Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(), 'MyFreestyleProject')]")).getText(),"MyFreestyleProject");
 
+    }
+    @Test
+    public void testRenameFolder() {
+        createNewFolder("FolderJob");
 
+        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[7]/span/a")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@name = 'newName']")).sendKeys(NEW_NAME_FOLDER);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'TestFolder')]")).getText(), NEW_NAME_FOLDER);
 
     }
 }
