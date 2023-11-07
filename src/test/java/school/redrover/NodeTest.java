@@ -122,6 +122,7 @@ public class NodeTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[contains(@name, 'numExecutors')]"))
                 .sendKeys(String.valueOf(numberOfExecutors));
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.xpath("//a[@title = 'collapse']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'executors']//table//td")).getText()
                 , "built-in node (0 of " + numberOfExecutors + " executors busy)");
