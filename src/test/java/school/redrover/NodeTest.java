@@ -81,7 +81,7 @@ public class NodeTest extends BaseTest {
     }
 
     @Test
-    public void testSetIncorrectNumberOfExecutes() {
+    public void testSetIncorrectNumberOfExecutors() {
         final int numberOfExecutes = -1;
 
         createNode(INITIAL_NAME);
@@ -97,7 +97,7 @@ public class NodeTest extends BaseTest {
     }
 
     @Test
-    public void testSetEnormousNumberOfExecutes() {
+    public void testSetEnormousNumberOfExecutors() {
         createNode(INITIAL_NAME);
 
         getDriver().findElement(By.xpath("//a[contains(text(), '" + INITIAL_NAME + "')]")).click();
@@ -109,5 +109,21 @@ public class NodeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText().trim(), "Oops!");
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2")).getText(),
                 "A problem occurred while processing the request.");
+    }
+
+    @Test
+    public void testSetCorrectNumberOfExecutorsForBuiltInNode() {
+        final int numberOfExecutors = 55;
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Manage Jenkins')]/..")).click();
+        getDriver().findElement(By.xpath("//a[@href = 'computer']")).click();
+        getDriver().findElement(By.xpath("//a[contains(text(), 'Built-In Node')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+        getDriver().findElement(By.xpath("//input[contains(@name, 'numExecutors')]")).clear();
+        getDriver().findElement(By.xpath("//input[contains(@name, 'numExecutors')]"))
+                .sendKeys(String.valueOf(numberOfExecutors));
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'executors']//table//td")).getText()
+                , "built-in node (0 of " + numberOfExecutors + " executors busy)");
     }
 }
