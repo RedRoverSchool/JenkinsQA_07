@@ -26,7 +26,7 @@ public class Pipeline8Test extends BaseTest {
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(By.xpath("(//a[ . = '" + pipeLineName + "'])[1]"))).perform();
-        getDriver().findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[3]")).click();
+        getDriver().findElement(By.xpath("//*[@id='projectstatus']//td//button")).click();
         getDriver().findElement(By.xpath("//*[@class='jenkins-dropdown']//button[2]")).click();
 
         Alert alert = getDriver().switchTo().alert();
