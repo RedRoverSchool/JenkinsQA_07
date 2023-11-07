@@ -44,7 +44,7 @@ public class NewItemTest extends BaseTest {
         assertFalse(isCloneItemSectionDisplayed());
     }
 
-    @Test
+    @Test(invocationCount = 7)
     public void testAutocompleteListOfCopyFromFieldWithItemCreated() {
         final String firstProject = "Test project";
         final String secondProject = "Test project 2";
@@ -55,12 +55,9 @@ public class NewItemTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(secondProject);
         getDriver().findElement(By.id("from")).sendKeys(firstProject.substring(0, 4));
 
-        boolean isAutocompleteSuggested = getDriver()
-                .findElements(By.xpath("//div[@class='yui-ac-bd']//li"))
-                .stream()
-                .map(WebElement::getText)
-                .toList()
-                .contains(firstProject);
+        boolean isAutocompleteSuggested = !getDriver()
+                .findElements(By.xpath("//li[contains(text(),'" + firstProject + "')]"))
+                .isEmpty();
         assertTrue(isAutocompleteSuggested);
     }
 
