@@ -1,8 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -46,9 +49,12 @@ public class MultibranchPipeline4Test extends BaseTest {
         WebElement element = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
         actions.moveToElement(element).moveByOffset(100, 50).click().build().perform();
 
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        WebElement error_message = getDriver().findElement(By.xpath("//div[@class='error']"));
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='error']")).getText(), "‘!’ is an unsafe character");
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(d -> error_message.isDisplayed());
+
+        Assert.assertEquals(error_message.getText(), "‘!’ is an unsafe character");
     }
 
     @Test
