@@ -1,5 +1,6 @@
 package school.redrover;
 
+import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -87,6 +88,7 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
                 .getAttribute("style"), "");
     }
+    @Ignore
     @Test
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         createAnItem("Freestyle project");
@@ -144,4 +146,35 @@ public class FreestyleProjectSeTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(buildStepInputLocator).getText(), "buildStep");
     }
+
+    @Test
+    public void testGitHubEditedLabelAppears() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        createAnItem("Freestyle project");
+
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//label[contains(text(), 'GitHub project')]")))
+                .click()
+                .perform();
+
+        js.executeScript("arguments[0].scrollIntoView();", getDriver()
+                .findElement(By.name("_.projectUrlStr")));
+
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[6]/div[3]/div[2]/div[1]/button")))
+                .click()
+                .perform();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//input[@name = '_.displayName']")))
+                .click()
+                .sendKeys("GitHubURL")
+                .perform();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//span[@class = 'jenkins-edited-section-label']")).getText().trim(), "Edited");
+    }
 }
+

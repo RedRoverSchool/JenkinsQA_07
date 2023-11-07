@@ -1,6 +1,8 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -14,6 +16,7 @@ public class FreestyleProject22Test extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
     private final String FREESTYLE_PROJECT_NAME = "FreestyleProject1";
+    private final String FREESTYLE_PROJECT_INVALID_NAME = "FreestyleProject2";
 
     @Test
     public void testCreateFreestyleProjectWithValidName() {
@@ -45,5 +48,18 @@ public class FreestyleProject22Test extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled());
 
         getDriver().findElement(By.xpath("//a[contains(text(), 'Dashboard')]")).click();
+    }
+
+    @Test(dataProvider = "wrong-characters")
+    public void testWrongCharactersAfterNameProject(String wrongCharacters) {
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        getDriver().findElement(By.id("name"))
+                .sendKeys(FREESTYLE_PROJECT_INVALID_NAME + wrongCharacters);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/p")).getText(),
+                "‘" + wrongCharacters + "’ " + "is an unsafe character");
     }
 }
