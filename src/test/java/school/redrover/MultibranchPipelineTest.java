@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -59,7 +60,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//span[contains(text(),'"+ MULTIBRANCH_PIPELINE_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + MULTIBRANCH_PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
         getDriver().findElement(By.xpath("//div[@class ='setting-main']/input")).clear();
         getDriver().findElement(By.xpath("//div[@class ='setting-main']/input")).sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
@@ -71,7 +72,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String breadcrumbName = getDriver().findElement(
                 By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).getText();
         Assert.assertEquals(breadcrumbName, MULTIBRANCH_PIPELINE_NEW_NAME,
-                breadcrumbName +  MULTIBRANCH_PIPELINE_NEW_NAME);
+                breadcrumbName + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
     @Test
@@ -140,11 +141,11 @@ public class MultibranchPipelineTest extends BaseTest {
                 "People",
                 "Build History",
                 "Rename",
-                "Pipeline Syntax" ,
+                "Pipeline Syntax",
                 "Credentials");
 
         int a = 1;
-        for (String expectedText: taskText) {
+        for (String expectedText : taskText) {
             Assert.assertEquals(
                     getDriver().findElement(By.xpath("//div[@id='tasks']/div[" + a++ + "]")).getText(),
                     expectedText);
@@ -182,7 +183,27 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).isDisplayed());
+    }
 
+    @Test
+    public void testRenameMultibranchDropdownDashboard() {
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
 
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(elementToHover).perform();
+        elementToHover.click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
+
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//td[3]/a/span")).getText(), MULTIBRANCH_PIPELINE_NEW_NAME,
+                MULTIBRANCH_PIPELINE_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 }
