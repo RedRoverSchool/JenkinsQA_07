@@ -45,7 +45,7 @@ public class NewItemTest extends BaseTest {
     }
 
     @Test
-    public void testAutocompleteFunctionalityOfCopyFromFieldWithItemCreated() {
+    public void testAutocompleteListOfCopyFromFieldWithItemCreated() {
         final String firstProject = "Test project";
         final String secondProject = "Test project 2";
         createFreeStyleProject(firstProject);
@@ -56,7 +56,7 @@ public class NewItemTest extends BaseTest {
         getDriver().findElement(By.id("from")).sendKeys(firstProject.substring(0, 4));
 
         boolean isAutocompleteSuggested = getDriver()
-                .findElements(By.xpath("//li[@class='yui-ac-prehighlight']"))
+                .findElements(By.xpath("//div[@class='yui-ac-bd']//li"))
                 .stream()
                 .map(WebElement::getText)
                 .toList()
