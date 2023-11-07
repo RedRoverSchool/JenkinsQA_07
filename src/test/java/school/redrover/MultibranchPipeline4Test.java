@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,9 @@ public class MultibranchPipeline4Test extends BaseTest {
 
         Actions actions = new Actions(getDriver());
         WebElement element = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
-        actions.moveToElement(element).moveByOffset(100,50).click().build().perform();
+        actions.moveToElement(element).moveByOffset(100, 50).click().build().perform();
+
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='error']")).getText(), "‘!’ is an unsafe character");
     }
@@ -60,7 +63,7 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'"+RENAMED+"')]")).getText(), RENAMED);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'" + RENAMED + "')]")).getText(), RENAMED);
     }
 
     @Test
