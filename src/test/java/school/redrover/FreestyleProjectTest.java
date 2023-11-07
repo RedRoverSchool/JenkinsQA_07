@@ -769,4 +769,16 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + editedProjectName));
     }
+
+    @Test
+    public void testDisableFreestyleProject() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
+        getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
+        String result = getDriver().findElement(By.cssSelector("form[id='enable-project']")).getText();
+
+        Assert.assertEquals("This project is currently disabled", result.substring(0,34));
+    }
 }
