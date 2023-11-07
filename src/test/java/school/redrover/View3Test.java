@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -249,5 +250,36 @@ public class View3Test extends BaseTest {
                 "//table[@id = 'projectstatus']//th"));
 
         Assert.assertFalse(dashboardColumnNamesAfterColumnDeletion.contains(deletedColumnName));
+    }
+
+    @Test
+    public void testReorderColumnsForTheView() {
+        final String newFreeStyleProjectName = "FreeStyleTestProject";
+        final String newListViewName = "ListViewTest";
+        final String reorderedColumnName = "Name";
+
+        createFreeStyleProject(newFreeStyleProjectName);
+        createListViewWithAssociatedJob(newListViewName);
+        returnToJenkinsHomepage();
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
+        JavascriptExecutor scriptForScrolling = (JavascriptExecutor) getDriver();
+        scriptForScrolling.executeScript("window.scrollBy(0,926)");
+        WebElement columnToReorder = getDriver().findElement(By.xpath(
+                "//div[contains(text(), '" + reorderedColumnName + "')]/div[@class = 'dd-handle']"));
+        WebElement placeForTheReorderedColumn = getDriver().findElement(By.xpath(
+                "//div[@class = 'repeated-chunk__header'][1]"));
+        Actions actions = new Actions(getDriver());
+        actions.clickAndHold(columnToReorder)
+                .moveToElement(placeForTheReorderedColumn)
+                .release(placeForTheReorderedColumn)
+                .build()
+                .perform();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        List<WebElement> dashboardColumnNamesAfterColumnReorder = getDriver().findElements(By.xpath(
+                "//table[@id = 'projectstatus']//th"));
+
+        Assert.assertTrue(dashboardColumnNamesAfterColumnReorder.get(0).getText().contains(reorderedColumnName));
     }
 }
