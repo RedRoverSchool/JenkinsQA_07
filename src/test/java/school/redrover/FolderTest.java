@@ -2,9 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.time.Duration;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -34,6 +37,15 @@ public class FolderTest extends BaseTest {
 
     private void getDashboardLink() {
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+    }
+
+    private void createFolderAddReturnToDashboard(String folderName) {
+        getDriver().findElement(By.className("task-link")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
     }
 
     private WebElement findJobByName(String name) {
@@ -186,6 +198,52 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_FOLDER_NAME,
                 FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
+    }
+
+    @Test
+    public void testErrorMessageIsDisplayedWithoutFolderName() {
+        String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
+
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        boolean errorMessageDisplayed = getDriver().findElement(By.id("itemname-required")).isDisplayed();
+        String actualErrorMessage = getDriver().findElement(By.id("itemname-required")).getText();
+
+        Assert.assertTrue(errorMessageDisplayed, "Error message for empty name is not displayed!");
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "The error message does not match the expected message!");
+    }
+
+    @Test
+    public void testOKbuttonIsNotClickableWithoutFolderName() {
+        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        WebElement okButton = getDriver().findElement(By.id("ok-button"));
+        boolean okButtonDisabled = "true".equals(okButton.getAttribute("disabled"));
+
+        Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
+    }
+
+    @Test
+    public void testAddDisplayName() {
+        final String folderDisplayName = "Best folder";
+
+        createFolderAddReturnToDashboard(FOLDER_NAME);
+
+        WebElement folder = getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a"));
+        new Actions(getDriver())
+                .moveToElement(folder)
+                .click()
+                .perform();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/configure']")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderDisplayName);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+
+        String folderName = getDriver()
+                .findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a/span"))
+                .getText();
+
+        Assert.assertEquals(folderName, folderDisplayName);
     }
 }
 

@@ -1,15 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class FreestyleProject10Test extends BaseTest {
 
     private final static String NAME_FREESTYLE_PROJECT = "Freestyle Project 1 2 3";
+    private final static By LINK_ON_A_CREATED_FREESTYLE_PROJECT = By.xpath("//tr[@id='job_" + NAME_FREESTYLE_PROJECT + "']/td[3]/a");
 
     private void creatingFreestyleProject(String projectName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -58,7 +62,7 @@ public class FreestyleProject10Test extends BaseTest {
 
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
 
-        getDriver().findElement(By.xpath("//tr[@id='job_" + NAME_FREESTYLE_PROJECT + "']/td[3]/a")).click();
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[7]/span/a")).click();
         getDriver().findElement(By.name("newName")).clear();
 
@@ -75,7 +79,7 @@ public class FreestyleProject10Test extends BaseTest {
     public void testDeleteFreestyleProject() {
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
 
-        getDriver().findElement(By.xpath("//tr[@id='job_" + NAME_FREESTYLE_PROJECT + "']/td[3]/a")).click();
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
         getDriver().findElement(By.xpath("//a[@data-message='Delete the Project ‘" + NAME_FREESTYLE_PROJECT + "’?']")).click();
         getDriver().switchTo().alert().accept();
 
@@ -85,7 +89,8 @@ public class FreestyleProject10Test extends BaseTest {
     @Test
     public void testTooltipDiscardIsVisible() {
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
-        getDriver().findElement(By.xpath("//tr[@id='job_" + NAME_FREESTYLE_PROJECT + "']/td[3]/a")).click();
+
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[5]")).click();
 
         WebElement helpButton = getDriver().findElement(By.xpath("//a[@helpurl='/descriptor/hudson.model.FreeStyleProject/help/concurrentBuild']"));
@@ -100,5 +105,63 @@ public class FreestyleProject10Test extends BaseTest {
         }
 
         Assert.assertTrue(toolTipIsVisible, "The tooltip message is not visible");
+    }
+
+    @Test
+    public void testCheckTheBoxes() {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[5]")).click();
+
+        getDriver().findElement(By.xpath("//label[contains(text(),'GitHub project')]")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.id("cb5")).isSelected(), "Checkbox is not click");
+    }
+
+    @Test
+    public void testDeletePermalinksOnProjectsStatusPage() {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.cssSelector("a[onclick^='return build_']")).click();
+        getDriver().navigate().refresh();
+
+        getDriver().findElement(By.cssSelector("a[href='lastBuild/']")).click();
+        getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
+        getDriver().findElement(By.cssSelector("button[formnovalidate]")).click();
+
+        List<By> permaLinks = List.of(
+                By.xpath("//ul[@class='permalinks-list']/li[1]"),
+                By.xpath("//ul[@class='permalinks-list']/li[2]"),
+                By.xpath("//ul[@class='permalinks-list']/li[3]"),
+                By.xpath("//ul[@class='permalinks-list']/li[4]"));
+
+        for (By link : permaLinks) {
+        Assert.assertEquals(
+                getDriver().findElements(link).size(),
+                0);
+        }
+    }
+
+    @Test
+    public void testRenameUnsafeCharacters() throws InterruptedException {
+        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.cssSelector("a[href$='confirm-rename']")).click();
+        WebElement newName = getDriver().findElement(By.name("newName"));
+
+        List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
+
+        for (String x : unsafeCharacters) {
+            newName.clear();
+            newName.sendKeys(x);
+            newName.sendKeys(Keys.TAB);
+            Thread.sleep(20);
+
+            Assert.assertEquals(getDriver().findElement(By.cssSelector("div[class='error']")).getText(),
+                    "‘" + x + "’ is an unsafe character");
+        }
     }
 }

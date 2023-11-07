@@ -169,5 +169,28 @@ public class NodesTest extends BaseTest {
                 String.format("Agent %s", NEW_NAME)
         );
     }
+
+    @Test
+    public void testUpdateOfflineReason() {
+        final String newReason = "Updated reason";
+
+        createNewNode(NODE_NAME);
+        goToMainPage();
+
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys("111");
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        getDriver().findElement(By.xpath("//form[@action = 'setOfflineCause']/button")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys(newReason);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@class = 'message']")).getText(),
+                "Disconnected by admin : " + newReason
+        );
+    }
 }
 

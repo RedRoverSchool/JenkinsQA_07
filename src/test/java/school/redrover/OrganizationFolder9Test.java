@@ -47,7 +47,7 @@ public class OrganizationFolder9Test extends BaseTest {
     }
 
     @Test
-    public void testCreateOrganizationFolderWithValidName () {
+    public void testCreateOrganizationFolderWithValidName() {
         final String OrganizationFolderName = "NewOrganizationFolder555";
 
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -61,5 +61,36 @@ public class OrganizationFolder9Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//tr[@id='job_" + OrganizationFolderName + "']//td[3]")).getText(),
                 OrganizationFolderName);
+    }
+
+    final String folderName = "OrganizationFolder5";
+    final String renamedFolder = "NewOrganizationFolder555";
+    private void createFolder () {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//li[@class='jenkins_branch_OrganizationFolder']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithValidNameNew () {
+        createFolder();
+    }
+
+    @Test
+    public void testRenameOrganizationFolderNameFromDropDownList () {
+        createFolder();
+        getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/confirm-rename']")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(renamedFolder);
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
     }
 }

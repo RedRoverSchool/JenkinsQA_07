@@ -1,5 +1,7 @@
 package school.redrover;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -84,29 +86,27 @@ public class FreestyleProject6Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[starts-with(@name,'name') and contains(@id,'name')]")).sendKeys(projectName);
         getDriver().findElement(By.xpath("//li[contains(@class, 'FreeStyleProject')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 
-    private boolean isElementPresent(WebDriver driver, By locator) {
-        try {
-            driver.findElement(locator);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+    private void createFolder(String folderName) {
+        getDriver().findElement(By.xpath("//a[starts-with(@href,'/view/all/newJob') and contains (@class,'task-link')]")).click();
+        getDriver().findElement(By.xpath("//*[starts-with(@name,'name') and contains(@id,'name')]")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//*[contains(@class,'com_cloud')]")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 
     @Test
     public void testDeleteFreestyleProject() {
         final String projectName = "Starlight";
         createFreestyleProject(projectName);
-        getDriver().findElement(By.xpath("//*[@class = 'jenkins-button jenkins-button--primary ']")).click();
         getDriver().findElement(By.xpath("//a[@class='task-link  confirmation-link']")).click();
         getDriver().switchTo().alert().accept();
-        boolean isElementPresent = isElementPresent(getDriver(), By.xpath("//a[starts-with(@href,'job/" + projectName + "/') and contains(@class,'jenkins-table__link')]"));
 
-        Assert.assertFalse(isElementPresent);
-
+        Assert.assertEquals(getDriver().findElements(By.id("job_" + projectName)).size(), 0);
     }
+
     @Test
     public void testDiscardOldBuildsCheckbox() {
         final String projectName = "Starlight";
@@ -117,17 +117,38 @@ public class FreestyleProject6Test extends BaseTest {
         final String maxOfBuildsToKeepFieldValue = "7";
 
         createFreestyleProject(projectName);
-        getDriver().findElement(By.xpath("//*[@class = 'jenkins-button jenkins-button--primary ']")).click();
         getDriver().findElement(By.xpath(configureLink)).click();
         getDriver().findElement(By.xpath("//label[normalize-space()='Discard old builds']")).click();
         getDriver().findElement(By.xpath(daysToKeepBuildsField)).sendKeys(daysToKeepBuildsFieldValue);
         getDriver().findElement(By.xpath(maxOfBuildsToKeepField)).sendKeys(maxOfBuildsToKeepFieldValue);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath(configureLink)).click();
-        boolean isCheckBoxElementPresent = isElementPresent(getDriver(), By.xpath("//div[@class='rowvg-start tr']"));
 
-        Assert.assertTrue(isCheckBoxElementPresent,"Check-box is not selected");
+        Assert.assertTrue(getDriver().findElement(By.id("cb4")).isSelected(), "Checkbox is not click");
         Assert.assertEquals(getDriver().findElement(By.xpath(daysToKeepBuildsField)).getAttribute("value"),daysToKeepBuildsFieldValue);
         Assert.assertEquals(getDriver().findElement(By.xpath(maxOfBuildsToKeepField)).getAttribute("value"),maxOfBuildsToKeepFieldValue);
+    }
+
+    @Test
+    public void testMoveProjectToFolder() {
+        final String projectName = "Starlight";
+        final String folderName = "Folder";
+
+        createFolder(folderName);
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        createFreestyleProject(projectName);
+        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/move']")).click();
+        Select select = new Select(getDriver().findElement(By.xpath("//select[@name = 'destination']")));
+        select.selectByValue("/" + folderName);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        Actions actions = new Actions(getDriver());
+        WebElement element = getDriver().findElement(By.xpath("//a[@href='job/" + folderName + "/']"));
+        actions.moveToElement(element).moveByOffset(0, 0).click().build().perform();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(),folderName);
+        Assert.assertTrue(getDriver().findElement(By.id("job_" + projectName)).isDisplayed());
     }
 }

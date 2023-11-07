@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FreestyleProject1Test extends BaseTest {
@@ -113,5 +114,63 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),projectName);
+    }
+
+    @Test
+    public void testThisProjectIsParameterizedCheckboxAddBooleanParameter() {
+
+        final String name = "Ņame";
+        final String description = "Description";
+
+        createProject("Freestyle project", PROJECT_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+
+        getDriver().findElement(By.
+                        xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"))
+                .click();
+        getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]")).click();
+
+        getDriver().findElement(By.xpath("//a[contains(text(), 'Boolean Parameter')]")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'parameter.name']"))
+                .sendKeys(name);
+        getDriver().findElement(By.xpath("//textarea[@name = 'parameter.description']"))
+                .sendKeys(description);
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//input[@name = 'parameter.name']"))
+                .getAttribute("value"),
+                name);
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//textarea[@name = 'parameter.description']"))
+                .getAttribute("value"),
+                description);
+    }
+
+    @Test
+    public void testAddBooleanParameterDropdownIsSortedAlphabetically() {
+        createProject("Freestyle project", PROJECT_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+
+        getDriver().findElement(
+                        By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"))
+                .click();
+        getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]")).click();
+
+        List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
+        List<String> getTextOfDropDownElements = new ArrayList<>();
+        for (WebElement element:listDropDownElements) {
+            getTextOfDropDownElements.add(element.getText());
+        }
+
+        List<String> expectedListResult = getTextOfDropDownElements.stream().sorted().toList();
+
+        Assert.assertEquals(getTextOfDropDownElements, expectedListResult);
     }
 }
