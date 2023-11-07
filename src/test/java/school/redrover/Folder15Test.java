@@ -16,24 +16,19 @@ public class Folder15Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
     private void createFreestPro(String nameFreestyleProject) {
-
         getDriver().findElement(By.id("name")).sendKeys(nameFreestyleProject);
         getDriver().findElement(By.xpath("//img[@class='icon-freestyle-project icon-xlg']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
     }
-
     private void AddDescriptionFolder(String descriptionText){
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(descriptionText);
         getDriver().findElement(By.name("Submit")).click();
     }
-
-
     @Test
     public void testCreateNewFolder() {
         createNewFolder("WorkFolder");
-
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(), 'WorkFolder')]")).getText(), "WorkFolder");
     }
     @Test
@@ -49,7 +44,6 @@ public class Folder15Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains (text(), 'WorkFolder123')]")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(), 'MyFreestyleProject')]")).getText(),"MyFreestyleProject");
-
     }
     @Test
     public void testRenameFolder() {
@@ -72,5 +66,16 @@ public class Folder15Test extends BaseTest {
         AddDescriptionFolder("New description");
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]")).getText(), "New description");
     }
+    @Test
+    public void testEditDescriptionFolder() {
+        createNewFolder("OfficeFolder");
+        getDriver().findElement(By.xpath("//span[contains(text(), 'OfficeFolder')]")).click();
 
+        AddDescriptionFolder("New description");
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.name("description")).sendKeys("New description edited");
+        getDriver().findElement(By.name("Submit")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),"New description edited");
+    }
 }
