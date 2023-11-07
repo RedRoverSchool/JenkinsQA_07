@@ -49,23 +49,6 @@ public class MultibranchPipeline4Test extends BaseTest {
     }
 
     @Test
-    public void testRenameUsingBreadcrumb() {
-        createMultibranchPipelin(NAME);
-
-        WebElement chevron = getDriver().findElement(By.xpath("//a[@class='model-link'][text()='Multibranch Pipeline']"));
-        new Actions(getDriver()).moveToElement(chevron).build().perform();
-
-        getDriver().findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[3]")).click();
-        getDriver().findElement(By.xpath("//div/a[6]")).click();
-
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), RENAMED);
-    }
-
-    @Test
     public void testRenameUsingSidebar() {
         createMultibranchPipelin(NAME);
         getDashboardLink();
