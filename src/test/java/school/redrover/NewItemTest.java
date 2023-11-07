@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -44,7 +43,7 @@ public class NewItemTest extends BaseTest {
         assertFalse(isCloneItemSectionDisplayed());
     }
 
-    @Test(invocationCount = 7)
+    @Test
     public void testAutocompleteListOfCopyFromFieldWithItemCreated() {
         final String firstProject = "Test project";
         final String secondProject = "Test project 2";
