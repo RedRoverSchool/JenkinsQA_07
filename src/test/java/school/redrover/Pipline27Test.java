@@ -9,7 +9,7 @@ public class Pipline27Test extends BaseTest {
     private final String piplineName = "Pipline test name";
 
     @Test
-    public void createPiplineTest() {
+    public void testCreatePiplineWithValidName() {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//*[@id='j-add-item-type-standalone-projects']/ul/li[2]")).click();
         getDriver().findElement(By.cssSelector("#name")).sendKeys(piplineName);
