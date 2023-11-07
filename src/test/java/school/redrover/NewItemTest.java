@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -41,6 +42,26 @@ public class NewItemTest extends BaseTest {
         getDriver().findElement(By.linkText("New Item")).click();
 
         assertFalse(isCloneItemSectionDisplayed());
+    }
+
+    @Test
+    public void testAutocompleteFunctionalityOfCopyFromFieldWithItemCreated() {
+        final String firstProject = "Test project";
+        final String secondProject = "Test project 2";
+        createFreeStyleProject(firstProject);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(secondProject);
+        getDriver().findElement(By.id("from")).sendKeys(firstProject.substring(0, 4));
+
+        boolean isAutocompleteSuggested = getDriver()
+                .findElements(By.xpath("//li[@class='yui-ac-prehighlight']"))
+                .stream()
+                .map(WebElement::getText)
+                .toList()
+                .contains(firstProject);
+        assertTrue(isAutocompleteSuggested);
     }
 
 }
