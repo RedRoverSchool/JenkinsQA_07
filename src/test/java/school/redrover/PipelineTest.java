@@ -13,6 +13,8 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PipelineTest extends BaseTest {
 
@@ -23,14 +25,13 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.className("jenkins-input")).sendKeys(pipelineName);
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-        getDriver().findElement(By.name("Submit")).click();
 
         if (returnToDashboard) {
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
+            goToDashboard();
         }
     }
 
-    private void saveConfiguration() {
+    private void clickSaveConfiguration() {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
@@ -134,6 +135,7 @@ public class PipelineTest extends BaseTest {
 
         createPipeline(PIPELINE_NAME, false);
 
+        getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
 
         final String[] buildIconTitle = getDriver().findElement(By.xpath("//div[@class='build-icon']/a"))
@@ -251,7 +253,7 @@ public class PipelineTest extends BaseTest {
 
         Select select = new Select(getDriver().findElement(By.xpath("//div[@class='samples']/select")));
         select.selectByValue("hello");
-        saveConfiguration();
+        clickSaveConfiguration();
 
         clickBuildNow();
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
@@ -275,6 +277,7 @@ public class PipelineTest extends BaseTest {
         createPipeline(PIPELINE_NAME, true);
         createPipeline(upstreamPipelineName, false);
 
+        getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
                 .click();
         WebElement buildAfterOtherProjectsCheckbox = getDriver()
@@ -285,7 +288,7 @@ public class PipelineTest extends BaseTest {
         WebElement alwaysTriggerRadio = getDriver().findElement(
                 By.xpath("//label[text()='Always trigger, even if the build is aborted']"));
         js.executeScript("arguments[0].click();", alwaysTriggerRadio);
-        saveConfiguration();
+        clickSaveConfiguration();
 
         goToDashboard();
         getDriver().findElement(
@@ -295,5 +298,27 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']/a")).getText(),
                 upstreamPipelineName);
+    }
+
+    @Test
+    public void testStagesAreDisplayedInStageView() {
+        final List<String> stageNames = List.of(new String[]{"test", "build", "deploy"});
+        final String pipelineScript = "stage('test') {}\nstage('build') {}\nstage('deploy') {}";
+
+        createPipeline(PIPELINE_NAME, false);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true)", getDriver().findElement(By.xpath("//div[@class='ace_line']")));
+        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+        clickSaveConfiguration();
+        clickBuildNow();
+
+        List<String> actualStageNames = getDriver()
+                .findElements(By.xpath("//th[contains(@class, 'stage-header-name-')]"))
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(actualStageNames, stageNames);
     }
 }
