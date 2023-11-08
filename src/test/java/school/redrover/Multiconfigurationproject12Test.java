@@ -34,7 +34,7 @@ public class Multiconfigurationproject12Test extends BaseTest {
     }
 
     @Test
-    public void createProjectWithDescription() {
+    public void testCreateProjectWithDescription() {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECTNAME);
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
@@ -46,31 +46,29 @@ public class Multiconfigurationproject12Test extends BaseTest {
     }
 
     @Test
-    public void addDescription() {
+    public void testAddDescription() {
         createProject();
         addDescriptionIntoProject();
         Assert.assertEquals(DESCRIPTION, textDescription().getText());
     }
 
     @Test
-    public void editDescription() {
+    public void testEditDescription() {
         createProject();
         addDescriptionIntoProject();
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
         getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        System.out.println(getDriver().findElement(By.xpath("//div[@id='description']//div")).getText());
         Assert.assertEquals(DESCRIPTION + DESCRIPTION, textDescription().getText());
     }
 
     @Test
-    public void deleteDescription() {
+    public void testDeleteDescription() {
         createProject();
         addDescriptionIntoProject();
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
         getDriver().findElement(By.name("description")).clear();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        System.out.println(getDriver().findElement(By.xpath("//div[@id='description']//div")).getText() + " del descr");
         Assert.assertEquals("", textDescription().getText());
     }
 
