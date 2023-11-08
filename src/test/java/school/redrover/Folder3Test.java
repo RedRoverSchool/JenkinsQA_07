@@ -69,4 +69,21 @@ public class Folder3Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), "Nested");
     }
+
+    @Test
+    public void testCreateNewJob() {
+        final String folderName = "Folder1";
+        final String jobName = "New Job";
+        createFolder(folderName);
+
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + folderName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(jobName);
+        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText(),
+                "Project " + jobName);
+    }
 }

@@ -7,9 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import javax.swing.*;
-import java.text.DateFormat;
-
+import java.time.Duration;
 import static org.testng.AssertJUnit.assertEquals;
 
 
@@ -38,6 +36,15 @@ public class FolderTest extends BaseTest {
 
     private void getDashboardLink() {
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+    }
+
+    private void createFolderAddReturnToDashboard(String folderName) {
+        getDriver().findElement(By.className("task-link")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
     }
 
     private WebElement findJobByName(String name) {
@@ -213,6 +220,29 @@ public class FolderTest extends BaseTest {
         boolean okButtonDisabled = "true".equals(okButton.getAttribute("disabled"));
 
         Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
+    }
+
+    @Test
+    public void testAddDisplayName() {
+        final String folderDisplayName = "Best folder";
+
+        createFolderAddReturnToDashboard(FOLDER_NAME);
+
+        WebElement folder = getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a"));
+        new Actions(getDriver())
+                .moveToElement(folder)
+                .click()
+                .perform();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/configure']")).click();
+        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderDisplayName);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+
+        String folderName = getDriver()
+                .findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a/span"))
+                .getText();
+
+        Assert.assertEquals(folderName, folderDisplayName);
     }
 
     @Test

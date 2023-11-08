@@ -1,11 +1,16 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +35,29 @@ public class MultibranchPipeline4Test extends BaseTest {
     }
 
     @Test
+    public void testErrorForUnsafeChar() {
+        createMultibranchPipelin(NAME);
+        getDashboardLink();
+        goMultibranchPipelinePage();
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED + "!");
+
+        Actions actions = new Actions(getDriver());
+        WebElement element = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
+        actions.moveToElement(element).moveByOffset(100, 50).click().build().perform();
+
+        WebElement error_message = getDriver().findElement(By.xpath("//div[@class='error']"));
+
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        wait.until(d -> error_message.isDisplayed());
+
+        Assert.assertEquals(error_message.getText(), "‘!’ is an unsafe character");
+    }
+
+    @Test
     public void testRenameUsingSidebar() {
         createMultibranchPipelin(NAME);
         getDashboardLink();
@@ -41,7 +69,7 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'"+RENAMED+"')]")).getText(), RENAMED);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'" + RENAMED + "')]")).getText(), RENAMED);
     }
 
     @Test

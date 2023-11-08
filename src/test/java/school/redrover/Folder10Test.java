@@ -11,14 +11,13 @@ public class Folder10Test extends BaseTest {
 
     @Test
     public void testCreate() {
-
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(NEW_ITEM_NAME);
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NEW_ITEM_NAME);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
 
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.id("jenkins-home-link")).click();
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + NEW_ITEM_NAME + "/']")).click();
 

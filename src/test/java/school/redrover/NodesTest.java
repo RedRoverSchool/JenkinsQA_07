@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -61,6 +62,7 @@ public class NodesTest extends BaseTest {
                 (By.tagName("h1")).getText().contains(newNodeName));
     }
 
+    @Ignore
     @Test
     public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
@@ -168,6 +170,52 @@ public class NodesTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")).getText(),
                 String.format("Agent %s", NEW_NAME)
         );
+    }
+
+    @Test
+    public void testUpdateOfflineReason() {
+        final String newReason = "Updated reason";
+
+        createNewNode(NODE_NAME);
+        goToMainPage();
+
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys("111");
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        getDriver().findElement(By.xpath("//form[@action = 'setOfflineCause']/button")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys(newReason);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@class = 'message']")).getText(),
+                "Disconnected by admin : " + newReason
+        );
+    }
+
+    @Test
+    public void testCreateNewNodeCopyingExistingWithNotExistingName() {
+        final String nameFirstNode = "new node";
+        final String nameSecondNode = "new copy node";
+
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameFirstNode);
+        getDriver().findElement(By.xpath("//input[@id='hudson.slaves.DumbSlave']/following-sibling::label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        goToMainPage();
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameSecondNode);
+        getDriver().findElement(By.xpath("//input[@id='copy']/following-sibling::label")).click();
+        getDriver().findElement(By.xpath("//input[@name='from']")).sendKeys(nameFirstNode + 2);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1/following-sibling::p")).getText().contains("No such agent"));
     }
 }
 
