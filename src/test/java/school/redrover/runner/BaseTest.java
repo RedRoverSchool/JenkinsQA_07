@@ -103,9 +103,7 @@ public abstract class BaseTest {
             ProjectUtils.takeScreenshot(driver, method.getName(), this.getClass().getName());
         }
 
-        if ((!ProjectUtils.isServerRun() && (testResult.isSuccess() || ProjectUtils.closeBrowserIfError()))
-            || (ProjectUtils.isServerRun() && (!testResult.isSuccess() || methodsOrder.isGroupFinished(method))))
-        {
+        if (methodsOrder.isGroupFinished(method) && !(!ProjectUtils.isServerRun() && !testResult.isSuccess() && !ProjectUtils.closeBrowserIfError())) {
             stopDriver();
         }
 
