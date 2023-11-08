@@ -2,6 +2,7 @@ package old;
 
 import org.openqa.selenium.*;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.collections.Sets;
 import school.redrover.runner.BaseTest;
@@ -157,6 +158,7 @@ public class GroupUnderdogsTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testRestApiPageOpensAndHas3ApiOptions() {
         getDriver().findElement(

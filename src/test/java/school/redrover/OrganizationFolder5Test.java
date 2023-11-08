@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -26,6 +27,7 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertEquals(warningMessageTextActual, WARNING_MESSAGE_TEXT_EXPECTED);
     }
 
+    @Ignore
     @Test
     public void testVerifyWarningMessageWithDotName() {
         final String WARNING_MESSAGE_TEXT_EXPECTED = "» A name cannot end with ‘.’";

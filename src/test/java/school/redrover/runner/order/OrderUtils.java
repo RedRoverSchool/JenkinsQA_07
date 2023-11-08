@@ -90,7 +90,7 @@ public final class OrderUtils {
         }
 
         public List<T> getGroupList(T method) {
-            return new ArrayList<>(this.methodListMap.get(method));
+            return new ArrayList<>(Optional.ofNullable(this.methodListMap.get(method)).orElse(List.of()));
         }
 
         public boolean isGroupFinished(T method) {
