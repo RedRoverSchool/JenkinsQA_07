@@ -1,14 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
 
-    private static final String NODE_NAME = "new node";
+    private static final String NODE_NAME = "New node";
 
     private void createNewNode(String nodeName) {
         getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
@@ -26,14 +26,14 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
-    private void goToConfigureNodePage(String nodeName) {
-        getDriver().findElement(By.xpath("//span[text()='" + nodeName +"']")).click();
+    private void goToConfigureNodePage() {
+        goToMainPage();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
     }
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
-
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
         getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
@@ -62,7 +62,6 @@ public class NodesTest extends BaseTest {
                 (By.tagName("h1")).getText().contains(newNodeName));
     }
 
-    @Ignore
     @Test
     public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
@@ -72,7 +71,7 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
 
         Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".error")).getText(),
+                getWait2().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector(".error")))).getText(),
                 "‘!’ is an unsafe character");
     }
 
@@ -104,13 +103,13 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testCreateNodeByCopyingExistingNode() {
-        createNewNode(NODE_NAME);
+        final String newNode = "Copy node";
 
         getDriver().findElement(By.linkText("Build Executor Status")).click();
         getDriver().findElement(By.linkText("New Node")).click();
-        getDriver().findElement(By.id("name")).sendKeys("copy");
+        getDriver().findElement(By.id("name")).sendKeys(newNode);
         getDriver().findElement(By.xpath("//label[@for='copy']")).click();
         getDriver().findElement(By.name("from")).sendKeys(NODE_NAME);
         getDriver().findElement(By.name("Submit")).click();
@@ -118,9 +117,9 @@ public class NodesTest extends BaseTest {
 
         goToNodesPage();
 
-        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_copy']//a")).getText();
+        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + newNode + "']//a")).getText();
 
-        Assert.assertEquals(actualNodeName, "copy");
+        Assert.assertEquals(actualNodeName, newNode);
     }
 
     @Test
@@ -136,15 +135,12 @@ public class NodesTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(
                 By.xpath("//h1")).getText().contains(NODE_NAME));
-
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testMarkNodeTemporarilyOffline() {
-        createNewNode(NODE_NAME);
-        goToMainPage();
-
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getWait2().until(ExpectedConditions.visibilityOf(
+                getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")))).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
@@ -154,21 +150,19 @@ public class NodesTest extends BaseTest {
         );
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testRenameNodeWithValidName() {
-        final String NEW_NAME = "renamed node";
+        final String new_name = "Renamed node";
 
-        createNewNode(NODE_NAME);
-        goToMainPage();
-        goToConfigureNodePage(NODE_NAME);
+        goToConfigureNodePage();
 
         getDriver().findElement(By.name("_.name")).clear();
-        getDriver().findElement(By.name("_.name")).sendKeys(NEW_NAME);
+        getDriver().findElement(By.name("_.name")).sendKeys(new_name);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")).getText(),
-                String.format("Agent %s", NEW_NAME)
+                String.format("Agent %s", new_name)
         );
     }
 
@@ -218,4 +212,3 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//h1/following-sibling::p")).getText().contains("No such agent"));
     }
 }
-
