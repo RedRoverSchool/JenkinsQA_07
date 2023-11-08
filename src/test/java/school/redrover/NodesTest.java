@@ -194,5 +194,28 @@ public class NodesTest extends BaseTest {
                 "Disconnected by admin : " + newReason
         );
     }
+
+    @Test
+    public void testCreateNewNodeCopyingExistingWithNotExistingName() {
+        final String nameFirstNode = "new node";
+        final String nameSecondNode = "new copy node";
+
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameFirstNode);
+        getDriver().findElement(By.xpath("//input[@id='hudson.slaves.DumbSlave']/following-sibling::label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        goToMainPage();
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameSecondNode);
+        getDriver().findElement(By.xpath("//input[@id='copy']/following-sibling::label")).click();
+        getDriver().findElement(By.xpath("//input[@name='from']")).sendKeys(nameFirstNode + 2);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1/following-sibling::p")).getText().contains("No such agent"));
+    }
 }
 
