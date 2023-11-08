@@ -68,12 +68,6 @@ public abstract class BaseTest {
 
     @BeforeMethod
     protected void beforeMethod(Method method) {
-        startDriver();
-
-        clearData();
-        getWeb();
-        loginWeb();
-
         ProjectUtils.logf("Run %s.%s", this.getClass().getName(), method.getName());
         try {
             if (!methodsOrder.isGroupStarted(method) || methodsOrder.isGroupFinished(method)) {
@@ -98,7 +92,7 @@ public abstract class BaseTest {
             ProjectUtils.takeScreenshot(driver, method.getName(), this.getClass().getName());
         }
 
-        if ((!ProjectUtils.isServerRun() && !testResult.isSuccess() && ProjectUtils.closeBrowserIfError())
+        if ((!ProjectUtils.isServerRun() && (testResult.isSuccess() || ProjectUtils.closeBrowserIfError()))
             || (ProjectUtils.isServerRun() && (!testResult.isSuccess() || methodsOrder.isGroupFinished(method))))
         {
             stopDriver();
