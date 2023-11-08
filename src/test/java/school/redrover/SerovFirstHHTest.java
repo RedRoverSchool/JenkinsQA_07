@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
             WebDriver driver = new ChromeDriver();
             driver.get("https://hh.ru/");
 
-            try {
+
                 WebElement getHelpButton = driver.findElement(By.xpath("//button[@class='supernova-link-switch' and @data-qa='mainmenu_help']"));
                 getHelpButton.click();
 
@@ -32,9 +32,9 @@ import org.testng.annotations.Test;
 
                 Thread.sleep(5000);
 
-            } finally {
+
                 driver.quit();
             }
         }
-    }
+
 
