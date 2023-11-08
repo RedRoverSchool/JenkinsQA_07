@@ -254,14 +254,15 @@ public class PipelineTest extends BaseTest {
         saveConfiguration();
 
         clickBuildNow();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(getDriver()
-                .findElement(By.xpath("//span[@class='badge']/a[text()='#1']"))));
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='badge']/a[text()='#1']")));
+
         Actions actions = new Actions(getDriver());
         actions.moveToElement(getDriver().findElement(
                 By.xpath("//tbody[@class='tobsTable-body']//div[@class='duration']"))).perform();
-        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")))).click();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']"))).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//pre[@class='console-output']")).getText(),
                 "Hello World");
