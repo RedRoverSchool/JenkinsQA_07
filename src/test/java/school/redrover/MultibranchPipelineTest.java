@@ -15,12 +15,12 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
 
-    private void createMultibranchPipeline(String MULTIBRANCH_PIPELINE_NAME) {
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+    private void createMultibranchPipeline(String pipelineName) {
+        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.linkText("Dashboard")).click();
     }
 
@@ -32,15 +32,6 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']"))
                 .click();
         getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void createSecondMultibranchPipeline() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
-        getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.linkText("Dashboard")).click();
     }
 
     @Test
@@ -156,7 +147,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testDeleteMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        createSecondMultibranchPipeline();
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NEW_NAME);
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + MULTIBRANCH_PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/delete']")).click();
