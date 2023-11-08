@@ -326,12 +326,13 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualStageNames, stageNames);
     }
 
-    @Test(dependsOnMethods = "testCreatePipeline")
+    @Test
     public void testBuildWithStringParameter() {
         final String parameterName = "textParam";
         final String parameterValue = "some text";
         final String scriptText = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
 
+        createPipeline(PIPELINE_NAME, false);
         clickConfigure();
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
