@@ -7,12 +7,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +35,11 @@ public class PipelineTest extends BaseTest {
 
     private void clickBuildNow() {
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
+    }
+
+    private void clickConfigure() {
+        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
+                .click();
     }
 
     private void goToDashboard() {
@@ -321,5 +324,34 @@ public class PipelineTest extends BaseTest {
                 .collect(Collectors.toList());
 
         Assert.assertEquals(actualStageNames, stageNames);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipeline")
+    public void testBuildWithStringParameter() {
+        final String parameterName = "textParam";
+        final String parameterValue = "some text";
+        final String scriptText = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
+
+        clickConfigure();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click()",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        getDriver().findElement(By.id("yui-gen1-button")).click();
+        getDriver().findElement(By.id("yui-gen10")).click();
+
+        getDriver().findElement(By.name("parameter.name")).sendKeys(parameterName);
+        getDriver().findElement(By.className("ace_text-input")).sendKeys(scriptText);
+        clickSaveConfiguration();
+
+        clickBuildNow();
+        getDriver().findElement(By.name("value")).sendKeys(parameterValue);
+        getDriver().findElement(
+                By.xpath("//button[@class='jenkins-button jenkins-button--primary jenkins-!-build-color']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='pane build-name']/a[text()='#1']"))).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, '/console')]")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.className("console-output")).getText().contains(parameterValue));
     }
 }
