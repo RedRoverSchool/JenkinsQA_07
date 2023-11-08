@@ -17,7 +17,6 @@ public class Multiconfigurationproject12Test extends BaseTest {
     }
 
     private void createProject() {
-
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECTNAME);
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
