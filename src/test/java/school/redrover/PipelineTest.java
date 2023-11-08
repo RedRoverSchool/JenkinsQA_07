@@ -300,7 +300,7 @@ public class PipelineTest extends BaseTest {
                 .click();
         getDriver().navigate().refresh();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']/a")).getText()
+        Assert.assertTrue(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']")).getText()
                 .contains(upstreamPipelineName));
     }
 
