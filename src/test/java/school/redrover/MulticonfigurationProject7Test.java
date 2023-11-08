@@ -7,6 +7,7 @@ import school.redrover.runner.BaseTest;
 
 public class MulticonfigurationProject7Test extends BaseTest {
     private final String PROJECT_NAME = "hero builds";
+
     @Test
     public void testCreateMulticonfiguratiobProject() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -23,7 +24,7 @@ public class MulticonfigurationProject7Test extends BaseTest {
 
         //The last one assert — Navigate to the configuration page of the created project Multiconfiguration;
         Assert.assertEquals(getDriver().findElement
-                (By.xpath("//h1")).getText(),"Project " + PROJECT_NAME);
+                (By.xpath("//h1")).getText(), "Project " + PROJECT_NAME);
     }
 
 }
