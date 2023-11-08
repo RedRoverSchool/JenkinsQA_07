@@ -349,7 +349,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//button[@class='jenkins-button jenkins-button--primary jenkins-!-build-color']")).click();
         getDriver().navigate().refresh();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='pane build-name']/a[text()='#1']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='badge']/a[text()='#1']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, '/console')]")).click();
 
         Assert.assertTrue(getDriver().findElement(By.className("console-output")).getText().contains(parameterValue));
