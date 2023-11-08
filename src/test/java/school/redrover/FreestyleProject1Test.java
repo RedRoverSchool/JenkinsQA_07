@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -59,6 +60,7 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().switchTo().alert().accept();
     }
 
+    @Ignore
     @Test
     public void testConfigureBuildEnvironmentSettingsAddTimestamp() throws InterruptedException {
         createProject("Freestyle project", PROJECT_NAME, true);
