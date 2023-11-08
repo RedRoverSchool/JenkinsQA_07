@@ -200,10 +200,16 @@ public class FreestyleProjectSeTest extends BaseTest {
                 inputText);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testDescriptionPreviewAppears")
+    @Test
     public void testDescriptionPreviewHides() {
-        getDriver().findElement(By.xpath("//a[@class = 'textarea-hide-preview']")).click();
+        createAnItem("Freestyle project");
+        final String inputText = "This project describes smth";
+
+        hoverClickInput("//textarea[@name = 'description']", inputText);
+
+        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
+
+        hoverClick("//a[@class = 'textarea-hide-preview']");
 
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//div[@class = 'textarea-preview']"))
