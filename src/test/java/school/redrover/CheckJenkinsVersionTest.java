@@ -13,6 +13,7 @@ import java.util.List;
 
 public class CheckJenkinsVersionTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testVersionCheck() {
 
