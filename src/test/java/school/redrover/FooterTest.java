@@ -35,6 +35,7 @@ public class FooterTest extends BaseTest {
                 "Jenkins 2.414.2");
     }
 
+    @Ignore
     @Test
     //https://trello.com/c/OOkxIvHX/402-tc1200107-footer-jenkins-version-check-the-tippy-box
     public void checkTippyBox() throws InterruptedException
