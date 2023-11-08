@@ -14,6 +14,7 @@ public class Folder6Test extends BaseTest {
     private static final String EMPTY_NAME = "";
     private static final String INVALID_NAME = ".";
     private static final String NEW_VALID_NAME = "Folder2";
+    private static final String NAME_FOR_BOUNDARY_VALUES = "A";
 
     private void utilsCreate(String folderName) {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
@@ -32,11 +33,14 @@ public class Folder6Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href = '/job/" + folderName + "/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
     }
+    private void utilsGoNameField() {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+    }
 
     @Test
     public void testCreateEmptyName() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        utilsGoNameField();
 
         getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(EMPTY_NAME);
 
@@ -45,15 +49,15 @@ public class Folder6Test extends BaseTest {
 
     @Test
     public void testCreateValidName() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        utilsGoNameField();
 
         getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(VALID_NAME);
         getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
 
         utilsGoDashboard();
+        boolean findName = getDriver().findElement(By.xpath("//tr[@id = 'job_" + VALID_NAME + "']")).isDisplayed();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(), VALID_NAME);
+        Assert.assertTrue(findName);
     }
 
     @Test
@@ -67,16 +71,16 @@ public class Folder6Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
 
         utilsGoDashboard();
+        boolean findName = getDriver().findElement(By.xpath("//tr[@id = 'job_" + NEW_VALID_NAME + "']")).isDisplayed();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(), NEW_VALID_NAME);
+        Assert.assertTrue(findName);
     }
 
     @Test
     public void testCreateNameSpecialCharacters() {
-        List<String> invalidNames = Arrays.asList("&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";");
+        List<String> invalidNames = Arrays.asList("#", "&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";");
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        utilsGoNameField();
 
         WebElement inputName = getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']"));
 
@@ -99,5 +103,29 @@ public class Folder6Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@role = 'searchbox']")).sendKeys(VALID_NAME + "\n");
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'error']")).getText(), "Nothing seems to match.");
+    }
+
+    @Test
+    public void testBoundaryValuesName() {
+        utilsGoNameField();
+
+        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(NAME_FOR_BOUNDARY_VALUES.repeat(1));
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+        getDriver().findElement(By.xpath("//h1[text() = 'Configuration']"));
+
+        utilsGoDashboard();
+        utilsGoNameField();
+
+        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(NAME_FOR_BOUNDARY_VALUES.repeat(255));
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+        getDriver().findElement(By.xpath("//h1[text() = 'Configuration']"));
+
+        utilsGoDashboard();
+        utilsGoNameField();
+
+        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(NAME_FOR_BOUNDARY_VALUES.repeat(256));
+        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 }
