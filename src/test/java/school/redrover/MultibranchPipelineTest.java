@@ -20,10 +20,9 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
         getDriver().findElement(By.linkText("Dashboard")).click();
     }
-
 
     private void createMultibranchPipelineWithCreateAJob() {
 
