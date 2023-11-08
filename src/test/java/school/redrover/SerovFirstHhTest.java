@@ -11,6 +11,7 @@ public class SerovFirstHhTest {
     public void  testHHFunctions() throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
+
         driver.get("https://hh.ru/");
 
         try {
