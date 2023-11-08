@@ -333,7 +333,6 @@ public class PipelineTest extends BaseTest {
         final String scriptText = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
 
         createPipeline(PIPELINE_NAME, false);
-        clickConfigure();
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click()",
