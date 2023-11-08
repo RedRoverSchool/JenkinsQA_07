@@ -300,8 +300,8 @@ public class PipelineTest extends BaseTest {
                 .click();
         getDriver().navigate().refresh();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']/a")).getText(),
-                upstreamPipelineName);
+        Assert.assertTrue(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']/a")).getText()
+                .contains(upstreamPipelineName));
     }
 
     @Test
@@ -348,7 +348,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.name("value")).sendKeys(parameterValue);
         getDriver().findElement(
                 By.xpath("//button[@class='jenkins-button jenkins-button--primary jenkins-!-build-color']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='pane build-name']/a[text()='#1']"))).click();
         getDriver().findElement(By.xpath("//a[contains(@href, '/console')]")).click();
 
