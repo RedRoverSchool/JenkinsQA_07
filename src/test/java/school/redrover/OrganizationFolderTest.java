@@ -43,14 +43,12 @@ public class OrganizationFolderTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateWithValidName")
     public void testDeleteOrganizationFolder() {
-        final String folderName = "Organization_Folder";
+        final String folderName = "MyOrganization";
 
-        creationNewOrganizationFolder(folderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//span/a[@href='/job/Organization_Folder/delete']")).click();
+        getDriver().findElement(By.xpath("//span/a[@href='/job/"+folderName+"/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
@@ -116,16 +114,13 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualResult, expectedResultWarningMessage);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatedNewOrganizationFolder")
     public void testOnDeletingOrganizationFolder() {
-        final String folderName = "OrganizationFolder";
+        final String folderName = "Organization_Folder";
         boolean deletetOK = true;
 
-        creationNewOrganizationFolder(folderName);
-
-        getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/"+folderName+"/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         try {
@@ -143,15 +138,12 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertFalse(deletetOK);
     }
-    @Test
+    @Test(dependsOnMethods = "testCreateOrganizationFolderWithValidName")
     public void testRedirectAfterDeleting() {
-        final String folderName = "OrganizationFolder";
+        final String folderName = "Project";
 
-        creationNewOrganizationFolder(folderName);
-
-        getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/"+folderName+"/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         Assert.assertTrue(getDriver().getTitle().equals("Dashboard [Jenkins]"));
