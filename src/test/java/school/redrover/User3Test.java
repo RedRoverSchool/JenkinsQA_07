@@ -27,4 +27,18 @@ public class User3Test extends BaseTest {
         );
     }
 
+    @Test(dependsOnMethods = "testCreateUser")
+    public void testConfigureUser() {
+
+        getDriver().findElement(By.xpath("//a[@href = '/asynchPeople/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/user/ivan/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
+        getDriver().findElement(By.name("description")).sendKeys("qweqwe");
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "qweqwe");
+
+    }
 }
