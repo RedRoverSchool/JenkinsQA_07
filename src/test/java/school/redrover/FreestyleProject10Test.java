@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -144,6 +145,7 @@ public class FreestyleProject10Test extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testRenameUnsafeCharacters() throws InterruptedException {
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);

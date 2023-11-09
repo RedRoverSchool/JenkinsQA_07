@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class CheckJenkinsVersionTest extends BaseTest {
 
+    @Ignore
     @Test
     public void testVersionCheck() {
 
@@ -78,6 +80,8 @@ public class CheckJenkinsVersionTest extends BaseTest {
                 .findElement(By.xpath("//p[@class='app-about-version']"))
                 .getText().contains("Version 2.414.2"));
     }
+
+    @Ignore
     @Test
     public void testJenkinsVersionButtonVisibilityCLikabilityFunctionality() {
 

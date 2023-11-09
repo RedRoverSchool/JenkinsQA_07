@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.time.Duration;
-
 import static org.testng.AssertJUnit.assertEquals;
 
 
@@ -244,6 +243,33 @@ public class FolderTest extends BaseTest {
                 .getText();
 
         Assert.assertEquals(folderName, folderDisplayName);
+    }
+
+    @Test
+    public void testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Folder");
+        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/Folder/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys("Pipeline");
+        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/Folder/job/Pipeline/build?delay=0sec']")).click();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Folder/job/Pipeline/1/console']")))
+                .perform();
+
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//a[@href='/job/Folder/job/Pipeline/1/console']")).getAttribute("tooltip"),
+                "Success > Console Output");
     }
 }
 

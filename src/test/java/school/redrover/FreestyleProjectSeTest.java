@@ -1,6 +1,5 @@
 package school.redrover;
 
-import com.beust.ah.A;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -18,12 +17,12 @@ import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectSeTest extends BaseTest {
-    private boolean isItemTitleExists(String itemName){
+    private boolean isItemTitleExists(String itemName) {
         List<WebElement> itemsList = getDriver().findElements(By.cssSelector(".jenkins-table__link.model-link.inside span"));
         boolean res = false;
-        if(itemsList.isEmpty()){
+        if (itemsList.isEmpty()) {
             return res;
-        }else {
+        } else {
             for (WebElement e : itemsList) {
                 if (e.getText().equals(itemName)) {
                     res = true;
@@ -42,7 +41,6 @@ public class FreestyleProjectSeTest extends BaseTest {
         if (isItemTitleExists(createdItemName)) {
             int randInt = ((int) (Math.random() * 100));
             createdItemName = createdItemName + randInt;
-
         } else {
             createdItemName = createdItemName;
         }
@@ -66,6 +64,23 @@ public class FreestyleProjectSeTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
+    private void hoverClickInput(String xpathLocator, String inputText) {
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath(xpathLocator)))
+                .click()
+                .sendKeys(inputText)
+                .perform();
+    }
+
+    private void hoverClick(String xpathLocator) {
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath(xpathLocator)))
+                .click()
+                .perform();
+    }
+
     @Test
     public void testSettingsOfDiscardOldBuildsIsDisplayed() {
         createAnItem("Freestyle project");
@@ -77,6 +92,7 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .form-container.tr"))
                 .getAttribute("style"), "");
     }
+
     @Test
     public void testSettingsGitIsOpened() {
         createAnItem("Freestyle project");
@@ -88,6 +104,7 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
                 .getAttribute("style"), "");
     }
+
     @Ignore
     @Test
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
@@ -123,13 +140,13 @@ public class FreestyleProjectSeTest extends BaseTest {
 
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath("//button[contains(text(), 'Add build step')]")))
+                        .findElement(By.xpath("//button[contains(text(), 'Add build step')]")))
                 .click()
                 .perform();
 
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath("//a[contains(text(), 'Execute shell')]")))
+                        .findElement(By.xpath("//a[contains(text(), 'Execute shell')]")))
                 .click()
                 .perform();
 
@@ -152,29 +169,51 @@ public class FreestyleProjectSeTest extends BaseTest {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         createAnItem("Freestyle project");
 
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                .findElement(By.xpath("//label[contains(text(), 'GitHub project')]")))
-                .click()
-                .perform();
+        hoverClick("//label[contains(text(), 'GitHub project')]");
 
-        js.executeScript("arguments[0].scrollIntoView();", getDriver()
-                .findElement(By.name("_.projectUrlStr")));
+        js.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(By.name("_.projectUrlStr")));
 
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                .findElement(By.xpath("//*[@id='main-panel']/form/div[1]/section[1]/div[6]/div[3]/div[2]/div[1]/button")))
-                .click()
-                .perform();
+        hoverClick("//*[@id='main-panel']/form/div[1]/section[1]/div[6]/div[3]/div[2]/div[1]/button");
 
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                .findElement(By.xpath("//input[@name = '_.displayName']")))
-                .click()
-                .sendKeys("GitHubURL")
-                .perform();
+        hoverClickInput("//input[@name = '_.displayName']", "GitHubURL");
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//span[@class = 'jenkins-edited-section-label']")).getText().trim(), "Edited");
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//span[@class = 'jenkins-edited-section-label']"))
+                .getText()
+                .trim(),
+                "Edited");
+    }
+
+    @Test
+    public void testDescriptionPreviewAppears() {
+        createAnItem("Freestyle project");
+        final String inputText = "This project describes smth";
+
+        hoverClickInput("//textarea[@name = 'description']", inputText);
+
+        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//div[@class = 'textarea-preview']"))
+                .getText(),
+                inputText);
+    }
+
+    @Test
+    public void testDescriptionPreviewHides() {
+        createAnItem("Freestyle project");
+        final String inputText = "This project describes smth";
+
+        hoverClickInput("//textarea[@name = 'description']", inputText);
+
+        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
+
+        hoverClick("//a[@class = 'textarea-hide-preview']");
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//div[@class = 'textarea-preview']"))
+                .getCssValue("display"),
+                "none");
     }
 }
-
