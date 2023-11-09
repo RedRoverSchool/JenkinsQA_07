@@ -104,7 +104,7 @@ public class NodesTest extends BaseTest {
         );
     }
 
-    @Test(dependsOnMethods = {"testCreateNewNodeWithValidNameFromMainPanel", "testCreateNodeByCopyingExistingNode", "testMarkNodeTemporarilyOffline"})
+    @Test(dependsOnMethods = {"testCreateNodeByCopyingExistingNode", "testMarkNodeTemporarilyOffline"})
     public void testRenameNodeWithValidName() {
         final String new_name = "Renamed node";
 
