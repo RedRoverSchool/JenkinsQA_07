@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class RestApiLinkTest5 extends BaseTest {
+public class RestApiLink5Test extends BaseTest {
     @Test
     public void testRestApiLinkClickable() {
         getDriver().findElement(By.id("executors")).click();
