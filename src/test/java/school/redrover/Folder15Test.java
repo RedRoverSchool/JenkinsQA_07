@@ -7,6 +7,7 @@ import school.redrover.runner.BaseTest;
 
 public class Folder15Test extends BaseTest {
     private final static String NEW_NAME_FOLDER = "TestFolder";
+
     private void createNewFolder(String folderName) {
         getDriver().findElement(By.xpath("//a [@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(folderName);
@@ -15,22 +16,26 @@ public class Folder15Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
+
     private void createFreestPro(String nameFreestyleProject) {
         getDriver().findElement(By.id("name")).sendKeys(nameFreestyleProject);
         getDriver().findElement(By.xpath("//img[@class='icon-freestyle-project icon-xlg']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
     }
+
     private void AddDescriptionFolder(String descriptionText){
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(descriptionText);
         getDriver().findElement(By.name("Submit")).click();
     }
+
     @Test
     public void testCreateNewFolder() {
         createNewFolder("WorkFolder");
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(), 'WorkFolder')]")).getText(), "WorkFolder");
     }
+
     @Test
     public void testCreateNewJob() {
         createNewFolder("WorkFolder123");
@@ -45,6 +50,7 @@ public class Folder15Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(), 'MyFreestyleProject')]")).getText(),"MyFreestyleProject");
     }
+
     @Test
     public void testRenameFolder() {
         createNewFolder("FolderJob");
@@ -58,6 +64,7 @@ public class Folder15Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'TestFolder')]")).getText(), NEW_NAME_FOLDER);
     }
+
     @Test
     public void testAddDescriptionFolder() {
         createNewFolder("OfficeFolder");
@@ -66,6 +73,7 @@ public class Folder15Test extends BaseTest {
         AddDescriptionFolder("New description");
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"description\"]/div[1]")).getText(), "New description");
     }
+
     @Test
     public void testEditDescriptionFolder() {
         createNewFolder("OfficeFolder");
@@ -77,5 +85,17 @@ public class Folder15Test extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys("New description edited");
         getDriver().findElement(By.name("Submit")).click();
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),"New description edited");
+    }
+
+    @Test
+    public void testDeleteDescriptionFolder() {
+        createNewFolder("OfficeFolder");
+        getDriver().findElement(By.xpath("//span[contains(text(), 'OfficeFolder')]")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(
+                "#description > div:nth-child(1)")).getText(),"");
     }
 }
