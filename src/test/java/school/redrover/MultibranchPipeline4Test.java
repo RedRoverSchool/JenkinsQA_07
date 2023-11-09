@@ -69,7 +69,8 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'" + RENAMED + "')]")).getText(), RENAMED);
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//*[contains(text(),'" + RENAMED + "')]")).getText(), RENAMED);
     }
 
     @Test(dependsOnMethods = "testRenameUsingSidebar")
