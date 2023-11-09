@@ -26,12 +26,13 @@ public class PluginsTest extends BaseTest {
         for (WebElement plugin : plugins) {
             String content = additionalUtils.findTextInPseudoElement(getDriver(), plugin,"::before");
             content = content.replaceAll("^\"|\"$", "");
+            System.out.println(content);
 
             if ("Ant Plugin".contains(content)) {
                 foundAntPlugin = true;
                 break;
             }
         }
-        Assert.assertTrue(foundAntPlugin, "Ant Plugin");
+        Assert.assertTrue(foundAntPlugin);
     }
 }

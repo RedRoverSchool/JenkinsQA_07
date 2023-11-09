@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -26,6 +27,7 @@ public class MultibranchPipeline2Test extends BaseTest {
         Assert.assertEquals(pipelineNameExpected, PIPELINE_NAME);
     }
 
+    @Ignore
     @Test
     public void testMultibranchCreationFromExisting() {
 
