@@ -1,12 +1,19 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class Nodes2Test extends BaseTest {
     final String NODE_NAME = "Node Name";
+
+    private void goDashboard() {
+        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a"));
+    }
 
     private void createNode() {
 
@@ -42,8 +49,7 @@ public class Nodes2Test extends BaseTest {
         final String RENAMED_NODE_NAME = "Renamed Node";
 
         createNode();
-
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a"));
+        goDashboard();
 
         getDriver().findElement(By.xpath("//*[@id='executors']/div[1]")).click();
 
@@ -60,6 +66,22 @@ public class Nodes2Test extends BaseTest {
                 RENAMED_NODE_NAME
         );
 
+    }
+
+    @Test
+    public void testDeleteNode() {
+        createNode();
+        goDashboard();
+
+        getDriver().findElement(By.xpath("//*[@id='executors']/div[1]")).click();
+
+        getDriver().findElement(By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]")).click();
+        getDriver().switchTo().alert().accept();
+
+        List<WebElement> elements = getDriver().findElements(
+                By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a"));
+        Assert.assertTrue(elements.isEmpty());
     }
 
 }
