@@ -46,23 +46,6 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testRenameNodeValidName() {
-        final String nodeName = "TestNode";
-        final String newNodeName = "TestNodeRename";
-
-        createNewNode(nodeName);
-
-        getDriver().findElement(By.xpath("//tr[@id = 'node_" + nodeName + "']//a")).click();
-        getDriver().findElement(By.xpath("//a[@href= '/computer/" + nodeName + "/configure']")).click();
-
-        getDriver().findElement(By.name("_.name")).sendKeys(newNodeName);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement
-                (By.tagName("h1")).getText().contains(newNodeName));
-    }
-
-    @Test
     public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
 
@@ -73,19 +56,6 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(
                 getWait2().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector(".error")))).getText(),
                 "‘!’ is an unsafe character");
-    }
-
-    @Test
-    public void testCreateNewNodeByBuildExecutorInSidePanelMenu() {
-        goToNodesPage();
-        getDriver().findElement(By.linkText("New Node")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-
-        Assert.assertTrue(getDriver().findElement(
-                By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).getText().contains(NODE_NAME));
     }
 
     @Test
@@ -122,25 +92,9 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, newNode);
     }
 
-    @Test
-    public void testCreateNewNodeFromNodesSectionInManageJenkinsPage() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
-        getDriver().findElement(By.linkText("New Node")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).click();
-
-        Assert.assertTrue(getDriver().findElement(
-                By.xpath("//h1")).getText().contains(NODE_NAME));
-    }
-
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testMarkNodeTemporarilyOffline() {
-        getWait2().until(ExpectedConditions.visibilityOf(
-                getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")))).click();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
@@ -150,7 +104,7 @@ public class NodesTest extends BaseTest {
         );
     }
 
-    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
+    @Test(dependsOnMethods = {"testCreateNewNodeWithValidNameFromMainPanel", "testCreateNodeByCopyingExistingNode", "testMarkNodeTemporarilyOffline"})
     public void testRenameNodeWithValidName() {
         final String new_name = "Renamed node";
 
@@ -164,6 +118,51 @@ public class NodesTest extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")).getText(),
                 String.format("Agent %s", new_name)
         );
+    }
+
+    @Test
+    public void testRenameNodeValidName() {
+        final String nodeName = "TestNode";
+        final String newNodeName = "TestNodeRename";
+
+        createNewNode(nodeName);
+
+        getDriver().findElement(By.xpath("//tr[@id = 'node_" + nodeName + "']//a")).click();
+        getDriver().findElement(By.xpath("//a[@href= '/computer/" + nodeName + "/configure']")).click();
+
+        getDriver().findElement(By.name("_.name")).sendKeys(newNodeName);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement
+                (By.tagName("h1")).getText().contains(newNodeName));
+    }
+
+    @Test
+    public void testCreateNewNodeByBuildExecutorInSidePanelMenu() {
+        goToNodesPage();
+        getDriver().findElement(By.linkText("New Node")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+
+        Assert.assertTrue(getDriver().findElement(
+                By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).getText().contains(NODE_NAME));
+    }
+
+    @Test
+    public void testCreateNewNodeFromNodesSectionInManageJenkinsPage() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
+        getDriver().findElement(By.linkText("New Node")).click();
+        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).click();
+
+        Assert.assertTrue(getDriver().findElement(
+                By.xpath("//h1")).getText().contains(NODE_NAME));
     }
 
     @Test
