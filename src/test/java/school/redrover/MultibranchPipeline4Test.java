@@ -35,6 +35,7 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[normalize-space()='" + str + "']")).click();
     }
 
+
     @Test(dependsOnMethods = "testRenameResultOnPageHeading")
     public void testErrorForUnsafeChar() {
         goMultibranchPipelinePage(NAME);
