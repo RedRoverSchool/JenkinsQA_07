@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -352,5 +353,36 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, '/console')]")).click();
 
         Assert.assertTrue(getDriver().findElement(By.className("console-output")).getText().contains(parameterValue));
+    }
+
+    @Test
+    public void testVerifyChoiceParameterCanBeSet() {
+
+        createPipeline(PIPELINE_NAME, false);
+        List<String> parameterChoices = Arrays.asList("one", "two");
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click()",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        getDriver().findElement(By.id("yui-gen1-button")).click();
+        getDriver().findElement(By.id("yui-gen4")).click();
+        getDriver().findElement(By.name("parameter.name")).sendKeys("parameterName");
+        for (int i = 0; i < parameterChoices.size(); i++) {
+            if (i != parameterChoices.size() - 1) {
+                getDriver().findElement(By.name("parameter.choices")).sendKeys(parameterChoices.get(i) + "\n");
+            } else {
+                getDriver().findElement(By.name("parameter.choices")).sendKeys(parameterChoices.get(i));
+            }
+        }
+        clickSaveConfiguration();
+
+        clickBuildNow();
+
+        List<String> buildParameters = getDriver().findElements(By.xpath("//select[@name='value']/option"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(buildParameters, parameterChoices);
     }
 }
