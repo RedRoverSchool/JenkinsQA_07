@@ -21,11 +21,9 @@ public class User3Test extends BaseTest {
         getDriver().findElement(By.name("email")).sendKeys("hotmail@hotmail.ru");
         getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button")).click();
 
-        getDriver().findElement(By.xpath("//a[contains(@href,'" + NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'user/" + NAME + "/configure')]")).click();
 
         Assert.assertEquals(
-                getDriver().findElement(By.name("_.fullName")).getAttribute("value"), NAME
+                getDriver().findElement(By.xpath("//td[contains(text(),'" + NAME + "')]")).getText(), NAME
         );
     }
 
