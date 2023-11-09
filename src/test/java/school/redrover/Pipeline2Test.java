@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -11,18 +12,21 @@ import java.util.List;
 
 public class Pipeline2Test extends BaseTest {
 
+    private final String JOB_NAME = "NewPipeline";
+
     private void createAPipeline(String jobName) {
         getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(jobName);
+        getWait5().until(ExpectedConditions.presenceOfElementLocated(By.id("name"))).sendKeys(jobName);
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
 
-        getDriver().findElement(By.name("Submit")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
     }
 
-    private void goDashboardByBreadcrumb() {
-        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
+    private void goMainPageByBreadcrumb() {
+        getDriver().findElement(By.xpath("//div[@id = 'breadcrumbBar']//a[@href = '/']")).click();
+        getWait5().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"),1));
     }
 
     private void runHelloWorldBuildInPipeline(String jobName) throws InterruptedException {
@@ -44,32 +48,28 @@ public class Pipeline2Test extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + jobName + "/configure']")).click();
         getDriver().findElement(By.xpath("//label[contains(text(), '" + checkboxText + "')]")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
     }
 
     @Test
     public void testCreate() {
-        final String jobName = "New_Pipeline";
+        createAPipeline(JOB_NAME);
+        goMainPageByBreadcrumb();
 
-        createAPipeline(jobName);
-
-        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href='/']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), jobName);
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(),
+                JOB_NAME);
     }
 
-    @Test
+    @Test (dependsOnMethods = "testCreate")
     public void testDelete() {
-        final String jobName = "MyPipeline";
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td/a[@href ='job/" + JOB_NAME + "/']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Delete')]"))).click();
 
-        createAPipeline(jobName);
+        getWait2().until(ExpectedConditions.alertIsPresent()).accept();
 
-        getDriver().findElement(By.xpath("//li[@class = 'jenkins-breadcrumbs__list-item']/a[@href ='/']")).click();
-
-        getDriver().findElement(By.xpath("//td/a[@href ='job/" + jobName + "/']")).click();
-        getDriver().findElement(By.xpath("//span[contains(text(),'Delete')]")).click();
-
-        getDriver().switchTo().alert().accept();
+        getWait5().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"),1));
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
     }
@@ -80,7 +80,7 @@ public class Pipeline2Test extends BaseTest {
         final String description = "Description of the Pipeline ";
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//td/a[@href ='job/" + jobName + "/']")).click();
         getDriver().findElement(By.id("description-link")).click();
@@ -96,7 +96,7 @@ public class Pipeline2Test extends BaseTest {
         final String jobName = "NewPipeline";
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
 
@@ -112,7 +112,7 @@ public class Pipeline2Test extends BaseTest {
                 "Last completed build (#1)");
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//td//a[@title = 'Schedule a Build for " + jobName + "']")).click();
         Thread.sleep(2000);
@@ -132,7 +132,7 @@ public class Pipeline2Test extends BaseTest {
         final String jobName = "Pipeline3";
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//td/a[@href = 'job/" + jobName + "/']")).click();
 
@@ -146,7 +146,7 @@ public class Pipeline2Test extends BaseTest {
         final String jobName = "PipelineForBuild";
 
         runHelloWorldBuildInPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
 
@@ -159,7 +159,7 @@ public class Pipeline2Test extends BaseTest {
         final String jobName = "NewPipeline";
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
         getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + jobName + "/configure']")).click();
@@ -190,7 +190,7 @@ public class Pipeline2Test extends BaseTest {
         final String checkboxText = "Do not allow concurrent builds";
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
         checkAGeneralSettingsCheckbox(jobName, checkboxText);
 
         getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
@@ -212,7 +212,7 @@ public class Pipeline2Test extends BaseTest {
         final String jobName = "Another_Pipeline";
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//tr[@id ='job_" + jobName + "']//a[@href = 'job/" + jobName + "/']")).click();
         getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + jobName + "/configure']")).click();
@@ -222,7 +222,7 @@ public class Pipeline2Test extends BaseTest {
 
         Assert.assertEquals(toolTips.size(), 11);
         Assert.assertEquals(toolTips.size(), checkBoxesWithTooltips.size());
-        for(int i = 0; i < toolTips.size(); i++) {
+        for (int i = 0; i < toolTips.size(); i++) {
             Assert.assertEquals("Help for feature: " + checkBoxesWithTooltips.get(i).getText(), toolTips.get(i).getAttribute("title"));
         }
     }
@@ -232,12 +232,12 @@ public class Pipeline2Test extends BaseTest {
         final String jobName = "Pipeline1";
 
         createAPipeline(jobName);
-        goDashboardByBreadcrumb();
+        goMainPageByBreadcrumb();
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/build?delay=0sec']")).click();
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         getDriver().navigate().refresh();
         List<WebElement> permalinksBuildHistory = getDriver().findElements(By.xpath("//li[@class='permalink-item']"));
 
