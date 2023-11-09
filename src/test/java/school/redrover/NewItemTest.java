@@ -4,8 +4,7 @@ import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class NewItemTest extends BaseTest {
 
@@ -58,6 +57,24 @@ public class NewItemTest extends BaseTest {
                 .findElements(By.xpath("//li[contains(text(),'" + firstProject + "')]"))
                 .isEmpty();
         assertTrue(isAutocompleteSuggested);
+    }
+
+    @Test
+    public void testNewItemCreationWithNonExistentName() {
+        final String firstProject = "Test project";
+        final String secondProject = "Test project 2";
+        final String nonExistentProject = "Test project 3";
+        createFreeStyleProject(firstProject);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(secondProject);
+        getDriver().findElement(By.id("from")).sendKeys(nonExistentProject);
+        getDriver().findElement(By.id("ok-button")).click();
+
+        String expectedErrorMessage = "Error\nNo such job: " + nonExistentProject;
+        String actualErrorMessage = getDriver().findElement(By.id("main-panel")).getText();
+        assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
 }
