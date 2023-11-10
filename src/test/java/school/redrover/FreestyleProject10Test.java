@@ -141,7 +141,7 @@ public class FreestyleProject10Test extends BaseTest {
         getDriver().findElement(By.cssSelector("a[onclick^='return build_']")).click();
         getDriver().navigate().refresh();
 
-        getDriver().findElement(By.cssSelector("a[href='lastBuild/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).click();
         getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
         getDriver().findElement(By.cssSelector("button[formnovalidate]")).click();
 
