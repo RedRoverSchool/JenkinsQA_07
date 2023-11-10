@@ -46,7 +46,6 @@ public class FreestyleProject10Test extends BaseTest {
         final String nameDescription = "Test123%#";
 
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
-
         getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(nameDescription);
@@ -56,6 +55,17 @@ public class FreestyleProject10Test extends BaseTest {
                 getDriver().findElement(By.xpath("//div[@class='jenkins-!-margin-bottom-0']/div[1]")).getText(),
                 nameDescription);
     }
+
+    @Test(dependsOnMethods = "testFreestyleProjectAddDescription")
+    public void testDeleteTheExistingDescription() {
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.cssSelector("#description-link")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
+    }
+
 
     @Test
     public void testRenameFreestyleProject() {
