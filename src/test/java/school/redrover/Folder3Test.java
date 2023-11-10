@@ -8,10 +8,10 @@ import school.redrover.runner.BaseTest;
 
 public class Folder3Test extends BaseTest {
 
-    private final String FOLDER_NAME = "Folder1";
-    private final String RENAMED_FOLDER = "RenamedFolder";
-    private final String NESTED_FOLDER = "Nested";
-    private final String JOB_NAME = "New Job";
+    private static final String FOLDER_NAME = "Folder1";
+    private static final String RENAMED_FOLDER = "RenamedFolder";
+    private static final String NESTED_FOLDER = "Nested";
+    private static final String JOB_NAME = "New Job";
 
     private void createFolder(String folderName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
