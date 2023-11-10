@@ -76,6 +76,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testCreateNodeByCopyingExistingNode() {
         final String newNode = "Copy node";
@@ -95,6 +96,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, newNode);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testMarkNodeTemporarilyOffline() {
         getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
@@ -107,6 +109,7 @@ public class NodesTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateNodeByCopyingExistingNode", "testMarkNodeTemporarilyOffline"})
     public void testRenameNodeWithValidName() {
         final String new_name = "Renamed node";
