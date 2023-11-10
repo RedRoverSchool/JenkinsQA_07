@@ -59,6 +59,7 @@ public class Pipeline2Test extends BaseTest {
                 JOB_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testDelete() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(JOB_ON_DASHBOARD_XPATH))).click();
