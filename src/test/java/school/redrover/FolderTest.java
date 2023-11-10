@@ -271,5 +271,24 @@ public class FolderTest extends BaseTest {
                 By.xpath("//a[@href='/job/Folder/job/Pipeline/1/console']")).getAttribute("tooltip"),
                 "Success > Console Output");
     }
+
+    @Test(dependsOnMethods = "testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder")
+    public void testDeletePipelineInsideOfFolder() {
+
+        getDriver().findElement(By.xpath("//a[@href='job/Folder/']")).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Folder/configure']")))
+                .click()
+                .perform();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+
+        getDriver().findElement(By.xpath("//a[@href='job/Pipeline/']")).click();
+        getDriver().findElement(By.xpath("//a[@data-url='/job/Folder/job/Pipeline/doDelete']")).click();
+
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertEquals(getDriver().findElement(By.className("h4")).getText(), "This folder is empty");
+    }
 }
 
