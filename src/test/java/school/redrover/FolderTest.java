@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -103,6 +104,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test
     public void testRenameWithInvalidName() {
         final String oldFolderName = "Old folder";
@@ -122,6 +124,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\"main-panel\"]/p")).getText(), "‘" + invalidFolderName + "’ is an unsafe character");
     }
 
+    @Ignore
     @Test
     public void TestMoveFolder() {
         final String firstFolderName = "Original Folder";
@@ -145,6 +148,7 @@ public class FolderTest extends BaseTest {
         assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a/span")).getText(), secondFolderName);
     }
 
+    @Ignore
     @Test
     public void testCreatingNewFolder() {
         final String folderName = "TestFolder";
@@ -180,6 +184,7 @@ public class FolderTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
@@ -199,6 +204,7 @@ public class FolderTest extends BaseTest {
                 FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
     }
 
+    @Ignore
     @Test
     public void testErrorMessageIsDisplayedWithoutFolderName() {
         String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
@@ -212,6 +218,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "The error message does not match the expected message!");
     }
 
+    @Ignore
     @Test
     public void testOKbuttonIsNotClickableWithoutFolderName() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();

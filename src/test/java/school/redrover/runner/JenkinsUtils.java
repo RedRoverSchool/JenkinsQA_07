@@ -32,7 +32,8 @@ public class JenkinsUtils {
     }
 
     private static Set<String> getSubstringsFromPage(String page, String from, String to) {
-        return getSubstringsFromPage(page, from, to, 100);
+        // 255 - максимально возможная длинна имени, но если используется не латиница или специальные символы, страка будет длинней из-за кодирования (пробел - %20)
+        return getSubstringsFromPage(page, from, to, 256);
     }
 
     private static Set<String> getSubstringsFromPage(String page, String from, String to, int maxSubstringLength) {
@@ -40,12 +41,13 @@ public class JenkinsUtils {
 
         int index = page.indexOf(from);
         while (index != -1) {
-            int endIndex = page.indexOf(to, index + from.length());
+            index += from.length();
+            int endIndex = page.indexOf(to, index);
 
             if (endIndex != -1 && endIndex - index < maxSubstringLength) {
-                result.add(page.substring(index + from.length(), endIndex));
+                result.add(page.substring(index, endIndex));
             } else {
-                endIndex = index + from.length();
+                endIndex = index;
             }
 
             index = page.indexOf(from, endIndex);

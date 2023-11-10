@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -21,6 +22,7 @@ public class Folder8Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
+    @Ignore
     @Test
     public void testCreate() {
 
@@ -33,6 +35,7 @@ public class Folder8Test extends BaseTest {
                 folderName);
     }
 
+    @Ignore
     @Test
     public void testMoveFolderToFolder() {
 

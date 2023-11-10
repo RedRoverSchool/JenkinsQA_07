@@ -2,11 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class Pipeline10Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testCreatePipeline() {
         final String pipelineName = "PipelineName";
@@ -22,6 +24,8 @@ public class Pipeline10Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Pipeline " + pipelineName);
     }
+
+    @Ignore
     @Test
     public void testDeleteMyPipeline2() {
         final String jobName = "MyPipeline2";

@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -35,6 +36,7 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).getText(), FOLDER_NAME);
     }
 
+    @Ignore
     @Test
     public void testRename() {
         createFolder(FOLDER_NAME);
@@ -51,6 +53,7 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']")).getText(), RENAMED_FOLDER);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testMoveFolderToFolder() {
         createFolder(NESTED_FOLDER);

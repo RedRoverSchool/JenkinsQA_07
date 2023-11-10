@@ -27,8 +27,6 @@ public abstract class BaseTest {
         ProjectUtils.log("Browser open");
 
         driver = ProjectUtils.createDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        //driver.manage().timeouts().pageLoadTimeout();
     }
 
     private void clearData() {

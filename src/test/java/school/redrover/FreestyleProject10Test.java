@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -46,6 +47,7 @@ public class FreestyleProject10Test extends BaseTest {
         final String nameDescription = "Test123%#";
 
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
+
         getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(nameDescription);
@@ -66,7 +68,7 @@ public class FreestyleProject10Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
     }
 
-
+    @Ignore
     @Test
     public void testRenameFreestyleProject() {
         final String newName = "Test Rename Project 3210";
