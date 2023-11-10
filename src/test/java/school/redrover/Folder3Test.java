@@ -9,7 +9,7 @@ import school.redrover.runner.BaseTest;
 public class Folder3Test extends BaseTest {
 
     private final String FOLDER_NAME = "Folder1";
-    private final String RENAMED_FOLDER = "Edited Folder1";
+    private final String RENAMED_FOLDER = "RenamedFolder";
     private final String NESTED_FOLDER = "Nested";
     private final String JOB_NAME = "New Job";
 
@@ -46,14 +46,14 @@ public class Folder3Test extends BaseTest {
         returnToJenkinsDashboard();
 
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), RENAMED_FOLDER);
+                By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']")).getText(), RENAMED_FOLDER);
     }
 
     @Test(dependsOnMethods = "testCreate")
     public void testMoveFolderToFolder() {
         createFolder(NESTED_FOLDER);
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + NESTED_FOLDER + "/']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/" + NESTED_FOLDER + "/']"))).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + NESTED_FOLDER + "/move']")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(By.name("destination"))).click();
         getWait10().until(ExpectedConditions.elementToBeClickable(
