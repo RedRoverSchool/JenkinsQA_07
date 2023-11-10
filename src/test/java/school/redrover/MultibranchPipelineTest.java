@@ -202,9 +202,9 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testEnableByDefault() {
         getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).click();
 
-        getDriver().findElement(By.xpath("//*[@id=\"tasks\"]/div[5]/span/a")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/a")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath(
-                "//*[@id=\"toggle-switch-enable-disable-project\"]/label/span[2]")).getText(), "Enabled");
+                "//*[@id='toggle-switch-enable-disable-project']/label/span[2]")).getText(), "Enabled");
     }
 }
