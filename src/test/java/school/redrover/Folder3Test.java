@@ -1,12 +1,18 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class Folder3Test extends BaseTest {
+
+    private static final String FOLDER_NAME = "Folder1";
+    private static final String RENAMED_FOLDER = "RenamedFolder";
+    private static final String NESTED_FOLDER = "Nested";
+    private static final String JOB_NAME = "New Job";
 
     private void createFolder(String folderName) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -17,50 +23,46 @@ public class Folder3Test extends BaseTest {
 
         returnToJenkinsDashboard();
     }
+
     private void returnToJenkinsDashboard() {
         getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
     }
 
     @Test
     public void testCreate() {
-        final String folderName = "Folder1";
-
-        createFolder(folderName);
+        createFolder(FOLDER_NAME);
 
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//td/a[@href='job/" + folderName + "/']")).getText(), folderName);
+                By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).getText(), FOLDER_NAME);
     }
 
     @Ignore
     @Test
     public void testRename() {
-        final String folderName = "Folder1";
-        final String renamedFolder = "Edited Folder1";
+        createFolder(FOLDER_NAME);
 
-        createFolder(folderName);
-
-        getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
 
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(renamedFolder);
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(RENAMED_FOLDER);
         getDriver().findElement(By.name("Submit")).click();
         returnToJenkinsDashboard();
 
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), renamedFolder);
+                By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']")).getText(), RENAMED_FOLDER);
     }
 
     @Ignore
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testMoveFolderToFolder() {
-        createFolder("Main");
-        createFolder("Nested");
+        createFolder(NESTED_FOLDER);
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/Nested/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/Nested/move']")).click();
-        getDriver().findElement(By.name("destination")).click();
-        getDriver().findElement(By.xpath("//option[@value='/Main']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/" + NESTED_FOLDER + "/']"))).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + NESTED_FOLDER + "/move']")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.name("destination"))).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//option[@value='/" + FOLDER_NAME + "']"))).click();
         getDriver().findElement(By.name("Submit")).click();
         returnToJenkinsDashboard();
 
@@ -70,23 +72,20 @@ public class Folder3Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item']")).click();
 
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), "Nested");
+                By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testCreateNewJob() {
-        final String folderName = "Folder1";
-        final String jobName = "New Job";
-        createFolder(folderName);
-
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + folderName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(jobName);
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']"))).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(JOB_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText(),
-                "Project " + jobName);
+                "Project " + JOB_NAME);
     }
 }
