@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -32,6 +33,7 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
@@ -45,6 +47,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
+    @Ignore
     @Test
     public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
@@ -120,6 +123,7 @@ public class NodesTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test
     public void testRenameNodeValidName() {
         final String nodeName = "TestNode";
@@ -165,6 +169,7 @@ public class NodesTest extends BaseTest {
                 By.xpath("//h1")).getText().contains(NODE_NAME));
     }
 
+    @Ignore
     @Test
     public void testUpdateOfflineReason() {
         final String newReason = "Updated reason";

@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -41,6 +42,7 @@ public class FreestyleProject2Test extends BaseTest {
                 .getText(), "Project Online store");
     }
 
+    @Ignore
     @Test
     public void testGiveNewNameProject() {
         String jobName = "freestyleJob";

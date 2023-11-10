@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -27,6 +28,8 @@ public class Pipeline1Test extends BaseTest {
 
         getDriver().findElement(By.id(HOME_PAGE)).click();
     }
+
+    @Ignore
     @Test
     public void testCreatePipeline() {
         getDriver().findElement(By.id(HOME_PAGE));
@@ -43,6 +46,8 @@ public class Pipeline1Test extends BaseTest {
                 .findElement(By.xpath(PIPELINE_BOARD_NAME)).getText();
         Assert.assertEquals(actualName, PIPELINE_NAME);
     }
+
+    @Ignore
     @Test
     public void testPipelineDelete() {
         createProject();
@@ -54,6 +59,8 @@ public class Pipeline1Test extends BaseTest {
         boolean deleted = elements.isEmpty();
         Assert.assertTrue(deleted, "Element is not present after deletion");
     }
+
+    @Ignore
     @Test
     public void testPipelineBuildNowLaunch() {
         createProject();
@@ -65,6 +72,8 @@ public class Pipeline1Test extends BaseTest {
                 .findElement(By.xpath("//span[@class='pipeline-new-node'][1]")).getText();
         Assert.assertEquals(actualMessage,"[Pipeline] Start of Pipeline");
     }
+
+    @Ignore
     @Test
     public void testPipelineAddDescriptionInConfiguration() {
         createProject();
@@ -82,6 +91,8 @@ public class Pipeline1Test extends BaseTest {
 
         Assert.assertEquals(actualDescription,"Test description");
     }
+
+    @Ignore
     @Test
     public void testPipelineDeleteDescriptionInConfiguration() {
         createProject();

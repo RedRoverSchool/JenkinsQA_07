@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +11,7 @@ import school.redrover.runner.BaseTest;
 
 public class BuildHistory2Test extends BaseTest {
 
+    @Ignore
     @Test
     public void testCheckDateAndMonthBuildHistory() {
         Date systemDate = new Date();

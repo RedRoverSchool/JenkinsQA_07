@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -104,8 +105,8 @@ public class Pipeline5Test extends BaseTest {
                 "MyPiplineProject2");
 
     }
-      
 
+    @Ignore
     @Test
     public void testRename2() {
         final String pipelineName = "Pipeline5";

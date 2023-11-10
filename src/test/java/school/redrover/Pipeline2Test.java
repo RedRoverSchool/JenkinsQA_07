@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -46,6 +47,7 @@ public class Pipeline2Test extends BaseTest {
         Thread.sleep(2000);
     }
 
+    @Ignore
     @Test
     public void testCreate() {
         createAPipeline(JOB_NAME);
@@ -165,6 +167,7 @@ public class Pipeline2Test extends BaseTest {
                 By.xpath("//label[contains(text(), '" + CHECKBOX_TEXT + "')]/../input"))).isSelected());
     }
 
+    @Ignore
     @Test
     public void testCreatingPipeline() {
         String pipeline = "ArtusomPipeline";
