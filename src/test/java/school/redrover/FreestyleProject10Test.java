@@ -65,7 +65,8 @@ public class FreestyleProject10Test extends BaseTest {
         getDriver().findElement(By.name("description")).clear();
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),
+                "");
     }
 
     @Ignore
