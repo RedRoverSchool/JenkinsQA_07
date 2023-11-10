@@ -9,18 +9,12 @@ import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderBayanTest extends BaseTest
+public class Folder16Test extends BaseTest
 {
     private final String MAIN_FOLDER_NAME = "Main_folder_name";
     private final String NESTED_FOLDER_NAME = "Nested_folder_name";
     private final String RENAMED_FOLDER_NAME = "Renamed_folder_name";
 
-    private void create(String nameFolder) {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nameFolder);
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-    }
 
     private void rename(String newFolderName) {
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
@@ -37,9 +31,18 @@ public class FolderBayanTest extends BaseTest
     }
 
     @Test
-    //https://trello.com/c/AZlAR8HB/109-tc0400104-us04001-folder-rename-folder
+    public void testCreate() {
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(MAIN_FOLDER_NAME);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertTrue(getDriver().getTitle().contains(MAIN_FOLDER_NAME));
+    }
+
+    @Test(dependsOnMethods = {"testCreate"})
     public void testRenameThroughSidePanel() {
-        create(MAIN_FOLDER_NAME);
         goToDashboard();
 
         goTheFolderPage(MAIN_FOLDER_NAME);
@@ -51,25 +54,21 @@ public class FolderBayanTest extends BaseTest
                 RENAMED_FOLDER_NAME, "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
     }
 
-    @Test
-    //https://trello.com/c/tm5ILS4l/190-tc04002034-folder-move-folder-to-folder-through-context-menu
+    @Test(dependsOnMethods = {"testRenameThroughSidePanel"})
     public void testRenameThroughContextMenu() {
-        create(MAIN_FOLDER_NAME);
         goToDashboard();
 
-        getDriver().findElement(By.xpath("//*[@id='job_" + MAIN_FOLDER_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + MAIN_FOLDER_NAME + "/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_" + RENAMED_FOLDER_NAME + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + RENAMED_FOLDER_NAME + "/confirm-rename']")).click();
 
-        rename(RENAMED_FOLDER_NAME);
+        rename(MAIN_FOLDER_NAME);
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'" + RENAMED_FOLDER_NAME + "')]")).getText(),
-                RENAMED_FOLDER_NAME, "Renamed folder name is not matching to the expected renamed name " + RENAMED_FOLDER_NAME);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1[contains(.,'" + MAIN_FOLDER_NAME + "')]")).getText(),
+                MAIN_FOLDER_NAME, "Renamed folder name is not matching to the expected renamed name " + MAIN_FOLDER_NAME);
     }
 
-    @Test
-    //https://trello.com/c/HpLFOFj4/112-tc0400105-folder-rename-folder-check-error-when-no-name-is-specified
+    @Test(dependsOnMethods = {"testRenameThroughContextMenu"})
     public void testRenameErrorNoNameSpecified() {
-        create(MAIN_FOLDER_NAME);
         goToDashboard();
         goTheFolderPage(MAIN_FOLDER_NAME);
         getDriver().findElement(By.xpath("//a[@href='/job/" + MAIN_FOLDER_NAME + "/confirm-rename']")).click();
@@ -78,15 +77,12 @@ public class FolderBayanTest extends BaseTest
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//p")).getText(),
                 "No name is specified");
-
     }
 
-    @Test
-    //https://trello.com/c/qKuYXV9W/180-tc0400107-folder-rename-folder-check-error-unsafe-character
+    @Test(dependsOnMethods = {"testRenameThroughContextMenu"})
     public void testRenameWithUnsafeCharacter() {
         char unsafeCharacter = '*'; // $ # / : ? [ \
 
-        create(MAIN_FOLDER_NAME);
         goToDashboard();
         goTheFolderPage(MAIN_FOLDER_NAME);
         getDriver().findElement(By.xpath("//a[@href='/job/" + MAIN_FOLDER_NAME + "/confirm-rename']")).click();
@@ -97,12 +93,10 @@ public class FolderBayanTest extends BaseTest
                 "‘" + unsafeCharacter +"’ is an unsafe character");
     }
 
-    @Test
-    //https://trello.com/c/2lI25hTY/184-tc0400108-folder-rename-folder-check-error-for-an-ending-period
+    @Test(dependsOnMethods = {"testRenameThroughContextMenu"})
     public void testRenameWithEndingPeriod() {
         char period = '.';
 
-        create(MAIN_FOLDER_NAME);
         goToDashboard();
         goTheFolderPage(MAIN_FOLDER_NAME);
         getDriver().findElement(By.xpath("//a[@href='/job/" + MAIN_FOLDER_NAME + "/confirm-rename']")).click();
@@ -113,13 +107,14 @@ public class FolderBayanTest extends BaseTest
                 "A name cannot end with ‘" + period + "’");
     }
 
-    @Test
-    //https://trello.com/c/Iq7pi6KS/186-tc0400203-folder-move-folder-to-folder-through-the-side-panel
+    @Test(dependsOnMethods = {"testRenameWithEndingPeriod", "testRenameWithUnsafeCharacter", "testRenameErrorNoNameSpecified"})
     public void testMoveThroughSidePanel() {
-        create(MAIN_FOLDER_NAME);
-        goToDashboard();
 
-        create(NESTED_FOLDER_NAME);
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NESTED_FOLDER_NAME);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
         goToDashboard();
 
         goTheFolderPage(NESTED_FOLDER_NAME);
@@ -145,11 +140,5 @@ public class FolderBayanTest extends BaseTest
         }
 
         Assert.assertEquals(actualBreadcrumbs, expectedBreadcrumbs, "Breadcrumbs don't match");
-    }
-
-    @Test
-    //https://trello.com/c/Iq7pi6KS/186-tc0400203-folder-move-folder-to-folder-through-the-side-panel
-    public void testMoveThroughContextMenu() {
-        
     }
 }
