@@ -35,8 +35,10 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).getText(), FOLDER_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test
     public void testRename() {
+        createFolder(FOLDER_NAME);
+
         getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
 
