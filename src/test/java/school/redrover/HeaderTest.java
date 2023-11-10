@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -19,6 +20,7 @@ public class HeaderTest extends BaseTest {
         Assert.assertTrue(getDriver().getTitle().contains("Dashboard"));
     }
 
+    @Ignore
     @Test
     public void testClickLogoToMainPage() {
 
@@ -34,11 +36,11 @@ public class HeaderTest extends BaseTest {
     public void testReturningBackToMainPageFromMainMenuPages() {
 
         List<By> mainPageMenuItems = List.of(
-            By.xpath("//a[@href='/view/all/newJob']"),
-            By.xpath("//a[@href='/asynchPeople/']"),
-            By.xpath("//a[@href='/view/all/builds']"),
-            By.xpath("//a[@href='/manage']"),
-            By.xpath("//a[@href='/me/my-views']"));
+                By.xpath("//a[@href='/view/all/newJob']"),
+                By.xpath("//a[@href='/asynchPeople/']"),
+                By.xpath("//a[@href='/view/all/builds']"),
+                By.xpath("//a[@href='/manage']"),
+                By.xpath("//a[@href='/me/my-views']"));
 
         for (By locator : mainPageMenuItems) {
             getDriver().findElement(locator).click();

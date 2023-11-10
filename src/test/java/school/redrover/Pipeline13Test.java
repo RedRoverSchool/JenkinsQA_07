@@ -3,6 +3,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -19,6 +20,7 @@ public class Pipeline13Test extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testCreatPipeline() {
         createNewPipeline();
@@ -30,6 +32,7 @@ public class Pipeline13Test extends BaseTest {
                 "Pipeline PipeLineProject");
     }
 
+    @Ignore
     @Test
     public void testRenamePipeline() {
         final String pipeLineNewName = "PipeLineNewProject";

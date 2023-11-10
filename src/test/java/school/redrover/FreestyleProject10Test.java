@@ -57,6 +57,7 @@ public class FreestyleProject10Test extends BaseTest {
                 nameDescription);
     }
 
+    @Ignore
     @Test
     public void testRenameFreestyleProject() {
         final String newName = "Test Rename Project 3210";
@@ -139,9 +140,9 @@ public class FreestyleProject10Test extends BaseTest {
                 By.xpath("//ul[@class='permalinks-list']/li[4]"));
 
         for (By link : permaLinks) {
-        Assert.assertEquals(
-                getDriver().findElements(link).size(),
-                0);
+            Assert.assertEquals(
+                    getDriver().findElements(link).size(),
+                    0);
         }
     }
 

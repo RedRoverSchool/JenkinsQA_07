@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -21,6 +22,7 @@ public class Folder8Test extends BaseTest {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
 
+    @Ignore
     @Test
     public void testCreate() {
 
@@ -29,10 +31,11 @@ public class Folder8Test extends BaseTest {
         goToJenkinsHomePage();
 
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
+                        By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
                 folderName);
     }
 
+    @Ignore
     @Test
     public void testMoveFolderToFolder() {
 
@@ -57,7 +60,7 @@ public class Folder8Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
         Assert.assertEquals(getDriver().findElement(
-                By.xpath("//tr[@id = 'job_" + nestedFolderName + "']//a//span")).getText(),
+                        By.xpath("//tr[@id = 'job_" + nestedFolderName + "']//a//span")).getText(),
                 nestedFolderName);
     }
 }

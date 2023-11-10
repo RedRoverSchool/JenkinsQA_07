@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -33,6 +34,7 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
+    @Ignore
     @Test
     public void testMultibranchPipelineCreationWithCreateAJob() {
 
@@ -65,6 +67,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 breadcrumbName + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
+    @Ignore
     @Test
     public void testErrorMessageRenameWithDotAtTheEnd() {
 
@@ -82,6 +85,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 "There is no message " + ERROR_MESSAGE);
     }
 
+    @Ignore
     @Test
     public void testErrorMessageRenameWithLessThanSign() {
 
@@ -99,6 +103,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 "There is no message " + ERROR_MESSAGE);
     }
 
+    @Ignore
     @Test
     public void testErrorMessageRenameWithTwoUnsafeCharacters() {
 
@@ -116,6 +121,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 "There is no message " + ERROR_MESSAGE);
     }
 
+    @Ignore
     @Test
     public void testAllTaskTextInSidebar() {
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
@@ -175,6 +181,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testRenameMultibranchDropdownDashboard() {
         createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);

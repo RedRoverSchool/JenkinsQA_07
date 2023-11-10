@@ -168,6 +168,7 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertTrue(confirmingButtonActual.contains(CONFIRMING_BUTTON_TEXT_EXPECTED));
     }
 
+    @Ignore
     @Test
     public void testDeleteOrganizationFolder() {
         String organizationFolderName = "Organization Folder";

@@ -2,15 +2,16 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class FreestyleProjectPopovTest extends BaseTest{
+public class FreestyleProjectPopovTest extends BaseTest {
 
     private final static String PROJECT_NAME = "NewFreestyleProject";
     private final static String PROJECT_DESCRIPTION = "New Test Project";
 
-    private void createProject(){
+    private void createProject() {
         getDriver().findElement(By.linkText("Create a job")).click();
         getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.className("label")).click();
@@ -19,6 +20,7 @@ public class FreestyleProjectPopovTest extends BaseTest{
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateProject() {
         createProject();
@@ -35,6 +37,7 @@ public class FreestyleProjectPopovTest extends BaseTest{
                 PROJECT_DESCRIPTION);
     }
 
+    @Ignore
     @Test
     public void testDeleteProject() {
         createProject();

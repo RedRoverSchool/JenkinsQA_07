@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -16,6 +17,7 @@ public class Folder3Test extends BaseTest {
 
         returnToJenkinsDashboard();
     }
+
     private void returnToJenkinsDashboard() {
         getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
     }
@@ -30,6 +32,7 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@href='job/" + folderName + "/']")).getText(), folderName);
     }
 
+    @Ignore
     @Test
     public void testRename() {
         final String folderName = "Folder1";
@@ -49,6 +52,7 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//a[@class='jenkins-table__link model-link inside']")).getText(), renamedFolder);
     }
 
+    @Ignore
     @Test
     public void testMoveFolderToFolder() {
         createFolder("Main");

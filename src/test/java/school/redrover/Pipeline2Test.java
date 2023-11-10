@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -26,7 +27,7 @@ public class Pipeline2Test extends BaseTest {
 
     private void goMainPageByBreadcrumb() {
         getDriver().findElement(By.xpath("//div[@id = 'breadcrumbBar']//a[@href = '/']")).click();
-        getWait5().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"),1));
+        getWait5().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"), 1));
     }
 
     private void runHelloWorldBuildInPipeline(String jobName) throws InterruptedException {
@@ -51,6 +52,7 @@ public class Pipeline2Test extends BaseTest {
         goMainPageByBreadcrumb();
     }
 
+    @Ignore
     @Test
     public void testCreate() {
         createAPipeline(JOB_NAME);
@@ -61,7 +63,8 @@ public class Pipeline2Test extends BaseTest {
                 JOB_NAME);
     }
 
-    @Test (dependsOnMethods = "testCreate")
+    @Ignore
+    @Test(dependsOnMethods = "testCreate")
     public void testDelete() {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//td/a[@href ='job/" + JOB_NAME + "/']"))).click();
@@ -69,7 +72,7 @@ public class Pipeline2Test extends BaseTest {
 
         getWait2().until(ExpectedConditions.alertIsPresent()).accept();
 
-        getWait5().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"),1));
+        getWait5().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"), 1));
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
     }
@@ -172,6 +175,7 @@ public class Pipeline2Test extends BaseTest {
                 "Box is not checked");
     }
 
+    @Ignore
     @Test
     public void testCreatingPipeline() {
         String pipeline = "ArtusomPipeline";

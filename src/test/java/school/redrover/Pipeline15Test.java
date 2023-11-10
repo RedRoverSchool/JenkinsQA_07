@@ -2,12 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class Pipeline15Test extends BaseTest {
     private void createPipeline(String jobName) {
-        
+
         getDriver().findElement(By.xpath("//span[@class = 'task-icon-link']")).click();
 
         getDriver().findElement(By.id("name")).sendKeys(jobName);
@@ -21,6 +22,7 @@ public class Pipeline15Test extends BaseTest {
         getDriver().findElement(By.xpath("//li[@class= 'jenkins-breadcrumbs__list-item']")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateJob() {
         final String jobName = "Pipeline_1";

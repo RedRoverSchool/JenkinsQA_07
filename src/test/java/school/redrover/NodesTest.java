@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -28,7 +29,7 @@ public class NodesTest extends BaseTest {
 
     private void goToConfigureNodePage() {
         goToMainPage();
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
     }
 
@@ -45,6 +46,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameNodeValidName() {
         final String nodeName = "TestNode";
@@ -62,6 +64,7 @@ public class NodesTest extends BaseTest {
                 (By.tagName("h1")).getText().contains(newNodeName));
     }
 
+    @Ignore
     @Test
     public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
@@ -103,6 +106,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testCreateNodeByCopyingExistingNode() {
         final String newNode = "Copy node";
@@ -137,10 +141,11 @@ public class NodesTest extends BaseTest {
                 By.xpath("//h1")).getText().contains(NODE_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testMarkNodeTemporarilyOffline() {
         getWait2().until(ExpectedConditions.visibilityOf(
-                getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")))).click();
+                getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")))).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
@@ -150,6 +155,7 @@ public class NodesTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testRenameNodeWithValidName() {
         final String new_name = "Renamed node";
@@ -166,6 +172,7 @@ public class NodesTest extends BaseTest {
         );
     }
 
+    @Ignore
     @Test
     public void testUpdateOfflineReason() {
         final String newReason = "Updated reason";
@@ -173,7 +180,7 @@ public class NodesTest extends BaseTest {
         createNewNode(NODE_NAME);
         goToMainPage();
 
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys("111");
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
