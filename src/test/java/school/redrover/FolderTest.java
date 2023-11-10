@@ -274,7 +274,6 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder")
     public void testDeletePipelineInsideOfFolder() {
-
         getDriver().findElement(By.xpath("//a[@href='job/Folder/']")).click();
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Folder/configure']")))
