@@ -13,22 +13,15 @@ public class ManageJenkinsTest extends BaseTest {
 
     final private static String USER_NAME = "New_User";
     final private static String PASSWORD = "12345";
-    final private static String EMAIL = "asd@gmail.com";
     final private static String DESCRIPTION = "Student";
-
-    private void createUser(String name, String password, String email) {
-        getDriver().findElement(By.xpath("//a[@href ='/manage']")).click();
-        getDriver().findElement(By.xpath("//dt[text()='Users']")).click();
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-        getDriver().findElement(By.name("username")).sendKeys(name);
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(password);
-        getDriver().findElement(By.name("email")).sendKeys(email);
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     private void goToHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
+    }
+
+    private void goToUsersPage() {
+        getDriver().findElement(By.xpath("//a[@href ='/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[text()='Users']")).click();
     }
 
     private boolean isUserDisplayed(List<WebElement> list, String name) {
@@ -42,14 +35,23 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testCreateUserWithValidData() {
-        createUser(USER_NAME, PASSWORD, EMAIL);
+        goToUsersPage();
+
+        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+
+        getDriver().findElement(By.name("username")).sendKeys(USER_NAME);
+        getDriver().findElement(By.name("password1")).sendKeys(PASSWORD);
+        getDriver().findElement(By.name("password2")).sendKeys(PASSWORD);
+        getDriver().findElement(By.name("email")).sendKeys("asd@gmail.com");
+
+        getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertTrue(getDriver().findElement(By.linkText(USER_NAME)).isDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddUserDescription")
     public void testDeleteUser() {
-        createUser(USER_NAME, PASSWORD, EMAIL);
+        goToUsersPage();
 
         getDriver().findElement(By.xpath("//*[@id = 'people']/tbody//descendant::a[5]")).click();
         getDriver().switchTo().alert().accept();
@@ -59,15 +61,14 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertFalse(isUserDisplayed(userNames, USER_NAME));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateUserWithValidData")
     public void testAddUserDescription() {
-        createUser(USER_NAME, PASSWORD, EMAIL);
         goToHomePage();
 
         getDriver().findElement(By.xpath("//div[@id = 'tasks']//descendant::div[2]")).click();
 
         getDriver().findElement(
-                By.xpath("//tr[@id = 'person-" + USER_NAME +"']//descendant::td[2]/a")).click();
+                By.xpath("//tr[@id = 'person-" + USER_NAME +"']/td[2]/a")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
