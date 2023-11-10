@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class User3Test extends BaseTest {
 
@@ -40,5 +44,24 @@ public class User3Test extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "qweqwe");
 
+    }
+
+    @Test(dependsOnMethods = "testConfigureUser")
+    public void testDeleteUser() {
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[contains(text(), 'Users')]/../..")).click();
+
+        getDriver().findElement(By.xpath("//div[@class = 'jenkins-table__cell__button-wrapper']/a[@href = '#']")).click();
+        getDriver().switchTo().alert().accept();
+
+        List<WebElement> users = getDriver().findElements(By.xpath("//table[@id = 'people']//td[2]/a"));
+        List<String> usernames = new ArrayList<>();
+
+        for(WebElement w: users){
+            usernames.add(w.getAttribute("href").substring(48).replace("/", ""));
+        }
+
+        Assert.assertFalse(usernames.contains(NAME));
     }
 }
