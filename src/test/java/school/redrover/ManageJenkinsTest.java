@@ -14,6 +14,7 @@ public class ManageJenkinsTest extends BaseTest {
     final private static String USER_NAME = "New_User";
     final private static String PASSWORD = "12345";
     final private static String EMAIL = "asd@gmail.com";
+    final private static String DESCRIPTION = "Student";
 
     private void createUser(String name, String password, String email) {
         getDriver().findElement(By.xpath("//a[@href ='/manage']")).click();
@@ -24,6 +25,10 @@ public class ManageJenkinsTest extends BaseTest {
         getDriver().findElement(By.name("password2")).sendKeys(password);
         getDriver().findElement(By.name("email")).sendKeys(email);
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void goToHomePage() {
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
     private boolean isUserDisplayed(List<WebElement> list, String name) {
@@ -53,4 +58,23 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertFalse(isUserDisplayed(userNames, USER_NAME));
     }
+
+    @Test
+    public void testAddUserDescription() {
+        createUser(USER_NAME, PASSWORD, EMAIL);
+        goToHomePage();
+
+        getDriver().findElement(By.xpath("//div[@id = 'tasks']//descendant::div[2]")).click();
+
+        getDriver().findElement(
+                By.xpath("//tr[@id = 'person-" + USER_NAME +"']//descendant::td[2]/a")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[@id = 'description']/div[1]")).getText(), DESCRIPTION);
+    }
 }
+
