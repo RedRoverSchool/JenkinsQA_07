@@ -167,7 +167,7 @@ public class MultibranchPipelineTest extends BaseTest {
         nameField.clear();
         nameField.sendKeys("MyMultiConfigurationPipeline");
 
-        getDriver().findElement(By.xpath("//span[text()='Multi-configuration project']")).click();
+        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline'] ")).click();
 
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
