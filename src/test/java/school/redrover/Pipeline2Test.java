@@ -144,7 +144,7 @@ public class Pipeline2Test extends BaseTest {
 
         getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
 
-        Assert.assertTrue(getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+        Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class = 'table-box']"))).isDisplayed());
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//table[@class = 'jobsTable']//th[@class = 'stage-header-name-0']")).getText(),
