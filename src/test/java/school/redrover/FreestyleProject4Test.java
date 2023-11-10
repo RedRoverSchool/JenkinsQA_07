@@ -1,8 +1,10 @@
 package school.redrover;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -31,7 +33,7 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    private void testFreestyleProjectAddDescription() {
+    public void testFreestyleProjectAddDescription() {
 
         createFreestyleProject();
 
@@ -59,7 +61,7 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    private void testEditExistingDescription() {
+    public void testEditExistingDescription() {
 
         createFreestyleProject();
         returnToTheHomePageJenkins();
@@ -74,7 +76,7 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    private void testRenameExistingFProject() {
+    public void testRenameExistingFProject() {
         createFreestyleProject();
         returnToTheHomePageJenkins();
 
@@ -93,7 +95,7 @@ public class FreestyleProject4Test extends BaseTest {
     }
 
     @Test
-    private void testDeleteExistingFProject() {
+    public void testDeleteExistingFProject() {
         createFreestyleProject();
         returnToTheHomePageJenkins();
 
@@ -102,7 +104,19 @@ public class FreestyleProject4Test extends BaseTest {
         getDriver().switchTo().alert().accept();
 
         WebElement wellcomeMessage = getDriver().findElement(By.xpath("//h2[contains(text(),'Start building your software project')]"));
-        Assert.assertEquals(wellcomeMessage.getText(),"Start building your software project");
+        Assert.assertEquals(wellcomeMessage.getText(), "Start building your software project");
+
+    }
+    @Test
+    public void testDisableExistingFProject() {
+        createFreestyleProject();
+
+        returnToTheHomePageJenkins();
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        boolean  projectIsDisable = getDriver().findElement(By.xpath("//form[contains(text(),'This project is currently disabled')]")).isDisplayed();
+        Assert.assertTrue(projectIsDisable);
 
     }
 }
