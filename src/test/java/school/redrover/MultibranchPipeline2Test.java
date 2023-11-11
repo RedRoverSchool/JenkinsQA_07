@@ -27,7 +27,7 @@ public class MultibranchPipeline2Test extends BaseTest {
         Assert.assertEquals(pipelineNameExpected, PIPELINE_NAME);
     }
 
-    @Ignore
+
     @Test
     public void testMultibranchCreationFromExisting() {
 

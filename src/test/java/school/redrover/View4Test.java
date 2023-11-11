@@ -138,7 +138,6 @@ public class View4Test extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     public void testOrderColumns() {
         createNewFreestyleProject(JOB_NAME);
