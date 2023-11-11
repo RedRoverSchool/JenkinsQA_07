@@ -63,8 +63,8 @@ public class OrganizationFolder9Test extends BaseTest {
                 OrganizationFolderName);
     }
 
-    final String folderName = "OrganizationFolder5";
-    final String renamedFolder = "NewOrganizationFolder555";
+    final String folderName = "OrganizationFolder1111111";
+    final String renamedFolder = "NewOrganizationFolder5555555555";
     private void createFolder () {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(folderName);
@@ -87,6 +87,7 @@ public class OrganizationFolder9Test extends BaseTest {
     @Test
     public void testRenameOrganizationFolderNameFromDropDownList () {
         createFolder();
+
         getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/confirm-rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
@@ -95,6 +96,8 @@ public class OrganizationFolder9Test extends BaseTest {
 
         getDriver().findElement(By.linkText("Dashboard")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//tr[@id='job_" + renamedFolder + "']/td[3]/a/span")).getText(),
+                renamedFolder);
     }
 }
