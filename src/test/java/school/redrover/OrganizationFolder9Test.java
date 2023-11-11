@@ -78,6 +78,10 @@ public class OrganizationFolder9Test extends BaseTest {
     @Test
     public void testCreateOrganizationFolderWithValidNameNew () {
         createFolder();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//tr[@id='job_" + folderName + "']//td[3]")).getText(),
+                folderName);
     }
 
     @Test
