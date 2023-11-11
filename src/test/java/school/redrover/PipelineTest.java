@@ -275,7 +275,6 @@ public class PipelineTest extends BaseTest {
                 "Hello World");
     }
 
-    @Ignore
     @Test
     public void testBuildRunTriggeredByAnotherProject() {
 
@@ -301,9 +300,10 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(
                         By.xpath(String.format("//span[text()='%s']/../../..//a[contains(@href,'build?')]", PIPELINE_NAME)))
                 .click();
-        getDriver().navigate().refresh();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']")).getText()
+        Assert.assertTrue(getWait5().until(ExpectedConditions
+                        .visibilityOfElementLocated(By.xpath("//td[@class='pane pane-grow']")))
+                .getText()
                 .contains(upstreamPipelineName));
     }
 
@@ -340,7 +340,11 @@ public class PipelineTest extends BaseTest {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click()",
                 getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
-        getDriver().findElement(By.id("yui-gen1-button")).click();
+        WebElement addParameterBtn = getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.id("yui-gen1-button")));
+        js.executeScript("arguments[0].scrollIntoView(true)",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        addParameterBtn.click();
         getDriver().findElement(By.id("yui-gen10")).click();
 
         getDriver().findElement(By.name("parameter.name")).sendKeys(parameterName);
@@ -365,6 +369,8 @@ public class PipelineTest extends BaseTest {
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click()",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        js.executeScript("arguments[0].scrollIntoView(true)",
                 getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
         getDriver().findElement(By.id("yui-gen1-button")).click();
         getDriver().findElement(By.id("yui-gen4")).click();
