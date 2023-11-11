@@ -214,4 +214,17 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath(
                 "//*[@id='toggle-switch-enable-disable-project']/label")).getText(), "Enabled");
     }
+
+    @Test
+    public void testSeeAAlertAfterDisableMultibranchPipeline() {
+        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.cssSelector("a[href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
+        getDriver().findElement(By.cssSelector("button[formNoValidate]")).click();
+
+        Assert.assertTrue(
+                getDriver().findElement(By.cssSelector("form[method='post']")).getText().
+                        contains("This Multibranch Pipeline is currently disabled"),
+                "Incorrect or missing text");
+    }
 }
