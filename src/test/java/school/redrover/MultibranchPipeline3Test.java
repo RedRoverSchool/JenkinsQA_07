@@ -14,6 +14,8 @@ public class MultibranchPipeline3Test extends BaseTest {
 
     private final static String PROJECT_NAME = "MultibranchPipelineTest";
     private final static String HOME_PAGE = "jenkins-home-link";
+    private final List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
+            "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
     private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
         getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
@@ -64,9 +66,6 @@ public class MultibranchPipeline3Test extends BaseTest {
 
     @Test
     public void testVisibilityTasksOfSidebarMenu() {
-        List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
-                "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
-
         createProject("Multibranch Pipeline", PROJECT_NAME, true);
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
 
@@ -80,9 +79,6 @@ public class MultibranchPipeline3Test extends BaseTest {
 
     @Test
     public void testVisibilityOfAdditionalTaskOfSidebarMenuIfFolderIsCreated() {
-        List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
-                "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
-
         createProject("Folder", "Nested Folder", true);
         createProject("Multibranch Pipeline", PROJECT_NAME, true);
 
