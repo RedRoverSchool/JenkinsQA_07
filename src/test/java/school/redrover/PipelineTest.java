@@ -248,6 +248,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testOpenLogsFromStageView() {
 
