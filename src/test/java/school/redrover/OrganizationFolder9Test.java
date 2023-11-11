@@ -63,8 +63,8 @@ public class OrganizationFolder9Test extends BaseTest {
                 OrganizationFolderName);
     }
 
-    final String folderName = "OrganizationFolder1111111";
-    final String renamedFolder = "NewOrganizationFolder5555555555";
+    final String folderName = "OrganizationFolder11";
+    final String renamedFolder = "NewOrganizationFolder55";
     private void createFolder () {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(folderName);
