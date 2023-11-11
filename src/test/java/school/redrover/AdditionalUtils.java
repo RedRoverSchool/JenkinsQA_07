@@ -21,9 +21,9 @@ public class AdditionalUtils extends BaseTest{
         executor.executeScript("arguments[0].click();", element);
     }
 
-    public static String findTextInPseudoElement(WebDriver driver, WebElement element, String pseudoElement) {
+    public static String findTextInPseudoElement(WebDriver driver, WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = "return window.getComputedStyle(arguments[0], arguments[1]).getPropertyValue('content');";
-        return (String) js.executeScript(script, element, pseudoElement);
+        String script = "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('content');";
+        return (String) js.executeScript(script, element);
     }
 }

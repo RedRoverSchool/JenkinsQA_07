@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PluginsTest extends BaseTest {
     AdditionalUtils additionalUtils = new AdditionalUtils();
+
     @Test
     public void testInstalledPluginsContainsAnt() {
         getDriver().findElement(By.xpath(
@@ -18,22 +19,19 @@ public class PluginsTest extends BaseTest {
 
         WebElement installedPlugins = getDriver().findElement(By.xpath(
                 "//a[@href = '/manage/pluginManager/installed']"));
-        additionalUtils.jsClick(getDriver(),installedPlugins);
+
+        additionalUtils.jsClick(getDriver(), installedPlugins);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
 
-//        boolean foundAntPlugin = false;
+        boolean foundAntPlugin = false;
         for (WebElement plugin : plugins) {
-            System.out.println(plugin.getText());
-//            String content = additionalUtils.findTextInPseudoElement(getDriver(), plugin,"::before");
-//            content = content.replaceAll("^\"|\"$", "");
-//            System.out.println(content);
-//
-//            if ("Ant Plugin".contains(content)) {
-//                foundAntPlugin = true;
-//                break;
-//            }
+            String text = plugin.getText();
+            if (text.contains("Ant Plugin")) {
+                foundAntPlugin = true;
+                break;
+            }
         }
-//        Assert.assertTrue(foundAntPlugin);
+        Assert.assertTrue(foundAntPlugin);
     }
 }
