@@ -219,7 +219,7 @@ public class Pipeline2Test extends BaseTest {
     }
 
     @Test
-    public void testPermalinksBuildData() throws InterruptedException {
+    public void testPermalinksBuildData() {
         final String jobName = "Pipeline1";
 
         createAPipeline(jobName);
@@ -227,10 +227,10 @@ public class Pipeline2Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/build?delay=0sec']")).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-warning']")));
 
-        Thread.sleep(2000);
         getDriver().navigate().refresh();
-        List<WebElement> permalinksBuildHistory = getDriver().findElements(By.xpath("//li[@class='permalink-item']"));
+        List<WebElement> permalinksBuildHistory = getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//li[@class='permalink-item']")));
 
         Assert.assertEquals(permalinksBuildHistory.size(), 4);
         Assert.assertTrue(permalinksBuildHistory.get(0).getText().contains("Last build"));
