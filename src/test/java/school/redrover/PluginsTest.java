@@ -9,7 +9,6 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class PluginsTest extends BaseTest {
-    AdditionalUtils additionalUtils = new AdditionalUtils();
 
     @Test
     public void testInstalledPluginsContainsAnt() {
@@ -20,7 +19,7 @@ public class PluginsTest extends BaseTest {
         WebElement installedPlugins = getDriver().findElement(By.xpath(
                 "//a[@href = '/manage/pluginManager/installed']"));
 
-        additionalUtils.jsClick(getDriver(), installedPlugins);
+        AdditionalUtils.jsClick(getDriver(), installedPlugins);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
 
