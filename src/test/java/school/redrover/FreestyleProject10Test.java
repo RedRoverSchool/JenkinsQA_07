@@ -179,7 +179,7 @@ public class FreestyleProject10Test extends BaseTest {
     }
 
     @Test
-    public void testTooltipIsVisibleInTableLink() {
+    public void testTooltipIsVisibleInTheTimeSinceSection() {
         creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
         getDriver().findElement(By.xpath("//td[@class='jenkins-table__cell--tight']/div/a")).click();
         getDriver().findElement(By.cssSelector("a[href='/view/all/builds']")).click();
