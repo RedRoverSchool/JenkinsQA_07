@@ -33,7 +33,6 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
     }
 
-    @Ignore
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
@@ -47,7 +46,6 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
-    @Ignore
     @Test
     public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
@@ -76,7 +74,6 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testCreateNodeByCopyingExistingNode() {
         final String newNode = "Copy node";
@@ -96,7 +93,6 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, newNode);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testMarkNodeTemporarilyOffline() {
         getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
@@ -109,7 +105,6 @@ public class NodesTest extends BaseTest {
         );
     }
 
-    @Ignore
     @Test(dependsOnMethods = {"testCreateNodeByCopyingExistingNode", "testMarkNodeTemporarilyOffline"})
     public void testRenameNodeWithValidName() {
         final String new_name = "Renamed node";
@@ -126,7 +121,6 @@ public class NodesTest extends BaseTest {
         );
     }
 
-    @Ignore
     @Test
     public void testRenameNodeValidName() {
         final String nodeName = "TestNode";
