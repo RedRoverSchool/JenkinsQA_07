@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -15,14 +16,15 @@ public class MultibranchPipeline3Test extends BaseTest {
     private final static String HOME_PAGE = "jenkins-home-link";
 
     private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
-        getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(nameOfProject);
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")))).click();
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//input[@class='jenkins-input']")))).sendKeys(nameOfProject);
         getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
 
         if (goToHomePage) {
-            getDriver().findElement(By.id(HOME_PAGE)).click();
+            getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id(HOME_PAGE)))).click();
         }
     }
 
@@ -74,5 +76,24 @@ public class MultibranchPipeline3Test extends BaseTest {
         }
 
         Assert.assertEquals(namesOfTasks, requiredNamesOfTasks);
+    }
+
+    @Test
+    public void testVisibilityOfAdditionalTaskOfSidebarMenuIfFolderIsCreated() {
+        List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
+                "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
+
+        createProject("Folder", "Nested Folder", true);
+        createProject("Multibranch Pipeline", PROJECT_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
+
+        List<String> namesOfTasks = new ArrayList<>();
+        for (WebElement task : getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']"))) {
+            namesOfTasks.add(task.getText());
+        }
+        namesOfTasks.removeAll(requiredNamesOfTasks);
+
+        Assert.assertEquals(namesOfTasks.toString(), "[Move]");
     }
 }
