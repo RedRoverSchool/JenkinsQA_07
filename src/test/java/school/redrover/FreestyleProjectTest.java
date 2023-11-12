@@ -607,7 +607,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
-    @Test
+    @Test()
     public void testRenameFreestyleProjectSideMenu() {
         final String NEW_PROJECT_NAME = "New Freestyle project name";
 
@@ -694,9 +694,8 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDeleteFreestyleProjectSideMenu() {
-        createFreeStyleProject(PROJECT_NAME);
         goToJenkinsHomePage();
 
         getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
