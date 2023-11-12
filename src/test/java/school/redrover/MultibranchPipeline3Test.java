@@ -101,10 +101,12 @@ public class MultibranchPipeline3Test extends BaseTest {
 
     @Test
     public void testVisibilityOfAdditionalTaskOfSidebarMenuIfProjectInsideFolder() {
-        createProject("Folder", "Wrapper Folder", false);
+        final String folderName = "Wrapper Folder";
+
+        createProject("Folder", folderName, false);
         createProject("Multibranch Pipeline", PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//span[text()='Wrapper Folder']/..")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
 
         List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
