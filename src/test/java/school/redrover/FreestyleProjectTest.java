@@ -607,7 +607,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
-    @Test()
+    @Test
     public void testRenameFreestyleProjectSideMenu() {
         final String NEW_PROJECT_NAME = "New Freestyle project name";
 
