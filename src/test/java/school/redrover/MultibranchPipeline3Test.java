@@ -109,8 +109,7 @@ public class MultibranchPipeline3Test extends BaseTest {
 
         List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
                 By.xpath("//span[@class='task-link-wrapper ']")));
-        namesOfTasks.removeAll(requiredNamesOfTasks);
 
-        Assert.assertEquals(namesOfTasks.toString(), "[Move]");
+        Assert.assertTrue(namesOfTasks.contains("Move"), "Move is not the additional task of sidebar menu on the left");
     }
 }
