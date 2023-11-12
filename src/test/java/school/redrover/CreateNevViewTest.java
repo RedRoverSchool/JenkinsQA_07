@@ -7,7 +7,7 @@ import school.redrover.runner.BaseTest;
 
 
   public class CreateNevViewTest extends BaseTest {
-     private static final String PROJECT_NAME = "MyProject";
+      private static final String PROJECT_NAME = "MyProject";
      
     @Test
     public void testCreateFreestPro() {
@@ -47,5 +47,17 @@ import school.redrover.runner.BaseTest;
           Assert.assertEquals(getDriver().findElement(
                   By.xpath("//div[@id=\"main-panel\"]/div[2]/div[1]/div[2]/a")).getText(),
                   "Job view");
+      }
+      
+      @Test (dependsOnMethods = "testRenameView")
+       public  void testAddDescription() {
+          getDriver().findElement(By.xpath("//div[@id='projectstatus-tabBar']/div/div[1]/div[2]/a")).click();
+          getDriver().findElement(By.xpath("//a[@href = 'editDescription']")).click();
+          getDriver().findElement(By.name("description")).sendKeys("Help folder");
+          getDriver().findElement(By.name("Submit")).click();
+
+          final String textDescription = getDriver().findElement(By.xpath(
+                  "//div[@id = 'main-panel']/div[1]/div[2]/div")).getText();
+          Assert.assertEquals(textDescription, "Help folder");
       }
   }
