@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -60,23 +61,24 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().switchTo().alert().accept();
     }
 
-    @Ignore
     @Test
-    public void testConfigureBuildEnvironmentSettingsAddTimestamp() throws InterruptedException {
+    public void testConfigureBuildEnvironmentSettingsAddTimestamp() {
         createProject("Freestyle project", PROJECT_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
         getDriver().findElement(By.xpath("//span[text()='Configure']/..")).click();
 
         getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
-        Thread.sleep(600);
-        getDriver().findElement(By.xpath("//label[text()='Add timestamps to the Console Output']")).click();
+        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//label[text()='Add timestamps to the Console Output']")))).click();
+        //JavascriptExecutor scriptForScrolling = (JavascriptExecutor) getDriver();
+        //        scriptForScrolling.executeScript("window.scrollBy(0,926)");
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
-        Thread.sleep(5000);
         getDriver().navigate().refresh();
-        getDriver().findElement(By.xpath("//span[@class='build-status-icon__outer']")).click();
+        WebElement buildLink = getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//span[@class='build-status-icon__outer']"))));
+        buildLink.click();
 
         List<WebElement> timestamps = getDriver().findElements(
                 By.xpath("//pre[@class='console-output']//span[@class='timestamp']"));
