@@ -108,6 +108,7 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     @Test
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         createAnItem("Freestyle project");
         WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
         new Actions(getDriver())
@@ -117,10 +118,9 @@ public class FreestyleProjectSeTest extends BaseTest {
         daysToKeepBuildsField.click();
         daysToKeepBuildsField.sendKeys("-2");
         getDriver().findElement(By.cssSelector("input[name='_.numToKeepStr']")).click();
-        WebElement errorMesage =  getDriver()
-                .findElement(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']"));
+        WebElement errorMessage =  wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
 
-        Assert.assertTrue(errorMesage.isDisplayed());
+        Assert.assertTrue(errorMessage.isDisplayed());
     }
 
     @Test
