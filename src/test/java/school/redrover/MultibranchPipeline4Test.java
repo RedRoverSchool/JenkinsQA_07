@@ -35,24 +35,6 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[normalize-space()='" + str + "']")).click();
     }
 
-    @Test
-    public void testRenameUsingBreadcrumb() {
-        createMultibranchPipelin(NAME);
-
-        WebElement breadcrumb = getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline/'][@class='model-link']"));
-        WebElement chevron = getDriver().findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[3]"));
-
-        new Actions(getDriver()).moveToElement(breadcrumb).moveToElement(chevron).click().build().perform();
-
-        getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item'][normalize-space()='Rename']")).click();
-
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), RENAMED);
-    }
-
     @Test(dependsOnMethods = "testRenameResultOnPageHeading")
     public void testErrorForUnsafeChar() {
         goMultibranchPipelinePage(RENAMED);
