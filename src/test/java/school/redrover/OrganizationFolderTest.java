@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -123,7 +124,7 @@ public class OrganizationFolderTest extends BaseTest {
 
         getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/"+folderName+"/delete']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         try {
@@ -141,6 +142,26 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertFalse(deletetOK);
     }
+
+    @Test
+    public void testRenameUsingBreadcrumb() {
+        final String folderName = "Organization_Folder";
+        createOrganizationFolder(folderName);
+
+        WebElement breadcrumb = getDriver().findElement(By.xpath("//a[@href='/job/Organization_Folder/'][@class='model-link']"));
+        WebElement chevron = getDriver().findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[3]"));
+
+        new Actions(getDriver()).moveToElement(breadcrumb).moveToElement(chevron).click().build().perform();
+
+        getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item'][normalize-space()='Rename']")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys("RENAMED");
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "RENAMED");
+    }
+
     @Test
     public void testRedirectAfterDeleting() {
         final String folderName = "OrganizationFolder";
@@ -205,7 +226,7 @@ public class OrganizationFolderTest extends BaseTest {
     @Test
     public void testVerifyCreatedItem() {
         final String name = "Project";
-        
+
         createOrganizationFolder(name);
         returnToJenkinsHomePage();
 
