@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -24,7 +25,7 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        if(goToHomePage) {
+        if (goToHomePage) {
             getDriver().findElement(By.id(HOME_PAGE)).click();
         }
     }
@@ -69,10 +70,11 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='Configure']/..")).click();
 
         getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(
+                By.xpath("//label[text()='Add timestamps to the Console Output']")));
         getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(
                 By.xpath("//label[text()='Add timestamps to the Console Output']")))).click();
-        //JavascriptExecutor scriptForScrolling = (JavascriptExecutor) getDriver();
-        //        scriptForScrolling.executeScript("window.scrollBy(0,926)");
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
@@ -111,6 +113,7 @@ public class FreestyleProject1Test extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).isDisplayed());
     }
+
     @Test
     public void testCreatingFreestyleProject() {
         String projectName = "Artusom";
@@ -119,7 +122,7 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id='items']//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),projectName);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(), projectName);
     }
 
     @Test
@@ -148,12 +151,12 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
 
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//input[@name = 'parameter.name']"))
-                .getAttribute("value"),
+                        .findElement(By.xpath("//input[@name = 'parameter.name']"))
+                        .getAttribute("value"),
                 name);
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//textarea[@name = 'parameter.description']"))
-                .getAttribute("value"),
+                        .findElement(By.xpath("//textarea[@name = 'parameter.description']"))
+                        .getAttribute("value"),
                 description);
     }
 
@@ -171,7 +174,7 @@ public class FreestyleProject1Test extends BaseTest {
 
         List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
         List<String> getTextOfDropDownElements = new ArrayList<>();
-        for (WebElement element:listDropDownElements) {
+        for (WebElement element : listDropDownElements) {
             getTextOfDropDownElements.add(element.getText());
         }
 
