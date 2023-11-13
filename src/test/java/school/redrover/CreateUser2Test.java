@@ -106,7 +106,6 @@ import java.util.List;
                     "Help for feature: Description",
                     "Help for feature: Current token(s)",
                     "Help for feature: Notification URL",
-                    "Help for feature: SSH Public Keys",
                     "Help",
                     "Help for feature: Time Zone");
 
