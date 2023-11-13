@@ -113,6 +113,7 @@ import java.util.List;
             getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
             getDriver().findElement(By.xpath("//a[@href='/user/" + USER_NAME.toLowerCase() + "/']")).click();
             getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
+            getWait5();
 
             List <WebElement> helpIconsTooltips = getDriver().findElements(By.xpath("//a[@class='jenkins-help-button']"));
             List<String> actualListOfHelpIconsTooltipsText = new ArrayList<>();
