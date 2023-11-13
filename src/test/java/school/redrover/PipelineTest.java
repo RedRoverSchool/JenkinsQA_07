@@ -274,7 +274,6 @@ public class PipelineTest extends BaseTest {
                 By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']"))).click();
 
         String consoleLog = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//pre[@class='console-output']"))).getText();
-
         Assert.assertEquals(consoleLog, "Hello World");
     }
 
