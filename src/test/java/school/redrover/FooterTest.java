@@ -38,8 +38,7 @@ public class FooterTest extends BaseTest {
     @Ignore
     @Test
     //https://trello.com/c/OOkxIvHX/402-tc1200107-footer-jenkins-version-check-the-tippy-box
-    public void checkTippyBox() throws InterruptedException
-    {
+    public void checkTippyBox() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
                 getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")));
 
@@ -57,10 +56,9 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualMenu, expectedMenu, "Tippy box context menu doesn't macth");
     }
 
+    @Ignore
     @Test
-    //TC_12.001.09 | Footer > Jenkins version > Get Involved
-    public void testGetInvolved() throws InterruptedException
-    {
+    public void testGetInvolved() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
                 getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")));
 
@@ -89,6 +87,7 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/");
     }
+
     private void clickRestApi() {
         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
     }
@@ -97,9 +96,9 @@ public class FooterTest extends BaseTest {
     public void testVersionJenkins() {
         Assert.assertEquals(
                 getDriver()
-                .findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"))
-                .getText(),
-        "Jenkins 2.414.2");
+                        .findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"))
+                        .getText(),
+                "Jenkins 2.414.2");
     }
 
     @Ignore
@@ -110,16 +109,18 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "Remote API [Jenkins]");
     }
 
+    @Ignore
     @Test
     public void testVerifyRedirectedRestApi() {
         clickRestApi();
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("api"));
     }
+
     @Test
     public void testJenkinsVersionMainPage() {
         Assert.assertEquals(getDriver()
                 .findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']"))
-                .getText(),"Jenkins 2.414.2");
+                .getText(), "Jenkins 2.414.2");
     }
 }

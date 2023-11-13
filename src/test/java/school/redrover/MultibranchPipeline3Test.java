@@ -24,10 +24,20 @@ public class MultibranchPipeline3Test extends BaseTest {
                 By.xpath("//input[@class='jenkins-input']")))).sendKeys(nameOfProject);
         getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
 
         if (goToHomePage) {
             getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id(HOME_PAGE)))).click();
         }
+    }
+
+    private List<String> getTextOfWebElements(List<WebElement> elements) {
+        List<String> textOfWebElements = new ArrayList<>();
+
+        for (WebElement element : elements) {
+            textOfWebElements.add(element.getText());
+        }
+        return textOfWebElements;
     }
 
     @Test
@@ -69,10 +79,8 @@ public class MultibranchPipeline3Test extends BaseTest {
         createProject("Multibranch Pipeline", PROJECT_NAME, true);
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
 
-        List<String> namesOfTasks = new ArrayList<>();
-        for (WebElement task : getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']"))) {
-            namesOfTasks.add(task.getText());
-        }
+        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
+                By.xpath("//span[@class='task-link-wrapper ']")));
 
         Assert.assertEquals(namesOfTasks, requiredNamesOfTasks);
     }
@@ -84,12 +92,26 @@ public class MultibranchPipeline3Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
 
-        List<String> namesOfTasks = new ArrayList<>();
-        for (WebElement task : getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']"))) {
-            namesOfTasks.add(task.getText());
-        }
+        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
+                By.xpath("//span[@class='task-link-wrapper ']")));
         namesOfTasks.removeAll(requiredNamesOfTasks);
 
         Assert.assertEquals(namesOfTasks.toString(), "[Move]");
+    }
+
+    @Test
+    public void testVisibilityOfAdditionalTaskOfSidebarMenuIfProjectInsideFolder() {
+        final String folderName = "Wrapper Folder";
+
+        createProject("Folder", folderName, false);
+        createProject("Multibranch Pipeline", PROJECT_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
+
+        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
+                By.xpath("//span[@class='task-link-wrapper ']")));
+
+        Assert.assertTrue(namesOfTasks.contains("Move"), "Move is not the additional task of sidebar menu on the left");
     }
 }

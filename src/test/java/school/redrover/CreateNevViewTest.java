@@ -60,4 +60,16 @@ import school.redrover.runner.BaseTest;
                   "//div[@id = 'main-panel']/div[1]/div[2]/div")).getText();
           Assert.assertEquals(textDescription, "Help folder");
       }
+
+      @Test (dependsOnMethods = "testCreateFreestPro")
+      public void testAddJobView() {
+          getDriver().findElement(By.xpath("//div[@id='projectstatus-tabBar']/div/div[1]/div[2]/a")).click();
+          getDriver().findElement(By.xpath("//div[@id='tasks']/div[4]/span/a")).click();
+          getDriver().findElement(By.xpath("//label[@title = 'MyProject']")).click();
+          getDriver().findElement(By.name("Submit")).click();
+
+          final String jobAdd = getDriver().findElement(By.xpath(
+                  "//span [contains(text(), 'MyProject')]")).getText();
+          Assert.assertEquals(jobAdd,"MyProject");
+      }
   }

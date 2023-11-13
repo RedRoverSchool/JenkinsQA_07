@@ -116,16 +116,14 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualResult, expectedResultWarningMessage);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatedNewOrganizationFolder")
     public void testOnDeletingOrganizationFolder() {
-        final String folderName = "OrganizationFolder";
+        final String folderName = "Organization_Folder";
         boolean deletetOK = true;
-
-        creationNewOrganizationFolder(folderName);
 
         getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/"+folderName+"/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         try {

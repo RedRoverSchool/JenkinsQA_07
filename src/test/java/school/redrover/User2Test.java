@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class User2Test extends BaseTest {
     private void createUser(String userName, String password, String email) {
@@ -51,7 +52,7 @@ public class User2Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
 
-        getDriver().findElement(By.xpath(String.format("//a[@href='/user/%s/']",userName.toLowerCase()))).click();
+        getDriver().findElement(By.xpath(String.format("//a[@href='/user/%s/']", userName.toLowerCase()))).click();
 
         getDriver().findElement(By.xpath("//span[contains(text(),'Delete')]")).click();
         Alert alert = getDriver().switchTo().alert();
@@ -65,5 +66,16 @@ public class User2Test extends BaseTest {
 
         String errorText = getDriver().findElement(By.className("app-sign-in-register__error")).getText();
         assertEquals(errorText, "Invalid username or password");
+    }
+
+    @Test
+    public void testCreateUserAndCheckOnUserDatabase() {
+        final String userName = "Jane";
+        final String password = "Te5t";
+        final String email = "test_redrov@yahoo.com";
+
+        createUser(userName, password, email);
+
+        assertTrue(getDriver().findElement(By.xpath(String.format("//a[@href='user/%s/']", userName.toLowerCase()))).isDisplayed());
     }
 }
