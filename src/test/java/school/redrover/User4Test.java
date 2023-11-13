@@ -10,16 +10,18 @@ import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateUser3Test extends BaseTest {
+public class User4Test extends BaseTest {
 
     @Test
     public void testVerifyRequiredFields() {
+        List<String> expectedLabelNames = List.of("Username", "Password", "Confirm password", "Full name", "E-mail address");
+        List<String> actualLabelNames = new ArrayList<>();
+
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href = '/manage']"))).click();
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='securityRealm/']"))).click();
         getDriver().findElement(By.cssSelector("a[href='addUser']")).click();
 
-        List<String> expectedLabelNames = List.of("Username", "Password", "Confirm password", "Full name", "E-mail address");
-        List<String> actualLabelNames = new ArrayList<>();
+
 
         for (String labelName : expectedLabelNames) {
             String labelText = getDriver().findElement(By.xpath("//div[text() = '" + labelName + "']")).getText();
