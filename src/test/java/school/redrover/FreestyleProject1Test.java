@@ -76,9 +76,11 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
+        getWait5().until(ExpectedConditions.visibilityOfAllElements(getDriver()
+                .findElements(By.xpath("//a[@class='model-link inside build-link display-name']"))));
         getDriver().navigate().refresh();
-        WebElement buildLink = getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//span[@class='build-status-icon__outer']"))));
-        buildLink.click();
+        List<WebElement> buildLinks = getWait10().until(ExpectedConditions.visibilityOfAllElements(getDriver().findElements(By.xpath("//span[@class='build-status-icon__outer']"))));
+        buildLinks.get(0).click();
 
         List<WebElement> timestamps = getDriver().findElements(
                 By.xpath("//pre[@class='console-output']//span[@class='timestamp']"));
