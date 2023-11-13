@@ -803,6 +803,8 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//label[text()='Always trigger, even if the build is aborted']")).click();
         clickSaveConfiguration();
+        goToJenkinsHomePage();
+        clickProjectOnDashboard(PROJECT_NAME);
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//ul[@style='list-style-type: none;']/li/a")).getText(),
                 upstreamProjectName);
