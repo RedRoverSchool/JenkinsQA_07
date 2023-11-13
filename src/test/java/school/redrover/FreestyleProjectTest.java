@@ -804,7 +804,7 @@ public class FreestyleProjectTest extends BaseTest {
                 By.xpath("//label[text()='Always trigger, even if the build is aborted']")).click();
         clickSaveConfiguration();
 
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         getDriver().navigate().refresh();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//ul[@style='list-style-type: none;']/li/a")).getText(),
