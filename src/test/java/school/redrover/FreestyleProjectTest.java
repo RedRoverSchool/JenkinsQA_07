@@ -787,7 +787,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testSetUpstreamProject() {
+    public void testSetUpstreamProject() throws InterruptedException {
         final String upstreamProjectName = "Upstream Test";
 
         createFreeStyleProject(upstreamProjectName);
@@ -803,8 +803,9 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(
                 By.xpath("//label[text()='Always trigger, even if the build is aborted']")).click();
         clickSaveConfiguration();
-        goToJenkinsHomePage();
-        clickProjectOnDashboard(PROJECT_NAME);
+
+        Thread.sleep(1000);
+        getDriver().navigate().refresh();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//ul[@style='list-style-type: none;']/li/a")).getText(),
                 upstreamProjectName);
