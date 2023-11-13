@@ -201,6 +201,28 @@ public class MultibranchPipelineTest extends BaseTest {
                 MULTIBRANCH_PIPELINE_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
+    @Test(dependsOnMethods = "testRenameMultibranchDropdownDashboard")
+    public void testRenameMultibranchDropdownBreadcrumbs() {
+        getDriver().findElement(By.xpath("//td[3]/a/span")).click();
+
+        WebElement elementToHover = getDriver().findElement(By.xpath("//li[3]/a/button"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(elementToHover).perform();
+        elementToHover.click();
+
+        getDriver().findElement(By.xpath("//div/a[7][@href='/job/" + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
+
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//td[3]/a/span")).getText(), MULTIBRANCH_PIPELINE_NAME,
+                MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
+    }
+
     @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
     public void testEnableByDefault() {
         getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).click();
