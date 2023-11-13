@@ -98,6 +98,30 @@ import java.util.List;
             Assert.assertTrue(getDriver().getCurrentUrl().contains(USER_NAME.toLowerCase() + "/configure"));
             Assert.assertEquals(breadcrumbTrailLastSectionText, "Configure");
         }
+
+        @Test(dependsOnMethods = "testVerifyUserCreated")
+        public void testVerifyHelpTooltips(){
+            List<String> expectedListOfHelpIconsTooltipsText = List.of(
+                    "Help for feature: Full Name",
+                    "Help for feature: Description",
+                    "Help for feature: Current token(s)",
+                    "Help",
+                    "Help for feature: SSH Public Keys",
+                    "Help",
+                    "Help for feature: Time Zone");
+
+            getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
+            getDriver().findElement(By.xpath("//a[@href='/user/" + USER_NAME.toLowerCase() + "/']")).click();
+            getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
+
+            List <WebElement> helpIconsTooltips = getDriver().findElements(By.xpath("//a[@class='jenkins-help-button']"));
+            List<String> actualListOfHelpIconsTooltipsText = new ArrayList<>();
+            for (int i = 0; i < helpIconsTooltips.size(); i++) {
+                actualListOfHelpIconsTooltipsText.add(helpIconsTooltips.get(i).getAttribute("tooltip"));
+            }
+
+            Assert.assertEquals(actualListOfHelpIconsTooltipsText, expectedListOfHelpIconsTooltipsText);
+        }
 }
 
 
