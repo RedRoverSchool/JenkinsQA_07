@@ -75,17 +75,29 @@ import java.util.List;
         Assert.assertTrue(getDriver().findElement(By.id("people")).getText().contains(USER_NAME) && getDriver().findElement(By.id("people")).getText().contains(FULL_NAME));
     }
 
-    @Test(dependsOnMethods = "testVerifyUserCreated")
-    public void testVerifyUserIdButton(){
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        @Test(dependsOnMethods = "testVerifyUserCreated")
+        public void testVerifyUserIdButton(){
+            getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+            getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
 
-        getDriver().findElement(By.xpath("//table[@id='people']//td/a[text()='" + USER_NAME+ "']")).click();
-        String titleOfUserPageActual = getDriver().findElement(By.tagName("h1")).getText();
+            getDriver().findElement(By.xpath("//table[@id='people']//td/a[text()='" + USER_NAME+ "']")).click();
+            String titleOfUserPageActual = getDriver().findElement(By.tagName("h1")).getText();
 
-        Assert.assertEquals(titleOfUserPageActual, FULL_NAME);
-        Assert.assertTrue(getDriver().findElement(By.id("main-panel")).getText().contains("Jenkins User ID: " + USER_NAME));
-    }
+            Assert.assertEquals(titleOfUserPageActual, FULL_NAME);
+            Assert.assertTrue(getDriver().findElement(By.id("main-panel")).getText().contains("Jenkins User ID: " + USER_NAME));
+        }
+
+        @Test(dependsOnMethods = "testVerifyUserCreated")
+        public void testVerifyUserConfigurationButton(){
+            getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+            getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+            getDriver().findElement(By.xpath("//a[contains(@href, '" + USER_NAME.toLowerCase() + "/configure')]")).click();
+            String breadcrumbTrailLastSectionText = getDriver().findElement(By.cssSelector("#breadcrumbs li:last-child")).getText();
+
+            Assert.assertTrue(getDriver().getCurrentUrl().contains(USER_NAME.toLowerCase() + "/configure"));
+            Assert.assertEquals(breadcrumbTrailLastSectionText, "Configure");
+        }
 }
 
 
