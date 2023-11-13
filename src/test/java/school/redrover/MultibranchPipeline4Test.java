@@ -40,7 +40,7 @@ public class MultibranchPipeline4Test extends BaseTest {
         createMultibranchPipelin(NAME);
 
         WebElement breadcrumb = getDriver().findElement(By.xpath("//a[@href='/job/Multibranch%20Pipeline/'][@class='model-link']"));
-        WebElement chevron = getDriver().findElement(By.xpath("//a[normalize-space()='" + NAME + "']//button[@class='jenkins-menu-dropdown-chevron']"));
+        WebElement chevron = getDriver().findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[3]"));
 
         new Actions(getDriver()).moveToElement(breadcrumb).moveToElement(chevron).click().build().perform();
 
