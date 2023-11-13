@@ -119,9 +119,8 @@ import java.util.List;
             List<String> actualListOfHelpIconsTooltipsText = new ArrayList<>();
             for (int i = 0; i < helpIconsTooltips.size(); i++) {
                 actualListOfHelpIconsTooltipsText.add(helpIconsTooltips.get(i).getAttribute("tooltip"));
+                Assert.assertEquals(actualListOfHelpIconsTooltipsText.get(i), expectedListOfHelpIconsTooltipsText.get(i));
             }
-
-            Assert.assertEquals(actualListOfHelpIconsTooltipsText, expectedListOfHelpIconsTooltipsText);
         }
 }
 
