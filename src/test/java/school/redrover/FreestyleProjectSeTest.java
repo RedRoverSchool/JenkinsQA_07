@@ -206,9 +206,10 @@ public class FreestyleProjectSeTest extends BaseTest {
         js.executeScript("arguments[0].scrollIntoView();",
                 getDriver().findElement(By.cssSelector("label[for='radio-block-1']")));
 
-        WebElement inputField = getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@checkdependson='credentialsId']")));
         new Actions(getDriver())
-                .moveToElement(inputField)
+                .moveToElement(
+                        getWait5().until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//input[@checkdependson='credentialsId']"))))
                 .click()
                 .sendKeys("123")
                 .perform();
