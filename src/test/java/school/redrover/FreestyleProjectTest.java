@@ -613,8 +613,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testRenameFreestyleProjectSideMenu() {
-//        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
-
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]"))).click();
         getDriver().findElement(By.linkText("Rename")).click();
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
@@ -622,7 +620,6 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']//button")).click();
 
         Assert.assertEquals(
-//                getDriver().findElement(By.cssSelector("h1")).getText(),
                 getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("h1"))).getText(),
                 "Project " + NEW_PROJECT_NAME
         );
@@ -703,8 +700,6 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().switchTo().alert().accept();
 
         Assert.assertTrue(getDriver().findElements(By.id("job_" + PROJECT_NAME)).isEmpty());
-//        Assert.assertEquals(getWait10().until(ExpectedConditions.elementToBeClickable(By.cssSelector("h1"))).getText(),"Welcome to Jenkins!");
-//        Assert.assertEquals(getDriver().findElement(By.cssSelector("h1")).getText(), "Welcome to Jenkins!");
     }
 
     @Test
