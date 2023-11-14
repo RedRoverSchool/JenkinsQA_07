@@ -20,6 +20,7 @@ import static org.testng.Assert.*;
 public class FreestyleProjectTest extends BaseTest {
 
     private final String PROJECT_NAME = "New Freestyle Project";
+    private static final String NEW_PROJECT_NAME = "New Freestyle project name";
 
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -612,12 +613,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testRenameFreestyleProjectSideMenu() {
-        final String NEW_PROJECT_NAME = "New Freestyle project name";
-
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
         getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
 
         getDriver().findElement(By.linkText("Rename")).click();
@@ -729,13 +726,8 @@ public class FreestyleProjectTest extends BaseTest {
                 editedDescriptionText);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testCreateFreestyleProjectFromExistingProject() {
-        final String NEW_PROJECT_NAME = "New Freestyle project 2";
-
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(NEW_PROJECT_NAME);
         getDriver().findElement(By.id("from")).sendKeys(PROJECT_NAME);
