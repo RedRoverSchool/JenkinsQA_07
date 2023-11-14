@@ -698,7 +698,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDeleteFreestyleProjectSideMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/.."))).click();
+        getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
         getDriver().findElement(By.xpath("//span[contains(text(), 'Delete Project')]/..")).click();
         getDriver().switchTo().alert().accept();
 
@@ -724,7 +724,7 @@ public class FreestyleProjectTest extends BaseTest {
                 editedDescriptionText);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test(dependsOnMethods = "testRenameFreestyleProjectSideMenu")
     public void testCreateFreestyleProjectFromExistingProject() {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(NEW_PROJECT_NAME);
