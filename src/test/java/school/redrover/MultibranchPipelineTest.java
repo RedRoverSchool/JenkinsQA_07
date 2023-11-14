@@ -35,7 +35,6 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
-    @Ignore
     @Test
     public void testMultibranchPipelineCreationWithCreateAJob() {
 
@@ -182,11 +181,8 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).isDisplayed());
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testRenameMultibranchDropdownDashboard() {
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']"));
 
         Actions actions = new Actions(getDriver());

@@ -86,4 +86,18 @@ public class Folder3Test extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText(),
                 "Project " + JOB_NAME);
     }
+
+    @Test
+    public void testCreateOrganizationFolderWithInvalidName() {
+        char exclamationPoint = '!';
+
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("#name")).sendKeys(FOLDER_NAME + exclamationPoint);
+        getWait2().until(ExpectedConditions.elementToBeClickable(
+                By.cssSelector(".jenkins_branch_OrganizationFolder"))).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
+                "‘" + exclamationPoint + "’ is an unsafe character");
+    }
 }

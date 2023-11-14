@@ -6,6 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class Footer3Test extends BaseTest {
     private final String jenkinsExpectedVersion = "Jenkins 2.414.2";
 
@@ -81,5 +83,24 @@ public class Footer3Test extends BaseTest {
 
         Assert.assertEquals(actualPageName, expectedPageName, "The page name is not Jenkins");
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Jenkins");
+    }
+
+    @Test
+    public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
+        String aboutJenkins = "About Jenkins";
+
+        clickDropdownItemJenkinsVersionButton(aboutJenkins);
+
+        List<WebElement> tabs = getDriver().findElements(By.cssSelector(".tabBar .tab"));
+
+        String[] expectedTabNames = {"Mavenized dependencies", "Static resources", "License and dependency information for plugins"};
+        for (int i = 0; i < tabs.size(); i++) {
+
+            Assert.assertEquals(tabs.get(i).getText(), expectedTabNames[i]);
+
+            tabs.get(i).click();
+            WebElement activeTab = getDriver().findElement(By.cssSelector(".tabBar .tab.active"));
+            Assert.assertTrue(activeTab.getText().equals(expectedTabNames[i]));
+        }
     }
 }

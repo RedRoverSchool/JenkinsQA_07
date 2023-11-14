@@ -20,6 +20,11 @@ public class NewItemTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
     }
 
+    private boolean isProjectExist(String projectName) {
+        goToJenkinsHomePage();
+        return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
+    }
+
     private boolean isCloneItemSectionDisplayed() {
         return !getDriver().findElements(By.className("item-copy")).isEmpty();
     }
@@ -77,4 +82,20 @@ public class NewItemTest extends BaseTest {
         assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
+    @Test
+    public void testNewItemCreationWithExistentName() {
+        final String firstProject = "Test project";
+        final String secondProject = "Test project 2";
+        createFreeStyleProject(firstProject);
+        goToJenkinsHomePage();
+        getDriver().findElement(By.linkText("New Item")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys(secondProject);
+        getDriver().findElement(By.id("from")).sendKeys(firstProject);
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        goToJenkinsHomePage();
+
+        assertTrue(isProjectExist(secondProject));
+    }
 }

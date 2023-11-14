@@ -21,8 +21,6 @@ public class User4Test extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='securityRealm/']"))).click();
         getDriver().findElement(By.cssSelector("a[href='addUser']")).click();
 
-
-
         for (String labelName : expectedLabelNames) {
             String labelText = getDriver().findElement(By.xpath("//div[text() = '" + labelName + "']")).getText();
             actualLabelNames.add(labelText);
@@ -35,18 +33,46 @@ public class User4Test extends BaseTest {
 
         Assert.assertEquals(expectedLabelNames, actualLabelNames);
     }
+
+
+    public void testUserCreation() {
+        final String username = "testUser";
+        final String password = "1";
+        final String email = "test@test.com";
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = 'addUser']")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'username']")).sendKeys(username);
+        getDriver().findElement(By.xpath("//input[@name = 'password1']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//input[@name = 'password2']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//input[@name = 'email']")).sendKeys(email);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        List<WebElement> listOfUserID = getDriver().findElements(By.xpath(
+                "//td/a[@class = 'jenkins-table__link model-link inside']"));
+
+        Assert.assertFalse(listOfUserID.isEmpty());
+
+        boolean isNewUserIDShown = false;
+        for (WebElement webElement : listOfUserID) {
+            if (webElement.getText().contains(username)) {
+                isNewUserIDShown = true;
+                break;
+            }
+        }
+
+        Assert.assertTrue(isNewUserIDShown);
+    }
+
+    @Test
+    public void testShowingValidationMessages() {
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = 'addUser']")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        List<WebElement> listOfValidationMessages = getDriver().findElements(By.xpath(
+                "//div[@class = 'error jenkins-!-margin-bottom-2']"));
+
+        Assert.assertFalse(listOfValidationMessages.isEmpty());
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
