@@ -1,23 +1,21 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
 import static org.testng.Assert.*;
-
 
 public class FreestyleProjectTest extends BaseTest {
 
@@ -60,10 +58,17 @@ public class FreestyleProjectTest extends BaseTest {
 
     private void clickBuildNow() {
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
-        new WebDriverWait(getDriver(), Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfAllElements(
-                        getDriver().findElements(By.xpath("//a[@class='model-link inside build-link display-name']"))
-                ));
+        getWait5().until(ExpectedConditions.visibilityOfAllElements(getDriver()
+                .findElements(By.xpath("//a[@class='model-link inside build-link display-name']"))));
+    }
+
+    private void clickSaveConfiguration() {
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+    }
+
+    private void clickProjectOnDashboard(String projectName) {
+        getDriver().findElement(By
+                .xpath(String.format("//a[@href='job/%s/']", projectName.replace(" ", "%20")))).click();
     }
 
     @Test
@@ -778,6 +783,32 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.cssSelector("button[name = 'Submit']")).click();
         String result = getDriver().findElement(By.cssSelector("form[id='enable-project']")).getText();
 
-        Assert.assertEquals("This project is currently disabled", result.substring(0,34));
+        Assert.assertEquals("This project is currently disabled", result.substring(0, 34));
+    }
+
+    @Test
+    public void testSetUpstreamProject() {
+        final String upstreamProjectName = "Upstream Test";
+
+        createFreeStyleProject(upstreamProjectName);
+        goToJenkinsHomePage();
+        createFreeStyleProject(PROJECT_NAME);
+
+        WebElement buildAfterOtherProjectsCheckbox = getDriver()
+                .findElement(By.xpath("//label[text()='Build after other projects are built']"));
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
+        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(upstreamProjectName);
+        js.executeScript("arguments[0].scrollIntoView(true);", buildAfterOtherProjectsCheckbox);
+        getDriver().findElement(
+                By.xpath("//label[text()='Always trigger, even if the build is aborted']")).click();
+        clickSaveConfiguration();
+
+        js.executeScript("setTimeout(function(){\n" +
+                "    location.reload();\n" +
+                "}, 500);");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//ul[@style='list-style-type: none;']/li/a")).getText(),
+                upstreamProjectName);
     }
 }

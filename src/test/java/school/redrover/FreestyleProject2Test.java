@@ -66,7 +66,6 @@ public class FreestyleProject2Test extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(itemName);
         getDriver().findElement(By.xpath("//img[@class='icon-freestyle-project icon-xlg']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-
         getDriver().navigate().back();
         getDriver().navigate().back();
 
