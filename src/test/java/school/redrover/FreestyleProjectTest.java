@@ -787,7 +787,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testSetUpstreamProject() throws InterruptedException {
+    public void testSetUpstreamProject() {
         final String upstreamProjectName = "Upstream Test";
 
         createFreeStyleProject(upstreamProjectName);
@@ -804,8 +804,9 @@ public class FreestyleProjectTest extends BaseTest {
                 By.xpath("//label[text()='Always trigger, even if the build is aborted']")).click();
         clickSaveConfiguration();
 
-        Thread.sleep(3000);
-        getDriver().navigate().refresh();
+        js.executeScript("setTimeout(function(){\n" +
+                "    location.reload();\n" +
+                "}, 500);");
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//ul[@style='list-style-type: none;']/li/a")).getText(),
                 upstreamProjectName);
