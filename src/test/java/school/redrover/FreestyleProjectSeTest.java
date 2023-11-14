@@ -3,14 +3,9 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
-import java.time.Duration;
 import java.util.List;
 
 public class FreestyleProjectSeTest extends BaseTest {
@@ -192,8 +187,8 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     @Test
     public void testDescriptionPreviewAppears() {
-        createAnItem("Freestyle project");
         final String inputText = "This project describes smth";
+        createAnItem("Freestyle project");
 
         hoverClickInput("//textarea[@name = 'description']", inputText);
 
@@ -205,14 +200,10 @@ public class FreestyleProjectSeTest extends BaseTest {
                 inputText);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDescriptionPreviewAppears")
     public void testDescriptionPreviewHides() {
-        createAnItem("Freestyle project");
-        final String inputText = "This project describes smth";
-
-        hoverClickInput("//textarea[@name = 'description']", inputText);
-
-        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
+        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
+        alert.dismiss();
 
         hoverClick("//a[@class = 'textarea-hide-preview']");
 
