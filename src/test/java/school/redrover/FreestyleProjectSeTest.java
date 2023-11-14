@@ -86,7 +86,6 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testSettingsOfDiscardOldBuildsIsDisplayed")
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
