@@ -513,18 +513,16 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProjectWithValidName() {
-        final String projectName = "New Freestyle Project";
-
         getDriver().findElement(By.xpath("//*[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
-        getDriver().findElement(By.xpath("//span[text()='" + projectName + "']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("h1")).getText(),
-                "Project " + projectName);
+                "Project " + PROJECT_NAME);
     }
 
 
