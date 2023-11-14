@@ -107,4 +107,23 @@ public class User4Test extends BaseTest {
 
         Assert.assertTrue(isValidationMessageEqual);
     }
+
+    @Test(dependsOnMethods = "testUserCreation")
+    public void testDeleteLoggedInUser() {
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
+
+        String logUsername = getDriver().findElement(By.xpath("(//span[@class='hidden-xs hidden-sm'])[1]"))
+                .getText();
+
+        boolean doDelete = true;
+
+        try {
+            getDriver().findElement(By.xpath("//tr[.//td[contains(text(), '" + logUsername + "')]]/td[last()]/*"));
+        } catch (Exception e) {
+            doDelete = false;
+        }
+
+        Assert.assertFalse(doDelete);
+    }
 }
