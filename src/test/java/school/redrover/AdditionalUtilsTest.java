@@ -3,11 +3,13 @@ package school.redrover;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.Ignore;
 import school.redrover.runner.BaseTest;
 
 import java.security.SecureRandom;
 import java.util.UUID;
 
+@Ignore
 public class AdditionalUtilsTest extends BaseTest{
 
     public static String generateRandomName() {
