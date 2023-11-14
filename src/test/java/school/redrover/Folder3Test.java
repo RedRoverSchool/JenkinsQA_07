@@ -35,10 +35,8 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).getText(), FOLDER_NAME);
     }
 
-
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testRename() {
-        createFolder(FOLDER_NAME);
 
         getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
@@ -52,7 +50,7 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']")).getText(), RENAMED_FOLDER);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testRename")
     public void testMoveFolderToFolder() {
         createFolder(NESTED_FOLDER);
 
@@ -60,7 +58,7 @@ public class Folder3Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/job/" + NESTED_FOLDER + "/move']")).click();
         getDriver().findElement(By.name("destination")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//option[@value='/" + FOLDER_NAME + "']"))).click();
+                By.xpath("//option[@value='/" + RENAMED_FOLDER + "']"))).click();
         getDriver().findElement(By.name("Submit")).click();
         returnToJenkinsDashboard();
 
@@ -73,11 +71,11 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testMoveFolderToFolder")
     public void testCreateNewJob() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']"))).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/newJob']")).click();
+                By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']"))).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + RENAMED_FOLDER + "/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(JOB_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();
