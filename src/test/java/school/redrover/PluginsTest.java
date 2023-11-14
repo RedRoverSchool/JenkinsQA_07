@@ -19,7 +19,7 @@ public class PluginsTest extends BaseTest {
         WebElement installedPlugins = getDriver().findElement(By.xpath(
                 "//a[@href = '/manage/pluginManager/installed']"));
 
-        AdditionalUtils.jsClick(getDriver(), installedPlugins);
+        AdditionalUtilsTest.jsClick(getDriver(), installedPlugins);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
 

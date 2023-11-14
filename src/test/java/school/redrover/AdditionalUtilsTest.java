@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 import java.security.SecureRandom;
 import java.util.UUID;
 
-public class AdditionalUtils extends BaseTest{
+public class AdditionalUtilsTest extends BaseTest{
 
     public static String generateRandomName() {
         String randomName = UUID.randomUUID()

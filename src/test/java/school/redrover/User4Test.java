@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -118,9 +117,9 @@ public class User4Test extends BaseTest {
 
     @Test
     public void testFullNameAppearsSameAsUserID() {
-        final String username = AdditionalUtils.generateRandomName();
-        final String password = AdditionalUtils.generateRandomPassword(12);
-        final String email = AdditionalUtils.generateRandomName() + "@" + "mail.com";
+        final String username = AdditionalUtilsTest.generateRandomName();
+        final String password = AdditionalUtilsTest.generateRandomPassword(12);
+        final String email = AdditionalUtilsTest.generateRandomName() + "@" + "mail.com";
 
         getDriver().findElement(By.xpath(MANAGE_JENKINS_ELEMENT)).click();
         getDriver().findElement(By.xpath(SECURITY_ELEMENT)).click();
