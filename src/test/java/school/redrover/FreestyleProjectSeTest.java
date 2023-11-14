@@ -130,43 +130,22 @@ public class FreestyleProjectSeTest extends BaseTest {
     @Test
     public void testAddBuildStep() {
         final String projectName = "FSproject";
-
-        By buildStepInputLocator = By
-                .xpath("//div[@class='CodeMirror-scroll cm-s-default']");
+        final String buildStepTitle = "buildStep";
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
         createFreeStyleProject(projectName);
         getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath("//button[contains(text(), 'Add build step')]")))
-                .click()
-                .perform();
-
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath("//a[contains(text(), 'Execute shell')]")))
-                .click()
-                .perform();
-
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                .findElement(buildStepInputLocator))
-                .click()
-                .sendKeys("buildStep")
-                .perform();
-
+        js.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(By.xpath("//button[contains(text(), 'Add build step')]")));
+        hoverClick("//button[contains(text(), 'Add build step')]");
+        hoverClick("//a[contains(text(), 'Execute shell')]");
+        hoverClickInput("//div[@class='CodeMirror-scroll cm-s-default']", buildStepTitle);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
         getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
 
-        Assert.assertEquals(getDriver().findElement(buildStepInputLocator).getText(), "buildStep");
+        Assert.assertEquals(getDriver().findElement(By
+                .xpath("//div[@class='CodeMirror-scroll cm-s-default']")).getText(), buildStepTitle);
     }
 
     @Test
