@@ -2,6 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -120,7 +122,7 @@ public class NodeTest extends BaseTest {
                 "A problem occurred while processing the request.");
     }
 
-    @Test(dependsOnMethods = "testSetEnormousNumberOfExecutes")
+    @Test(dependsOnMethods = "testCheckWarningMessage")
     public void testSetCorrectNumberOfExecutorsForBuiltInNode() {
         final int numberOfExecutors = 5;
 
@@ -133,5 +135,25 @@ public class NodeTest extends BaseTest {
 
         List<WebElement> listExecutors = getDriver().findElements(By.xpath("//div[@id = 'executors']//table//tr/td[1]"));
         Assert.assertEquals(listExecutors.size(), numberOfExecutors);
+    }
+
+    @Test(dependsOnMethods = "testSetEnormousNumberOfExecutes")
+    public void testCheckWarningMessage() {
+        goToNodesPage();
+        clickConfigureNode(NEW_NODE_NAME);
+
+        getDriver().findElement(By.xpath("//input[@name = '_.remoteFS']")).sendKeys("@");
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+
+        WebElement warningMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class = 'warning']")));
+        Assert.assertEquals(warningMessage.getText(),
+                "Are you sure you want to use a relative path for the FS root?" +
+                        " Note that relative paths require that you can assure that the selected launcher provides" +
+                        " a consistent current working directory. Using an absolute path is highly recommended.");
+
+        Assert.assertEquals(Color.fromString(warningMessage.getCssValue("color")).asHex(), "#fe820a");
     }
 }
