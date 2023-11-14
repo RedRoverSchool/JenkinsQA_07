@@ -622,7 +622,8 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='bottom-sticker']//button")).click();
 
         Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("h1")).getText(),
+//                getDriver().findElement(By.cssSelector("h1")).getText(),
+                getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("h1"))).getText(),
                 "Project " + NEW_PROJECT_NAME
         );
     }
