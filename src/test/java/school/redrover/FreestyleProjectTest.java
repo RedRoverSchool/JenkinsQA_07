@@ -724,16 +724,16 @@ public class FreestyleProjectTest extends BaseTest {
                 editedDescriptionText);
     }
 
-    @Test(dependsOnMethods = "testRenameFreestyleProjectSideMenu")
+    @Test(dependsOnMethods = {"testCreateFreestyleProjectWithValidName", "testRenameFreestyleProjectSideMenu"})
     public void testCreateFreestyleProjectFromExistingProject() {
         getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.id("from")).sendKeys(PROJECT_NAME);
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[contains(text(),'" + PROJECT_NAME + "')]"))).click();
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(By.id("from")).sendKeys(NEW_PROJECT_NAME);
+        getDriver().findElement(By.xpath("//li[contains(text(),'" + NEW_PROJECT_NAME + "')]")).click();
         getDriver().findElement(By.id("ok-button")).click();
         goToJenkinsHomePage();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'" + NEW_PROJECT_NAME + "')]")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).isDisplayed());
     }
 
     @Test
