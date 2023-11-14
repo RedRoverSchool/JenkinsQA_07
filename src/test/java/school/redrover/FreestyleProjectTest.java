@@ -698,9 +698,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDeleteFreestyleProjectSideMenu() {
-        goToJenkinsHomePage();
-
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/.."))).click();
         getDriver().findElement(By.xpath("//span[contains(text(), 'Delete Project')]/..")).click();
         getDriver().switchTo().alert().accept();
 
@@ -731,7 +729,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(NEW_PROJECT_NAME);
         getDriver().findElement(By.id("from")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[contains(text(),'" + PROJECT_NAME + "')]"))).click();
         getDriver().findElement(By.id("ok-button")).click();
         goToJenkinsHomePage();
 
