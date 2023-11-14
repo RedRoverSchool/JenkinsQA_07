@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
@@ -35,7 +32,6 @@ public class FreestyleProjectSeTest extends BaseTest {
     }
 
     private void createAnItem(String itemName) {
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
         String createdItemName = "New " + itemName;
 
         if (isItemTitleExists(createdItemName)) {
@@ -54,7 +50,7 @@ public class FreestyleProjectSeTest extends BaseTest {
                 break;
             }
         }
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
     }
 
     private void createFreeStyleProject(String projectName) {
@@ -91,25 +87,16 @@ public class FreestyleProjectSeTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .form-container.tr"))
                 .getAttribute("style"), "");
+
     }
 
-    @Test
-    public void testSettingsGitIsOpened() {
-        createAnItem("Freestyle project");
-        WebElement radioGit = getDriver().findElement(By.cssSelector("label[for='radio-block-1']"));
-        new Actions(getDriver())
-                .click(radioGit)
-                .perform();
-
-        Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
-                .getAttribute("style"), "");
-    }
-
-
-    @Test
+    @Test(dependsOnMethods = "testSettingsOfDiscardOldBuildsIsDisplayed")
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        createAnItem("Freestyle project");
+        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
+        alert.accept();
+        getDriver().findElement(By.cssSelector("td [href='job/New%20Freestyle%20project/']")).click();
+        getDriver().findElement(By.cssSelector(".task-link-wrapper  [href='/job/New%20Freestyle%20project/configure']"))
+                .click();
         WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
         new Actions(getDriver())
                 .click(checkbox)
@@ -118,9 +105,26 @@ public class FreestyleProjectSeTest extends BaseTest {
         daysToKeepBuildsField.click();
         daysToKeepBuildsField.sendKeys("-2");
         getDriver().findElement(By.cssSelector("input[name='_.numToKeepStr']")).click();
-        WebElement errorMessage =  wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
+        WebElement errorMessage =  getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
 
         Assert.assertTrue(errorMessage.isDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testDaysToKeepBuildsErrorMessageIsDisplayed")
+    public void testSettingsGitIsOpened() {
+        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
+        alert.accept();
+        getDriver().findElement(By.cssSelector("td [href='job/New%20Freestyle%20project/']")).click();
+        getDriver().findElement(By.cssSelector(".task-link-wrapper  [href='/job/New%20Freestyle%20project/configure']"))
+                .click();
+
+        WebElement radioGit = getDriver().findElement(By.cssSelector("label[for='radio-block-1']"));
+        new Actions(getDriver())
+                .click(radioGit)
+                .perform();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".form-container.tr[nameref='radio-block-1']"))
+                .getAttribute("style"), "");
     }
 
     @Test
