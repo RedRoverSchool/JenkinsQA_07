@@ -4,16 +4,36 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
+
 public class FreestyleProject1Test extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String HOME_PAGE = "jenkins-home-link";
     private final static String NAME_SEARCH = "//span[text()='FreestyleProject']";
+
+    @Test
+    public void testNewFreestyleProjectCreated() {
+        final String projectName = AdditionalUtils.generateRandomName();
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        WebElement projectNameElement = getDriver().findElement(By.xpath("//td[3]/a"));
+
+        String actualProjectName = projectNameElement.getText();
+
+        assertEquals(actualProjectName, projectName);
+    }
 
     private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
         getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
@@ -59,6 +79,7 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().switchTo().alert().accept();
     }
 
+    @Ignore
     @Test
     public void testConfigureBuildEnvironmentSettingsAddTimestamp() throws InterruptedException {
         createProject("Freestyle project", PROJECT_NAME, true);

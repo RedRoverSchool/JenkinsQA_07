@@ -19,6 +19,18 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 
+    private void createOrganizationFolder(String name) {
+        returnToJenkinsHomePage();
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//span[text()='Organization Folder']")).click();
+        getDriver().findElement(By.xpath("//div[@class='footer']//button")).click();
+    }
+
+    private void returnToJenkinsHomePage() {
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+    }
+
     @Test
     public void testCreatedNewOrganizationFolder() {
         final String folderName = "Organization_Folder";
@@ -104,16 +116,14 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(actualResult, expectedResultWarningMessage);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatedNewOrganizationFolder")
     public void testOnDeletingOrganizationFolder() {
-        final String folderName = "OrganizationFolder";
+        final String folderName = "Organization_Folder";
         boolean deletetOK = true;
-
-        creationNewOrganizationFolder(folderName);
 
         getDriver().findElement(By.linkText("Dashboard")).click();
         getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/"+folderName+"/delete']")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
         try {
@@ -195,19 +205,13 @@ public class OrganizationFolderTest extends BaseTest {
     @Test
     public void testVerifyCreatedItem() {
         final String name = "Project";
+        
+        createOrganizationFolder(name);
+        returnToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
-        getDriver().findElement(By.xpath("//span[text()='Organization Folder']")).click();
-        getDriver().findElement(By.xpath("//div[@class='footer']//button")).click();
-        getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']/li[1]/a")).click();
+        Boolean actualResult = getDriver().findElement((By.xpath("//tr[@id='job_" + name + "']"))).getText().contains(name);
 
-        List<WebElement> tableElement = getDriver().findElements(By.xpath("//tr[@id='job_" + name + "']"));
+        Assert.assertTrue(actualResult);
 
-        for (WebElement e : tableElement) {
-            if(e.getText().equals(name)) {
-                Assert.assertTrue(e.getText().equals(name));
-            }
-        }
     }
 }

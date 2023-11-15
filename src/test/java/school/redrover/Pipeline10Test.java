@@ -22,6 +22,7 @@ public class Pipeline10Test extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Pipeline " + pipelineName);
     }
+
     @Test
     public void testDeleteMyPipeline2() {
         final String jobName = "MyPipeline2";

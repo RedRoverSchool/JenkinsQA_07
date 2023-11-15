@@ -1,11 +1,17 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +21,7 @@ public class MultibranchPipeline4Test extends BaseTest {
 
     private void createMultibranchPipelin(String str) {
         getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NAME);
+        getDriver().findElement(By.id("name")).sendKeys(str);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']"))
                 .click();
         getDriver().findElement(By.id("ok-button")).click();
@@ -25,15 +31,36 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
     }
 
-    private void goMultibranchPipelinePage() {
-        getDriver().findElement(By.xpath("//span[normalize-space()='" + NAME + "']")).click();
+    private void goMultibranchPipelinePage(String str) {
+        getDriver().findElement(By.xpath("//span[normalize-space()='" + str + "']")).click();
+    }
+
+    @Test(dependsOnMethods = "testRenameResultOnPageHeading")
+    public void testErrorForUnsafeChar() {
+        goMultibranchPipelinePage(RENAMED);
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
+                .sendKeys(RENAMED + "!");
+
+        Actions actions = new Actions(getDriver());
+        WebElement element = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
+        actions.moveToElement(element).moveByOffset(100, 50).click().build().perform();
+
+        WebElement error_message = getDriver().findElement(By.xpath("//div[@class='error']"));
+
+        getWait2().until(d -> error_message.isDisplayed());
+
+        Assert.assertEquals(error_message.getText(), "‘!’ is an unsafe character");
     }
 
     @Test
     public void testRenameUsingSidebar() {
         createMultibranchPipelin(NAME);
         getDashboardLink();
-        goMultibranchPipelinePage();
+        goMultibranchPipelinePage(NAME);
 
         getDriver().findElement(By.xpath("//div[8]/span/a")).click();
 
@@ -41,14 +68,14 @@ public class MultibranchPipeline4Test extends BaseTest {
         getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(RENAMED);
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'"+RENAMED+"')]")).getText(), RENAMED);
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'" + RENAMED + "')]")).getText(), RENAMED);
     }
 
     @Test
     public void testRenameResultInBreadcrumb() {
         createMultibranchPipelin(NAME);
         getDashboardLink();
-        goMultibranchPipelinePage();
+        goMultibranchPipelinePage(NAME);
 
         getDriver().findElement(By.xpath("//div[8]/span/a")).click();
 
@@ -69,7 +96,7 @@ public class MultibranchPipeline4Test extends BaseTest {
     public void testRenameResultOnPageHeading() {
         createMultibranchPipelin(NAME);
         getDashboardLink();
-        goMultibranchPipelinePage();
+        goMultibranchPipelinePage(NAME);
 
         getDriver().findElement(By.xpath("//div[8]/span/a")).click();
 
@@ -84,7 +111,7 @@ public class MultibranchPipeline4Test extends BaseTest {
     public void testRenameResultOnDashboard() {
         createMultibranchPipelin(NAME);
         getDashboardLink();
-        goMultibranchPipelinePage();
+        goMultibranchPipelinePage(NAME);
 
         getDriver().findElement(By.xpath("//div[8]/span/a")).click();
 

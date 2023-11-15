@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -37,15 +38,16 @@ public class FreestyleProject7Test extends BaseTest {
     }
 
     @Test
-    public void testPermalinksListOnStatusPage() throws InterruptedException {
+    public void testPermalinksListOnStatusPage() {
 
         final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
                 "Last completed build"};
 
         createFreeStyleProject(PROJECT_NAME);
 
-        getDriver().findElement(By.partialLinkText("Build Now")).click();
-        Thread.sleep(2000);
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Build Now"))).click();
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td[@class='build-row-cell']")));
 
         getDriver().navigate().refresh();
 
@@ -54,10 +56,12 @@ public class FreestyleProject7Test extends BaseTest {
 
         ArrayList<String> permalinksTexts = new ArrayList<>();
 
+        Assert.assertEquals(permalinks.size(), 4);
+
         for (int i = 0; i < permalinks.size(); i++) {
             permalinksTexts.add(permalinks.get(i).getText());
             Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
         }
-        Assert.assertEquals(permalinks.size(), 4);
+
     }
 }

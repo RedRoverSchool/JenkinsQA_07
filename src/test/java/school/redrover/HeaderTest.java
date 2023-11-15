@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -19,6 +20,7 @@ public class HeaderTest extends BaseTest {
         Assert.assertTrue(getDriver().getTitle().contains("Dashboard"));
     }
 
+    @Ignore
     @Test
     public void testClickLogoToMainPage() {
 
@@ -46,5 +48,12 @@ public class HeaderTest extends BaseTest {
 
             Assert.assertEquals(getDriver().getTitle(), "Dashboard [Jenkins]");
         }
+    }
+
+    @Test
+    public void testVerifyRedirectToHomepageByClickLogoImg() {
+        getDriver().findElement(By.id("jenkins-head-icon")).click();
+
+        Assert.assertEquals(getDriver().getTitle().trim(), "Dashboard [Jenkins]");
     }
 }

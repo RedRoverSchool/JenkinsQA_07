@@ -10,14 +10,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 public class NewUser1Test extends BaseTest {
     private final String USER_NAME = "FirstUser";
-    private void createNewUser(String testName){
+
+    private void createNewUser(String userName){
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
         getDriver().findElement(By.xpath("//dt[contains(text(),'Users')]")).click();
         getDriver().findElement(By.linkText("Create User")).click();
         getDriver().findElement(By.id("username")).clear();
-        getDriver().findElement(By.id("username")).sendKeys(testName);
+        getDriver().findElement(By.id("username")).sendKeys(userName);
         getDriver().findElement(By.name("password1")).clear();
         getDriver().findElement(By.name("password1")).sendKeys("TestPassword");
         getDriver().findElement(By.name("password2")).clear();
@@ -29,27 +33,32 @@ public class NewUser1Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    @Test
-    public void TestCreateUserWithValidName() {
-        createNewUser(USER_NAME);
-
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//a[@href= 'user/firstuser/']")).getText(), USER_NAME);
+    private void goToUsersPage() {
+        getDriver().findElement(By.linkText("Manage Jenkins")).click();
+        getDriver().findElement(By.xpath("//dt[contains(text(),'Users')]")).click();
     }
 
     @Test
-    public void TestCreateUserWithInvalidName() {
+    public void testCreateUserWithValidName() {
+        createNewUser(USER_NAME);
+
+        assertEquals(getDriver().findElement(
+                By.xpath("//a[@href= 'user/firstuser/']")).getText(), USER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateUserWithValidName")
+    public void testCreateUserWithInvalidName() {
         char unsafeCharacter = '$';
 
         createNewUser(USER_NAME + unsafeCharacter);
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@id='main-panel']/form/div[1]/div[2]")).isDisplayed());
+        assertTrue(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/form/div[1]/div[2]")).isDisplayed());
     }
-    @Test
-    public void TestCreateUserWithAllEmptyFields() {
 
-        getDriver().findElement(By.linkText("Manage Jenkins")).click();
-        getDriver().findElement(By.xpath("//dt[contains(text(),'Users')]")).click();
+    @Test(dependsOnMethods = "testCreateUserWithInvalidName")
+    public void testCreateUserWithAllEmptyFields() {
+        goToUsersPage();
         getDriver().findElement(By.linkText("Create User")).click();
         getDriver().findElement(By.name("Submit")).click();
 
@@ -60,44 +69,74 @@ public class NewUser1Test extends BaseTest {
                 "\"\" is prohibited as a full name for security reasons.",
                 "Invalid e-mail address");
 
-        List<WebElement> listOfWarnings = getDriver().findElements(By.xpath("//div[@class='error jenkins-!-margin-bottom-2' and contains(., '')]"));
+        List<WebElement> listOfWarnings = getDriver().findElements(
+                By.xpath("//div[@class='error jenkins-!-margin-bottom-2' and contains(., '')]"));
         List<String> extractedWarnings = listOfWarnings.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
 
-        Assert.assertEquals(extractedWarnings, listOfExpectedWarnings);
+        assertEquals(extractedWarnings, listOfExpectedWarnings);
     }
 
-    @Test
-    public void TestCreatedUserCheckFieldName() {
-        createNewUser(USER_NAME);
+    @Test(dependsOnMethods = "testCreateUserWithAllEmptyFields")
+    public void testCreatedUserCheckFieldName() {
+        goToUsersPage();
 
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//*[@id=\"people\"]/tbody/tr[2]/td[3]")).getText(), "Tester");
+        assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='people']/tbody/tr[2]/td[3]")).getText(), "Tester");
     }
 
-    @Test
-    public void TestCreatedUserCheckUserIdButton() {
-        createNewUser(USER_NAME);
-
+    @Test(dependsOnMethods = "testCreatedUserCheckFieldName")
+    public void testCreatedUserCheckUserIdButton() {
+        goToUsersPage();
         getDriver().findElement(By.xpath("//a[@href='user/firstuser/'] ")).click();
 
-        Assert.assertEquals(getDriver().findElement(
+        assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/div[2]")).getText(), "Jenkins User ID: FirstUser");
     }
-    @Test
-    public void TestCreatedUserCheckConfigurationButton() {
-        createNewUser(USER_NAME);
 
+    @Test(dependsOnMethods = "testCreatedUserCheckUserIdButton")
+    public void testCreateUserCheckConfigurationButton() {
+        goToUsersPage();
         getDriver().findElement(By.xpath("//a[@href='user/firstuser/configure'] ")).click();
 
         List<String>  listOfExpectedItems = Arrays.asList("People", "Status", "Builds", "Configure", "My Views", "Delete");
 
-        List<WebElement> listOfDashboardItems = getDriver().findElements(By.xpath("//div[@class ='task ' and contains(., '')]"));
+        List<WebElement> listOfDashboardItems = getDriver().findElements(
+                By.xpath("//div[@class ='task ' and contains(., '')]"));
         List<String> extractedTexts = listOfDashboardItems.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
 
-        Assert.assertEquals(extractedTexts, listOfExpectedItems);
+        assertEquals(extractedTexts, listOfExpectedItems);
+    }
+
+    @Test(dependsOnMethods = "testCreateUserCheckConfigurationButton")
+    public void testDeleteUser() {
+        goToUsersPage();
+        getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[5]/div")).click();
+        getDriver().switchTo().alert().accept();
+
+        List<String>  listOfExpectedUsers = List.of("admin");
+        List<WebElement> listOfDashboardUsers = getDriver().findElements(
+                By.xpath("//a[@href = 'user/admin/' and contains(., '')]"));
+        List<String> extractedUsers = listOfDashboardUsers.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        assertEquals(extractedUsers, listOfExpectedUsers);
+    }
+
+    @Test(dependsOnMethods = "testDeleteUser")
+    public void testCreateNewUserAndLogInAsNewUser() {
+        createNewUser(USER_NAME);
+        getDriver().findElement(By.linkText("log out")).click();
+        getDriver().findElement(By.id("j_username")).clear();
+        getDriver().findElement(By.id("j_username")).sendKeys(USER_NAME);
+        getDriver().findElement(By.id("j_password")).clear();
+        getDriver().findElement(By.id("j_password")).sendKeys("TestPassword");
+        getDriver().findElement(By.name("Submit")).click();
+
+        assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/firstuser']")).getText(), "Tester");
     }
 }

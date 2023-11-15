@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -16,6 +17,8 @@ public class FreestyleProjectVDTest extends BaseTest {
     private static final String SUBMIT_BUTTON = "//button[@name='Submit']";
 
     private static final String CONFIGURE_LINK = "//a[@href='/job/" + PROJECT_NAME + "/configure']";
+
+    private final static String JENKINS_ICON = "//img[@id='jenkins-head-icon']";
 
     private void createFreeStyleProject(String projectName) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -111,5 +114,24 @@ public class FreestyleProjectVDTest extends BaseTest {
         int quantityOfElementsAfterClicking = getDriver().findElements(By.xpath(checkBoxXpath)).size();
 
         Assert.assertEquals(quantityOfElementsAfterClicking, quantityOfElementsBeforeClicking + 1);
+    }
+
+    @Test
+    public void testIsWorkspaceCreated() {
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath(JENKINS_ICON)).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error: no workspace");
+
+        getDriver().findElement(By.xpath(JENKINS_ICON)).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/build?delay=0sec']")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Workspace of " + PROJECT_NAME + " on Built-In Node");
     }
 }

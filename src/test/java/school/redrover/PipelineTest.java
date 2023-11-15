@@ -7,12 +7,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PipelineTest extends BaseTest {
 
@@ -23,14 +24,13 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.className("jenkins-input")).sendKeys(pipelineName);
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
         getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-        getDriver().findElement(By.name("Submit")).click();
 
         if (returnToDashboard) {
-            getDriver().findElement(By.id("jenkins-name-icon")).click();
+            goToDashboard();
         }
     }
 
-    private void saveConfiguration() {
+    private void clickSaveConfiguration() {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
@@ -38,8 +38,18 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
     }
 
+    private void clickConfigure() {
+        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
+                .click();
+    }
+
     private void goToDashboard() {
         getDriver().findElement(By.id("jenkins-home-link")).click();
+    }
+
+    private void clickProjectOnDashboard(String projectName) {
+        getDriver().findElement(By
+                .xpath(String.format("//a[@href='job/%s/']", projectName.replace(" ", "%20")))).click();
     }
 
     @Test
@@ -134,6 +144,7 @@ public class PipelineTest extends BaseTest {
 
         createPipeline(PIPELINE_NAME, false);
 
+        getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
 
         final String[] buildIconTitle = getDriver().findElement(By.xpath("//div[@class='build-icon']/a"))
@@ -177,17 +188,17 @@ public class PipelineTest extends BaseTest {
         WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
         newItem.click();
         WebElement itemName = getDriver().findElement(By.id("name"));
-        itemName.sendKeys("MyPipeline");
+        itemName.sendKeys(PIPELINE_NAME);
         WebElement pipeLine = getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"));
         pipeLine.click();
         WebElement button = getDriver().findElement(By.id("ok-button"));
         button.click();
         getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.xpath("//td/a[@href = 'job/MyPipeline/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + PIPELINE_NAME.replace(" ", "%20") + "/']")).click();
 
         Assert.assertEquals(
                 getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
-                "Pipeline MyPipeline");
+                "Pipeline " + PIPELINE_NAME);
     }
 
     @Test
@@ -241,30 +252,29 @@ public class PipelineTest extends BaseTest {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreatePipeline")
     public void testOpenLogsFromStageView() {
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(PIPELINE_NAME);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
+        clickProjectOnDashboard(PIPELINE_NAME);
+        clickConfigure();
 
         Select select = new Select(getDriver().findElement(By.xpath("//div[@class='samples']/select")));
         select.selectByValue("hello");
-        saveConfiguration();
+        clickSaveConfiguration();
 
         clickBuildNow();
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(getDriver()
-                .findElement(By.xpath("//span[@class='badge']/a[text()='#1']"))));
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(getDriver().findElement(
-                By.xpath("//tbody[@class='tobsTable-body']//div[@class='duration']"))).perform();
-        wait.until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")))).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//pre[@class='console-output']")).getText(),
-                "Hello World");
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='badge']/a[text()='#1']")));
+        WebElement buildRecordInStageView = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tbody[@class='tobsTable-body']//div[@class='duration']")));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(buildRecordInStageView).perform();
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']"))).click();
+
+        String consoleLog = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//pre[@class='console-output']"))).getText();
+        Assert.assertEquals(consoleLog, "Hello World");
     }
 
     @Test
@@ -275,6 +285,7 @@ public class PipelineTest extends BaseTest {
         createPipeline(PIPELINE_NAME, true);
         createPipeline(upstreamPipelineName, false);
 
+        getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
                 .click();
         WebElement buildAfterOtherProjectsCheckbox = getDriver()
@@ -285,15 +296,103 @@ public class PipelineTest extends BaseTest {
         WebElement alwaysTriggerRadio = getDriver().findElement(
                 By.xpath("//label[text()='Always trigger, even if the build is aborted']"));
         js.executeScript("arguments[0].click();", alwaysTriggerRadio);
-        saveConfiguration();
+        clickSaveConfiguration();
 
         goToDashboard();
         getDriver().findElement(
                         By.xpath(String.format("//span[text()='%s']/../../..//a[contains(@href,'build?')]", PIPELINE_NAME)))
                 .click();
-        getDriver().navigate().refresh();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[@class='pane pane-grow']/a")).getText(),
-                upstreamPipelineName);
+        Assert.assertTrue(getWait5().until(ExpectedConditions
+                        .visibilityOfElementLocated(By.xpath("//td[@class='pane pane-grow']")))
+                .getText()
+                .contains(upstreamPipelineName));
+    }
+
+    @Test
+    public void testStagesAreDisplayedInStageView() {
+        final List<String> stageNames = List.of(new String[]{"test", "build", "deploy"});
+        final String pipelineScript = "stage('test') {}\nstage('build') {}\nstage('deploy') {}";
+
+        createPipeline(PIPELINE_NAME, false);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true)", getDriver().findElement(By.xpath("//div[@class='ace_line']")));
+        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
+        clickSaveConfiguration();
+        clickBuildNow();
+
+        List<String> actualStageNames = getDriver()
+                .findElements(By.xpath("//th[contains(@class, 'stage-header-name-')]"))
+                .stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(actualStageNames, stageNames);
+    }
+
+    @Test
+    public void testBuildWithStringParameter() {
+        final String parameterName = "textParam";
+        final String parameterValue = "some text";
+        final String scriptText = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
+
+        createPipeline(PIPELINE_NAME, false);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click()",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        WebElement addParameterBtn = getWait5().until(ExpectedConditions
+                .visibilityOfElementLocated(By.id("yui-gen1-button")));
+        js.executeScript("arguments[0].scrollIntoView(true)",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        addParameterBtn.click();
+        getDriver().findElement(By.id("yui-gen10")).click();
+
+        getDriver().findElement(By.name("parameter.name")).sendKeys(parameterName);
+        getDriver().findElement(By.className("ace_text-input")).sendKeys(scriptText);
+        clickSaveConfiguration();
+
+        clickBuildNow();
+        getDriver().findElement(By.name("value")).sendKeys(parameterValue);
+        getDriver().findElement(
+                By.xpath("//button[@class='jenkins-button jenkins-button--primary jenkins-!-build-color']")).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='badge']/a[text()='#1']"))).click();
+        getDriver().findElement(By.xpath("//a[contains(@href, '/console')]")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.className("console-output")).getText().contains(parameterValue));
+    }
+
+    @Test
+    public void testVerifyChoiceParameterCanBeSet() {
+
+        createPipeline(PIPELINE_NAME, false);
+        List<String> parameterChoices = Arrays.asList("one", "two");
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click()",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        js.executeScript("arguments[0].scrollIntoView(true)",
+                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
+        getDriver().findElement(By.id("yui-gen1-button")).click();
+        getDriver().findElement(By.id("yui-gen4")).click();
+        getDriver().findElement(By.name("parameter.name")).sendKeys("parameterName");
+        for (int i = 0; i < parameterChoices.size(); i++) {
+            if (i != parameterChoices.size() - 1) {
+                getDriver().findElement(By.name("parameter.choices")).sendKeys(parameterChoices.get(i) + "\n");
+            } else {
+                getDriver().findElement(By.name("parameter.choices")).sendKeys(parameterChoices.get(i));
+            }
+        }
+        clickSaveConfiguration();
+
+        clickBuildNow();
+
+        List<String> buildParameters = getDriver().findElements(By.xpath("//select[@name='value']/option"))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
+
+        Assert.assertEquals(buildParameters, parameterChoices);
     }
 }

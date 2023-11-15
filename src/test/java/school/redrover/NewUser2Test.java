@@ -42,7 +42,7 @@ public class NewUser2Test extends BaseTest {
     private void createUserSuccess() {
         goToUserCreateFormPage();
         List<WebElement> valueInputs = getDriver().findElements(
-            By.xpath("//*[@class = 'jenkins-input']"));
+                By.xpath("//*[@class = 'jenkins-input']"));
         for (int i = 0; i < valueInputs.size(); i++) {
             if (i == 0) {
                 valueInputs.get(i).sendKeys(TEST_INPUT);
@@ -51,6 +51,14 @@ public class NewUser2Test extends BaseTest {
             }
         }
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    @Test
+    public void testUserRecordContainUserIdButton() {
+        createUserSuccess();
+
+        WebElement UserIdButton = getDriver().findElement(By.xpath("//tbody/tr[2]/td[2]/a[1]"));
+        Assert.assertTrue(UserIdButton.isEnabled() && UserIdButton.isDisplayed(), "Button should be enabled and displayed");
     }
 }
 
