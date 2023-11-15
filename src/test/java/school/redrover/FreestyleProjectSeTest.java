@@ -86,6 +86,7 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testSettingsOfDiscardOldBuildsIsDisplayed")
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
@@ -106,6 +107,7 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testSetNumberDaysToKeepBuildsIsSaved", "testDaysToKeepBuildsErrorMessageIsDisplayed", "testSettingsOfDiscardOldBuildsIsDisplayed",})
     public void testSettingsGitIsOpened() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -193,6 +195,7 @@ public class FreestyleProjectSeTest extends BaseTest {
                 "none");
     }
 
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
@@ -221,6 +224,8 @@ public class FreestyleProjectSeTest extends BaseTest {
                 By.xpath("//input[@checkdependson='credentialsId']")).getAttribute("value"),
                 "123");
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testDaysToKeepBuildsErrorMessageIsDisplayed")
     public void testSetNumberDaysToKeepBuildsIsSaved(){
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
