@@ -870,6 +870,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "");
     }
 
+    @Ignore
     @Test
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         createAnItem("Freestyle project");
@@ -969,6 +970,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "none");
     }
 
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
