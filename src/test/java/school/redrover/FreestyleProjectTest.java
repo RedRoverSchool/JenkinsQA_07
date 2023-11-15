@@ -657,7 +657,7 @@ public class FreestyleProjectTest extends BaseTest {
         );
     }
 
-    @Test(dependsOnMethods = "testFreestyleProjectNavigateToStatusPage")
+    @Test(dependsOnMethods = {"testCreateFreestyleProjectWithValidName", "testFreestyleProjectNavigateToStatusPage"})
     public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckboxSelected() {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
@@ -691,7 +691,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDeleteFreestyleProjectSideMenu() {
         getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
