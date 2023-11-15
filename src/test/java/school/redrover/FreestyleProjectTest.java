@@ -870,7 +870,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "");
     }
 
-    @Ignore
     @Test
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         createAnItem("Freestyle project");
@@ -882,7 +881,7 @@ public class FreestyleProjectTest extends BaseTest {
         daysToKeepBuildsField.click();
         daysToKeepBuildsField.sendKeys("-2");
         getDriver().findElement(By.cssSelector("input[name='_.numToKeepStr']")).click();
-        WebElement errorMessage =  getWait5().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
+        WebElement errorMessage =  getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
 
         Assert.assertTrue(errorMessage.isDisplayed());
     }
@@ -970,7 +969,6 @@ public class FreestyleProjectTest extends BaseTest {
                 "none");
     }
 
-    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
@@ -982,7 +980,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.cssSelector("label[for='radio-block-1']")));
+                getDriver().findElement(By.id("source-code-management")));
 
         new Actions(getDriver())
                 .moveToElement(
