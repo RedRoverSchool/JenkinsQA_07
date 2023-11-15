@@ -176,4 +176,33 @@ public class ViewTest extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.xpath("//div[@class='tabBar']"))
                 .getText().contains("NewView"));
     }
+
+    @Test
+    public void testCreateNewFolder() {
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("TestFolder");
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='jenkins-name-icon']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='job_TestFolder']/td[3]/a/span")).getText(),
+                "TestFolder");
+    }
+
+    @Test(dependsOnMethods = "testCreateNewFolder")
+    public void testCreateNewEmptyView() {
+        final String nameView = "My new view";
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+        getDriver().findElement(By.xpath("//a[@title='New View']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameView);
+        getDriver().findElement(By.xpath("//input[@id='hudson.model.ListView']/following-sibling::label")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']"));
+        String text = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar' and descendant::*[contains(text(), '" + nameView +"' )]]")).getText();
+
+        Assert.assertTrue(text.contains(nameView));
+
+    }
 }
