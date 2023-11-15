@@ -64,4 +64,26 @@ public class Header2Test extends BaseTest {
         assertTrue(isResultMatchQuery);
     }
 
+    @Test
+    public void testRedirectionToStatusPageFromResultList() {
+        final String itemName = "Test project";
+        final String searchRequest = itemName.substring(0, 5);
+        createFreeStyleProject(itemName);
+
+        getDriver().findElement(By.name("q")).click();
+        getDriver().findElement(By.name("q")).sendKeys(searchRequest);
+        new Actions(getDriver()).sendKeys(Keys.ENTER).perform();
+        getDriver().findElement(By.linkText(itemName)).click();
+
+        String title = getDriver().getTitle();
+        boolean isStatusPageSelected = getDriver()
+                .findElement(By.linkText("Status"))
+                .getAttribute("class")
+                .contains("active");
+
+        assertTrue(title.contains(itemName));
+        assertTrue(isStatusPageSelected);
+    }
+
+
 }
