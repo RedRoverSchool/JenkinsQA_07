@@ -40,6 +40,8 @@ public class Pipeline10Test extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]/span/a")).click();
         getDriver().switchTo().alert().accept();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
+        String welcome = getDriver().findElement(By.xpath("//*[@id='main-panel']//h2")).getText();
+
+        Assert.assertEquals(welcome,"Start building your software project");
     }
 }
