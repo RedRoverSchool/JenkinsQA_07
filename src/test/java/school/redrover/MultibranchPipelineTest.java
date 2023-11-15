@@ -213,9 +213,8 @@ public class MultibranchPipelineTest extends BaseTest {
         actions.moveToElement(breadcrumbArrow).perform();
         actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
-                By.xpath("//a[@href='/job/"
-                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")))).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/"
+                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
 
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
