@@ -49,4 +49,19 @@ public class Pipeline26Test extends BaseTest {
         String confirmingName = getDriver().findElement(By.xpath("//h1")).getText();
         Assert.assertEquals(confirmingName, "Pipeline " + newPipelineName);
     }
+
+    @Test
+    public void testPipelineDelete() {
+        createPipeline();
+        goBackToDashboard();
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PIPELINE_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@class='task-link  confirmation-link']")).click();
+        getDriver().switchTo().alert().accept();
+
+        goBackToDashboard();
+
+        String dashboardResult = getDriver().findElement(By.xpath("//h1[contains(text(), 'Welcome to Jenkins!')]")).getText();
+        Assert.assertEquals(dashboardResult, "Welcome to Jenkins!");
+    }
 }

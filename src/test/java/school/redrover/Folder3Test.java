@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderDetailsPage;
+import school.redrover.model.FolderRenamePage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class Folder3Test extends BaseTest {
@@ -37,17 +41,14 @@ public class Folder3Test extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickRename()
+                .typeNewName(RENAMED_FOLDER)
+                .clickSubmit()
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(RENAMED_FOLDER);
-        getDriver().findElement(By.name("Submit")).click();
-        returnToJenkinsDashboard();
-
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']")).getText(), RENAMED_FOLDER);
+        Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));
     }
 
     @Test(dependsOnMethods = "testRename")

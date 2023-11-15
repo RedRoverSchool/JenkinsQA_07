@@ -26,7 +26,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
     }
 
-    private void folderCreation(String FOLDER_NAME) {
+    private void createFolder() {
 
         getDriver().findElement(By.linkText("Create a job")).click();
         getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
@@ -182,23 +182,21 @@ public class FolderTest extends BaseTest {
 
     }
 
-    @Ignore
     @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
         final String NEW_FOLDER_NAME = "FolderNew";
 
-        folderCreation(FOLDER_NAME);
+        createFolder();
 
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]")).click();
-
         getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
 
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_FOLDER_NAME,
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME,
                 FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
     }
 

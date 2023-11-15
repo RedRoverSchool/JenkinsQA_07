@@ -1,9 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -62,6 +64,41 @@ public class Header2Test extends BaseTest {
                 .map(WebElement::getText)
                 .allMatch(x -> x.contains(searchingRequest));
         assertTrue(isResultMatchQuery);
+    }
+
+    @Test
+    public void testRedirectionToStatusPageFromResultList() {
+        final String itemName = "Test project";
+        final String searchRequest = itemName.substring(0, 5);
+        createFreeStyleProject(itemName);
+
+        getDriver().findElement(By.name("q")).click();
+        getDriver().findElement(By.name("q")).sendKeys(searchRequest);
+        new Actions(getDriver()).sendKeys(Keys.ENTER).perform();
+        getDriver().findElement(By.linkText(itemName)).click();
+
+        String title = getDriver().getTitle();
+        boolean isStatusPageSelected = getDriver()
+                .findElement(By.linkText("Status"))
+                .getAttribute("class")
+                .contains("active");
+
+        assertTrue(title.contains(itemName));
+        assertTrue(isStatusPageSelected);
+    }
+
+    @Ignore
+    @Test
+    public void testHotKeysSearchAreaSelection() {
+        new Actions(getDriver())
+                .keyDown(Keys.CONTROL)
+                .sendKeys("k")
+                .keyUp(Keys.CONTROL)
+                .perform();
+
+        boolean isFocused = (Boolean) ((JavascriptExecutor) getDriver()).executeScript(
+                "return document.activeElement === arguments[0]", getDriver().findElement(By.name("q")));
+        assertTrue(isFocused);
     }
 
 }
