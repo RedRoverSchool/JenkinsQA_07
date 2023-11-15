@@ -84,11 +84,12 @@ public class Users2Test extends BaseTest {
         actions.moveToElement(moveToUserName).perform();
 
         WebElement moveToArrow = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']/button"));
+
         actions.sendKeys(moveToArrow, Keys.ENTER).click().perform();
 
         WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
 
-        actions.moveToElement(clickDelete).click().perform();
+        clickDelete.click();
 
         getDriver().switchTo().alert().accept();
 
