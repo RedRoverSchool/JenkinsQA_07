@@ -198,17 +198,20 @@ public class FreestyleProjectSeTest extends BaseTest {
         final String projectName = "FSproject";
         final String projectRename = "FSproject1";
 
+        //span[text()='" + projectName + "']/button
+
         createFreeStyleProject(projectName);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
-        hoverClick("//button[@data-href='http://localhost:8080/job/" + projectName + "/']");
+//        hoverClick("//button[@data-href='http://localhost:8080/job/" + projectName + "/']");
+        hoverClick("//a[@href='job/" + projectName + "/']/button");
         hoverClick("//a[@href='/job/" + projectName + "/confirm-rename']");
         getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
         hoverClickInput("//input[@name='newName']", projectRename);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//button[@data-href='http://localhost:8080/job/" + projectRename + "/']")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + projectRename + "']")).isDisplayed());
 
     }
 }
