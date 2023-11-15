@@ -106,7 +106,7 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
-    @Test(dependsOnMethods = {"testSetNumberDaysToKeepBuildsIsSaved", "testDaysToKeepBuildsErrorMessageIsDisplayed", "testSettingsOfDiscardOldBuildsIsDisplayed",})
+    @Test(dependsOnMethods = "testSetNumberDaysToKeepBuildsIsSaved")
     public void testSettingsGitIsOpened() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         getDriver().findElement(By.cssSelector("td [href='job/New%20Freestyle%20project/']")).click();
@@ -242,7 +242,19 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                         By.cssSelector("input[name='_.daysToKeepStr']")).getAttribute("value"),
                 "2");
+    }
 
+    @Test(dependsOnMethods = "testSettingsGitIsOpened")
+    public  void testSavedNotificationIsDisplayed(){
+        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
+        alert.accept();
+        getDriver().findElement(By.cssSelector("td [href='job/New%20Freestyle%20project/']")).click();
+        getDriver().findElement(By.cssSelector(".task-link-wrapper  [href='/job/New%20Freestyle%20project/configure']"))
+                .click();
+        getDriver().findElement(By.name("Apply")).click();
+        String notificationIsDisplayed = getDriver().findElement(By.id("notification-bar")).getAttribute("class");
+
+        Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
 
 }
