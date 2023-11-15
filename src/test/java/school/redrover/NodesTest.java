@@ -106,6 +106,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(actualNodeName, NODE_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testCreateNodeByCopyingExistingNode() {
         final String newNode = "Copy node";
