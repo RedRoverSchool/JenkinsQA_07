@@ -9,6 +9,7 @@ import school.redrover.runner.BaseTest;
 public class Pipeline26Test extends BaseTest {
 
     private final String PIPELINE_NAME = "PipelineName";
+    private final String NEW_PIPELINE_NAME = "NewPipelineName";
 
     public void createPipeline() {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
@@ -32,21 +33,26 @@ public class Pipeline26Test extends BaseTest {
         Assert.assertEquals(foundName, PIPELINE_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testPipelineRename() {
-        final String newPipelineName = "NewPipelineName";
-
-        createPipeline();
-        goBackToDashboard();
-
         getDriver().findElement(By.xpath("//span[contains(text(),'" + PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
 
         getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL + "a");
-        getDriver().findElement(By.name("newName")).sendKeys(newPipelineName);
+        getDriver().findElement(By.name("newName")).sendKeys(NEW_PIPELINE_NAME);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         String confirmingName = getDriver().findElement(By.xpath("//h1")).getText();
-        Assert.assertEquals(confirmingName, "Pipeline " + newPipelineName);
+        Assert.assertEquals(confirmingName, "Pipeline " + NEW_PIPELINE_NAME);
+    }
+
+    @Test(dependsOnMethods = "testPipelineRename")
+    public void testPipelineDelete() {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + NEW_PIPELINE_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//a[@class='task-link  confirmation-link']")).click();
+        getDriver().switchTo().alert().accept();
+
+        String dashboardResult = getDriver().findElement(By.xpath("//h1[contains(text(), 'Welcome to Jenkins!')]")).getText();
+        Assert.assertEquals(dashboardResult, "Welcome to Jenkins!");
     }
 }

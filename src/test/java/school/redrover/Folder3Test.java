@@ -1,9 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderDetailsPage;
+import school.redrover.model.FolderRenamePage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 public class Folder3Test extends BaseTest {
@@ -35,24 +39,19 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']")).getText(), FOLDER_NAME);
     }
 
-
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testRename() {
-        createFolder(FOLDER_NAME);
+        HomePage homePage = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickRename()
+                .typeNewName(RENAMED_FOLDER)
+                .clickSubmit()
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(RENAMED_FOLDER);
-        getDriver().findElement(By.name("Submit")).click();
-        returnToJenkinsDashboard();
-
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']")).getText(), RENAMED_FOLDER);
+        Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testRename")
     public void testMoveFolderToFolder() {
         createFolder(NESTED_FOLDER);
 
@@ -60,7 +59,7 @@ public class Folder3Test extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/job/" + NESTED_FOLDER + "/move']")).click();
         getDriver().findElement(By.name("destination")).click();
         getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//option[@value='/" + FOLDER_NAME + "']"))).click();
+                By.xpath("//option[@value='/" + RENAMED_FOLDER + "']"))).click();
         getDriver().findElement(By.name("Submit")).click();
         returnToJenkinsDashboard();
 
@@ -73,11 +72,11 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testMoveFolderToFolder")
     public void testCreateNewJob() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//td/a[@href='job/" + FOLDER_NAME + "/']"))).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/newJob']")).click();
+                By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']"))).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + RENAMED_FOLDER + "/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(JOB_NAME);
         getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
         getDriver().findElement(By.id("ok-button")).click();

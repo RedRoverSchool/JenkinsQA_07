@@ -77,5 +77,18 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//div[@id = 'description']/div[1]")).getText(), DESCRIPTION);
     }
+
+    @Test(dependsOnMethods = "testDeleteUser")
+    public void testLoginAsARemoteUser() {
+        getDriver().findElement(By.xpath("//span[text() = 'log out']")).click();
+
+        getDriver().findElement(By.id("j_username")).sendKeys(USER_NAME);
+        getDriver().findElement(By.id("j_password")).sendKeys(PASSWORD);
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(
+                By.xpath("//div[contains(text(), 'Invalid')]")).isDisplayed(), "Invalid username or password");
+    }
 }
 
