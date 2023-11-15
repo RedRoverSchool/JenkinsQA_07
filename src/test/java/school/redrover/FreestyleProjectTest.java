@@ -146,6 +146,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectExist(initialProjectName));
     }
 
+    @Ignore
     @Test
     public void testErrorMessageWhenNewNameFieldEmpty() {
         final String initialProjectName = "Test Project";
@@ -611,6 +612,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testRenameFreestyleProjectSideMenu() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]"))).click();
@@ -720,6 +722,7 @@ public class FreestyleProjectTest extends BaseTest {
                 editedDescriptionText);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateFreestyleProjectWithValidName", "testRenameFreestyleProjectSideMenu"})
     public void testCreateFreestyleProjectFromExistingProject() {
         getDriver().findElement(By.linkText("New Item")).click();

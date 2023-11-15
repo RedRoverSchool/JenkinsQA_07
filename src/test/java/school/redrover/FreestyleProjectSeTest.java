@@ -86,6 +86,7 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     }
 
+   
     @Test(dependsOnMethods = "testSettingsOfDiscardOldBuildsIsDisplayed")
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
@@ -193,6 +194,7 @@ public class FreestyleProjectSeTest extends BaseTest {
                 "none");
     }
 
+   
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
@@ -221,6 +223,8 @@ public class FreestyleProjectSeTest extends BaseTest {
                 By.xpath("//input[@checkdependson='credentialsId']")).getAttribute("value"),
                 "123");
     }
+
+    
     @Test(dependsOnMethods = "testDaysToKeepBuildsErrorMessageIsDisplayed")
     public void testSetNumberDaysToKeepBuildsIsSaved(){
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
