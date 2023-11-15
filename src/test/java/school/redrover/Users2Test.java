@@ -85,7 +85,7 @@ public class Users2Test extends BaseTest {
 
         WebElement moveToArrow = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']/button"));
 
-        actions.sendKeys(moveToArrow, Keys.ENTER).click().perform();
+        actions.sendKeys(moveToArrow, Keys.ENTER).perform();
 
         WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
 
