@@ -750,7 +750,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testFreestyleProjectNavigateToStatusPage() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
 
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/.."))).click();
 
         Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + editedProjectName));
     }
