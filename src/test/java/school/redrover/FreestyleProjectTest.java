@@ -659,7 +659,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreateFreestyleProjectWithValidName", "testFreestyleProjectNavigateToStatusPage"})
     public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckboxSelected() {
-        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]"))).click();
         getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
         getDriver().findElement(By.xpath("//label[contains(text(), 'This project is parameterized')]")).click();
 
