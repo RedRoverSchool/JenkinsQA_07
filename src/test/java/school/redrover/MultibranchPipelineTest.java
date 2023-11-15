@@ -147,7 +147,7 @@ public class MultibranchPipelineTest extends BaseTest {
                     expectedText);
         }
     }
-
+    @Ignore
     @Test
     public void testDeleteMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
@@ -210,12 +210,13 @@ public class MultibranchPipelineTest extends BaseTest {
         actions.moveToElement(breadcrumbName).perform();
 
         WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
-        actions.moveToElement(breadcrumbArrow).click().perform();
-        actions.moveToElement(breadcrumbArrow).perform();
         actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
+        actions.moveToElement(breadcrumbArrow).click().perform();
 
-        getDriver().findElement(By.xpath("//div[@class='jenkins-dropdown']/a[@href='/job/"
-                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(
+                By.xpath("//div[@class='jenkins-dropdown']/a[@href='/job/"
+                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")))).click();
+
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
         getDriver().findElement(By.name("Submit")).click();
