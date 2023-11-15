@@ -693,7 +693,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDeleteFreestyleProjectSideMenu() {
-        getDriver().findElement(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/..")).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(), '" + PROJECT_NAME + "')]/.."))).click();
         getDriver().findElement(By.xpath("//span[contains(text(), 'Delete Project')]/..")).click();
         getDriver().switchTo().alert().accept();
 
