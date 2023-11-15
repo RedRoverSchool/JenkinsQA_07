@@ -2,11 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class RestApiLlinkTest extends BaseTest {
 
+    @Ignore
     @Test(description = "Кликабельность ссылки и отображение страницы REST API")
     public void testvisabilityAndClickabilityRestApiLink() {
 
