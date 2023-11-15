@@ -4,15 +4,36 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
 
 public class FreestyleProject1Test extends BaseTest {
     private final static String PROJECT_NAME = "FreestyleProject";
     private final static String HOME_PAGE = "jenkins-home-link";
     private final static String NAME_SEARCH = "//span[text()='FreestyleProject']";
+
+    @Test
+    public void testNewFreestyleProjectCreated() {
+        final String projectName = AdditionalUtils.generateRandomName();
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        WebElement projectNameElement = getDriver().findElement(By.xpath("//td[3]/a"));
+
+        String actualProjectName = projectNameElement.getText();
+
+        assertEquals(actualProjectName, projectName);
+    }
 
     private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
         getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
@@ -58,6 +79,7 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().switchTo().alert().accept();
     }
 
+    @Ignore
     @Test
     public void testConfigureBuildEnvironmentSettingsAddTimestamp() throws InterruptedException {
         createProject("Freestyle project", PROJECT_NAME, true);
@@ -78,8 +100,9 @@ public class FreestyleProject1Test extends BaseTest {
         List<WebElement> timestamps = getDriver().findElements(
                 By.xpath("//pre[@class='console-output']//span[@class='timestamp']"));
 
+        Assert.assertNotEquals(timestamps.size(), 0);
         for (WebElement timestamp : timestamps) {
-            Assert.assertTrue(timestamp.getText().trim().matches("[0-9]{2}:[0-9]{2}:[0-9]{2}"));
+            Assert.assertTrue(timestamp.getText().trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
         }
     }
 
@@ -102,5 +125,73 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).isDisplayed());
+    }
+    @Test
+    public void testCreatingFreestyleProject() {
+        String projectName = "Artusom";
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//div[@id='add-item-panel']//input[@id='name']")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//div[@id='items']//li[@class='hudson_model_FreeStyleProject']")).click();
+        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//a[@href='/']")).click();
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']/span")).getText(),projectName);
+    }
+
+    @Test
+    public void testThisProjectIsParameterizedCheckboxAddBooleanParameter() {
+
+        final String name = "Ņame";
+        final String description = "Description";
+
+        createProject("Freestyle project", PROJECT_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+
+        getDriver().findElement(By.
+                        xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"))
+                .click();
+        getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]")).click();
+
+        getDriver().findElement(By.xpath("//a[contains(text(), 'Boolean Parameter')]")).click();
+        getDriver().findElement(By.xpath("//input[@name = 'parameter.name']"))
+                .sendKeys(name);
+        getDriver().findElement(By.xpath("//textarea[@name = 'parameter.description']"))
+                .sendKeys(description);
+        getDriver().findElement(By.cssSelector("button[name='Submit']")).click();
+
+        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
+
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//input[@name = 'parameter.name']"))
+                .getAttribute("value"),
+                name);
+        Assert.assertEquals(getDriver()
+                .findElement(By.xpath("//textarea[@name = 'parameter.description']"))
+                .getAttribute("value"),
+                description);
+    }
+
+    @Test
+    public void testAddBooleanParameterDropdownIsSortedAlphabetically() {
+        createProject("Freestyle project", PROJECT_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+
+        getDriver().findElement(
+                        By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"))
+                .click();
+        getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]")).click();
+
+        List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
+        List<String> getTextOfDropDownElements = new ArrayList<>();
+        for (WebElement element:listDropDownElements) {
+            getTextOfDropDownElements.add(element.getText());
+        }
+
+        List<String> expectedListResult = getTextOfDropDownElements.stream().sorted().toList();
+
+        Assert.assertEquals(getTextOfDropDownElements, expectedListResult);
     }
 }

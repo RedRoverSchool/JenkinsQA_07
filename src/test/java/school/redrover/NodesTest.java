@@ -1,13 +1,15 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class NodesTest extends BaseTest {
 
-    private static final String NODE_NAME = "new node";
+    private static final String NODE_NAME = "New node";
 
     private void createNewNode(String nodeName) {
         getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
@@ -25,14 +27,14 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
-    private void goToConfigureNodePage(String nodeName) {
-        getDriver().findElement(By.xpath("//span[text()='" + nodeName +"']")).click();
+    private void goToConfigureNodePage() {
+        goToMainPage();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
     }
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
-
         getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
         getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
@@ -42,6 +44,81 @@ public class NodesTest extends BaseTest {
         String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + NODE_NAME + "']//a")).getText();
 
         Assert.assertEquals(actualNodeName, NODE_NAME);
+    }
+
+    @Test
+    public void testCreateNewNodeWithInvalidNameFromMainPanel() {
+        final String NODE_NAME = "!";
+
+        getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
+
+        Assert.assertEquals(
+                getWait2().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector(".error")))).getText(),
+                "‘!’ is an unsafe character");
+    }
+
+    @Test
+    public void testCreateNewNodeWithValidNameFromManageJenkinsPage() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + NODE_NAME + "']//a")).getText();
+
+        Assert.assertEquals(actualNodeName, NODE_NAME);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
+    public void testCreateNodeByCopyingExistingNode() {
+        final String newNode = "Copy node";
+
+        getDriver().findElement(By.linkText("Build Executor Status")).click();
+        getDriver().findElement(By.linkText("New Node")).click();
+        getDriver().findElement(By.id("name")).sendKeys(newNode);
+        getDriver().findElement(By.xpath("//label[@for='copy']")).click();
+        getDriver().findElement(By.name("from")).sendKeys(NODE_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+
+        goToNodesPage();
+
+        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + newNode + "']//a")).getText();
+
+        Assert.assertEquals(actualNodeName, newNode);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
+    public void testMarkNodeTemporarilyOffline() {
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.className("message")).getText(),
+                "Disconnected by admin"
+        );
+    }
+
+    @Test(dependsOnMethods = {"testCreateNodeByCopyingExistingNode", "testMarkNodeTemporarilyOffline"})
+    public void testRenameNodeWithValidName() {
+        final String new_name = "Renamed node";
+
+        goToConfigureNodePage();
+
+        getDriver().findElement(By.name("_.name")).clear();
+        getDriver().findElement(By.name("_.name")).sendKeys(new_name);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")).getText(),
+                String.format("Agent %s", new_name)
+        );
     }
 
     @Test
@@ -62,19 +139,6 @@ public class NodesTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewNodeWithInvalidNameFromMainPanel() {
-        final String NODE_NAME = "!";
-
-        getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector(".error")).getText(),
-                "‘!’ is an unsafe character");
-    }
-
-    @Test
     public void testCreateNewNodeByBuildExecutorInSidePanelMenu() {
         goToNodesPage();
         getDriver().findElement(By.linkText("New Node")).click();
@@ -85,40 +149,6 @@ public class NodesTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(
                 By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).getText().contains(NODE_NAME));
-    }
-
-    @Test
-    public void testCreateNewNodeWithValidNameFromManageJenkinsPage() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
-
-        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + NODE_NAME + "']//a")).getText();
-
-        Assert.assertEquals(actualNodeName, NODE_NAME);
-    }
-
-    @Test
-    public void testCreateNodeByCopyingExistingNode() {
-        createNewNode(NODE_NAME);
-
-        getDriver().findElement(By.linkText("Build Executor Status")).click();
-        getDriver().findElement(By.linkText("New Node")).click();
-        getDriver().findElement(By.id("name")).sendKeys("copy");
-        getDriver().findElement(By.xpath("//label[@for='copy']")).click();
-        getDriver().findElement(By.name("from")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
-
-        goToNodesPage();
-
-        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_copy']//a")).getText();
-
-        Assert.assertEquals(actualNodeName, "copy");
     }
 
     @Test
@@ -134,40 +164,75 @@ public class NodesTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(
                 By.xpath("//h1")).getText().contains(NODE_NAME));
-
     }
 
+    @Ignore
     @Test
-    public void testMarkNodeTemporarilyOffline() {
+    public void testUpdateOfflineReason() {
+        final String newReason = "Updated reason";
+
         createNewNode(NODE_NAME);
         goToMainPage();
 
         getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys("111");
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        getDriver().findElement(By.xpath("//form[@action = 'setOfflineCause']/button")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).clear();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys(newReason);
+        getDriver().findElement(By.name("Submit")).click();
 
         Assert.assertEquals(
-                getDriver().findElement(By.className("message")).getText(),
-                "Disconnected by admin"
+                getDriver().findElement(By.xpath("//div[@class = 'message']")).getText(),
+                "Disconnected by admin : " + newReason
         );
     }
 
     @Test
-    public void testRenameNodeWithValidName() {
-        final String NEW_NAME = "renamed node";
+    public void testCreateNewNodeCopyingExistingWithNotExistingName() {
+        final String nameFirstNode = "new node";
+        final String nameSecondNode = "new copy node";
 
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameFirstNode);
+        getDriver().findElement(By.xpath("//input[@id='hudson.slaves.DumbSlave']/following-sibling::label")).click();
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        goToMainPage();
+        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='new']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameSecondNode);
+        getDriver().findElement(By.xpath("//input[@id='copy']/following-sibling::label")).click();
+        getDriver().findElement(By.xpath("//input[@name='from']")).sendKeys(nameFirstNode + 2);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//h1/following-sibling::p")).getText().contains("No such agent"));
+    }
+
+    @Test
+    public void testNodeStatusUpdateOfflineReason() {
         createNewNode(NODE_NAME);
         goToMainPage();
-        goToConfigureNodePage(NODE_NAME);
+        final String reasonMessage = "New No Reason";
 
-        getDriver().findElement(By.name("_.name")).clear();
-        getDriver().findElement(By.name("_.name")).sendKeys(NEW_NAME);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")).getText(),
-                String.format("Agent %s", NEW_NAME)
-        );
+        getDriver().findElement(By.name("offlineMessage")).sendKeys("No Reason");
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDriver().findElement(By.xpath("//form[@action = 'setOfflineCause']/button")).click();
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).clear();
+
+        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys(reasonMessage);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String message = getDriver().findElement(By.xpath("//div[@class='message']")).getText();
+
+        Assert.assertEquals(message.substring(message.indexOf(':')+1).trim(), reasonMessage);
     }
 }
-

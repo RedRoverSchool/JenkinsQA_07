@@ -2,9 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.List;
 
 public class FreestyleProjectVDTest extends BaseTest {
 
@@ -13,6 +17,8 @@ public class FreestyleProjectVDTest extends BaseTest {
     private static final String SUBMIT_BUTTON = "//button[@name='Submit']";
 
     private static final String CONFIGURE_LINK = "//a[@href='/job/" + PROJECT_NAME + "/configure']";
+
+    private final static String JENKINS_ICON = "//img[@id='jenkins-head-icon']";
 
     private void createFreeStyleProject(String projectName) {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -87,5 +93,45 @@ public class FreestyleProjectVDTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath(numberOfBuilds)).getAttribute("value"), "4");
         Assert.assertEquals(getDriver().findElement(By.xpath(timePeriod)).getAttribute("value"), "day");
+    }
+
+    @Test
+    public void testSelectExecuteConcurrentBuilds() {
+
+        final String checkBoxXpath = "//div[@class='form-container tr']";
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,300)");
+        int quantityOfElementsBeforeClicking = getDriver().findElements(By.xpath(checkBoxXpath)).size();
+
+        getDriver().findElement(By.xpath("//label[normalize-space()='Execute concurrent builds if necessary']")).click();
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON)).click();
+        getDriver().findElement(By.xpath(CONFIGURE_LINK)).click();
+        js.executeScript("window.scrollBy(0,300)");
+
+        int quantityOfElementsAfterClicking = getDriver().findElements(By.xpath(checkBoxXpath)).size();
+
+        Assert.assertEquals(quantityOfElementsAfterClicking, quantityOfElementsBeforeClicking + 1);
+    }
+
+    @Test
+    public void testIsWorkspaceCreated() {
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath(JENKINS_ICON)).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error: no workspace");
+
+        getDriver().findElement(By.xpath(JENKINS_ICON)).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/build?delay=0sec']")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Workspace of " + PROJECT_NAME + " on Built-In Node");
     }
 }

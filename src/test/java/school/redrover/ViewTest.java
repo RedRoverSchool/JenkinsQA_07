@@ -112,28 +112,27 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]")).getText(),"Bob");
 
     }
-    @Ignore
+
     @Test
     public void testAddJobToTheView() {
-        final String newViewName = "New Test View";
-        final String VIEW_NAME = "New name";
+        final String PROJECT_NAME = "Freestyle Project";
+        final String VIEW_NAME = "View";
 
-        createNewFreestyleProject(newViewName);
-        createMyNewListView(newViewName);
+        createNewFreestyleProject(PROJECT_NAME);
+        createMyNewListView(VIEW_NAME);
         goHome();
 
-        String PROJECT_NAME = "project name";
-
         getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + VIEW_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//div[@class='tab']/a[contains(text(), '" + VIEW_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[contains(@href,'/configure')]")).click();
         getDriver().findElement(By.xpath(String.format("//label[@title='%s']", PROJECT_NAME))).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
-        String projectName = getDriver().findElement(By.xpath("//span[text()='My New Freestyle Project']")).getText();
+        String projectName = getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']")).getText();
 
         Assert.assertEquals(projectName, PROJECT_NAME);
     }
+
     @Test
     public void testEditView() {
         final String myProjectName = "My new freestyle project name";
@@ -163,5 +162,47 @@ public class ViewTest extends BaseTest {
 
         String checkDeletedViewName = getDriver().findElement(By.xpath("//*[@id='projectstatus-tabBar']/div/div[1]/div[2]/a")).getText();
         Assert.assertEquals(checkDeletedViewName,"");
+    }
+
+    @Test
+    public void testDeleteViewOnDashboard() {
+
+        createNewFreestyleProject("New View");
+        createMyNewListView("NewView");
+
+        getDriver().findElement(By.xpath("//span[text()='Delete View']")).click();
+        getDriver().switchTo().alert().accept();
+
+        Assert.assertFalse(getDriver().findElement(By.xpath("//div[@class='tabBar']"))
+                .getText().contains("NewView"));
+    }
+
+    @Test
+    public void testCreateNewFolder() {
+        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(1) > span > a")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys("TestFolder");
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']/div/button[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='jenkins-name-icon']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='job_TestFolder']/td[3]/a/span")).getText(),
+                "TestFolder");
+    }
+
+    @Test(dependsOnMethods = "testCreateNewFolder")
+    public void testCreateNewEmptyView() {
+        final String nameView = "My new view";
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+        getDriver().findElement(By.xpath("//a[@title='New View']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(nameView);
+        getDriver().findElement(By.xpath("//input[@id='hudson.model.ListView']/following-sibling::label")).click();
+        getDriver().findElement(By.id("ok")).click();
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']"));
+        String text = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar' and descendant::*[contains(text(), '" + nameView +"' )]]")).getText();
+
+        Assert.assertTrue(text.contains(nameView));
+
     }
 }

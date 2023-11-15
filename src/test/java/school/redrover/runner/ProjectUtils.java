@@ -112,6 +112,11 @@ public final class ProjectUtils {
         System.out.println(str);
     }
 
+    public static void logf(String str, Object... arr) {
+        System.out.printf(str, arr);
+        System.out.println();
+    }
+
     static File takeScreenshot(WebDriver driver, String methodName, String className) {
         File file = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         try {

@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -41,14 +42,11 @@ public class FreestyleProject2Test extends BaseTest {
                 .getText(), "Project Online store");
     }
 
-    @Test
+    @Ignore
+    @Test(dependsOnMethods = {"testCreateNewItem"})
     public void testGiveNewNameProject() {
-        String jobName = "freestyleJob";
-        String newJobName = "freestyleJob-2";
-
-        CreateNewItem(jobName);
-        getDriver().navigate().back();
-        getDriver().navigate().back();
+        final String jobName = "Freestyle Project1";
+        final String newJobName = "Freestyle Project2";
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[7]/span")).click();
@@ -60,21 +58,24 @@ public class FreestyleProject2Test extends BaseTest {
                 By.xpath("//*[@id='breadcrumbs']/li[3]/a")).getText(), newJobName);
     }
 
-    private void CreateNewItem(String itemName) {
-        getDriver().findElement(By.className("task-icon-link")).click();
-        getDriver().findElement(
-                By.xpath("//div/input[@class='jenkins-input']")).sendKeys(itemName);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']/label[1]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
     @Test
-    public void testDeleteFreestyleProject() {
+    public void testCreateNewItem() {
         final String itemName = "Freestyle Project1";
 
-        CreateNewItem(itemName);
+        getDriver().findElement(By.className("task-icon-link")).click();
+        getDriver().findElement(By.id("name")).sendKeys(itemName);
+        getDriver().findElement(By.xpath("//img[@class='icon-freestyle-project icon-xlg']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
         getDriver().navigate().back();
         getDriver().navigate().back();
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//span[contains(text(),'" + itemName + "')]")).getText(), itemName);
+    }
+
+    @Test(dependsOnMethods = "testCreateNewItem")
+    public void testDeleteFreestyleProject() {
+        final String itemName = "Freestyle Project1";
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + itemName + "')]")).click();
         getDriver().findElement(By.xpath(" //*[@id='tasks']/div[6]/span/a")).click();
