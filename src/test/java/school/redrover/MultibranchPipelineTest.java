@@ -147,7 +147,7 @@ public class MultibranchPipelineTest extends BaseTest {
                     expectedText);
         }
     }
-    @Ignore
+
     @Test
     public void testDeleteMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
