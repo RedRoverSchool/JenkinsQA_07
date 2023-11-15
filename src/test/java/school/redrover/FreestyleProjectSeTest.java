@@ -106,16 +106,16 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
-    @Test(dependsOnMethods = "testDaysToKeepBuildsErrorMessageIsDisplayed")
+    @Test(dependsOnMethods = {"testSetNumberDaysToKeepBuildsIsSaved", "testDaysToKeepBuildsErrorMessageIsDisplayed", "testSettingsOfDiscardOldBuildsIsDisplayed",})
     public void testSettingsGitIsOpened() {
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.accept();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
         getDriver().findElement(By.cssSelector("td [href='job/New%20Freestyle%20project/']")).click();
         getDriver().findElement(By.cssSelector(".task-link-wrapper  [href='/job/New%20Freestyle%20project/configure']"))
                 .click();
-
+        js.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(By.id("source-code-management")));
         WebElement radioGit = getDriver().findElement(By.cssSelector("label[for='radio-block-1']"));
-        new Actions(getDriver())
+                new Actions(getDriver())
                 .click(radioGit)
                 .perform();
 
@@ -221,4 +221,28 @@ public class FreestyleProjectSeTest extends BaseTest {
                 By.xpath("//input[@checkdependson='credentialsId']")).getAttribute("value"),
                 "123");
     }
+    @Test(dependsOnMethods = "testDaysToKeepBuildsErrorMessageIsDisplayed")
+    public void testSetNumberDaysToKeepBuildsIsSaved(){
+        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
+        alert.accept();
+        getDriver().findElement(By.cssSelector("td [href='job/New%20Freestyle%20project/']")).click();
+        getDriver().findElement(By.cssSelector(".task-link-wrapper  [href='/job/New%20Freestyle%20project/configure']"))
+                .click();
+        WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
+        new Actions(getDriver())
+                .click(checkbox)
+                .perform();
+        WebElement daysToKeepBuildsField = getDriver().findElement(By.cssSelector("input[name='_.daysToKeepStr']"));
+        daysToKeepBuildsField.click();
+        daysToKeepBuildsField.sendKeys("2");
+        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.cssSelector(".task-link-wrapper  [href='/job/New%20Freestyle%20project/configure']"))
+                .click();
+
+        Assert.assertEquals(getDriver().findElement(
+                        By.cssSelector("input[name='_.daysToKeepStr']")).getAttribute("value"),
+                "2");
+
+    }
+
 }
