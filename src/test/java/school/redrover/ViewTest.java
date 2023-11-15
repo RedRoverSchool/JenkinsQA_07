@@ -9,6 +9,7 @@ import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ViewTest extends BaseTest {
 
@@ -539,5 +540,27 @@ public class ViewTest extends BaseTest {
         for (int i = 0; i < jobNamesDashboard.size(); i++) {
             Assert.assertEquals(jobNames.get(i), jobNamesDashboard.get(i));
         }
+    }
+
+    @Test
+    public void testCreateViewWithOptionGlobalView() {
+
+        final String VIEW_NAME = UUID.randomUUID().toString();
+
+        createNewFreestyleProject(UUID.randomUUID().toString());
+
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
+        getDriver().findElement(By.className("addTab")).click();
+        getDriver().findElement(By.name("name")).sendKeys(VIEW_NAME);
+
+        getDriver().findElement(By.xpath("//div/label[@for='hudson.model.ProxyView']")).click();
+        getDriver().findElement(By.id("ok")).click();
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div/ol/li/a[@href='/user/admin/my-views/view/"+VIEW_NAME+"/']")).getText(), VIEW_NAME);
+
     }
 }
