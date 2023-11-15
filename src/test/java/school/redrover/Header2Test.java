@@ -94,11 +94,12 @@ public class Header2Test extends BaseTest {
                 .keyUp(Keys.CONTROL)
                 .perform();
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement focusedElement = (WebElement) js.executeScript("return document.activeElement;");
-        boolean isSearchFieldSelected = focusedElement.getAttribute("id").equals("search-box");
-
-        assertTrue(isSearchFieldSelected);
+//        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+//        WebElement focusedElement = (WebElement) js.executeScript("return document.activeElement;");
+//        boolean isSearchFieldSelected = focusedElement.getAttribute("id").equals("search-box");
+        boolean isFocused = (Boolean) ((JavascriptExecutor) getDriver()).executeScript(
+                "return document.activeElement === arguments[0]", getDriver().findElement(By.name("q")));
+        assertTrue(isFocused);
     }
 
 }
