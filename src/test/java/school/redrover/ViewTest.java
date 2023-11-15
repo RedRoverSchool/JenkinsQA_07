@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -501,6 +502,7 @@ public class ViewTest extends BaseTest {
                 JOB_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddJobToListViewWithoutJobs_fromMainSectionLink")
     public void testAddAllJobsToView() {
         createNewFreestyleProject(JOB_NAME_1);

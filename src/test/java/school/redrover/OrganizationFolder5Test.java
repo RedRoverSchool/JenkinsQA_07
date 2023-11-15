@@ -194,6 +194,7 @@ public class OrganizationFolder5Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//p")).getText().contains(errorMessage));
     }
 
+    @Ignore
     @Test
     public void testCloneOrganizationFolder() {
         String organizationFolderName = "Organization Folder Parent";

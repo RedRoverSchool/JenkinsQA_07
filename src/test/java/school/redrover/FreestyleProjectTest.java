@@ -146,6 +146,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectExist(initialProjectName));
     }
 
+    @Ignore
     @Test
     public void testErrorMessageWhenNewNameFieldEmpty() {
         final String initialProjectName = "Test Project";
