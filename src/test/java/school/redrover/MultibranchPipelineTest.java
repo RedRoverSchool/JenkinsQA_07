@@ -210,7 +210,6 @@ public class MultibranchPipelineTest extends BaseTest {
         actions.moveToElement(breadcrumbName).perform();
 
         WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
-        actions.moveToElement(breadcrumbArrow).perform();
         actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
 
         getDriver().findElement(By.xpath("//a[@href='/job/"
