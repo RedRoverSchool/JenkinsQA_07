@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.NodesListPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -67,15 +69,16 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
-        getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
-        String actualNodeName = getDriver().findElement(By.xpath("//tr[@id='node_" + NODE_NAME + "']//a")).getText();
+        List<String> nodeList = new HomePage(getDriver())
+                .clickSetUpAnAgent()
+                .sendKeys(NODE_NAME)
+                .clickPermanentAgentCheckbox()
+                .clickCreateButton()
+                .saveButtonClick()
+                .getNodeList();
 
-        Assert.assertEquals(actualNodeName, NODE_NAME);
+        Assert.assertTrue(nodeList.contains(NODE_NAME));
     }
 
     @Test
