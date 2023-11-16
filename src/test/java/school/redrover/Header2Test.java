@@ -87,7 +87,7 @@ public class Header2Test extends BaseTest {
         assertTrue(isStatusPageSelected);
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void testHotKeysSearchAreaSelection() {
         new Actions(getDriver())
