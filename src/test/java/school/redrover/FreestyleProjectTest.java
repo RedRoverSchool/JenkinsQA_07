@@ -1075,4 +1075,36 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(getTextOfDropDownElements, expectedListResult);
     }
+
+    @Test
+    public void testPermalinksListOnStatusPage() {
+
+        final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
+                "Last completed build"};
+
+        createFreeStyleProject(PROJECT_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        for (int i = 0; i < 4; i++) {
+            getWait2().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Build Now"))).click();
+        }
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td[@class='build-row-cell']")));
+
+        getDriver().navigate().refresh();
+
+        List<WebElement> permalinks = getDriver().findElements(
+                By.xpath("//ul[@class='permalinks-list']/li"));
+
+        ArrayList<String> permalinksTexts = new ArrayList<>();
+
+        Assert.assertEquals(permalinks.size(), 4);
+
+        for (int i = 0; i < permalinks.size(); i++) {
+            permalinksTexts.add(permalinks.get(i).getText());
+            Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
+        }
+
+    }
 }
