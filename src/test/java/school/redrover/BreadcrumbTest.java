@@ -130,8 +130,8 @@ public class BreadcrumbTest extends BaseTest {
                 .click()
                 .perform();
 
-        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id("tippy-3"))));
-        List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@class='tippy-box']//a"));
+        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//div[@id='tippy-3']"))));
+        List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@id='tippy-3']//a"));
 
         Assert.assertTrue(itemsListBreadcrumb.size() > 0);
 
