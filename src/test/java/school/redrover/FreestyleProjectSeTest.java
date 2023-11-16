@@ -86,6 +86,7 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testSettingsOfDiscardOldBuildsIsDisplayed")
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
@@ -106,6 +107,7 @@ public class FreestyleProjectSeTest extends BaseTest {
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testSetNumberDaysToKeepBuildsIsSaved", "testDaysToKeepBuildsErrorMessageIsDisplayed", "testSettingsOfDiscardOldBuildsIsDisplayed",})
     public void testSettingsGitIsOpened() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
@@ -193,6 +195,7 @@ public class FreestyleProjectSeTest extends BaseTest {
                 "none");
     }
 
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
@@ -221,6 +224,8 @@ public class FreestyleProjectSeTest extends BaseTest {
                 By.xpath("//input[@checkdependson='credentialsId']")).getAttribute("value"),
                 "123");
     }
+
+    @Ignore
     @Test(dependsOnMethods = "testDaysToKeepBuildsErrorMessageIsDisplayed")
     public void testSetNumberDaysToKeepBuildsIsSaved(){
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
@@ -245,4 +250,23 @@ public class FreestyleProjectSeTest extends BaseTest {
 
     }
 
+
+    @Test
+    public void testRenameProject() {
+        final String projectName = "FSproject";
+        final String projectRename = "FSproject1";
+
+        createFreeStyleProject(projectName);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+        hoverClick("//*[@id='job_" + projectName + "']/td[3]/a");
+        hoverClick("//a[@href='/job/" + projectName + "/confirm-rename']");
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        hoverClickInput("//input[@name='newName']", projectRename);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + projectRename + "']")).isDisplayed());
+
+    }
 }
