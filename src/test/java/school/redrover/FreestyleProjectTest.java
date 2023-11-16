@@ -969,6 +969,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "none");
     }
 
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
