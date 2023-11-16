@@ -1015,6 +1015,14 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                         By.cssSelector("input[name='_.daysToKeepStr']")).getAttribute("value"),
                 "2");
+    }
 
+    @Test
+    public  void testSavedNotificationIsDisplayed(){
+        createAnItem("Freestyle project");
+        getDriver().findElement(By.name("Apply")).click();
+        String notificationIsDisplayed = getDriver().findElement(By.id("notification-bar")).getAttribute("class");
+
+        Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
 }
