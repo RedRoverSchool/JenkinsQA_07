@@ -78,15 +78,27 @@ public class Users2Test extends BaseTest {
     public void testDeleteUserDropDown() {
         goToUsersTab();
 
-        WebElement moveToUserName = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
+        WebElement moveToUserName = getDriver().findElement(By.xpath(
+                "//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
         WebElement moveToArrow = getDriver().findElement(By.xpath("//tr[2]//button"));
 
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(moveToUserName).moveToElement(moveToArrow).perform();
+        actions.moveToElement(moveToUserName).perform();
+        actions.moveToElement(moveToArrow).perform();
         moveToArrow.sendKeys(Keys.ENTER);
 
-        WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
-        actions.click(clickDelete).perform();
+        if (getDriver().findElement(By.className("tippy-box")).isDisplayed()) {
+            actions.moveToElement(getDriver().findElement(By.xpath(
+                    "//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']")))
+                    .click()
+                    .perform();
+        } else {
+            moveToArrow.sendKeys(Keys.ENTER);
+            actions.moveToElement(getDriver().findElement(By.xpath(
+                    "//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']")))
+                    .click()
+                    .perform();
+        }
 
         getDriver().switchTo().alert().accept();
 
