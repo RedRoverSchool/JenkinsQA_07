@@ -29,7 +29,7 @@ public class MultibranchPipeline2Test extends BaseTest {
     }
 
     @Test
-    public void testDisableMultibranchPipeline() throws InterruptedException {
+    public void testDisableMultibranchPipeline() {
         createMultibranchPipeline("Test_Folder");
         String expectedResult = "Disabled";
 
