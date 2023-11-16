@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    public void createUserAllFields(String username, String password, String confirmPassword, String fullName, String eMailAddress){
+    public void createUserAllFields(String username, String password, String confirmPassword, String fullName, String eMailAddress) {
         getDriver().findElement(By.id("username")).sendKeys(username);
         getDriver().findElement(By.name("password1")).sendKeys(password);
         getDriver().findElement(By.name("password2")).sendKeys(confirmPassword);
@@ -48,7 +49,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void createNewUser(String userName){
+    private void createNewUser(String userName) {
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
         getDriver().findElement(By.xpath("//dt[contains(text(),'Users')]")).click();
         getDriver().findElement(By.linkText("Create User")).click();
@@ -249,7 +250,7 @@ public class UserTest extends BaseTest {
         List<WebElement> users = getDriver().findElements(By.xpath("//table[@id = 'people']//td[2]/a"));
         List<String> usernames = new ArrayList<>();
 
-        for(WebElement w: users){
+        for (WebElement w : users) {
             usernames.add(w.getAttribute("href").substring(48).replace("/", ""));
         }
 
@@ -356,21 +357,9 @@ public class UserTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUserCreation")
     public void testDeleteLoggedInUser() {
-        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
+        HomePage homePage = new HomePage(getDriver());
 
-        String logUsername = getDriver().findElement(By.xpath("(//span[@class='hidden-xs hidden-sm'])[1]"))
-                .getText();
-
-        boolean doDelete = true;
-
-        try {
-            getDriver().findElement(By.xpath("//tr[.//td[contains(text(), '" + logUsername + "')]]/td[last()]/*"));
-        } catch (Exception e) {
-            doDelete = false;
-        }
-
-        Assert.assertFalse(doDelete);
+        Assert.assertFalse(homePage.clickManageJenkins().goUserDatabasePage().deleteLoggedUser());
     }
 
     @Test
@@ -430,7 +419,7 @@ public class UserTest extends BaseTest {
         goToUsersPage();
         getDriver().findElement(By.xpath("//a[@href='user/firstuser/configure'] ")).click();
 
-        List<String>  listOfExpectedItems = Arrays.asList("People", "Status", "Builds", "Configure", "My Views", "Delete");
+        List<String> listOfExpectedItems = Arrays.asList("People", "Status", "Builds", "Configure", "My Views", "Delete");
 
         List<WebElement> listOfDashboardItems = getDriver().findElements(
                 By.xpath("//div[@class ='task ' and contains(., '')]"));
@@ -448,7 +437,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[5]/div")).click();
         getDriver().switchTo().alert().accept();
 
-        List<String>  listOfExpectedUsers = List.of("admin");
+        List<String> listOfExpectedUsers = List.of("admin");
         List<WebElement> listOfDashboardUsers = getDriver().findElements(
                 By.xpath("//a[@href = 'user/admin/' and contains(., '')]"));
         List<String> extractedUsers = listOfDashboardUsers.stream()
@@ -502,7 +491,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testCreateUserEmptyName(){
+    public void testCreateUserEmptyName() {
         goToUsersTab();
 
         getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys("Test_Test");
@@ -532,11 +521,11 @@ public class UserTest extends BaseTest {
 
     @Ignore
     @Test(dependsOnMethods = "testVerifyUserCreated")
-    public void testVerifyUserIdButton(){
+    public void testVerifyUserIdButton() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
 
-        getDriver().findElement(By.xpath("//table[@id='people']//td/a[text()='" + USER_NAME+ "']")).click();
+        getDriver().findElement(By.xpath("//table[@id='people']//td/a[text()='" + USER_NAME + "']")).click();
         String titleOfUserPageActual = getDriver().findElement(By.tagName("h1")).getText();
 
         Assert.assertEquals(titleOfUserPageActual, FULL_NAME);
@@ -544,7 +533,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testVerifyUserCreated")
-    public void testVerifyUserConfigurationButton(){
+    public void testVerifyUserConfigurationButton() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
 
@@ -557,7 +546,7 @@ public class UserTest extends BaseTest {
 
     @Ignore
     @Test(dependsOnMethods = "testVerifyUserCreated")
-    public void testVerifyHelpTooltips(){
+    public void testVerifyHelpTooltips() {
         List<String> expectedListOfHelpIconsTooltipsText = List.of(
                 "Help for feature: Full Name",
                 "Help for feature: Description",
@@ -571,7 +560,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
         getWait5();
 
-        List <WebElement> helpIconsTooltips = getDriver().findElements(By.xpath("//a[@class='jenkins-help-button']"));
+        List<WebElement> helpIconsTooltips = getDriver().findElements(By.xpath("//a[@class='jenkins-help-button']"));
         List<String> actualListOfHelpIconsTooltipsText = new ArrayList<>();
         for (int i = 0; i < helpIconsTooltips.size(); i++) {
             actualListOfHelpIconsTooltipsText.add(helpIconsTooltips.get(i).getAttribute("tooltip"));

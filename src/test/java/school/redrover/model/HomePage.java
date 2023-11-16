@@ -19,10 +19,17 @@ public class HomePage extends BasePage {
         return page;
     }
 
+    public ManageJenkinsPage clickManageJenkins() {
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+
     public List<String> getJobList() {
         List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]/span[1]"));
         List<String> resultList = elementList.stream().map(WebElement::getText).toList();
 
         return resultList;
     }
+
 }
