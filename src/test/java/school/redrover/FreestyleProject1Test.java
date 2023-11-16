@@ -69,20 +69,15 @@ public class FreestyleProject1Test extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
         getDriver().findElement(By.xpath("//span[text()='Configure']/..")).click();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].scrollIntoView(true);", getDriver().findElement(
-                By.xpath("//label[text()='Add timestamps to the Console Output']")));
-        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//label[text()='Add timestamps to the Console Output']")))).click();
+        WebElement addTimestampsCheckbox = getDriver().findElement(
+                By.xpath("//label[text()='Add timestamps to the Console Output']"));
+        js.executeScript("arguments[0].scrollIntoView(true);", addTimestampsCheckbox);
+        addTimestampsCheckbox.click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
-        getWait5().until(ExpectedConditions.visibilityOfAllElements(getDriver()
-                .findElements(By.xpath("//a[@class='model-link inside build-link display-name']"))));
-        js.executeScript("setTimeout(function(){\n" +
-                "    location.reload();\n" +
-                "}, 500);");
+        js.executeScript("setTimeout(function() {location.reload();}, 1000);");
         getDriver().navigate().refresh();
         List<WebElement> buildLinks = getWait10().until(ExpectedConditions.visibilityOfAllElements(getDriver().findElements(By.xpath("//span[@class='build-status-icon__outer']"))));
         buildLinks.get(0).click();
