@@ -10,19 +10,46 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
+    private final static String HOME_PAGE = "jenkins-home-link";
+    private final List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
+            "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
-    private void createMultibranchPipeline(String pipelineName) {
+    private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")))).click();
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//input[@class='jenkins-input']")))).sendKeys(nameOfProject);
+        getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
+
+        if (goToHomePage) {
+            getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id(HOME_PAGE)))).click();
+        }
+    }
+
+    private List<String> getTextOfWebElements(List<WebElement> elements) {
+        List<String> textOfWebElements = new ArrayList<>();
+
+        for (WebElement element : elements) {
+            textOfWebElements.add(element.getText());
+        }
+        return textOfWebElements;
+    }
+
+    private void createMultibranchPipelineAndClickDashboard(String pipelineName) {
         getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
         getDriver().findElement(By.id("name")).sendKeys(pipelineName);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
         getDriver().findElement(By.linkText("Dashboard")).click();
     }
 
@@ -33,6 +60,14 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']"))
                 .click();
         getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void goMultibranchPipelinePage(String pipelineName) {
+        getDriver().findElement(By.xpath("//span[normalize-space()='" + pipelineName + "']")).click();
+    }
+
+    private void getDashboardLink() {
+        getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
     }
 
     @Test
@@ -50,7 +85,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + MULTIBRANCH_PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
@@ -124,7 +159,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testAllTaskTextInSidebar() {
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
 
@@ -151,8 +186,8 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testDeleteMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NEW_NAME);
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NEW_NAME);
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + MULTIBRANCH_PIPELINE_NAME + "')]")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/delete']")).click();
@@ -237,7 +272,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
-        createMultibranchPipeline(MULTIBRANCH_PIPELINE_NAME);
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.cssSelector("a[href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
         getDriver().findElement(By.cssSelector("button[formNoValidate]")).click();
@@ -246,5 +281,195 @@ public class MultibranchPipelineTest extends BaseTest {
                 getDriver().findElement(By.cssSelector("form[method='post']")).getText().
                         contains("This Multibranch Pipeline is currently disabled"),
                 "Incorrect or missing text");
+    }
+
+    @Test
+    public void testMultibranchNameDisplayBreadcrumbTrail() {
+        createMultibranchPipelineWithCreateAJob();
+        String pipelineNameExpected =  getDriver().findElement(By.xpath("//a[contains(text(),'"
+                + MULTIBRANCH_PIPELINE_NAME + "')]")).getText();
+        Assert.assertEquals(pipelineNameExpected, MULTIBRANCH_PIPELINE_NAME);
+    }
+
+    @Test
+    public void testMultibranchCreationFromExisting() {
+
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.className("task-link")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("Multi2");
+        getDriver().findElement(By.xpath("//input[@id='from']")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+
+        String expectedName = getDriver().findElement(By.xpath("//span[text()='Multi2']")).getText();
+        Assert.assertEquals(expectedName, "Multi2");
+    }
+
+    @Test
+    public void testMultibranchCreationFromNonExisting() {
+
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        getDriver().findElement(By.className("task-link")).click();
+
+        getDriver().findElement(By.id("name")).sendKeys("Multi3");
+        getDriver().findElement(By.xpath("//input[@id='from']")).sendKeys("Multi0");
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+
+        String error = getDriver().findElement(By.xpath("//h1")).getText();
+        Assert.assertEquals(error, "Error");
+    }
+
+    @Test(dependsOnMethods = "testRenameResultOnPageHeading")
+    public void testErrorForUnsafeChar() {
+        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NEW_NAME);
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
+                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME + "!");
+
+        Actions actions = new Actions(getDriver());
+        WebElement element = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
+        actions.moveToElement(element).moveByOffset(100, 50).click().build().perform();
+
+        WebElement error_message = getDriver().findElement(By.xpath("//div[@class='error']"));
+
+        getWait2().until(d -> error_message.isDisplayed());
+
+        Assert.assertEquals(error_message.getText(), "‘!’ is an unsafe character");
+    }
+
+    @Test
+    public void testRenameUsingSidebar() {
+       createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
+                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'"
+                + MULTIBRANCH_PIPELINE_NEW_NAME + "')]")).getText(), MULTIBRANCH_PIPELINE_NEW_NAME);
+    }
+
+    @Test
+    public void testRenameResultInBreadcrumb() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
+                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        List<WebElement> elements = getDriver().findElements(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"));
+        List<String> breadcrumb = new ArrayList<>();
+        for (WebElement element : elements) {
+            breadcrumb.add(element.getText());
+        }
+
+        Assert.assertTrue(breadcrumb.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
+    }
+
+    @Test
+    public void testRenameResultOnPageHeading() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
+                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), MULTIBRANCH_PIPELINE_NEW_NAME);
+    }
+
+    @Test
+    public void testRenameResultOnDashboard() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
+
+        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
+                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        getDashboardLink();
+
+        List<WebElement> elements = getDriver().findElements(By.xpath("//td/a"));
+        List<String> jobs = new ArrayList<>();
+        for (WebElement element : elements) {
+            jobs.add(element.getText());
+        }
+
+        Assert.assertTrue(jobs.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
+    }
+
+    @Test
+    public void testSidebarMenuConsistingOfTenTasks() {
+        final int quantityOfTasks = 10;
+
+        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+
+        Assert.assertEquals(
+                getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']")).size(),
+                quantityOfTasks);
+    }
+
+    @Test
+    public void testVisibilityTasksOfSidebarMenu() {
+        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+
+        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
+                By.xpath("//span[@class='task-link-wrapper ']")));
+
+        Assert.assertEquals(namesOfTasks, requiredNamesOfTasks);
+    }
+
+    @Test
+    public void testVisibilityOfAdditionalTaskOfSidebarMenuIfFolderIsCreated() {
+        createProject("Folder", "Nested Folder", true);
+        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+
+        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
+                By.xpath("//span[@class='task-link-wrapper ']")));
+        namesOfTasks.removeAll(requiredNamesOfTasks);
+
+        Assert.assertEquals(namesOfTasks.toString(), "[Move]");
+    }
+
+    @Test
+    public void testVisibilityOfAdditionalTaskOfSidebarMenuIfProjectInsideFolder() {
+        final String folderName = "Wrapper Folder";
+
+        createProject("Folder", folderName, false);
+        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+
+        getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+
+        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
+                By.xpath("//span[@class='task-link-wrapper ']")));
+
+        Assert.assertTrue(namesOfTasks.contains("Move"), "Move is not the additional task of sidebar menu on the left");
     }
 }
