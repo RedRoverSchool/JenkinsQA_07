@@ -35,7 +35,8 @@ public class MultibranchPipeline2Test extends BaseTest {
 
         getDriver().findElement(By.xpath("//span[@id='toggle-switch-enable-disable-project']/label")).click();
 
-        WebElement elementPage = getWait2().until(ExpectedConditions.visibilityOfElementLocated((By.xpath(
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+        WebElement elementPage = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath(
                 "//span[@id='toggle-switch-enable-disable-project']/label/span[text()='Disabled']"))));
         String nameToggle = elementPage.getText();
 
