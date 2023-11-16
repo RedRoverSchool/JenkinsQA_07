@@ -87,7 +87,7 @@ public class Users2Test extends BaseTest {
         actions.moveToElement(moveToArrow).perform();
         moveToArrow.sendKeys(Keys.RETURN);
 
-        WebElement clickDelete = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']")));
+        WebElement clickDelete = getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']")));
         clickDelete.click();
 
         getDriver().switchTo().alert().accept();
