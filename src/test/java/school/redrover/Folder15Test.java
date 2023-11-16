@@ -22,7 +22,9 @@ public class Folder15Test extends BaseTest {
         getDriver().findElement(By.id("name")).sendKeys(nameFreestyleProject);
         getDriver().findElement(By.xpath("//img[@class='icon-freestyle-project icon-xlg']")).click();
         getDriver().findElement(By.id("ok-button")).click();
+
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
+
     }
 
     private void AddDescriptionFolder(String descriptionText){
