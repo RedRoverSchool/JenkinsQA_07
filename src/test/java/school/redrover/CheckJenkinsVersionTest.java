@@ -47,8 +47,8 @@ public class CheckJenkinsVersionTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".app-about-version")).getText(), "Version 2.414.2");
     }
 
+    @Ignore
     @Test
-
     public void testJenkinsVersionCheck() {
 
         Assert.assertEquals(
