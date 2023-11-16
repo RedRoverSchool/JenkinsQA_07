@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -11,9 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class SystemLogTest extends BaseTest {
-
     private final static String SYSLOG_NAME = "NewSystemLog";
-
     private void openSyslogPage() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
