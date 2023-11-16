@@ -35,4 +35,13 @@ public class NewItemPage extends BasePage {
 
         return new ConfigurationPage(getDriver());
     }
+
+    public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
+
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new FreestyleProjectConfigurePage(getDriver());
+    }
 }
