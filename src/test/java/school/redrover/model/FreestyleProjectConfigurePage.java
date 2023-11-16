@@ -24,4 +24,5 @@ public class FreestyleProjectConfigurePage extends BasePage {
         }
         return tooltipIsVisible;
     }
+
 }
