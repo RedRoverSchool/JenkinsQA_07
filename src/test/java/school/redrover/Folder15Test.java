@@ -15,6 +15,7 @@ public class Folder15Test extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@formnovalidate = 'formNoValidate']")).click();
         getDriver().findElement(By.id("jenkins-home-link")).click();
+
     }
 
     private void createFreestPro(String nameFreestyleProject) {
