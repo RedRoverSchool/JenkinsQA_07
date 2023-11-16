@@ -1,12 +1,18 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
-public class DisableMultibranchPipelineTest extends BaseTest {
+import java.time.Duration;
+
+public class MultibranchPipeline2Test extends BaseTest {
 
     private void returnToJenkinsHomePage() {
         getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
@@ -25,14 +31,15 @@ public class DisableMultibranchPipelineTest extends BaseTest {
     @Test
     public void testDisableMultibranchPipeline() throws InterruptedException {
         createMultibranchPipeline("Test_Folder");
+        String expectedResult = "Disabled";
 
         getDriver().findElement(By.xpath("//span[@id='toggle-switch-enable-disable-project']/label")).click();
-        Thread.sleep(2000);
 
-        WebElement elementPage = getDriver().findElement(By.xpath("//span[@id='toggle-switch-enable-disable-project']/label/span[text()='Disabled']"));
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+
+        WebElement elementPage = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath(
+                "//span[@id='toggle-switch-enable-disable-project']/label/span[text()='Disabled']"))));
         String nameToggle = elementPage.getText();
-
-        String expectedResult = "Disabled";
 
         Assert.assertEquals(nameToggle, expectedResult);
     }
