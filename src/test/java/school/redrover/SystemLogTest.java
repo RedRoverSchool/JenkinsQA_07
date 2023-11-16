@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
 public class SystemLogTest extends BaseTest {
+
     private final static String SYSLOG_NAME = "NewSystemLog";
     private void openSyslogPage() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
