@@ -58,19 +58,6 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    @Ignore
-    @Test
-    public void testCreate() {
-        HomePage homePage = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(FOLDER_NAME)
-                .selectItemType("Folder")
-                .clickOk()
-                .goHomePage();
-
-        Assert.assertTrue(homePage.getJobList().contains(FOLDER_NAME));
-    }
-
     @Test
     public void testRenameWithValidNameFromDropDownMenu() {
 
