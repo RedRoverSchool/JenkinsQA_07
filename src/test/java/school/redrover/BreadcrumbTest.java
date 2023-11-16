@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -127,10 +128,10 @@ public class BreadcrumbTest extends BaseTest {
         new Actions(getDriver())
                 .moveToElement(dashboardChevron)
                 .pause(500)
-                .click()
                 .perform();
+        dashboardChevron.sendKeys(Keys.RETURN);
 
-        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//div[@id='tippy-3']"))));
+        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//div[@id='tippy-3']"))));
         List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@id='tippy-3']//a"));
 
         Assert.assertTrue(itemsListBreadcrumb.size() > 0);
