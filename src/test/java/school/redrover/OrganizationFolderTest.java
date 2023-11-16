@@ -321,6 +321,7 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertFalse(deletetOK);
     }
+
     @Ignore
     @Test
     public void testDeleteOrganizationFolder() {
