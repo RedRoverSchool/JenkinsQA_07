@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -86,7 +87,7 @@ public class Users2Test extends BaseTest {
         actions.moveToElement(moveToArrow).perform();
         moveToArrow.sendKeys(Keys.RETURN);
 
-        WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
+        WebElement clickDelete = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']")));
         clickDelete.click();
 
         getDriver().switchTo().alert().accept();
