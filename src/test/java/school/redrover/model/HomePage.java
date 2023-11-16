@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HomePage extends BasePage {
 
-    @FindBy(xpath = "//a[@href='computer/new']")
+   @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement SetUpAnAgent;
 
     public HomePage(WebDriver driver) {

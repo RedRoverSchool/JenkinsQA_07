@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,19 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private void getDashboardLink() {
         getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
+    }
+
+    private void returnToJenkinsHomePage() {
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+    }
+
+    private void createMultibranchPipeline(String name) {
+        returnToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
+        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
     }
 
     @Test
@@ -462,5 +476,22 @@ public class MultibranchPipelineTest extends BaseTest {
                 By.xpath("//span[@class='task-link-wrapper ']")));
 
         Assert.assertTrue(namesOfTasks.contains("Move"), "Move is not the additional task of sidebar menu on the left");
+    }
+
+    @Test
+    public void testDisableMultibranchPipelineWithHomePage() {
+        String name = "Test_Folder";
+        String expectedResult = "Enable";
+
+        createMultibranchPipeline(name);
+        returnToJenkinsHomePage();
+
+        getDriver().findElement(By.xpath("//tr[@id='job_Test_Folder']//a[@href='job/" +name + "/']")).click();
+        getDriver().findElement(By.xpath("//form[@id='disable-project']/button")).click();
+
+        WebElement enableButton = getDriver().findElement(By.xpath("//form[@id='enable-project']/button"));
+        String actualResult = enableButton.getText();
+
+        Assert.assertEquals(actualResult, expectedResult);
     }
 }
