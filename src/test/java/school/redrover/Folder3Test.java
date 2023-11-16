@@ -10,7 +10,7 @@ import school.redrover.model.FolderRenamePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
-public class Folder3Test extends BaseTest {
+public class  Folder3Test extends BaseTest {
 
     private static final String FOLDER_NAME = "Folder1";
     private static final String RENAMED_FOLDER = "RenamedFolder";
