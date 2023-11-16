@@ -35,10 +35,4 @@ public class NewItemPage extends BasePage {
 
         return new ConfigurationPage(getDriver());
     }
-
-    public NewItemPage selectItemFolder() {
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-
-        return this;
-    }
 }
