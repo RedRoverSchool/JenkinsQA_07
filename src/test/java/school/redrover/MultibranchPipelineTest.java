@@ -2,15 +2,19 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -493,5 +497,21 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualResult = enableButton.getText();
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testDisableMultibranchPipeline() {
+        createMultibranchPipeline("Test_Folder");
+        String expectedResult = "Disabled";
+
+        getDriver().findElement(By.xpath("//span[@id='toggle-switch-enable-disable-project']/label")).click();
+
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+
+        WebElement elementPage = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath(
+                "//span[@id='toggle-switch-enable-disable-project']/label/span[text()='Disabled']"))));
+        String nameToggle = elementPage.getText();
+
+        Assert.assertEquals(nameToggle, expectedResult);
     }
 }
