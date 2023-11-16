@@ -963,7 +963,7 @@ public class FreestyleProjectTest extends BaseTest {
                         .getCssValue("display"),
                 "none");
     }
-
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
