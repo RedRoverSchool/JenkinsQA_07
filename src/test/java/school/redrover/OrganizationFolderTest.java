@@ -6,15 +6,30 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.NewItemPage;
 import school.redrover.runner.BaseTest;
 
 public class OrganizationFolderTest extends BaseTest {
     private static final String PROJECT_NAME = "Organization Folder";
     private static final String NEW_PROJECT_NAME = "Organization Folder Renamed";
 
+    @Test
+    public void testCreateOrganizationFolderWithValidName() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem(new NewItemPage(getDriver()))
+                .typeItemName(PROJECT_NAME)
+                .selectItemType("Organization Folder")
+                .clickOk()
+                .goHomePage();
+
+        Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
+    }
+
     private void returnHomeJenkins() {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
+
     private void createProject(String name) {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
         getDriver().findElement(By.name("name")).sendKeys(name);
@@ -30,13 +45,6 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
         returnHomeJenkins();
-    }
-
-    @Test
-    public void testCreateProject() {
-        createProject(PROJECT_NAME);
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),"Organization Folder");
     }
 
     @DataProvider(name = "wrong-character")

@@ -30,10 +30,15 @@ public class HomePage extends BasePage {
         return resultList;
     }
 
+    public <T> T clickNewItem(T page) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+
+        return page;
+    }
+
     public NodeCreatePage clickSetUpAnAgent() {
         SetUpAnAgent.click();
 
         return new NodeCreatePage(getDriver());
     }
-
 }

@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -67,15 +66,12 @@ public class MultibranchPipelineTest extends BaseTest {
                 breadcrumbName + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testErrorMessageRenameWithDotAtTheEnd() {
 
         final String ERROR_MESSAGE = "A name cannot end with ‘.’";
 
-        createMultibranchPipelineWithCreateAJob();
-
-        getDriver().findElement(By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
         getDriver().findElement(
                 By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
         getDriver().findElement(By.name("newName")).sendKeys(".");
@@ -85,15 +81,12 @@ public class MultibranchPipelineTest extends BaseTest {
                 "There is no message " + ERROR_MESSAGE);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testErrorMessageRenameWithLessThanSign() {
 
         final String ERROR_MESSAGE = "‘&lt;’ is an unsafe character";
 
-        createMultibranchPipelineWithCreateAJob();
-
-        getDriver().findElement(By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
         getDriver().findElement(
                 By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
         getDriver().findElement(By.name("newName")).sendKeys(Keys.SHIFT + ",");
@@ -103,15 +96,12 @@ public class MultibranchPipelineTest extends BaseTest {
                 "There is no message " + ERROR_MESSAGE);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testErrorMessageRenameWithTwoUnsafeCharacters() {
 
         final String ERROR_MESSAGE = "‘#’ is an unsafe character";
 
-        createMultibranchPipelineWithCreateAJob();
-
-        getDriver().findElement(By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
         getDriver().findElement(
                 By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
         getDriver().findElement(By.name("newName")).sendKeys("#" + Keys.SHIFT + ".");
