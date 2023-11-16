@@ -963,6 +963,7 @@ public class FreestyleProjectTest extends BaseTest {
                         .getCssValue("display"),
                 "none");
     }
+
     @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
@@ -1038,6 +1039,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + projectRename + "']")).isDisplayed());
     }
-
-
 }
