@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -80,15 +79,14 @@ public class Users2Test extends BaseTest {
         goToUsersTab();
 
         WebElement moveToUserName = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
+        WebElement moveToArrow = getDriver().findElement(By.xpath("//tr[2]//button"));
+
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(moveToUserName).perform();
+        actions.moveToElement(moveToUserName).moveToElement(moveToArrow).perform();
+        moveToArrow.sendKeys(Keys.ENTER);
 
-        WebElement moveToArrow = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']/button"));
-        actions.moveToElement(moveToArrow).perform();
-        moveToArrow.sendKeys(Keys.RETURN);
-
-        WebElement clickDelete = getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']")));
-        actions.moveToElement(clickDelete).click().perform();
+        WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
+        actions.click(clickDelete).perform();
 
         getDriver().switchTo().alert().accept();
 
