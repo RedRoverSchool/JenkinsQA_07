@@ -69,7 +69,6 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
-
         List<String> nodeList = new HomePage(getDriver())
                 .clickSetUpAnAgent()
                 .sendKeys(NODE_NAME)
@@ -85,13 +84,13 @@ public class NodesTest extends BaseTest {
     public void testCreateNewNodeWithInvalidNameFromMainPanel() {
         final String NODE_NAME = "!";
 
-        getDriver().findElement(By.xpath("//a[@href='computer/new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.cssSelector(".jenkins-radio__label")).click();
+        String errorMessage = new HomePage(getDriver())
+                .clickSetUpAnAgent()
+                .sendKeys(NODE_NAME)
+                .clickPermanentAgentCheckbox()
+                .getErrorMessage();
 
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector(".error")))).getText(),
-                "‘!’ is an unsafe character");
+        Assert.assertEquals(errorMessage, "‘!’ is an unsafe character");
     }
 
     @Test
