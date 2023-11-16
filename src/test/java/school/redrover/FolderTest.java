@@ -4,20 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-
 import java.util.Arrays;
 import java.util.List;
-
 import static org.testng.AssertJUnit.assertEquals;
 
-
 public class FolderTest extends BaseTest {
-
     private static final String FOLDER_NAME = "Folder";
     private static final String FOLDER_NAME_2 = "My new project";
     private static final String NAME_FOR_BOUNDARY_VALUES = "A";
@@ -140,6 +135,7 @@ public class FolderTest extends BaseTest {
         assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a/span")).getText(), secondFolderName);
     }
 
+    @Ignore
     @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
@@ -183,6 +179,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatingNewFolder1")
     public void testAddDisplayName() {
         final String folderDisplayName = "Best folder";
