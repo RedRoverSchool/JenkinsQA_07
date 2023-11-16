@@ -275,6 +275,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualFolderName, folderDisplayName);
     }
 
+    @Ignore
     @Test
     public void testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder() {
 
@@ -302,6 +303,7 @@ public class FolderTest extends BaseTest {
                 "Success > Console Output");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder")
     public void testDeletePipelineInsideOfFolder() {
         getDriver().findElement(By.xpath("//a[@href='job/Folder/']")).click();

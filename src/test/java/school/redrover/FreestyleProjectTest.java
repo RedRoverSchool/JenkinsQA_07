@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.NewJobPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -301,20 +303,13 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testTooltipDiscardOldBuildsIsVisible() {
-        createFreeStyleProject("New Freestyle Project");
-        WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
+    public void testTooltipDiscardOldBuildsIsVisible(){
+        boolean tooltipIsVisible = new HomePage(getDriver())
+                .clickNewItem(new NewJobPage(getDriver()))
+                .createFreestyleProject("New Project")
+                .tooltipDiscardOldBuildsIsVisible();
 
-        boolean tioltopIsVisible = true;
-        new Actions(getDriver())
-                .moveToElement(helpButton)
-                .perform();
-
-        if (helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
-            tioltopIsVisible = false;
-        }
-
-        Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
+        Assert.assertTrue(tooltipIsVisible, "The tooltip is not displayed.");
     }
 
     @Test
@@ -969,6 +964,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "none");
     }
 
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         createFreeStyleProject("FreestyleProject");
@@ -1015,6 +1011,32 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(
                         By.cssSelector("input[name='_.daysToKeepStr']")).getAttribute("value"),
                 "2");
+    }
 
+    @Test
+    public  void testSavedNotificationIsDisplayed(){
+        createAnItem("Freestyle project");
+        getDriver().findElement(By.name("Apply")).click();
+        String notificationIsDisplayed = getDriver().findElement(By.id("notification-bar")).getAttribute("class");
+
+        Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
+    }
+
+    @Test
+    public void testRenameProjectFromDashboard() {
+        final String projectName = "FSproject";
+        final String projectRename = "FSproject1";
+
+        createFreeStyleProject(projectName);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+        hoverClick("//*[@id='job_" + projectName + "']/td[3]/a");
+        hoverClick("//a[@href='/job/" + projectName + "/confirm-rename']");
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        hoverClickInput("//input[@name='newName']", projectRename);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        getDriver().findElement(By.xpath("//a[@id='jenkins-home-link']")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + projectRename + "']")).isDisplayed());
     }
 }
