@@ -7,6 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.NewJobPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -301,20 +303,13 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testTooltipDiscardOldBuildsIsVisible() {
-        createFreeStyleProject("New Freestyle Project");
-        WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
+    public void testTooltipDiscardOldBuildsIsVisible(){
+        boolean tooltipIsVisible = new HomePage(getDriver())
+                .clickNewItem(new NewJobPage(getDriver()))
+                .createFreestyleProject("New Project")
+                .tooltipDiscardOldBuildsIsVisible();
 
-        boolean tioltopIsVisible = true;
-        new Actions(getDriver())
-                .moveToElement(helpButton)
-                .perform();
-
-        if (helpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
-            tioltopIsVisible = false;
-        }
-
-        Assert.assertTrue(tioltopIsVisible, "The tooltip is not displayed.");
+        Assert.assertTrue(tooltipIsVisible, "The tooltip is not displayed.");
     }
 
     @Test
@@ -1043,4 +1038,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + projectRename + "']")).isDisplayed());
     }
+
+
 }
