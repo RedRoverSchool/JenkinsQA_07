@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -91,13 +92,15 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testMultibranchPipelineCreationWithCreateAJob() {
 
-        createMultibranchPipelineWithCreateAJob();
+        String multibranchBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineOption()
+                .clickOk()
+                .getJobName();
 
-        String breadcrumbName = getDriver().findElement(
-                By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).getText();
-
-        Assert.assertEquals(breadcrumbName, MULTIBRANCH_PIPELINE_NAME,
-                breadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchBreadcrumbName, MULTIBRANCH_PIPELINE_NAME,
+                multibranchBreadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
     }
 
     @Test

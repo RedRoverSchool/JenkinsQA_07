@@ -31,6 +31,11 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
+    public NewItemPage selectMultibranchPipelineOption() {
+        getDriver().findElement(By.xpath("//li[contains(@class, 'multibranch_Workflow')]")).click();
+
+        return this;
+    }
     public NewItemPage selectOrganizationFolder() {
         getDriver().findElement(By.xpath("//li[@class = 'jenkins_branch_OrganizationFolder']")).click();
 
@@ -41,6 +46,12 @@ public class NewItemPage extends BasePage {
         okButton.click();
 
         return page;
+    }
+
+    public MultibranchPipelineConfigurationPage clickOk () {
+        okButton.click();
+
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public String getRequiredNameErrorMessage() {
@@ -58,5 +69,11 @@ public class NewItemPage extends BasePage {
         getDriver().findElement(By.id("ok-button")).click();
 
         return new FreestyleProjectConfigurePage(getDriver());
+    }
+
+    public NewItemPage selectItemFolder() {
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+
+        return this;
     }
 }
