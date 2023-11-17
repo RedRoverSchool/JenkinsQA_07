@@ -83,7 +83,7 @@ public class Users2Test extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(moveToUserName).pause(1000).perform();
 
-        WebElement moveToArrow = getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[2]/a/button[@data-href='http://localhost:8080/manage/securityRealm/user/user_name_test/']"));
+        WebElement moveToArrow = getDriver().findElement(By.cssSelector("#people > tbody > tr:nth-child(2) > td:nth-child(2) > a > button"));
         actions.sendKeys(moveToArrow, Keys.ENTER).pause(1000).click().perform();
 
         WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
