@@ -80,7 +80,7 @@ public class Users2Test extends BaseTest {
 
         WebElement moveToUserName = getDriver().findElement(By.xpath(
                 "//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
-        WebElement moveToArrow = getDriver().findElement(By.xpath("//tr[2]//button"));
+        WebElement moveToArrow = getDriver().findElement(By.xpath("//tr[2]/td/a/button"));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(moveToUserName).perform();
