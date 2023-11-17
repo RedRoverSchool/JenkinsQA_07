@@ -20,6 +20,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class UserTest extends BaseTest {
+    private final static String MANAGE_JENKINS_ELEMENT = "//a[@href = '/manage']";
+    private final static String SECURITY_ELEMENT = "//a[@href = 'securityRealm/']";
+    private final static String ADD_USER_ELEMENT = "//a[@href = 'addUser']";
     private static final String USER_NAME = "Jane";
     private final String USER_NAME_2 = "FirstUser";
     private static final String NAME = "ivan";
