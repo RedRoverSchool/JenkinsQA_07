@@ -40,10 +40,9 @@ public class FooterTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='api/']")).click();
     }
 
-//    @Ignore
+    @Ignore
     @Test
     public void testVersionCheck() {
-
         getDriver().findElement(By.xpath("//div/button")).click();
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//div/button")).getText(),
@@ -65,10 +64,8 @@ public class FooterTest extends BaseTest {
                 "Jenkins 2.414.2");
     }
 
-//    @Ignore
     @Test
     public void testJenkinsVersionCheck() {
-
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//button[contains(text(),'Jenkins 2.414.2')]")).
                         getAttribute("innerText").trim(),
@@ -90,7 +87,6 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testVersion() {
-
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
         getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
         Assert.assertEquals(getDriver().findElement(By.cssSelector(".app-about-version")).getText(), "Version 2.414.2");
@@ -117,7 +113,6 @@ public class FooterTest extends BaseTest {
                 .getText().contains("Version 2.414.2"));
     }
 
-//    @Ignore
     @Test
     public void checkTippyBox() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
@@ -152,7 +147,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not About Jenkins 2.414.2 [Jenkins]");
     }
 
-//    @Ignore
     @Test
     public void testGetInvolved() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
@@ -183,7 +177,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Participate and Contribute");
     }
 
-//    @Ignore
     @Test
     public void testWebsite() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
@@ -214,7 +207,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Jenkins");
     }
 
-//    @Ignore
     @Test
     public void testVerifyClickabilityOfRestAPILink() {
         clickRestApi();
@@ -222,7 +214,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "Remote API [Jenkins]");
     }
 
-//    @Ignore
     @Test(description = "Кликабельность ссылки и отображение страницы REST API")
     public void testvisabilityAndClickabilityRestApiLink() {
         String link = getDriver().findElement(By.xpath("//a[@href='api/']")).getText();
@@ -242,7 +233,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), "REST API");
     }
 
-//    @Ignore
     @Test
     public void testJenkinsVersionButtonVisibilityCLikabilityFunctionality() {
         getDriver().findElement(By.xpath("//a[@class]//span[@class='hidden-xs hidden-sm']")).click();
@@ -271,7 +261,6 @@ public class FooterTest extends BaseTest {
         Assert.assertTrue(actualListTabBarGetText.containsAll(expectedListTabBar));
     }
 
-//    @Ignore
     @Test
     public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
         String aboutJenkins = "About Jenkins";
@@ -291,7 +280,6 @@ public class FooterTest extends BaseTest {
         }
     }
 
-//    @Ignore
     @Test
     public void testVerifyRedirectedRestApi() {
         clickRestApi();
