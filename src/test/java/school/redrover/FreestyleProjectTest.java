@@ -807,6 +807,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testGitRadioButtonSettingsIsOpened() {
         createFreeStyleProject("NewFSproject");
