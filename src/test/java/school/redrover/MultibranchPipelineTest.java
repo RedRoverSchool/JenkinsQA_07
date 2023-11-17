@@ -19,6 +19,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.testng.Assert.assertTrue;
+
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
@@ -516,5 +518,15 @@ public class MultibranchPipelineTest extends BaseTest {
         String nameToggle = elementPage.getText();
 
         Assert.assertEquals(nameToggle, expectedResult);
+    }
+
+    @Test(dependsOnMethods = "testDisableMultibranchPipelineWithHomePage")
+    public void testEnableFromStatusPage() {
+        getDriver().findElement(By.xpath("//*[@id=\"job_Test_Folder\"]/td[3]/a")).click();
+
+        getDriver().findElement(By.xpath("//form[@id='enable-project']/button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.name(
+                "Submit")).getText(), "Disable Multibranch Pipeline");
     }
 }
