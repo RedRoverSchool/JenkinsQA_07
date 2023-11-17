@@ -51,6 +51,11 @@ public class HomePage extends BasePage {
         return new NodeCreatePage(getDriver());
     }
 
+    public NewViewPage clickNewViewButton() {
+        getDriver().findElement(By.xpath("//a[@tooltip='New View']")).click();
+        return new NewViewPage(getDriver());
+    }
+
     public NewItemPage clickCreateAJob() {
         CreateAJob.click();
 
