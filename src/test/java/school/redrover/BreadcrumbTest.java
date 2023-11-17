@@ -11,110 +11,165 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
+import static org.testng.AssertJUnit.assertTrue;
+
 public class BreadcrumbTest extends BaseTest {
-  private final String MAIN_PAGE_LOCATOR = "Main Page";
+  private final String MAIN_PAGE = "Main Page";
 
-  private void searchDashboardOnBreadcrumbBarAndClick() {
+  private void createDescriptionMainPage() {
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("description-link"))).click();
+    getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).sendKeys(MAIN_PAGE);
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//button[@name='Submit' and contains(@class, 'jenkins-button jenkins-button--primary')]")))
+            .click();
+  }
 
-    WebElement breadcrumbBar = getDriver().findElement(By.id("breadcrumbBar"));
-    List<WebElement> breadcrumbItems = breadcrumbBar.findElements(By.cssSelector("li.jenkins-breadcrumbs__list-item"));
-
+  private void clickDashboardOnBreadcrumbBar() {
+    List<WebElement> breadcrumbItems = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.id("breadcrumbBar"))).findElements(By.cssSelector("li.jenkins-breadcrumbs__list-item"));
     for (WebElement item : breadcrumbItems) {
       if (item.getText().equals("Dashboard")) {
-        getDriver().findElement(By.xpath(
-            "//a[@href='/' and contains(@class, 'model-link')]")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//a[@href='/' and contains(@class, 'model-link')]"))).click();
         break;
       }
     }
   }
 
-  private void createMainPageLocator() {
-
-    WebElement descriptionButton = getDriver().findElement(By.id("description-link"));
-    descriptionButton.click();
-    WebElement descriptionField = getDriver().findElement(By.xpath(
-        "//textarea[@class='jenkins-input   ']"));
-    descriptionField.sendKeys("Main Page");
-    getDriver().findElement(By.xpath(
-        "//button[@name='Submit' and contains(@class, 'jenkins-button jenkins-button--primary')]")).click();
+  private boolean isBreadcrumbPresent() {
+    List<WebElement> breadcrumbs = getDriver().findElements(By.id("breadcrumbBar"));
+    return !breadcrumbs.isEmpty() && breadcrumbs.get(0).isDisplayed();
   }
 
-  private int isElementExistInBreadcrumb(By element) {
-
-    try {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(element));
-        return 1;
-      }
-
-    catch (Exception ex) {
-        System.out.println(Arrays.toString(ex.getStackTrace()));
-        System.out.println(ex.getMessage());
-      }
-    return 0;
+  private boolean thisIsDashboardPage() {
+    List<WebElement> dashboardElements = getDriver().findElements(By.id("main-panel"));
+    return !dashboardElements.isEmpty() && dashboardElements.get(0).isDisplayed();
   }
 
   @Test
-    public void testDashboardPresentsOnBuiltInNodePageAndReturnOnMainPageByClick() {
+  public void testReturnHomepageFromAnyPageClickingDashboard() {
+    List<By> sidebarItems = List.of(
+            By.xpath("//a[@href='/view/all/newJob']"),
+            By.xpath("//a[@href='/asynchPeople/']"),
+            By.xpath("//a[@href='/view/all/builds']"),
+            By.xpath("//a[@href='/manage']"),
+            By.xpath("//a[@href='/me/my-views']"));
+    for (By locator : sidebarItems){
+      getWait2().until(ExpectedConditions.visibilityOfElementLocated(locator)).click();
 
-    createMainPageLocator();
-    getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
-    getDriver().findElement(By.xpath("//a[@href = 'computer']")).click();
-    getDriver().findElement(By.xpath("//a[@href = '../computer/(built-in)/']")).click();
-    searchDashboardOnBreadcrumbBarAndClick();
+      getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+              By.xpath("//li/a[@class='model-link']"))).click();
 
-    Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(MAIN_PAGE_LOCATOR));
-  }
-
-  @Test
-  public void testDashboardPresentsOnWerreConfigPageAndReturnOnMainPageByClick() {
-
-    final String projectName = "Project Name";
-
-    createMainPageLocator();
-    getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-    getDriver().findElement(By.className("jenkins-input")).sendKeys(projectName);
-    getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-    getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-    searchDashboardOnBreadcrumbBarAndClick();
-
-    Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(MAIN_PAGE_LOCATOR));
-  }
-
-  @Test
-  public void testDashboardPresentsOnAdminPageAndReturnOnMainPageByClick() {
-
-    createMainPageLocator();
-    getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
-    getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
-    getDriver().findElement(By.xpath("//a[@href = 'user/admin/']")).click();
-    getDriver().findElement(By.xpath("//a[@href = '/user/admin/credentials']")).click();
-    searchDashboardOnBreadcrumbBarAndClick();
-
-    Assert.assertTrue(getDriver().findElement(By.id("description")).getText().contains(MAIN_PAGE_LOCATOR));
-  }
-
-    @Test
-    public void testDashboardReturn () {
-
-    final By dashboard = By.xpath("//div//li[@class='jenkins-breadcrumbs__list-item'][1]");
-    final String expectedTitle = "Dashboard [Jenkins]";
-    final int expectedDashboardCount = 4;
-
-    int dashboardItemCounter = isElementExistInBreadcrumb(dashboard);
-    getDriver().findElement(By.xpath("//div//a[@href='/manage']")).click();
-
-    dashboardItemCounter+= isElementExistInBreadcrumb(dashboard);
-    getDriver().findElement(By.xpath("//div//a[@href= 'pluginManager']/dl")).click();
-
-    dashboardItemCounter+= isElementExistInBreadcrumb(dashboard);
-    getDriver().findElement(dashboard).click();
-    dashboardItemCounter+= isElementExistInBreadcrumb(dashboard);
-
-    Assert.assertEquals(dashboardItemCounter, expectedDashboardCount);
-    Assert.assertEquals(getDriver().getTitle(), expectedTitle);
-
+      Assert.assertEquals(getDriver().findElement(By.xpath(
+                      "//div[@class='empty-state-block']/h1")).getText()
+              , "Welcome to Jenkins!");
     }
+  }
+
+  @Test
+  public void testReturnMainPageClickOnDashboardBreadcrumb() {
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//span/a[@href='/asynchPeople/']"))).click();
+
+    Assert.assertEquals(getDriver().findElement(By.xpath(
+                    "//div[@class ='jenkins-app-bar__content']/h1")).getText()
+            , "People");
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+            "//li[@class ='jenkins-breadcrumbs__list-item']/a"))).click();
+
+    Assert.assertEquals(getDriver().findElement(By.xpath(
+                    "//div[@class='empty-state-block']/h1")).getText()
+            , "Welcome to Jenkins!");
+  }
+
+  @Test
+  public void testBuildInNodePageAndReturnOnMainPage() {
+    createDescriptionMainPage();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//a[@href = '/manage']"))).click();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//a[@href = 'computer']"))).click();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//a[@href = '../computer/(built-in)/']"))).click();
+
+    clickDashboardOnBreadcrumbBar();
+
+    Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.id("description"))).getText().contains(MAIN_PAGE));
+  }
+
+  @Test
+  public void testConfigPageAndReturnOnMainPage() {
+    createDescriptionMainPage();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//*[@id='main-panel']/div[2]/div/section[1]/ul/li/a/span[1]"))).click();
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.className("jenkins-input"))).sendKeys("Project Name");
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.className("hudson_model_FreeStyleProject"))).click();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//button[@id = 'ok-button']"))).click();
+
+    clickDashboardOnBreadcrumbBar();
+
+    Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.id("description"))).getText().contains(MAIN_PAGE));
+  }
+
+  @Test
+  public void testOnAdminPageAndReturnOnMainPage() {
+    createDescriptionMainPage();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//a[@href = '/manage']"))).click();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//a[@href = 'securityRealm/']"))).click();
+
+    getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//*[@id='people']/tbody/tr/td[2]/a"))).click();
+
+    clickDashboardOnBreadcrumbBar();
+
+    Assert.assertTrue(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+            By.id("description"))).getText().contains(MAIN_PAGE));
+  }
+
+  @Test
+  public void testBreadcrumbOnMenuPages() {
+    List<By> pages = List.of(
+            By.xpath("//*[@id='tasks']/div[2]/span/a"),
+            By.xpath("//*[@id='tasks']/div[3]/span/a"),
+            By.xpath("//*[@id='tasks']/div[4]/span/a"),
+            By.xpath("//*[@id='page-header']/div[3]/a[1]"));
+    for (By locator: pages) {
+      getWait2().until(ExpectedConditions.visibilityOfElementLocated(locator)).click();
+
+      assertTrue(isBreadcrumbPresent());
+    }
+  }
+
+  @Test
+  public void testReturnToDashboardFromMenuPages() {
+    List<By> menuPages = List.of(
+            By.xpath("//*[@id='tasks']/div[2]/span/a"),
+            By.xpath("//*[@id='tasks']/div[3]/span/a"),
+            By.xpath("//*[@id='tasks']/div[4]/span/a"),
+            By.xpath("//*[@id='page-header']/div[3]/a[1]"));
+
+    for (By locator : menuPages) {
+      getWait2().until(ExpectedConditions.visibilityOfElementLocated(locator)).click();
+
+      assertTrue(thisIsDashboardPage());
+    }
+  }
 }
 
 
