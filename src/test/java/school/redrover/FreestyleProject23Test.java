@@ -3,6 +3,9 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -34,6 +37,20 @@ public class FreestyleProject23Test extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
+    private void addTimeStampToConsoleOutput(String projectName) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.linkText("REST API"))).perform();
+
+        getDriver().findElement(By.xpath("//div[@id = 'tasks']//div[5]/span")).click();
+
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Add timestamps')]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
     @Test
     public void testParameterizedBuildWithChoices() {
         final String choices = "Chrome Firefox Edge Safari";
@@ -56,4 +73,28 @@ public class FreestyleProject23Test extends BaseTest {
             Assert.assertTrue(choices.contains(ch.getText()));
         }
     }
+
+    @Test
+    public void testTimeStampsInConsoleOutput() {
+        createFreestyleProject(PROJECT_NAME);
+        getDriver().findElement(By.id("jenkins-home-link")).click();
+
+        addTimeStampToConsoleOutput(PROJECT_NAME);
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a"))));
+        getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a")).click();
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']//div[1]//a")).click();
+
+        getDriver().findElement(By.xpath("//a[@href = 'lastBuild/']")).click();
+        getDriver().findElement(By.xpath("//div[@id='tasks']//div[3]//a")).click();
+
+        List<WebElement> logs = getDriver().findElements(By.xpath("//span[@class = 'timestamp']"));
+        Assert.assertFalse(logs.isEmpty());
+
+        for (WebElement log : logs) {
+            Assert.assertTrue(log.getText().trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
+        }
+    }
+
 }

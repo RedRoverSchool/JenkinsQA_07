@@ -30,4 +30,15 @@ public class PluginsTest extends BaseTest {
 
         Assert.assertTrue(foundAntPlugin, "Ant Plugin is not found in the list of installed plugins.");
     }
+
+    @Test
+    public void testInstalledPluginsSearch() {
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='pluginManager']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/manage/pluginManager/installed']")).click();
+        getDriver().findElement(By.xpath("//input[@type='search']")).sendKeys("Build Timeout");
+
+        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='https://plugins.jenkins.io/build-timeout']"))
+                .getText().contains("Build Timeout"));
+    }
 }
