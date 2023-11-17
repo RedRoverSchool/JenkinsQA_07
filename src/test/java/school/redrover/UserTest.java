@@ -578,6 +578,16 @@ public class UserTest extends BaseTest {
     }
 
     @Test
+    public void testVerifyScreenAfterCreateUser () {
+        String password = "1234567";
+        String email = "test@gmail.com";
+        createUser(USER_NAME, password, email);
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/securityRealm/']")).getText(),
+                "Jenkins’ own user database");
+    }
+
+    @Test
     public void testVerifyDisplayedUserAfterCreateUser () {
         String password = "1234567";
         String email = "test@gmail.com";
