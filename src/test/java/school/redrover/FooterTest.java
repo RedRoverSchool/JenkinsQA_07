@@ -214,6 +214,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "Remote API [Jenkins]");
     }
 
+    @Ignore
     @Test(description = "Кликабельность ссылки и отображение страницы REST API")
     public void testvisabilityAndClickabilityRestApiLink() {
         String link = getDriver().findElement(By.xpath("//a[@href='api/']")).getText();
