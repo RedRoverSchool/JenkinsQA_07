@@ -72,6 +72,12 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
+    public GlobalViewPage clickViewByName(String viewName) {
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
+
+        return new GlobalViewPage(getDriver());
+    }
+
     public List<String> getViewsList() {
         List<WebElement> viewsList = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
         List<String> resultList = new ArrayList<>();
