@@ -2,17 +2,24 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.testng.Assert.assertTrue;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -87,13 +94,15 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testMultibranchPipelineCreationWithCreateAJob() {
 
-        createMultibranchPipelineWithCreateAJob();
+        String multibranchBreadcrumbName = new HomePage(getDriver())
+                .clickCreateAJob()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineOption()
+                .clickOk()
+                .getJobName();
 
-        String breadcrumbName = getDriver().findElement(
-                By.xpath("//a[@class='model-link'][contains(@href, 'job')]")).getText();
-
-        Assert.assertEquals(breadcrumbName, MULTIBRANCH_PIPELINE_NAME,
-                breadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchBreadcrumbName, MULTIBRANCH_PIPELINE_NAME,
+                multibranchBreadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
     }
 
     @Test
@@ -493,5 +502,31 @@ public class MultibranchPipelineTest extends BaseTest {
         String actualResult = enableButton.getText();
 
         Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
+    public void testDisableMultibranchPipeline() {
+        createMultibranchPipeline("Test_Folder");
+        String expectedResult = "Disabled";
+
+        getDriver().findElement(By.xpath("//span[@id='toggle-switch-enable-disable-project']/label")).click();
+
+        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
+
+        WebElement elementPage = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath(
+                "//span[@id='toggle-switch-enable-disable-project']/label/span[text()='Disabled']"))));
+        String nameToggle = elementPage.getText();
+
+        Assert.assertEquals(nameToggle, expectedResult);
+    }
+
+    @Test(dependsOnMethods = "testDisableMultibranchPipelineWithHomePage")
+    public void testEnableFromStatusPage() {
+        getDriver().findElement(By.xpath("//*[@id=\"job_Test_Folder\"]/td[3]/a")).click();
+
+        getDriver().findElement(By.xpath("//form[@id='enable-project']/button")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.name(
+                "Submit")).getText(), "Disable Multibranch Pipeline");
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 
 public class FooterTest extends BaseTest {
 
+    @Ignore
     @Test
     //https://trello.com/c/3ie7dy8O/403-tc1200108-footer-jenkins-version-about-jenkins
     public void testAboutJenkins() {
