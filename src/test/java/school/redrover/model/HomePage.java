@@ -11,14 +11,17 @@ import java.util.List;
 
 public class HomePage extends BasePage {
 
-   @FindBy(xpath = "//a[@href='computer/new']")
-    private WebElement SetUpAnAgent;
+    @FindBy(xpath = "//a[@href='computer/new']")
+    private WebElement setUpAnAgent;
 
-   @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
-   public WebElement buildHistoryButton;
+    @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
+    public WebElement buildHistoryButton;
 
-   @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
+    @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
     private WebElement CreateAJob;
+
+    @FindBy(xpath = "//a[@href='/computer/']")
+    private WebElement buildExecutorStatus;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -50,7 +53,7 @@ public class HomePage extends BasePage {
     }
 
     public NodeCreatePage clickSetUpAnAgent() {
-        SetUpAnAgent.click();
+        setUpAnAgent.click();
 
         return new NodeCreatePage(getDriver());
     }
@@ -80,5 +83,11 @@ public class HomePage extends BasePage {
         }
 
         return resultList;
+    }
+
+    public NodesListPage goNodesListPage() {
+        buildExecutorStatus.click();
+
+        return new NodesListPage(getDriver());
     }
 }

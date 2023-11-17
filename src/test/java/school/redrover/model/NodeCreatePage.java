@@ -11,8 +11,14 @@ public class NodeCreatePage extends BasePage {
     @FindBy(id = "name")
     private WebElement inputName;
 
-    @FindBy(css = ".jenkins-radio__label")
-    private WebElement PermanentAgentCheckbox;
+    @FindBy(name = "from")
+    private WebElement inputExistingName;
+
+    @FindBy(xpath = "//label[@for='hudson.slaves.DumbSlave']")
+    private WebElement permanentAgentRadioButton;
+
+    @FindBy(xpath = "//label[@for='copy']")
+    private WebElement copyExistingNodeRadioButton;
 
     @FindBy(name = "Submit")
     private WebElement createButton;
@@ -24,13 +30,23 @@ public class NodeCreatePage extends BasePage {
         super(driver);
     }
 
-    public NodeCreatePage sendKeys(String nodeName) {
+    public NodeCreatePage sendNodeName(String nodeName) {
         inputName.sendKeys(nodeName);
         return this;
     }
 
-    public NodeCreatePage clickPermanentAgentCheckbox() {
-        PermanentAgentCheckbox.click();
+    public NodeCreatePage sendExistingNodeName(String nodeName) {
+        inputExistingName.sendKeys(nodeName);
+        return this;
+    }
+
+    public NodeCreatePage SelectPermanentAgentRadioButton() {
+        permanentAgentRadioButton.click();
+        return this;
+    }
+
+    public NodeCreatePage SelectCopyExistingNodeRadioButton() {
+        copyExistingNodeRadioButton.click();
         return this;
     }
 
