@@ -14,6 +14,9 @@ public class NewItemPage extends BasePage {
     @FindBy(id = "ok-button")
     private WebElement okButton;
 
+    @FindBy(xpath = "//li[@class = 'hudson_model_FreeStyleProject']")
+    private WebElement freeStyleProject;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -30,17 +33,28 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
+    public NewItemPage selectFreestyleProject() {
+        freeStyleProject.click();
+
+        return this;
+    }
+
     public ConfigurationPage clickOk() {
         okButton.click();
 
         return new ConfigurationPage(getDriver());
     }
 
-    public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
+    public <T> T clickOk(T page) {
+        okButton.click();
 
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        return page;
+    }
+
+    public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
+        inputName.sendKeys(projectName);
+        freeStyleProject.click();
+        okButton.click();
 
         return new FreestyleProjectConfigurePage(getDriver());
     }

@@ -9,6 +9,10 @@ import school.redrover.model.base.BasePage;
 public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement helpButtonDiscardOldBuilds;
+
+    @FindBy(xpath = "//button[@name='Submit']")
+    private WebElement saveButton;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -25,4 +29,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return tooltipIsVisible;
     }
 
+    public FreestyleProjectDetailsPage clickSaveButton() {
+        saveButton.click();
+
+        return new FreestyleProjectDetailsPage(getDriver());
+    }
 }

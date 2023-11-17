@@ -8,4 +8,5 @@ public class ConfigurationPage extends BasePage {
     public ConfigurationPage(WebDriver driver) {
         super(driver);
     }
+
 }
