@@ -2,14 +2,11 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-
-import java.util.List;
+import school.redrover.runner.SeleniumUtils;
 
 import static org.testng.Assert.assertEquals;
 
@@ -22,7 +19,7 @@ public class FreestyleProject4Test extends BaseTest {
 
     @Test
     public void testNewFreestyleProjectCreated() {
-        final String projectName = AdditionalUtils.generateRandomName();
+        final String projectName = SeleniumUtils.generateRandomName();
 
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.id("name")).sendKeys(projectName);

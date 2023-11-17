@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.SeleniumUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,9 +32,9 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testFullNameAppearsSameAsUserID() {
-        final String username = AdditionalUtils.generateRandomName();
-        final String password = AdditionalUtils.generateRandomPassword(12);
-        final String email = AdditionalUtils.generateRandomName() + "@" + "mail.com";
+        final String username = SeleniumUtils.generateRandomName();
+        final String password = SeleniumUtils.generateRandomPassword(12);
+        final String email = SeleniumUtils.generateRandomName() + "@" + "mail.com";
 
         getDriver().findElement(By.xpath(MANAGE_JENKINS_ELEMENT)).click();
         getDriver().findElement(By.xpath(SECURITY_ELEMENT)).click();

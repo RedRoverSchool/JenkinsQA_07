@@ -1,14 +1,13 @@
-package school.redrover;
+package school.redrover.runner;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import school.redrover.runner.BaseTest;
 
 import java.security.SecureRandom;
 import java.util.UUID;
 
-public class AdditionalUtils extends BaseTest{
+public class SeleniumUtils {
 
     public static String generateRandomName() {
         return UUID.randomUUID().toString().substring(0, 5);
