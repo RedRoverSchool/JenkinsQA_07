@@ -9,6 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
+import java.util.*;
+
 public class SystemLogTest extends BaseTest {
 
     private final static String SYSLOG_NAME = "NewSystemLog";
@@ -37,7 +39,8 @@ public class SystemLogTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
         new Actions(getDriver()).moveToElement(getDriver()
                 .findElement(By.cssSelector("input[checkurl='checkNewName']")))
-                .click();
+                .click()
+                .perform();
         getDriver().findElement(By.cssSelector("input[checkurl='checkNewName']")).sendKeys(SYSLOG_NAME);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
@@ -50,18 +53,19 @@ public class SystemLogTest extends BaseTest {
     }
 
     @Test(dependsOnMethods ="testCreateCustomLogRecorder")
-    public void testDeleteCustomLogRecorder() throws InterruptedException {
+    public void testDeleteCustomLogRecorder() {
         openSyslogPage();
 
-        getDriver().findElement(By.xpath("//a[@href='NewSystemLog/'][1]")).click();
+        getDriver().findElement(By.xpath("//a[@href='" + SYSLOG_NAME + "/'][1]")).click();
         getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
-
-        Thread.sleep(400);
-        getDriver().findElement(By.xpath("//*[@data-url='doDelete']")).click();
-
+        Actions actions = new Actions(getDriver());
+        actions.pause(400)
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//a[@data-post='true']")))
+                .click()
+                .perform();
         getWait5().until(ExpectedConditions.alertIsPresent()).accept();
 
-        Assert.assertFalse(isDisplayed(By.xpath("//a[@href='NewSystemLog/'][1]")));
-
+        Assert.assertFalse(isDisplayed(By.xpath("//a[@href='" + SYSLOG_NAME + "/'][1]")));
     }
 }
