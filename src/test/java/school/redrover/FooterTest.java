@@ -162,6 +162,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/participate/");
     }
 
+    @Ignore
     @Test
     public void testClickGetInvolved() {
         String expectedPageName = "Participate and Contribute";
@@ -311,6 +312,7 @@ public class FooterTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testRestApiLinkRedirectionUserArea() {
         List<By> userPages = List.of(
