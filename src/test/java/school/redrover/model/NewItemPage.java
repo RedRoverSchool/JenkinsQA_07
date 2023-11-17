@@ -71,11 +71,6 @@ public class NewItemPage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOf(invalidNameErrorMessage)).getText();
     }
 
-    public <T> T clickOk(T page) {
-        okButton.click();
-
-        return page;
-    }
 
     public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
         inputName.sendKeys(projectName);
