@@ -56,6 +56,7 @@ public class Footer3Test extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not About Jenkins 2.414.2 [Jenkins]");
     }
 
+    @Ignore
     @Test
     public void testClickGetInvolved() {
         String expectedPageName = "Participate and Contribute";

@@ -970,24 +970,24 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + projectRename + "']")).isDisplayed());
     }
 
-    @Ignore
     @Test
-    public void testConfigureBuildEnvironmentSettingsAddTimestamp() throws InterruptedException {
-        createAnItem("Freestyle project");
-        goToJenkinsHomePage();
+    public void testConfigureBuildEnvironmentSettingsAddTimestamp() {
+        createProject("Freestyle project", PROJECT_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + PROJECT_NAME + "']/..")).click();
         getDriver().findElement(By.xpath("//span[text()='Configure']/..")).click();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
-        Thread.sleep(600);
-        getDriver().findElement(By.xpath("//label[text()='Add timestamps to the Console Output']")).click();
-        clickSubmitButton();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        WebElement addTimestampsCheckbox = getDriver().findElement(
+                By.xpath("//label[text()='Add timestamps to the Console Output']"));
+        js.executeScript("arguments[0].scrollIntoView(true);", addTimestampsCheckbox);
+        addTimestampsCheckbox.click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
 
         getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
-        Thread.sleep(5000);
+        js.executeScript("setTimeout(function() {location.reload();}, 2000);");
         getDriver().navigate().refresh();
-        getDriver().findElement(By.xpath("//span[@class='build-status-icon__outer']")).click();
+        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//span[@class='build-status-icon__outer']")))).click();
 
         List<WebElement> timestamps = getDriver().findElements(
                 By.xpath("//pre[@class='console-output']//span[@class='timestamp']"));
@@ -1074,5 +1074,37 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> expectedListResult = getTextOfDropDownElements.stream().sorted().toList();
 
         Assert.assertEquals(getTextOfDropDownElements, expectedListResult);
+    }
+
+    @Test
+    public void testPermalinksListOnStatusPage() {
+
+        final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
+                "Last completed build"};
+
+        createFreeStyleProject(PROJECT_NAME);
+        getDriver().findElement(By.name("Submit")).click();
+
+        for (int i = 0; i < 4; i++) {
+            getWait2().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Build Now"))).click();
+        }
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//td[@class='build-row-cell']")));
+
+        getDriver().navigate().refresh();
+
+        List<WebElement> permalinks = getDriver().findElements(
+                By.xpath("//ul[@class='permalinks-list']/li"));
+
+        ArrayList<String> permalinksTexts = new ArrayList<>();
+
+        Assert.assertEquals(permalinks.size(), 4);
+
+        for (int i = 0; i < permalinks.size(); i++) {
+            permalinksTexts.add(permalinks.get(i).getText());
+            Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
+        }
+
     }
 }
