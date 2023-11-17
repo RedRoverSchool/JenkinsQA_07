@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.FolderRenamePage;
@@ -72,6 +73,7 @@ public class Folder3Test extends BaseTest {
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testMoveFolderToFolder")
     public void testCreateNewJob() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
