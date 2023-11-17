@@ -7,4 +7,5 @@ public class FolderGeneralConfigurationPage extends BasePage {
     public FolderGeneralConfigurationPage(WebDriver driver) {
         super(driver);
     }
+
 }

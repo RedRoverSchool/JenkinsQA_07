@@ -14,6 +14,9 @@ public class HomePage extends BasePage {
    @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement SetUpAnAgent;
 
+   @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
+   public WebElement buildHistoryButton;
+
    @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
     private WebElement CreateAJob;
 
@@ -50,6 +53,12 @@ public class HomePage extends BasePage {
         SetUpAnAgent.click();
 
         return new NodeCreatePage(getDriver());
+    }
+
+    public BuildHistoryPage clickBuildHistoryButton() {
+        buildHistoryButton.click();
+
+        return new BuildHistoryPage(getDriver());
     }
 
     public NewViewPage clickNewViewButton() {

@@ -576,4 +576,14 @@ public class UserTest extends BaseTest {
                 By.xpath("//h1")))).getText(),
                 "Sign in to Jenkins");
     }
+
+    @Test
+    public void testVerifyScreenAfterCreateUser () {
+        String password = "1234567";
+        String email = "test@gmail.com";
+        createUser(USER_NAME, password, email);
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/securityRealm/']")).getText(),
+                "Jenkins’ own user database");
+    }
 }
