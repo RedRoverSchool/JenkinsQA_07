@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -80,14 +81,14 @@ public class Users2Test extends BaseTest {
         WebElement moveToUserName = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
 
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(moveToUserName).perform();
+        actions.moveToElement(moveToUserName).pause(1000).perform();
 
         WebElement moveToArrow = getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[2]/a/button[@data-href='http://localhost:8080/manage/securityRealm/user/user_name_test/']"));
-        actions.moveToElement(moveToArrow).click().perform();
+        actions.sendKeys(moveToArrow, Keys.ENTER).pause(1000).click().perform();
 
         WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
 
-        actions.moveToElement(clickDelete).click().perform();
+        actions.moveToElement(clickDelete).pause(1000).click().perform();
 
         getDriver().switchTo().alert().accept();
 
