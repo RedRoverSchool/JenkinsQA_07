@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderGeneralConfigurationPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import java.util.Arrays;
@@ -16,6 +17,18 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "Folder";
     private static final String FOLDER_NAME_2 = "My new project";
     private static final String NAME_FOR_BOUNDARY_VALUES = "A";
+
+    @Test
+    public void testCreate() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(FOLDER_NAME)
+                .selectItemFolder()
+                .clickOk(new FolderGeneralConfigurationPage(getDriver()))
+                .goHomePage();
+
+        Assert.assertTrue(homePage.getJobList().contains(FOLDER_NAME));
+    }
 
     private void creationNewFolder(String folderName) {
 

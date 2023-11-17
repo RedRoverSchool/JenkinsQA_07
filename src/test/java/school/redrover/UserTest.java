@@ -567,4 +567,13 @@ public class UserTest extends BaseTest {
             Assert.assertEquals(actualListOfHelpIconsTooltipsText.get(i), expectedListOfHelpIconsTooltipsText.get(i));
         }
     }
+
+    @Test
+    public void testUserCanLogout() {
+        getDriver().findElement(By.xpath("//a[@href ='/logout']")).click();
+
+        Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
+                By.xpath("//h1")))).getText(),
+                "Sign in to Jenkins");
+    }
 }
