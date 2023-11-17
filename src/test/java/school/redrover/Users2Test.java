@@ -78,7 +78,7 @@ public class Users2Test extends BaseTest {
     public void testDeleteUserDropDown() {
         goToUsersTab();
 
-        WebElement moveToUserName = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
+        WebElement moveToUserName = getDriver().findElement(By.xpath("//table[@id='people']/tbody/tr[2]/td[2]/a"));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(moveToUserName).pause(1000).perform();
