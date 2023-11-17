@@ -18,10 +18,10 @@ public class BuildHistoryTest extends BaseTest {
 
     @Test
     public void testViewBuildHistory() {
-        BuildHistoryPage homePage = new HomePage(getDriver())
+        BuildHistoryPage buildHistoryPage = new HomePage(getDriver())
                 .clickBuildHistoryButton();
 
-        Assert.assertTrue(homePage.getMainPanel().isDisplayed());
+        Assert.assertTrue(buildHistoryPage.getMainPanel().isDisplayed());
     }
 
     @Test
