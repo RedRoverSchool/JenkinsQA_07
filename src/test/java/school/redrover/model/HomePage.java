@@ -13,6 +13,9 @@ public class HomePage extends BasePage {
    @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement SetUpAnAgent;
 
+   @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
+    private WebElement CreateAJob;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -46,5 +49,11 @@ public class HomePage extends BasePage {
         SetUpAnAgent.click();
 
         return new NodeCreatePage(getDriver());
+    }
+
+    public NewItemPage clickCreateAJob() {
+        CreateAJob.click();
+
+        return new NewItemPage(getDriver());
     }
 }
