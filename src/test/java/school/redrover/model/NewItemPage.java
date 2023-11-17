@@ -1,0 +1,62 @@
+package school.redrover.model;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import school.redrover.model.base.BasePage;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+public class NewItemPage extends BasePage {
+
+    @FindBy(name = "name")
+    private WebElement inputName;
+
+    @FindBy(id = "ok-button")
+    private WebElement okButton;
+
+    @FindBy(id = "itemname-required")
+    private WebElement requiredNameErrorMessage;
+
+    @FindBy(id = "itemname-invalid")
+    private WebElement invalidNameErrorMessage;
+
+    public NewItemPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public NewItemPage typeItemName(String name) {
+        inputName.sendKeys(name);
+
+        return this;
+    }
+
+    public NewItemPage selectOrganizationFolder() {
+        getDriver().findElement(By.xpath("//li[@class = 'jenkins_branch_OrganizationFolder']")).click();
+
+        return this;
+    }
+
+    public <T> T clickOk (T page) {
+        okButton.click();
+
+        return page;
+    }
+
+    public String getRequiredNameErrorMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(requiredNameErrorMessage)).getText();
+    }
+
+    public String getInvalidNameErrorMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(invalidNameErrorMessage)).getText();
+    }
+
+    public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
+
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        return new FreestyleProjectConfigurePage(getDriver());
+    }
+}

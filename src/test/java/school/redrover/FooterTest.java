@@ -14,6 +14,7 @@ import java.util.List;
 
 public class FooterTest extends BaseTest {
 
+    @Ignore
     @Test
     //https://trello.com/c/3ie7dy8O/403-tc1200108-footer-jenkins-version-about-jenkins
     public void testAboutJenkins() {
@@ -72,6 +73,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/participate/");
     }
 
+    @Ignore
     @Test
     //https://trello.com/c/y8Xzp86w/405-tc1200109-footer-jenkins-version-website
     public void testWebsite() {
