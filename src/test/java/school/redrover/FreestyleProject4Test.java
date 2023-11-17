@@ -2,14 +2,13 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.SeleniumUtils;
 
-import java.util.List;
+import static org.testng.Assert.assertEquals;
 
 public class FreestyleProject4Test extends BaseTest {
 
@@ -17,6 +16,23 @@ public class FreestyleProject4Test extends BaseTest {
     protected static final String DESCRIPTION_FOR_FREESTYLE_PROJECT = "It s a description adding test";
     protected static final String ADDITIONAL_DESCRIPTION_FOR_FREESTYLE_PROJECT = "Additional description";
     protected static final String RENAME_PROJECT = "Freestyle2";
+
+    @Test
+    public void testNewFreestyleProjectCreated() {
+        final String projectName = SeleniumUtils.generateRandomName();
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.xpath("//span[text()='Freestyle project']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.linkText("Dashboard")).click();
+        WebElement projectNameElement = getDriver().findElement(By.xpath("//td[3]/a"));
+
+        String actualProjectName = projectNameElement.getText();
+
+        assertEquals(actualProjectName, projectName);
+    }
 
     private void createFreestyleProject() {
 

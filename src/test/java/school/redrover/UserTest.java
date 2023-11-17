@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.SeleniumUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,11 +21,36 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class UserTest extends BaseTest {
+    private final static String MANAGE_JENKINS_ELEMENT = "//a[@href = '/manage']";
+    private final static String SECURITY_ELEMENT = "//a[@href = 'securityRealm/']";
+    private final static String ADD_USER_ELEMENT = "//a[@href = 'addUser']";
     private static final String USER_NAME = "Jane";
     private final String USER_NAME_2 = "FirstUser";
     private static final String NAME = "ivan";
     private static final String TEST_INPUT = "Test";
     public static final String FULL_NAME = "User Full Name";
+
+    @Test
+    public void testFullNameAppearsSameAsUserID() {
+        final String username = SeleniumUtils.generateRandomName();
+        final String password = SeleniumUtils.generateRandomPassword(12);
+        final String email = SeleniumUtils.generateRandomName() + "@" + "mail.com";
+
+        getDriver().findElement(By.xpath(MANAGE_JENKINS_ELEMENT)).click();
+        getDriver().findElement(By.xpath(SECURITY_ELEMENT)).click();
+        getDriver().findElement(By.xpath(ADD_USER_ELEMENT)).click();
+
+        getDriver().findElement(By.name("username")).sendKeys(username);
+        getDriver().findElement(By.name("password1")).sendKeys(password);
+        getDriver().findElement(By.name("password2")).sendKeys(password);
+        getDriver().findElement(By.name("email")).sendKeys(email);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String name = getDriver().findElement(By.xpath("(//td/a[@href='user/" + username + "/']/following::td[1])"))
+                .getText();
+
+        assertEquals(name, username);
+    }
 
     private void createUser(String userName, String password, String email) {
         getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
@@ -573,17 +599,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href ='/logout']")).click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//h1")))).getText(),
+                        By.xpath("//h1")))).getText(),
                 "Sign in to Jenkins");
-    }
-
-    @Test
-    public void testVerifyScreenAfterCreateUser () {
-        String password = "1234567";
-        String email = "test@gmail.com";
-        createUser(USER_NAME, password, email);
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/securityRealm/']")).getText(),
-                "Jenkins’ own user database");
     }
 }
