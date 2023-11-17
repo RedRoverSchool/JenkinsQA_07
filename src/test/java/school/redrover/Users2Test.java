@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
@@ -74,7 +75,7 @@ public class Users2Test extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateUserValidData")
-    public void testDeleteUserDropDown2() {
+    public void testDeleteUserDropDown() {
         goToUsersTab();
 
         WebElement moveToUserName = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
@@ -82,7 +83,8 @@ public class Users2Test extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(moveToUserName).perform();
 
-        actions.moveToElement(moveToUserName, 61, 0).pause(301).click().perform();
+        WebElement moveToArrow = getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[2]/a/button[@data-href='http://localhost:8080/manage/securityRealm/user/user_name_test/']"));
+        actions.moveToElement(moveToArrow).click().perform();
 
         WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
 
