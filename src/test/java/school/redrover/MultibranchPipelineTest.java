@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -69,6 +70,23 @@ public class MultibranchPipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
     }
 
+    @Test
+    public void testRenameUsingBreadcrumb() {
+        createMultibranchPipelineWithCreateAJob();
+
+        WebElement breadcrumb = getDriver().findElement(By.xpath("//a[contains(@href,'job')][@class='model-link']"));
+        WebElement chevron = getDriver().findElement(By.xpath("(//button[@class='jenkins-menu-dropdown-chevron'])[3]"));
+
+        new Actions(getDriver()).moveToElement(breadcrumb).pause(500).moveToElement(chevron).click().perform();
+
+        getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item'][normalize-space()='Rename']")).click();
+
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
+        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), MULTIBRANCH_PIPELINE_NEW_NAME);
+    }
     @Test
     public void testMultibranchPipelineCreationWithCreateAJob() {
 
