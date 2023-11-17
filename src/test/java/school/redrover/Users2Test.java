@@ -75,7 +75,7 @@ public class Users2Test extends BaseTest {
     }
 
     @Test (dependsOnMethods = "testCreateUserValidData")
-    public void testDeleteUserDropDown() {
+    public void testDeleteUserDropDown2() {
         goToUsersTab();
 
         WebElement moveToUserName = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']"));
@@ -83,8 +83,7 @@ public class Users2Test extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(moveToUserName).perform();
 
-        WebElement moveToArrow = getDriver().findElement(By.xpath("//a[@href='user/" + USER_VALID_NAME.toLowerCase() + "/']/button"));
-        actions.sendKeys(moveToArrow, Keys.ENTER).click().perform();
+        actions.moveToElement(moveToUserName, 60, 0).click().perform();
 
         WebElement clickDelete = getDriver().findElement(By.xpath("//button[@href='/user/" + USER_VALID_NAME.toLowerCase() + "/doDelete']"));
 
