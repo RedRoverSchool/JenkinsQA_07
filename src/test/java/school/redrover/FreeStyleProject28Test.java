@@ -20,6 +20,6 @@ public class FreeStyleProject28Test extends BaseTest {
 
        String NewMessage = getDriver().findElement(By.xpath("//h1[@class='job-index-headline page-headline']")).getText();
 
-       Assert.assertEquals(NewMessage ,"Projekt FreeStyleProject28");
+       Assert.assertEquals(NewMessage ,"Project FreeStyleProject28");
     }
 }
