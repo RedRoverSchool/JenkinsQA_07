@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -72,6 +73,22 @@ public class ViewTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/configure']")).click();
         getDriver().findElement(By.xpath("//label[@title = '" + jobName + "']")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+    }
+
+    private void createNewFolder(String folderName) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void createNewMultibranchPipeline(String PipelineName) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(PipelineName);
+        getDriver().findElement(By.xpath("//li[@class='org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
@@ -563,4 +580,27 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div/ol/li/a[@href='/user/admin/my-views/view/"+VIEW_NAME+"/']")).getText(), VIEW_NAME);
 
     }
+
+    @Test
+    public void testCreateNewListView() {
+        final String multibranchPipelineName = "Multibranch Pipeline Name";
+        final String folderName = "New Folder Name";
+        final String actualNewViewName = "New View Name";
+
+        createNewFolder(folderName);
+        goHome();
+        createNewMultibranchPipeline(multibranchPipelineName);
+        goHome();
+        String expectedListViewName = new HomePage(getDriver())
+                .clickNewViewButton()
+                .typeNewViewName(actualNewViewName)
+                .selectListViewType()
+                .clickCreateButton()
+                .clickCheckboxByTitle(multibranchPipelineName)
+                .clickOKButton()
+                .getActiveViewName();
+
+        Assert.assertEquals(actualNewViewName, expectedListViewName);
+    }
+
 }
