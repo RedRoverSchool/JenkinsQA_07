@@ -471,22 +471,25 @@ public class ViewTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewListViewWithoutJobs() {
-        createNewFreestyleProject(JOB_NAME);
-        goHome();
-        createListViewWithoutAssociatedJob(VIEW_NAME);
+    public void testCreateNewListView_WithoutJobs() {
+        final String jobName = "FreestyleProject-1";
+        final String newViewName = "ListView-1";
+
+        createNewFreestyleProject(jobName);
         goHome();
 
-        List<WebElement> listOfViews = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
-        List<String> actualViewsNames = new ArrayList<>();
-        for (WebElement el : listOfViews) {
-            actualViewsNames.add(el.getText());
-        }
+        List<String> viewsNamesList = new HomePage(getDriver())
+                .clickNewViewButton()
+                .typeNewViewName(newViewName)
+                .selectListViewType()
+                .clickCreateButton()
+                .goHomePage()
+                .getViewsList();
 
-        Assert.assertTrue(actualViewsNames.contains(VIEW_NAME));
+        Assert.assertTrue(viewsNamesList.contains(newViewName));
     }
 
-    @Test(dependsOnMethods = "testCreateNewListViewWithoutJobs")
+    @Test(dependsOnMethods = "testCreateNewListView_WithoutJobs")
     public void testRenameListView() {
         getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']"))
                 .click();

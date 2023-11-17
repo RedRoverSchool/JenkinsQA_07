@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomePage extends BasePage {
@@ -51,5 +52,15 @@ public class HomePage extends BasePage {
     public NewViewPage clickNewViewButton() {
         getDriver().findElement(By.xpath("//a[@tooltip='New View']")).click();
         return new NewViewPage(getDriver());
+    }
+
+    public List<String> getViewsList() {
+        List<WebElement> viewsList = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
+        List<String> resultList = new ArrayList<>();
+        for (WebElement el : viewsList) {
+            resultList.add(el.getText());
+        }
+
+        return resultList;
     }
 }
