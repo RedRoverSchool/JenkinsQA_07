@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.UserPage;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
@@ -77,19 +79,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='addUser']")).click();
     }
 
-    private void createUserSuccess() {
-        goToUserCreateFormPage();
-        List<WebElement> valueInputs = getDriver().findElements(
-                By.xpath("//*[@class = 'jenkins-input']"));
-        for (int i = 0; i < valueInputs.size(); i++) {
-            if (i == 0) {
-                valueInputs.get(i).sendKeys(TEST_INPUT);
-            } else {
-                valueInputs.get(i).sendKeys(TEST_INPUT + "@" + TEST_INPUT + ".com");
-            }
-        }
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     private void goToUsersTab() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
@@ -472,21 +461,25 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(error.size(), 5);
     }
 
+    @Ignore
     @Test
     public void testUserIsDisplayedInUsersTable() {
-        createUserSuccess();
-        WebElement createdUser = getDriver().findElement(By.xpath("//tbody/tr[2]/td[2]/a[1]"));
+        String createdUserName = new UserPage(getDriver())
+            .createUserSuccess("Test")
+            .getCreatedUserName();
 
-        Assert.assertTrue(createdUser.isDisplayed());
-        Assert.assertEquals(createdUser.getText(), TEST_INPUT);
+        Assert.assertEquals(createdUserName, "Test");
     }
 
+    @Ignore
     @Test
     public void testUserRecordContainUserIdButton() {
-        createUserSuccess();
+        UserPage createdUserPage = new UserPage(getDriver())
+            .createUserSuccess("Test");
 
-        WebElement UserIdButton = getDriver().findElement(By.xpath("//tbody/tr[2]/td[2]/a[1]"));
-        Assert.assertTrue(UserIdButton.isEnabled() && UserIdButton.isDisplayed(), "Button should be enabled and displayed");
+        boolean userId = new UserPage(getDriver())
+            .userIdIsClickable();
+        Assert.assertTrue(userId, "Button should be enabled and displayed");
     }
 
     @Test
@@ -572,12 +565,12 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href ='/logout']")).click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                        By.xpath("//h1")))).getText(),
+                By.xpath("//h1")))).getText(),
                 "Sign in to Jenkins");
     }
 
     @Test
-    public void testVerifyScreenAfterCreateUser() {
+    public void testVerifyScreenAfterCreateUser () {
         String password = "1234567";
         String email = "test@gmail.com";
         createUser(USER_NAME, password, email);

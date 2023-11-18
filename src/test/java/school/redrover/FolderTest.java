@@ -18,7 +18,7 @@ import java.util.List;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class FolderTest extends BaseTest {
-    private static final String FOLDER_NAME = "Folder";
+    private static final String FOLDER_NAME = "FolderName";
     private static final String FOLDER_NAME_2 = "My new project";
     private static final String NAME_FOR_BOUNDARY_VALUES = "A";
     private static final String RENAMED_FOLDER = "RenamedFolder";
@@ -366,6 +366,53 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreate")
+    public void testAddDescriptionToFolder() {
+        final String descriptionText = "This is Folder's description";
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        Assert.assertEquals(actualDescription, descriptionText);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
+    public void testEditDescriptionOfFolder() {
+        final String newDescriptionText = "This is new Folder's description";
+
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))).click();
+
+        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
+        getDriver().findElement(By.className("jenkins-input")).clear();
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(newDescriptionText);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String actualNewDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        Assert.assertEquals(actualNewDescription, newDescriptionText);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
+    public void testDeleteDescriptionOfFolder() {
+        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))).click();
+
+        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
+        getDriver().findElement(By.className("jenkins-input")).clear();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        String textOfDescriptionField = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
+        Assert.assertEquals(textOfDescriptionField, "");
+
+        String appearanceOfAddDescriptionButton = getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
+        Assert.assertEquals(appearanceOfAddDescriptionButton, "Add description");
     }
 }
 

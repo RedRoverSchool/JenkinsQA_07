@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.NewItemPage;
 import school.redrover.model.OrganizationFolderConfigurationPage;
 import school.redrover.runner.BaseTest;
 
@@ -17,6 +18,10 @@ import java.util.List;
 public class OrganizationFolderTest extends BaseTest {
     private static final String PROJECT_NAME = "Organization Folder";
     private static final String NEW_PROJECT_NAME = "Organization Folder Renamed";
+
+    private String getName(int nameLength) {
+        return "a".repeat(nameLength);
+    }
 
     @Test
     public void testCreateOrganizationFolderWithValidName() {
@@ -52,6 +57,19 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
+    @Test
+    public void testCreateOrganizationFolderWithLongName() {
+        String longName = getName(256);
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(longName)
+                .selectOrganizationFolder()
+                .clickOk(new NewItemPage(getDriver()))
+                .getRequestErrorMessage();
+
+        Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
+    }
+
     private void returnHomeJenkins() {
         getDriver().findElement(By.id("jenkins-home-link")).click();
     }
@@ -63,6 +81,7 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
+
     private void createOrganizationFolder(String organizationFolderName) {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
@@ -72,6 +91,7 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         returnHomeJenkins();
     }
+
     private void clickNewJobButton() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
     }
@@ -186,6 +206,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), errorTitle);
         Assert.assertTrue(getDriver().findElement(By.xpath("//p")).getText().contains(errorMessage));
     }
+
     @Test
     public void testCloneOrganizationFolder() {
         String organizationFolderName = "Organization Folder Parent";
@@ -272,20 +293,6 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(),
                 "No name is specified");
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithLongName() {
-        clickNewJobButton();
-        setFolderName("Long name long name long name long name long name long name long name long name long name" +
-                " long name long name long name long name long name long name long name long name long name long name" +
-                " long name long name long name long name long name long name long name long name long name long name" +
-                " long name long name long name long name");
-        clickOrganizationFolderButton();
-        clickOkButton();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h2")).getText(),
-                "A problem occurred while processing the request.");
     }
 
     @Ignore
