@@ -468,17 +468,15 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(error.size(), 5);
     }
 
-    @Ignore
     @Test
     public void testUserIsDisplayedInUsersTable() {
-        String createdUserName = new UserPage(getDriver())
+        List<String> createdUserName = new UserPage(getDriver())
             .createUserSuccess("Test")
-            .getCreatedUserName();
+            .userNameList();
 
-        Assert.assertEquals(createdUserName, "Test");
+        Assert.assertTrue(createdUserName.contains("Test"));
     }
 
-    @Ignore
     @Test
     public void testUserRecordContainUserIdButton() {
         UserPage createdUserPage = new UserPage(getDriver())
