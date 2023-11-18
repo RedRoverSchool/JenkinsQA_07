@@ -15,8 +15,8 @@ public class NodeCofigurationPage extends BasePage {
         super(driver);
     }
 
-    public NodesListPage saveButtonClick() {
+    public <T> T saveButtonClick(T page) {
         saveButton.click();
-        return new NodesListPage(getDriver());
+        return page;
     }
 }

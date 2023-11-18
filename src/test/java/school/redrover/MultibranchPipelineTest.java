@@ -229,22 +229,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testRenameMultibranchDropdownDashboard() {
-        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']"));
+        HomePage homePage = new HomePage(getDriver())
+        .clickJobDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+        .clickRenameDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+        .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+        .clickSubmit()
+        .goHomePage();
 
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(elementToHover).perform();
-        elementToHover.click();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[3]/a/span")).getText(), MULTIBRANCH_PIPELINE_NEW_NAME,
-                MULTIBRANCH_PIPELINE_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NEW_NAME);
+        Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
     @Test(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})

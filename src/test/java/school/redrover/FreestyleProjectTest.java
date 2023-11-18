@@ -9,7 +9,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.NewJobPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -19,8 +18,14 @@ import static org.testng.Assert.*;
 
 public class FreestyleProjectTest extends BaseTest {
 
-    private final String PROJECT_NAME = "New Freestyle Project";
-    private static final String NEW_PROJECT_NAME = "New Freestyle project name";
+    private static final String PROJECT_NAME = "NewFreestyleProject";
+    private static final String NEW_PROJECT_NAME = "NewFreestyleProjectName";
+
+    private static final String SUBMIT_BUTTON_LOCATOR = "//button[@name='Submit']";
+
+    private static final String CONFIGURE_LINK_LOCATOR = "//a[@href='/job/" + PROJECT_NAME + "/configure']";
+
+    private final static String JENKINS_ICON_LOCATOR = "//img[@id='jenkins-head-icon']";
 
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -38,7 +43,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
         getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
 
-        if(goToHomePage) {
+        if (goToHomePage) {
             goToJenkinsHomePage();
         }
     }
@@ -126,7 +131,7 @@ public class FreestyleProjectTest extends BaseTest {
     private void hoverClickInput(String xpathLocator, String inputText) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath(xpathLocator)))
+                        .findElement(By.xpath(xpathLocator)))
                 .click()
                 .sendKeys(inputText)
                 .perform();
@@ -135,7 +140,7 @@ public class FreestyleProjectTest extends BaseTest {
     private void hoverClick(String xpathLocator) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath(xpathLocator)))
+                        .findElement(By.xpath(xpathLocator)))
                 .click()
                 .perform();
     }
@@ -192,7 +197,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         createFreeStyleProject(projectName);
 
-        hoverClickInput("//textarea[@class='jenkins-input   ']",descriptionText);
+        hoverClickInput("//textarea[@class='jenkins-input   ']", descriptionText);
 
         clickSubmitButton();
 
@@ -260,7 +265,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testTooltipDiscardOldBuildsIsVisible(){
+    public void testTooltipDiscardOldBuildsIsVisible() {
         boolean tooltipIsVisible = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject("New Project")
@@ -428,7 +433,7 @@ public class FreestyleProjectTest extends BaseTest {
     @DataProvider(name = "ValidName")
     public String[][] validCredentials() {
         return new String[][]{
-                {"\'Акико\'"}, {"Ак,ко"}, {"Акико"}, {"Akiko"}, {"12345`67890"}
+                {"Акико"}, {"Ак,ко"}, {"Акико"}, {"Akiko"}, {"12345`67890"}
         };
     }
 
@@ -802,7 +807,7 @@ public class FreestyleProjectTest extends BaseTest {
         daysToKeepBuildsField.click();
         daysToKeepBuildsField.sendKeys("-2");
         getDriver().findElement(By.cssSelector("input[name='_.numToKeepStr']")).click();
-        WebElement errorMessage =  getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
+        WebElement errorMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
 
         Assert.assertTrue(errorMessage.isDisplayed());
     }
@@ -821,7 +826,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .perform();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@tooltip = 'Help for feature: Repositories']"))
-                .getText(),
+                        .getText(),
                 "?");
     }
 
@@ -905,7 +910,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "none");
     }
 
-    @Test (dependsOnMethods = "testGitRadioButtonSettingsIsOpened")
+    @Test(dependsOnMethods = "testGitRadioButtonSettingsIsOpened")
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String xpathLocator = "//input[@checkdependson='credentialsId']";
         final String inputText = "123";
@@ -925,7 +930,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testSetNumberDaysToKeepBuildsIsSaved(){
+    public void testSetNumberDaysToKeepBuildsIsSaved() {
         createAnItem("Freestyle project");
         WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
         new Actions(getDriver())
@@ -944,7 +949,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public  void testSavedNotificationIsDisplayed(){
+    public void testSavedNotificationIsDisplayed() {
         createAnItem("Freestyle project");
         getDriver().findElement(By.name("Apply")).click();
         String notificationIsDisplayed = getDriver().findElement(By.id("notification-bar")).getAttribute("class");
@@ -1067,7 +1072,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
         List<String> getTextOfDropDownElements = new ArrayList<>();
-        for (WebElement element:listDropDownElements) {
+        for (WebElement element : listDropDownElements) {
             getTextOfDropDownElements.add(element.getText());
         }
 
@@ -1106,5 +1111,113 @@ public class FreestyleProjectTest extends BaseTest {
             Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
         }
 
+    }
+
+    @Test
+    public void testAddLinkToGitHubInGitHubProjectSection() {
+        final String sourseCodeManagementLocator = "//button[@data-section-id='source-code-management']";
+        final String inputUrlFieldLocator = "//input[@name='_.url']";
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath(sourseCodeManagementLocator)).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,600)");
+        getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
+
+        getDriver().findElement(By.xpath(inputUrlFieldLocator)).sendKeys("https://github.com/RedRoverSchool/JenkinsQA_07");
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
+
+        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
+        getDriver().findElement(By.xpath(sourseCodeManagementLocator)).click();
+        js.executeScript("window.scrollBy(0,600)");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(inputUrlFieldLocator)).getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
+    }
+
+    @Test
+    public void testCheckDiscardOldBuildsCheckbox() {
+        final String inputDaysToKeepBuildsFieldLocator = "//input[@name='_.daysToKeepStr']";
+        final String inputMaxNumberOfBuildsToKeepFieldLocator = "//input[@name='_.numToKeepStr']";
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//label[normalize-space()='Discard old builds']")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,300)");
+
+        getDriver().findElement(By.xpath(inputDaysToKeepBuildsFieldLocator)).sendKeys("2");
+        getDriver().findElement(By.xpath(inputMaxNumberOfBuildsToKeepFieldLocator)).sendKeys("3");
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
+        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
+        js.executeScript("window.scrollBy(0,300)");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(inputDaysToKeepBuildsFieldLocator)).getAttribute("value"), "2");
+        Assert.assertEquals(getDriver().findElement(By.xpath(inputMaxNumberOfBuildsToKeepFieldLocator)).getAttribute("value"), "3");
+    }
+
+    @Test
+    public void testCheckThrottleBuildsCheckbox() {
+
+        final String numberOfBuildsLocator = "//input[@name='_.count']";
+        final String timePeriodLocator = "//select[@name='_.durationName']";
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath("//label[normalize-space()='Throttle builds']")).click();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,600)");
+
+        getDriver().findElement(By.xpath(numberOfBuildsLocator)).clear();
+        getDriver().findElement(By.xpath(numberOfBuildsLocator)).sendKeys("4");
+        getDriver().findElement(By.xpath(timePeriodLocator)).click();
+        getDriver().findElement(By.xpath("//option[@value='day']")).click();
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
+        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
+        js.executeScript("window.scrollBy(0,600)");
+
+        Assert.assertEquals(getDriver().findElement(By.xpath(numberOfBuildsLocator)).getAttribute("value"), "4");
+        Assert.assertEquals(getDriver().findElement(By.xpath(timePeriodLocator)).getAttribute("value"), "day");
+    }
+
+    @Test
+    public void testSelectExecuteConcurrentBuilds() {
+
+        final String checkBoxLocator = "//div[@class='form-container tr']";
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("window.scrollBy(0,300)");
+        int quantityOfElementsBeforeClicking = getDriver().findElements(By.xpath(checkBoxLocator)).size();
+
+        getDriver().findElement(By.xpath("//label[normalize-space()='Execute concurrent builds if necessary']")).click();
+        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
+        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
+        js.executeScript("window.scrollBy(0,300)");
+
+        int quantityOfElementsAfterClicking = getDriver().findElements(By.xpath(checkBoxLocator)).size();
+
+        Assert.assertEquals(quantityOfElementsAfterClicking, quantityOfElementsBeforeClicking + 1);
+    }
+
+    @Test
+    public void testIsWorkspaceCreated() {
+
+        createFreeStyleProject(PROJECT_NAME);
+
+        getDriver().findElement(By.xpath(JENKINS_ICON_LOCATOR)).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error: no workspace");
+
+        getDriver().findElement(By.xpath(JENKINS_ICON_LOCATOR)).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/build?delay=0sec']")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Workspace of " + PROJECT_NAME + " on Built-In Node");
     }
 }

@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
@@ -11,14 +12,17 @@ import java.util.List;
 
 public class HomePage extends BasePage {
 
-   @FindBy(xpath = "//a[@href='computer/new']")
-    private WebElement SetUpAnAgent;
+    @FindBy(xpath = "//a[@href='computer/new']")
+    private WebElement setUpAnAgent;
 
-   @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
-   public WebElement buildHistoryButton;
+    @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
+    public WebElement buildHistoryButton;
 
-   @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
+    @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
     private WebElement CreateAJob;
+
+    @FindBy(xpath = "//a[@href='/computer/']")
+    private WebElement buildExecutorStatus;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -50,7 +54,7 @@ public class HomePage extends BasePage {
     }
 
     public NodeCreatePage clickSetUpAnAgent() {
-        SetUpAnAgent.click();
+        setUpAnAgent.click();
 
         return new NodeCreatePage(getDriver());
     }
@@ -72,6 +76,12 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
+    public GlobalViewPage clickViewByName(String viewName) {
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
+
+        return new GlobalViewPage(getDriver());
+    }
+
     public List<String> getViewsList() {
         List<WebElement> viewsList = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
         List<String> resultList = new ArrayList<>();
@@ -80,5 +90,27 @@ public class HomePage extends BasePage {
         }
 
         return resultList;
+    }
+
+    public NodesListPage goNodesListPage() {
+        buildExecutorStatus.click();
+
+        return new NodesListPage(getDriver());
+    }
+
+    public HomePage clickJobDropdownMenu (String name) {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(elementToHover).perform();
+        elementToHover.click();
+
+        return this;
+    }
+
+    public MultibranchPipelineRenamePage clickRenameDropdownMenu (String name) {
+        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
     }
 }
