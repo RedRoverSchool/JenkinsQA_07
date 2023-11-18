@@ -27,6 +27,8 @@ public class UserTest extends BaseTest {
     private static final String NAME = "ivan";
     private static final String TEST_INPUT = "Test";
     public static final String FULL_NAME = "User Full Name";
+    final private static String PASSWORD = "12345";
+    final private static String DESCRIPTION = "Test description";
 
     private void createUser(String userName, String password, String email) {
         getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
@@ -66,6 +68,10 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("email")).clear();
         getDriver().findElement(By.name("email")).sendKeys("test@gmail.com");
         getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void goToHomePage() {
+        getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
 
     private void goToUsersPage() {
@@ -578,5 +584,51 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/securityRealm/']")).getText(),
                 "Jenkins’ own user database");
+    }
+
+    @Test
+    public void testCreateUserWithValidData() {
+        goToUsersPage();
+
+        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+
+        getDriver().findElement(By.name("username")).sendKeys(USER_NAME);
+        getDriver().findElement(By.name("password1")).sendKeys(PASSWORD);
+        getDriver().findElement(By.name("password2")).sendKeys(PASSWORD);
+        getDriver().findElement(By.name("email")).sendKeys("asd@gmail.com");
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(By.linkText(USER_NAME)).isDisplayed());
+    }
+
+    @Test(dependsOnMethods = "testCreateUserWithValidData")
+    public void testAddUserDescription() {
+        goToHomePage();
+
+        getDriver().findElement(By.xpath("//div[@id = 'tasks']//descendant::div[2]")).click();
+
+        getDriver().findElement(
+                By.xpath("//tr[@id = 'person-" + USER_NAME +"']/td[2]/a")).click();
+
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(
+                By.xpath("//div[@id = 'description']/div[1]")).getText(), DESCRIPTION);
+    }
+
+    @Test(dependsOnMethods = "testDeleteUser")
+    public void testLoginAsARemoteUser() {
+        getDriver().findElement(By.xpath("//span[text() = 'log out']")).click();
+
+        getDriver().findElement(By.id("j_username")).sendKeys(USER_NAME);
+        getDriver().findElement(By.id("j_password")).sendKeys(PASSWORD);
+
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertTrue(getDriver().findElement(
+                By.xpath("//div[contains(text(), 'Invalid')]")).isDisplayed(), "Invalid username or password");
     }
 }
