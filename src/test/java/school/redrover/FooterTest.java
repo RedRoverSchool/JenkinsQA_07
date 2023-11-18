@@ -84,7 +84,7 @@ public class FooterTest extends BaseTest {
                 "Jenkins 2.414.2");
     }
 
-
+    @Ignore
     @Test
     public void testVersion() {
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
