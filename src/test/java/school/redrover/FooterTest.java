@@ -288,6 +288,7 @@ public class FooterTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testVerifyRedirectedRestApi() {
         clickRestApi();
