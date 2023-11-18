@@ -16,12 +16,15 @@ public class NodeDetailsPage extends BasePage {
     @FindBy(xpath = "//div[@class='jenkins-app-bar__content']/h1")
     private WebElement nodeName;
 
+    @FindBy(className = "message")
+    private WebElement message;
+
+    @FindBy(xpath = "//a[@href='/computer/NewNode/configure']")
+    private WebElement configure;
+
     public NodeDetailsPage(WebDriver driver) {
         super(driver);
     }
-
-    @FindBy(className = "message")
-    private WebElement message;
 
     public NodesListPage goNodesListPage() {
         buildExecutorStatus.click();
@@ -43,4 +46,9 @@ public class NodeDetailsPage extends BasePage {
         return message.getText();
     }
 
+    public NodeCofigurationPage clickConfigure() {
+        configure.click();
+
+        return new NodeCofigurationPage(getDriver());
+    }
 }
