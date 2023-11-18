@@ -353,6 +353,7 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testVerifyRequiredFields() {
+
         List<String> expectedLabelNames = List.of("Username", "Password", "Confirm password", "Full name", "E-mail address");
         List<String> actualLabelNames = new ArrayList<>();
 
