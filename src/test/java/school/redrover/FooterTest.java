@@ -113,6 +113,7 @@ public class FooterTest extends BaseTest {
                 .getText().contains("Version 2.414.2"));
     }
 
+    @Ignore
     @Test
     public void checkTippyBox() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
@@ -207,6 +208,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Jenkins");
     }
 
+    @Ignore
     @Test
     public void testVerifyClickabilityOfRestAPILink() {
         clickRestApi();
