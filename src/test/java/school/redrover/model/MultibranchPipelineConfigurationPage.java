@@ -14,7 +14,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
         super(driver);
     }
 
-    public String getJobName() {
+    public String getJobNameFromBreadcrumb() {
 
         return breadcrumbJobName.getText();
     }

@@ -19,7 +19,7 @@ public class HomePage extends BasePage {
     public WebElement buildHistoryButton;
 
     @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
-    private WebElement CreateAJob;
+    private WebElement createAJob;
 
     @FindBy(xpath = "//a[@href='/computer/']")
     private WebElement buildExecutorStatus;
@@ -71,7 +71,7 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickCreateAJob() {
-        CreateAJob.click();
+        createAJob.click();
 
         return new NewItemPage(getDriver());
     }

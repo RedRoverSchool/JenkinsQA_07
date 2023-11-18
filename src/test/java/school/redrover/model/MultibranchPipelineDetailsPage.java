@@ -25,4 +25,10 @@ public class MultibranchPipelineDetailsPage extends BasePage {
 
         return list;
     }
+
+    public MultibranchPipelineRenamePage clickRename() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
+    }
 }
