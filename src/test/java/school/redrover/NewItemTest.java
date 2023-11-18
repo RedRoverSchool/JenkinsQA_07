@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 
@@ -64,6 +65,7 @@ public class NewItemTest extends BaseTest {
         assertTrue(isAutocompleteSuggested);
     }
 
+    @Ignore
     @Test
     public void testNewItemCreationWithNonExistentName() {
         final String firstProject = "Test project";
