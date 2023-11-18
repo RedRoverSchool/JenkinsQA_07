@@ -366,7 +366,7 @@ public class UserTest extends BaseTest {
                     (By.xpath("//div[@class='jenkins-form-label help-sibling'][text() = '" + labelName + "']" +
                             "/following-sibling::div/input"));
 
-            Assert.assertNotNull(input);
+             Assert.assertNotNull(input);
         }
 
         Assert.assertEquals(expectedLabelNames, actualLabelNames);
