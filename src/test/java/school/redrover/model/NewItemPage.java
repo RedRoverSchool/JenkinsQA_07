@@ -27,6 +27,9 @@ public class NewItemPage extends BasePage {
     @FindBy(tagName = "h2")
     private WebElement requestErrorMessage;
 
+    @FindBy(className = "com_cloudbees_hudson_plugins_folder_Folder")
+    private WebElement folder;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -87,7 +90,7 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectItemFolder() {
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        folder.click();
 
         return this;
     }

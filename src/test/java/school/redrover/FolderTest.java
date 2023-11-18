@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderDetailsPage;
-import school.redrover.model.FolderGeneralConfigurationPage;
+import school.redrover.model.FolderConfigurationPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(FOLDER_NAME)
                 .selectItemFolder()
-                .clickOk(new FolderGeneralConfigurationPage(getDriver()))
+                .clickOk(new FolderConfigurationPage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(FOLDER_NAME));
