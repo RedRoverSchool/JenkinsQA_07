@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -367,20 +367,19 @@ public class UserTest extends BaseTest {
         List<String> expectedLabelNames = List.of("Username", "Password", "Confirm password", "Full name", "E-mail address");
         List<String> actualLabelNames = new ArrayList<>();
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href = '/manage']"))).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href='securityRealm/']"))).click();
-        getDriver().findElement(By.cssSelector("a[href='addUser']")).click();
+        new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser();
+
+        CreateNewUserPage createNewUserPage = new CreateNewUserPage(getDriver());
 
         for (String labelName : expectedLabelNames) {
-            String labelText = getDriver().findElement(By.xpath("//div[text() = '" + labelName + "']")).getText();
+            String labelText = createNewUserPage.getLabelText(labelName);
             actualLabelNames.add(labelText);
-            WebElement input = getDriver().findElement
-                    (By.xpath("//div[@class='jenkins-form-label help-sibling'][text() = '" + labelName + "']" +
-                            "/following-sibling::div/input"));
 
-            Assert.assertNotNull(input);
+            Assert.assertNotNull(createNewUserPage.getInputField(labelName));
         }
-
         Assert.assertEquals(expectedLabelNames, actualLabelNames);
     }
 
@@ -573,12 +572,12 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href ='/logout']")).click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//h1")))).getText(),
+                        By.xpath("//h1")))).getText(),
                 "Sign in to Jenkins");
     }
 
     @Test
-    public void testVerifyScreenAfterCreateUser () {
+    public void testVerifyScreenAfterCreateUser() {
         String password = "1234567";
         String email = "test@gmail.com";
         createUser(USER_NAME, password, email);
