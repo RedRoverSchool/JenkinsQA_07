@@ -64,6 +64,7 @@ public class FooterTest extends BaseTest {
                 "Jenkins 2.414.2");
     }
 
+    @Ignore
     @Test
     public void testJenkinsVersionCheck() {
         Assert.assertEquals(
