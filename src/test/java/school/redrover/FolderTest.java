@@ -314,12 +314,12 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))).click();
+        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
@@ -329,12 +329,11 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))).click();
+        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
         getDriver().findElement(By.className("jenkins-input")).clear();
@@ -345,10 +344,9 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualNewDescription, newDescriptionText);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))).click();
+        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
         getDriver().findElement(By.className("jenkins-input")).clear();
