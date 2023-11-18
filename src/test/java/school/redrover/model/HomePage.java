@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
@@ -89,5 +90,21 @@ public class HomePage extends BasePage {
         buildExecutorStatus.click();
 
         return new NodesListPage(getDriver());
+    }
+
+    public HomePage clickJobDropdownMenu (String name) {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(elementToHover).perform();
+        elementToHover.click();
+
+        return this;
+    }
+
+    public MultibranchPipelineRenamePage clickRenameDropdownMenu (String name) {
+        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
     }
 }
