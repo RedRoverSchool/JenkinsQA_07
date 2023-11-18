@@ -372,6 +372,7 @@ public class FolderTest extends BaseTest {
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(String.format("//*[@id='job_%s']/td[3]/a", FOLDER_NAME)))));
         WebElement itemOnPage = getDriver().findElement(By.xpath(String.format("//*[@id='job_%s']/td[3]/a", FOLDER_NAME)));
         new Actions(getDriver()).moveToElement(itemOnPage).build().perform();
         itemOnPage.click();
@@ -388,6 +389,7 @@ public class FolderTest extends BaseTest {
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(String.format("//*[@id='job_%s']/td[3]/a", FOLDER_NAME)))));
         WebElement itemOnPage = getDriver().findElement(By.xpath(String.format("//*[@id='job_%s']/td[3]/a", FOLDER_NAME)));
         new Actions(getDriver()).moveToElement(itemOnPage).build().perform();
         itemOnPage.click();
@@ -403,6 +405,8 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
+
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(String.format("//*[@id='job_%s']/td[3]/a", FOLDER_NAME)))));
         WebElement itemOnPage = getDriver().findElement(By.xpath(String.format("//*[@id='job_%s']/td[3]/a", FOLDER_NAME)));
         new Actions(getDriver()).moveToElement(itemOnPage).build().perform();
         itemOnPage.click();
