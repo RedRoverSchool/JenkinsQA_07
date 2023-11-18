@@ -24,6 +24,9 @@ public class NewItemPage extends BasePage {
     @FindBy(id = "itemname-invalid")
     private WebElement invalidNameErrorMessage;
 
+    @FindBy(tagName = "h2")
+    private WebElement requestErrorMessage;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -71,6 +74,9 @@ public class NewItemPage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOf(invalidNameErrorMessage)).getText();
     }
 
+    public String getRequestErrorMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(requestErrorMessage)).getText();
+    }
 
     public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
         inputName.sendKeys(projectName);
