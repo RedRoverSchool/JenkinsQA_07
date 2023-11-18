@@ -27,4 +27,16 @@ public class MultibranchPipelineRenamePage extends BasePage {
 
         return new MultibranchPipelineDetailsPage(getDriver());
     }
+
+    public MultibranchPipelineRenamePage addCharsToExistingName (String chars) {
+        inputName.sendKeys(chars);
+
+        return this;
+    }
+
+    public MultibranchPipelineRenameErrorsPage clickSubmitError() {
+        getDriver().findElement(By.name("Submit")).click();
+
+        return new MultibranchPipelineRenameErrorsPage(getDriver());
+    }
 }

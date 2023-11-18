@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -99,7 +100,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .typeItemName(MULTIBRANCH_PIPELINE_NAME)
                 .selectMultibranchPipelineOption()
                 .clickOk()
-                .getJobName();
+                .getJobNameFromBreadcrumb();
 
         Assert.assertEquals(multibranchBreadcrumbName, MULTIBRANCH_PIPELINE_NAME,
                 multibranchBreadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
@@ -128,46 +129,40 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testErrorMessageRenameWithDotAtTheEnd() {
 
-        final String ERROR_MESSAGE = "A name cannot end with ‘.’";
+        String dotErrorMessage = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .addCharsToExistingName(".")
+                .clickSubmitError()
+                .getErrorMessage();
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(
-                By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
-        getDriver().findElement(By.name("newName")).sendKeys(".");
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(), ERROR_MESSAGE,
-                "There is no message " + ERROR_MESSAGE);
+        Assert.assertEquals(dotErrorMessage, "A name cannot end with ‘.’");
     }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testErrorMessageRenameWithLessThanSign() {
 
-        final String ERROR_MESSAGE = "‘&lt;’ is an unsafe character";
+        String lessThanSignErrorMessage = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .addCharsToExistingName(Keys.SHIFT + ",")
+                .clickSubmitError()
+                .getErrorMessage();
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(
-                By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
-        getDriver().findElement(By.name("newName")).sendKeys(Keys.SHIFT + ",");
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(), ERROR_MESSAGE,
-                "There is no message " + ERROR_MESSAGE);
+        Assert.assertEquals(lessThanSignErrorMessage, "‘&lt;’ is an unsafe character");
     }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
-    public void testErrorMessageRenameWithTwoUnsafeCharacters() {
+    public void testErrorMessageRenameWithTwoUnsafeChars() {
 
-        final String ERROR_MESSAGE = "‘#’ is an unsafe character";
+        String twoUnsafeCharsErrorMessage = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .addCharsToExistingName("#" + Keys.SHIFT + ".")
+                .clickSubmitError()
+                .getErrorMessage();
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(
-                By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/confirm-rename']")).click();
-        getDriver().findElement(By.name("newName")).sendKeys("#" + Keys.SHIFT + ".");
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(), ERROR_MESSAGE,
-                "There is no message " + ERROR_MESSAGE);
+        Assert.assertEquals(twoUnsafeCharsErrorMessage, "‘#’ is an unsafe character");
     }
 
     @Ignore
