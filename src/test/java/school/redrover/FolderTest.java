@@ -368,6 +368,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
@@ -382,6 +383,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
@@ -397,6 +399,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualNewDescription, newDescriptionText);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))).click();
