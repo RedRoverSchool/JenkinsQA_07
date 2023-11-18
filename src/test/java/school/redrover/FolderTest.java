@@ -18,7 +18,7 @@ import java.util.List;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class FolderTest extends BaseTest {
-    private static final String FOLDER_NAME = "Folder";
+    private static final String FOLDER_NAME = "FolderName";
     private static final String FOLDER_NAME_2 = "My new project";
     private static final String NAME_FOR_BOUNDARY_VALUES = "A";
     private static final String RENAMED_FOLDER = "RenamedFolder";
@@ -372,10 +372,7 @@ public class FolderTest extends BaseTest {
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
-        getWait10().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))));
-        WebElement itemOnPage = getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)));
-        new Actions(getDriver()).moveToElement(itemOnPage).build().perform();
-        itemOnPage.click();
+        getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME))).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
@@ -389,10 +386,7 @@ public class FolderTest extends BaseTest {
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))));
-        WebElement itemOnPage = getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)));
-        new Actions(getDriver()).moveToElement(itemOnPage).build().perform();
-        itemOnPage.click();
+        getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME))).click();
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
         getDriver().findElement(By.className("jenkins-input")).clear();
@@ -405,11 +399,7 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCreate", "testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)))));
-        WebElement itemOnPage = getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME)));
-        new Actions(getDriver()).moveToElement(itemOnPage).build().perform();
-        itemOnPage.click();
+        getDriver().findElement(By.xpath(String.format("//td/a[@href = 'job/%s/']", FOLDER_NAME))).click();
 
         getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
         getDriver().findElement(By.className("jenkins-input")).clear();
