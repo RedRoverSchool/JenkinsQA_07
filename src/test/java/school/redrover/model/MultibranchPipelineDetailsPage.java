@@ -22,3 +22,4 @@ public class MultibranchPipelineDetailsPage extends BasePage {
 
         return list;
     }
+}
