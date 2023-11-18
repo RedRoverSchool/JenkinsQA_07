@@ -1,8 +1,11 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.BuildHistoryPage;
 import school.redrover.model.FreestyleProjectConfigurePage;
@@ -56,5 +59,21 @@ public class BuildHistoryTest extends BaseTest {
                     .presenceOfElementLocated(By.xpath("//a[@class='model-link inside build-link']"))).getText()
                     .substring(0, 6), dateNow);
         }
+    }
+
+    @Test
+    public void testTooltipIsVisibleInTheTimeSinceSection() {
+        String tooltipIsVisible = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName("FreestyleProject")
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .clickSaveButton()
+                .clickBuildNowButton()
+                .goHomePage()
+                .clickBuildHistoryButton()
+                .timeSinceTableLinkText();
+
+        Assert.assertEquals(tooltipIsVisible, "Click to center timeline on event");
     }
 }

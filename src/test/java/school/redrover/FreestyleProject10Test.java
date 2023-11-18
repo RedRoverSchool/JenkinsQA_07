@@ -188,26 +188,6 @@ public class FreestyleProject10Test extends BaseTest {
     }
 
     @Test
-    public void testTooltipIsVisibleInTheTimeSinceSection() {
-        creatingFreestyleProject(NAME_FREESTYLE_PROJECT);
-        getDriver().findElement(By.xpath("//td[@class='jenkins-table__cell--tight']/div/a")).click();
-        getDriver().findElement(By.cssSelector("a[href='/view/all/builds']")).click();
-
-        WebElement timeSince = getDriver().findElement(By.xpath("//tr/td[3]/button[1]"));
-
-        boolean tooltipIsVisible = true;
-        new Actions(getDriver()).
-                moveToElement(timeSince).
-                perform();
-
-        if (timeSince.getAttribute("title").equals("Click to center timeline on event")){
-            tooltipIsVisible = false;
-        }
-
-        Assert.assertTrue(tooltipIsVisible,"Tooltip is not visible");
-    }
-
-    @Test
     public void testMoveProjectToFolder() {
 
         final String folderName = "NewFolder";
