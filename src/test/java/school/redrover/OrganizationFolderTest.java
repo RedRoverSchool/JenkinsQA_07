@@ -8,7 +8,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.NewItemPage;
+import school.redrover.model.OrganizationFolderConfigurationPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -23,11 +23,33 @@ public class OrganizationFolderTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(PROJECT_NAME)
-                .selectItemType("Organization Folder")
-                .clickOk()
+                .selectOrganizationFolder()
+                .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateOrganizationFolderWithValidName")
+    public void testCreateOrganizationFolderWithExistingName() {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectOrganizationFolder()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» A job already exists with the name ‘" + PROJECT_NAME + "’");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithEmptyName() {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .selectOrganizationFolder()
+                .getRequiredNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
     private void returnHomeJenkins() {
@@ -73,17 +95,6 @@ public class OrganizationFolderTest extends BaseTest {
         clickOkButton();
     }
 
-    @Test
-    public void testCreatedNewOrganizationFolder() {
-        final String folderName = "Organization_Folder";
-
-        createOrganizationFolderBySteps(folderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        Assert.assertTrue(getDriver()
-                .findElement(By.xpath("//tr[@id='job_" + folderName + "']")).isDisplayed());
-    }
-
     @DataProvider(name = "wrong-character")
     public Object[][] provideWrongCharacters() {
         return new Object[][]{{"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {">"}, {"["}, {"]"}};
@@ -110,15 +121,6 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error");
-    }
-
-    @Test
-    public void testCreateProjectWithEmptyName() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//li//span[text()='Organization Folder']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
-                "» This field cannot be empty, please enter a valid name");
     }
 
     @Test
@@ -251,16 +253,6 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
                 "» “..” is not an allowed name");
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithEmptyName() {
-        clickNewJobButton();
-        clickOrganizationFolderButton();
-
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-required")).getText(),
-                "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
