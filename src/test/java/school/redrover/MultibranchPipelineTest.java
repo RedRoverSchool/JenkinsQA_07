@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -170,14 +171,9 @@ public class MultibranchPipelineTest extends BaseTest {
                 "There is no message " + ERROR_MESSAGE);
     }
 
-    @Ignore
     @Test
     public void testAllTaskTextInSidebar() {
-        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-
-        getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
-
-        List<String> taskText = List.of(
+        final List<String> expectedTasksText = List.of(
                 "Status",
                 "Configure",
                 "Scan Multibranch Pipeline Log",
@@ -189,12 +185,13 @@ public class MultibranchPipelineTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
-        int a = 1;
-        for (String expectedText : taskText) {
-            Assert.assertEquals(
-                    getDriver().findElement(By.xpath("//div[@id='tasks']/div[" + a++ + "]")).getText(),
-                    expectedText);
-        }
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+
+        List<String> actualTasksText = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getTasksText();
+
+        Assert.assertEquals(actualTasksText, expectedTasksText);
     }
 
     @Test
