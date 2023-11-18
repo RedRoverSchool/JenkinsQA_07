@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
@@ -24,19 +25,19 @@ public class FreeStyleProject88Test extends BaseTest {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = "testAddDescription" )
     public void testEditDescription() {
         final String expectedDescription = "New freestyle Description text";
         createFreestyleProject();
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@id='description-link']"))).click();
         String newDescription = createUniqueTextValue();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(newDescription);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))).click();
         getDriver().navigate().refresh();
-        getDriver().findElement(By.id("description-link")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("description-link"))).click();
         getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(expectedDescription);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-        String text = getDriver().findElement(By.xpath("//*[@id='description']/div[1]")).getText();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']"))).click();
+        String text =  getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='description']/div[1]"))).getText();
         String actualDescription = text.replaceAll(newDescription, "");
         Assert.assertEquals(actualDescription, expectedDescription);
 
