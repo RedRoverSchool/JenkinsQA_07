@@ -15,8 +15,11 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     }
 
     public List<String> getTasksText() {
+        WebElement parentElement = getDriver().findElement(By.xpath("//div[@id='tasks']"));
+        List<WebElement> childElements = parentElement.findElements(By.xpath("./*"));
+
         List<String> list = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= childElements.size(); i++) {
             list.add(getDriver().findElement(By.xpath("//div[@id='tasks']/div[" + i + "]")).getText());
         }
 
