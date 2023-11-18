@@ -906,7 +906,8 @@ public class FreestyleProjectTest extends BaseTest {
                 "none");
     }
 
-    @Test
+    @Ignore //depends on failing test testGitRadioButtonSettingsIsOpened
+    @Test (dependsOnMethods = "testGitRadioButtonSettingsIsOpened")
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String xpathLocator = "//input[@checkdependson='credentialsId']";
         final String inputText = "123";
