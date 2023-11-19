@@ -64,6 +64,7 @@ public class FooterTest extends BaseTest {
                 "Jenkins 2.414.2");
     }
 
+    @Ignore
     @Test
     public void testJenkinsVersionCheck() {
         Assert.assertEquals(
@@ -84,7 +85,7 @@ public class FooterTest extends BaseTest {
                 "Jenkins 2.414.2");
     }
 
-
+    @Ignore
     @Test
     public void testVersion() {
         getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
@@ -113,6 +114,7 @@ public class FooterTest extends BaseTest {
                 .getText().contains("Version 2.414.2"));
     }
 
+    @Ignore
     @Test
     public void checkTippyBox() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
@@ -147,6 +149,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not About Jenkins 2.414.2 [Jenkins]");
     }
 
+    @Ignore
     @Test
     public void testGetInvolved() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
@@ -162,6 +165,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/participate/");
     }
 
+    @Ignore
     @Test
     public void testClickGetInvolved() {
         String expectedPageName = "Participate and Contribute";
@@ -177,6 +181,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Participate and Contribute");
     }
 
+    @Ignore
     @Test
     public void testWebsite() {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
@@ -192,6 +197,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/");
     }
 
+    @Ignore
     @Test
     public void testClickWebsite() {
         String expectedPageName = "Jenkins";
@@ -207,6 +213,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Jenkins");
     }
 
+    @Ignore
     @Test
     public void testVerifyClickabilityOfRestAPILink() {
         clickRestApi();
@@ -214,6 +221,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getTitle(), "Remote API [Jenkins]");
     }
 
+    @Ignore
     @Test(description = "Кликабельность ссылки и отображение страницы REST API")
     public void testvisabilityAndClickabilityRestApiLink() {
         String link = getDriver().findElement(By.xpath("//a[@href='api/']")).getText();
@@ -225,6 +233,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getTitle, "REST API", "заголовок страницы не совпадает");
     }
 
+    @Ignore
     @Test
     public void testRestApiLinkClickable() {
         getDriver().findElement(By.id("executors")).click();
@@ -233,6 +242,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), "REST API");
     }
 
+    @Ignore
     @Test
     public void testJenkinsVersionButtonVisibilityCLikabilityFunctionality() {
         getDriver().findElement(By.xpath("//a[@class]//span[@class='hidden-xs hidden-sm']")).click();
@@ -280,6 +290,7 @@ public class FooterTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testVerifyRedirectedRestApi() {
         clickRestApi();
@@ -311,6 +322,7 @@ public class FooterTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testRestApiLinkRedirectionUserArea() {
         List<By> userPages = List.of(

@@ -59,14 +59,6 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a"));
     }
 
-    private boolean elementIsNotPresent(String xpath){
-        return getDriver().findElements(By.xpath(xpath)).isEmpty();
-    }
-
-    private void clickOnDeleteButton(){
-        getDriver().findElement(By.xpath("//a[@href='../computer/"+ NODE_NAME +"/']")).click();
-        getDriver().findElement(By.xpath("//div[@id='tasks']/div[2]/span/a")).click();
-    }
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
@@ -115,7 +107,8 @@ public class NodesTest extends BaseTest {
     public void testCreateNodeByCopyingExistingNode() {
         final String newNode = "Copy node";
 
-        String nodeName = new HomePage(getDriver()).goNodesListPage()
+        String nodeName = new HomePage(getDriver())
+                .goNodesListPage()
                 .clickNewNodeButton()
                 .sendNodeName(newNode)
                 .SelectPermanentAgentRadioButton()
@@ -141,37 +134,19 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(message, "Disconnected by admin");
     }
 
-    @Test(dependsOnMethods = "testMarkNodeTemporarilyOffline")
+    @Test(dependsOnMethods =  "testMarkNodeTemporarilyOffline")
     public void testRenameNodeWithValidName() {
-        final String new_name = "Renamed node";
+        final String newName = "Renamed node";
 
-        goToConfigureNodePage();
+        String actualName = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNodeByName(NODE_NAME)
+                .clickConfigure()
+                .clearAndInputNewName(newName)
+                .saveButtonClick(new NodeDetailsPage(getDriver()))
+                .getNodeName();
 
-        getDriver().findElement(By.name("_.name")).clear();
-        getDriver().findElement(By.name("_.name")).sendKeys(new_name);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@class='jenkins-app-bar__content']/h1")).getText(),
-                String.format("Agent %s", new_name)
-        );
-    }
-
-    @Test
-    public void testRenameNodeValidName() {
-        final String nodeName = "TestNode";
-        final String newNodeName = "TestNodeRename";
-
-        createNewNode(nodeName);
-
-        getDriver().findElement(By.xpath("//tr[@id = 'node_" + nodeName + "']//a")).click();
-        getDriver().findElement(By.xpath("//a[@href= '/computer/" + nodeName + "/configure']")).click();
-
-        getDriver().findElement(By.name("_.name")).sendKeys(newNodeName);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement
-                (By.tagName("h1")).getText().contains(newNodeName));
+        Assert.assertTrue(actualName.contains(newName));
     }
 
     @Test
@@ -185,21 +160,6 @@ public class NodesTest extends BaseTest {
 
         Assert.assertTrue(getDriver().findElement(
                 By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).getText().contains(NODE_NAME));
-    }
-
-    @Test
-    public void testCreateNewNodeFromNodesSectionInManageJenkinsPage() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dt[text()='Nodes']")).click();
-        getDriver().findElement(By.linkText("New Node")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).click();
-
-        Assert.assertTrue(getDriver().findElement(
-                By.xpath("//h1")).getText().contains(NODE_NAME));
     }
 
     @Ignore
@@ -443,34 +403,56 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCheckAlertMessageInDeleteNewNode() {
-        createNewNode(NODE_NAME);
+        final String expectedAlertText = "Delete the agent ‘"+ NODE_NAME + "’?";
 
-        clickOnDeleteButton();
+        String actualAlertText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goNodesListPage()
+                .clickNewNodeButton()
+                .sendNodeName(NODE_NAME)
+                .SelectPermanentAgentRadioButton()
+                .clickCreateButton()
+                .saveButtonClick(new NodesListPage(getDriver()))
+                .clickNodeByName(NODE_NAME)
+                .clickDeleteAgentButton()
+                .switchToAlertAndGetText();
 
-        Assert.assertEquals(getDriver().switchTo().alert().getText(), "Delete the agent ‘"+ NODE_NAME + "’?");
+        Assert.assertEquals(actualAlertText, expectedAlertText);
     }
 
     @Test
     public void testCancelToDeleteNewNodeFromAgentPage() {
-        createNewNode(NODE_NAME);
+        String nodeName = "//tr[@id='node_"+ NODE_NAME +"']//a//button";
 
-        clickOnDeleteButton();
+        boolean newNode = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goNodesListPage()
+                .clickNewNodeButton()
+                .sendNodeName(NODE_NAME)
+                .SelectPermanentAgentRadioButton()
+                .clickCreateButton()
+                .saveButtonClick(new NodesListPage(getDriver()))
+                .clickNodeByName(NODE_NAME)
+                .clickDeleteAgentButton()
+                .dismissAlert()
+                .goNodesListPage()
+                .elementIsNotPresent(nodeName);
 
-        getDriver().switchTo().alert().dismiss();
-
-        goToNodesPage();
-
-        Assert.assertFalse(elementIsNotPresent("//tr[@id='node_"+ NODE_NAME +"']//a//button"));
+        Assert.assertFalse(newNode);
     }
 
     @Test(dependsOnMethods = "testCancelToDeleteNewNodeFromAgentPage")
     public void testDeleteNewNodeFromAgentPage() {
-        goToNodesPage();
+        String nodeName = "//tr[@id='node_"+ NODE_NAME +"']//a";
 
-        clickOnDeleteButton();
+        boolean deletedNode = new HomePage (getDriver())
+                .clickManageJenkins()
+                .goNodesListPage()
+                .clickNodeByName(NODE_NAME)
+                .clickDeleteAgentButton()
+                .acceptAlert()
+                .elementIsNotPresent(nodeName);
 
-        getDriver().switchTo().alert().accept();
-
-        Assert.assertTrue(elementIsNotPresent("//tr[@id='node_"+ NODE_NAME +"']//a"));
+        Assert.assertTrue(deletedNode);
     }
 }

@@ -34,4 +34,9 @@ public class NodesListPage extends BasePage {
 
         return new NodeDetailsPage(getDriver());
     }
+
+    public boolean elementIsNotPresent(String xpath){
+
+        return getDriver().findElements(By.xpath(xpath)).isEmpty();
+    }
 }

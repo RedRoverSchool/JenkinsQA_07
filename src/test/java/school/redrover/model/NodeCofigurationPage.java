@@ -10,6 +10,8 @@ public class NodeCofigurationPage extends BasePage {
     @FindBy(xpath = "//button[@formnovalidate='formNoValidate']")
     private WebElement saveButton;
 
+    @FindBy(name = "_.name")
+    private WebElement inputName;
 
     public NodeCofigurationPage(WebDriver driver) {
         super(driver);
@@ -19,4 +21,12 @@ public class NodeCofigurationPage extends BasePage {
         saveButton.click();
         return page;
     }
+
+    public NodeCofigurationPage clearAndInputNewName(String newName) {
+        inputName.clear();
+        inputName.sendKeys(newName);
+
+        return this;
+    }
+
 }

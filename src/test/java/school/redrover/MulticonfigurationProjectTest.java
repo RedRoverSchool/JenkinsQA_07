@@ -5,132 +5,153 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.MultiConfigurationConfigurePage;
 import school.redrover.runner.BaseTest;
 
 public class MulticonfigurationProjectTest extends BaseTest {
+    private static final  String DESCRIPTION = "This is a description!!!";
+    private static final  String PROJECT_NAME = "MultiConfigurationProject123";
+    private static final  By LINK_ON_A_CREATED_FREESTYLE_PROJECT = By.xpath("//tr[@id='job_" + PROJECT_NAME + "']/td[3]/a");
 
-    private void createMulticonfigurationProject (String MulticonfigurationProjectName) {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(MulticonfigurationProjectName);
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//*[@id=\"bottom-sticker\"]/div/button[1]")).click();
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+    private WebElement textDescription() {
+        return getDriver().findElement(By.xpath("//*[@class='jenkins-!-margin-bottom-0']//div"));
     }
 
-    private void createMulticonfigurationProjectWithDescription(String projectName, String description) {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.xpath("//li[@class='hudson_matrix_MatrixProject']")).click();
+    private void createProject() {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//textarea[@name='description']")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
+    }
+
+    private void addDescriptionIntoProject() {
+        getDriver().findElement(By.xpath("//span[normalize-space()='" + PROJECT_NAME + "']")).click();
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+    }
+
+    @Test
+    public void testCreate() {
+        final String projectName = "MyMulticonfigurationProject";
+
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.id("name")).sendKeys(projectName);
+        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + projectName + "/']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
+                "Project " + projectName);
     }
 
     @Test
     public void testCreateWithValidName() {
-        final String MulticonfigurationProjectName = "MCProjectName";
-        createMulticonfigurationProject (MulticonfigurationProjectName);
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectMultiConfigurationProject()
+                .clickOk(new MultiConfigurationConfigurePage(getDriver()))
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + MulticonfigurationProjectName + "/']")).click();
-
-        Assert.assertEquals(getDriver().getTitle(),MulticonfigurationProjectName + " [Jenkins]");
+        Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
     }
 
     @Test
     public void testCreateWithEmptyName() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        boolean validationMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName("")
+                .selectMultiConfigurationProject()
+                .inputValidationMessage(
+                        "» This field cannot be empty, please enter a valid name");
 
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
+        Assert.assertTrue(validationMessage);
+        Assert.assertTrue(getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
+    }
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id=\"itemname-required\"]")).getText(),
-                "» This field cannot be empty, please enter a valid name");
-        Assert.assertTrue(
-                getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
+    @Test(dependsOnMethods = "testCreateWithValidName")
+    public void testCreateWithDuplicateName() {
+        boolean duplicateName = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .inputValidationMessage(
+                        "» A job already exists with the name ‘" + PROJECT_NAME +"’");
+
+        Assert.assertTrue(duplicateName);
     }
 
     @Test
-    public void testCreateWithDublicateName() {
-        final String multiconfigurationProjectName = "MCProjectName";
-        createMulticonfigurationProject (multiconfigurationProjectName);
-
+    public void testCreateProjectWithDescription() {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(multiconfigurationProjectName);
-
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]")).getText(),
-                "» A job already exists with the name ‘" + multiconfigurationProjectName + "’");
-
-
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("#main-panel")).getText().contains("A job already exists with the name ‘" + multiconfigurationProjectName + "’"));
-
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@class='jenkins-!-margin-bottom-0']//div")).isDisplayed());
+        Assert.assertEquals(DESCRIPTION, textDescription().getText());
     }
 
     @Test
-    public void testCreateWithDescription() {
-        String projectName = "MyMulticonfiguration project";
-        String description = "Description";
-
-        createMulticonfigurationProjectWithDescription(projectName, description);
-
-          String actualProjectName = getDriver().findElement(By.tagName("h1")).getText();
-          String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-
-        Assert.assertEquals(actualProjectName, String.format("Project %s", projectName));
-        Assert.assertEquals(actualDescription, description);
+    public void testAddDescription() {
+        createProject();
+        addDescriptionIntoProject();
+        Assert.assertEquals(DESCRIPTION, textDescription().getText());
     }
 
     @Test
     public void testEditDescription() {
-        String projectName = "MyMulticonfiguration project";
-        String description = "Description";
-        String newDescription = "New Description";
-
-        createMulticonfigurationProjectWithDescription(projectName, description);
-
-        getDriver().findElement(By.id("description-link")).click();
-        WebElement descriptionield = getDriver().findElement(By.tagName("textarea"));
-        descriptionield.clear();
-        descriptionield.sendKeys(newDescription);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-        String actualProjectName = getDriver().findElement(By.tagName("h1")).getText();
-        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-
-        Assert.assertEquals(actualProjectName, String.format("Project %s", projectName));
-        Assert.assertEquals(actualDescription, newDescription);
+        createProject();
+        addDescriptionIntoProject();
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        Assert.assertEquals(DESCRIPTION + DESCRIPTION, textDescription().getText());
     }
 
     @Test
-    public void testCancelDelete() {
-        String projectName = "MyMulticonfiguration project";
-        String description = "Description";
+    public void testDeleteDescription() {
+        createProject();
+        addDescriptionIntoProject();
+        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        Assert.assertEquals("", textDescription().getText());
+    }
 
-        createMulticonfigurationProjectWithDescription(projectName, description);
-        getDriver().findElement(By.xpath("//a[@data-url='/job/MyMulticonfiguration%20project/doDelete']")).click();
+
+    @Test
+    public void testCancelDelete() {
+        createProject();
+        addDescriptionIntoProject();
+
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[6]")).click();
         Alert alert = getDriver().switchTo().alert();
         alert.dismiss();
 
         String actualProjectName = getDriver().findElement(By.tagName("h1")).getText();
         String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
 
-        Assert.assertEquals(actualProjectName, String.format("Project %s", projectName));
-        Assert.assertEquals(actualDescription, description);
+        Assert.assertEquals(actualProjectName, String.format("Project %s", PROJECT_NAME));
+        Assert.assertEquals(actualDescription, DESCRIPTION);
     }
 
     @Test
     public void testDelete() {
-        String projectName = "MyMulticonfiguration project";
-        String description = "Description";
         String greetingJenkins = "Welcome to Jenkins!";
 
-        createMulticonfigurationProjectWithDescription(projectName, description);
-        getDriver().findElement(By.xpath("//a[@data-url='/job/MyMulticonfiguration%20project/doDelete']")).click();
+        createProject();
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.xpath("//div[@id='tasks']/div[6]")).click();
         Alert alert = getDriver().switchTo().alert();
         alert.accept();
 

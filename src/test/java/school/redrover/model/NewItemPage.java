@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,6 +25,24 @@ public class NewItemPage extends BasePage {
     @FindBy(id = "itemname-invalid")
     private WebElement invalidNameErrorMessage;
 
+    @FindBy(tagName = "h2")
+    private WebElement requestErrorMessage;
+
+    @FindBy(tagName = "p")
+    private WebElement noNameErrorMessage;
+
+    @FindBy(className = "com_cloudbees_hudson_plugins_folder_Folder")
+    private WebElement folder;
+
+    @FindBy(id = "from")
+    private WebElement cloneItemTextField;
+
+    @FindBy(css = "div[class='add-item-name']")
+    private WebElement inputValidationMessage;
+
+    @FindBy(css = "li[class='hudson_matrix_MatrixProject']")
+    private WebElement MultiConfigurationProject;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -39,6 +58,7 @@ public class NewItemPage extends BasePage {
 
         return this;
     }
+
     public NewItemPage selectOrganizationFolder() {
         getDriver().findElement(By.xpath("//li[@class = 'jenkins_branch_OrganizationFolder']")).click();
 
@@ -51,13 +71,13 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public <T> T clickOk (T page) {
+    public <T> T clickOk(T page) {
         okButton.click();
 
         return page;
     }
 
-    public MultibranchPipelineConfigurationPage clickOk () {
+    public MultibranchPipelineConfigurationPage clickOk() {
         okButton.click();
 
         return new MultibranchPipelineConfigurationPage(getDriver());
@@ -71,6 +91,13 @@ public class NewItemPage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOf(invalidNameErrorMessage)).getText();
     }
 
+    public String getRequestErrorMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(requestErrorMessage)).getText();
+    }
+
+    public String getNoNameErrorMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(noNameErrorMessage)).getText();
+    }
 
     public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
         inputName.sendKeys(projectName);
@@ -81,8 +108,37 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectItemFolder() {
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        folder.click();
 
         return this;
+    }
+
+    public NewItemPage selectMultiConfigurationProject() {
+        MultiConfigurationProject.click();
+
+        return this;
+    }
+
+    public boolean inputValidationMessage(String errorMessage) {
+        inputName.sendKeys(Keys.TAB);
+
+        return getWait2().until(ExpectedConditions.textToBePresentInElement(
+                inputValidationMessage, errorMessage));
+    }
+
+
+    public boolean isCloneItemSectionDisplayed() {
+        return !getDriver().findElements(By.className("item-copy")).isEmpty();
+    }
+
+    public NewItemPage enterExistentItemNameToClone(String itemName) {
+        cloneItemTextField.sendKeys(itemName);
+        return this;
+    }
+
+    public boolean isAutocompleteToCloneSuggested(String projectName) {
+        return !getDriver()
+                .findElements(By.xpath("//li[contains(text(),'" + projectName + "')]"))
+                .isEmpty();
     }
 }
