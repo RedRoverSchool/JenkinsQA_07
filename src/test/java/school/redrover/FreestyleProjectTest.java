@@ -8,8 +8,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleProjectConfigurePage;
+import school.redrover.model.FreestyleProjectDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1117,70 +1120,68 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddLinkToGitHubInGitHubProjectSection() {
-        final String sourseCodeManagementLocator = "//button[@data-section-id='source-code-management']";
-        final String inputUrlFieldLocator = "//input[@name='_.url']";
 
-        createFreeStyleProject(PROJECT_NAME);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        getDriver().findElement(By.xpath(sourseCodeManagementLocator)).click();
+        new FreestyleProjectDetailsPage(getDriver())
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .clickSourseCodeManagementLinkFromSideMenu()
+                .scrollPage(0, 600)
+                .clickGitRadioButton()
+                .inputGitLink("https://github.com/RedRoverSchool/JenkinsQA_07")
+                .clickSaveButton()
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .clickSourseCodeManagementLinkFromSideMenu()
+                .scrollPage(0, 600);
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,600)");
-        getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
+        WebElement inputUrlField = getDriver().findElement(By.xpath("//input[@name='_.url']"));
 
-        getDriver().findElement(By.xpath(inputUrlFieldLocator)).sendKeys("https://github.com/RedRoverSchool/JenkinsQA_07");
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
-
-        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
-        getDriver().findElement(By.xpath(sourseCodeManagementLocator)).click();
-        js.executeScript("window.scrollBy(0,600)");
-
-        Assert.assertEquals(getDriver().findElement(By.xpath(inputUrlFieldLocator)).getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
+        Assert.assertEquals(inputUrlField.getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
     }
 
     @Test
     public void testCheckDiscardOldBuildsCheckbox() {
-        final String inputDaysToKeepBuildsFieldLocator = "//input[@name='_.daysToKeepStr']";
-        final String inputMaxNumberOfBuildsToKeepFieldLocator = "//input[@name='_.numToKeepStr']";
 
-        createFreeStyleProject(PROJECT_NAME);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        getDriver().findElement(By.xpath("//label[normalize-space()='Discard old builds']")).click();
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,300)");
+        new FreestyleProjectDetailsPage(getDriver())
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .clickDiscardOldBuildsCheckBox()
+                .scrollPage(0, 300)
+                .inputMaxNumberOfBuildsToKeep("2")
+                .inputDaysToKeepBuilds("3")
+                .clickSaveButton()
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .scrollPage(0, 300);
 
-        getDriver().findElement(By.xpath(inputDaysToKeepBuildsFieldLocator)).sendKeys("2");
-        getDriver().findElement(By.xpath(inputMaxNumberOfBuildsToKeepFieldLocator)).sendKeys("3");
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
-        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
-        js.executeScript("window.scrollBy(0,300)");
+        WebElement inputDaysToKeepBuildsField = getDriver().findElement(By.xpath("//input[@name='_.daysToKeepStr']"));
+        WebElement inputMaxNumberOfBuildsToKeepField = getDriver().findElement(By.xpath("//input[@name='_.numToKeepStr']"));
 
-        Assert.assertEquals(getDriver().findElement(By.xpath(inputDaysToKeepBuildsFieldLocator)).getAttribute("value"), "2");
-        Assert.assertEquals(getDriver().findElement(By.xpath(inputMaxNumberOfBuildsToKeepFieldLocator)).getAttribute("value"), "3");
+        Assert.assertEquals(inputDaysToKeepBuildsField.getAttribute("value"), "3");
+        Assert.assertEquals(inputMaxNumberOfBuildsToKeepField.getAttribute("value"), "2");
+
     }
 
     @Test
     public void testCheckThrottleBuildsCheckbox() {
 
-        final String numberOfBuildsLocator = "//input[@name='_.count']";
-        final String timePeriodLocator = "//select[@name='_.durationName']";
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        createFreeStyleProject(PROJECT_NAME);
+        new FreestyleProjectDetailsPage(getDriver())
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .clickThrottleBuildsCheckBox()
+                .scrollPage(0, 600)
+                .inputNumberOfBuilds("4")
+                .selectTimePeriod("day")
+                .clickSaveButton()
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .scrollPage(0, 600);
 
-        getDriver().findElement(By.xpath("//label[normalize-space()='Throttle builds']")).click();
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,600)");
+        WebElement numberOfBuilds = getDriver().findElement(By.xpath("//input[@name='_.count']"));
+        WebElement timePeriod = getDriver().findElement(By.xpath("//select[@name='_.durationName']"));
 
-        getDriver().findElement(By.xpath(numberOfBuildsLocator)).clear();
-        getDriver().findElement(By.xpath(numberOfBuildsLocator)).sendKeys("4");
-        getDriver().findElement(By.xpath(timePeriodLocator)).click();
-        getDriver().findElement(By.xpath("//option[@value='day']")).click();
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
-        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
-        js.executeScript("window.scrollBy(0,600)");
-
-        Assert.assertEquals(getDriver().findElement(By.xpath(numberOfBuildsLocator)).getAttribute("value"), "4");
-        Assert.assertEquals(getDriver().findElement(By.xpath(timePeriodLocator)).getAttribute("value"), "day");
+        Assert.assertEquals(numberOfBuilds.getAttribute("value"), "4");
+        Assert.assertEquals(timePeriod.getAttribute("value"), "day");
     }
 
     @Test
@@ -1188,20 +1189,23 @@ public class FreestyleProjectTest extends BaseTest {
 
         final String checkBoxLocator = "//div[@class='form-container tr']";
 
-        createFreeStyleProject(PROJECT_NAME);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,300)");
-        int quantityOfElementsBeforeClicking = getDriver().findElements(By.xpath(checkBoxLocator)).size();
+        new FreestyleProjectDetailsPage(getDriver())
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .scrollPage(0, 300);
 
-        getDriver().findElement(By.xpath("//label[normalize-space()='Execute concurrent builds if necessary']")).click();
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
-        getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
-        js.executeScript("window.scrollBy(0,300)");
+        List<WebElement> quantityOfElementsBeforeClicking = getDriver().findElements(By.xpath(checkBoxLocator));
 
-        int quantityOfElementsAfterClicking = getDriver().findElements(By.xpath(checkBoxLocator)).size();
+        new FreestyleProjectConfigurePage(getDriver())
+                .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
+                .clickSaveButton()
+                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .scrollPage(0, 300);
 
-        Assert.assertEquals(quantityOfElementsAfterClicking, quantityOfElementsBeforeClicking + 1);
+        List<WebElement> quantityOfElementsAfterClicking = getDriver().findElements(By.xpath(checkBoxLocator));
+
+        Assert.assertEquals(quantityOfElementsAfterClicking.size(), quantityOfElementsBeforeClicking.size() + 1);
     }
 
     @Test
