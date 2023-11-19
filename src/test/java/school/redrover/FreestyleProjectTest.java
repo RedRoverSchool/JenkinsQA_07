@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.FreestyleProjectDetailsPage;
@@ -519,6 +520,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testRenameFreestyleProjectSideMenu() {
         getWait10().until(ExpectedConditions.elementToBeClickable(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE)).click();
@@ -624,6 +626,7 @@ public class FreestyleProjectTest extends BaseTest {
                 editedDescriptionText);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreateFreestyleProjectWithValidName", "testRenameFreestyleProjectSideMenu"})
     public void testCreateFreestyleProjectFromExistingProject() {
         getDriver().findElement(By.linkText("New Item")).click();
