@@ -36,6 +36,12 @@ public class NewItemPage extends BasePage {
     @FindBy(id = "from")
     private WebElement cloneItemTextField;
 
+    @FindBy(css = "div[class='add-item-name']")
+    private WebElement inputValidationMessage;
+
+    @FindBy(css = "li[class='hudson_matrix_MatrixProject']")
+    private WebElement MultiConfigurationProject;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -107,13 +113,14 @@ public class NewItemPage extends BasePage {
     }
 
     public NewItemPage selectMultiConfigurationProject() {
-        getDriver().findElement(By.cssSelector("li[class='hudson_matrix_MatrixProject']")).click();
+        MultiConfigurationProject.click();
 
         return this;
     }
 
     public String inputValidationMessage() {
-        return  getDriver().findElement(By.cssSelector("div[class='add-item-name']")).getText();
+        return  getWait2().until(ExpectedConditions.visibilityOf(
+                inputValidationMessage)).getText();
     }
 
     public boolean isCloneItemSectionDisplayed() {
