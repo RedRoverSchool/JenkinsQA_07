@@ -589,13 +589,12 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testSizeIcon() {
-        List<String> sizeIcon = new HomePage(getDriver())
+    public void testText() {
+        String sizeIcon = new HomePage(getDriver())
                 .clickPeople(new PeoplePage(getDriver()))
                 .clickIconLarge()
-                .getIcon();
+                .getText();
 
-        Assert.assertTrue(sizeIcon.size()!=0);
-        System.out.println(sizeIcon);
+        Assert.assertTrue(sizeIcon.contains("Includes all known"));
     }
 }

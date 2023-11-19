@@ -134,9 +134,7 @@ public class PeoplePage extends BasePage {
         return resultList;
     }
 
-    public List<String> getIcon() {
-        List<WebElement> buttonList = (List<WebElement>) getDriver().findElement(By.xpath("//div[@class='jenkins-table__cell__button-wrapper']"));
-        List<String> result = buttonList.stream().map(WebElement::getText).toList();
-        return result;
+    public String getText() {
+        return getDriver().findElement(By.cssSelector(".jenkins-description")).getText();
     }
 }
