@@ -638,7 +638,7 @@ public class UserTest extends BaseTest {
         String email = "test@gmail.com";
         createUser(USER_NAME, password, email);
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody/tr")).
+        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
     }
 }
