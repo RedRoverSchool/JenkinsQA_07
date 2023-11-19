@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -119,9 +120,12 @@ public class NewItemPage extends BasePage {
     }
 
     public boolean inputValidationMessage(String errorMessage) {
-       return getWait2().until(ExpectedConditions.textToBePresentInElement(
+        inputName.sendKeys(Keys.TAB);
+
+        return getWait2().until(ExpectedConditions.textToBePresentInElement(
                 inputValidationMessage, errorMessage));
     }
+
 
     public boolean isCloneItemSectionDisplayed() {
         return !getDriver().findElements(By.className("item-copy")).isEmpty();
