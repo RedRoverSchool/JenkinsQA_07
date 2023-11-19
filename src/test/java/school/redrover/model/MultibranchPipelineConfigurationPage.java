@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.bouncycastle.pqc.crypto.util.PQCOtherInfoGenerator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,7 +21,13 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     private WebElement nameH1;
 
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
+
         super(driver);
+    }
+
+    public String getJobNameFromBreadcrumb() {
+
+        return breadcrumbJobName.getText();
     }
 
     public String getJobName() {
@@ -40,6 +45,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
 
         return this;
     }
+
 
     public MultibranchPipelineConfigurationPage inputName(String name) {
         nameField.sendKeys(name);

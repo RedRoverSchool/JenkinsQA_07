@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
@@ -18,7 +19,7 @@ public class HomePage extends BasePage {
     public WebElement buildHistoryButton;
 
     @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
-    private WebElement CreateAJob;
+    private WebElement createAJob;
 
     @FindBy(xpath = "//a[@href='/computer/']")
     private WebElement buildExecutorStatus;
@@ -70,9 +71,15 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickCreateAJob() {
-        CreateAJob.click();
+        createAJob.click();
 
         return new NewItemPage(getDriver());
+    }
+
+    public GlobalViewPage clickViewByName(String viewName) {
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
+
+        return new GlobalViewPage(getDriver());
     }
 
     public List<String> getViewsList() {
@@ -90,4 +97,33 @@ public class HomePage extends BasePage {
 
         return new NodesListPage(getDriver());
     }
+
+    public HomePage clickJobDropdownMenu(String name) {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(elementToHover).perform();
+        elementToHover.click();
+
+        return this;
+    }
+
+    public MultibranchPipelineRenamePage clickRenameDropdownMenu(String name) {
+        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
+
+        return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public boolean isProjectExist(String projectName) {
+        return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
+    }
+
+    public String getJobDisplayName(String name) {
+        return getDriver().findElement(By.xpath("//*[@id='job_" + name + "']/td[3]/a/span")).getText();
+    }
+
+    public String getTitle() {
+        return getDriver().getTitle();
+    }
+
 }

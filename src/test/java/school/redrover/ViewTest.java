@@ -25,11 +25,10 @@ public class ViewTest extends BaseTest {
     }
 
     private void createNewFreestyleProject(String projectName) {
-        goHome();
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
-        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.cssSelector("#ok-button")).click();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(projectName)
+                .goHomePage();
     }
 
     private void createMyNewListView(String viewName) {
@@ -114,26 +113,18 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/my-views/view/Test%20view/']")).getText(), nameView);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewListView")
     public void testRenameView() {
-        final String projectName = "My New Freestyle Project";
-        final String viewName = "Test View";
-        final String newViewName = "New Test View";
+        final String renamedViewName = "Renamed View Name";
 
-        createNewFreestyleProject(projectName);
-        createMyNewListView(viewName);
-        goHome();
+        HomePage homePage = new HomePage(getDriver())
+                .clickViewByName(VIEW_NAME)
+                .clickEditView()
+                .typeNewName(renamedViewName)
+                .clickSubmit()
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'/configure')]")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newViewName);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[contains(@class,'active')]/a")).getText(),
-                newViewName);
+        Assert.assertTrue(homePage.getViewsList().contains(renamedViewName));
     }
 
     @Test
@@ -588,7 +579,6 @@ public class ViewTest extends BaseTest {
     public void testCreateNewListView() {
         final String multibranchPipelineName = "Multibranch Pipeline Name";
         final String folderName = "New Folder Name";
-        final String actualNewViewName = "New View Name";
 
         createNewFolder(folderName);
         goHome();
@@ -596,14 +586,14 @@ public class ViewTest extends BaseTest {
         goHome();
         String expectedListViewName = new HomePage(getDriver())
                 .clickNewViewButton()
-                .typeNewViewName(actualNewViewName)
+                .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
                 .clickCreateButton()
                 .clickCheckboxByTitle(multibranchPipelineName)
                 .clickOKButton()
                 .getActiveViewName();
 
-        Assert.assertEquals(actualNewViewName, expectedListViewName);
+        Assert.assertEquals(VIEW_NAME, expectedListViewName);
     }
 
 }

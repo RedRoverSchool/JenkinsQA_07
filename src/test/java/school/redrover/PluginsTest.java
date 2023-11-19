@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.SeleniumUtils;
 
 import java.util.List;
 
@@ -19,21 +20,17 @@ public class PluginsTest extends BaseTest {
         WebElement installedPlugins = getDriver().findElement(By.xpath(
                 "//a[@href = '/manage/pluginManager/installed']"));
 
-        AdditionalUtils.jsClick(getDriver(), installedPlugins);
+        SeleniumUtils.jsClick(getDriver(), installedPlugins);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
 
-        boolean foundAntPlugin = false;
-        for (WebElement plugin : plugins) {
-            String text = plugin.getText();
-            if (text.contains("Ant Plugin")) {
-                foundAntPlugin = true;
-                break;
-            }
-        }
-        Assert.assertTrue(foundAntPlugin);
-    }
+        Assert.assertFalse(plugins.isEmpty(), "No elements is the List");
+        boolean foundAntPlugin = plugins.stream()
+                .map(WebElement::getText)
+                .anyMatch(text -> text.contains("Ant Plugin"));
 
+        Assert.assertTrue(foundAntPlugin, "Ant Plugin is not found in the list of installed plugins.");
+    }
     @Test
     public void testInstalledPluginsSearch() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
