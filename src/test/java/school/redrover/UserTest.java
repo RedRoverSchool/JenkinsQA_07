@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.checkerframework.dataflow.qual.TerminatesExecution;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -591,11 +590,12 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testSizeIcon() {
-        PeoplePage sizeIcon = new HomePage(getDriver())
+        List<String> sizeIcon = new HomePage(getDriver())
                 .clickPeople(new PeoplePage(getDriver()))
-                .getPeopleList();
+                .clickIconLarge()
+                .getIcon();
 
-//        Assert.assertEquals(sizeIcon);
+        Assert.assertTrue(sizeIcon.size()!=0);
         System.out.println(sizeIcon);
     }
 }
