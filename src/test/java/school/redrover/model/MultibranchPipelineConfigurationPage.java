@@ -31,25 +31,30 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
     public MultibranchPipelineConfigurationPage confirmRename(String name) {
         getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
+
         return this;
     }
 
     public  MultibranchPipelineConfigurationPage clearField() {
         nameField.clear();
+
         return this;
     }
 
     public MultibranchPipelineConfigurationPage inputName(String name) {
         nameField.sendKeys(name);
+
         return this;
     }
 
     public MultibranchPipelineConfigurationPage buttonSubmit() {
         buttonSubmit.click();
+
         return this;
     }
 
     public String headerName() {
+
         return nameH1.getText();
     }
 }
