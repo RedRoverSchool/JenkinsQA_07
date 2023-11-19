@@ -120,8 +120,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .buttonSubmit()
                 .getJobName();
 
-        String nameH1 = new MultibranchPipelineConfigurationPage(getDriver())
-                .headerName();
+        String nameH1 = new MultibranchPipelineConfigurationPage(getDriver()).headerName();
 
         Assert.assertTrue(nameH1.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
 
