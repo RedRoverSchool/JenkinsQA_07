@@ -118,9 +118,9 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public String inputValidationMessage() {
-        return  getWait2().until(ExpectedConditions.visibilityOf(
-                inputValidationMessage)).getText();
+    public boolean inputValidationMessage(String errorMessage) {
+       return getWait2().until(ExpectedConditions.textToBePresentInElement(
+                inputValidationMessage, errorMessage));
     }
 
     public boolean isCloneItemSectionDisplayed() {

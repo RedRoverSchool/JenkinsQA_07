@@ -67,24 +67,26 @@ public class MulticonfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateWithEmptyName() {
-        String validationMessage = new HomePage(getDriver())
+        boolean validationMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName("")
                 .selectMultiConfigurationProject()
-                .inputValidationMessage();
+                .inputValidationMessage(
+                        "» This field cannot be empty, please enter a valid name");
 
-        Assert.assertTrue(validationMessage.contains("» This field cannot be empty, please enter a valid name"));
+        Assert.assertTrue(validationMessage);
         Assert.assertTrue(getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
     }
 
     @Test(dependsOnMethods = "testCreateWithValidName")
     public void testCreateWithDuplicateName() {
-        String duplicateName = new HomePage(getDriver())
+        boolean duplicateName = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(PROJECT_NAME)
-                .inputValidationMessage();
+                .inputValidationMessage(
+                        "» A job already exists with the name ‘" + PROJECT_NAME +"’");
 
-        Assert.assertTrue(duplicateName.contains("» A job already exists with the name ‘" + PROJECT_NAME +"’"));
+        Assert.assertTrue(duplicateName);
     }
 
     @Test
