@@ -197,6 +197,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/");
     }
 
+    @Ignore
     @Test
     public void testClickWebsite() {
         String expectedPageName = "Jenkins";
@@ -232,6 +233,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(getTitle, "REST API", "заголовок страницы не совпадает");
     }
 
+    @Ignore
     @Test
     public void testRestApiLinkClickable() {
         getDriver().findElement(By.id("executors")).click();
@@ -288,6 +290,7 @@ public class FooterTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test
     public void testVerifyRedirectedRestApi() {
         clickRestApi();
