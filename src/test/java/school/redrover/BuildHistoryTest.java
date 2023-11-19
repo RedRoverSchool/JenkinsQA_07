@@ -57,4 +57,20 @@ public class BuildHistoryTest extends BaseTest {
                     .substring(0, 6), dateNow);
         }
     }
+
+    @Test
+    public void testTooltipIsVisibleInTheTimeSinceSection() {
+        String tooltipIsVisible = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName("FreestyleProject")
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .clickSaveButton()
+                .clickBuildNowButton()
+                .goHomePage()
+                .clickBuildHistoryButton()
+                .timeSinceTableLinkText();
+
+        Assert.assertEquals(tooltipIsVisible, "Click to center timeline on event");
+    }
 }

@@ -233,6 +233,22 @@ public class UserTest extends BaseTest {
 
     }
 
+    @Test
+    public void testConfigureAddDescriptionFromPeoplePage() {
+        final String description = "The user's description";
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/asynchPeople/']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/user/admin/']"))).click();
+
+        getDriver().findElement(By.xpath("//a[@href = '/user/admin/configure']")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='_.description']"))).clear();
+        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//div[@id = 'description']/div[1]"))).getText(), description);
+    }
+
     @Test(dependsOnMethods = "testConfigureUser")
     public void testDeleteUser() {
 
@@ -468,17 +484,15 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(error.size(), 5);
     }
 
-    @Ignore
     @Test
     public void testUserIsDisplayedInUsersTable() {
-        String createdUserName = new UserPage(getDriver())
+        List<String> createdUserName = new UserPage(getDriver())
             .createUserSuccess("Test")
-            .getCreatedUserName();
+            .userNameList();
 
-        Assert.assertEquals(createdUserName, "Test");
+        Assert.assertTrue(createdUserName.contains("Test"));
     }
 
-    @Ignore
     @Test
     public void testUserRecordContainUserIdButton() {
         UserPage createdUserPage = new UserPage(getDriver())

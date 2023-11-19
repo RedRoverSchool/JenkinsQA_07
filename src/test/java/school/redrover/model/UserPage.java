@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class UserPage extends BasePage {
@@ -21,9 +20,6 @@ public class UserPage extends BasePage {
 
     @FindBy(name = "Submit")
     private WebElement submitNewUser;
-
-    @FindBy (xpath = "//tbody/tr[2]/td[2]/a[1]")
-    private WebElement createdUserName;
 
     public UserPage(WebDriver driver) { super(driver); }
 
@@ -52,13 +48,25 @@ public class UserPage extends BasePage {
         return new UserPage(getDriver());
     }
 
-    public String getCreatedUserName() {
+    public boolean userIdIsClickable() {
+        List<WebElement> userNameList = getDriver().findElements(By.xpath("//tr/td/a"));
+        for (WebElement element : userNameList) {
+            if (userNameList().isEmpty()) {
+                return false;
+            }
+            if (!element.isDisplayed() && element.isEnabled()) {
+                return false;
+            } else if (element.isDisplayed() && element.isEnabled()) {
+                return true;
+            }
+        }
 
-        return getWait2().until(ExpectedConditions.visibilityOf(createdUserName)).getText();
+        return userIdIsClickable();
     }
 
-    public boolean userIdIsClickable() {
+    public List<String> userNameList() {
+        List<WebElement> userNameList = getDriver().findElements(By.xpath("//tr/td/a"));
 
-        return createdUserName.isEnabled() && createdUserName.isDisplayed();
+        return userNameList.stream().map(WebElement::getText).toList();
     }
 }

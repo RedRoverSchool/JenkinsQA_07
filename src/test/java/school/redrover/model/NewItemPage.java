@@ -27,6 +27,9 @@ public class NewItemPage extends BasePage {
     @FindBy(tagName = "h2")
     private WebElement requestErrorMessage;
 
+    @FindBy(tagName = "p")
+    private WebElement noNameErrorMessage;
+
     @FindBy(className = "com_cloudbees_hudson_plugins_folder_Folder")
     private WebElement folder;
 
@@ -83,6 +86,10 @@ public class NewItemPage extends BasePage {
 
     public String getRequestErrorMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(requestErrorMessage)).getText();
+    }
+
+    public String getNoNameErrorMessage() {
+        return getWait2().until(ExpectedConditions.visibilityOf(noNameErrorMessage)).getText();
     }
 
     public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {

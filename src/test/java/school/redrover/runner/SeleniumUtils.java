@@ -1,4 +1,4 @@
-package school.redrover;
+package school.redrover.runner;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -7,7 +7,7 @@ import school.redrover.runner.BaseTest;
 
 import java.util.UUID;
 
-public class AdditionalUtils extends BaseTest{
+public class SeleniumUtils {
 
     public static String generateRandomName() {
         String randomName = UUID.randomUUID()
