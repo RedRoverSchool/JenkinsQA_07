@@ -98,7 +98,7 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobDropdownMenu (String name) {
+    public HomePage clickJobDropdownMenu(String name) {
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
 
         Actions actions = new Actions(getDriver());
@@ -108,9 +108,13 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public MultibranchPipelineRenamePage clickRenameDropdownMenu (String name) {
+    public MultibranchPipelineRenamePage clickRenameDropdownMenu(String name) {
         getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
 
         return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public boolean isProjectExist(String projectName) {
+        return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 }
