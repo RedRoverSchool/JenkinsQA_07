@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,6 +36,12 @@ public class NewItemPage extends BasePage {
 
     @FindBy(id = "from")
     private WebElement cloneItemTextField;
+
+    @FindBy(css = "div[class='add-item-name']")
+    private WebElement inputValidationMessage;
+
+    @FindBy(css = "li[class='hudson_matrix_MatrixProject']")
+    private WebElement MultiConfigurationProject;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -105,6 +112,20 @@ public class NewItemPage extends BasePage {
 
         return this;
     }
+
+    public NewItemPage selectMultiConfigurationProject() {
+        MultiConfigurationProject.click();
+
+        return this;
+    }
+
+    public boolean inputValidationMessage(String errorMessage) {
+        inputName.sendKeys(Keys.TAB);
+
+        return getWait2().until(ExpectedConditions.textToBePresentInElement(
+                inputValidationMessage, errorMessage));
+    }
+
 
     public boolean isCloneItemSectionDisplayed() {
         return !getDriver().findElements(By.className("item-copy")).isEmpty();
