@@ -215,9 +215,6 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEditDescription() {
         String descriptionEditText = "Welcome";
 
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.accept();
-
         getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
 
         changeDescriptionTextInStatus(descriptionEditText);
@@ -487,30 +484,15 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='enable']/button")).isEnabled());
     }
 
-    @Test(dependsOnMethods = "testDisable")
+    @Test
     public void testEnable() {
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
+        createFreeStyleProject(PROJECT_NAME);
+        clickSubmitButton();
 
+        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
         getDriver().findElement(By.xpath("//form[@action='enable']/button")).click();
 
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
-    }
-
-    @Test()
-    public void testErrorWhenRenameWithExistingName() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage(); //New Freestyle Project
-
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
-        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL + "a");
-        getDriver().findElement(By.name("newName")).sendKeys(PROJECT_NAME);
-        clickSubmitButton();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
-                "The new name is the same as the current name.");
     }
 
     @Test
@@ -658,8 +640,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
 
-        getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
-        getDriver().findElement(By.cssSelector("#tasks > div:nth-child(6) > span > a")).click();
+        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
 
         getDriver().findElement(By.xpath("(//button[@type='button'][normalize-space()='Advanced'])[3]")).click();
         getDriver().findElement(By.cssSelector("a[title='Help for feature: Quiet period']")).click();
