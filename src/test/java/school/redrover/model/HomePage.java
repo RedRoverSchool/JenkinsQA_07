@@ -117,9 +117,13 @@ public class HomePage extends BasePage {
     public boolean isProjectExist(String projectName) {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
-  
+
     public String getJobDisplayName(String name) {
         return getDriver().findElement(By.xpath("//*[@id='job_" + name + "']/td[3]/a/span")).getText();
     }
-  
+
+    public String getTitle() {
+        return getDriver().getTitle();
+    }
+
 }
