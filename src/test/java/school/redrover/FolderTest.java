@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.checkerframework.checker.units.qual.N;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -11,8 +12,13 @@ import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.FolderConfigurationPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class FolderTest extends BaseTest {
@@ -21,9 +27,29 @@ public class FolderTest extends BaseTest {
     private static final String RENAMED_FOLDER = "RenamedFolder";
     private static final String NESTED_FOLDER = "Nested";
     private static final String JOB_NAME = "New Job";
+    private void getDashboardLink() {
+        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
+    }
 
-    private void returnToJenkinsDashboard() {
-        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+    private void createFolder(String folderName) {
+        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        getDriver().findElement(By.cssSelector("#name")).sendKeys(folderName);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+    }
+
+    private void utilsGoNameField() {
+        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
+    }
+
+    private void create(String folderName) {
+
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
@@ -57,7 +83,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#name")).sendKeys(NESTED_FOLDER);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
         getDriver().findElement(By.id("ok-button")).click();
-        returnToJenkinsDashboard();
+        getDashboardLink();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/" + NESTED_FOLDER + "/']"))).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + NESTED_FOLDER + "/move']")).click();
@@ -65,7 +91,7 @@ public class FolderTest extends BaseTest {
         getWait5().until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//option[@value='/" + RENAMED_FOLDER + "']"))).click();
         getDriver().findElement(By.name("Submit")).click();
-        returnToJenkinsDashboard();
+        getDashboardLink();
 
         getDriver().findElement(By.xpath("//li[@class='children'][1]")).click();
         getDriver().findElement(By.xpath("//a[@href='/view/all/']")).click();
@@ -111,73 +137,17 @@ public class FolderTest extends BaseTest {
                 "Project " + JOB_NAME);
     }
 
-    private void createFolder() {
-
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(FOLDER_NAME);
-        getDriver().findElement(By.xpath("//span[@class='label' and text()='Folder']"))
-                .click();
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void getDashboardLink() {
-        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
-    }
-
-    private void utilsGoNameField() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
-    }
-
-    private void create(String folderName) {
-
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(folderName);
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testRenameWithValidNameFromDropDownMenu() {
 
-        final String folderName = "Folder1";
-        final String renamedFolder = "Folder111";
-        create(folderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        getDriver().findElement(By.xpath("//*[@id='job_" + folderName + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/Folder1/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
         getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(renamedFolder);
+        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_FOLDER);
         getDriver().findElement(By.name("Submit")).click();
         getDriver().findElement(By.linkText("Dashboard")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + renamedFolder + "']")).isDisplayed());
-    }
-
-    @Ignore
-    @Test
-    public void TestMoveFolder() {
-        final String firstFolderName = "Original Folder";
-        final String secondFolderName = "Inserted Folder";
-
-        create(firstFolderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        create(secondFolderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//*[@href='/job/Inserted%20Folder/move']")).click();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/select")).click();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/select/option[2]")).click();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/button")).click();
-
-        getDriver().findElement(By.linkText("Dashboard")).click();
-        getDriver().findElement(By.xpath("//*[@id= 'job_" + firstFolderName + "']/td[3]/a")).click();
-
-        assertEquals(getDriver().findElement(By.xpath("//*[@id='job_" + secondFolderName + "']/td[3]/a/span")).getText(), secondFolderName);
+        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + RENAMED_FOLDER + "']")).isDisplayed());
     }
 
     @Ignore
@@ -186,7 +156,7 @@ public class FolderTest extends BaseTest {
 
         final String NEW_FOLDER_NAME = "FolderNew";
 
-        createFolder();
+        createFolder(FOLDER_NAME);
 
         getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
@@ -246,7 +216,6 @@ public class FolderTest extends BaseTest {
                 .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Folder/job/Pipeline/1/console']")))
                 .perform();
 
-
         Assert.assertEquals(getDriver().findElement(
                         By.xpath("//a[@href='/job/Folder/job/Pipeline/1/console']")).getAttribute("tooltip"),
                 "Success > Console Output");
@@ -261,7 +230,6 @@ public class FolderTest extends BaseTest {
                 .click()
                 .perform();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
 
         getDriver().findElement(By.xpath("//a[@href='job/Pipeline/']")).click();
         getDriver().findElement(By.xpath("//a[@data-url='/job/Folder/job/Pipeline/doDelete']")).click();
@@ -313,7 +281,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 
-
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
@@ -356,6 +323,143 @@ public class FolderTest extends BaseTest {
 
         String appearanceOfAddDescriptionButton = getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
         Assert.assertEquals(appearanceOfAddDescriptionButton, "Add description");
+    }
+
+    @Ignore
+    @Test
+    public void testSubFolderInBreadcrumbs() {
+        final String folderName = "Test Folder";
+        final String subfolderName = "Test SubFolder";
+
+        create(folderName);
+
+        getDriver().findElement(By.xpath(String.format("//td/a[@href='job/%s/']",
+                folderName.replace(" ", "%20")))).click();
+        getDriver().findElement(By.xpath("//li/a[@href='newJob']")).click();
+
+        getDriver().findElement(By.className("jenkins-input")).sendKeys(subfolderName);
+        getDriver().findElement(By.xpath("//*[@id='j-add-item-type-nested-projects']/ul/li[1]")).click();
+        getDriver().findElement(By.xpath("//*[@id='ok-button']")).click();
+
+        List<String> listBreadcrumbsItems = getDriver().findElements(
+                        By.xpath("//li[@class='jenkins-breadcrumbs__list-item']/a"))
+                .stream().map(WebElement::getText).toList();
+        List<String> listExpectedItems = new ArrayList<>(List.of
+                (new String[]{"Dashboard", folderName, subfolderName}));
+
+        Assert.assertEquals(listBreadcrumbsItems, listExpectedItems);
+    }
+
+    @Test
+    public void testAddDescription() {
+        final String description = "Test123";
+
+        createFolder("Test");
+
+        getDriver().findElement(By.name("_.description")).sendKeys(description);
+        getDriver().findElement(By.name("Submit")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(),description);
+    }
+    @Test
+    public void testClickPreview() {
+        createFolder(FOLDER_NAME);
+
+        getDriver().findElement(By.name("_.description")).sendKeys("description123");
+        getDriver().findElement(By.className("textarea-show-preview")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(),"description123");
+    }
+
+    @Test
+    public void testRenameWithEndingPeriod() {
+        char period = '.';
+
+        createFolder(FOLDER_NAME);
+        getDashboardLink();
+        getDriver().findElement(By.xpath("//a[@href='job/" + FOLDER_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
+
+        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
+        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys("FOLDER_WITH_UNSAFE_CHARACTER" + period);
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//p")).getText(),
+                "A name cannot end with ‘" + period + "’");
+    }
+
+    @Ignore
+    @Test
+    public void testMoveThroughSidePanel() {
+        create(FOLDER_NAME);
+        getDashboardLink();
+
+        create(NESTED_FOLDER);
+        getDashboardLink();
+
+        getDriver().findElement(By.xpath("//a[@href='job/" + NESTED_FOLDER + "/']")).click();
+        getDriver().findElement(By.linkText("Move")).click();
+        getDriver().findElement(By.name("destination")).click();
+        getDriver().findElement(By .xpath("//option[contains(text(),'Jenkins » " + FOLDER_NAME + "')]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+
+        getDashboardLink();
+        getDriver().findElement(By.xpath("//a[@href='job/" + FOLDER_NAME + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='job/" + NESTED_FOLDER + "/']")).click();
+
+        ArrayList<String> expectedBreadcrumbs = new ArrayList<>();
+        expectedBreadcrumbs.add("Dashboard");
+        expectedBreadcrumbs.add(FOLDER_NAME);
+        expectedBreadcrumbs.add(NESTED_FOLDER);
+
+        ArrayList<String> actualBreadcrumbs = new ArrayList<>();
+        List<WebElement> breadcrumbs = getDriver().findElements(By.xpath("//li/a[@class='model-link']"));
+        for (WebElement eachBreadcrumb: breadcrumbs)
+        {
+            actualBreadcrumbs.add(eachBreadcrumb.getText());
+        }
+
+        Assert.assertEquals(actualBreadcrumbs, expectedBreadcrumbs, "Breadcrumbs don't match");
+    }
+
+    @Test(dependsOnMethods = "testRename")
+    public void testRenameFolderThroughLeftPanelWithEmptyName() {
+        getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
+        getDriver().findElement(By.xpath("//a[@ href='/job/Renamed%20Folder/confirm-rename']")).click();
+        getDriver().findElement(By.name("newName")).clear();
+        getDriver().findElement(By.name("newName")).sendKeys("");
+        getDriver().findElement(By.name("Submit")).click();
+
+        assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='main-panel']/p")).getText(), "No name is specified");
+    }
+
+    @Test(dependsOnMethods = "testAddFolderDescription")
+    public void testChangeFolderDescription() {
+        getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
+        getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.name("description")).clear();
+        getDriver().findElement(By.name("description")).sendKeys("Second description");
+        getDriver().findElement(By.name("Submit")).click();
+
+        assertEquals(getDriver().findElement(
+                By.xpath("//*[@id='description']/div[1]")).getText(), "Second description");
+    }
+
+    @Test(dependsOnMethods = "testDeleteFolderDescription")
+    public void testConfigureFolderCheckConfigurationMenu() {
+        getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
+        getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/a")).click();
+
+        List<String> listOfExpectedMenuItems = Arrays.asList("General", "Health metrics", "Properties");
+
+        List<WebElement> listOfMenuItems = getDriver().findElements(
+                By.xpath("//span[@class = 'task-link-text' and contains(., '')]"));
+        List<String> extractedMenuItems = listOfMenuItems.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(extractedMenuItems, listOfExpectedMenuItems);
     }
 }
 
