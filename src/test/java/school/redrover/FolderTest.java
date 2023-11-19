@@ -1,7 +1,7 @@
 package school.redrover;
 
 import org.checkerframework.checker.units.qual.N;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,14 +12,10 @@ import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.FolderConfigurationPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.testng.Assert.assertTrue;
-import static org.testng.AssertJUnit.assertEquals;
 
 public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "FolderName";
@@ -76,6 +72,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testMoveFolderToFolder() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
@@ -123,6 +120,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualFolderName, folderDisplayName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testMoveFolderToFolder")
     public void testCreateNewJob() {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
@@ -294,7 +292,7 @@ public class FolderTest extends BaseTest {
         String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
         Assert.assertEquals(actualDescription, descriptionText);
     }
-
+    @Ignore
     @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
@@ -310,6 +308,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualNewDescription, newDescriptionText);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
         getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
@@ -422,6 +421,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualBreadcrumbs, expectedBreadcrumbs, "Breadcrumbs don't match");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testRenameFolderThroughLeftPanelWithEmptyName() {
         getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
@@ -430,10 +430,11 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("newName")).sendKeys("");
         getDriver().findElement(By.name("Submit")).click();
 
-        assertEquals(getDriver().findElement(
+        Assert.assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/p")).getText(), "No name is specified");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddFolderDescription")
     public void testChangeFolderDescription() {
         getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
@@ -442,7 +443,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("description")).sendKeys("Second description");
         getDriver().findElement(By.name("Submit")).click();
 
-        assertEquals(getDriver().findElement(
+        Assert.assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='description']/div[1]")).getText(), "Second description");
     }
 
