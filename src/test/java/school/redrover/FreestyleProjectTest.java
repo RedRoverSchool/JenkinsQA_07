@@ -164,10 +164,14 @@ public class FreestyleProjectTest extends BaseTest {
         goToJenkinsHomePage();
 
         getDriver().findElement(By.xpath("//span[contains(text(),'" + initialProjectName + "')]")).click();
+
         getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
+
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(newProjectName);
+
         clickSubmitButton();
+
         goToJenkinsHomePage();
 
         assertTrue(isProjectExist(newProjectName));
@@ -595,7 +599,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testRenameFreestyleProjectSideMenu() {
         getWait10().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]"))).click();
@@ -704,7 +707,6 @@ public class FreestyleProjectTest extends BaseTest {
                 editedDescriptionText);
     }
 
-    @Ignore
     @Test(dependsOnMethods = {"testCreateFreestyleProjectWithValidName", "testRenameFreestyleProjectSideMenu"})
     public void testCreateFreestyleProjectFromExistingProject() {
         getDriver().findElement(By.linkText("New Item")).click();
@@ -1219,5 +1221,18 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Workspace of " + PROJECT_NAME + " on Built-In Node");
+    }
+
+    @Test
+    public void testDisableProjectMessage() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside")).click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+
+        boolean isMessageVisible = getDriver().findElement(By.className("warning")).isDisplayed();
+
+        Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 }
