@@ -101,4 +101,15 @@ public class NewItemPage extends BasePage {
 
         return this;
     }
+
+    public NewItemPage selectMultiConfigurationProject() {
+        getDriver().findElement(By.cssSelector("li[class='hudson_matrix_MatrixProject']")).click();
+
+        return this;
+    }
+
+    public String inputValidationMessage() {
+        return  getDriver().findElement(By.cssSelector("div[class='add-item-name']")).getText();
+    }
+
 }

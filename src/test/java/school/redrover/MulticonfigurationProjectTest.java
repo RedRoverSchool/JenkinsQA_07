@@ -4,14 +4,15 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.MultiConfigurationConfigurePage;
 import school.redrover.runner.BaseTest;
 
 public class MulticonfigurationProjectTest extends BaseTest {
     private static final  String DESCRIPTION = "This is a description!!!";
-    private static final  String PROJECTNAME = "MulticonfigurationProject";
-    private final static By LINK_ON_A_CREATED_FREESTYLE_PROJECT = By.xpath("//tr[@id='job_" + PROJECTNAME + "']/td[3]/a");
+    private static final  String PROJECT_NAME = "MultiConfigurationProject123";
+    private static final  By LINK_ON_A_CREATED_FREESTYLE_PROJECT = By.xpath("//tr[@id='job_" + PROJECT_NAME + "']/td[3]/a");
 
     private WebElement textDescription() {
         return getDriver().findElement(By.xpath("//*[@class='jenkins-!-margin-bottom-0']//div"));
@@ -19,7 +20,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
 
     private void createProject() {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECTNAME);
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
@@ -27,7 +28,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
     }
 
     private void addDescriptionIntoProject() {
-        getDriver().findElement(By.xpath("//span[normalize-space()='" + PROJECTNAME + "']")).click();
+        getDriver().findElement(By.xpath("//span[normalize-space()='" + PROJECT_NAME + "']")).click();
         getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
         getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
@@ -54,48 +55,42 @@ public class MulticonfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateWithValidName() {
-        createProject();
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectMultiConfigurationProject()
+                .clickOk(new MultiConfigurationConfigurePage(getDriver()))
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + PROJECTNAME + "/']")).click();
-
-        Assert.assertEquals(getDriver().getTitle(),PROJECTNAME + " [Jenkins]");
+        Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
     }
 
     @Test
     public void testCreateWithEmptyName() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        String validationMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName("")
+                .selectMultiConfigurationProject()
+                .inputValidationMessage();
 
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id=\"itemname-required\"]")).getText(),
-                "» This field cannot be empty, please enter a valid name");
-        Assert.assertTrue(
-                getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
+        Assert.assertTrue(validationMessage.contains("» This field cannot be empty, please enter a valid name"));
+        Assert.assertTrue(getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
     }
 
-    @Test
-    public void testCreateWithDublicateName() {
-        createProject();
+    @Test(dependsOnMethods = "testCreateWithValidName")
+    public void testCreateWithDuplicateName() {
+        String duplicateName = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .inputValidationMessage();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(PROJECTNAME);
-
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]")).getText(),
-                "» A job already exists with the name ‘" + PROJECTNAME + "’");
-
-
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("#main-panel")).getText().contains("A job already exists with the name ‘" + PROJECTNAME + "’"));
+        Assert.assertTrue(duplicateName.contains("» A job already exists with the name ‘" + PROJECT_NAME +"’"));
     }
 
     @Test
     public void testCreateProjectWithDescription() {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECTNAME);
+        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
         getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
@@ -144,7 +139,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
         String actualProjectName = getDriver().findElement(By.tagName("h1")).getText();
         String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
 
-        Assert.assertEquals(actualProjectName, String.format("Project %s",PROJECTNAME));
+        Assert.assertEquals(actualProjectName, String.format("Project %s", PROJECT_NAME));
         Assert.assertEquals(actualDescription, DESCRIPTION);
     }
 
