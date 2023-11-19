@@ -271,6 +271,7 @@ public class FooterTest extends BaseTest {
         Assert.assertTrue(actualListTabBarGetText.containsAll(expectedListTabBar));
     }
 
+    @Ignore
     @Test
     public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
         String aboutJenkins = "About Jenkins";

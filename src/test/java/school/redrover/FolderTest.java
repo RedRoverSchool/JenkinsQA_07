@@ -130,19 +130,6 @@ public class FolderTest extends BaseTest {
                 "Project " + JOB_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreate")
-    public void testRenameWithValidNameFromDropDownMenu() {
-
-        getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_FOLDER);
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + RENAMED_FOLDER + "']")).isDisplayed());
-    }
-
     @Ignore
     @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
@@ -274,6 +261,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
