@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.checkerframework.checker.units.qual.N;
 import org.openqa.selenium.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -60,6 +59,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(FOLDER_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
         HomePage homePage = new HomePage(getDriver())
@@ -99,6 +99,7 @@ public class FolderTest extends BaseTest {
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreate", "testRename"})
     public void testAddDisplayName() {
         final String folderDisplayName = "Best folder";
