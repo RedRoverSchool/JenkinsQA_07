@@ -117,4 +117,8 @@ public class HomePage extends BasePage {
     public String getJobDisplayName(String name) {
         return getDriver().findElement(By.xpath("//*[@id='job_" + name + "']/td[3]/a/span")).getText();
     }
+
+    public String getTitle() {
+        return getDriver().getTitle();
+    }
 }
