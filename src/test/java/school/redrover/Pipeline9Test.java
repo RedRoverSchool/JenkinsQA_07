@@ -60,7 +60,7 @@ public class Pipeline9Test extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//ul[@class = 'permalinks-list']")).getText().isEmpty());
     }
 
-    @Test(dependsOnMethods = "testPermalinksIsEmpty")
+    @Test(dependsOnMethods = "testCreatePipeline")
     public void testPermalinksContainsInfo() throws InterruptedException {
         final List<String> permalinksInfo = List.of(
                 "Last build (#1)",
@@ -70,8 +70,7 @@ public class Pipeline9Test extends BaseTest {
         );
 
         getDriver().findElement(By.xpath("//td//a[@title = 'Schedule a Build for " + PIPELINE_NAME + "']")).click();
-        Thread.sleep(2000);
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']"))).click();
 
         List<WebElement> permalinks = getDriver().findElements(By.className("permalink-item"));
 
