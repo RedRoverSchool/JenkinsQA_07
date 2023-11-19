@@ -1199,7 +1199,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testVisibilityHelDescriptionQuietPeriod(){
+    public void testVisibilityHelDescriptionQuietPeriod() {
         createProject("Freestyle project", PROJECT_NAME, true);
 
         getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
