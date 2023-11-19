@@ -1,14 +1,14 @@
 package school.redrover;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.FolderConfigurationPage;
+import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
@@ -102,23 +102,17 @@ public class FolderTest extends BaseTest {
     @Ignore
     @Test(dependsOnMethods = {"testCreate", "testRename"})
     public void testAddDisplayName() {
-        final String folderDisplayName = "Best folder";
+        final String expectedFolderDisplayName = "Best folder";
 
-        WebElement folder = getDriver().findElement(By.xpath("//*[@id='job_" + RENAMED_FOLDER + "']/td[3]/a"));
-        new Actions(getDriver())
-                .moveToElement(folder)
-                .click()
-                .perform();
-        getDriver().findElement(By.linkText("Configure")).click();
-        getDriver().findElement(By.xpath("//input[@name='_.displayNameOrNull']")).sendKeys(folderDisplayName);
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
+        String actualFolderDisplayName = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickConfigure()
+                .typeDisplayName(expectedFolderDisplayName)
+                .clickSave()
+                .goHomePage()
+                .getJobDisplayName(RENAMED_FOLDER);
 
-        String actualFolderName = getDriver()
-                .findElement(By.xpath("//*[@id='job_" + RENAMED_FOLDER + "']/td[3]/a/span"))
-                .getText();
-
-        Assert.assertEquals(actualFolderName, folderDisplayName);
+        Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
     }
 
     @Ignore

@@ -1,103 +1,91 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.ErrorPage;
+import school.redrover.model.FreestyleProjectConfigurePage;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import static org.testng.Assert.*;
 
 public class NewItemTest extends BaseTest {
 
-    private void goToJenkinsHomePage() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
-
-    private void createFreeStyleProject(String projectName) {
-        goToJenkinsHomePage();
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private boolean isProjectExist(String projectName) {
-        goToJenkinsHomePage();
-        return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
-    }
-
-    private boolean isCloneItemSectionDisplayed() {
-        return !getDriver().findElements(By.className("item-copy")).isEmpty();
-    }
-
     @Test
     public void testNewItemFromExistedJobSectionIsDisplayedWhenItemCreated() {
         final String projectName = "Test Project";
-        createFreeStyleProject(projectName);
-        goToJenkinsHomePage();
-        getDriver().findElement(By.linkText("New Item")).click();
 
-        assertTrue(isCloneItemSectionDisplayed());
+        boolean isCloneItemSectionDisplayed = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(projectName)
+                .goHomePage()
+                .clickNewItem()
+                .isCloneItemSectionDisplayed();
+
+        assertTrue(isCloneItemSectionDisplayed);
     }
 
     @Test
     public void testNewItemFromExistedJobSectionIsNotDisplayedWhenNoItemsCreated() {
-        goToJenkinsHomePage();
-        getDriver().findElement(By.linkText("New Item")).click();
+        boolean isCloneItemSectionDisplayed = new HomePage(getDriver())
+                .clickNewItem()
+                .isCloneItemSectionDisplayed();
 
-        assertFalse(isCloneItemSectionDisplayed());
+        assertFalse(isCloneItemSectionDisplayed);
     }
 
     @Test
     public void testAutocompleteListOfCopyFromFieldWithItemCreated() {
         final String firstProject = "Test project";
         final String secondProject = "Test project 2";
-        createFreeStyleProject(firstProject);
-        goToJenkinsHomePage();
-        getDriver().findElement(By.linkText("New Item")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(secondProject);
-        getDriver().findElement(By.id("from")).sendKeys(firstProject.substring(0, 4));
+        boolean isAutocompleteSuggested = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(firstProject)
+                .goHomePage()
+                .clickNewItem()
+                .typeItemName(secondProject)
+                .enterExistentItemNameToClone(firstProject.substring(0, 4))
+                .isAutocompleteToCloneSuggested(firstProject);
 
-        boolean isAutocompleteSuggested = !getDriver()
-                .findElements(By.xpath("//li[contains(text(),'" + firstProject + "')]"))
-                .isEmpty();
         assertTrue(isAutocompleteSuggested);
     }
 
-    @Ignore
     @Test
     public void testNewItemCreationWithNonExistentName() {
         final String firstProject = "Test project";
         final String secondProject = "Test project 2";
         final String nonExistentProject = "Test project 3";
-        createFreeStyleProject(firstProject);
-        goToJenkinsHomePage();
-        getDriver().findElement(By.linkText("New Item")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(secondProject);
-        getDriver().findElement(By.id("from")).sendKeys(nonExistentProject);
-        getDriver().findElement(By.id("ok-button")).click();
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(firstProject)
+                .goHomePage()
+                .clickNewItem()
+                .typeItemName(secondProject)
+                .enterExistentItemNameToClone(nonExistentProject)
+                .clickOk(new ErrorPage(getDriver()))
+                .getErrorMessage();
 
-        String expectedErrorMessage = "Error\nNo such job: " + nonExistentProject;
-        String actualErrorMessage = getDriver().findElement(By.id("main-panel")).getText();
-        assertEquals(actualErrorMessage, expectedErrorMessage);
+        assertEquals(errorMessage, ("Error\n" + "No such job: " + nonExistentProject));
     }
 
     @Test
     public void testNewItemCreationWithExistentName() {
         final String firstProject = "Test project";
         final String secondProject = "Test project 2";
-        createFreeStyleProject(firstProject);
-        goToJenkinsHomePage();
-        getDriver().findElement(By.linkText("New Item")).click();
 
-        getDriver().findElement(By.id("name")).sendKeys(secondProject);
-        getDriver().findElement(By.id("from")).sendKeys(firstProject);
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        goToJenkinsHomePage();
+        boolean isProjectCreated = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(firstProject)
+                .goHomePage()
+                .clickNewItem()
+                .typeItemName(secondProject)
+                .enterExistentItemNameToClone(firstProject)
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .clickSaveButton()
+                .goHomePage()
+                .isProjectExist(secondProject);
 
-        assertTrue(isProjectExist(secondProject));
+        assertTrue(isProjectCreated);
     }
 }

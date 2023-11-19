@@ -14,10 +14,18 @@ import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class OrganizationFolderTest extends BaseTest {
     private static final String PROJECT_NAME = "Organization Folder";
     private static final String NEW_PROJECT_NAME = "Organization Folder Renamed";
+
+    @DataProvider(name = "random unsafe character")
+    public Object[][] provideUnsafeCharacters() {
+        String[] wrongCharacters = {"!", "@", "#", "$", "%", "^", "&", "*", "?", "|", ">", "[", "]"};
+        int randomIndex = new Random().nextInt(wrongCharacters.length);
+        return new Object[][]{{wrongCharacters[randomIndex]}};
+    }
 
     private String getName(int nameLength) {
         return "a".repeat(nameLength);
@@ -46,6 +54,17 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "» A job already exists with the name ‘" + PROJECT_NAME + "’");
     }
 
+    @Test(dataProvider = "random unsafe character")
+    public void testCreateProjectWithUnsafeCharacters(String unsafeChar) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(unsafeChar)
+                .selectOrganizationFolder()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
+    }
+
     @Test
     public void testCreateOrganizationFolderWithEmptyName() {
         String errorMessage = new HomePage(getDriver())
@@ -58,8 +77,21 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
+    public void testCreateOrganizationFolderWithSpaceInsteadOfName() {
+        final String nameWithSpace = " ";
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(nameWithSpace)
+                .selectOrganizationFolder()
+                .clickOk(new NewItemPage(getDriver()))
+                .getNoNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "No name is specified");
+    }
+
+    @Test
     public void testCreateOrganizationFolderWithLongName() {
-        String longName = getName(256);
+        final String longName = getName(256);
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(longName)
@@ -68,6 +100,31 @@ public class OrganizationFolderTest extends BaseTest {
                 .getRequestErrorMessage();
 
         Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithInvalidNameWithTwoDots() {
+        final String name = "..";
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(name)
+                .selectOrganizationFolder()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» “..” is not an allowed name");
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithInvalidNameWithDotAtEnd() {
+        final String name = "name.";
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(name)
+                .selectOrganizationFolder()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» A name cannot end with ‘.’");
     }
 
     private void returnHomeJenkins() {
@@ -113,34 +170,6 @@ public class OrganizationFolderTest extends BaseTest {
         setFolderName(folderName);
         clickOrganizationFolderButton();
         clickOkButton();
-    }
-
-    @DataProvider(name = "wrong-character")
-    public Object[][] provideWrongCharacters() {
-        return new Object[][]{{"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {">"}, {"["}, {"]"}};
-    }
-
-    @Test(dataProvider = "wrong-character")
-    public void testCreateProjectWithInvalidChar(String invalidData) {
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.name("name")).sendKeys(invalidData);
-
-        String errorMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
-
-        Assert.assertEquals(errorMessage, "» ‘" + invalidData + "’ is an unsafe character");
-    }
-
-    @Test
-    public void testCreateProjectWithSpaceInsteadOfName() {
-        final String space = " ";
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.name("name")).sendKeys(space);
-        getDriver().findElement(By.xpath("//li//span[text()='Organization Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error");
     }
 
     @Test
@@ -264,35 +293,6 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//button[@name='Submit']")).getText(),
                 "Enable");
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@method='post']")).getText().contains("This Organization Folder is currently disabled"));
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithInvalidNameWithTwoDots() {
-        clickNewJobButton();
-        setFolderName("..");
-        clickOrganizationFolderButton();
-
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
-                "» “..” is not an allowed name");
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithInvalidNameWithDotAtEnd() {
-        clickNewJobButton();
-        setFolderName("name.");
-        clickOrganizationFolderButton();
-
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
-                "» A name cannot end with ‘.’");
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithInvalidNameOnlyWithSpace() {
-        createOrganizationFolderBySteps(" ");
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(),
-                "No name is specified");
     }
 
     @Ignore

@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.SeleniumUtils;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class PluginsTest extends BaseTest {
         WebElement installedPlugins = getDriver().findElement(By.xpath(
                 "//a[@href = '/manage/pluginManager/installed']"));
 
-        AdditionalUtils.jsClick(getDriver(), installedPlugins);
+        SeleniumUtils.jsClick(getDriver(), installedPlugins);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
 
