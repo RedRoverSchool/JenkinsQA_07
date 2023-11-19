@@ -1037,7 +1037,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        new FreestyleProjectDetailsPage(getDriver())
+        String inputUrlField = new FreestyleProjectDetailsPage(getDriver())
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .clickSourseCodeManagementLinkFromSideMenu()
                 .scrollPage(0, 600)
@@ -1046,11 +1046,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .clickSourseCodeManagementLinkFromSideMenu()
-                .scrollPage(0, 600);
+                .scrollPage(0, 600)
+                .getInputGitLinkFieldValue();
 
-        WebElement inputUrlField = getDriver().findElement(By.xpath("//input[@name='_.url']"));
-
-        Assert.assertEquals(inputUrlField.getAttribute("value"), "https://github.com/RedRoverSchool/JenkinsQA_07");
+        Assert.assertEquals(inputUrlField, "https://github.com/RedRoverSchool/JenkinsQA_07");
     }
 
     @Test
@@ -1058,7 +1057,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        new FreestyleProjectDetailsPage(getDriver())
+        String inputDaysToKeepBuilds = new FreestyleProjectDetailsPage(getDriver())
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .clickDiscardOldBuildsCheckBox()
                 .scrollPage(0, 300)
@@ -1066,14 +1065,14 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputDaysToKeepBuilds("3")
                 .clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
-                .scrollPage(0, 300);
+                .scrollPage(0, 300)
+                .getInputDaysToKeepBuildsFieldValue();
 
-        WebElement inputDaysToKeepBuildsField = getDriver().findElement(By.xpath("//input[@name='_.daysToKeepStr']"));
-        WebElement inputMaxNumberOfBuildsToKeepField = getDriver().findElement(By.xpath("//input[@name='_.numToKeepStr']"));
+        String inputMaxNumberOfBuildsToKeep = new FreestyleProjectConfigurePage(getDriver())
+                .getInputMaxNumberOfBuildsToKeepFieldValue();
 
-        Assert.assertEquals(inputDaysToKeepBuildsField.getAttribute("value"), "3");
-        Assert.assertEquals(inputMaxNumberOfBuildsToKeepField.getAttribute("value"), "2");
-
+        Assert.assertEquals(inputDaysToKeepBuilds, "3");
+        Assert.assertEquals(inputMaxNumberOfBuildsToKeep, "2");
     }
 
     @Test
@@ -1081,7 +1080,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        new FreestyleProjectDetailsPage(getDriver())
+        String numberOfBuilds = new FreestyleProjectDetailsPage(getDriver())
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .clickThrottleBuildsCheckBox()
                 .scrollPage(0, 600)
@@ -1089,37 +1088,34 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectTimePeriod("day")
                 .clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
-                .scrollPage(0, 600);
+                .scrollPage(0, 600)
+                .getNumberOfBuildsFieldValue();
 
-        WebElement numberOfBuilds = getDriver().findElement(By.xpath("//input[@name='_.count']"));
-        WebElement timePeriod = getDriver().findElement(By.xpath("//select[@name='_.durationName']"));
+        String timePeriod = new FreestyleProjectConfigurePage(getDriver())
+                .getTimePeriodFieldValue();
 
-        Assert.assertEquals(numberOfBuilds.getAttribute("value"), "4");
-        Assert.assertEquals(timePeriod.getAttribute("value"), "day");
+        Assert.assertEquals(numberOfBuilds, "4");
+        Assert.assertEquals(timePeriod, "day");
     }
 
     @Test
     public void testSelectExecuteConcurrentBuilds() {
 
-        final String checkBoxLocator = "//div[@class='form-container tr']";
-
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        new FreestyleProjectDetailsPage(getDriver())
+        List <WebElement> quantityOfElementsBeforeClicking = new FreestyleProjectDetailsPage(getDriver())
                 .goToConfigureFromSideMenu(PROJECT_NAME)
-                .scrollPage(0, 300);
+                .scrollPage(0, 300)
+                .getExecuteConcurrentBuilds();
 
-        List<WebElement> quantityOfElementsBeforeClicking = getDriver().findElements(By.xpath(checkBoxLocator));
-
-        new FreestyleProjectConfigurePage(getDriver())
+        List <WebElement> quantityOfElementsAfterClicking = new FreestyleProjectConfigurePage(getDriver())
                 .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
                 .clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
-                .scrollPage(0, 300);
+                .scrollPage(0, 300)
+                .getExecuteConcurrentBuilds();
 
-        List<WebElement> quantityOfElementsAfterClicking = getDriver().findElements(By.xpath(checkBoxLocator));
-
-        Assert.assertEquals(quantityOfElementsAfterClicking.size(), quantityOfElementsBeforeClicking.size() + 1);
+        Assert.assertEquals(quantityOfElementsAfterClicking.size(), quantityOfElementsBeforeClicking.size());
     }
 
     @Test

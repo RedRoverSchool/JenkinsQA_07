@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import java.util.List;
 
 public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
@@ -40,8 +41,10 @@ public class FreestyleProjectConfigurePage extends BasePage {
     private WebElement inputMaxNumberOfBuildsToKeepField;
 
     @FindBy(xpath = "//input[@name='_.count']")
-    private WebElement numberOfBuildsLocator;
+    private WebElement numberOfBuilds;
 
+    @FindBy(xpath = "//select[@name='_.durationName']")
+    private WebElement selectTimePeriod;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -107,8 +110,8 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage inputNumberOfBuilds(String num) {
-        numberOfBuildsLocator.clear();
-        numberOfBuildsLocator.sendKeys(num);
+        numberOfBuilds.clear();
+        numberOfBuilds.sendKeys(num);
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
@@ -124,4 +127,27 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
+    public String getInputGitLinkFieldValue() {
+        return inputGitLinkField.getAttribute("value");
+    }
+
+    public String getInputDaysToKeepBuildsFieldValue() {
+        return inputDaysToKeepBuildsField.getAttribute("value");
+    }
+
+    public String getInputMaxNumberOfBuildsToKeepFieldValue() {
+        return inputMaxNumberOfBuildsToKeepField.getAttribute("value");
+    }
+
+    public String getNumberOfBuildsFieldValue() {
+        return numberOfBuilds.getAttribute("value");
+    }
+
+    public String getTimePeriodFieldValue() {
+        return selectTimePeriod.getAttribute("value");
+    }
+
+    public List <WebElement> getExecuteConcurrentBuilds() {
+        return getDriver().findElements(By.xpath("//div[@class='form-container']"));
+    }
 }
