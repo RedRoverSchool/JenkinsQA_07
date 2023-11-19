@@ -20,12 +20,9 @@ public class FreestyleProjectTest extends BaseTest {
 
     private static final String PROJECT_NAME = "NewFreestyleProject";
     private static final String NEW_PROJECT_NAME = "NewFreestyleProjectName";
-
     private static final String SUBMIT_BUTTON_LOCATOR = "//button[@name='Submit']";
-
     private static final String CONFIGURE_LINK_LOCATOR = "//a[@href='/job/" + PROJECT_NAME + "/configure']";
-
-    private final static String JENKINS_ICON_LOCATOR = "//img[@id='jenkins-head-icon']";
+    private final static By LINK_ON_A_CREATED_FREESTYLE_PROJECT = By.xpath("//tr[@id='job_" + PROJECT_NAME + "']/td[3]/a");
 
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -37,7 +34,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
-        getDriver().findElement(By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")).click();
+        getDriver().findElement(By.xpath("//div[@id='side-panel']//a[2008(@href,'newJob')]")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
                 .sendKeys(nameOfProject);
         getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
@@ -1129,7 +1126,7 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.xpath("//label[@for='radio-block-1']")).click();
 
         getDriver().findElement(By.xpath(inputUrlFieldLocator)).sendKeys("https://github.com/RedRoverSchool/JenkinsQA_07");
-        getDriver().findElement(By.xpath(SUBMIT_BUTTON_LOCATOR)).click();
+        clickSubmitButton();
 
         getDriver().findElement(By.xpath(CONFIGURE_LINK_LOCATOR)).click();
         getDriver().findElement(By.xpath(sourseCodeManagementLocator)).click();
@@ -1209,13 +1206,13 @@ public class FreestyleProjectTest extends BaseTest {
 
         createFreeStyleProject(PROJECT_NAME);
 
-        getDriver().findElement(By.xpath(JENKINS_ICON_LOCATOR)).click();
+        goToJenkinsHomePage();
         getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error: no workspace");
 
-        getDriver().findElement(By.xpath(JENKINS_ICON_LOCATOR)).click();
+        goToJenkinsHomePage();
         getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/build?delay=0sec']")).click();
         getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
@@ -1234,5 +1231,31 @@ public class FreestyleProjectTest extends BaseTest {
         boolean isMessageVisible = getDriver().findElement(By.className("warning")).isDisplayed();
 
         Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
+    }
+
+    @Test
+    public void testDeletePermalinksOnProjectsStatusPage() {
+        createFreeStyleProject(PROJECT_NAME);
+        goToJenkinsHomePage();
+
+        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
+        getDriver().findElement(By.cssSelector("a[onclick^='return build_']")).click();
+        getDriver().navigate().refresh();
+
+        getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).click();
+        getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
+        getDriver().findElement(By.cssSelector("#jenkins-home-link")).click();
+
+        List<By> permaLinks = List.of(
+                By.xpath("//ul[@class='permalinks-list']/li[1]"),
+                By.xpath("//ul[@class='permalinks-list']/li[2]"),
+                By.xpath("//ul[@class='permalinks-list']/li[3]"),
+                By.xpath("//ul[@class='permalinks-list']/li[4]"));
+
+        for (By link : permaLinks) {
+            Assert.assertEquals(
+                    getDriver().findElements(link).size(),
+                    0);
+        }
     }
 }
