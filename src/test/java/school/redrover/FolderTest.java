@@ -447,7 +447,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testDeleteFolderDescription")
+    @Test
     public void testConfigureFolderCheckConfigurationMenu() {
         getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
         getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/a")).click();
