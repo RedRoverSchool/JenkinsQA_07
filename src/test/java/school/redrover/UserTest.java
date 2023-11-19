@@ -234,6 +234,21 @@ public class UserTest extends BaseTest {
     }
 
     @Test
+    public void testConfigureShowDescriptionPreview() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/asynchPeople/']"))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/user/admin/']"))).click();
+
+        getDriver().findElement(By.xpath("//a[@href = '/user/admin/configure']")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='_.description']"))).clear();
+        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(DESCRIPTION);
+        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
+
+        Assert.assertEquals(
+                getWait2().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//div[@class='textarea-preview']"))).getText(), DESCRIPTION);
+    }
+
+    @Test
     public void testConfigureAddDescriptionFromPeoplePage() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/asynchPeople/']"))).click();
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/user/admin/']"))).click();
