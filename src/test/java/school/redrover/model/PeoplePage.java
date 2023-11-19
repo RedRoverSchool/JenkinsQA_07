@@ -1,10 +1,13 @@
 package school.redrover.model;
 
+import org.bouncycastle.est.LimitedSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+
+import java.util.List;
 
 public class PeoplePage extends BasePage {
 
@@ -54,7 +57,7 @@ public class PeoplePage extends BasePage {
     private WebElement iconMedium;
 
     @FindBy(css =".jenkins-icon-size__items-item")
-    private WebElement largeIcon;
+    private WebElement iconLarge;
 
     @FindBy(xpath = "//a[@href='api/']")
     private WebElement restApi;
@@ -94,15 +97,46 @@ public class PeoplePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public void clickBell() {
+    public PeoplePage clickBell() {
         bell.click();
+        return this;
     }
 
-    public void clickShield() {
+    public PeoplePage clickShield() {
         shield.click();
+        return this;
     }
 
-    public void clickQuestionMark() {
+    public PeoplePage clickQuestionMark() {
         questionMark.click();
+        return this;
     }
+
+    public PeoplePage clickIconSmall() {
+        iconSmall.click();
+        return this;
+    }
+
+    public PeoplePage clickIconMedium() {
+        iconMedium.click();
+        return this;
+    }
+
+    public PeoplePage clickIconLarge() {
+        iconLarge.click();
+        return this;
+    }
+
+    public List <String> getPeopleList() {
+        List<WebElement> elementList = getDriver().findElements(By.cssSelector(".jenkins-table__link"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        return resultList;
+    }
+
+//    public List<WebElement> getIcon() {
+//        List<WebElement> buttonList = (List<WebElement>) getDriver().findElement(By.xpath("//div[@class='jenkins-table__cell__button-wrapper']"));
+//        List<String> result = buttonList.stream().map(WebElement::getText).toList();
+//        return result;
+//    }
 }

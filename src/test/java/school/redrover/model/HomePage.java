@@ -14,6 +14,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement setUpAnAgent;
 
+    @FindBy(xpath = "//a[@href='/asynchPeople/']")
+    private WebElement people;
+
     @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
     public WebElement buildHistoryButton;
 
@@ -30,6 +33,11 @@ public class HomePage extends BasePage {
     public <T> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//*[@id='job_" + name + "']/td[3]/a")).click();
 
+        return page;
+    }
+
+    public <T> T clickPeople(T page) {
+        people.click();
         return page;
     }
 

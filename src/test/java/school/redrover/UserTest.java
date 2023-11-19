@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.checkerframework.dataflow.qual.TerminatesExecution;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.PeoplePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -585,5 +587,15 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/securityRealm/']")).getText(),
                 "Jenkins’ own user database");
+    }
+
+    @Test
+    public void testSizeIcon() {
+        PeoplePage sizeIcon = new HomePage(getDriver())
+                .clickPeople(new PeoplePage(getDriver()))
+                .getPeopleList();
+
+//        Assert.assertEquals(sizeIcon);
+        System.out.println(sizeIcon);
     }
 }
