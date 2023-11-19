@@ -23,8 +23,12 @@ public class FolderDetailsPage extends BasePage {
 
     public ConfigurationPage clickConfigure() {
         configure.click();
-
         return new ConfigurationPage(getDriver());
+    }
+
+    public FolderConfigurationPage clickConfigureFolder() {
+        configure.click();
+        return new FolderConfigurationPage(getDriver());
     }
 
 }

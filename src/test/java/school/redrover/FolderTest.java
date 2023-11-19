@@ -458,5 +458,18 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(extractedMenuItems, listOfExpectedMenuItems);
     }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void folderDescriptionPreviewWorksCorrectly() {
+        String description = "Folder description";
+        HomePage homePage = new HomePage(getDriver());
+        String previewText = homePage.clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickConfigureFolder()
+                .typeDescription(description)
+                .clickPreviewDescription()
+                .getFolderDescription();
+
+        Assert.assertEquals(previewText,description);
+    }
 }
 
