@@ -126,4 +126,8 @@ public class HomePage extends BasePage {
         return getDriver().getTitle();
     }
 
+    public String getHeadLineText() {
+
+        return getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")).getText();
+    }
 }
