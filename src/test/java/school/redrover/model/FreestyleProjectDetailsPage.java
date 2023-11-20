@@ -25,4 +25,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href = '/job/" + projectName + "/configure']")).click();
         return new FreestyleProjectConfigurePage(getDriver());
     }
+
+    public WorkspacePage goToWorkspaceFromSideMenu(String projectName) {
+        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/ws/']")).click();
+        return new WorkspacePage(getDriver());
+    }
 }

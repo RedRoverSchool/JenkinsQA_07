@@ -130,4 +130,10 @@ public class HomePage extends BasePage {
 
         return getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")).getText();
     }
+
+    public HomePage clickBuildByGreenArrow(String name) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + name + "/build?delay=0sec']")).click();
+
+        return this;
+    }
 }

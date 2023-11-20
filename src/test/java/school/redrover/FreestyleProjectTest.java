@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.BreadcrumbPage;
 import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.FreestyleProjectDetailsPage;
 import school.redrover.model.HomePage;
@@ -1142,12 +1143,12 @@ public class FreestyleProjectTest extends BaseTest {
 
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        List <WebElement> quantityOfElementsBeforeClicking = new FreestyleProjectDetailsPage(getDriver())
+        List<WebElement> quantityOfElementsBeforeClicking = new FreestyleProjectDetailsPage(getDriver())
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .scrollPage(0, 300)
                 .getExecuteConcurrentBuilds();
 
-        List <WebElement> quantityOfElementsAfterClicking = new FreestyleProjectConfigurePage(getDriver())
+        List<WebElement> quantityOfElementsAfterClicking = new FreestyleProjectConfigurePage(getDriver())
                 .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
                 .clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
@@ -1160,20 +1161,23 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testIsWorkspaceCreated() {
 
-        createFreeStyleProject(PROJECT_NAME);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
 
-        goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+        String titleBeforeWorkspaceCreating = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .goToWorkspaceFromSideMenu(PROJECT_NAME)
+                .getTitleText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error: no workspace");
+        Assert.assertEquals(titleBeforeWorkspaceCreating, "Error: no workspace");
 
-        goToJenkinsHomePage();
-        getDriver().findElement(By.xpath("//a[@href='job/" + PROJECT_NAME + "/build?delay=0sec']")).click();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + PROJECT_NAME + "/ws/']")).click();
+        String titleAfterWorkspaceCreating = new BreadcrumbPage(getDriver())
+                .clickJenkinsIcon()
+                .clickBuildByGreenArrow(PROJECT_NAME)
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .goToWorkspaceFromSideMenu(PROJECT_NAME)
+                .getTitleText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Workspace of " + PROJECT_NAME + " on Built-In Node");
+        Assert.assertEquals(titleAfterWorkspaceCreating, "Workspace of " + PROJECT_NAME + " on Built-In Node");
     }
 
     @Test
@@ -1267,7 +1271,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), choiceName);
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='setting-main']//select/option[1]")).isSelected());
         Assert.assertFalse(actualChoiceList.isEmpty());
-        for (WebElement ch : actualChoiceList ) {
+        for (WebElement ch : actualChoiceList) {
             Assert.assertTrue(choices.contains(ch.getText()));
         }
     }
