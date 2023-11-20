@@ -263,15 +263,15 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
         HomePage homePage = new HomePage(getDriver());
         String actualDescription = homePage
-                .goHomePage()
-                .clickAnyFolderJobCreated()
+                .clickAlertIfVisibleAndGoHomePage()
+                .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
                 .clickAddDescription()
                 .typeDescription(descriptionText)
                 .clickSave()

@@ -1,6 +1,7 @@
 package school.redrover.model;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -9,6 +10,8 @@ import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.alertIsPresent;
 
 public class HomePage extends BasePage {
 
@@ -130,10 +133,25 @@ public class HomePage extends BasePage {
 
         return getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")).getText();
     }
-    public FolderDetailsPage clickAnyFolderJobCreated() {
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+    public <T> T clickAnyJobCreated(T page) {
+        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
 
-        return new FolderDetailsPage(getDriver());
+        return page;
     }
 
+    public boolean isAlertVisible() {
+        try {
+            getDriver().switchTo().alert();
+            return true;
+        } catch (NoAlertPresentException ex) {
+            return false;
+        }
+    }
+
+    public HomePage clickAlertIfVisibleAndGoHomePage() {
+        if (isAlertVisible()) {
+            getDriver().switchTo().alert().accept();
+        }
+        return this;
+    }
 }
