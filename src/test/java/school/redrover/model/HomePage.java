@@ -126,6 +126,10 @@ public class HomePage extends BasePage {
         return getDriver().getTitle();
     }
 
+    public String getHeadLineText() {
+
+        return getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")).getText();
+    }
     public FolderDetailsPage clickAnyFolderJobCreated() {
         getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
 
