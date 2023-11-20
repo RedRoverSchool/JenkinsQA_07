@@ -11,6 +11,7 @@ import school.redrover.model.HomePage;
 import school.redrover.model.NewItemPage;
 import school.redrover.model.OrganizationFolderConfigurationPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,15 +174,17 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testRenameProjectFromProjectPage() {
-        createProject(PROJECT_NAME);
+    public void testRenameProjectFromProjectDropdown() {
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.name("Submit")).click();
+        String newProjectName = new HomePage(getDriver())
+                .hoverOverJobDropdownMenu(PROJECT_NAME)
+                .clickRenameOrganizationFolderDropdownMenu()
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickSubmitButton()
+                .getProjectName();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
+        Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
     @Test
