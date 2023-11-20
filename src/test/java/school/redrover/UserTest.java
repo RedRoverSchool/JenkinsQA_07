@@ -33,6 +33,7 @@ public class UserTest extends BaseTest {
     public static final String FULL_NAME = "User Full Name";
     final private static String PASSWORD = "12345";
     final private static String DESCRIPTION = "Test description";
+    private static final String EMAIL = "asd@gmail.com";
 
     private void createUser(String userName, String password, String email) {
         getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
@@ -671,18 +672,19 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserWithValidData() {
-        goToUsersPage();
 
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        boolean isUserCreated = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputEmail(EMAIL)
+                .clickSubmit()
+                .isUserCreated(USER_NAME);
 
-        getDriver().findElement(By.name("username")).sendKeys(USER_NAME);
-        getDriver().findElement(By.name("password1")).sendKeys(PASSWORD);
-        getDriver().findElement(By.name("password2")).sendKeys(PASSWORD);
-        getDriver().findElement(By.name("email")).sendKeys("asd@gmail.com");
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.linkText(USER_NAME)).isDisplayed());
+        Assert.assertTrue(isUserCreated);
     }
 
     @Test(dependsOnMethods = "testCreateUserWithValidData")
