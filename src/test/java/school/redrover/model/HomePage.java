@@ -158,6 +158,7 @@ public class HomePage extends BasePage {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                 .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .pause(400)
                 .perform();
 
         new Actions(getDriver())
