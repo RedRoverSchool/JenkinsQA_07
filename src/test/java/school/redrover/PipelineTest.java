@@ -70,24 +70,6 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreatePipeline() {
-        WebElement newItem = getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']"));
-        newItem.click();
-        WebElement itemName = getDriver().findElement(By.id("name"));
-        itemName.sendKeys(PIPELINE_NAME);
-        WebElement pipeLine = getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob"));
-        pipeLine.click();
-        WebElement button = getDriver().findElement(By.id("ok-button"));
-        button.click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + PIPELINE_NAME.replace(" ", "%20") + "/']")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
-                "Pipeline " + PIPELINE_NAME);
-    }
-
-    @Test
     public void testCreatePipelineValidName() {
         final String validPipelineName = "NewPipeline";
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
