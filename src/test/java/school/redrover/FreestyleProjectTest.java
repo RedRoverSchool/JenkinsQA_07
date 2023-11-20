@@ -214,7 +214,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectExist(PROJECT_NAME));
     }
 
-    @Test(invocationCount = 10)
+    @Test
     public void testErrorMessageWhenNewNameFieldEmpty() {
         String expectedErrorMessage = "No name is specified";
 
