@@ -1,57 +1,16 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultiConfigurationConfigurePage;
+import school.redrover.model.MultiConfigurationDetailsPage;
 import school.redrover.runner.BaseTest;
 
 public class MulticonfigurationProjectTest extends BaseTest {
     private static final  String DESCRIPTION = "This is a description!!!";
     private static final  String PROJECT_NAME = "MultiConfigurationProject123";
-    private static final  By LINK_ON_A_CREATED_FREESTYLE_PROJECT = By.xpath("//tr[@id='job_" + PROJECT_NAME + "']/td[3]/a");
-
-    private WebElement textDescription() {
-        return getDriver().findElement(By.xpath("//*[@class='jenkins-!-margin-bottom-0']//div"));
-    }
-
-    private void createProject() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
-    }
-
-    private void addDescriptionIntoProject() {
-        getDriver().findElement(By.xpath("//span[normalize-space()='" + PROJECT_NAME + "']")).click();
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
-        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-    }
-
-    @Test
-    public void testCreate() {
-        final String projectName = "MyMulticonfigurationProject";
-
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
-
-        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + projectName + "/']")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("#main-panel > h1")).getText(),
-                "Project " + projectName);
-    }
 
     @Test
     public void testCreateWithValidName() {
@@ -91,72 +50,75 @@ public class MulticonfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateProjectWithDescription() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.className("hudson_matrix_MatrixProject")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        Assert.assertTrue(getDriver().findElement(By.xpath("//*[@class='jenkins-!-margin-bottom-0']//div")).isDisplayed());
-        Assert.assertEquals(DESCRIPTION, textDescription().getText());
+        String description = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectMultiConfigurationProject()
+                .clickOk(new MultiConfigurationConfigurePage(getDriver()))
+                .inputDescription(DESCRIPTION)
+                .buttonSubmit()
+                .getDescriptionText();
+
+        Assert.assertEquals(description, DESCRIPTION);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateWithValidName")
     public void testAddDescription() {
-        createProject();
-        addDescriptionIntoProject();
-        Assert.assertEquals(DESCRIPTION, textDescription().getText());
+        String description = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
+                .buttonEditDescription()
+                .inputDescription(DESCRIPTION)
+                .buttonSaveDescription()
+                .getDescriptionText();
+
+        Assert.assertEquals(description, DESCRIPTION);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateProjectWithDescription")
     public void testEditDescription() {
-        createProject();
-        addDescriptionIntoProject();
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
-        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        Assert.assertEquals(DESCRIPTION + DESCRIPTION, textDescription().getText());
+        final String newDescription = "newDescription123?!";
+
+        String description = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
+                .buttonEditDescription()
+                .clearDescription()
+                .inputDescription(newDescription)
+                .buttonSaveDescription()
+                .getDescriptionText();
+
+        Assert.assertEquals(description,newDescription);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateProjectWithDescription", "testEditDescription"})
     public void testDeleteDescription() {
-        createProject();
-        addDescriptionIntoProject();
-        getDriver().findElement(By.xpath("//a[@id='description-link']")).click();
-        getDriver().findElement(By.name("description")).clear();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        Assert.assertEquals("", textDescription().getText());
+        String delete = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
+                .buttonEditDescription()
+                .clearDescription()
+                .buttonSaveDescription()
+                .getDescriptionText();
+
+        Assert.assertEquals(delete,"");
     }
 
-
-    @Test
+    @Test(dependsOnMethods = {"testCreateWithValidName", "testAddDescription"})
     public void testCancelDelete() {
-        createProject();
-        addDescriptionIntoProject();
+        String page = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
+                .taskLinkDeleteMultiConfigurationProject()
+                .cancelDelete()
+                .getProjectHeadLineText();
 
-        getDriver().findElement(By.xpath("//div[@id='tasks']/div[6]")).click();
-        Alert alert = getDriver().switchTo().alert();
-        alert.dismiss();
-
-        String actualProjectName = getDriver().findElement(By.tagName("h1")).getText();
-        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-
-        Assert.assertEquals(actualProjectName, String.format("Project %s", PROJECT_NAME));
-        Assert.assertEquals(actualDescription, DESCRIPTION);
+        Assert.assertEquals(page, "Project " + PROJECT_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateProjectWithDescription", "testEditDescription", "testDeleteDescription"})
     public void testDelete() {
-        String greetingJenkins = "Welcome to Jenkins!";
+        String page = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
+                .taskLinkDeleteMultiConfigurationProject()
+                .acceptAlert().getHeadLineText();
 
-        createProject();
-        getDriver().findElement(LINK_ON_A_CREATED_FREESTYLE_PROJECT).click();
-        getDriver().findElement(By.xpath("//div[@id='tasks']/div[6]")).click();
-        Alert alert = getDriver().switchTo().alert();
-        alert.accept();
-
-        String actualGreetingJenkins = getDriver().findElement(By.tagName("h1")).getText();
-
-        Assert.assertEquals(actualGreetingJenkins, greetingJenkins);
+        Assert.assertEquals(page, "Welcome to Jenkins!");
     }
 }
