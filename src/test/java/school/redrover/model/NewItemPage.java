@@ -34,6 +34,9 @@ public class NewItemPage extends BasePage {
     @FindBy(className = "com_cloudbees_hudson_plugins_folder_Folder")
     private WebElement folder;
 
+    @FindBy(xpath = "//span[text()='Pipeline']")
+    private WebElement createPipelineProject;
+
     @FindBy(id = "from")
     private WebElement cloneItemTextField;
 
@@ -141,4 +144,10 @@ public class NewItemPage extends BasePage {
                 .findElements(By.xpath("//li[contains(text(),'" + projectName + "')]"))
                 .isEmpty();
     }
+
+    public NewItemPage selectPipelineProject(){
+        createPipelineProject.click();
+        return this;
+    }
+
 }

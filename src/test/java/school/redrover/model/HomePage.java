@@ -163,4 +163,10 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public HomePage clickBuildByGreenArrow(String name) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + name + "/build?delay=0sec']")).click();
+
+        return this;
+    }
+
 }
