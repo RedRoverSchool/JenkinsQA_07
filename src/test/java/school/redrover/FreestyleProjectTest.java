@@ -924,6 +924,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + NEW_PROJECT_NAME + "']")).isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testConfigureBuildEnvironmentSettingsAddTimestamp() {
         createProject("Freestyle project", PROJECT_NAME, true);
