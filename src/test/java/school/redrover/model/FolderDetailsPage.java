@@ -30,6 +30,11 @@ public class FolderDetailsPage extends BasePage {
         return new ConfigurationPage(getDriver());
     }
 
+    public FolderConfigurationPage clickConfigureFolder() {
+        configure.click();
+        return new FolderConfigurationPage(getDriver());
+    }
+
     public FolderDetailsPage clickAddDescription() {
         getDriver().findElement(By.id("description-link")).click();
 
