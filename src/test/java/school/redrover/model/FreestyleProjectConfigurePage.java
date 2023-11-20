@@ -74,61 +74,61 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public FreestyleProjectConfigurePage clickSourseCodeManagementLinkFromSideMenu() {
         sourseCodeManagementLink.click();
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage scrollPage(int x, int y) {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollBy(" + x + "," + y + ")");
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage clickGitRadioButton() {
         gitRadioButton.click();
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage inputGitLink(String url) {
         inputGitLinkField.sendKeys(url);
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage clickDiscardOldBuildsCheckBox() {
         discardOldBuildsCheckBox.click();
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage inputDaysToKeepBuilds(String num) {
         inputDaysToKeepBuildsField.sendKeys(num);
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage inputMaxNumberOfBuildsToKeep(String num) {
         inputMaxNumberOfBuildsToKeepField.sendKeys(num);
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage clickThrottleBuildsCheckBox() {
         throttleBuildsCheckBox.click();
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage inputNumberOfBuilds(String num) {
         numberOfBuilds.clear();
         numberOfBuilds.sendKeys(num);
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage selectTimePeriod(String period) {
         getDriver().findElement(By.xpath("//select[@name='_.durationName']")).click();
         getDriver().findElement(By.xpath("//option[@value='" + period + "']")).click();
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
 
     public FreestyleProjectConfigurePage clickExecuteConcurrentBuildsIfNecessaryCheckBox() {
         executeConcurrentBuildsIfNecessaryCheckBox.click();
-        return new FreestyleProjectConfigurePage(getDriver());
+        return this;
     }
 
     public FreestyleProjectConfigurePage clickDisableToggle() {
