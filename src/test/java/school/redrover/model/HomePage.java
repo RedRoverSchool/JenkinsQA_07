@@ -98,7 +98,7 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobDropdownMenu(String name) {
+    public HomePage clickJobName(String name) {
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
 
         Actions actions = new Actions(getDriver());
@@ -124,6 +124,23 @@ public class HomePage extends BasePage {
 
     public String getTitle() {
         return getDriver().getTitle();
+    }
+
+    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .perform();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/button")))
+                .click()
+                .perform();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']")).click();
+
+        return page;
     }
 
 }

@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.FreestyleProjectDetailsPage;
+import school.redrover.model.FreestyleProjectRenamePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -917,21 +918,18 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameProjectFromDashboard() {
-        createFreeStyleProject(PROJECT_NAME);
-        clickSubmitButton();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage()
+                .clickRenameInDropdownMenu(PROJECT_NAME, new FreestyleProjectRenamePage(getDriver()))
+                .typeNewName(NEW_PROJECT_NAME)
+                .clickSubmit()
+                .goHomePage();
 
-        goToJenkinsHomePage();
-
-        hoverClick("//span[contains(text(),'" + PROJECT_NAME + "')]");
-
-        hoverClick("//a[@href='/job/" + PROJECT_NAME + "/confirm-rename']");
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        hoverClickInput("//input[@name='newName']", NEW_PROJECT_NAME);
-        clickSubmitButton();
-
-        goToJenkinsHomePage();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + NEW_PROJECT_NAME + "']")).isDisplayed());
+        Assert.assertTrue(new HomePage(getDriver())
+                .isProjectExist(NEW_PROJECT_NAME));
     }
 
     @Test

@@ -9,13 +9,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -226,7 +224,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testRenameMultibranchDropdownDashboard() {
         HomePage homePage = new HomePage(getDriver())
-        .clickJobDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+        .clickJobName(MULTIBRANCH_PIPELINE_NAME)
         .clickRenameDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
         .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
         .clickSubmit()

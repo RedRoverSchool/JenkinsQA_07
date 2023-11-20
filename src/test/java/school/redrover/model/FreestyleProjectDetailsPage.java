@@ -25,4 +25,10 @@ public class FreestyleProjectDetailsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href = '/job/" + projectName + "/configure']")).click();
         return new FreestyleProjectConfigurePage(getDriver());
     }
+
+    public FreestyleProjectRenamePage clickRename() {
+        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+
+        return new FreestyleProjectRenamePage(getDriver());
+    }
 }
