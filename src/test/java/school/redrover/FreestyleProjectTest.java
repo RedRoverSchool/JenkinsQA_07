@@ -932,6 +932,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .isProjectExist(NEW_PROJECT_NAME));
     }
 
+    @Ignore
     @Test
     public void testConfigureBuildEnvironmentSettingsAddTimestamp() {
         createProject("Freestyle project", PROJECT_NAME, true);

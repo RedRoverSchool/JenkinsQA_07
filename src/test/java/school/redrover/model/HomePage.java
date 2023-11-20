@@ -161,6 +161,7 @@ public class HomePage extends BasePage {
                 .perform();
 
         new Actions(getDriver())
+                .pause(400)
                 .moveToElement(getDriver()
                 .findElement(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/button")))
                 .click()
