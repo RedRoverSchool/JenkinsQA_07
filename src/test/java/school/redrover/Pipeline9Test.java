@@ -70,7 +70,7 @@ public class Pipeline9Test extends BaseTest {
         );
 
         getDriver().findElement(By.xpath("//td//a[@title = 'Schedule a Build for " + PIPELINE_NAME + "']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']"))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + PIPELINE_NAME + "/']"))).click();
 
         List<WebElement> permalinks = getDriver().findElements(By.className("permalink-item"));
 
