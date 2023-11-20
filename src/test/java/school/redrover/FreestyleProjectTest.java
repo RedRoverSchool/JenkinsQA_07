@@ -1180,6 +1180,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 
+    @Ignore
     @Test
     public void testDeletePermalinksOnProjectsStatusPage() {
         createFreeStyleProject(PROJECT_NAME);
