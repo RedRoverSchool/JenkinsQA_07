@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.ErrorPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.NodeDetailsPage;
 import school.redrover.model.NodesListPage;
@@ -188,25 +189,25 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCreateNewNodeCopyingExistingWithNotExistingName() {
-        final String nameFirstNode = "new node";
-        final String nameSecondNode = "new copy node";
+        HomePage newNode = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNewNodeButton()
+                .sendNodeName(NODE_NAME)
+                .SelectPermanentAgentRadioButton()
+                .clickCreateButton()
+                .saveButtonClick(new HomePage(getDriver()))
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nameFirstNode);
-        getDriver().findElement(By.xpath("//input[@id='hudson.slaves.DumbSlave']/following-sibling::label")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        String errorMassage = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNewNodeButton()
+                .sendNodeName(NEW_NODE_NAME)
+                .SelectCopyExistingNodeRadioButton()
+                .sendExistingNodeName(NODE_NAME + "xxx")
+                .clickCreateButton(new ErrorPage(getDriver()))
+                .getErrorMessage();
 
-        goToMainPage();
-        getDriver().findElement(By.xpath("//a[@href='/computer/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nameSecondNode);
-        getDriver().findElement(By.xpath("//input[@id='copy']/following-sibling::label")).click();
-        getDriver().findElement(By.xpath("//input[@name='from']")).sendKeys(nameFirstNode + 2);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//h1/following-sibling::p")).getText().contains("No such agent"));
+        Assert.assertTrue(errorMassage.contains("No such agent"));
     }
 
     @Test

@@ -11,12 +11,15 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//a[@href='computer']")
     private WebElement nodeSection;
 
+    @FindBy(xpath = "//a[@href = 'securityRealm/']")
+    private WebElement userSection;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
 
     public UserDatabasePage goUserDatabasePage() {
-        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
+        userSection.click();
 
         return new UserDatabasePage(getDriver());
     }

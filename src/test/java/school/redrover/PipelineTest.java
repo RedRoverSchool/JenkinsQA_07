@@ -8,7 +8,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.PipelineConfigurationPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.Arrays;
@@ -32,7 +35,8 @@ public class PipelineTest extends BaseTest {
             goToDashboard();
         }
     }
-    private void createPipeline (String pipelineName) {
+
+    private void createPipeline(String pipelineName) {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
         getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(pipelineName);
         getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
@@ -125,7 +129,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id ='j-add-item-type-standalone-projects']//span[contains(text(), 'Pipeline')]")).click();
 
         WebElement error = getDriver().findElement(By.id("itemname-required"));
-        String errorTextActual =  error.getText();
+        String errorTextActual = error.getText();
         String errorTextColor = error.getCssValue("color");
 
         Assert.assertEquals(errorTextActual, errorTextExpected);
@@ -218,20 +222,23 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipelineProject() {
+        final String PipelineName = "MyPipeline";
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        List<String> jobList = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PipelineName)
+                .selectPipelineProject()
+                .clickOk(new PipelineConfigurationPage(getDriver()))
+                .goHomePage()
+                .getJobList();
+        Assert.assertTrue(jobList.contains(PipelineName));
+    }
 
-        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
-        nameField.clear();
-        nameField.sendKeys("MyPipeline");
-
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyPipeline/']")).isDisplayed());
+    @Ignore
+    @Test
+    public void testDeletePipeline() {
+        testCreatePipelineProject();
+        getDriver().findElement(By.xpath("//a[@href='job/MyPipeline/'])")).click();
 
     }
 
@@ -408,6 +415,7 @@ public class PipelineTest extends BaseTest {
                 By.xpath("//div[@id = 'tasks']//a[contains(@href, '/job/" + jobName + "/build')]"))).click();
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class = 'table-box']")));
     }
+
     @Test(dependsOnMethods = "testDescriptionDisplays")
     public void testDelete() {
         getDriver().findElement((By.xpath(JOB_ON_DASHBOARD_XPATH))).click();
@@ -451,7 +459,8 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).isDisplayed());
         Assert.assertEquals(getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).getText(), JOB_NAME);
     }
-    @Test (dependsOnMethods = "testCreate")
+
+    @Test(dependsOnMethods = "testCreate")
     public void testDescriptionDisplays() {
         final String description = "Description of the Pipeline ";
 
@@ -539,7 +548,7 @@ public class PipelineTest extends BaseTest {
         }
     }
 
-    @Test (dependsOnMethods = "testStageViewBeforeBuild")
+    @Test(dependsOnMethods = "testStageViewBeforeBuild")
     public void testStageViewAfterRunningSampleBuild() {
         getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
         runHelloWorldBuildInPipeline(JOB_NAME);
@@ -604,6 +613,7 @@ public class PipelineTest extends BaseTest {
             Assert.assertEquals("Help for feature: " + checkBoxesWithTooltips.get(i).getText(), toolTips.get(i).getAttribute("title"));
         }
     }
+
     @Test
     public void testPermalinksBuildData() {
         final String jobName = "Pipeline1";
