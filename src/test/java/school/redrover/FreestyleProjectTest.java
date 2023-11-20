@@ -16,6 +16,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.testng.Assert.*;
 
@@ -142,6 +143,43 @@ public class FreestyleProjectTest extends BaseTest {
                         .findElement(By.xpath(xpathLocator)))
                 .click()
                 .perform();
+    }
+
+    private void configureParameterizedBuild(String projectName, String choiceName, String choiceOptions) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
+
+        WebElement parameterizedOption = getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"));
+        parameterizedOption.click();
+        getDriver().findElement(By.xpath("//button[@suffix='parameterDefinitions']")).click();
+        getDriver().findElement(By.linkText("Choice Parameter")).click();
+        getDriver().findElement(By.name("parameter.name")).sendKeys(choiceName);
+        getDriver().findElement(By.name("parameter.choices"))
+                .sendKeys(choiceOptions.replace(" ", Keys.chord(Keys.SHIFT, Keys.ENTER)));
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void addTimeStampToConsoleOutput(String projectName) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.linkText("REST API"))).perform();
+
+        getDriver().findElement(By.xpath("//div[@id = 'tasks']//div[5]/span")).click();
+
+        getDriver().findElement(By.xpath("//label[contains(text(), 'Add timestamps')]")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private String createUniqueTextValue() {
+        int desiredLength = 5;
+
+        String testFreeStyleProjectName = UUID.randomUUID()
+                .toString()
+                .substring(0, desiredLength);
+        return testFreeStyleProjectName;
     }
 
     @Test
@@ -1210,5 +1248,51 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.
                         xpath("//div[@class='tbody dropdownList-container']//div[@class='help']//div")).isDisplayed(),
                 "Help description of Quiet Period is not displayed!");
+    }
+
+    @Test
+    public void testParameterizedBuildWithChoices() {
+        final String choices = "Chrome Firefox Edge Safari";
+        final String choiceName = "browsers";
+
+        createProject("Freestyle project", PROJECT_NAME, true);
+        configureParameterizedBuild(PROJECT_NAME, choiceName, choices);
+
+        WebElement build = getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a"));
+        build.click();
+
+        List<WebElement> actualChoiceList = getDriver().findElements(By.xpath("//div[@class='setting-main']//select/option"));
+
+        Assert.assertNotEquals(getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a")).getText(), "Build Now");
+        Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), choiceName);
+        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='setting-main']//select/option[1]")).isSelected());
+        Assert.assertFalse(actualChoiceList.isEmpty());
+        for (WebElement ch : actualChoiceList ) {
+            Assert.assertTrue(choices.contains(ch.getText()));
+        }
+    }
+
+    @Test
+    public void testMoveFreestyleToFolder() {
+        final String freestyleName = "freestyleName";
+        final String folderName = "folderName";
+
+        createProject("Freestyle project", freestyleName, true);
+        createProject("Folder", folderName, true);
+
+        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + freestyleName + "/']")).click();
+        getDriver().findElement(By.xpath("//a[@href = '/job/" + freestyleName + "/move']")).click();
+
+        Select select = new Select(getDriver().findElement(By.xpath("//select[@name = 'destination']")));
+        select.selectByValue("/" + folderName);
+
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
+
+        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + folderName + "/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText().trim(), folderName);
+        Assert.assertTrue(
+                getDriver().findElement(By.xpath("//tbody/tr[@id = 'job_" + freestyleName + "']")).isDisplayed());
     }
 }
