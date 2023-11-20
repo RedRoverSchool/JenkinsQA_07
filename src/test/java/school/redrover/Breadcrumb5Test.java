@@ -18,6 +18,7 @@ public class Breadcrumb5Test extends BaseTest {
 
     private void createMainPage() {
         getDriver().findElement(By.id("description-link")).click();
+        getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).clear();
         getDriver().findElement(By.xpath("//textarea[@class='jenkins-input   ']")).sendKeys(MAIN_PAGE);
         getDriver().findElement(By.xpath("//button[@name='Submit' and contains(@class, 'jenkins-button jenkins-button--primary')]")).click();
     }
@@ -36,8 +37,7 @@ public class Breadcrumb5Test extends BaseTest {
 
     private int isElementExistInBreadcrumb(By element) {
         try {
-            WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(element));
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(element));
             return 1;
         } catch (Exception ex) {
             System.out.println(Arrays.toString(ex.getStackTrace()));
