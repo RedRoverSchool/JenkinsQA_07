@@ -37,6 +37,12 @@ public class FreestyleProjectTest extends BaseTest {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
+    private void disableProjectByName(String projectName) {
+        goToJenkinsHomePage();
+        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+        clickSubmitButton();
+    }
+
     private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
         getDriver().findElement(By.linkText("New Item")).click();
         getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
@@ -93,12 +99,6 @@ public class FreestyleProjectTest extends BaseTest {
         }
 
         return res;
-    }
-
-    private void disableProjectByName(String projectName) {
-        goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        clickSubmitButton();
     }
 
     private void addDescriptionInConfiguration(String text) {
@@ -215,16 +215,17 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testErrorMessageWhenNewNameFieldEmpty() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
+        String expectedErrorMessage = "No name is specified";
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(Keys.TAB);
+        String actualErrorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .clickRenameLink()
+                .clearInputField()
+                .getErrorMessage();
 
-        String errorMessage = getDriver().findElement(By.className("error")).getText();
-        assertEquals(errorMessage, "No name is specified");
+        assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
     @Test
@@ -289,120 +290,112 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDisableProjectFromStatusPage() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
+        boolean isEnabled = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .isEnabled();
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        clickSubmitButton();
-
-        boolean isDisabled = getDriver()
-                .findElement(By.id("enable-project"))
-                .getText()
-                .contains("This project is currently disabled");
-
-        assertTrue(isDisabled);
+        assertFalse(isEnabled);
     }
 
     @Test
     public void testDisableProjectFromConfigurePage() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
+        boolean isEnabled = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickDisableToggle()
+                .clickSaveButton()
+                .isEnabled();
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
-        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
-        clickSubmitButton();
-
-        boolean isDisabled = getDriver()
-                .findElement(By.id("enable-project"))
-                .getText()
-                .contains("This project is currently disabled");
-
-        assertTrue(isDisabled);
+        assertFalse(isEnabled);
     }
 
     @Test
     public void testDisableProjectWhenCreating() {
-        createFreeStyleProject(PROJECT_NAME);
+        boolean isEnabled = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickDisableToggle()
+                .clickSaveButton()
+                .isEnabled();
 
-        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
-        clickSubmitButton();
-
-        boolean isDisabled = getDriver()
-                .findElement(By.id("enable-project"))
-                .getText()
-                .contains("This project is currently disabled");
-
-        assertTrue(isDisabled);
+        assertFalse(isEnabled);
     }
 
     @Test
     public void testEnableProjectFromStatusPage() {
-        createFreeStyleProject(PROJECT_NAME);
-        disableProjectByName(PROJECT_NAME);
-
-        clickSubmitButton();
-
-        boolean isEnabled = getDriver()
-                .findElement(By.name("Submit"))
-                .getText()
-                .contains("Disable Project");
+        boolean isEnabled = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickDisableToggle()
+                .clickSaveButton()
+                .clickEnableDisableButton()
+                .isEnabled();
 
         assertTrue(isEnabled);
     }
 
     @Test
     public void testEnableProjectFromConfigurePage() {
-        createFreeStyleProject(PROJECT_NAME);
-        disableProjectByName(PROJECT_NAME);
+        boolean isEnabled = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickDisableToggle()
+                .clickSaveButton()
+                .clickConfigure()
+                .clickDisableToggle()
+                .clickSaveButton()
+                .isEnabled();
 
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
-        getDriver().findElement(By.className("jenkins-toggle-switch__label")).click();
-        clickSubmitButton();
-
-        boolean isEnabled = getDriver()
-                .findElement(By.name("Submit"))
-                .getText()
-                .contains("Disable Project");
         assertTrue(isEnabled);
     }
 
     @Test
     public void testWarningMessageOnStatusPageWhenDisabled() {
-        createFreeStyleProject(PROJECT_NAME);
-        disableProjectByName(PROJECT_NAME);
+        String expectedWarningMessage = "This project is currently disabled";
 
-        boolean isDisabled = getDriver()
-                .findElement(By.id("enable-project"))
-                .getText()
-                .contains("This project is currently disabled");
+        String actualWarningMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickDisableToggle()
+                .clickSaveButton()
+                .getWarningMessageWhenDisabled();
 
-        assertTrue(isDisabled);
+        assertEquals(actualWarningMessage, expectedWarningMessage);
     }
 
     @Test
     public void testEnableButtonOnStatusPageWhenDisabled() {
-        createFreeStyleProject(PROJECT_NAME);
-        disableProjectByName(PROJECT_NAME);
+        String expectedButtonName = "Enable";
 
-        boolean isVisible = getDriver().findElement(By.name("Submit")).isDisplayed();
-        String buttonName = getDriver().findElement(By.name("Submit")).getText();
-        assertTrue(isVisible);
-        assertTrue(buttonName.contains("Enable"));
+        String actualButtonName = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickDisableToggle()
+                .clickSaveButton()
+                .getTextEnableDisableButton();
+
+        assertEquals(actualButtonName, expectedButtonName);
     }
 
     @Test
     public void testStatusDisabledOnDashboardWhenDisabled() {
-        createFreeStyleProject(PROJECT_NAME);
-        disableProjectByName(PROJECT_NAME);
-        goToJenkinsHomePage();
+        String expectedProjectStatus = "Disabled";
 
-        String actualProjectStatus = getDriver()
-                .findElement(By.id("job_" + PROJECT_NAME))
-                .findElement(By.className("svg-icon"))
-                .getAttribute("title");
+        String actualProjectStatus = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickDisableToggle()
+                .clickSaveButton()
+                .goHomePage()
+                .getProjectBuildStatusByName(PROJECT_NAME);
 
-        assertEquals(actualProjectStatus, "Disabled");
+        assertEquals(actualProjectStatus, expectedProjectStatus);
     }
 
     @Test
@@ -417,19 +410,15 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRedirectionToStatusPageAfterRenaming() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
-        getDriver().findElement(By.name("newName")).sendKeys(Keys.CONTROL + "a");
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
-        clickSubmitButton();
-
-        boolean isStatusPageSelected = getDriver()
-                .findElement(By.linkText("Status"))
-                .getAttribute("class")
-                .contains("active");
+        boolean isStatusPageSelected = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .clickRenameLink()
+                .clearInputField()
+                .enterName(NEW_PROJECT_NAME)
+                .clickRenameButton()
+                .isStatusPageSelected();
 
         assertTrue(isStatusPageSelected);
     }
@@ -1142,12 +1131,12 @@ public class FreestyleProjectTest extends BaseTest {
 
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        List <WebElement> quantityOfElementsBeforeClicking = new FreestyleProjectDetailsPage(getDriver())
+        List<WebElement> quantityOfElementsBeforeClicking = new FreestyleProjectDetailsPage(getDriver())
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .scrollPage(0, 300)
                 .getExecuteConcurrentBuilds();
 
-        List <WebElement> quantityOfElementsAfterClicking = new FreestyleProjectConfigurePage(getDriver())
+        List<WebElement> quantityOfElementsAfterClicking = new FreestyleProjectConfigurePage(getDriver())
                 .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
                 .clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
@@ -1267,7 +1256,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), choiceName);
         Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='setting-main']//select/option[1]")).isSelected());
         Assert.assertFalse(actualChoiceList.isEmpty());
-        for (WebElement ch : actualChoiceList ) {
+        for (WebElement ch : actualChoiceList) {
             Assert.assertTrue(choices.contains(ch.getText()));
         }
     }
