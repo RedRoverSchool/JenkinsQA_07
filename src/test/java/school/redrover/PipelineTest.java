@@ -70,7 +70,7 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreatePipelineValidName() {
+    public void testCreatePipeline() {
         final String validPipelineName = "NewPipeline";
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
 
