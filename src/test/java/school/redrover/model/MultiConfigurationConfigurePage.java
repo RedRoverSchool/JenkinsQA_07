@@ -3,8 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import school.redrover.model.base.BasePage;
 
-public class FolderGeneralConfigurationPage extends BasePage {
-    public FolderGeneralConfigurationPage(WebDriver driver) {
+public class MultiConfigurationConfigurePage extends BasePage {
+
+    public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
     }
 }

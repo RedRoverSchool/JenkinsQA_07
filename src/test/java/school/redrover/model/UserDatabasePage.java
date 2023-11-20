@@ -25,4 +25,8 @@ public class UserDatabasePage extends BasePage {
         }
         return doDelete;
     }
+
+    public void createUser() {
+        getDriver().findElement(By.cssSelector("a[href = 'addUser']")).click();
+    }
 }

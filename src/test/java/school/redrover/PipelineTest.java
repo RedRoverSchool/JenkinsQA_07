@@ -395,4 +395,35 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(buildParameters, parameterChoices);
     }
+    @Test
+    public void testConfirmCreationOfNewUser() {
+
+        String username = "mishka";
+        String password = "1";
+        String full_name = "admin";
+        String email = "test@test.com";
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+        getDriver().findElement(By.xpath("//dt[normalize-space()='Users']")).click();
+        getDriver().findElement(By.xpath("//a[@href= 'addUser']")).click();
+
+        getDriver().findElement(By.id("username")).sendKeys(username);
+        getDriver().findElement(By.xpath("//input[@name= 'password1']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//input[@name= 'password2']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//input[@name= 'fullname']")).sendKeys(full_name);
+        getDriver().findElement(By.xpath("//input[@name= 'email']")).sendKeys(email);
+        getDriver().findElement(By.xpath("//button[@name= 'Submit']")).click();
+
+        List<WebElement> listOfUsrID = getDriver().findElements(By.xpath("//td[@class = 'jenkins-table__cell--tight jenkins-table__icon']"));
+
+        boolean isNewUserVisible = true;
+        for (WebElement eachUser : listOfUsrID) {
+            if (eachUser.getText().contains(username)) {
+                isNewUserVisible = false;
+                break;
+            }
+        }
+
+        Assert.assertTrue(isNewUserVisible);
+    }
 }
