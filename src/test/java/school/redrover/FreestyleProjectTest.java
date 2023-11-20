@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.FreestyleProjectDetailsPage;
+import school.redrover.model.FreestyleProjectRenamePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -213,7 +214,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(isProjectExist(PROJECT_NAME));
     }
 
-    @Test
+    @Test(invocationCount = 10)
     public void testErrorMessageWhenNewNameFieldEmpty() {
         String expectedErrorMessage = "No name is specified";
 
@@ -293,8 +294,8 @@ public class FreestyleProjectTest extends BaseTest {
         boolean isEnabled = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
-                .goHomePage()
-                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickSaveButton()
+                .clickEnableDisableButton()
                 .isEnabled();
 
         assertFalse(isEnabled);
