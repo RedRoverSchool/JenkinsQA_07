@@ -11,6 +11,7 @@ import school.redrover.model.FolderConfigurationPage;
 import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +23,7 @@ public class FolderTest extends BaseTest {
     private static final String RENAMED_FOLDER = "RenamedFolder";
     private static final String NESTED_FOLDER = "Nested";
     private static final String JOB_NAME = "New Job";
+
     private void getDashboardLink() {
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
     }
@@ -261,20 +263,23 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        HomePage homePage = new HomePage(getDriver());
+        String actualDescription = homePage
+                .clickAlertIfVisibleAndGoHomePage()
+                .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
+                .clickAddDescription()
+                .typeDescription(descriptionText)
+                .clickSave()
+                .getActualFolderDescription();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
         Assert.assertEquals(actualDescription, descriptionText);
     }
+
     @Ignore
     @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testEditDescriptionOfFolder() {
@@ -341,8 +346,9 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("_.description")).sendKeys(description);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(),description);
+        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(), description);
     }
+
     @Test
     public void testClickPreview() {
         createFolder(FOLDER_NAME);
@@ -350,7 +356,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("_.description")).sendKeys("description123");
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(),"description123");
+        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), "description123");
     }
 
     @Test
@@ -382,7 +388,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='job/" + NESTED_FOLDER + "/']")).click();
         getDriver().findElement(By.linkText("Move")).click();
         getDriver().findElement(By.name("destination")).click();
-        getDriver().findElement(By .xpath("//option[contains(text(),'Jenkins » " + FOLDER_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//option[contains(text(),'Jenkins » " + FOLDER_NAME + "')]")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         getDashboardLink();
@@ -396,8 +402,7 @@ public class FolderTest extends BaseTest {
 
         ArrayList<String> actualBreadcrumbs = new ArrayList<>();
         List<WebElement> breadcrumbs = getDriver().findElements(By.xpath("//li/a[@class='model-link']"));
-        for (WebElement eachBreadcrumb: breadcrumbs)
-        {
+        for (WebElement eachBreadcrumb : breadcrumbs) {
             actualBreadcrumbs.add(eachBreadcrumb.getText());
         }
 
