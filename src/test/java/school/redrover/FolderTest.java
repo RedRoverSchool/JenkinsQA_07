@@ -447,6 +447,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(extractedMenuItems, listOfExpectedMenuItems);
     }
 
+
     @Test(dependsOnMethods = "testCreate")
     public void folderDescriptionPreviewWorksCorrectly() {
         String description = "Folder description";
