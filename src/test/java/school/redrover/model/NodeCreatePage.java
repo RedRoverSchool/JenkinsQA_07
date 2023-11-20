@@ -55,6 +55,11 @@ public class NodeCreatePage extends BasePage {
         return new NodeCofigurationPage(getDriver());
     }
 
+    public <T> T clickCreateButton(T page) {
+        createButton.click();
+        return page;
+    }
+
     public String getErrorMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(errorMessage)).getText();
     }
