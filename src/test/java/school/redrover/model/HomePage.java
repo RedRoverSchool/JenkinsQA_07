@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
@@ -157,16 +158,12 @@ public class HomePage extends BasePage {
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
-                .pause(400)
+                        .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .moveToElement(getDriver()
+                        .findElement(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/button")))
+                .click()
                 .perform();
-
-        new Actions(getDriver())
-                .click(getDriver().findElement(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/button")))
-                .pause(400)
-                .perform();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']")).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
 
         return page;
     }
