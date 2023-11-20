@@ -101,7 +101,7 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobDropdownMenu(String name) {
+    public HomePage clickJobName(String name) {
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
 
         Actions actions = new Actions(getDriver());
