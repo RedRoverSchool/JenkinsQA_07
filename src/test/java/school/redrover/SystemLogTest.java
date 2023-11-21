@@ -71,19 +71,37 @@ public class SystemLogTest extends BaseTest {
 
         lst = getDriver().findElements(By.className("jenkins-table__link"));
         if(lst.size() > 1) {
-            do {
-                lst.get(1).click();
-                getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
-                Actions actions = new Actions(getDriver());
-                actions.pause(400)
-                        .moveToElement(getDriver()
-                        .findElement(By.xpath("//a[@data-post='true']")))
-                        .click()
-                        .perform();
-                getWait5().until(ExpectedConditions.alertIsPresent()).accept();
-                getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
-                lst = getDriver().findElements(By.className("jenkins-table__link"));
-            } while (lst.size() > 1);
+            Iterator<WebElement> it = lst.iterator();
+            while (it.hasNext()) {
+                WebElement wb = it.next();
+                    if (!wb.getText().equals( "All Jenkins Logs")){
+                        wb.click();
+                        getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
+                        Actions actions = new Actions(getDriver());
+                        actions.pause(400)
+                            .moveToElement(getDriver()
+                                .findElement(By.xpath("//a[@data-post='true']")))
+                            .click()
+                            .perform();
+                        getWait5().until(ExpectedConditions.alertIsPresent()).accept();
+                        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
+                        lst = getDriver().findElements(By.className("jenkins-table__link"));
+                    } else if (lst.size() > 1) {
+                        lst.get(1).click();
+                        getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
+                        Actions actions = new Actions(getDriver());
+                        actions.pause(400)
+                            .moveToElement(getDriver()
+                                .findElement(By.xpath("//a[@data-post='true']")))
+                            .click()
+                            .perform();
+                        getWait5().until(ExpectedConditions.alertIsPresent()).accept();
+                        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
+                        lst = getDriver().findElements(By.className("jenkins-table__link"));
+                    }
+                if (lst.size() == 1) break;
+                it = lst.iterator();
+            }
         }
         Assert.assertEquals(lst.size(),1);
     }
