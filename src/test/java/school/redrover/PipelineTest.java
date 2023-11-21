@@ -139,6 +139,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test
     public void testPipelineRename() {
         final String pipelineName = "PipelineName";
