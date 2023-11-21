@@ -9,7 +9,11 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
-import java.util.*;
+
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class SystemLogTest extends BaseTest {
 
