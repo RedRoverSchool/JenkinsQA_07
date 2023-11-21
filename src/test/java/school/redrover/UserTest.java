@@ -744,11 +744,14 @@ public class UserTest extends BaseTest {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")));
+        ((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView(true);", new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))));
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))).click();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver()
-                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
+//        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+//                By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")));
+//
+//        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver()
+//                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
 
         getDriver().switchTo().alert().accept();
 
@@ -777,16 +780,17 @@ public class UserTest extends BaseTest {
 
         WebElement element = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]"));
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]")));
-
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")));
+        ((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView(true);", new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))));
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))).click();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver()
-                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
+//        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+//                By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")));
+//
+//        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver()
+//                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
 
         getDriver().switchTo().alert().accept();
 
