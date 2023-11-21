@@ -727,6 +727,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
     }
+
     @Test
     public void testDeleteUsingBreadcrumb() {
         goToUserCreateFormPage();
@@ -734,24 +735,19 @@ public class UserTest extends BaseTest {
 
         Actions actions = new Actions(getDriver());
 
-        WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]"));
+        WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]"));
         actions.moveToElement(breadcrumbName).perform();
 
-        WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]/button"));
+        WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]/button")));
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button")));
 
-        JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        ((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView(true);", new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))));
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))).click();
-
-//        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-//                By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")));
-//
-//        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver()
-//                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
+        WebElement button = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']")));
+        button.click();
 
         getDriver().switchTo().alert().accept();
 
@@ -765,7 +761,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteUsingBreadcrumbChain(){
+    public void testDeleteUsingBreadcrumbChain() {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, USER_NAME, EMAIL);
 
@@ -775,22 +771,17 @@ public class UserTest extends BaseTest {
         Actions actions = new Actions(getDriver());
         actions.sendKeys(userPage, Keys.ENTER).perform();
 
-        WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[@href='/securityRealm/user/"+USER_NAME.toLowerCase()+"/']"));
+        WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[@href='/securityRealm/user/" + USER_NAME.toLowerCase() + "/']"));
         actions.moveToElement(breadcrumbName).perform();
 
         WebElement element = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]"));
 
-        JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        ((JavascriptExecutor)getDriver()).executeScript("arguments[0].scrollIntoView(true);", new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))));
-        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"))).click();
-
-//        getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-//                By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")));
-//
-//        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver()
-//                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
+        WebElement button = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']")));
+        button.click();
 
         getDriver().switchTo().alert().accept();
 
