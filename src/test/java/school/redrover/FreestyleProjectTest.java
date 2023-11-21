@@ -914,8 +914,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .clickRenameInDropdownMenu(PROJECT_NAME, new FreestyleProjectRenamePage(getDriver()))
-                .typeNewName(NEW_PROJECT_NAME)
-                .clickSubmit()
+                .clearInputField()
+                .enterName(NEW_PROJECT_NAME)
+                .clickRenameButton()
                 .goHomePage();
 
         Assert.assertTrue(new HomePage(getDriver())
