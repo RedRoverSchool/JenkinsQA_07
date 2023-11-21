@@ -739,7 +739,7 @@ public class UserTest extends BaseTest {
         WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]"));
         actions.moveToElement(breadcrumbName).perform();
 
-        //WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
+       // getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button")).click();
 
         actions.moveToElement(getWait2()
                 .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"))))
@@ -748,7 +748,11 @@ public class UserTest extends BaseTest {
 //        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
 //        javascriptExecutor.executeScript("arguments[0].click();", element);
 
+
+
+
         WebElement button = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']"));
+        getDriver().switchTo().parentFrame();
         actions.moveToElement(button).click().perform();
 
         getDriver().switchTo().alert().accept();
