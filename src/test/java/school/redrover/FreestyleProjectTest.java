@@ -1184,30 +1184,30 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 
-    @Ignore
     @Test
     public void testDeletePermalinksOnProjectsStatusPage() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
+        final List<String> removedPermalinks = List.of(
+                "Last build",
+                "Last stable build",
+                "Last successful build",
+                "Last completed build");
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.cssSelector("a[onclick^='return build_']")).click();
-        getDriver().navigate().refresh();
+        String permaLinks = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNowButton()
+                .refreshPage()
+                .clickPermalinkLastBuild()
+                .clickDeleteBuildSidePanel()
+                .clickButtonDeleteBuild()
+                .getPermalinksText();
 
-        getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).click();
-        getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
-        goToJenkinsHomePage();
-
-        List<By> permaLinks = List.of(
-                By.xpath("//ul[@class='permalinks-list']/li[1]"),
-                By.xpath("//ul[@class='permalinks-list']/li[2]"),
-                By.xpath("//ul[@class='permalinks-list']/li[3]"),
-                By.xpath("//ul[@class='permalinks-list']/li[4]"));
-
-        for (By link : permaLinks) {
-            Assert.assertEquals(
-                    getDriver().findElements(link).size(),
-                    0);
+        for (String x : removedPermalinks) {
+            Assert.assertFalse(permaLinks.contains(x));
         }
     }
 
