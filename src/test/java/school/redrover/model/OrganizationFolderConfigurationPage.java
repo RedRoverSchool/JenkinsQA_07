@@ -10,9 +10,6 @@ import school.redrover.model.base.BasePage;
 
 public class OrganizationFolderConfigurationPage extends BasePage {
 
-    @FindBy(xpath = "//h1")
-    private WebElement projectName;
-
     public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -29,10 +26,5 @@ public class OrganizationFolderConfigurationPage extends BasePage {
                 .click();
 
         return new HomePage(getDriver());
-    }
-
-    public String getProjectName() {
-
-        return projectName.getText();
     }
 }

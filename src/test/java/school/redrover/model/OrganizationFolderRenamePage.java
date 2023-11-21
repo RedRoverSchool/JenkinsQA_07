@@ -12,7 +12,10 @@ public class OrganizationFolderRenamePage extends BasePage {
     private WebElement inputNewName;
 
     @FindBy(name = "Submit")
-    private WebElement submitButton;
+    private WebElement renameButton;
+
+    @FindBy(xpath = "//div[@class='warning']")
+    private WebElement warningMessage;
 
     public OrganizationFolderRenamePage(WebDriver driver) {
         super(driver);
@@ -25,9 +28,14 @@ public class OrganizationFolderRenamePage extends BasePage {
         return this;
     }
 
-    public OrganizationFolderConfigurationPage clickSubmitButton() {
-        submitButton.click();
+    public OrganizationFolderDetailsPage clickRenameButton() {
+        renameButton.click();
 
-        return new OrganizationFolderConfigurationPage(getDriver());
+        return new OrganizationFolderDetailsPage(getDriver());
+    }
+
+    public String getWarningMessageText() {
+
+        return warningMessage.getText();
     }
 }
