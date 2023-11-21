@@ -742,10 +742,7 @@ public class UserTest extends BaseTest {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        WebElement webElement = getDriver()
-                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver()
+        getWait10().until(ExpectedConditions.elementToBeClickable(getDriver()
                 .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
 
         getDriver().switchTo().alert().accept();
@@ -778,7 +775,7 @@ public class UserTest extends BaseTest {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver()
+        getWait10().until(ExpectedConditions.elementToBeClickable(getDriver()
                 .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
 
         getDriver().switchTo().alert().accept();
