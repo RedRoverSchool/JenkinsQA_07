@@ -1201,7 +1201,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickBuildNowButton()
                 .refreshPage()
-                .clickTimeOfLastBuild()
+                .clickPermalinkLastBuild()
                 .clickDeleteBuildSidePanel()
                 .clickButtonDeleteBuild()
                 .getPermalinksText();

@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
+import java.time.Duration;
+
 public class FreestyleProjectDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
@@ -79,13 +81,14 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public FreestyleProjectDetailsPage refreshPage() {
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         getDriver().navigate().refresh();
 
         return this;
     }
 
-    public FreestyleProjectBuildDetailsPage clickTimeOfLastBuild() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[tooltip^='Took']"))).click();
+    public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='lastBuild/']"))).click();
 
         return new FreestyleProjectBuildDetailsPage(getDriver());
     }
