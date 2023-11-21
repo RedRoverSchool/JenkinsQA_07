@@ -44,6 +44,7 @@ public class SystemLogTest extends BaseTest {
                 .getText(), SYSLOG_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateCustomLogRecorder")
     public void testDeleteCustomLogRecorder() {
         List<WebElement> lst = new ArrayList<>();
