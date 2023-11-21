@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -12,6 +13,7 @@ import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.SeleniumUtils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -726,7 +728,7 @@ public class UserTest extends BaseTest {
                 getText().contains(USER_NAME), true);
     }
     @Test
-    public void testDeleteUsingBreadcrumb() throws InterruptedException {
+    public void testDeleteUsingBreadcrumb() {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
@@ -738,10 +740,10 @@ public class UserTest extends BaseTest {
         WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]/button"));
 
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
-        javascriptExecutor.executeScript("arguments[0].click();", element).wait(3000);
+        javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        WebElement tippyBox = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
-        actions.moveToElement(tippyBox).click().perform();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver()
+                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
 
         getDriver().switchTo().alert().accept();
 
@@ -755,7 +757,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteUsingBreadcrumbChain() throws InterruptedException {
+    public void testDeleteUsingBreadcrumbChain(){
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, USER_NAME, EMAIL);
 
@@ -771,10 +773,10 @@ public class UserTest extends BaseTest {
         WebElement element = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]"));
 
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
-        javascriptExecutor.executeScript("arguments[0].click();", element).wait(3000);
+        javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        WebElement tippyBox = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
-        actions.moveToElement(tippyBox).click().perform();
+        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver()
+                .findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']")))).click();
 
         getDriver().switchTo().alert().accept();
 
