@@ -77,6 +77,22 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return new WorkspacePage(getDriver());
     }
 
+    public FreestyleProjectDetailsPage refreshPage() {
+        getDriver().navigate().refresh();
+
+        return this;
+    }
+
+    public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
+        getDriver().findElement(By.cssSelector("a[href='lastBuild/']")).click();
+
+        return new FreestyleProjectBuildDetailsPage(getDriver());
+    }
+
+    public String getPermalinksText() {
+
+        return getDriver().findElement(By.cssSelector("ul[class='permalinks-list']")).getText();
+    }
 
     public FreestyleProjectRenamePage clickRename() {
         getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
