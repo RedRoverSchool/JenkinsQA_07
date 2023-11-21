@@ -833,28 +833,26 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDescriptionPreviewAppears() {
-        createFreeStyleProject(PROJECT_NAME);
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .inputDescription(DESCRIPTION_TEXT)
+                .clickPreviewDescription();
 
-        hoverClickInput("//textarea[@name = 'description']", DESCRIPTION_TEXT);
-
-        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class = 'textarea-preview']"))
-                        .getText(),
+        Assert.assertEquals(
+                new FreestyleProjectConfigurePage(getDriver()).getPreviewDescriptionText(),
                 DESCRIPTION_TEXT);
+
     }
 
     @Test(dependsOnMethods = "testDescriptionPreviewAppears")
     public void testDescriptionPreviewHides() {
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
+        new FreestyleProjectConfigurePage(getDriver())
+                .dismissAlertAndStay()
+                .clickHidePreviewDescription();
 
-        hoverClick("//a[@class = 'textarea-hide-preview']");
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class = 'textarea-preview']"))
-                        .getCssValue("display"),
+        Assert.assertEquals(
+                new FreestyleProjectConfigurePage(getDriver()).getCssValue(By.xpath("//div[@class = 'textarea-preview']"), "display"),
                 "none");
     }
 
@@ -906,8 +904,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
 
-
-    @Ignore
     @Test
     public void testRenameProjectFromDashboard() {
         new HomePage(getDriver())

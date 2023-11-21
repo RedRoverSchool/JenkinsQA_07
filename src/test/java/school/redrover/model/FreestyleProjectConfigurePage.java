@@ -1,11 +1,9 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -50,10 +48,12 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(className = "jenkins-toggle-switch__label")
     private WebElement disableToggle;
 
+    @FindBy(xpath = "//textarea[@name = 'description']")
+    private WebElement inputDescription;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
-
 
     public boolean tooltipDiscardOldBuildsIsVisible() {
         boolean tooltipIsVisible = true;
@@ -158,5 +158,38 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public List<WebElement> getExecuteConcurrentBuilds() {
         return getDriver().findElements(By.xpath("//div[@class='form-container']"));
+    }
+
+    public FreestyleProjectConfigurePage inputDescription(String description) {
+        new Actions(getDriver())
+                .moveToElement(inputDescription)
+                .click()
+                .sendKeys(description)
+                .perform();
+
+        return this;
+    }
+
+    public void clickPreviewDescription() {
+        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
+    }
+
+    public void clickHidePreviewDescription() {
+        getDriver().findElement(By.xpath("//a[@class = 'textarea-hide-preview']")).click();
+    }
+
+    public String getPreviewDescriptionText() {
+        return getDriver().findElement(By.xpath("//div[@class = 'textarea-preview']")).getText();
+    }
+
+    public String getCssValue(By locator, String cssValueName) {
+        return getDriver().findElement(locator).getCssValue(cssValueName);
+    }
+
+    public FreestyleProjectConfigurePage dismissAlertAndStay() {
+        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
+        alert.dismiss();
+
+        return this;
     }
 }

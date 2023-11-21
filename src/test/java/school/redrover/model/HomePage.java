@@ -12,8 +12,6 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.alertIsPresent;
-
 public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='computer/new']")
@@ -191,10 +189,16 @@ public class HomePage extends BasePage {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                         .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .perform();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName + "/']/button")));
+
+        new Actions(getDriver())
                 .moveToElement(getDriver()
                         .findElement(By.xpath("//a[@href='job/" + jobName + "/']/button")))
                 .click()
                 .perform();
+
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
 
         return page;
