@@ -8,15 +8,30 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.NewItemPage;
 import school.redrover.model.OrganizationFolderConfigurationPage;
+import school.redrover.model.OrganizationFolderDetailsPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class OrganizationFolderTest extends BaseTest {
     private static final String PROJECT_NAME = "Organization Folder";
     private static final String NEW_PROJECT_NAME = "Organization Folder Renamed";
+
+    @DataProvider(name = "random unsafe character")
+    public Object[][] provideUnsafeCharacters() {
+        String[] wrongCharacters = {"!", "@", "#", "$", "%", "^", "&", "*", "?", "|", ">", "[", "]"};
+        int randomIndex = new Random().nextInt(wrongCharacters.length);
+        return new Object[][]{{wrongCharacters[randomIndex]}};
+    }
+
+    private String getName(int nameLength) {
+        return "a".repeat(nameLength);
+    }
 
     @Test
     public void testCreateOrganizationFolderWithValidName() {
@@ -41,6 +56,17 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "» A job already exists with the name ‘" + PROJECT_NAME + "’");
     }
 
+    @Test(dataProvider = "random unsafe character")
+    public void testCreateProjectWithUnsafeCharacters(String unsafeChar) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(unsafeChar)
+                .selectOrganizationFolder()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
+    }
+
     @Test
     public void testCreateOrganizationFolderWithEmptyName() {
         String errorMessage = new HomePage(getDriver())
@@ -50,6 +76,57 @@ public class OrganizationFolderTest extends BaseTest {
 
         Assert.assertEquals(errorMessage, "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithSpaceInsteadOfName() {
+        final String nameWithSpace = " ";
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(nameWithSpace)
+                .selectOrganizationFolder()
+                .clickOk(new NewItemPage(getDriver()))
+                .getNoNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "No name is specified");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithLongName() {
+        final String longName = getName(256);
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(longName)
+                .selectOrganizationFolder()
+                .clickOk(new NewItemPage(getDriver()))
+                .getRequestErrorMessage();
+
+        Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithInvalidNameWithTwoDots() {
+        final String name = "..";
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(name)
+                .selectOrganizationFolder()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» “..” is not an allowed name");
+        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
+    }
+
+    @Test
+    public void testCreateOrganizationFolderWithInvalidNameWithDotAtEnd() {
+        final String name = "name.";
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(name)
+                .selectOrganizationFolder()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertEquals(errorMessage, "» A name cannot end with ‘.’");
     }
 
     private void returnHomeJenkins() {
@@ -63,6 +140,7 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.id("ok-button")).click();
         getDriver().findElement(By.name("Submit")).click();
     }
+
     private void createOrganizationFolder(String organizationFolderName) {
 
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
@@ -72,6 +150,7 @@ public class OrganizationFolderTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
         returnHomeJenkins();
     }
+
     private void clickNewJobButton() {
         getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
     }
@@ -95,70 +174,44 @@ public class OrganizationFolderTest extends BaseTest {
         clickOkButton();
     }
 
-    @DataProvider(name = "wrong-character")
-    public Object[][] provideWrongCharacters() {
-        return new Object[][]{{"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {">"}, {"["}, {"]"}};
-    }
-
-    @Test(dataProvider = "wrong-character")
-    public void testCreateProjectWithInvalidChar(String invalidData) {
-
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.name("name")).sendKeys(invalidData);
-
-        String errorMessage = getDriver().findElement(By.id("itemname-invalid")).getText();
-
-        Assert.assertEquals(errorMessage, "» ‘" + invalidData + "’ is an unsafe character");
-    }
-
     @Test
-    public void testCreateProjectWithSpaceInsteadOfName() {
-        final String space = " ";
+    public void testRenameProjectFromProjectDropdown() {
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.name("name")).sendKeys(space);
-        getDriver().findElement(By.xpath("//li//span[text()='Organization Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
+        String newProjectName = new HomePage(getDriver())
+                .hoverOverJobDropdownMenu(PROJECT_NAME)
+                .clickRenameOrganizationFolderDropdownMenu()
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickRenameButton()
+                .getProjectName();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Error");
+        Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
     @Test
     public void testRenameProjectFromProjectPage() {
-        createProject(PROJECT_NAME);
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.name("Submit")).click();
+        String newProjectName = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new OrganizationFolderDetailsPage(getDriver()))
+                .clickRenameOptionFromLeftSideMenu()
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickRenameButton()
+                .getProjectName();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
-    }
-
-    @Test
-    public void testRenameProjectFromDashboardDropdownMenu() {
-        createProject(PROJECT_NAME);
-
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
-        getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.linkText("Rename")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
+        Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
     @Test
     public void testRenameProjectWithSameName() {
-        createProject(PROJECT_NAME);
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
-        getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.linkText("Rename")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        String message = new HomePage(getDriver())
+                .hoverOverJobDropdownMenu(PROJECT_NAME)
+                .clickRenameOrganizationFolderDropdownMenu()
+                .getWarningMessageText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div//p")).getText(), "The new name is the same as the current name.");
+        Assert.assertEquals(message, "The new name is the same as the current name.");
     }
 
     @Test
@@ -186,6 +239,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), errorTitle);
         Assert.assertTrue(getDriver().findElement(By.xpath("//p")).getText().contains(errorMessage));
     }
+
     @Test
     public void testCloneOrganizationFolder() {
         String organizationFolderName = "Organization Folder Parent";
@@ -246,98 +300,29 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testCreateOrganizationFolderWithInvalidNameWithTwoDots() {
-        clickNewJobButton();
-        setFolderName("..");
-        clickOrganizationFolderButton();
-
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
-                "» “..” is not an allowed name");
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithInvalidNameWithDotAtEnd() {
-        clickNewJobButton();
-        setFolderName("name.");
-        clickOrganizationFolderButton();
-
-        Assert.assertEquals(getDriver().findElement(By.id("itemname-invalid")).getText(),
-                "» A name cannot end with ‘.’");
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithInvalidNameOnlyWithSpace() {
-        createOrganizationFolderBySteps(" ");
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("p")).getText(),
-                "No name is specified");
-    }
-
-    @Test
-    public void testCreateOrganizationFolderWithLongName() {
-        clickNewJobButton();
-        setFolderName("Long name long name long name long name long name long name long name long name long name" +
-                " long name long name long name long name long name long name long name long name long name long name" +
-                " long name long name long name long name long name long name long name long name long name long name" +
-                " long name long name long name long name");
-        clickOrganizationFolderButton();
-        clickOkButton();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h2")).getText(),
-                "A problem occurred while processing the request.");
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCreatedNewOrganizationFolder")
     public void testOnDeletingOrganizationFolder() {
-        final String folderName = "Organization_Folder";
-        boolean deletetOK = true;
-        getDriver().findElement(By.linkText("Dashboard")).click();
-        getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + folderName + "/delete']")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        HomePage homePage = new HomePage(getDriver());
 
-        try {
-            if (getDriver().findElement(By.xpath("//table[@id ='projectstatus']")).isDisplayed()) {
-                List<WebElement> elements = getDriver().findElements(By.xpath("//td/a"));
-                List<String> jobs = new ArrayList<>();
-                for (WebElement element : elements) {
-                    jobs.add(element.getText());
-                }
-                deletetOK = jobs.contains(folderName);
-            }
-        } catch (Exception e) {
-            deletetOK = false;
-        }
+        homePage.clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectOrganizationFolder()
+                .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
+                .clickSave().clickDelete();
 
-        Assert.assertFalse(deletetOK);
+        Assert.assertFalse(homePage.getJobList().contains(PROJECT_NAME));
     }
 
-    @Ignore
-    @Test
-    public void testDeleteOrganizationFolder() {
-        final String folderName = "Organization_Folder";
-        createProject(folderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
-        getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//span/a[@href='/job/Organization_Folder/delete']")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
-    }
-
-    @Ignore
     @Test
     public void testRedirectAfterDeleting() {
-        final String folderName = "OrganizationFolder";
+        HomePage homePage = new HomePage(getDriver());
 
-        createProject(folderName);
-        getDriver().findElement(By.linkText("Dashboard")).click();
-        getDriver().findElement(By.linkText(folderName)).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/OrganizationFolder/delete']")).click();
-        getDriver().findElement(By.xpath("//button[@formnovalidate='formNoValidate']")).click();
+        homePage.clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectOrganizationFolder()
+                .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
+                .clickSave().clickDelete();
 
-        Assert.assertTrue(getDriver().getTitle().equals("Dashboard [Jenkins]"));
+        Assert.assertTrue(homePage.getTitle().equals("Dashboard [Jenkins]"));
     }
 }

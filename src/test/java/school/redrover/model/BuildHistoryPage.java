@@ -1,7 +1,9 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
@@ -33,5 +35,16 @@ public class BuildHistoryPage extends BasePage {
     public BuildHistoryPage clickIconLegendButton() {
         iconLegendButton.click();
         return this;
+    }
+
+    public String timeSinceTableLinkText() {
+        WebElement timeSince = getDriver().findElement(By.xpath("//tr/td[3]/button[1]"));
+
+        new Actions(getDriver()).
+                moveToElement(timeSince).
+                perform();
+
+        return  getDriver().findElement(By.cssSelector("div[class='tippy-content']"))
+                .getText();
     }
 }
