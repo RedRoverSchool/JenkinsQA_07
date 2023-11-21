@@ -739,18 +739,18 @@ public class UserTest extends BaseTest {
         WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]"));
         actions.moveToElement(breadcrumbName).perform();
 
-        WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
+        //WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button")));
+        actions.moveToElement(getWait2()
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"))))
+                .click().perform();
 
-        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
-        javascriptExecutor.executeScript("arguments[0].click();", element);
+//        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
+//        javascriptExecutor.executeScript("arguments[0].click();", element);
 
-        WebElement button = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
-                By.id("tippy-6")));
-        actions.moveToElement(button).perform();
-        WebElement button1 = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']"));
-        actions.moveToElement(button1).click().perform();
+        WebElement button = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']"));
+        actions.moveToElement(button).click().perform();
+
         getDriver().switchTo().alert().accept();
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
