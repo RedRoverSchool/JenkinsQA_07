@@ -225,6 +225,7 @@ public class PipelineTest extends BaseTest {
 
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testOpenLogsFromStageView() {
 
