@@ -28,6 +28,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/computer/']")
     private WebElement buildExecutorStatus;
 
+    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameOptionProjectDropdown;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -102,7 +105,7 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobName(String name) {
+    public HomePage clickJobDropdownMenu(String name) {
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
 
         Actions actions = new Actions(getDriver());
@@ -130,10 +133,18 @@ public class HomePage extends BasePage {
         return getDriver().getTitle();
     }
 
-    public String getHeadLineText() {
 
+    public String getProjectBuildStatusByName(String projectName) {
+        return getDriver()
+                .findElement(By.id("job_" + projectName))
+                .findElement(By.className("svg-icon"))
+                .getAttribute("tooltip");
+    }
+
+    public String getHeadLineText() {
         return getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")).getText();
     }
+
     public <T> T clickAnyJobCreated(T page) {
         getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
 
@@ -162,6 +173,20 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public HomePage hoverOverJobDropdownMenu(String name) {
+        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + name + "']"));
+
+        new Actions(getDriver())
+            .moveToElement(projectName).click().perform();
+
+        return this;
+    }
+
+    public OrganizationFolderRenamePage clickRenameOrganizationFolderDropdownMenu() {
+        renameOptionProjectDropdown.click();
+
+        return new OrganizationFolderRenamePage(getDriver());
+    }
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()

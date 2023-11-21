@@ -3,10 +3,15 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
 public class OrganizationFolderConfigurationPage extends BasePage {
+
+    @FindBy(xpath = "//h1")
+    private WebElement projectName;
 
     public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
@@ -24,5 +29,10 @@ public class OrganizationFolderConfigurationPage extends BasePage {
                 .click();
 
         return new HomePage(getDriver());
+    }
+
+    public String getProjectName() {
+
+        return projectName.getText();
     }
 }

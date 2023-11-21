@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+
 import java.util.List;
 
 public class FreestyleProjectConfigurePage extends BasePage {
@@ -45,6 +46,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     @FindBy(xpath = "//select[@name='_.durationName']")
     private WebElement selectTimePeriod;
+
+    @FindBy(className = "jenkins-toggle-switch__label")
+    private WebElement disableToggle;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -127,6 +131,11 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return this;
     }
 
+    public FreestyleProjectConfigurePage clickDisableToggle() {
+        disableToggle.click();
+        return this;
+    }
+
     public String getInputGitLinkFieldValue() {
         return inputGitLinkField.getAttribute("value");
     }
@@ -147,7 +156,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return selectTimePeriod.getAttribute("value");
     }
 
-    public List <WebElement> getExecuteConcurrentBuilds() {
+    public List<WebElement> getExecuteConcurrentBuilds() {
         return getDriver().findElements(By.xpath("//div[@class='form-container']"));
     }
 }

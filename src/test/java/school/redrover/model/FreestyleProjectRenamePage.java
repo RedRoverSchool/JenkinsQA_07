@@ -1,29 +1,44 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class FreestyleProjectRenamePage extends BasePage {
-    @FindBy(xpath = "//input[@name='newName']")
-    private WebElement inputName;
+
+    @FindBy(name = "newName")
+    private WebElement inputField;
+
+    @FindBy(name = "Submit")
+    private WebElement renameButton;
+
+    @FindBy(className = "error")
+    private WebElement errorMessage;
 
     public FreestyleProjectRenamePage(WebDriver driver) {
         super(driver);
     }
 
-    public FreestyleProjectRenamePage typeNewName(String name) {
-        inputName.clear();
-        inputName.sendKeys(name);
-
+    public FreestyleProjectRenamePage clearInputField() {
+        inputField.clear();
         return this;
     }
 
-    public FreestyleProjectDetailsPage clickSubmit() {
-        getDriver().findElement(By.name("Submit")).click();
+    public FreestyleProjectRenamePage enterName(String newProjectName) {
+        inputField.sendKeys(newProjectName);
+        return this;
+    }
 
+    public FreestyleProjectDetailsPage clickRenameButton() {
+        renameButton.click();
         return new FreestyleProjectDetailsPage(getDriver());
     }
+
+    public String getErrorMessage() {
+        getWait2().until(ExpectedConditions.visibilityOf(errorMessage));
+        return errorMessage.getText();
+    }
+
 }

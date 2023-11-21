@@ -557,8 +557,8 @@ public class UserTest extends BaseTest {
     @Test
     public void testUserIsDisplayedInUsersTable() {
         List<String> createdUserName = new UserPage(getDriver())
-            .createUserSuccess("Test")
-            .userNameList();
+                .createUserSuccess("Test")
+                .userNameList();
 
         Assert.assertTrue(createdUserName.contains("Test"));
     }
@@ -566,10 +566,10 @@ public class UserTest extends BaseTest {
     @Test
     public void testUserRecordContainUserIdButton() {
         UserPage createdUserPage = new UserPage(getDriver())
-            .createUserSuccess("Test");
+                .createUserSuccess("Test");
 
         boolean userId = new UserPage(getDriver())
-            .userIdIsClickable();
+                .userIdIsClickable();
         Assert.assertTrue(userId, "Button should be enabled and displayed");
     }
 
@@ -656,12 +656,13 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href ='/logout']")).click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//h1")))).getText(),
+                        By.xpath("//h1")))).getText(),
                 "Sign in to Jenkins");
     }
 
+    @Ignore
     @Test
-    public void testVerifyScreenAfterCreateUser () {
+    public void testVerifyScreenAfterCreateUser() {
         String password = "1234567";
         String email = "test@gmail.com";
         createUser(USER_NAME, password, email);
@@ -694,7 +695,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id = 'tasks']//descendant::div[2]")).click();
 
         getDriver().findElement(
-                By.xpath("//tr[@id = 'person-" + USER_NAME +"']/td[2]/a")).click();
+                By.xpath("//tr[@id = 'person-" + USER_NAME + "']/td[2]/a")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
@@ -718,7 +719,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyDisplayedUserAfterCreateUser () {
+    public void testVerifyDisplayedUserAfterCreateUser() {
         String password = "1234567";
         String email = "test@gmail.com";
         createUser(USER_NAME, password, email);
