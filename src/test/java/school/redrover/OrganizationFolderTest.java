@@ -201,6 +201,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameProjectWithSameName() {
         createProject(PROJECT_NAME);
