@@ -5,6 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -24,11 +25,10 @@ public class ViewTest extends BaseTest {
     }
 
     private void createNewFreestyleProject(String projectName) {
-        goHome();
-        getDriver().findElement(By.cssSelector("a[href='/view/all/newJob']")).click();
-        getDriver().findElement(By.cssSelector(".jenkins-input")).sendKeys(projectName);
-        getDriver().findElement(By.cssSelector(".hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.cssSelector("#ok-button")).click();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(projectName)
+                .goHomePage();
     }
 
     private void createMyNewListView(String viewName) {
@@ -74,6 +74,22 @@ public class ViewTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
+    private void createNewFolder(String folderName) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(folderName);
+        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
+    private void createNewMultibranchPipeline(String PipelineName) {
+        getDriver().findElement(By.linkText("New Item")).click();
+        getDriver().findElement(By.id("name")).sendKeys(PipelineName);
+        getDriver().findElement(By.xpath("//li[@class='org_jenkinsci_plugins_workflow_multibranch_WorkflowMultiBranchProject']")).click();
+        getDriver().findElement(By.id("ok-button")).click();
+        getDriver().findElement(By.name("Submit")).click();
+    }
+
     @Test
     public void testCreateNewView() {
         final String nameFreestyleProject = "My new Freestyle project";
@@ -97,26 +113,18 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/admin/my-views/view/Test%20view/']")).getText(), nameView);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewListView")
     public void testRenameView() {
-        final String projectName = "My New Freestyle Project";
-        final String viewName = "Test View";
-        final String newViewName = "New Test View";
+        final String renamedViewName = "Renamed View Name";
 
-        createNewFreestyleProject(projectName);
-        createMyNewListView(viewName);
-        goHome();
+        HomePage homePage = new HomePage(getDriver())
+                .clickViewByName(VIEW_NAME)
+                .clickEditView()
+                .typeNewName(renamedViewName)
+                .clickSubmit()
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href,'/configure')]")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(newViewName);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[contains(@class,'active')]/a")).getText(),
-                newViewName);
+        Assert.assertTrue(homePage.getViewsList().contains(renamedViewName));
     }
 
     @Test
@@ -454,22 +462,25 @@ public class ViewTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewListViewWithoutJobs() {
-        createNewFreestyleProject(JOB_NAME);
-        goHome();
-        createListViewWithoutAssociatedJob(VIEW_NAME);
+    public void testCreateNewListView_WithoutJobs() {
+        final String jobName = "FreestyleProject-1";
+        final String newViewName = "ListView-1";
+
+        createNewFreestyleProject(jobName);
         goHome();
 
-        List<WebElement> listOfViews = getDriver().findElements(By.xpath("//div[@class='tabBar']/div"));
-        List<String> actualViewsNames = new ArrayList<>();
-        for (WebElement el : listOfViews) {
-            actualViewsNames.add(el.getText());
-        }
+        List<String> viewsNamesList = new HomePage(getDriver())
+                .clickNewViewButton()
+                .typeNewViewName(newViewName)
+                .selectListViewType()
+                .clickCreateButton()
+                .goHomePage()
+                .getViewsList();
 
-        Assert.assertTrue(actualViewsNames.contains(VIEW_NAME));
+        Assert.assertTrue(viewsNamesList.contains(newViewName));
     }
 
-    @Test(dependsOnMethods = "testCreateNewListViewWithoutJobs")
+    @Test(dependsOnMethods = "testCreateNewListView_WithoutJobs")
     public void testRenameListView() {
         getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']"))
                 .click();
@@ -563,4 +574,26 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//div/ol/li/a[@href='/user/admin/my-views/view/"+VIEW_NAME+"/']")).getText(), VIEW_NAME);
 
     }
+
+    @Test
+    public void testCreateNewListView() {
+        final String multibranchPipelineName = "Multibranch Pipeline Name";
+        final String folderName = "New Folder Name";
+
+        createNewFolder(folderName);
+        goHome();
+        createNewMultibranchPipeline(multibranchPipelineName);
+        goHome();
+        String expectedListViewName = new HomePage(getDriver())
+                .clickNewViewButton()
+                .typeNewViewName(VIEW_NAME)
+                .selectListViewType()
+                .clickCreateButton()
+                .clickCheckboxByTitle(multibranchPipelineName)
+                .clickOKButton()
+                .getActiveViewName();
+
+        Assert.assertEquals(VIEW_NAME, expectedListViewName);
+    }
+
 }
