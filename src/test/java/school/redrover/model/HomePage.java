@@ -37,7 +37,7 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickJobByName(String name, T page) {
-        getDriver().findElement(By.xpath("//*[@id='job_" + name + "']/td[3]/a")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']")).click();
 
         return page;
     }
@@ -188,6 +188,11 @@ public class HomePage extends BasePage {
         renameOptionProjectDropdown.click();
 
         return new OrganizationFolderRenamePage(getDriver());
+    }
+
+    public String getJobInsideFolder() {
+
+        return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText();
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
