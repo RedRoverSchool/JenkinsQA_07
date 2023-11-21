@@ -738,7 +738,7 @@ public class UserTest extends BaseTest {
         WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]/button"));
 
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
-        javascriptExecutor.executeScript("arguments[0].click();", element).wait(1000);
+        javascriptExecutor.executeScript("arguments[0].click();", element).wait(3000);
 
         WebElement tippyBox = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
         actions.moveToElement(tippyBox).click().perform();
@@ -755,7 +755,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteUsingBreadcrumbChain() {
+    public void testDeleteUsingBreadcrumbChain() throws InterruptedException {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, USER_NAME, EMAIL);
 
@@ -771,7 +771,7 @@ public class UserTest extends BaseTest {
         WebElement element = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]"));
 
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
-        javascriptExecutor.executeScript("arguments[0].click();", element);
+        javascriptExecutor.executeScript("arguments[0].click();", element).wait(3000);
 
         WebElement tippyBox = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
         actions.moveToElement(tippyBox).click().perform();
