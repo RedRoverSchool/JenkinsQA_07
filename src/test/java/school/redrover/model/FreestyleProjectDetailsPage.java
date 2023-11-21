@@ -85,7 +85,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
-        getWait2().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector("a[href='lastBuild/']")))).click();
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated((By.cssSelector("a[href='lastBuild/']")))).click();
 
         return new FreestyleProjectBuildDetailsPage(getDriver());
     }
