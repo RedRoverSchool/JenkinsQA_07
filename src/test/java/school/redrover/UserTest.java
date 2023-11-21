@@ -749,8 +749,8 @@ public class UserTest extends BaseTest {
         WebElement button = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.id("tippy-6")));
         actions.moveToElement(button).perform();
-        getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']")).click();
-
+        WebElement button1 = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']"));
+        actions.moveToElement(button1).click().perform();
         getDriver().switchTo().alert().accept();
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
