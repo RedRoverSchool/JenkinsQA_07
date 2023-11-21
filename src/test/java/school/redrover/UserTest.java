@@ -739,6 +739,8 @@ public class UserTest extends BaseTest {
 
         WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]/button"));
 
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]/button")));
+
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
 
@@ -774,6 +776,8 @@ public class UserTest extends BaseTest {
         actions.moveToElement(breadcrumbName).perform();
 
         WebElement element = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]"));
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]")));
 
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
