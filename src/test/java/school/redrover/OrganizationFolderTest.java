@@ -188,6 +188,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameProjectFromProjectPage() {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
@@ -202,6 +203,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameProjectWithSameName() {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);

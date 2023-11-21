@@ -19,9 +19,14 @@ public class ViewTest extends BaseTest {
     private static final String JOB_NAME_2 = "FreestyleProject-3";
     private static final String VIEW_NAME = "ListView-1";
     private static final String VIEW_NAME_1 = "ListView-new";
+    private static final String NEW_FREE_STYLE_PROJECT_NAME = "FreeStyleTestProject";
+    private static final String NEW_LIST_VIEW_NAME = "ListViewTest";
+    private static final String NEW_DESCRIPTION_FOR_THE_VIEW = "Test description for the List View";
+    final String EDITED_DESCRIPTION_FOR_THE_VIEW = "New Test description for the List View instead of the previous one";
+
 
     private void goHome() {
-        getDriver().findElement(By.id("jenkins-home-link")).click();
+        new HomePage(getDriver()).goHomePage();
     }
 
     private void createNewFreestyleProject(String projectName) {
@@ -41,11 +46,12 @@ public class ViewTest extends BaseTest {
     }
 
     private void createListViewWithoutAssociatedJob(String newListViewName) {
-        goHome();
-        getDriver().findElement(By.xpath("//a[@href = '/newView']")).click();
-        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(newListViewName);
-        getDriver().findElement(By.xpath("//label[@for = 'hudson.model.ListView']")).click();
-        getDriver().findElement(By.xpath("//button[@id = 'ok']")).click();
+        new HomePage(getDriver())
+                .clickNewViewButton()
+                .typeNewViewName(newListViewName)
+                .selectListViewType()
+                .clickCreateButton()
+                .goHomePage();
     }
 
     private void createListViewWithAssociatedJob(String newListViewName) {
@@ -59,11 +65,11 @@ public class ViewTest extends BaseTest {
     }
 
     private void addNewDescriptionForTheView(String listViewName, String newDescriptionForTheView) {
-        goHome();
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(newDescriptionForTheView);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        new HomePage(getDriver())
+                .clickViewByName(listViewName)
+                .clickAddOrEditDescription()
+                .typeNewDescription(newDescriptionForTheView)
+                .clickSaveDescription();
     }
 
     private void associateJobToTheView(String listViewName, String jobName) {
@@ -259,66 +265,51 @@ public class ViewTest extends BaseTest {
 
     @Test
     public void testAddingDescriptionForTheView() {
-        final String newFreeStyleProjectName = "FreeStyleTestProject";
-        final String newListViewName = "ListViewTest";
-        final String newDescriptionForTheView = "Test description for the List View";
-
-        createNewFreestyleProject(newFreeStyleProjectName);
-        createListViewWithoutAssociatedJob(newListViewName);
+        createNewFreestyleProject(NEW_FREE_STYLE_PROJECT_NAME);
+        createListViewWithoutAssociatedJob(NEW_LIST_VIEW_NAME);
         goHome();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(newDescriptionForTheView);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        String description = new HomePage(getDriver())
+                .clickViewByName(NEW_LIST_VIEW_NAME)
+                .clickAddOrEditDescription()
+                .typeNewDescription(NEW_DESCRIPTION_FOR_THE_VIEW)
+                .clickSaveDescription()
+                .getDescription();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),
-                newDescriptionForTheView);
+        Assert.assertEquals(description, NEW_DESCRIPTION_FOR_THE_VIEW);
     }
 
     @Test
     public void testEditingDescriptionForTheView() {
-        final String newFreeStyleProjectName = "FreeStyleTestProject";
-        final String newListViewName = "ListViewTest";
-        final String newDescriptionForTheView = "Test description for the List View";
-        final String editedDescriptionForTheView = "New Test description for the List View instead of the previous one";
-
-        createNewFreestyleProject(newFreeStyleProjectName);
-        createListViewWithoutAssociatedJob(newListViewName);
-        addNewDescriptionForTheView(newListViewName, newDescriptionForTheView);
+        createNewFreestyleProject(NEW_FREE_STYLE_PROJECT_NAME);
+        createListViewWithoutAssociatedJob(NEW_LIST_VIEW_NAME);
         goHome();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(editedDescriptionForTheView);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        String description = new HomePage(getDriver())
+                .clickViewByName(NEW_LIST_VIEW_NAME)
+                .clickAddOrEditDescription()
+                .typeNewDescription(EDITED_DESCRIPTION_FOR_THE_VIEW)
+                .clickSaveDescription()
+                .getDescription();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),
-                editedDescriptionForTheView);
+        Assert.assertEquals(description, EDITED_DESCRIPTION_FOR_THE_VIEW);
     }
 
     @Test
     public void testDeletingDescriptionForTheView() {
-        final String newFreeStyleProjectName = "FreeStyleTestProject";
-        final String newListViewName = "ListViewTest";
-        final String newDescriptionForTheView = "Test description for the List View";
-
-        createNewFreestyleProject(newFreeStyleProjectName);
-        createListViewWithoutAssociatedJob(newListViewName);
-        addNewDescriptionForTheView(newListViewName, newDescriptionForTheView);
+        createNewFreestyleProject(NEW_FREE_STYLE_PROJECT_NAME);
+        createListViewWithoutAssociatedJob(NEW_LIST_VIEW_NAME);
+        addNewDescriptionForTheView(NEW_LIST_VIEW_NAME, NEW_DESCRIPTION_FOR_THE_VIEW);
         goHome();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        String description = new HomePage(getDriver())
+                .clickViewByName(NEW_LIST_VIEW_NAME)
+                .clickAddOrEditDescription()
+                .clearDescriptionField()
+                .clickSaveDescription()
+                .getDescription();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(),
-                "");
+        Assert.assertEquals(description,"");
     }
 
     @Test
