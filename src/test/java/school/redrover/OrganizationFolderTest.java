@@ -324,6 +324,6 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickSave()
                 .clickDelete();
 
-        Assert.assertTrue(homePage.getTitle().equals("Dashboard [Jenkins]"));
+        Assert.assertEquals(homePage.getTitle(), "Dashboard [Jenkins]");
     }
 }
