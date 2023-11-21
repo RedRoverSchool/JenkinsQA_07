@@ -306,7 +306,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .typeItemName(PROJECT_NAME)
                 .selectOrganizationFolder()
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
-                .clickSave().clickDelete();
+                .clickSave()
+                .clickDelete();
 
         Assert.assertFalse(homePage.getJobList().contains(PROJECT_NAME));
     }
@@ -320,7 +321,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .typeItemName(PROJECT_NAME)
                 .selectOrganizationFolder()
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
-                .clickSave().clickDelete();
+                .clickSave()
+                .clickDelete();
 
         Assert.assertTrue(homePage.getTitle().equals("Dashboard [Jenkins]"));
     }

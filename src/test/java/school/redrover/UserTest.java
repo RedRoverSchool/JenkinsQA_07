@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -726,5 +727,60 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
+    }
+    @Test
+    public void testDeleteUsingBreadcrumb() {
+        goToUserCreateFormPage();
+        createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
+
+        Actions actions = new Actions(getDriver());
+
+        WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]"));
+        actions.moveToElement(breadcrumbName).perform();
+
+        getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]//button")).click();
+
+        WebElement tippyBox = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
+        actions.moveToElement(tippyBox).click().perform();
+
+        getDriver().switchTo().alert().accept();
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        Assert.assertFalse(resultList.contains(USER_NAME));
+    }
+
+    @Test
+    public void testDeleteUsingBreadcrumbChain() {
+        goToUserCreateFormPage();
+        createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
+
+        WebElement userPage =
+                getDriver().findElement(
+                        By.xpath("//a[contains(text(),'" + USER_NAME + "')]"));
+        Actions actions = new Actions(getDriver());
+        actions.sendKeys(userPage, Keys.ENTER).perform();
+
+        WebElement breadcrumbName = getDriver().findElement(By.xpath("//a[@href='/securityRealm/user/"+USER_NAME.toLowerCase()+"/']"));
+        actions.moveToElement(breadcrumbName).perform();
+
+        getDriver().findElement(By.xpath("//li[5]/a/button")).click();
+
+        WebElement tippyBox = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
+        actions.moveToElement(tippyBox).click().perform();
+
+        getDriver().switchTo().alert().accept();
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        Assert.assertFalse(resultList.contains(USER_NAME));
     }
 }
