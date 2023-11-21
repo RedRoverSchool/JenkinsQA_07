@@ -31,6 +31,12 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public String getFolderDescription() {
+
         return getDriver().findElement(By.className("textarea-preview")).getText();
+    }
+
+    public HomePage clickSave() {
+        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        return new HomePage(getDriver());
     }
 }
