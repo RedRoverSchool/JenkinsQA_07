@@ -726,7 +726,7 @@ public class UserTest extends BaseTest {
                 getText().contains(USER_NAME), true);
     }
     @Test
-    public void testDeleteUsingBreadcrumb() {
+    public void testDeleteUsingBreadcrumb() throws InterruptedException {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
@@ -738,7 +738,7 @@ public class UserTest extends BaseTest {
         WebElement element = getDriver().findElement(By.xpath("//a[(@href='user/"+USER_NAME.toLowerCase()+"/')]/button"));
 
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)getDriver();
-        javascriptExecutor.executeScript("arguments[0].click();", element);
+        javascriptExecutor.executeScript("arguments[0].click();", element).wait(1000);
 
         WebElement tippyBox = getDriver().findElement(By.xpath("//div[@class='tippy-content']//button[@href='/user/"+USER_NAME.toLowerCase()+"/doDelete']"));
         actions.moveToElement(tippyBox).click().perform();
