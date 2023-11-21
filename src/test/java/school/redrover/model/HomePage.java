@@ -12,24 +12,25 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.alertIsPresent;
-
 public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[@href='computer/new']")
-    private WebElement setUpAnAgent;
+    private WebElement setUpAgent;
 
     @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
     public WebElement buildHistoryButton;
 
     @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
-    private WebElement createAJob;
+    private WebElement createJob;
 
     @FindBy(xpath = "//a[@href='/computer/']")
     private WebElement buildExecutorStatus;
 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameOptionProjectDropdown;
+
+    @FindBy(xpath = "//a[@href='/view/all/newJob']")
+    private WebElement newItemButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -55,13 +56,13 @@ public class HomePage extends BasePage {
     }
 
     public NewItemPage clickNewItem() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        newItemButton.click();
 
         return new NewItemPage(getDriver());
     }
 
     public NodeCreatePage clickSetUpAnAgent() {
-        setUpAnAgent.click();
+        setUpAgent.click();
 
         return new NodeCreatePage(getDriver());
     }
@@ -74,11 +75,12 @@ public class HomePage extends BasePage {
 
     public NewViewPage clickNewViewButton() {
         getDriver().findElement(By.xpath("//a[@tooltip='New View']")).click();
+
         return new NewViewPage(getDriver());
     }
 
     public NewItemPage clickCreateAJob() {
-        createAJob.click();
+        createJob.click();
 
         return new NewItemPage(getDriver());
     }
@@ -133,7 +135,6 @@ public class HomePage extends BasePage {
         return getDriver().getTitle();
     }
 
-
     public String getProjectBuildStatusByName(String projectName) {
         return getDriver()
                 .findElement(By.id("job_" + projectName))
@@ -164,6 +165,7 @@ public class HomePage extends BasePage {
         if (isAlertVisible()) {
             getDriver().switchTo().alert().accept();
         }
+
         return this;
     }
 
@@ -177,7 +179,7 @@ public class HomePage extends BasePage {
         WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + name + "']"));
 
         new Actions(getDriver())
-            .moveToElement(projectName).click().perform();
+                .moveToElement(projectName).click().perform();
 
         return this;
     }
@@ -187,6 +189,7 @@ public class HomePage extends BasePage {
 
         return new OrganizationFolderRenamePage(getDriver());
     }
+
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
@@ -199,5 +202,4 @@ public class HomePage extends BasePage {
 
         return page;
     }
-
 }
