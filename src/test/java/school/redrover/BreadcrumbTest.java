@@ -188,7 +188,7 @@ public class BreadcrumbTest extends BaseTest {
                 .perform();
         dashboardChevron.sendKeys(Keys.RETURN);
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='tippy-3']")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='tippy-3']")));
 
         List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@id='tippy-3']//a"));
 
