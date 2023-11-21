@@ -84,8 +84,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='lastBuild/']"))).click();
+    public FreestyleProjectBuildDetailsPage clickTimeOfLastBuild() {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[tooltip^='Took']"))).click();
 
         return new FreestyleProjectBuildDetailsPage(getDriver());
     }
