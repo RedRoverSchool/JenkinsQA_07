@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class FreestyleProjectDetailsPage extends BasePage {
@@ -84,7 +85,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
-        getDriver().findElement(By.cssSelector("a[href='lastBuild/']")).click();
+        getWait2().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.cssSelector("a[href='lastBuild/']")))).click();
 
         return new FreestyleProjectBuildDetailsPage(getDriver());
     }
