@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobDropdownMenu(String name) {
+    public HomePage clickJobName(String name) {
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
 
         Actions actions = new Actions(getDriver());
@@ -189,4 +190,18 @@ public class HomePage extends BasePage {
 
         return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText();
     }
+
+    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                        .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .moveToElement(getDriver()
+                        .findElement(By.xpath("//a[@href='job/" + jobName + "/']/button")))
+                .click()
+                .perform();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
+
+        return page;
+    }
+
 }

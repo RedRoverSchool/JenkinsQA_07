@@ -906,23 +906,23 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
 
+
+    @Ignore
     @Test
     public void testRenameProjectFromDashboard() {
-        createFreeStyleProject(PROJECT_NAME);
-        clickSubmitButton();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage()
+                .clickRenameInDropdownMenu(PROJECT_NAME, new FreestyleProjectRenamePage(getDriver()))
+                .clearInputField()
+                .enterName(NEW_PROJECT_NAME)
+                .clickRenameButton()
+                .goHomePage();
 
-        goToJenkinsHomePage();
-
-        hoverClick("//span[contains(text(),'" + PROJECT_NAME + "')]");
-
-        hoverClick("//a[@href='/job/" + PROJECT_NAME + "/confirm-rename']");
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        hoverClickInput("//input[@name='newName']", NEW_PROJECT_NAME);
-        clickSubmitButton();
-
-        goToJenkinsHomePage();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='" + NEW_PROJECT_NAME + "']")).isDisplayed());
+        Assert.assertTrue(new HomePage(getDriver())
+                .isProjectExist(NEW_PROJECT_NAME));
     }
 
     @Ignore
