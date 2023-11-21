@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
@@ -776,8 +777,10 @@ public class UserTest extends BaseTest {
 
         WebElement element = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//button)[last()]"));
 
+        getDriver().manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) getDriver();
         javascriptExecutor.executeScript("arguments[0].click();", element);
+        getDriver().manage().timeouts().setScriptTimeout(5, TimeUnit.SECONDS);
 
         WebElement button = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//div[@class='tippy-content']//button[@href='/user/" + USER_NAME.toLowerCase() + "/doDelete']")));
