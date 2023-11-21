@@ -456,4 +456,23 @@ public class NodesTest extends BaseTest {
 
         Assert.assertTrue(deletedNode);
     }
+
+    @Test
+    public void testDeleteNewNodeFromDropDownMenu() {
+        boolean deletedNode = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goNodesListPage()
+                .clickNewNodeButton()
+                .sendNodeName(NODE_NAME)
+                .SelectPermanentAgentRadioButton()
+                .clickCreateButton()
+                .saveButtonClick(new NodesListPage(getDriver()))
+                .clickDropDownMenu(NODE_NAME)
+                .clickDeleteFromDropDownMenu(NODE_NAME)
+                .acceptAlert()
+                .elementIsNotPresent(NODE_NAME);
+
+        Assert.assertTrue(deletedNode);
+
+    }
 }

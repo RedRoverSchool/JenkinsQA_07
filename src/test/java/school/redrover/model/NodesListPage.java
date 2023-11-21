@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
@@ -38,5 +39,27 @@ public class NodesListPage extends BasePage {
     public boolean elementIsNotPresent(String xpath){
 
         return getDriver().findElements(By.xpath(xpath)).isEmpty();
+    }
+
+    public NodesListPage clickDropDownMenu(String nodeName) {
+        WebElement dropDownMenu = getDriver().findElement(By.xpath("//tr[@id='node_"+ nodeName +"']//a//button"));
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(dropDownMenu).perform();
+        dropDownMenu.click();
+
+        return this;
+    }
+
+    public NodesListPage acceptAlert () {
+        getDriver().switchTo().alert().accept();
+
+        return this;
+    }
+
+    public NodesListPage clickDeleteFromDropDownMenu (String nodeName) {
+        getDriver().findElement(By.xpath("//button[@href='/computer/"+ nodeName +"/doDelete']")).click();
+
+        return this;
     }
 }
