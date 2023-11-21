@@ -1,16 +1,20 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultiConfigurationConfigurePage;
 import school.redrover.model.MultiConfigurationDetailsPage;
+import school.redrover.model.NewItemPage;
 import school.redrover.runner.BaseTest;
 
+import java.util.List;
+
 public class MulticonfigurationProjectTest extends BaseTest {
-    private static final  String DESCRIPTION = "This is a description!!!";
-    private static final  String PROJECT_NAME = "MultiConfigurationProject123";
+    private static final String DESCRIPTION = "This is a description!!!";
+    private static final String PROJECT_NAME = "MultiConfigurationProject123";
 
     @Test
     public void testCreateWithValidName() {
@@ -43,7 +47,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(PROJECT_NAME)
                 .inputValidationMessage(
-                        "» A job already exists with the name ‘" + PROJECT_NAME +"’");
+                        "» A job already exists with the name ‘" + PROJECT_NAME + "’");
 
         Assert.assertTrue(duplicateName);
     }
@@ -86,7 +90,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .buttonSaveDescription()
                 .getDescriptionText();
 
-        Assert.assertEquals(description,newDescription);
+        Assert.assertEquals(description, newDescription);
     }
 
     @Test(dependsOnMethods = {"testCreateProjectWithDescription", "testEditDescription"})
@@ -98,7 +102,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .buttonSaveDescription()
                 .getDescriptionText();
 
-        Assert.assertEquals(delete,"");
+        Assert.assertEquals(delete, "");
     }
 
     @Test(dependsOnMethods = {"testCreateWithValidName", "testAddDescription"})
@@ -120,5 +124,19 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .acceptAlert().getHeadLineText();
 
         Assert.assertEquals(page, "Welcome to Jenkins!");
+    }
+
+    @Test
+    public void testCreateWithInvalidValueData() {
+        final String INVALID_NAME = "#!@#$%^&*()";
+        String invalidMessage = "» ‘#’ is an unsafe character";
+
+        boolean invalidTypeOfValue = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(INVALID_NAME)
+                .selectMultiConfigurationProject()
+                .inputValidationMessage(invalidMessage);
+
+        Assert.assertTrue(invalidTypeOfValue);
     }
 }

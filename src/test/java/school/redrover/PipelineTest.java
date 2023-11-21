@@ -217,13 +217,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(jobList.contains(PipelineName));
     }
 
-    @Ignore
-    @Test
-    public void testDeletePipeline() {
-        testCreatePipelineProject();
-        getDriver().findElement(By.xpath("//a[@href='job/MyPipeline/'])")).click();
-
-    }
 
     @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
