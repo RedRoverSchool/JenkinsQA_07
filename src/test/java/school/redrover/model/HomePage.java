@@ -167,7 +167,7 @@ public class HomePage extends BasePage {
                 .moveToElement(getDriver()
                         .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
                 .moveToElement(getDriver()
-                        .findElement(By.xpath("//*[@id='job_" + jobName + "']/td[3]/a/button")))
+                        .findElement(By.xpath("//a[@href='job/" + jobName + "/']/button")))
                 .click()
                 .perform();
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
