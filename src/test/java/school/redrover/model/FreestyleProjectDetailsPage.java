@@ -4,7 +4,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+
+import java.time.Duration;
 
 public class FreestyleProjectDetailsPage extends BasePage {
 
@@ -82,6 +85,24 @@ public class FreestyleProjectDetailsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
 
         return new FreestyleProjectRenamePage(getDriver());
+    }
+
+    public FreestyleProjectDetailsPage refreshPage() {
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+        getDriver().navigate().refresh();
+
+        return this;
+    }
+
+    public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
+        getDriver().findElement(By.xpath("//a[@href='lastBuild/']")).click();
+
+        return new FreestyleProjectBuildDetailsPage(getDriver());
+    }
+
+    public String getPermalinksText() {
+
+        return getDriver().findElement(By.cssSelector("ul[class='permalinks-list']")).getText();
     }
 
     public String getNewDescriptionText() {
