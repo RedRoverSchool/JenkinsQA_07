@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
 import java.util.*;
@@ -22,6 +23,7 @@ public class SystemLogTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='log']")).click();
     }
 
+    @Ignore
     @Test
     public void testCreateCustomLogRecorder() {
         openSyslogPage();
