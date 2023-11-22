@@ -728,7 +728,6 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
     }
-
     @Test
     public void testDeleteUsingBreadcrumb() {
         goToUserCreateFormPage();
@@ -742,7 +741,8 @@ public class UserTest extends BaseTest {
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
         actions.moveToElement(chevron);
+        actions.clickAndHold(chevron).release().perform();
 
-        Assert.assertFalse(chevron.getSize().equals("(14, 14)"));
+       Assert.assertEquals(chevron.getText(), "12");
     }
 }
