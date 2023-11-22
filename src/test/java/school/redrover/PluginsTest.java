@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
+import school.redrover.model.base.PluginsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.SeleniumUtils;
 
@@ -13,14 +15,18 @@ public class PluginsTest extends BaseTest {
 
     @Test
     public void testInstalledPluginsContainsAnt() {
-        getDriver().findElement(By.xpath(
-                "//*[@id='tasks']//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dl/dt[text()='Plugins']")).click();
+        new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage();
 
-        WebElement installedPlugins = getDriver().findElement(By.xpath(
-                "//a[@href = '/manage/pluginManager/installed']"));
+        new PluginsPage(getDriver())
+                .jsClickInstalledPlugins();
 
-        SeleniumUtils.jsClick(getDriver(), installedPlugins);
+
+//        getDriver().findElement(By.xpath("//*[@id='tasks']//a[@href='/manage']")).click();
+//        getDriver().findElement(By.xpath("//dl/dt[text()='Plugins']")).click();
+//        WebElement installedPlugins = getDriver().findElement(By.xpath("//a[@href = '/manage/pluginManager/installed']"));
+//        SeleniumUtils.jsClick(getDriver(), installedPlugins);
 
         List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
 

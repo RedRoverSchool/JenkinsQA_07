@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.PluginsPage;
 
 public class ManageJenkinsPage extends BasePage {
 
@@ -13,6 +14,9 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(xpath = "//a[@href = 'securityRealm/']")
     private WebElement userSection;
+
+    @FindBy(xpath = "//dl/dt[text()='Plugins']")
+    private WebElement plugins;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -28,5 +32,11 @@ public class ManageJenkinsPage extends BasePage {
         nodeSection.click();
 
         return new NodesListPage(getDriver());
+    }
+
+    public PluginsPage goPluginsPage() {
+        plugins.click();
+
+        return new PluginsPage(getDriver());
     }
 }
