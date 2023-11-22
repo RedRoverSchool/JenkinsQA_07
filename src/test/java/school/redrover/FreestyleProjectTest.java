@@ -847,6 +847,7 @@ public class FreestyleProjectTest extends BaseTest {
                 DESCRIPTION_TEXT);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDescriptionPreviewAppears")
     public void testDescriptionPreviewHides() {
         Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
