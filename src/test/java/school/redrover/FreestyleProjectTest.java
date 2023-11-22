@@ -195,7 +195,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goHomePage()
                 .getJobDisplayName();
 
-        Assert.assertEquals(homePage,PROJECT_NAME);
+        Assert.assertEquals(homePage, PROJECT_NAME);
     }
 
     @Test
@@ -647,15 +647,15 @@ public class FreestyleProjectTest extends BaseTest {
 
         String editDescription = new FreestyleProjectDetailsPage(getDriver())
                 .clickSaveButton()
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .editProjectDescriptionField(DESCRIPTION_TEXT)
                 .clickSaveButton()
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .editProjectDescriptionField(NEW_DESCRIPTION_TEXT)
                 .clickSaveButton()
                 .getDescriptionText();
 
-        Assert.assertEquals(editDescription,NEW_DESCRIPTION_TEXT);
+        Assert.assertEquals(editDescription, NEW_DESCRIPTION_TEXT);
     }
 
     @Ignore
@@ -671,20 +671,16 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).isDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
-        createFreeStyleProject(PROJECT_NAME);
-        clickSubmitButton();
+        boolean helpMessageDisplay = new HomePage(getDriver())
+                 .clickOnJob()
+                .goToConfigureFromSideMenu()
+                .clickAdvancedButton()
+                .clickOnQuietPeriodToolTip()
+                .helpMessageDisplay();
 
-        getDriver().findElement(By.cssSelector("li[class = 'jenkins-breadcrumbs__list-item']")).click();
-
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
-
-        getDriver().findElement(By.xpath("(//button[@type='button'][normalize-space()='Advanced'])[3]")).click();
-        getDriver().findElement(By.cssSelector("a[title='Help for feature: Quiet period']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='tbody dropdownList-container']//div[@class='help']//div")).isDisplayed());
+        Assert.assertTrue(helpMessageDisplay);
     }
 
     @Test
@@ -1060,13 +1056,13 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
         String inputUrlField = new FreestyleProjectDetailsPage(getDriver())
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .clickSourseCodeManagementLinkFromSideMenu()
                 .scrollPage(0, 600)
                 .clickGitRadioButton()
                 .inputGitLink("https://github.com/RedRoverSchool/JenkinsQA_07")
                 .clickSaveButton()
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .clickSourseCodeManagementLinkFromSideMenu()
                 .scrollPage(0, 600)
                 .getInputGitLinkFieldValue();
@@ -1080,13 +1076,13 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
         String inputDaysToKeepBuilds = new FreestyleProjectDetailsPage(getDriver())
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .clickDiscardOldBuildsCheckBox()
                 .scrollPage(0, 300)
                 .inputMaxNumberOfBuildsToKeep("2")
                 .inputDaysToKeepBuilds("3")
                 .clickSaveButton()
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .scrollPage(0, 300)
                 .getInputDaysToKeepBuildsFieldValue();
 
@@ -1103,13 +1099,13 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
         String numberOfBuilds = new FreestyleProjectDetailsPage(getDriver())
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .clickThrottleBuildsCheckBox()
                 .scrollPage(0, 600)
                 .inputNumberOfBuilds("4")
                 .selectTimePeriod("day")
                 .clickSaveButton()
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .scrollPage(0, 600)
                 .getNumberOfBuildsFieldValue();
 
@@ -1126,14 +1122,14 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
         List<WebElement> quantityOfElementsBeforeClicking = new FreestyleProjectDetailsPage(getDriver())
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .scrollPage(0, 300)
                 .getExecuteConcurrentBuilds();
 
         List<WebElement> quantityOfElementsAfterClicking = new FreestyleProjectConfigurePage(getDriver())
                 .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
                 .clickSaveButton()
-                .goToConfigureFromSideMenu(PROJECT_NAME)
+                .goToConfigureFromSideMenu()
                 .scrollPage(0, 300)
                 .getExecuteConcurrentBuilds();
 

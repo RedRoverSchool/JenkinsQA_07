@@ -37,6 +37,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
+    @FindBy(xpath = "//a[contains(@href,'configure')]")
+    private WebElement configureButton;
+
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -47,8 +50,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigurePage goToConfigureFromSideMenu(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href = '/job/" + projectName + "/configure']")).click();
+    public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
+        configureButton.click();
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
