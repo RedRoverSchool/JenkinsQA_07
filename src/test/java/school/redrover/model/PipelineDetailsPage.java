@@ -29,7 +29,7 @@ public class PipelineDetailsPage extends BasePage {
         return this;
     }
 
-    public PipelineDetailsPage inputNewDescription(String description) {
+    public PipelineDetailsPage inputDescription(String description) {
         descriptionField.sendKeys(description);
 
         return this;

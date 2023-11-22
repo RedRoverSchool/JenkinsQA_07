@@ -433,7 +433,7 @@ public class PipelineTest extends BaseTest {
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickAddDescription()
-                .inputNewDescription(description)
+                .inputDescription(description)
                 .clickSaveButton()
                 .getDescription();
 
