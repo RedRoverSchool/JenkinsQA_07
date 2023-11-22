@@ -191,6 +191,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public WebElement getThisProjectIsParameterizedCheckbox() {
         return getThisProjectIsParameterizedCheckboxInput;
+    }
 
     public FreestyleProjectConfigurePage inputDescription(String description) {
         new Actions(getDriver())
