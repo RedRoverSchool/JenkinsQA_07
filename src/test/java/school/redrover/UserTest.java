@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -726,5 +727,28 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
+    }
+    @Test
+    public void testDeleteUsingBreadcrumb() {
+        goToUserCreateFormPage();
+        createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
+
+        Actions actions = new Actions(getDriver());
+
+        WebElement breadcrumbName = getDriver().findElement(By.linkText(USER_NAME));
+        actions.moveToElement(breadcrumbName);
+        actions.moveToElement(breadcrumbName).build().perform();
+
+        WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", chevron);
+
+        WebElement buttonDelete = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("button[class='jenkins-dropdown__item']")));
+
+        String string = buttonDelete.getText();
+
+        Assert.assertEquals(string, "Delete");
     }
 }
