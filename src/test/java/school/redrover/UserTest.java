@@ -743,6 +743,7 @@ public class UserTest extends BaseTest {
         actions.moveToElement(chevron);
         actions.clickAndHold(chevron).release().perform();
 
-       Assert.assertEquals(chevron.getText(), "12");
+        String text= chevron.getAttribute("aria-expanded");
+        Assert.assertEquals(text, "true");
     }
 }
