@@ -83,4 +83,10 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return new FreestyleProjectRenamePage(getDriver());
     }
+
+    public boolean isJobExist() {
+
+        return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).isDisplayed();
+    }
 }
+
