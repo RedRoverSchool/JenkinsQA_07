@@ -88,10 +88,10 @@ public class HomePage extends BasePage {
         return new NewItemPage(getDriver());
     }
 
-    public GlobalViewPage clickViewByName(String viewName) {
+    public <T> T clickViewByName(String viewName, T page) {
         getDriver().findElement(By.xpath("//a[contains(text(),'" + viewName + "')]")).click();
 
-        return new GlobalViewPage(getDriver());
+        return page;
     }
 
     public List<String> getViewsList() {

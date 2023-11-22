@@ -5,7 +5,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.GlobalViewPage;
 import school.redrover.model.HomePage;
+import school.redrover.model.ListViewPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class ViewTest extends BaseTest {
     private static final String NEW_FREE_STYLE_PROJECT_NAME = "FreeStyleTestProject";
     private static final String NEW_LIST_VIEW_NAME = "ListViewTest";
     private static final String NEW_DESCRIPTION_FOR_THE_VIEW = "Test description for the List View";
-    final String EDITED_DESCRIPTION_FOR_THE_VIEW = "New Test description for the List View instead of the previous one";
+    private static final String EDITED_DESCRIPTION_FOR_THE_VIEW = "New Test description for the List View instead of the previous one";
 
 
     private void goHome() {
@@ -66,7 +68,7 @@ public class ViewTest extends BaseTest {
 
     private void addNewDescriptionForTheView(String listViewName, String newDescriptionForTheView) {
         new HomePage(getDriver())
-                .clickViewByName(listViewName)
+                .clickViewByName(listViewName, new ListViewPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeNewDescription(newDescriptionForTheView)
                 .clickSaveDescription();
@@ -124,7 +126,7 @@ public class ViewTest extends BaseTest {
         final String renamedViewName = "Renamed View Name";
 
         HomePage homePage = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME)
+                .clickViewByName(VIEW_NAME, new GlobalViewPage(getDriver()))
                 .clickEditView()
                 .typeNewName(renamedViewName)
                 .clickSubmit()
@@ -270,7 +272,7 @@ public class ViewTest extends BaseTest {
         goHome();
 
         String description = new HomePage(getDriver())
-                .clickViewByName(NEW_LIST_VIEW_NAME)
+                .clickViewByName(NEW_LIST_VIEW_NAME, new ListViewPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeNewDescription(NEW_DESCRIPTION_FOR_THE_VIEW)
                 .clickSaveDescription()
@@ -286,7 +288,7 @@ public class ViewTest extends BaseTest {
         goHome();
 
         String description = new HomePage(getDriver())
-                .clickViewByName(NEW_LIST_VIEW_NAME)
+                .clickViewByName(NEW_LIST_VIEW_NAME, new ListViewPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeNewDescription(EDITED_DESCRIPTION_FOR_THE_VIEW)
                 .clickSaveDescription()
@@ -303,7 +305,7 @@ public class ViewTest extends BaseTest {
         goHome();
 
         String description = new HomePage(getDriver())
-                .clickViewByName(NEW_LIST_VIEW_NAME)
+                .clickViewByName(NEW_LIST_VIEW_NAME, new ListViewPage(getDriver()))
                 .clickAddOrEditDescription()
                 .clearDescriptionField()
                 .clickSaveDescription()
