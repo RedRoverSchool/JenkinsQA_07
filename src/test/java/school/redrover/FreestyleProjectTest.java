@@ -643,7 +643,7 @@ public class FreestyleProjectTest extends BaseTest {
         createFreeStyleProject(PROJECT_NAME);
 
         String editDescription = new FreestyleProjectDetailsPage(getDriver())
-                //.clickSaveButton()
+                .clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .editProjectDescriptionField(DESCRIPTION_TEXT)
                 .clickSaveButton()
