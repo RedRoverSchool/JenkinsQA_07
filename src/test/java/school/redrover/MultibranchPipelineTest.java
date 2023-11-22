@@ -428,12 +428,12 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVisibilityTasksOfSidebarMenu() {
-        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
-        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+    public void testVisibilityOfTasksOnSidebarMenu() {
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
-                By.xpath("//span[@class='task-link-wrapper ']")));
+        List<String> namesOfTasks = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getNameOfTasksFromSidebarMenu();
 
         Assert.assertEquals(namesOfTasks, requiredNamesOfTasks);
     }
