@@ -204,22 +204,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Test
-    public void testCreateMultiConfigurationPipeline() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
 
-        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
-        nameField.clear();
-        nameField.sendKeys("MyMultiConfigurationPipeline");
-
-        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline'] ")).click();
-
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).isDisplayed());
-    }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testRenameMultibranchDropdownDashboard() {
