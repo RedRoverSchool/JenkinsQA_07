@@ -50,6 +50,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(className = "jenkins-toggle-switch__label")
     private WebElement disableToggle;
 
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement inputProjectDescription;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -158,5 +161,11 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public List<WebElement> getExecuteConcurrentBuilds() {
         return getDriver().findElements(By.xpath("//div[@class='form-container']"));
+    }
+
+    public FreestyleProjectConfigurePage editProjectDescriptionField(String editDescription) {
+        inputProjectDescription.clear();
+        inputProjectDescription.sendKeys(editDescription);
+        return new FreestyleProjectConfigurePage(getDriver());
     }
 }
