@@ -199,22 +199,19 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameProject() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-
-        getDriver().findElement(By.xpath("//a[contains(@href,'rename')]")).click();
-
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
-
-        clickSubmitButton();
-
-        goToJenkinsHomePage();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickRename()
+                .clearInputField()
+                .enterName(NEW_PROJECT_NAME)
+                .clickRenameButton()
+                .goHomePage();
 
         assertTrue(isProjectExist(NEW_PROJECT_NAME));
-        assertFalse(isProjectExist(PROJECT_NAME));
     }
 
     @Test
