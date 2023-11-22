@@ -633,7 +633,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDeleteFreestyleProjectSideMenu() {
-        Boolean projectExist = new HomePage(getDriver())
+        boolean projectExist = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .deleteProject()
                 .isProjectExist(PROJECT_NAME);
