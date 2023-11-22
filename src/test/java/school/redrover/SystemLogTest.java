@@ -26,16 +26,15 @@ public class SystemLogTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='log']")).click();
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testDeleteAllCustomLogRecorders")
     public void testCreateCustomLogRecorder() {
         openSyslogPage();
 
         getDriver().findElement(By.xpath("//a[@href='new']")).click();
         new Actions(getDriver()).moveToElement(getDriver()
-                        .findElement(By.cssSelector("input[checkurl='checkNewName']")))
-                .click()
-                .perform();
+                .findElement(By.cssSelector("input[checkurl='checkNewName']")))
+            .click()
+            .perform();
         getDriver().findElement(By.cssSelector("input[checkurl='checkNewName']")).sendKeys(SYSLOG_NAME);
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
@@ -43,11 +42,10 @@ public class SystemLogTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
 
         Assert.assertEquals(getDriver()
-                .findElement(By.xpath("//*[@id='logRecorders']/tbody/tr[2]/td[1]/a"))
-                .getText(), SYSLOG_NAME);
+            .findElement(By.xpath("//*[@id='logRecorders']/tbody/tr[2]/td[1]/a"))
+            .getText(), SYSLOG_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateCustomLogRecorder")
     public void testDeleteCustomLogRecorder() {
         List<WebElement> lst = new ArrayList<>();
@@ -58,10 +56,10 @@ public class SystemLogTest extends BaseTest {
             getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
             Actions actions = new Actions(getDriver());
             actions.pause(400)
-                    .moveToElement(getDriver()
-                            .findElement(By.xpath("//a[@data-post='true']")))
-                    .click()
-                    .perform();
+                .moveToElement(getDriver()
+                    .findElement(By.xpath("//a[@data-post='true']")))
+                .click()
+                .perform();
             getWait5().until(ExpectedConditions.alertIsPresent()).accept();
 
             lst = getDriver().findElements(By.className("jenkins-table__link"));
@@ -78,6 +76,7 @@ public class SystemLogTest extends BaseTest {
         lst = getDriver().findElements(By.className("jenkins-table__link"));
         if (lst.size() > 1) {
             Iterator<WebElement> it = lst.iterator();
+
             while (it.hasNext()) {
                 WebElement wb = it.next();
                 if (!wb.getText().equals("All Jenkins Logs")) {
@@ -85,10 +84,10 @@ public class SystemLogTest extends BaseTest {
                     getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
                     Actions actions = new Actions(getDriver());
                     actions.pause(400)
-                            .moveToElement(getDriver()
-                                    .findElement(By.xpath("//a[@data-post='true']")))
-                            .click()
-                            .perform();
+                        .moveToElement(getDriver()
+                            .findElement(By.xpath("//a[@data-post='true']")))
+                        .click()
+                        .perform();
                     getWait5().until(ExpectedConditions.alertIsPresent()).accept();
                     getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
                     lst = getDriver().findElements(By.className("jenkins-table__link"));
@@ -97,10 +96,10 @@ public class SystemLogTest extends BaseTest {
                     getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
                     Actions actions = new Actions(getDriver());
                     actions.pause(400)
-                            .moveToElement(getDriver()
-                                    .findElement(By.xpath("//a[@data-post='true']")))
-                            .click()
-                            .perform();
+                        .moveToElement(getDriver()
+                            .findElement(By.xpath("//a[@data-post='true']")))
+                        .click()
+                        .perform();
                     getWait5().until(ExpectedConditions.alertIsPresent()).accept();
                     getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
                     lst = getDriver().findElements(By.className("jenkins-table__link"));
