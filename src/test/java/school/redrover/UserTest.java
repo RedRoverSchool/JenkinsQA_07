@@ -744,10 +744,19 @@ public class UserTest extends BaseTest {
         actions.clickAndHold(chevron).release().perform();
 
         WebElement buttonDelete = getWait10().until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("button[class='jenkins-dropdown__item']")));
+                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']")));
 
-        String string = buttonDelete.getText();
+        actions.moveToElement(buttonDelete).click().perform();
 
-        Assert.assertEquals(string, "Delete");
+
+        getDriver().switchTo().alert().accept();
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        Assert.assertFalse(resultList.contains(USER_NAME));
     }
 }
