@@ -741,9 +741,9 @@ public class UserTest extends BaseTest {
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
         actions.moveToElement(chevron);
-        actions.moveToElement(chevron).clickAndHold(chevron).release().perform();
+        actions.clickAndHold(chevron).release().perform();
 
-        WebElement buttonDelete = getWait10().until(ExpectedConditions.visibilityOfElementLocated(
+        WebElement buttonDelete = getWait10().until(ExpectedConditions.presenceOfElementLocated(
                 By.cssSelector("button[class='jenkins-dropdown__item']")));
 
         String string = buttonDelete.getText();
