@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -139,8 +140,12 @@ public class FolderTest extends BaseTest {
         FolderDetailsPage folderName = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()));
 
+        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
+        WebElement dropdownArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
+
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a/button")))
+                .moveToElement(breadcrumbName)
+                .moveToElement(dropdownArrow)
                 .click()
                 .perform();
 
