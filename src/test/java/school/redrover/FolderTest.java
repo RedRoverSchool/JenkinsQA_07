@@ -9,7 +9,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderConfigurationPage;
 import school.redrover.model.FolderDetailsPage;
-import school.redrover.model.FolderNewJobPage;
+import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -62,7 +62,6 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(FOLDER_NAME));
     }
 
-
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
         HomePage homePage = new HomePage(getDriver())
@@ -77,15 +76,16 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRename")
     public void testCreateNewJob() {
-        HomePage homePage = new HomePage(getDriver())
+        boolean isJobCreated = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickCreateJob()
-                .typeJobName(JOB_NAME)
-                .clickFreestyleProject()
-                .clickSubmit()
-                .clickSave();
+                .typeItemName(JOB_NAME)
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .clickSaveButton()
+                .isJobExist();
 
-        Assert.assertTrue(homePage.getJobInsideFolder().contains(JOB_NAME));
+        Assert.assertTrue(isJobCreated);
     }
 
     @Ignore
