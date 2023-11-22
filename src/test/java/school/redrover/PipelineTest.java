@@ -12,6 +12,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.PipelineConfigurationPage;
+import school.redrover.model.PipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.Arrays;
@@ -427,16 +428,16 @@ public class PipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreate")
     public void testDescriptionDisplays() {
-        final String description = "Description of the Pipeline ";
+        final String description = "Description of the Pipeline";
 
-        getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.cssSelector("textarea[name ='description']")).sendKeys(description + JOB_NAME);
-        getDriver().findElement(By.xpath("//div[@id = 'description']//button[@name = 'Submit']")).click();
+        String actualDescription = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickAddDescription()
+                .inputNewDescription(description)
+                .clickSaveButton()
+                .getDescription();
 
-        Assert.assertEquals(getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//div[@class = 'jenkins-buttons-row jenkins-buttons-row--invert']/preceding-sibling :: div"))).getText(),
-                description + JOB_NAME);
+        Assert.assertEquals(actualDescription, description);
     }
 
     @Test
