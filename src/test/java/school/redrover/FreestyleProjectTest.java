@@ -836,19 +836,20 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .inputDescription(DESCRIPTION_TEXT)
+                .clickApply()
                 .clickPreviewDescription();
 
         Assert.assertEquals(
                 new FreestyleProjectConfigurePage(getDriver()).getPreviewDescriptionText(),
                 DESCRIPTION_TEXT);
-
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDescriptionPreviewAppears")
     public void testDescriptionPreviewHides() {
-        new FreestyleProjectConfigurePage(getDriver())
-                .dismissAlertAndStay()
+        new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickPreviewDescription()
                 .clickHidePreviewDescription();
 
         Assert.assertEquals(
@@ -856,13 +857,11 @@ public class FreestyleProjectTest extends BaseTest {
                 "none");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testGitRadioButtonSettingsIsOpened")
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String xpathLocator = "//input[@checkdependson='credentialsId']";
         final String inputText = "123";
-
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
 
         hoverClickInput(xpathLocator, inputText);
 

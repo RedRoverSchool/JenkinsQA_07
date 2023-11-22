@@ -51,6 +51,18 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement inputProjectDescription;
 
+    @FindBy(xpath = "//a[@previewendpoint = '/markupFormatter/previewDescription']")
+    private WebElement previewDescription;
+
+    @FindBy(xpath = "//a[@class = 'textarea-hide-preview']")
+    private WebElement hidePreviewDescription;
+
+    @FindBy(xpath = "//div[@class = 'textarea-preview']")
+    private WebElement descriptionPreviewText;
+
+    @FindBy(xpath = "//button[@name = 'Apply']")
+    private WebElement applyButton;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -176,20 +188,30 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return this;
     }
 
-    public void clickPreviewDescription() {
-        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
+    public FreestyleProjectConfigurePage clickPreviewDescription() {
+        previewDescription.click();
+
+        return this;
     }
 
-    public void clickHidePreviewDescription() {
-        getDriver().findElement(By.xpath("//a[@class = 'textarea-hide-preview']")).click();
+    public FreestyleProjectConfigurePage clickHidePreviewDescription() {
+        hidePreviewDescription.click();
+
+        return this;
     }
 
     public String getPreviewDescriptionText() {
-        return getDriver().findElement(By.xpath("//div[@class = 'textarea-preview']")).getText();
+        return descriptionPreviewText.getText();
     }
 
     public String getCssValue(By locator, String cssValueName) {
         return getDriver().findElement(locator).getCssValue(cssValueName);
+    }
+
+    public FreestyleProjectConfigurePage clickApply() {
+        applyButton.click();
+
+        return this;
     }
 
     public FreestyleProjectConfigurePage dismissAlertAndStay() {
