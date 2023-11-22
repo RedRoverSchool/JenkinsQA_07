@@ -37,6 +37,15 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
+    @FindBy(xpath = "//a[@href='editDescription']")
+    private WebElement addDescriptionButton;
+
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement inputProjectDescription;
+
+    @FindBy(xpath = "//button[contains(text(), 'Save')]")
+    private WebElement saveButton;
+
     @FindBy(xpath = "//a[contains(@href,'configure')]")
     private WebElement configureButton;
 
@@ -103,8 +112,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public FreestyleProjectDetailsPage clickSaveButton() {
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        return new FreestyleProjectDetailsPage(getDriver());
+        saveButton.click();
+
+        return this;
     }
 
     public boolean isJobExist() {
@@ -128,5 +138,17 @@ public class FreestyleProjectDetailsPage extends BasePage {
     public String getPermalinksText() {
 
         return listPermalinks.getText();
+    }
+
+    public FreestyleProjectDetailsPage clickAddDescriptionButton() {
+        addDescriptionButton.click();
+
+        return this;
+    }
+
+    public FreestyleProjectDetailsPage inputDescriptionText(String description) {
+        inputProjectDescription.sendKeys(description);
+
+        return this;
     }
 }

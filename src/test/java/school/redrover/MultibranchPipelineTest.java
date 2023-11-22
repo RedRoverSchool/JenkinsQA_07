@@ -14,12 +14,11 @@ import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.testng.Assert.assertTrue;
 
 public class MultibranchPipelineTest extends BaseTest {
 
@@ -419,23 +418,22 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testSidebarMenuConsistingOfTenTasks() {
-        final int quantityOfTasks = 10;
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
-        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+        int numberOfTasksFromLeftSidebarMenu = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getNameOfTasksFromSidebarMenu().size();
 
-        Assert.assertEquals(
-                getDriver().findElements(By.xpath("//span[@class='task-link-wrapper ']")).size(),
-                quantityOfTasks);
+        Assert.assertEquals(numberOfTasksFromLeftSidebarMenu, requiredNamesOfTasks.size());
     }
 
     @Test
-    public void testVisibilityTasksOfSidebarMenu() {
-        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
-        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+    public void testVisibilityOfTasksOnSidebarMenu() {
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
-                By.xpath("//span[@class='task-link-wrapper ']")));
+        List<String> namesOfTasks = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getNameOfTasksFromSidebarMenu();
 
         Assert.assertEquals(namesOfTasks, requiredNamesOfTasks);
     }
