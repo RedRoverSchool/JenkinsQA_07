@@ -1196,26 +1196,40 @@ public class FreestyleProjectTest extends BaseTest {
         }
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDeletePermalinksOnProjectsStatusPage")
     public void testRenameUnsafeCharacters() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.cssSelector("a[href$='confirm-rename']")).click();
-        WebElement newName = getDriver().findElement(By.name("newName"));
+        final  List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
 
-        List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
+        FreestyleProjectRenamePage error = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickRenameLink();
+        
+        for (String x: unsafeCharacters) {
+            error.clearInputField()
+                    .enterName(x);
 
-        for (String x : unsafeCharacters) {
-            newName.clear();
-            newName.sendKeys(x);
-            newName.sendKeys(Keys.TAB);
-            getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='error']")));
-
-            Assert.assertEquals(getDriver().findElement(By.cssSelector("div[class='error']")).getText(),
-                    "‘" + x + "’ is an unsafe character");
+            Assert.assertEquals(error.getErrorMessage(),"‘" + x + "’ is an unsafe character");
         }
+
     }
+//        createFreeStyleProject(PROJECT_NAME);
+//        goToJenkinsHomePage();
+//        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+//        getDriver().findElement(By.cssSelector("a[href$='confirm-rename']")).click();
+//        WebElement newName = getDriver().findElement(By.name("newName"));
+//
+//        List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
+//
+//        for (String x : unsafeCharacters) {
+//            newName.clear();
+//            newName.sendKeys(x);
+//            newName.sendKeys(Keys.TAB);
+//            getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='error']")));
+//
+//            Assert.assertEquals(getDriver().findElement(By.cssSelector("div[class='error']")).getText(),
+//                    "‘" + x + "’ is an unsafe character");
+//        }
+//    }
 
     @Test
     public void testVisibilityHelDescriptionQuietPeriod() {
