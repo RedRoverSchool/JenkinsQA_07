@@ -831,29 +831,28 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDescriptionPreviewAppears() {
-        createFreeStyleProject(PROJECT_NAME);
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .inputDescription(DESCRIPTION_TEXT)
+                .clickApply()
+                .clickPreviewDescription();
 
-        hoverClickInput("//textarea[@name = 'description']", DESCRIPTION_TEXT);
-
-        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class = 'textarea-preview']"))
-                        .getText(),
+        Assert.assertEquals(
+                new FreestyleProjectConfigurePage(getDriver()).getPreviewDescriptionText(),
                 DESCRIPTION_TEXT);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDescriptionPreviewAppears")
     public void testDescriptionPreviewHides() {
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
+        new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickPreviewDescription()
+                .clickHidePreviewDescription();
 
-        hoverClick("//a[@class = 'textarea-hide-preview']");
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class = 'textarea-preview']"))
-                        .getCssValue("display"),
+        Assert.assertEquals(
+                new FreestyleProjectConfigurePage(getDriver()).getCssValue(By.xpath("//div[@class = 'textarea-preview']"), "display"),
                 "none");
     }
 
@@ -862,9 +861,6 @@ public class FreestyleProjectTest extends BaseTest {
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String xpathLocator = "//input[@checkdependson='credentialsId']";
         final String inputText = "123";
-
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
 
         hoverClickInput(xpathLocator, inputText);
 
@@ -904,7 +900,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
-
 
     @Ignore
     @Test

@@ -1,11 +1,9 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -59,10 +57,21 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//label[contains(text(), 'This project is parameterized')]/../input")
     private WebElement getThisProjectIsParameterizedCheckboxInput;
 
+    @FindBy(xpath = "//a[@previewendpoint = '/markupFormatter/previewDescription']")
+    private WebElement previewDescription;
+
+    @FindBy(xpath = "//a[@class = 'textarea-hide-preview']")
+    private WebElement hidePreviewDescription;
+
+    @FindBy(xpath = "//div[@class = 'textarea-preview']")
+    private WebElement descriptionPreviewText;
+
+    @FindBy(xpath = "//button[@name = 'Apply']")
+    private WebElement applyButton;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
-
 
     public boolean tooltipDiscardOldBuildsIsVisible() {
         boolean tooltipIsVisible = true;
@@ -182,5 +191,47 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public WebElement getThisProjectIsParameterizedCheckbox() {
         return getThisProjectIsParameterizedCheckboxInput;
+
+    public FreestyleProjectConfigurePage inputDescription(String description) {
+        new Actions(getDriver())
+                .moveToElement(inputProjectDescription)
+                .click()
+                .sendKeys(description)
+                .perform();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickPreviewDescription() {
+        previewDescription.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickHidePreviewDescription() {
+        hidePreviewDescription.click();
+
+        return this;
+    }
+
+    public String getPreviewDescriptionText() {
+        return descriptionPreviewText.getText();
+    }
+
+    public String getCssValue(By locator, String cssValueName) {
+        return getDriver().findElement(locator).getCssValue(cssValueName);
+    }
+
+    public FreestyleProjectConfigurePage clickApply() {
+        applyButton.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage dismissAlertAndStay() {
+        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
+        alert.dismiss();
+
+        return this;
     }
 }
