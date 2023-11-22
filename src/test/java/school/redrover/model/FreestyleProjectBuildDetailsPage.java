@@ -10,12 +10,15 @@ public class FreestyleProjectBuildDetailsPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement clickSubmitCancel;
 
+    @FindBy(css = "a[href$='confirmDelete']")
+    private WebElement deleteBuild;
+
     public FreestyleProjectBuildDetailsPage(WebDriver driver) {
         super(driver);
     }
 
     public FreestyleProjectBuildDetailsPage clickDeleteBuildSidePanel() {
-        getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
+        deleteBuild.click();
 
         return this;
     }

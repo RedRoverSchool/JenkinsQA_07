@@ -1184,7 +1184,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testDeletePermalinksOnProjectsStatusPage() {
         final List<String> removedPermalinks = List.of(
                 "Last build",
@@ -1193,11 +1193,6 @@ public class FreestyleProjectTest extends BaseTest {
                 "Last completed build");
 
         String permaLinks = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(PROJECT_NAME)
-                .selectFreestyleProject()
-                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
-                .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickBuildNowButton()
                 .refreshPage()
