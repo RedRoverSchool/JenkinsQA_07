@@ -34,6 +34,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(css = "ul[class='permalinks-list']")
     private WebElement listPermalinks;
 
+    @FindBy(xpath = "//div[@id = 'description']/div[1]")
+    private WebElement descriptionText;
+
     @FindBy(xpath = "//a[@href='editDescription']")
     private WebElement addDescriptionButton;
 
@@ -94,14 +97,15 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return new WorkspacePage(getDriver());
     }
 
+
     public FreestyleProjectRenamePage clickRename() {
         getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
 
         return new FreestyleProjectRenamePage(getDriver());
     }
 
-    public String getNewDescriptionText() {
-        return getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText();
+    public String getDescriptionText() {
+        return descriptionText.getText();
     }
 
     public FreestyleProjectDetailsPage clickSaveButton() {

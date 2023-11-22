@@ -232,12 +232,15 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddDescriptionFreestyleProject() {
-        createFreeStyleProject(PROJECT_NAME);
 
-        addDescriptionInConfiguration(DESCRIPTION_TEXT);
+        String actualDescription = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .inputDescription(DESCRIPTION_TEXT)
+                .clickSaveButton()
+                .getDescriptionText();
 
-        assertEquals(getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText(),
-                DESCRIPTION_TEXT);
+        assertEquals(actualDescription, DESCRIPTION_TEXT);
     }
 
     @Test
@@ -661,7 +664,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .editProjectDescriptionField(NEW_DESCRIPTION_TEXT)
                 .clickSaveButton()
-                .getNewDescriptionText();
+                .getDescriptionText();
 
         Assert.assertEquals(editDescription,NEW_DESCRIPTION_TEXT);
     }
