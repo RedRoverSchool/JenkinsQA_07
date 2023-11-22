@@ -168,7 +168,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public FreestyleProjectConfigurePage inputDescription(String description) {
         new Actions(getDriver())
-                .moveToElement(inputDescription)
+                .moveToElement(inputProjectDescription)
                 .click()
                 .sendKeys(description)
                 .perform();
