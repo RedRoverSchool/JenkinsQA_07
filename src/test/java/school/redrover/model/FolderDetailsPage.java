@@ -58,8 +58,8 @@ public class FolderDetailsPage extends BasePage {
         return getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
     }
 
-    public FolderNewJobPage clickCreateJob() {
+    public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//a[@class='content-block__link']")).click();
-        return new FolderNewJobPage(getDriver());
+        return new NewItemPage(getDriver());
     }
 }

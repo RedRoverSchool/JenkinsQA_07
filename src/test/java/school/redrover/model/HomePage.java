@@ -190,12 +190,7 @@ public class HomePage extends BasePage {
         return new OrganizationFolderRenamePage(getDriver());
     }
 
-    public String getJobInsideFolder() {
-
-        return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText();
-    }
-
-    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
+       public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                         .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
