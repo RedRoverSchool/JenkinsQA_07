@@ -14,6 +14,9 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(className = "textarea-show-preview")
     private WebElement previewSwitch;
 
+    @FindBy(xpath = "//h1[text() = 'Configuration']")
+    private WebElement configuration;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -38,5 +41,11 @@ public class FolderConfigurationPage extends BasePage {
     public HomePage clickSave() {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         return new HomePage(getDriver());
+    }
+
+    public FolderConfigurationPage getH1() {
+        configuration.isDisplayed();
+
+        return this;
     }
 }
