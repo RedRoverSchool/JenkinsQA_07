@@ -5,8 +5,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.base.BasePage;
 
 public class NewItemPage extends BasePage {
 
@@ -33,6 +33,9 @@ public class NewItemPage extends BasePage {
 
     @FindBy(className = "com_cloudbees_hudson_plugins_folder_Folder")
     private WebElement folder;
+
+    @FindBy(xpath = "//span[text()='Pipeline']")
+    private WebElement pipeline;
 
     @FindBy(id = "from")
     private WebElement cloneItemTextField;
@@ -126,13 +129,13 @@ public class NewItemPage extends BasePage {
                 inputValidationMessage, errorMessage));
     }
 
-
     public boolean isCloneItemSectionDisplayed() {
         return !getDriver().findElements(By.className("item-copy")).isEmpty();
     }
 
     public NewItemPage enterExistentItemNameToClone(String itemName) {
         cloneItemTextField.sendKeys(itemName);
+
         return this;
     }
 
@@ -140,5 +143,11 @@ public class NewItemPage extends BasePage {
         return !getDriver()
                 .findElements(By.xpath("//li[contains(text(),'" + projectName + "')]"))
                 .isEmpty();
+    }
+
+    public NewItemPage selectPipelineProject() {
+        pipeline.click();
+
+        return this;
     }
 }

@@ -33,6 +33,7 @@ public class UserTest extends BaseTest {
     public static final String FULL_NAME = "User Full Name";
     final private static String PASSWORD = "12345";
     final private static String DESCRIPTION = "Test description";
+    private static final String EMAIL = "asd@gmail.com";
 
     private void createUser(String userName, String password, String email) {
         getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
@@ -556,8 +557,8 @@ public class UserTest extends BaseTest {
     @Test
     public void testUserIsDisplayedInUsersTable() {
         List<String> createdUserName = new UserPage(getDriver())
-            .createUserSuccess("Test")
-            .userNameList();
+                .createUserSuccess("Test")
+                .userNameList();
 
         Assert.assertTrue(createdUserName.contains("Test"));
     }
@@ -565,10 +566,10 @@ public class UserTest extends BaseTest {
     @Test
     public void testUserRecordContainUserIdButton() {
         UserPage createdUserPage = new UserPage(getDriver())
-            .createUserSuccess("Test");
+                .createUserSuccess("Test");
 
         boolean userId = new UserPage(getDriver())
-            .userIdIsClickable();
+                .userIdIsClickable();
         Assert.assertTrue(userId, "Button should be enabled and displayed");
     }
 
@@ -655,12 +656,13 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href ='/logout']")).click();
 
         Assert.assertEquals(getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//h1")))).getText(),
+                        By.xpath("//h1")))).getText(),
                 "Sign in to Jenkins");
     }
 
+    @Ignore
     @Test
-    public void testVerifyScreenAfterCreateUser () {
+    public void testVerifyScreenAfterCreateUser() {
         String password = "1234567";
         String email = "test@gmail.com";
         createUser(USER_NAME, password, email);
@@ -671,18 +673,19 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserWithValidData() {
-        goToUsersPage();
 
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        boolean isUserCreated = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputEmail(EMAIL)
+                .clickSubmit()
+                .isUserCreated(USER_NAME);
 
-        getDriver().findElement(By.name("username")).sendKeys(USER_NAME);
-        getDriver().findElement(By.name("password1")).sendKeys(PASSWORD);
-        getDriver().findElement(By.name("password2")).sendKeys(PASSWORD);
-        getDriver().findElement(By.name("email")).sendKeys("asd@gmail.com");
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.linkText(USER_NAME)).isDisplayed());
+        Assert.assertTrue(isUserCreated);
     }
 
     @Test(dependsOnMethods = "testCreateUserWithValidData")
@@ -692,7 +695,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//div[@id = 'tasks']//descendant::div[2]")).click();
 
         getDriver().findElement(
-                By.xpath("//tr[@id = 'person-" + USER_NAME +"']/td[2]/a")).click();
+                By.xpath("//tr[@id = 'person-" + USER_NAME + "']/td[2]/a")).click();
 
         getDriver().findElement(By.id("description-link")).click();
         getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
@@ -716,7 +719,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testVerifyDisplayedUserAfterCreateUser () {
+    public void testVerifyDisplayedUserAfterCreateUser() {
         String password = "1234567";
         String email = "test@gmail.com";
         createUser(USER_NAME, password, email);

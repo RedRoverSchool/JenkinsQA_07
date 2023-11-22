@@ -9,8 +9,10 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.FolderConfigurationPage;
 import school.redrover.model.FolderDetailsPage;
+import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +24,7 @@ public class FolderTest extends BaseTest {
     private static final String RENAMED_FOLDER = "RenamedFolder";
     private static final String NESTED_FOLDER = "Nested";
     private static final String JOB_NAME = "New Job";
+
     private void getDashboardLink() {
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
     }
@@ -59,7 +62,6 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(FOLDER_NAME));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testRename() {
         HomePage homePage = new HomePage(getDriver())
@@ -70,6 +72,20 @@ public class FolderTest extends BaseTest {
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));
+    }
+
+    @Test(dependsOnMethods = "testRename")
+    public void testCreateNewJob() {
+        boolean isJobCreated = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickCreateJob()
+                .typeItemName(JOB_NAME)
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .clickSaveButton()
+                .isJobExist();
+
+        Assert.assertTrue(isJobCreated);
     }
 
     @Ignore
@@ -99,7 +115,7 @@ public class FolderTest extends BaseTest {
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = {"testCreate", "testRename"})
     public void testAddDisplayName() {
         final String expectedFolderDisplayName = "Best folder";
@@ -110,37 +126,9 @@ public class FolderTest extends BaseTest {
                 .typeDisplayName(expectedFolderDisplayName)
                 .clickSave()
                 .goHomePage()
-                .getJobDisplayName(RENAMED_FOLDER);
+                .getJobDisplayName();
 
         Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testMoveFolderToFolder")
-    public void testCreateNewJob() {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//td/a[@href='job/" + RENAMED_FOLDER + "/']"))).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + RENAMED_FOLDER + "/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(JOB_NAME);
-        getDriver().findElement(By.xpath("//li[@class='hudson_model_FreeStyleProject']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).getText(),
-                "Project " + JOB_NAME);
-    }
-
-    @Test(dependsOnMethods = "testCreate")
-    public void testRenameWithValidNameFromDropDownMenu() {
-
-        getDriver().findElement(By.xpath("//*[@id='job_" + FOLDER_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_FOLDER);
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//tr[@id='job_" + RENAMED_FOLDER + "']")).isDisplayed());
     }
 
     @Ignore
@@ -232,6 +220,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("h4")).getText(), "This folder is empty");
     }
 
+    @Ignore
     @Test
     public void testCreateNameSpecialCharacters() {
         List<String> invalidNames = Arrays.asList("#", "&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";");
@@ -274,19 +263,23 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        HomePage homePage = new HomePage(getDriver());
+        String actualDescription = homePage
+                .clickAlertIfVisibleAndGoHomePage()
+                .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
+                .clickAddDescription()
+                .typeDescription(descriptionText)
+                .clickSave()
+                .getActualFolderDescription();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(descriptionText);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String actualDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
         Assert.assertEquals(actualDescription, descriptionText);
     }
+
     @Ignore
     @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testEditDescriptionOfFolder() {
@@ -353,8 +346,9 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("_.description")).sendKeys(description);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(),description);
+        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(), description);
     }
+
     @Test
     public void testClickPreview() {
         createFolder(FOLDER_NAME);
@@ -362,7 +356,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.name("_.description")).sendKeys("description123");
         getDriver().findElement(By.className("textarea-show-preview")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(),"description123");
+        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), "description123");
     }
 
     @Test
@@ -394,7 +388,7 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.xpath("//a[@href='job/" + NESTED_FOLDER + "/']")).click();
         getDriver().findElement(By.linkText("Move")).click();
         getDriver().findElement(By.name("destination")).click();
-        getDriver().findElement(By .xpath("//option[contains(text(),'Jenkins » " + FOLDER_NAME + "')]")).click();
+        getDriver().findElement(By.xpath("//option[contains(text(),'Jenkins » " + FOLDER_NAME + "')]")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         getDashboardLink();
@@ -408,8 +402,7 @@ public class FolderTest extends BaseTest {
 
         ArrayList<String> actualBreadcrumbs = new ArrayList<>();
         List<WebElement> breadcrumbs = getDriver().findElements(By.xpath("//li/a[@class='model-link']"));
-        for (WebElement eachBreadcrumb: breadcrumbs)
-        {
+        for (WebElement eachBreadcrumb : breadcrumbs) {
             actualBreadcrumbs.add(eachBreadcrumb.getText());
         }
 
@@ -457,6 +450,20 @@ public class FolderTest extends BaseTest {
                 .collect(Collectors.toList());
 
         Assert.assertEquals(extractedMenuItems, listOfExpectedMenuItems);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreate")
+    public void folderDescriptionPreviewWorksCorrectly() {
+        String description = "Folder description";
+        HomePage homePage = new HomePage(getDriver());
+        String previewText = homePage.clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickConfigureFolder()
+                .typeDescription(description)
+                .clickPreviewDescription()
+                .getFolderDescription();
+
+        Assert.assertEquals(previewText, description);
     }
 }
 

@@ -2,11 +2,13 @@ package school.redrover.runner;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.io.File;
 import java.io.IOException;
@@ -99,6 +101,13 @@ public final class ProjectUtils {
 
     static void get(WebDriver driver) {
         driver.get(getUrl());
+    }
+
+    static void acceptAlert(WebDriver driver) {
+        Alert alert = ExpectedConditions.alertIsPresent().apply(driver);
+        if (alert != null) {
+            alert.accept();
+        }
     }
 
     static WebDriver createDriver() {

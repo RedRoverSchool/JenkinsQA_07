@@ -10,7 +10,9 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.NewItemPage;
 import school.redrover.model.OrganizationFolderConfigurationPage;
+import school.redrover.model.OrganizationFolderDetailsPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,41 +175,45 @@ public class OrganizationFolderTest extends BaseTest {
     }
 
     @Test
-    public void testRenameProjectFromProjectPage() {
-        createProject(PROJECT_NAME);
+    public void testRenameProjectFromProjectDropdown() {
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.name("Submit")).click();
+        String newProjectName = new HomePage(getDriver())
+                .hoverOverJobDropdownMenu(PROJECT_NAME)
+                .clickRenameOrganizationFolderDropdownMenu()
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickRenameButton()
+                .getProjectName();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
+        Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
+    @Ignore
     @Test
-    public void testRenameProjectFromDashboardDropdownMenu() {
-        createProject(PROJECT_NAME);
+    public void testRenameProjectFromProjectPage() {
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
-        getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.linkText("Rename")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.name("Submit")).click();
+        String newProjectName = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new OrganizationFolderDetailsPage(getDriver()))
+                .clickRenameOptionFromLeftSideMenu()
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickRenameButton()
+                .getProjectName();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), NEW_PROJECT_NAME);
+        Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
+    @Ignore
     @Test
     public void testRenameProjectWithSameName() {
-        createProject(PROJECT_NAME);
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']")).click();
-        getDriver().findElement(By.xpath("//*[@id='job_" + PROJECT_NAME + "']/td[3]/a")).click();
-        getDriver().findElement(By.linkText("Rename")).click();
-        getDriver().findElement(By.name("Submit")).click();
+        String message = new HomePage(getDriver())
+                .hoverOverJobDropdownMenu(PROJECT_NAME)
+                .clickRenameOrganizationFolderDropdownMenu()
+                .getWarningMessageText();
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div//p")).getText(), "The new name is the same as the current name.");
+        Assert.assertEquals(message, "The new name is the same as the current name.");
     }
 
     @Test

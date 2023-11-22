@@ -9,13 +9,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -167,14 +165,9 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(twoUnsafeCharsErrorMessage, "‘#’ is an unsafe character");
     }
 
-    @Ignore
     @Test
     public void testAllTaskTextInSidebar() {
-        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-
-        getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
-
-        List<String> taskText = List.of(
+        final List<String> expectedTasksText = List.of(
                 "Status",
                 "Configure",
                 "Scan Multibranch Pipeline Log",
@@ -186,12 +179,13 @@ public class MultibranchPipelineTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
-        int a = 1;
-        for (String expectedText : taskText) {
-            Assert.assertEquals(
-                    getDriver().findElement(By.xpath("//div[@id='tasks']/div[" + a++ + "]")).getText(),
-                    expectedText);
-        }
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+
+        List<String> actualTasksText = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getTasksText();
+
+        Assert.assertEquals(actualTasksText, expectedTasksText);
     }
 
     @Test
@@ -230,7 +224,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testRenameMultibranchDropdownDashboard() {
         HomePage homePage = new HomePage(getDriver())
-        .clickJobDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+        .clickJobName(MULTIBRANCH_PIPELINE_NAME)
         .clickRenameDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
         .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
         .clickSubmit()
