@@ -245,20 +245,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddDescriptionFromStatusPage() {
-//        createFreeStyleProject(PROJECT_NAME);
-//
-//        goToJenkinsHomePage();
-//
-//        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-//
-//        getDriver().findElement(By.cssSelector("#description-link")).click();
-//        getDriver().findElement(By.xpath("//textarea[@name ='description']")).sendKeys(DESCRIPTION_TEXT);
-//        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
-//
-//        assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), description)]")).isDisplayed());
-//        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), DESCRIPTION_TEXT);
-
-        new HomePage(getDriver())
+        String actualDescription = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
@@ -266,8 +253,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickAddDescriptionButton()
                 .inputDescriptionText(DESCRIPTION_TEXT)
                 .clickSaveButton()
+                .getDescriptionText();
 
-
+        Assert.assertEquals(actualDescription, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")
