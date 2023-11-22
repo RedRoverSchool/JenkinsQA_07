@@ -8,7 +8,7 @@ import school.redrover.runner.BaseTest;
 public class UserTest extends BaseTest {
 
     @Test
-    public void testCreateUser () {
+    public void testCreateUser() {
 
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
         getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
