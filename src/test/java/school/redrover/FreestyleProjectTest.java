@@ -188,13 +188,14 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProjectWithValidName() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+        String homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage()
+                .getJobDisplayName();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("h1")).getText(),
-                "Project " + PROJECT_NAME);
+        Assert.assertEquals(homePage,PROJECT_NAME);
     }
 
     @Test
@@ -642,7 +643,7 @@ public class FreestyleProjectTest extends BaseTest {
         createFreeStyleProject(PROJECT_NAME);
 
         String editDescription = new FreestyleProjectDetailsPage(getDriver())
-                .clickSaveButton()
+                //.clickSaveButton()
                 .goToConfigureFromSideMenu(PROJECT_NAME)
                 .editProjectDescriptionField(DESCRIPTION_TEXT)
                 .clickSaveButton()
