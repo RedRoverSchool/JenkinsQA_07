@@ -63,6 +63,18 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//button[@name = 'Apply']")
     private WebElement applyButton;
 
+    @FindBy(xpath = "//label[contains(text(), 'GitHub project')]")
+    private WebElement checkboxGitHubProject;
+
+    @FindBy(xpath = "//section[@nameref = 'rowSetStart30']/div[@nameref = 'rowSetStart27']//button")
+    private WebElement advancedDropdownGitHubProject;
+
+    @FindBy(xpath = "//input[@name = '_.displayName']")
+    private WebElement inputDisplayNameGitHubProject;
+
+    @FindBy(xpath = "//span[@class = 'jenkins-edited-section-label']")
+    private WebElement labelEditedInGitHubProject;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -179,11 +191,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage inputDescription(String description) {
-        new Actions(getDriver())
-                .moveToElement(inputProjectDescription)
-                .click()
-                .sendKeys(description)
-                .perform();
+        inputProjectDescription.sendKeys(description);
 
         return this;
     }
@@ -214,10 +222,33 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigurePage dismissAlertAndStay() {
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
+    public FreestyleProjectConfigurePage scrollToElement(By elementLocator) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(elementLocator));
 
         return this;
+    }
+
+    public FreestyleProjectConfigurePage clickCheckboxGitHubProject() {
+        checkboxGitHubProject.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAdvancedDropdownGitHubProject() {
+        advancedDropdownGitHubProject.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputDisplayNameGitHubProject(String displayName) {
+        inputDisplayNameGitHubProject.sendKeys(displayName);
+
+        return this;
+    }
+
+    public boolean editedLabelInGitHubProjectIsDisplayed() {
+       return labelEditedInGitHubProject.isDisplayed();
     }
 }

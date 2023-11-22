@@ -812,23 +812,15 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testGitHubEditedLabelAppears() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        createFreeStyleProject(PROJECT_NAME);
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickCheckboxGitHubProject()
+                .scrollToElement(By.name("_.projectUrlStr"))
+                .clickAdvancedDropdownGitHubProject()
+                .inputDisplayNameGitHubProject("GitHubURL");
 
-        hoverClick("//label[contains(text(), 'GitHub project')]");
-
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.name("_.projectUrlStr")));
-
-        hoverClick("//*[@id='main-panel']/form/div[1]/section[1]/div[6]/div[3]/div[2]/div[1]/button");
-
-        hoverClickInput("//input[@name = '_.displayName']", "GitHubURL");
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//span[@class = 'jenkins-edited-section-label']"))
-                        .getText()
-                        .trim(),
-                "Edited");
+        Assert.assertTrue(new FreestyleProjectConfigurePage(getDriver()).editedLabelInGitHubProjectIsDisplayed());
     }
 
     @Test
