@@ -46,6 +46,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//span[contains(text(), 'Delete Project')]/..")
+    private WebElement deleteProject;
+
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -147,5 +150,11 @@ public class FreestyleProjectDetailsPage extends BasePage {
         inputProjectDescription.sendKeys(description);
 
         return this;
+    }
+
+    public HomePage deleteProject() {
+        deleteProject.click();
+        getDriver().switchTo().alert().accept();
+        return new HomePage(getDriver());
     }
 }
