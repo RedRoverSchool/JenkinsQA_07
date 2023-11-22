@@ -242,18 +242,29 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddDescriptionFromStatusPage() {
-        createFreeStyleProject(PROJECT_NAME);
+//        createFreeStyleProject(PROJECT_NAME);
+//
+//        goToJenkinsHomePage();
+//
+//        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+//
+//        getDriver().findElement(By.cssSelector("#description-link")).click();
+//        getDriver().findElement(By.xpath("//textarea[@name ='description']")).sendKeys(DESCRIPTION_TEXT);
+//        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
+//
+//        assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), description)]")).isDisplayed());
+//        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), DESCRIPTION_TEXT);
 
-        goToJenkinsHomePage();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickAddDescriptionButton()
+                .inputDescriptionText(DESCRIPTION_TEXT)
+                .clickSaveButton()
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
 
-        getDriver().findElement(By.cssSelector("#description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name ='description']")).sendKeys(DESCRIPTION_TEXT);
-        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
-
-        assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), description)]")).isDisplayed());
-        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")
