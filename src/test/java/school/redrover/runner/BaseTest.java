@@ -44,6 +44,10 @@ public abstract class BaseTest {
         ProjectUtils.get(driver);
     }
 
+    private void acceptAlert() {
+        ProjectUtils.acceptAlert(getDriver());
+    }
+
     private void stopDriver() {
         try {
             JenkinsUtils.logout(driver);
@@ -86,6 +90,7 @@ public abstract class BaseTest {
                 loginWeb();
             } else {
                 getWeb();
+                acceptAlert();
             }
         } catch (Exception e) {
             closeDriver();
