@@ -132,12 +132,15 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
-        final String NEW_FOLDER_NAME = "FolderNew";
-
         FolderDetailsPage folderName = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(FOLDER_NAME)
+                .selectItemFolder()
+                .clickOk(new FolderConfigurationPage(getDriver()))
+                .goHomePage()
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()));
 
         WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
@@ -149,15 +152,15 @@ public class FolderTest extends BaseTest {
                 .click()
                 .perform();
 
-        getDriver().findElement(By.xpath(
-                "//div[contains(@class, 'dropdown')]/a[contains(@href, '/confirm-rename')]")).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath(
+                "//div[contains(@class, 'dropdown')]/a[contains(@href, '/confirm-rename')]"))).click();
 
         getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
+        getDriver().findElement(By.name("newName")).sendKeys(RENAMED_FOLDER);
         getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME,
-                FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
+        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), RENAMED_FOLDER,
+                FOLDER_NAME + " is not equal " + RENAMED_FOLDER);
     }
 
     @Ignore
