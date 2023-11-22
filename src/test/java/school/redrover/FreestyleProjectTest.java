@@ -188,13 +188,14 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateFreestyleProjectWithValidName() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+        String homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage()
+                .getJobDisplayName();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.cssSelector("h1")).getText(),
-                "Project " + PROJECT_NAME);
+        Assert.assertEquals(homePage,PROJECT_NAME);
     }
 
     @Test
@@ -811,50 +812,41 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testGitHubEditedLabelAppears() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        createFreeStyleProject(PROJECT_NAME);
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickCheckboxGitHubProject()
+                .scrollToElement(By.name("_.projectUrlStr"))
+                .clickAdvancedDropdownGitHubProject()
+                .inputDisplayNameGitHubProject("GitHubURL");
 
-        hoverClick("//label[contains(text(), 'GitHub project')]");
-
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.name("_.projectUrlStr")));
-
-        hoverClick("//*[@id='main-panel']/form/div[1]/section[1]/div[6]/div[3]/div[2]/div[1]/button");
-
-        hoverClickInput("//input[@name = '_.displayName']", "GitHubURL");
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//span[@class = 'jenkins-edited-section-label']"))
-                        .getText()
-                        .trim(),
-                "Edited");
+        Assert.assertTrue(new FreestyleProjectConfigurePage(getDriver()).editedLabelInGitHubProjectIsDisplayed());
     }
 
     @Test
     public void testDescriptionPreviewAppears() {
-        createFreeStyleProject(PROJECT_NAME);
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .inputDescription(DESCRIPTION_TEXT)
+                .clickApply()
+                .clickPreviewDescription();
 
-        hoverClickInput("//textarea[@name = 'description']", DESCRIPTION_TEXT);
-
-        getDriver().findElement(By.xpath("//a[@previewendpoint = '/markupFormatter/previewDescription']")).click();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class = 'textarea-preview']"))
-                        .getText(),
+        Assert.assertEquals(
+                new FreestyleProjectConfigurePage(getDriver()).getPreviewDescriptionText(),
                 DESCRIPTION_TEXT);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDescriptionPreviewAppears")
     public void testDescriptionPreviewHides() {
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
+        new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickPreviewDescription()
+                .clickHidePreviewDescription();
 
-        hoverClick("//a[@class = 'textarea-hide-preview']");
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class = 'textarea-preview']"))
-                        .getCssValue("display"),
+        Assert.assertEquals(
+                new FreestyleProjectConfigurePage(getDriver()).getCssValue(By.xpath("//div[@class = 'textarea-preview']"), "display"),
                 "none");
     }
 
@@ -863,9 +855,6 @@ public class FreestyleProjectTest extends BaseTest {
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String xpathLocator = "//input[@checkdependson='credentialsId']";
         final String inputText = "123";
-
-        Alert alert = getWait2().until(ExpectedConditions.alertIsPresent());
-        alert.dismiss();
 
         hoverClickInput(xpathLocator, inputText);
 
@@ -905,7 +894,6 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
-
 
     @Ignore
     @Test
@@ -1184,7 +1172,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testDeletePermalinksOnProjectsStatusPage() {
         final List<String> removedPermalinks = List.of(
                 "Last build",
@@ -1193,11 +1181,6 @@ public class FreestyleProjectTest extends BaseTest {
                 "Last completed build");
 
         String permaLinks = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(PROJECT_NAME)
-                .selectFreestyleProject()
-                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
-                .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickBuildNowButton()
                 .refreshPage()

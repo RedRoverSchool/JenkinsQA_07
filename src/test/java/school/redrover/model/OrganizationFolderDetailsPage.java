@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,6 +13,12 @@ public class OrganizationFolderDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameSubmenu;
+
+    @FindBy(name = "Submit")
+    private WebElement disableButton;
+
+    @FindBy(id = "enable-project")
+    private WebElement disableMessage;
 
     public OrganizationFolderDetailsPage(WebDriver driver) {
         super(driver);
@@ -26,5 +33,16 @@ public class OrganizationFolderDetailsPage extends BasePage {
         renameSubmenu.click();
 
         return new OrganizationFolderRenamePage(getDriver());
+    }
+
+    public OrganizationFolderDetailsPage clickDisableButton() {
+        disableButton.click();
+
+        return this;
+    }
+
+    public String getDisabledMessageText() {
+
+        return disableMessage.getText().substring(0, 46);
     }
 }

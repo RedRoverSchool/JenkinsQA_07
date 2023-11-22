@@ -32,6 +32,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement newItemButton;
 
+    @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
+    private WebElement getJobDisplayName;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -127,8 +130,8 @@ public class HomePage extends BasePage {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-    public String getJobDisplayName(String name) {
-        return getDriver().findElement(By.xpath("//*[@id='job_" + name + "']/td[3]/a/span")).getText();
+    public String getJobDisplayName() {
+        return getJobDisplayName.getText();
     }
 
     public String getTitle() {
@@ -194,10 +197,16 @@ public class HomePage extends BasePage {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                         .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .perform();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName + "/']/button")));
+
+        new Actions(getDriver())
                 .moveToElement(getDriver()
                         .findElement(By.xpath("//a[@href='job/" + jobName + "/']/button")))
                 .click()
                 .perform();
+
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
 
         return page;

@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.time.Duration;
+
 public class FreestyleProjectDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
@@ -25,6 +27,12 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
     @FindBy(linkText = "Rename")
     private WebElement renamePageLink;
+
+    @FindBy(xpath = "//a[@href='lastBuild/']")
+    private WebElement lastBuild;
+
+    @FindBy(css = "ul[class='permalinks-list']")
+    private WebElement listPermalinks;
 
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
@@ -96,5 +104,23 @@ public class FreestyleProjectDetailsPage extends BasePage {
     public boolean isJobExist() {
 
         return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).isDisplayed();
+    }
+
+    public FreestyleProjectDetailsPage refreshPage() {
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+        getDriver().navigate().refresh();
+
+        return this;
+    }
+
+    public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
+        lastBuild.click();
+
+        return new FreestyleProjectBuildDetailsPage(getDriver());
+    }
+
+    public String getPermalinksText() {
+
+        return listPermalinks.getText();
     }
 }

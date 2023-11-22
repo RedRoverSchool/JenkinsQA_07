@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,12 +9,15 @@ public class FreestyleProjectBuildDetailsPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement clickSubmitCancel;
 
+    @FindBy(css = "a[href$='confirmDelete']")
+    private WebElement deleteBuild;
+
     public FreestyleProjectBuildDetailsPage(WebDriver driver) {
         super(driver);
     }
 
     public FreestyleProjectBuildDetailsPage clickDeleteBuildSidePanel() {
-        getDriver().findElement(By.cssSelector("a[href$='confirmDelete']")).click();
+        deleteBuild.click();
 
         return this;
     }

@@ -1,11 +1,9 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -53,10 +51,33 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement inputProjectDescription;
 
+    @FindBy(xpath = "//a[@previewendpoint = '/markupFormatter/previewDescription']")
+    private WebElement previewDescription;
+
+    @FindBy(xpath = "//a[@class = 'textarea-hide-preview']")
+    private WebElement hidePreviewDescription;
+
+    @FindBy(xpath = "//div[@class = 'textarea-preview']")
+    private WebElement descriptionPreviewText;
+
+    @FindBy(xpath = "//button[@name = 'Apply']")
+    private WebElement applyButton;
+
+    @FindBy(xpath = "//label[contains(text(), 'GitHub project')]")
+    private WebElement checkboxGitHubProject;
+
+    @FindBy(xpath = "//section[@nameref = 'rowSetStart30']/div[@nameref = 'rowSetStart27']//button")
+    private WebElement advancedDropdownGitHubProject;
+
+    @FindBy(xpath = "//input[@name = '_.displayName']")
+    private WebElement inputDisplayNameGitHubProject;
+
+    @FindBy(xpath = "//span[@class = 'jenkins-edited-section-label']")
+    private WebElement labelEditedInGitHubProject;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
-
 
     public boolean tooltipDiscardOldBuildsIsVisible() {
         boolean tooltipIsVisible = true;
@@ -167,5 +188,67 @@ public class FreestyleProjectConfigurePage extends BasePage {
         inputProjectDescription.clear();
         inputProjectDescription.sendKeys(editDescription);
         return new FreestyleProjectConfigurePage(getDriver());
+    }
+
+    public FreestyleProjectConfigurePage inputDescription(String description) {
+        inputProjectDescription.sendKeys(description);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickPreviewDescription() {
+        previewDescription.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickHidePreviewDescription() {
+        hidePreviewDescription.click();
+
+        return this;
+    }
+
+    public String getPreviewDescriptionText() {
+        return descriptionPreviewText.getText();
+    }
+
+    public String getCssValue(By locator, String cssValueName) {
+        return getDriver().findElement(locator).getCssValue(cssValueName);
+    }
+
+    public FreestyleProjectConfigurePage clickApply() {
+        applyButton.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage scrollToElement(By elementLocator) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(elementLocator));
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickCheckboxGitHubProject() {
+        checkboxGitHubProject.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAdvancedDropdownGitHubProject() {
+        advancedDropdownGitHubProject.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputDisplayNameGitHubProject(String displayName) {
+        inputDisplayNameGitHubProject.sendKeys(displayName);
+
+        return this;
+    }
+
+    public boolean editedLabelInGitHubProjectIsDisplayed() {
+       return labelEditedInGitHubProject.isDisplayed();
     }
 }

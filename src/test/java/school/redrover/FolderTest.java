@@ -115,7 +115,7 @@ public class FolderTest extends BaseTest {
                 By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
     }
 
-    @Ignore
+
     @Test(dependsOnMethods = {"testCreate", "testRename"})
     public void testAddDisplayName() {
         final String expectedFolderDisplayName = "Best folder";
@@ -126,7 +126,7 @@ public class FolderTest extends BaseTest {
                 .typeDisplayName(expectedFolderDisplayName)
                 .clickSave()
                 .goHomePage()
-                .getJobDisplayName(RENAMED_FOLDER);
+                .getJobDisplayName();
 
         Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
     }

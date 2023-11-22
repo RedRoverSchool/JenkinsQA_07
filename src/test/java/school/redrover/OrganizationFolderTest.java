@@ -151,29 +151,6 @@ public class OrganizationFolderTest extends BaseTest {
         returnHomeJenkins();
     }
 
-    private void clickNewJobButton() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-    }
-
-    private void clickOrganizationFolderButton() {
-        getDriver().findElement(By.xpath("//span[contains(text(), 'Organization Folder')]")).click();
-    }
-
-    private void clickOkButton() {
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void setFolderName(String name) {
-        getDriver().findElement(By.name("name")).sendKeys(name);
-    }
-
-    private void createOrganizationFolderBySteps(String folderName) {
-        clickNewJobButton();
-        setFolderName(folderName);
-        clickOrganizationFolderButton();
-        clickOkButton();
-    }
-
     @Test
     public void testRenameProjectFromProjectDropdown() {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
@@ -188,13 +165,11 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
-    @Ignore
     @Test
     public void testRenameProjectFromProjectPage() {
-        TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, false);
 
-        String newProjectName = new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new OrganizationFolderDetailsPage(getDriver()))
+        String newProjectName = new OrganizationFolderDetailsPage(getDriver())
                 .clickRenameOptionFromLeftSideMenu()
                 .enterNewName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -203,7 +178,6 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
     }
 
-    @Ignore
     @Test
     public void testRenameProjectWithSameName() {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
@@ -218,10 +192,13 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testDisableProject() {
-        createProject(PROJECT_NAME);
+        TestUtils.createOrganizationFolder(this, PROJECT_NAME, false);
 
-        getDriver().findElement(By.name("Submit")).click();
-        Assert.assertEquals(getDriver().findElement(By.id("enable-project")).getText().substring(0, 46), "This Organization Folder is currently disabled");
+        String disableMessageText = new OrganizationFolderDetailsPage(getDriver())
+                .clickDisableButton()
+                .getDisabledMessageText();
+
+        Assert.assertEquals(disableMessageText, "This Organization Folder is currently disabled");
     }
 
     @Test
