@@ -131,16 +131,21 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testCreate")
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
         final String NEW_FOLDER_NAME = "FolderNew";
 
-        createFolder(FOLDER_NAME);
+        FolderDetailsPage folderName = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()));
 
-        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a/button")))
+                .click()
+                .perform();
+
+        getDriver().findElement(By.xpath(
+                "//div[contains(@class, 'dropdown')]/a[contains(@href, '/confirm-rename')]")).click();
 
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
