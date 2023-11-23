@@ -9,14 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
 import school.redrover.model.*;
-
-import school.redrover.model.HomePage;
-import school.redrover.model.NewItemPage;
-import school.redrover.model.PipelineConfigurationPage;
-import school.redrover.model.PipelineDetailsPage;
-
 import school.redrover.runner.BaseTest;
 
 import java.util.Arrays;
@@ -124,7 +117,7 @@ public class PipelineTest extends BaseTest {
                 .createPipelineProject(JOB_NAME)
                 .clickRenameOnSideMenu()
                 .enterNewName(PIPELINE_NAME)
-                .clickRenameButton()
+                .clickRenameButton(new PipelinePage(getDriver()))
                 .goHomePage()
                 .getJobDisplayName();
 
@@ -152,18 +145,18 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineNoNameError() {
-        PipelinePage newPipeline = new HomePage(getDriver())
+        String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .createPipelinePage(JOB_NAME)
                 .clickSaveButton(new PipelineConfigurationPage(getDriver()))
                 .goHomePage().clickJobByName(JOB_NAME, new PipelinePage(getDriver()))
                 .clickRenameOnSideMenu()
                 .clearInputName()
-                .clickRenameButton();
+                .clickRenameButton(new ErrorPage(getDriver()))
+                .getErrorMessage();
 
-        Assert.assertEquals(new ErrorPage(getDriver()).getErrorMessage(),"Error"+'\n'+"No name is specified");
+        Assert.assertEquals(errorMessage, "Error" + '\n' + "No name is specified");
     }
-
 
     @Test
     public void testCreatePipelineProject() {
@@ -178,7 +171,6 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertTrue(jobList.contains(PIPELINE_NAME));
     }
-
 
     @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
@@ -433,8 +425,8 @@ public class PipelineTest extends BaseTest {
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .getPermalinksList();
 
-      Assert.assertEquals(actualPermalinksList.size(),4);
-      Assert.assertEquals(actualPermalinksList, expectedPermalinksList);
+        Assert.assertEquals(actualPermalinksList.size(), 4);
+        Assert.assertEquals(actualPermalinksList, expectedPermalinksList);
     }
 
     @Test
