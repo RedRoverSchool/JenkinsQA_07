@@ -690,15 +690,9 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(helpMessageDisplay);
    }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testStatusPageUrlCheck() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
-
-        new HomePage(getDriver())
-                .clickNewItem()
-                .createFreestyleProject(PROJECT_NAME)
-                .clickSaveButton()
-                .goHomePage();
 
         String currentUrl = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
