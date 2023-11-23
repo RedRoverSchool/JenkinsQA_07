@@ -19,23 +19,26 @@ public class NewItemPage extends BasePage {
     @FindBy(xpath = "//li[@class = 'hudson_model_FreeStyleProject']")
     private WebElement freeStyleProject;
 
+    @FindBy(xpath = "//span[text()='Pipeline']")
+    private WebElement pipeline;
+
+    @FindBy(css = "li[class='hudson_matrix_MatrixProject']")
+    private WebElement multiConfigurationProject;
+
+    @FindBy(className = "com_cloudbees_hudson_plugins_folder_Folder")
+    private WebElement folder;
+
+    @FindBy(xpath = "//li[contains(@class, 'multibranch_Workflow')]")
+    private WebElement multibranchPipeline;
+
+    @FindBy(xpath = "//li[@class = 'jenkins_branch_OrganizationFolder']")
+    private WebElement organizationFolder;
+
     @FindBy(id = "itemname-required")
     private WebElement requiredNameErrorMessage;
 
     @FindBy(id = "itemname-invalid")
     private WebElement invalidNameErrorMessage;
-
-    @FindBy(tagName = "h2")
-    private WebElement requestErrorMessage;
-
-    @FindBy(tagName = "p")
-    private WebElement noNameErrorMessage;
-
-    @FindBy(className = "com_cloudbees_hudson_plugins_folder_Folder")
-    private WebElement folder;
-
-    @FindBy(xpath = "//span[text()='Pipeline']")
-    private WebElement pipeline;
 
     @FindBy(id = "from")
     private WebElement cloneItemTextField;
@@ -43,8 +46,9 @@ public class NewItemPage extends BasePage {
     @FindBy(css = "div[class='add-item-name']")
     private WebElement inputValidationMessage;
 
-    @FindBy(css = "li[class='hudson_matrix_MatrixProject']")
-    private WebElement MultiConfigurationProject;
+
+    @FindBy(xpath = "//span[normalize-space()='Pipeline']")
+    private WebElement pipeLineCategory;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -56,20 +60,38 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
+    public NewItemPage selectFreestyleProject() {
+        freeStyleProject.click();
+
+        return this;
+    }
+
+    public NewItemPage selectPipelineProject() {
+        pipeline.click();
+
+        return this;
+    }
+
+    public NewItemPage selectMultiConfigurationProject() {
+        multiConfigurationProject.click();
+
+        return this;
+    }
+
+    public NewItemPage selectItemFolder() {
+        folder.click();
+
+        return this;
+    }
+
     public NewItemPage selectMultibranchPipelineOption() {
-        getDriver().findElement(By.xpath("//li[contains(@class, 'multibranch_Workflow')]")).click();
+        multibranchPipeline.click();
 
         return this;
     }
 
     public NewItemPage selectOrganizationFolder() {
-        getDriver().findElement(By.xpath("//li[@class = 'jenkins_branch_OrganizationFolder']")).click();
-
-        return this;
-    }
-
-    public NewItemPage selectFreestyleProject() {
-        freeStyleProject.click();
+        organizationFolder.click();
 
         return this;
     }
@@ -80,10 +102,20 @@ public class NewItemPage extends BasePage {
         return page;
     }
 
+    public ErrorPage clickOkWithError() {
+        okButton.click();
+
+        return new ErrorPage(getDriver());
+    }
+
     public MultibranchPipelineConfigurationPage clickOk() {
         okButton.click();
 
         return new MultibranchPipelineConfigurationPage(getDriver());
+    }
+
+    public boolean isOkButtonEnabled() {
+        return okButton.isEnabled();
     }
 
     public String getRequiredNameErrorMessage() {
@@ -94,14 +126,6 @@ public class NewItemPage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOf(invalidNameErrorMessage)).getText();
     }
 
-    public String getRequestErrorMessage() {
-        return getWait2().until(ExpectedConditions.visibilityOf(requestErrorMessage)).getText();
-    }
-
-    public String getNoNameErrorMessage() {
-        return getWait2().until(ExpectedConditions.visibilityOf(noNameErrorMessage)).getText();
-    }
-
     public FreestyleProjectConfigurePage createFreestyleProject(String projectName) {
         inputName.sendKeys(projectName);
         freeStyleProject.click();
@@ -110,16 +134,12 @@ public class NewItemPage extends BasePage {
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
-    public NewItemPage selectItemFolder() {
-        folder.click();
+    public OrganizationFolderConfigurationPage createOrganizationFolder(String projectName) {
+        inputName.sendKeys(projectName);
+        organizationFolder.click();
+        okButton.click();
 
-        return this;
-    }
-
-    public NewItemPage selectMultiConfigurationProject() {
-        MultiConfigurationProject.click();
-
-        return this;
+        return new OrganizationFolderConfigurationPage(getDriver());
     }
 
     public boolean inputValidationMessage(String errorMessage) {
@@ -145,9 +165,8 @@ public class NewItemPage extends BasePage {
                 .isEmpty();
     }
 
-    public NewItemPage selectPipelineProject() {
-        pipeline.click();
-
+    public NewItemPage clickPipeLineCategory() {
+        pipeLineCategory.click();
         return this;
     }
 }
