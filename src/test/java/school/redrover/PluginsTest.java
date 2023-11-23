@@ -5,10 +5,11 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.base.PluginsPage;
+import school.redrover.model.PluginsPage;
+import school.redrover.model.UserPage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.SeleniumUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class PluginsTest extends BaseTest {
@@ -19,24 +20,14 @@ public class PluginsTest extends BaseTest {
                 .clickManageJenkins()
                 .goPluginsPage();
 
-        new PluginsPage(getDriver())
-                .jsClickInstalledPlugins();
+        List<String> pluginsNames =  new PluginsPage(getDriver())
+                .jsClickInstalledPlugins()
+                .installedPluginsList();
 
-
-//        getDriver().findElement(By.xpath("//*[@id='tasks']//a[@href='/manage']")).click();
-//        getDriver().findElement(By.xpath("//dl/dt[text()='Plugins']")).click();
-//        WebElement installedPlugins = getDriver().findElement(By.xpath("//a[@href = '/manage/pluginManager/installed']"));
-//        SeleniumUtils.jsClick(getDriver(), installedPlugins);
-
-        List<WebElement> plugins = getDriver().findElements(By.xpath("//a[starts-with(@href, 'https://plugins.jenkins.io')]"));
-
-        Assert.assertFalse(plugins.isEmpty(), "No elements is the List");
-        boolean foundAntPlugin = plugins.stream()
-                .map(WebElement::getText)
-                .anyMatch(text -> text.contains("Ant Plugin"));
-
-        Assert.assertTrue(foundAntPlugin, "Ant Plugin is not found in the list of installed plugins.");
+        Assert.assertFalse(pluginsNames.isEmpty(), "No elements in the List");
+        Assert.assertTrue(pluginsNames.stream().anyMatch(text -> text.contains("Ant Plugin")),"Ant Plugin was not found in the list of installed plugins.");
     }
+
     @Test
     public void testInstalledPluginsSearch() {
         getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
