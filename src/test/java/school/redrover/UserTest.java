@@ -745,6 +745,7 @@ public class UserTest extends BaseTest {
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].style.display = 'block';", chevron);
         js.executeScript("arguments[0].click();", chevron);
 
         WebDriverWait wait30 = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
