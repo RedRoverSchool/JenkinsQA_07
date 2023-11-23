@@ -33,7 +33,8 @@ public class HomePage extends BasePage {
     private WebElement newItemButton;
 
     @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
-    private WebElement getJobDisplayName;
+    private WebElement jobName;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -131,7 +132,7 @@ public class HomePage extends BasePage {
     }
 
     public String getJobDisplayName() {
-        return getJobDisplayName.getText();
+        return jobName.getText();
     }
 
     public String getTitle() {
@@ -210,5 +211,10 @@ public class HomePage extends BasePage {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
 
         return page;
+    }
+
+    public FreestyleProjectDetailsPage clickOnJob() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
+        return new FreestyleProjectDetailsPage(getDriver());
     }
 }
