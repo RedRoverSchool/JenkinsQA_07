@@ -11,12 +11,19 @@ public class PipelineRenamePage extends BasePage {
     private WebElement inputName;
 
     @FindBy(xpath = "//button[normalize-space()='Rename']")
+    @FindBy(name = "newName")
+    private WebElement inputName;
+
+    @FindBy(name = "Submit")
     private WebElement renameButton;
 
     public PipelineRenamePage(WebDriver driver) {
         super(driver);
     }
 
+    public PipelineRenamePage enterNewName(String newProjectName) {
+        inputName.clear();
+        inputName.sendKeys(newProjectName);
     public PipelineRenamePage clearInputName() {
         inputName.clear();
 
@@ -27,5 +34,11 @@ public class PipelineRenamePage extends BasePage {
         renameButton.click();
 
         return this;
+    }
+
+    public PipelinePage clickRenameButton() {
+        renameButton.click();
+
+        return new PipelinePage(getDriver());
     }
 }
