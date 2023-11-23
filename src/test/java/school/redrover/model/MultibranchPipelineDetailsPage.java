@@ -17,8 +17,26 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
 
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
+    private List<WebElement> breadcrumbChain;
+
+    @FindBy(tagName = "h1")
+    private WebElement pageTitle;
+
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
+    }
+
+
+    public String getTitle() {
+        return pageTitle.getText();
+    }
+    public List<String> getBreadcrumbChain() {
+        List<String> breadcrumb = new ArrayList<>();
+        for (WebElement element : breadcrumbChain) {
+            breadcrumb.add(element.getText());
+        }
+        return breadcrumb;
     }
 
     public List<String> getTasksText() {
