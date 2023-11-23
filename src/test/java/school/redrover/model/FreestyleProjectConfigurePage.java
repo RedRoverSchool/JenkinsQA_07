@@ -1,9 +1,6 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
@@ -53,10 +50,48 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement inputProjectDescription;
 
+    @FindBy(xpath = "//label[contains(text(), 'This project is parameterized')]")
+    private WebElement getThisProjectIsParameterizedCheckbox;
+
+    @FindBy(xpath = "//label[contains(text(), 'This project is parameterized')]/../input")
+    private WebElement getThisProjectIsParameterizedCheckboxInput;
+
+    @FindBy(xpath = "//a[@previewendpoint = '/markupFormatter/previewDescription']")
+    private WebElement previewDescription;
+
+    @FindBy(xpath = "//a[@class = 'textarea-hide-preview']")
+    private WebElement hidePreviewDescription;
+
+    @FindBy(xpath = "//div[@class = 'textarea-preview']")
+    private WebElement descriptionPreviewText;
+
+    @FindBy(xpath = "//button[@name = 'Apply']")
+    private WebElement applyButton;
+
+    @FindBy(xpath = "//label[contains(text(), 'GitHub project')]")
+    private WebElement checkboxGitHubProject;
+
+    @FindBy(xpath = "//section[@nameref = 'rowSetStart30']/div[@nameref = 'rowSetStart27']//button")
+    private WebElement advancedDropdownGitHubProject;
+
+    @FindBy(xpath = "//input[@name = '_.displayName']")
+    private WebElement inputDisplayNameGitHubProject;
+
+    @FindBy(xpath = "//span[@class = 'jenkins-edited-section-label']")
+    private WebElement labelEditedInGitHubProject;
+
+    @FindBy (xpath = "//div[@class ='jenkins-form-item tr jenkins-form-item--tight']//button")
+    private WebElement advancedButton;
+
+    @FindBy(xpath = "//a[@title='Help for feature: Quiet period']")
+    private WebElement quietPeriodToolTip;
+
+    @FindBy(xpath = "//div[@class='tbody dropdownList-container']//div[@class='help']//div")
+    private WebElement helpMessage;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
-
 
     public boolean tooltipDiscardOldBuildsIsVisible() {
         boolean tooltipIsVisible = true;
@@ -167,5 +202,90 @@ public class FreestyleProjectConfigurePage extends BasePage {
         inputProjectDescription.clear();
         inputProjectDescription.sendKeys(editDescription);
         return new FreestyleProjectConfigurePage(getDriver());
+    }
+
+    public FreestyleProjectConfigurePage clickThisProjectIsParameterizedCheckbox() {
+        getThisProjectIsParameterizedCheckbox.click();
+        return this;
+    }
+
+    public WebElement getThisProjectIsParameterizedCheckbox() {
+        return getThisProjectIsParameterizedCheckboxInput;
+    }
+
+    public FreestyleProjectConfigurePage inputDescription(String description) {
+        inputProjectDescription.sendKeys(description);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickPreviewDescription() {
+        previewDescription.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickHidePreviewDescription() {
+        hidePreviewDescription.click();
+
+        return this;
+    }
+
+    public String getPreviewDescriptionText() {
+        return descriptionPreviewText.getText();
+    }
+
+    public String getCssValue(By locator, String cssValueName) {
+        return getDriver().findElement(locator).getCssValue(cssValueName);
+    }
+
+    public FreestyleProjectConfigurePage clickApply() {
+        applyButton.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage scrollToElement(By elementLocator) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView();",
+                getDriver().findElement(elementLocator));
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickCheckboxGitHubProject() {
+        checkboxGitHubProject.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAdvancedDropdownGitHubProject() {
+        advancedDropdownGitHubProject.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputDisplayNameGitHubProject(String displayName) {
+        inputDisplayNameGitHubProject.sendKeys(displayName);
+
+        return this;
+    }
+
+    public boolean editedLabelInGitHubProjectIsDisplayed() {
+        return labelEditedInGitHubProject.isDisplayed();
+    }
+
+    public FreestyleProjectConfigurePage clickAdvancedButton() {
+        advancedButton.click();
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickOnQuietPeriodToolTip() {
+        quietPeriodToolTip.click();
+        return this;
+    }
+
+    public boolean helpMessageDisplay() {
+        return helpMessage.isDisplayed();
     }
 }

@@ -2,16 +2,22 @@ package school.redrover.model;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.WebElement;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MultibranchPipelineDetailsPage extends BasePage {
-    
-  public MultibranchPipelineDetailsPage(WebDriver driver) {
+
+    @FindBy(xpath = "//span[@class='task-link-wrapper ']")
+    private List<WebElement> sidebarMenuTasksList;
+
+    public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
 
@@ -31,5 +37,10 @@ public class MultibranchPipelineDetailsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
 
         return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public List<String> getNameOfTasksFromSidebarMenu() {
+        return TestUtils.getTextOfWebElements(getWait2().until(
+                ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
     }
 }

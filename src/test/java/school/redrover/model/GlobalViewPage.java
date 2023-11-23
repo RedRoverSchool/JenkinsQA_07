@@ -15,33 +15,4 @@ public class GlobalViewPage extends BasePage {
 
         return new GlobalViewConfigPage(getDriver());
     }
-
-    public GlobalViewPage clickAddOrEditDescription() {
-        getDriver().findElement(By.xpath("//a[@id = 'description-link']")).click();
-
-        return this;
-    }
-
-    public GlobalViewPage typeNewDescription(String newDescriptionForTheView) {
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(newDescriptionForTheView);
-
-        return this;
-    }
-
-    public GlobalViewPage clearDescriptionField() {
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-
-        return this;
-    }
-
-    public GlobalViewPage clickSaveDescription() {
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        return this;
-    }
-
-    public String getDescription() {
-        return getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText();
-    }
 }
