@@ -551,21 +551,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .getAttribute("style"), "display: none;");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
-    public void testRenameFreestyleProjectSideMenu() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE)).click();
-        getDriver().findElement(By.linkText("Rename")).click();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//*[@id='bottom-sticker']//button")).click();
-
-        Assert.assertEquals(
-                getWait5().until(ExpectedConditions.elementToBeClickable(By.cssSelector("h1"))).getText(),
-                "Project " + NEW_PROJECT_NAME
-        );
-    }
-
     @Test
     public void testSelectThisProjectIsParameterizedCheckbox() {
         createFreeStyleProject(PROJECT_NAME);
@@ -637,11 +622,12 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDeleteFreestyleProjectSideMenu() {
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//span[contains(text(), 'Delete Project')]/..")).click();
-        getDriver().switchTo().alert().accept();
+        boolean projectExist = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .deleteProject()
+                .isProjectExist(PROJECT_NAME);
 
-        Assert.assertTrue(getDriver().findElements(By.id("job_" + PROJECT_NAME)).isEmpty());
+        Assert.assertFalse(projectExist);
     }
 
     @Test
@@ -661,18 +647,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(editDescription, NEW_DESCRIPTION_TEXT);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testCreateFreestyleProjectWithValidName", "testRenameFreestyleProjectSideMenu"})
-    public void testCreateFreestyleProjectFromExistingProject() {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.id("from")).sendKeys(NEW_PROJECT_NAME);
-        getDriver().findElement(By.xpath("//li[contains(text(),'" + NEW_PROJECT_NAME + "')]")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        goToJenkinsHomePage();
-
-        Assert.assertTrue(getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).isDisplayed());
-    }
     @Test
     public void testFreestyleProjectAdvancedSetting() {
        boolean helpMessageDisplay = new HomePage(getDriver())

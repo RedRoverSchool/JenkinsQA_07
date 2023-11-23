@@ -1,12 +1,17 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PipelineDetailsPage extends BasePage {
+    
     public PipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -22,6 +27,9 @@ public class PipelineDetailsPage extends BasePage {
 
     @FindBy(xpath = "//div[@id='description']/div")
     private WebElement description;
+
+    @FindBy(css = ".permalink-item")
+    private List<WebElement> permalinksList;
 
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
@@ -45,5 +53,14 @@ public class PipelineDetailsPage extends BasePage {
     public String getDescription() {
 
         return description.getText();
+    }
+
+    public List<String> getPermalinksList() {
+        List<String> permalinks = new ArrayList<>();
+        for (WebElement permalink : permalinksList) {
+            permalinks.add(permalink.getText().substring(0, permalink.getText().indexOf(",")));
+        }
+
+        return permalinks;
     }
 }
