@@ -35,6 +35,10 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
     private WebElement getJobDisplayName;
 
+    @FindBy(xpath = "//td//a[@href]/span")
+    private WebElement multibranchPipelineNameOnHomePage;
+
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -210,5 +214,9 @@ public class HomePage extends BasePage {
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
 
         return page;
+    }
+
+        public String multibranchPipelineName() {
+            return multibranchPipelineNameOnHomePage.getText();
     }
 }

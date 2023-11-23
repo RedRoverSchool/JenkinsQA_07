@@ -192,15 +192,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
         createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
         createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NEW_NAME);
-
-        getDriver().findElement(By.xpath("//span[contains(text(),'" + MULTIBRANCH_PIPELINE_NAME + "')]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + MULTIBRANCH_PIPELINE_NAME + "/delete']")).click();
-        getDriver().findElement(By.xpath("//*[@id='main-panel']/form/button")).click();
-        getDriver().findElement(By.linkText("Dashboard")).click();
+        String expectedResult = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineConfigurationPage(getDriver()))
+                .clickButtonDelete()
+                .clickRedButtonYes()
+                .multibranchPipelineName();
 
         Assert.assertNotEquals(
-                getDriver().findElement(By.xpath("//td//a[@href]/span")).getText(),
-                MULTIBRANCH_PIPELINE_NAME);
+                expectedResult, MULTIBRANCH_PIPELINE_NAME);
     }
 
     @Test
