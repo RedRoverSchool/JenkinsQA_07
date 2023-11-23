@@ -733,7 +733,6 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testDeleteUsingBreadcrumb() {
-
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
