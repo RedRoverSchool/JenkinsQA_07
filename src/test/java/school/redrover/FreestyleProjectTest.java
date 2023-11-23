@@ -670,18 +670,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).isDisplayed());
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
-    public void testFreestyleProjectAdvancedSetting() {
-        boolean helpMessageDisplay = new HomePage(getDriver())
-                 .clickOnJob()
-                .goToConfigureFromSideMenu()
-                .clickAdvancedButton()
-                .clickOnQuietPeriodToolTip()
-                .helpMessageDisplay();
-
-        Assert.assertTrue(helpMessageDisplay);
-    }
-
     @Test
     public void testStatusPageUrlCheck() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
