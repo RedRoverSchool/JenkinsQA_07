@@ -251,19 +251,18 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
     }
 
-    @Ignore
     @Test
     public void testNegativeBoundaryValuesName() {
         HomePage homePage = new HomePage(getDriver());
 
-        String errorMessage = homePage.clickNewItem()
+        String errorMessage = homePage
+                .clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
                 .clickOk(new ErrorPage(getDriver()))
-                .getErrorMessage();
+                .getRequestErrorMessage();
 
-        Assert.assertEquals(errorMessage, "A problem occurred while processing the request. A problem occurred while processing the request.\n" +
-                "Logging ID=7434044b-8beb-4026-8927-34c4562dfeca");
+        Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
     }
 
 
