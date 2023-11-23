@@ -47,6 +47,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//span[contains(text(), 'Delete Project')]/..")
+    private WebElement deleteProject;
+
     @FindBy(xpath = "//a[contains(@href,'configure')]")
     private WebElement configureButton;
 
@@ -100,7 +103,6 @@ public class FreestyleProjectDetailsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/ws/']")).click();
         return new WorkspacePage(getDriver());
     }
-
 
     public FreestyleProjectRenamePage clickRename() {
         getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
@@ -158,7 +160,13 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return this;
     }
-
+  
+    public HomePage deleteProject() {
+        deleteProject.click();
+        getDriver().switchTo().alert().accept();
+        return new HomePage(getDriver());
+    }
+  
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }
