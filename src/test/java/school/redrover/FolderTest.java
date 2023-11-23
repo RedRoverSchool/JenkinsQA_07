@@ -24,7 +24,7 @@ public class FolderTest extends BaseTest {
     private static final String NESTED_FOLDER = "Nested";
     private static final String JOB_NAME = "New Job";
 
-    @DataProvider(name = "random unsafe character")
+    @DataProvider
     public Object[][] provideUnsafeCharacters() {
         String[] wrongCharacters = {"#", "&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";"};
         int randomIndex = new Random().nextInt(wrongCharacters.length);
@@ -227,7 +227,7 @@ public class FolderTest extends BaseTest {
     }
 
 
-    @Test(dataProvider = "random unsafe character")
+    @Test(dataProvider = "provideUnsafeCharacters")
     public void testCreateNameSpecialCharacters(String unsafeChar) {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
@@ -242,16 +242,10 @@ public class FolderTest extends BaseTest {
     public void testPositiveBoundaryValuesName() {
         HomePage homePage = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(NAME_FOR_BOUNDARY_VALUES)
-                .selectItemFolder()
-                .clickOk(new FolderConfigurationPage(getDriver()))
-                .getH1()
+                .createFolder(NAME_FOR_BOUNDARY_VALUES)
                 .goHomePage()
                 .clickNewItem()
-                .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(255))
-                .selectItemFolder()
-                .clickOk(new FolderConfigurationPage(getDriver()))
-                .getH1()
+                .createFolder(NAME_FOR_BOUNDARY_VALUES.repeat(255))
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
@@ -262,8 +256,7 @@ public class FolderTest extends BaseTest {
     public void testNegativeBoundaryValuesName() {
         HomePage homePage = new HomePage(getDriver());
 
-        String errorMessage = homePage
-                .clickNewItem()
+        String errorMessage = homePage.clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
                 .clickOk(new ErrorPage(getDriver()))

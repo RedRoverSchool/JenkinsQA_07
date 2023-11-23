@@ -150,4 +150,12 @@ public class NewItemPage extends BasePage {
 
         return this;
     }
+
+    public FolderConfigurationPage createFolder(String folderName) {
+        inputName.sendKeys(folderName);
+        folder.click();
+        okButton.click();
+
+        return new FolderConfigurationPage(getDriver());
+    }
 }
