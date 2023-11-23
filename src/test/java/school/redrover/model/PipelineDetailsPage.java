@@ -30,7 +30,6 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
 
-
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -57,7 +56,6 @@ public class PipelineDetailsPage extends BasePage {
 
     public List<String> getPermalinksList() {
         List<String> permalinks = new ArrayList<>();
-
         for (WebElement permalink : permalinksList) {
             permalinks.add(permalink.getText().substring(0, permalink.getText().indexOf(",")));
         }
