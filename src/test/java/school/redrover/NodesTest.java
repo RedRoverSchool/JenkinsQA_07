@@ -271,15 +271,13 @@ public class NodesTest extends BaseTest {
     public void testAddDescription() {
         final String descriptionText = "description";
 
-        goToNodesPage();
+        String actualDescription = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNodeByName(NEW_NODE_NAME)
+                .inputDescription(descriptionText)
+                .getDescriptionText();
 
-        getDriver().findElement(By.xpath("//a[contains(text(), '" + NEW_NODE_NAME + "')]")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(descriptionText);
-        getDriver().findElement(By.xpath("//div/button[@name = 'Submit']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id= 'description']/div[1]")).getText()
-                , descriptionText);
+        Assert.assertEquals(actualDescription, descriptionText);
     }
 
     @Test(dependsOnMethods = "testAddDescription")
@@ -300,13 +298,14 @@ public class NodesTest extends BaseTest {
     public void testSetIncorrectNumberOfExecutes() {
         final int numberOfExecutes = -1;
 
-        goToNodesPage();
-        clickConfigureNode(NEW_NODE_NAME);
-        getDriver().findElement(By.xpath("//input[contains(@name, 'numExecutors')]"))
-                .sendKeys(String.valueOf(numberOfExecutes));
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        String errorMessage = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNodeByName(NEW_NODE_NAME)
+                .clickConfigure()
+                .inputNumberOfExecutors(numberOfExecutes)
+                .getErrorMessage();
 
-        Assert.assertEquals(getDriver().findElement(By.id("main-panel")).getText(),
+        Assert.assertEquals(errorMessage,
                 "Error\nInvalid agent configuration for " + NEW_NODE_NAME + ". Invalid number of executors.");
     }
 
