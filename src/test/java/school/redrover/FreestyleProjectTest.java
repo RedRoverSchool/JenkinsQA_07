@@ -250,8 +250,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickAddDescriptionButton()
-                .inputDescriptionText(DESCRIPTION_TEXT)
+                .clickAddOrEditDescriptionButton()
+                .insertDescriptionText(DESCRIPTION_TEXT)
                 .clickSaveButton()
                 .getDescriptionText();
 
@@ -260,15 +260,15 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")
     public void testEditDescription() {
-        String descriptionEditText = "Welcome";
+        String actualNewDescriptionText = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickAddOrEditDescriptionButton()
+                .deleteDescriptionText()
+                .insertDescriptionText(NEW_DESCRIPTION_TEXT)
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-
-        changeDescriptionTextInStatus(descriptionEditText);
-
-        assertTrue(getDriver().findElement(By.xpath("//div[contains(text(), descriptionAfterEdit)]")).isDisplayed());
-        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), descriptionEditText);
-
+        Assert.assertEquals(actualNewDescriptionText, NEW_DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")

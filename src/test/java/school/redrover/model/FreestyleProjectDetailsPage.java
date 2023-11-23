@@ -39,10 +39,10 @@ public class FreestyleProjectDetailsPage extends BasePage {
     private WebElement descriptionText;
 
     @FindBy(xpath = "//a[@href='editDescription']")
-    private WebElement addDescriptionButton;
+    private WebElement addOrEditDescriptionButton;
 
     @FindBy(xpath = "//textarea[@name='description']")
-    private WebElement inputProjectDescription;
+    private WebElement projectDescriptionInputField;
 
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
@@ -141,14 +141,20 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return listPermalinks.getText();
     }
 
-    public FreestyleProjectDetailsPage clickAddDescriptionButton() {
-        addDescriptionButton.click();
+    public FreestyleProjectDetailsPage clickAddOrEditDescriptionButton() {
+        addOrEditDescriptionButton.click();
 
         return this;
     }
 
-    public FreestyleProjectDetailsPage inputDescriptionText(String description) {
-        inputProjectDescription.sendKeys(description);
+    public FreestyleProjectDetailsPage insertDescriptionText(String description) {
+        projectDescriptionInputField.sendKeys(description);
+
+        return this;
+    }
+
+    public FreestyleProjectDetailsPage deleteDescriptionText() {
+        projectDescriptionInputField.clear();
 
         return this;
     }
