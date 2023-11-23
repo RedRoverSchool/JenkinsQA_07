@@ -15,29 +15,30 @@ public class ConfigureLogRecorderPage extends BasePage {
     @FindBy(xpath = "(//div[@class = 'setting-main'])[1]/input")
     private WebElement name;
 
-    @FindBy(xpath = "//div[@class = 'repeated-container']/button")
+    @FindBy(xpath = "//div[@class='repeated-container']/button")
     private WebElement buttonAdd;
 
     @FindBy(xpath = "(//input[@name = '_.name'])[last()]")
     private WebElement lastLoggerField;
 
-    @FindBy(xpath = "//div[@name = 'loggers'])[last()]//li[1]")
+    @FindBy(xpath = "//div[@name='loggers'])[last()]//li[1]")
     private WebElement loggerDropDownList;
 
     @FindBy(xpath = "(//select)[last()")
     private WebElement lastLogLevel;
 
-    @FindBy(xpath = "//button[@name = 'Submit']")
+    @FindBy(xpath = "//button[@name='Submit']")
     private WebElement buttonSave;
 
-    @FindBy(xpath = "(//select)[last()]/option[@selected = 'true']")
+    @FindBy(xpath = "(//select)[last()]/option[@selected='true']")
     private WebElement selectedLogLevel;
+
+    @FindBy(xpath = "//a[@href='/manage/log/']")
+    private WebElement systemLog;
 
     public ConfigureLogRecorderPage(WebDriver driver) {
         super(driver);
     }
-
-
 
     public ConfigureLogRecorderPage clickAdd() {
         buttonAdd.click();
@@ -74,6 +75,12 @@ public class ConfigureLogRecorderPage extends BasePage {
         buttonSave.click();
 
         return new LogRecordersDetailsPage(getDriver());
+    }
+
+    public SystemLogPage clickSystemLog(){
+        systemLog.click();
+
+        return new SystemLogPage(getDriver());
     }
 
     public List<String> getLoggersAndLevelsSavedList() {

@@ -24,7 +24,4 @@ public class SystemLogPage extends BasePage {
 
         return new ConfigureLogRecorderPage(getDriver());
     }
-
-//    getDriver().findElement(By.xpath("//a[@href = '/manage/log/']")).click();
-
 }
