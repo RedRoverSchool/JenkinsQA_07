@@ -37,17 +37,6 @@ public class PipelineTest extends BaseTest {
         }
     }
 
-    private void createPipeline(String pipelineName) {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(pipelineName);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-    }
-
     private void clickSaveConfiguration() {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
@@ -454,27 +443,26 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(permalinksInfo.isEmpty());
     }
 
-
     @Test
-    public void testPermalinksContainBuildInformation() throws InterruptedException {
-        final String jobName = "Pipeline2";
-        final List<String> buildsInfo = List.of("Last build (#1)", "Last stable build (#1)", "Last successful build (#1)",
-                "Last completed build (#1)");
+    public void testPermalinksContainBuildInformation() {
 
-        createAPipeline(jobName);
+        final List<String> expectedPermalinksList = List.of(
+                "Last build (#1)",
+                "Last stable build (#1)",
+                "Last successful build (#1)",
+                "Last completed build (#1)"
+        );
+
+        createAPipeline(JOB_NAME);
         goMainPageByBreadcrumb();
 
-        getDriver().findElement(By.xpath("//td//a[@title = 'Schedule a Build for " + jobName + "']")).click();
-        Thread.sleep(2000);
+        List<String> actualPermalinksList = new HomePage(getDriver())
+                .clickBuildByGreenArrow(JOB_NAME)
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .getPermalinksList();
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + jobName + "/']")).click();
-
-        List<WebElement> permalinks = getDriver().findElements(By.cssSelector(".permalink-item"));
-
-        Assert.assertEquals(permalinks.size(), 4);
-        for (int i = 0; i < permalinks.size(); i++) {
-            Assert.assertTrue(permalinks.get(i).getText().contains(buildsInfo.get(i)));
-        }
+      Assert.assertEquals(actualPermalinksList.size(),4);
+      Assert.assertEquals(actualPermalinksList, expectedPermalinksList);
     }
 
     @Test
@@ -487,31 +475,6 @@ public class PipelineTest extends BaseTest {
         String stageViewInfo = getDriver().findElement(By.cssSelector("div#pipeline-box > div")).getText();
 
         Assert.assertEquals(stageViewInfo, "No data available. This Pipeline has not yet run.");
-    }
-
-    @Test
-    public void testPermalinksContainsInfo() throws InterruptedException {
-        final String pipelineName = "Pipeline_Test";
-        final List<String> permalinksInfo = List.of(
-                "Last build (#1)",
-                "Last stable build (#1)",
-                "Last successful build (#1)",
-                "Last completed build (#1)"
-        );
-
-        createPipeline(pipelineName);
-
-        getDriver().findElement(By.xpath("//td//a[@title = 'Schedule a Build for " + pipelineName + "']")).click();
-        Thread.sleep(2000);
-
-        getDriver().findElement(By.xpath("//td//a[@href = 'job/" + pipelineName + "/']")).click();
-
-        List<WebElement> permalinks = getDriver().findElements(By.className("permalink-item"));
-
-        Assert.assertEquals(permalinks.size(), 4);
-        for (int i = 0; i < permalinks.size(); i++) {
-            Assert.assertTrue(permalinks.get(i).getText().contains(permalinksInfo.get(i)));
-        }
     }
 
     @Test(dependsOnMethods = "testStageViewBeforeBuild")

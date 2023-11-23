@@ -174,6 +174,8 @@ public class HomePage extends BasePage {
 
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name + "/build?delay=0sec']")).click();
+        getWait5().until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//div[@class = 'jenkins-table__cell__button-wrapper']/a[contains(@aria-describedby,'tippy')]")));
 
         return this;
     }
