@@ -251,4 +251,5 @@ public class FreestyleProjectConfigurePage extends BasePage {
     public boolean editedLabelInGitHubProjectIsDisplayed() {
        return labelEditedInGitHubProject.isDisplayed();
     }
+
 }
