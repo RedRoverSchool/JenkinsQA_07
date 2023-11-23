@@ -320,8 +320,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testErrorForUnsafeChar() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+
         String error_message = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -332,8 +334,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error_message, "‘!’ is an unsafe character");
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testRenameUsingSidebar() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -344,8 +348,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testRenameResultInBreadcrumb() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+
         List<String> breadcrumb = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -356,8 +362,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(breadcrumb.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testRenameResultOnPageHeading() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -368,8 +376,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testRenameResultOnDashboard() {
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+
         List<String> jobs = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
