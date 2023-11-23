@@ -740,8 +740,9 @@ public class UserTest extends BaseTest {
         actions.moveToElement(breadcrumbName).build().perform();
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
-        actions.moveToElement(chevron);
-        actions.clickAndHold(chevron).release().perform();
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", chevron);
 
         String text= chevron.getAttribute("aria-expanded");
         Assert.assertEquals(text, "true");
