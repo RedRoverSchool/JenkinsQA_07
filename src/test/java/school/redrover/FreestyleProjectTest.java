@@ -689,16 +689,15 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(helpMessageDisplay);
    }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testStatusPageUrlCheck() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
 
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
+        String currentUrl = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .getCurrentUrl();
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + editedProjectName));
+        Assert.assertTrue(currentUrl.contains("/job/" + editedProjectName));
     }
 
     @Test

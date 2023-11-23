@@ -158,4 +158,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return this;
     }
+
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
+    }
 }
