@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.bouncycastle.asn1.cmc.DecryptedPOP;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -206,7 +207,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename()
+                .clickRenameItem()
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -498,15 +499,16 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameToEmptyName() {
-        createFreeStyleProject(PROJECT_NAME);
+        String errorText = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickRenameItem()
+                .clickRenameButtonEmptyName()
+                .getErrorText();
 
-        getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item'][2]")).click();
-        getDriver().findElement(By.xpath(
-                "//a[@class='task-link ' and contains(@href, 'confirm-rename')]")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        clickSubmitButton();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
-                "No name is specified");
+        Assert.assertEquals(errorText, "No name is specified");
     }
 
     @Test
@@ -647,15 +649,11 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(editDescription, NEW_DESCRIPTION_TEXT);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
        boolean helpMessageDisplay = new HomePage(getDriver())
-                .clickNewItem()
-                .createFreestyleProject(PROJECT_NAME)
-                .clickSaveButton()
-                .goHomePage()
-                .clickOnJob()
-                .goToConfigureFromSideMenu()
+               .clickOnJob()
+               .goToConfigureFromSideMenu()
                .clickAdvancedButton()
                .clickOnQuietPeriodToolTip()
                .helpMessageDisplay();

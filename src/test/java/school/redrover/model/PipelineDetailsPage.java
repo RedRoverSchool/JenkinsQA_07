@@ -63,4 +63,5 @@ public class PipelineDetailsPage extends BasePage {
 
         return permalinks;
     }
+
 }

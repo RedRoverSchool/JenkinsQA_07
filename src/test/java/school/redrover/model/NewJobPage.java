@@ -29,24 +29,23 @@ public class NewJobPage extends BasePage {
     public NewJobPage(WebDriver driver) {
         super(driver);
     }
+
     public NewJobPage createFreestyleProject(String projectName) {
         name.sendKeys(projectName);
         freestyleProject.click();
         okButton.click();
 
         return new NewJobPage(getDriver());
-
     }
 
     public NewJobPage clickSaveButton() {
         submitButton.click();
+
         return this;
     }
 
     public String getCreatedJobName() {
 
         return createdJobName.getText();
-
     }
-
 }
