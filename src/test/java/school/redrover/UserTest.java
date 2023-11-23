@@ -733,6 +733,7 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testDeleteUsingBreadcrumb() {
+
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
@@ -745,20 +746,16 @@ public class UserTest extends BaseTest {
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
 
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].style.display = 'block';", chevron);
         js.executeScript("arguments[0].click();", chevron);
 
         WebDriverWait wait30 = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
-        wait30.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']")));
 
-        WebElement buttonDelete = getDriver().findElement(
-                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+        WebElement buttonDelete = getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']"));
 
-        js.executeScript("arguments[0].style.display = 'block';", buttonDelete);
+        js.executeScript("arguments[0].style.visibility = 'visible';", buttonDelete);
 
-        wait30.until(ExpectedConditions.visibilityOf(buttonDelete));
-        buttonDelete.click();
+      //  wait30.until(ExpectedConditions.visibilityOf(buttonDelete));
+        js.executeScript("arguments[0].click();", buttonDelete);
 
         getDriver().switchTo().alert().accept();
 
