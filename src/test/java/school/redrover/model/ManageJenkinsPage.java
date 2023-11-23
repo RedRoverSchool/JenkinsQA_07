@@ -14,6 +14,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//a[@href = 'securityRealm/']")
     private WebElement userSection;
 
+    @FindBy(xpath = "//a[@href='log']")
+    private WebElement systemLogSection;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -28,5 +31,11 @@ public class ManageJenkinsPage extends BasePage {
         nodeSection.click();
 
         return new NodesListPage(getDriver());
+    }
+
+    public SystemLogPage goSystemLogPage() {
+        systemLogSection.click();
+
+        return new SystemLogPage(getDriver());
     }
 }

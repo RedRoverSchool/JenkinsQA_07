@@ -8,10 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.ErrorPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.NodeDetailsPage;
-import school.redrover.model.NodesListPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -37,7 +34,7 @@ public class NodesTest extends BaseTest {
 
     private void goToConfigureNodePage() {
         goToMainPage();
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
         getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
     }
 
@@ -135,7 +132,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(message, "Disconnected by admin");
     }
 
-    @Test(dependsOnMethods =  "testMarkNodeTemporarilyOffline")
+    @Test(dependsOnMethods = "testMarkNodeTemporarilyOffline")
     public void testRenameNodeWithValidName() {
         final String newName = "Renamed node";
 
@@ -171,7 +168,7 @@ public class NodesTest extends BaseTest {
         createNewNode(NODE_NAME);
         goToMainPage();
 
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys("111");
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
@@ -216,7 +213,7 @@ public class NodesTest extends BaseTest {
         goToMainPage();
         final String reasonMessage = "New No Reason";
 
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME +"']")).click();
+        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
         getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.name("offlineMessage")).sendKeys("No Reason");
@@ -230,7 +227,7 @@ public class NodesTest extends BaseTest {
 
         String message = getDriver().findElement(By.xpath("//div[@class='message']")).getText();
 
-        Assert.assertEquals(message.substring(message.indexOf(':')+1).trim(), reasonMessage);
+        Assert.assertEquals(message.substring(message.indexOf(':') + 1).trim(), reasonMessage);
     }
 
     @Test
@@ -404,7 +401,7 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCheckAlertMessageInDeleteNewNode() {
-        final String expectedAlertText = "Delete the agent ‘"+ NODE_NAME + "’?";
+        final String expectedAlertText = "Delete the agent ‘" + NODE_NAME + "’?";
 
         String actualAlertText = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -423,7 +420,7 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testCancelToDeleteNewNodeFromAgentPage() {
-        String nodeName = "//tr[@id='node_"+ NODE_NAME +"']//a//button";
+        String nodeName = "//tr[@id='node_" + NODE_NAME + "']//a//button";
 
         boolean newNode = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -444,9 +441,9 @@ public class NodesTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCancelToDeleteNewNodeFromAgentPage")
     public void testDeleteNewNodeFromAgentPage() {
-        String nodeName = "//tr[@id='node_"+ NODE_NAME +"']//a";
+        String nodeName = "//tr[@id='node_" + NODE_NAME + "']//a";
 
-        boolean deletedNode = new HomePage (getDriver())
+        boolean deletedNode = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goNodesListPage()
                 .clickNodeByName(NODE_NAME)
@@ -455,5 +452,17 @@ public class NodesTest extends BaseTest {
                 .elementIsNotPresent(nodeName);
 
         Assert.assertTrue(deletedNode);
+    }
+
+    @Test
+    public void testCreatingNodeWithoutPermanentAgent() {
+        boolean visibleButton = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goNodesListPage()
+                .clickNewNodeButton()
+                .sendNodeName(NODE_NAME)
+                .enabledCreateButton();
+
+        Assert.assertFalse(visibleButton);
     }
 }

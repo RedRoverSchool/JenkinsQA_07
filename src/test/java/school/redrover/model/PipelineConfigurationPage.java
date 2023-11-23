@@ -71,9 +71,10 @@ public class PipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public PipelinePage clickSaveButton() {
+    public <T> T clickSaveButton(T page) {
         saveButton.click();
 
-        return new PipelinePage(getDriver());
+        return page;
     }
+
 }

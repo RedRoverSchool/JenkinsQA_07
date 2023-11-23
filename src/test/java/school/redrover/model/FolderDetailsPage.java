@@ -11,8 +11,14 @@ public class FolderDetailsPage extends BasePage {
     @FindBy(linkText = "Configure")
     private WebElement configure;
 
+    @FindBy(id = "description-link")
+    private WebElement addDescription;
+
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
+
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
 
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
@@ -36,7 +42,7 @@ public class FolderDetailsPage extends BasePage {
     }
 
     public FolderDetailsPage clickAddDescription() {
-        getDriver().findElement(By.id("description-link")).click();
+        addDescription.click();
 
         return this;
     }
@@ -49,7 +55,7 @@ public class FolderDetailsPage extends BasePage {
     }
 
     public FolderDetailsPage clickSave() {
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        submitButton.click();
 
         return this;
     }
