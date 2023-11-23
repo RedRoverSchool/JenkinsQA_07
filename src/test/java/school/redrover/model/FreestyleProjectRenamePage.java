@@ -45,4 +45,11 @@ public class FreestyleProjectRenamePage extends BasePage {
 
         return getWait2().until(ExpectedConditions.visibilityOf(errorMessage)).getText();
     }
+
+    public RenameErrorPage clickRenameButtonEmptyName() {
+        inputField.clear();
+        renameButton.click();
+
+        return new RenameErrorPage(getDriver());
+    }
 }
