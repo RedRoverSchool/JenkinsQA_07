@@ -665,6 +665,12 @@ public class FreestyleProjectTest extends BaseTest {
     public void testStatusPageUrlCheck() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
 
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage();
+
         String currentUrl = new HomePage(getDriver())
                 .clickOnJob()
                 .getCurrentUrl();
