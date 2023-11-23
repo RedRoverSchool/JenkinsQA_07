@@ -10,9 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
-import school.redrover.model.PipelineConfigurationPage;
-import school.redrover.model.PipelineDetailsPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.util.Arrays;
@@ -24,7 +22,7 @@ public class PipelineTest extends BaseTest {
     private static final String JOB_ON_DASHBOARD_XPATH = "//tr[@id ='job_" + JOB_NAME + "']//a[@href = 'job/" + JOB_NAME + "/']";
     private static final String CONFIGURE_ON_SIDE_PANEL_XPATH = "//div[@id = 'tasks']//a[@href = '/job/" + JOB_NAME + "/configure']";
     private static final String CHECKBOX_TEXT = "Do not allow concurrent build";
-    private final String PIPELINE_NAME = "Pipeline test";
+    private final String PIPELINE_NAME = "Pipeline name string";
 
     private void createPipeline(String pipelineName, boolean returnToDashboard) {
         getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
@@ -72,22 +70,16 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
-        final String validPipelineName = "NewPipeline";
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
 
-        getDriver().findElement(By.xpath("//input[@id ='name']")).sendKeys(validPipelineName);
-        getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
+        String pipeLine = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PIPELINE_NAME)
+                .selectPipeline()
+                .clickOk()
+                .clickSaveButton()
+                .getJobName();
 
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//img[@id='jenkins-name-icon']")).click();
-
-        getDriver().findElement(By.xpath("//td//a[@href = 'job/" + validPipelineName + "/']")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@id = 'main-panel']/h1")).getText(),
-                "Pipeline " + validPipelineName);
-
+        Assert.assertEquals(pipeLine, "Pipeline " + PIPELINE_NAME, "Job page for pipeline is not created.");
     }
 
     @Test

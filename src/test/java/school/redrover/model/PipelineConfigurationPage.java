@@ -28,6 +28,9 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//button[@name = 'Submit']")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//button[@id= 'ok-button']")
+    private WebElement okButton;
+
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -71,9 +74,15 @@ public class PipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public PipelinePage clickSaveButton() {
+    public JobPage clickSaveButton() {
         saveButton.click();
 
-        return new PipelinePage(getDriver());
+        return new JobPage(getDriver());
+    }
+
+    public PipelineConfigurationPage clickOk() {
+        okButton.click();
+
+        return this;
     }
 }
