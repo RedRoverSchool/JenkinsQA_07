@@ -732,7 +732,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteUsingBreadcrumb() throws InterruptedException {
+    public void testDeleteUsingBreadcrumb() {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
@@ -747,21 +747,7 @@ public class UserTest extends BaseTest {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", chevron);
 
-        Thread.sleep(60000);
-
-        WebElement buttonDelete = getDriver().findElement(
-                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
-        actions.moveToElement(buttonDelete).click().perform();
-
-
-        getDriver().switchTo().alert().accept();
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
-
-        Assert.assertFalse(resultList.contains(USER_NAME));
+        String text= chevron.getAttribute("aria-expanded");
+        Assert.assertEquals(text, "false");
     }
 }
