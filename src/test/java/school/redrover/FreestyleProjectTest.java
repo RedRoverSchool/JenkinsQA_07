@@ -690,7 +690,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(helpMessageDisplay);
    }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test
     public void testStatusPageUrlCheck() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
 
