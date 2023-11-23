@@ -42,7 +42,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//td//a[@href]/span")
     private WebElement multibranchPipelineNameOnHomePage;
 
-
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -202,7 +201,7 @@ public class HomePage extends BasePage {
         return new OrganizationFolderRenamePage(getDriver());
     }
 
-       public <T> T clickRenameInDropdownMenu(String jobName, T page) {
+    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                         .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
@@ -221,13 +220,12 @@ public class HomePage extends BasePage {
         return page;
     }
 
-        public String multibranchPipelineName() {
-            return multibranchPipelineNameOnHomePage.getText();
+    public String multibranchPipelineName() {
+        return multibranchPipelineNameOnHomePage.getText();
     }
 
     public FreestyleProjectDetailsPage clickOnJob() {
         getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
         return new FreestyleProjectDetailsPage(getDriver());
     }
-
 }

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineConfigurationPage extends BasePage {
@@ -67,6 +68,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineDeletePage clickButtonDelete() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
         buttonDelete.click();
 
         return new MultibranchPipelineDeletePage(getDriver());
