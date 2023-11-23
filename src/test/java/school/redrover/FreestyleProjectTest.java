@@ -206,7 +206,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename()
+                .clickRenameItem()
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -503,8 +503,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename()
-                .clearInputField()
+                .clickRenameItem()
                 .clickRenameButtonEmptyName()
                 .getErrorText();
 
