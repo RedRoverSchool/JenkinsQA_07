@@ -7,10 +7,6 @@ import school.redrover.model.base.BasePage;
 
 public class PipelineRenamePage extends BasePage {
 
-    @FindBy(xpath = "//input[@name='newName']")
-    private WebElement inputName;
-
-    @FindBy(xpath = "//button[normalize-space()='Rename']")
     @FindBy(name = "newName")
     private WebElement inputName;
 
@@ -24,14 +20,12 @@ public class PipelineRenamePage extends BasePage {
     public PipelineRenamePage enterNewName(String newProjectName) {
         inputName.clear();
         inputName.sendKeys(newProjectName);
-    public PipelineRenamePage clearInputName() {
-        inputName.clear();
 
         return this;
     }
 
-    public PipelineRenamePage clickRenameButton() {
-        renameButton.click();
+        public PipelineRenamePage clearInputName() {
+        inputName.clear();
 
         return this;
     }

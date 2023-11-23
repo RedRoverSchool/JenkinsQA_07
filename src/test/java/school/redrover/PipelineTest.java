@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -153,7 +152,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineNoNameError() {
-        PipelineRenamePage newPipeline = new HomePage(getDriver())
+        PipelinePage newPipeline = new HomePage(getDriver())
                 .clickNewItem()
                 .createPipelinePage(JOB_NAME)
                 .clickSaveButton(new PipelineConfigurationPage(getDriver()))
