@@ -221,4 +221,5 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
         return new FreestyleProjectDetailsPage(getDriver());
     }
+
 }

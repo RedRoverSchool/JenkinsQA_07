@@ -20,6 +20,12 @@ public class NewJobPage extends BasePage {
     @FindBy(id = "ok-button")
     private WebElement okButton;
 
+    @FindBy(xpath = "//button[@name = 'Submit']")
+    private WebElement submitButton;
+
+    @FindBy(xpath = "//div/h1")
+    private WebElement createdJobName;
+
     public NewJobPage(WebDriver driver) {
         super(driver);
     }
@@ -29,5 +35,18 @@ public class NewJobPage extends BasePage {
         okButton.click();
 
         return new NewJobPage(getDriver());
+
     }
+
+    public NewJobPage clickSaveButton() {
+        submitButton.click();
+        return this;
+    }
+
+    public String getCreatedJobName() {
+
+        return createdJobName.getText();
+
+    }
+
 }

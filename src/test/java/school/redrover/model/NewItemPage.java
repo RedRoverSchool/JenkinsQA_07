@@ -46,6 +46,10 @@ public class NewItemPage extends BasePage {
     @FindBy(css = "div[class='add-item-name']")
     private WebElement inputValidationMessage;
 
+
+    @FindBy(xpath = "//span[normalize-space()='Pipeline']")
+    private WebElement pipeLineCategory;
+
     @FindBy(name = "Submit")
     private WebElement saveButton;
 
@@ -162,6 +166,11 @@ public class NewItemPage extends BasePage {
         return !getDriver()
                 .findElements(By.xpath("//li[contains(text(),'" + projectName + "')]"))
                 .isEmpty();
+    }
+
+    public NewItemPage clickPipeLineCategory() {
+        pipeLineCategory.click();
+        return this;
     }
     public PipelinePage createPipelineProject(String projectName) {
         inputName.sendKeys(projectName);
