@@ -13,11 +13,9 @@ public class PluginsTest extends BaseTest {
 
     @Test
     public void testInstalledPluginsContainsAnt() {
-        new HomePage(getDriver())
+        List<String> pluginsNames = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goPluginsPage();
-
-        List<String> pluginsNames = new PluginsPage(getDriver())
+                .goPluginsPage()
                 .jsClickInstalledPlugins()
                 .installedPluginsList();
 
