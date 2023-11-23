@@ -12,7 +12,7 @@ public class PluginsTest extends BaseTest {
 
     @Test
     public void testInstalledPluginsContainsAnt() {
-        new HomePage(getDriver())
+        PluginsPage pluginsPage = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goPluginsPage();
 
