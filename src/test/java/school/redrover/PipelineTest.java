@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.NewItemPage;
 import school.redrover.model.PipelineConfigurationPage;
 import school.redrover.model.PipelineDetailsPage;
 import school.redrover.runner.BaseTest;
@@ -92,15 +93,12 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreateWithEmptyName() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
+        NewItemPage newItemPage = new HomePage(getDriver()).
+                clickNewItem().
+                selectPipelineProject();
 
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id=\"itemname-required\"]")).getText(),
-                "» This field cannot be empty, please enter a valid name");
-        Assert.assertTrue(
-                getDriver().findElement(By.cssSelector(".disabled")).isDisplayed());
+        Assert.assertEquals(newItemPage.getRequiredNameErrorMessage(), "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(newItemPage.isOkButtonEnabled());
     }
 
     @Test
