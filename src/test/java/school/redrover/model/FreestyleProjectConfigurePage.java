@@ -89,6 +89,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//div[@class='tbody dropdownList-container']//div[@class='help']//div")
     private WebElement helpMessage;
 
+    @FindBy(xpath = "//button[contains( text(), 'Add Parameter')]")
+    private WebElement addParameterDropdownMenu;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -287,5 +290,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public boolean helpMessageDisplay() {
         return helpMessage.isDisplayed();
+    }
+
+    public WebElement getAddParameterDropdownMenu(){
+        return addParameterDropdownMenu;
     }
 }
