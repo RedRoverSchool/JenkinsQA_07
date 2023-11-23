@@ -2,9 +2,11 @@ package school.redrover;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -14,6 +16,7 @@ import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.SeleniumUtils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -726,5 +729,45 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
+    }
+
+    @Test
+    public void testDeleteUsingBreadcrumb() {
+
+        goToUserCreateFormPage();
+        createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
+
+        Actions actions = new Actions(getDriver());
+
+        WebElement breadcrumbName = getDriver().findElement(By.linkText(USER_NAME));
+        actions.moveToElement(breadcrumbName);
+        actions.moveToElement(breadcrumbName).build().perform();
+
+        WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
+
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", chevron);
+
+        WebDriverWait wait30 = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
+        wait30.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']")));
+
+        WebElement buttonDelete = getDriver().findElement(
+                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+
+        js.executeScript("arguments[0].style.display = 'block';", buttonDelete);
+
+        wait30.until(ExpectedConditions.visibilityOf(buttonDelete));
+        buttonDelete.click();
+
+        getDriver().switchTo().alert().accept();
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        Assert.assertFalse(resultList.contains(USER_NAME));
     }
 }
