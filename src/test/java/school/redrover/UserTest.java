@@ -6,6 +6,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -15,6 +16,7 @@ import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.SeleniumUtils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -728,6 +730,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
     }
+
     @Test
     public void testDeleteUsingBreadcrumb() {
         goToUserCreateFormPage();
@@ -744,7 +747,23 @@ public class UserTest extends BaseTest {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", chevron);
 
-        String text= chevron.getAttribute("aria-expanded");
-        Assert.assertEquals(text, "true");
+        WebDriverWait wait30 = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
+        wait30.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']")));
+
+        WebElement buttonDelete = getDriver().findElement(
+                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+        actions.moveToElement(buttonDelete).click().perform();
+
+
+        getDriver().switchTo().alert().accept();
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        Assert.assertFalse(resultList.contains(USER_NAME));
     }
 }
