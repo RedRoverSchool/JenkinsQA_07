@@ -29,9 +29,4 @@ public class PipelinePage extends BasePage {
         return new PipelineRenamePage(getDriver());
     }
 
-    public PipelineRenamePage clickRename() {
-        renameButton.click();
-
-        return new PipelineRenamePage(getDriver());
-    }
 }
