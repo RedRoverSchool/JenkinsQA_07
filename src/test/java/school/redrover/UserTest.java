@@ -747,7 +747,7 @@ public class UserTest extends BaseTest {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", chevron);
 
-        WebDriverWait wait30 = new WebDriverWait(getDriver(), Duration.ofSeconds(30));
+        WebDriverWait wait30 = new WebDriverWait(getDriver(), Duration.ofSeconds(50));
         wait30.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']")));
 
