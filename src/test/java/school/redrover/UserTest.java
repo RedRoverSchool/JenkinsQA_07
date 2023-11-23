@@ -744,12 +744,10 @@ public class UserTest extends BaseTest {
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
 
+        getDriver().manage().timeouts().setScriptTimeout(Duration.ofSeconds(65));
+
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", chevron);
-
-        WebDriverWait wait30 = new WebDriverWait(getDriver(), Duration.ofSeconds(50));
-        wait30.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']")));
 
         WebElement buttonDelete = getDriver().findElement(
                 By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
