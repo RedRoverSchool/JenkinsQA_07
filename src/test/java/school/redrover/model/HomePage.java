@@ -214,7 +214,7 @@ public class HomePage extends BasePage {
     }
 
     public FreestyleProjectDetailsPage clickOnJob() {
-        jobName.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
         return new FreestyleProjectDetailsPage(getDriver());
     }
 }
