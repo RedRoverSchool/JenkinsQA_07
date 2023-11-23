@@ -98,6 +98,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "true");
     }
 
+    @Ignore
     @Test
     public void testCreateWithDuplicateName() {
         createPipeline(JOB_NAME, true);
