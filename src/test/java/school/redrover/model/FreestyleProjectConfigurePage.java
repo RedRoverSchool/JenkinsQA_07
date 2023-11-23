@@ -3,7 +3,6 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -51,6 +50,12 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement inputProjectDescription;
 
+    @FindBy(xpath = "//label[contains(text(), 'This project is parameterized')]")
+    private WebElement getThisProjectIsParameterizedCheckbox;
+
+    @FindBy(xpath = "//label[contains(text(), 'This project is parameterized')]/../input")
+    private WebElement getThisProjectIsParameterizedCheckboxInput;
+
     @FindBy(xpath = "//a[@previewendpoint = '/markupFormatter/previewDescription']")
     private WebElement previewDescription;
 
@@ -74,6 +79,15 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     @FindBy(xpath = "//span[@class = 'jenkins-edited-section-label']")
     private WebElement labelEditedInGitHubProject;
+
+    @FindBy (xpath = "//div[@class ='jenkins-form-item tr jenkins-form-item--tight']//button")
+    private WebElement advancedButton;
+
+    @FindBy(xpath = "//a[@title='Help for feature: Quiet period']")
+    private WebElement quietPeriodToolTip;
+
+    @FindBy(xpath = "//div[@class='tbody dropdownList-container']//div[@class='help']//div")
+    private WebElement helpMessage;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -190,6 +204,15 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
+    public FreestyleProjectConfigurePage clickThisProjectIsParameterizedCheckbox() {
+        getThisProjectIsParameterizedCheckbox.click();
+        return this;
+    }
+
+    public WebElement getThisProjectIsParameterizedCheckbox() {
+        return getThisProjectIsParameterizedCheckboxInput;
+    }
+
     public FreestyleProjectConfigurePage inputDescription(String description) {
         inputProjectDescription.sendKeys(description);
 
@@ -249,7 +272,20 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public boolean editedLabelInGitHubProjectIsDisplayed() {
-       return labelEditedInGitHubProject.isDisplayed();
+        return labelEditedInGitHubProject.isDisplayed();
     }
 
+    public FreestyleProjectConfigurePage clickAdvancedButton() {
+        advancedButton.click();
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickOnQuietPeriodToolTip() {
+        quietPeriodToolTip.click();
+        return this;
+    }
+
+    public boolean helpMessageDisplay() {
+        return helpMessage.isDisplayed();
+    }
 }

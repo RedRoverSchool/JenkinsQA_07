@@ -33,7 +33,11 @@ public class HomePage extends BasePage {
     private WebElement newItemButton;
 
     @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
-    private WebElement getJobDisplayName;
+    private WebElement jobName;
+
+
+    @FindBy(xpath = "//div[@class = 'jenkins-table__cell__button-wrapper']/a[contains(@aria-describedby,'tippy')]")
+    private WebElement runningBuildIndicator;
 
     @FindBy(xpath = "//td//a[@href]/span")
     private WebElement multibranchPipelineNameOnHomePage;
@@ -135,7 +139,7 @@ public class HomePage extends BasePage {
     }
 
     public String getJobDisplayName() {
-        return getJobDisplayName.getText();
+        return jobName.getText();
     }
 
     public String getTitle() {
@@ -178,6 +182,7 @@ public class HomePage extends BasePage {
 
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name + "/build?delay=0sec']")).click();
+        getWait5().until(ExpectedConditions.invisibilityOf(runningBuildIndicator));
 
         return this;
     }
@@ -219,4 +224,10 @@ public class HomePage extends BasePage {
         public String multibranchPipelineName() {
             return multibranchPipelineNameOnHomePage.getText();
     }
+
+    public FreestyleProjectDetailsPage clickOnJob() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
+        return new FreestyleProjectDetailsPage(getDriver());
+    }
+
 }
