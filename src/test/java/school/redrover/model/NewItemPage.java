@@ -165,8 +165,11 @@ public class NewItemPage extends BasePage {
                 .isEmpty();
     }
 
-    public NewItemPage clickPipeLineCategory() {
-        pipeLineCategory.click();
-        return this;
+    public PipelineConfigurationPage createPipelinePage(String projectName) {
+        inputName.sendKeys(projectName);
+        pipeline.click();
+        okButton.click();
+
+        return new PipelineConfigurationPage(getDriver());
     }
 }

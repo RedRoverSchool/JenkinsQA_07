@@ -70,7 +70,7 @@ public class PipelineTest extends BaseTest {
         boolean pipeLineCreated = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(PIPELINE_NAME)
-                .clickPipeLineCategory()
+                .selectPipelineProject()
                 .clickOk(new NewJobPage(getDriver()))
                 .clickSaveButton()
                 .getCreatedJobName()
@@ -91,11 +91,11 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineEmptyNameHandling() {
-
         final String errorTextExpected = "» This field cannot be empty, please enter a valid name";
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//div[@id ='j-add-item-type-standalone-projects']//span[contains(text(), 'Pipeline')]")).click();
+        NewItemPage newPipeline = new HomePage(getDriver())
+                .clickNewItem()
+                .selectPipelineProject();
 
         WebElement error = getDriver().findElement(By.id("itemname-required"));
         String errorTextActual = error.getText();
@@ -107,23 +107,15 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testCreateWithDublicateName() {
-        final String pipelineName = "PipelineName";
-        createPipeline(pipelineName, true);
+    public void testCreateWithDuplicateName() {
+        createPipeline(JOB_NAME, true);
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(pipelineName);
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(JOB_NAME)
+                .getInvalidNameErrorMessage();
 
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id=\"itemname-invalid\"]")).getText(),
-                "» A job already exists with the name ‘" + pipelineName + "’");
-
-
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.cssSelector("#main-panel")).getText().contains("A job already exists with the name ‘" + pipelineName + "’"));
-
+        Assert.assertEquals(errorMessage, "» A job already exists with the name ‘" + JOB_NAME + "’");
     }
 
     @Ignore
@@ -166,42 +158,31 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineNoNameError() {
-        final String pipelineName = "My_Pipline_project1";
+        PipelineRenamePage newPipeline = new HomePage(getDriver())
+                .clickNewItem()
+                .createPipelinePage(JOB_NAME)
+                .clickSaveButton(new PipelineConfigurationPage(getDriver()))
+                .goHomePage().clickJobByName(JOB_NAME, new PipelinePage(getDriver()))
+                .clickRename()
+                .clearInputName()
+                .clickRenameButton();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(pipelineName);
-        getDriver().findElement(By.xpath("//span[normalize-space()='Pipeline']")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        getDriver().findElement(By.xpath("//img[@id='jenkins-name-icon']")).click();
-        getDriver().findElement(By.xpath("//span[normalize-space()='" + pipelineName + "']")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/My_Pipline_project1/confirm-rename']")).click();
-        getDriver().findElement(By.xpath("//input[@name='newName']")).clear();
-        getDriver().findElement(By.xpath("//button[normalize-space()='Rename']")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//h1")).getText(),
-                "Error");
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//p")).getText(),
-                "No name is specified");
+        Assert.assertEquals(new ErrorPage(getDriver()).getErrorMessage(),"Error"+'\n'+"No name is specified");
     }
 
 
     @Test
     public void testCreatePipelineProject() {
-        final String PipelineName = "MyPipeline";
 
         List<String> jobList = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(PipelineName)
+                .typeItemName(PIPELINE_NAME)
                 .selectPipelineProject()
                 .clickOk(new PipelineConfigurationPage(getDriver()))
                 .goHomePage()
                 .getJobList();
-        Assert.assertTrue(jobList.contains(PipelineName));
+
+        Assert.assertTrue(jobList.contains(PIPELINE_NAME));
     }
 
 
@@ -331,7 +312,7 @@ public class PipelineTest extends BaseTest {
                 .clickAddParameter()
                 .selectChoiceParameter().setParameterName("parameterName")
                 .setParameterChoices(parameterChoices)
-                .clickSaveButton()
+                .clickSaveButton(new PipelinePage(getDriver()))
                 .clickBuildWithParameters()
                 .getChoiceParameterOptions();
 
