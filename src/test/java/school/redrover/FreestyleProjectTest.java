@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.bouncycastle.asn1.cmc.DecryptedPOP;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -648,15 +649,11 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(editDescription, NEW_DESCRIPTION_TEXT);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
        boolean helpMessageDisplay = new HomePage(getDriver())
-                .clickNewItem()
-                .createFreestyleProject(PROJECT_NAME)
-                .clickSaveButton()
-                .goHomePage()
-                .clickOnJob()
-                .goToConfigureFromSideMenu()
+               .clickOnJob()
+               .goToConfigureFromSideMenu()
                .clickAdvancedButton()
                .clickOnQuietPeriodToolTip()
                .helpMessageDisplay();
