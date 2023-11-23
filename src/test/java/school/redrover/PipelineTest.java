@@ -157,7 +157,7 @@ public class PipelineTest extends BaseTest {
                 .createPipelinePage(JOB_NAME)
                 .clickSaveButton(new PipelineConfigurationPage(getDriver()))
                 .goHomePage().clickJobByName(JOB_NAME, new PipelinePage(getDriver()))
-                .clickRename()
+                .clickRenameOnSideMenu()
                 .clearInputName()
                 .clickRenameButton();
 
