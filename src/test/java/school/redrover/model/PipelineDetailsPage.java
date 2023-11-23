@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PipelineDetailsPage extends BasePage {
+    
     public PipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
