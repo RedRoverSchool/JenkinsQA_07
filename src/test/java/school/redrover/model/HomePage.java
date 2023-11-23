@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.PeopleTest;
 import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
@@ -35,9 +36,11 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
     private WebElement jobName;
 
-
     @FindBy(xpath = "//div[@class = 'jenkins-table__cell__button-wrapper']/a[contains(@aria-describedby,'tippy')]")
     private WebElement runningBuildIndicator;
+
+    @FindBy(xpath = "//a[@href='/asynchPeople/']")
+    private WebElement buttonPeople;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -201,7 +204,7 @@ public class HomePage extends BasePage {
        public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                        .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
                 .perform();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName + "/']/button")));
@@ -222,4 +225,8 @@ public class HomePage extends BasePage {
         return new FreestyleProjectDetailsPage(getDriver());
     }
 
+    public PeoplePage clickPeople() {
+        buttonPeople.click();
+        return new PeoplePage(getDriver());
+    }
 }
