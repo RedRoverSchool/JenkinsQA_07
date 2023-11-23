@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
@@ -46,6 +47,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
 
+    @FindBy(xpath = "//a[contains(@href,'configure')]")
+    private WebElement configureButton;
+
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -56,8 +60,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigurePage goToConfigureFromSideMenu(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href = '/job/" + projectName + "/configure']")).click();
+    public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
