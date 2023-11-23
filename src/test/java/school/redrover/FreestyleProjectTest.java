@@ -498,15 +498,17 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testRenameToEmptyName() {
-        createFreeStyleProject(PROJECT_NAME);
+        String errorText = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickRename()
+                .clearInputField()
+                .clickRenameButtonEmptyName()
+                .getErrorText();
 
-        getDriver().findElement(By.xpath("//li[@class='jenkins-breadcrumbs__list-item'][2]")).click();
-        getDriver().findElement(By.xpath(
-                "//a[@class='task-link ' and contains(@href, 'confirm-rename')]")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        clickSubmitButton();
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/p")).getText(),
-                "No name is specified");
+        Assert.assertEquals(errorText, "No name is specified");
     }
 
     @Test
