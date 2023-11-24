@@ -7,10 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
-import school.redrover.model.NewItemPage;
-import school.redrover.model.OrganizationFolderConfigurationPage;
-import school.redrover.model.OrganizationFolderDetailsPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -79,10 +76,10 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(nameWithSpace)
                 .selectOrganizationFolder()
-                .clickOkWithError()
+                .clickOkWithError(new ErrorPage(getDriver()))
                 .getErrorMessage();
 
-        Assert.assertEquals(errorMessage, "Error\n" + "No name is specified");
+        Assert.assertEquals(errorMessage, "No name is specified");
     }
 
     @Test (dependsOnMethods = "testCreateOrganizationFolderWithSpaceInsteadOfName")
@@ -93,8 +90,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(longName)
                 .selectOrganizationFolder()
-                .clickOkWithError()
-                .getRequestErrorMessage();
+                .clickOkWithError(new AngryErrorPage(getDriver()))
+                .getErrorMessage();
 
         Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
     }

@@ -303,21 +303,20 @@ public class NodesTest extends BaseTest {
                 .getErrorMessage();
 
         Assert.assertEquals(errorMessage,
-                "Error\nInvalid agent configuration for " + NEW_NODE_NAME + ". Invalid number of executors.");
+                "Invalid agent configuration for " + NEW_NODE_NAME + ". Invalid number of executors.");
     }
 
     @Test(dependsOnMethods = "testSetIncorrectNumberOfExecutes")
     public void testSetEnormousNumberOfExecutes() {
 
-        goToNodesPage();
-        clickConfigureNode(NEW_NODE_NAME);
-        getDriver().findElement(By.xpath("//input[contains(@name, 'numExecutors')]"))
-                .sendKeys(String.valueOf(Integer.MAX_VALUE));
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        AngryErrorPage angryErrorPage = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNodeByName(NEW_NODE_NAME)
+                .clickConfigure()
+                .inputEnormousNumberOfExecutors(Integer.MAX_VALUE);
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText().trim(), "Oops!");
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h2")).getText(),
-                "A problem occurred while processing the request.");
+        Assert.assertEquals(angryErrorPage.getErrorNotification(), "Oops!");
+        Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
     }
 
     @Test(dependsOnMethods = "testCheckWarningMessage")

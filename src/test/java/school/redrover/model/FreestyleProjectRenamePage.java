@@ -52,4 +52,10 @@ public class FreestyleProjectRenamePage extends BasePage {
 
         return new RenameErrorPage(getDriver());
     }
+
+    public ErrorPage clickRenameButtonAndRedirectErrorPage() {
+        renameButton.click();
+
+        return new ErrorPage(getDriver());
+    }
 }

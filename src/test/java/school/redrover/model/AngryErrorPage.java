@@ -5,14 +5,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseErrorPage;
 
-public class ErrorPage extends BaseErrorPage {
+public class AngryErrorPage extends BaseErrorPage {
 
-    public ErrorPage(WebDriver driver) {
+    @FindBy(xpath = "//h2")
+    private WebElement errorMessage;
+
+    public AngryErrorPage(WebDriver driver) {
         super(driver);
     }
-
-    @FindBy(xpath = "//h1/following-sibling::p")
-    WebElement errorMessage;
 
     public String getErrorMessage() {
         return errorMessage.getText();

@@ -255,14 +255,14 @@ public class FolderTest extends BaseTest {
     public void testNegativeBoundaryValuesName() {
         HomePage homePage = new HomePage(getDriver());
 
-        String errorMessage = homePage
+        AngryErrorPage angryErrorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
-                .clickOk(new ErrorPage(getDriver()))
-                .getRequestErrorMessage();
+                .clickOk(new AngryErrorPage(getDriver()));
 
-        Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
+        Assert.assertEquals(angryErrorPage.getErrorNotification(), "Error");
+        Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
     }
 
 

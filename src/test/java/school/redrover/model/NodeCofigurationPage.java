@@ -38,4 +38,11 @@ public class NodeCofigurationPage extends BasePage {
 
         return new ErrorPage(getDriver());
     }
+
+    public AngryErrorPage inputEnormousNumberOfExecutors(int number) {
+        NumberOfExecutorsField.sendKeys(String.valueOf(number));
+        saveButton.click();
+
+        return new AngryErrorPage(getDriver());
+    }
 }

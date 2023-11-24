@@ -105,10 +105,10 @@ public class NewItemPage extends BasePage {
         return page;
     }
 
-    public ErrorPage clickOkWithError() {
+    public <E> E clickOkWithError(E page) {
         okButton.click();
 
-        return new ErrorPage(getDriver());
+        return page;
     }
 
     public MultibranchPipelineConfigurationPage clickOk() {

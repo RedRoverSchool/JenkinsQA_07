@@ -9,11 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.BreadcrumbPage;
-import school.redrover.model.FreestyleProjectConfigurePage;
-import school.redrover.model.FreestyleProjectDetailsPage;
-import school.redrover.model.FreestyleProjectRenamePage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -481,21 +477,16 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertFalse(buttonOk.isEnabled());
     }
 
-    @Test(description = "Creating Freestyle project using duplicative name")
-    public void testFreestyleProjectWithDublicativeName() {
-        createFreeStyleProject(PROJECT_NAME);
+    @Test
+    public void testFreestyleProjectWithDuplicateName() {
+        ErrorPage errorPage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .clickRenameLink()
+                .clickRenameButtonAndRedirectErrorPage();
 
-        goToJenkinsHomePage();
-
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(PROJECT_NAME);
-        getDriver().findElement(By.id("ok-button")).click();
-
-        String textResult = getDriver().findElement(By.id("itemname-invalid")).getText();
-        WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
-
-        Assert.assertEquals(textResult, "» A job already exists with the name ‘" + PROJECT_NAME + "’");
-        Assert.assertFalse(buttonOk.isEnabled());
+        Assert.assertEquals(errorPage.getErrorMessage(), "The new name is the same as the current name.");
     }
 
     @Test
