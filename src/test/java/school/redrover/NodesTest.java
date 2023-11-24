@@ -302,7 +302,7 @@ public class NodesTest extends BaseTest {
                 .goNodesListPage()
                 .clickNodeByName(NEW_NODE_NAME)
                 .clickConfigure()
-                .inputInvlidNumberOfExecutors(numberOfExecutes)
+                .inputNumberOfExecutors(numberOfExecutes, new ErrorPage(getDriver()))
                 .getErrorMessage();
 
         Assert.assertEquals(errorMessage,

@@ -32,10 +32,10 @@ public class NodeCofigurationPage extends BasePage {
         return this;
     }
 
-    public ErrorPage inputInvlidNumberOfExecutors(int number) {
+    public <T> T inputNumberOfExecutors(int number, T page) {
         NumberOfExecutorsField.sendKeys(String.valueOf(number));
         saveButton.click();
 
-        return new ErrorPage(getDriver());
+        return page;
     }
 }
