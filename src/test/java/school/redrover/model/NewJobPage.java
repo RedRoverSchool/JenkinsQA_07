@@ -46,6 +46,7 @@ public class NewJobPage extends BasePage {
 
     public String getCreatedJobName() {
 
-        return createdJobName.getText();
+        return getWait2().until(ExpectedConditions.visibilityOf(createdJobName)).getText();
+
     }
 }
