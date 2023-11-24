@@ -574,7 +574,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
                 .goHomePage();
-
         WebElement addParameter = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
