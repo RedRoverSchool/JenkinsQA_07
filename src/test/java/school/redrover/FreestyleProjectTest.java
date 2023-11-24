@@ -769,31 +769,18 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testAddBuildStep() {
         final String buildStepTitle = "buildStep";
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-        createFreeStyleProject(PROJECT_NAME);
+        String shellScript = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickAddBuildStepsDropdown()
+                .clickExecuteShellOption()
+                .inputShellScript(buildStepTitle)
+                .clickSaveButton()
+                .clickConfigure()
+                .getShellScriptText();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
-
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//button[contains(text(), 'Add build step')]")));
-
-        hoverClick("//button[contains(text(), 'Add build step')]");
-
-        hoverClick("//a[contains(text(), 'Execute shell')]");
-
-        hoverClickInput("//div[@class='CodeMirror-scroll cm-s-default']", buildStepTitle);
-
-        clickSubmitButton();
-
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
-
-        getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class='CodeMirror-scroll cm-s-default']"))
-                        .getText(),
-                buildStepTitle);
+        Assert.assertEquals(shellScript, buildStepTitle);
     }
 
     @Test
