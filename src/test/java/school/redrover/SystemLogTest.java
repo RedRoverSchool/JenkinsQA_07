@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -19,11 +20,9 @@ public class SystemLogTest extends BaseTest {
     private final static String SYSLOG_NAME = "NewSystemLog";
 
     private void openSyslogPage() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//a[@href='log']")));
-        getDriver().findElement(By.xpath("//a[@href='log']")).click();
+        new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage();
     }
 
     @Test(dependsOnMethods = "testDeleteAllCustomLogRecorders")

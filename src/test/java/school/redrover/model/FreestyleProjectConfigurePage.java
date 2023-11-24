@@ -90,6 +90,21 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//div[@class='tbody dropdownList-container']//div[@class='help']//div")
     private WebElement helpMessage;
 
+    @FindBy(xpath = "//button[contains( text(), 'Add Parameter')]")
+    private WebElement addParameterDropdownMenu;
+
+    @FindBy(xpath = "//button[text()='Add build step']")
+    private WebElement addBuildStepDropdown;
+
+    @FindBy(xpath = "//a[text()='Execute shell']")
+    private WebElement executeShellOption;
+
+    @FindBy(xpath = "//div[@class='CodeMirror-scroll cm-s-default']")
+    private WebElement shellScriptInput;
+
+    @FindBy(xpath = "//button[@data-section-id='build-environment']")
+    private WebElement buildEnvironmentSidebarItem;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -294,5 +309,46 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public boolean helpMessageDisplay() {
         return helpMessage.isDisplayed();
+    }
+
+    public WebElement getAddParameterDropdownMenu(){
+        return addParameterDropdownMenu;
+    }
+
+    public FreestyleProjectConfigurePage clickAddBuildStepsDropdown() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+
+        js.executeScript("arguments[0].scrollIntoView();",
+                addBuildStepDropdown);
+
+        new Actions(getDriver())
+                .moveToElement(addBuildStepDropdown)
+                .click()
+                .perform();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickExecuteShellOption() {
+        new Actions(getDriver())
+                .moveToElement(executeShellOption)
+                .click()
+                .perform();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputShellScript(String script) {
+        new Actions(getDriver())
+                .moveToElement(shellScriptInput)
+                .click()
+                .sendKeys(script)
+                .perform();
+
+        return this;
+    }
+
+    public String getShellScriptText() {
+        return shellScriptInput.getText();
     }
 }

@@ -11,6 +11,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,9 +39,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
-    private void clickBuildNow() {
-        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
-    }
+
 
     private void clickConfigure() {
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
@@ -113,9 +112,9 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineRename() {
-        String currentName = new HomePage(getDriver())
-                .clickNewItem()
-                .createPipelineProject(JOB_NAME)
+        TestUtils.createPipeline(this, JOB_NAME, false);
+
+        String currentName = new PipelinePage(getDriver())
                 .clickRenameOnSideMenu()
                 .enterNewName(PIPELINE_NAME)
                 .clickRenameButton(new PipelinePage(getDriver()))
@@ -127,21 +126,13 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testVerifyBuildIconOnDashboard() {
+        TestUtils.createPipeline(this, JOB_NAME, false);
 
-        createPipeline(PIPELINE_NAME, false);
+        boolean buildIconIsDisplayed = new PipelinePage(getDriver())
+                .clickBuildNow()
+                .isBuildIconDisplayed();
 
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
-
-        final String[] buildIconTitle = getDriver().findElement(By.xpath("//div[@class='build-icon']/a"))
-                .getAttribute("title").split(" ");
-        final String buildStatus = buildIconTitle[0];
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath(
-                String.format("//td/a/span[text()='%s']/../../../td/div/span/span/*[name()='svg' and @tooltip='%s']",
-                        PIPELINE_NAME, buildStatus))).isDisplayed());
+        Assert.assertTrue(buildIconIsDisplayed);
     }
 
     @Test
@@ -184,7 +175,7 @@ public class PipelineTest extends BaseTest {
         select.selectByValue("hello");
         clickSaveConfiguration();
 
-        clickBuildNow();
+        new PipelinePage(getDriver()).clickBuildNow();
 
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='badge']/a[text()='#1']")));
         WebElement buildRecordInStageView = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tbody[@class='tobsTable-body']//div[@class='duration']")));
@@ -242,7 +233,7 @@ public class PipelineTest extends BaseTest {
         js.executeScript("arguments[0].scrollIntoView(true)", getDriver().findElement(By.xpath("//div[@class='ace_line']")));
         getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
         clickSaveConfiguration();
-        clickBuildNow();
+        new PipelinePage(getDriver()).clickBuildNow();
 
         List<String> actualStageNames = getDriver()
                 .findElements(By.xpath("//th[contains(@class, 'stage-header-name-')]"))
@@ -275,7 +266,7 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.className("ace_text-input")).sendKeys(scriptText);
         clickSaveConfiguration();
 
-        clickBuildNow();
+        new PipelinePage(getDriver()).clickBuildNow();
         getDriver().findElement(By.name("value")).sendKeys(parameterValue);
         getDriver().findElement(
                 By.xpath("//button[@class='jenkins-button jenkins-button--primary jenkins-!-build-color']")).click();

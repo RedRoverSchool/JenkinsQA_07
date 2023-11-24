@@ -20,9 +20,19 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(className = "jenkins-search__shortcut")
     private WebElement shortcutIcon;
 
+    @FindBy(xpath = "//dl/dt[text()='Plugins']")
+    private WebElement plugins;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
+
+    public PluginsPage goPluginsPage() {
+        plugins.click();
+
+        return new PluginsPage(getDriver());
+    }
+
 
     public UserDatabasePage goUserDatabasePage() {
         userSection.click();

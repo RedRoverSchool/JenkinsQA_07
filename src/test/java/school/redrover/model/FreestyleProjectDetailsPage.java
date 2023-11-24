@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FreestyleProjectDetailsPage extends BasePage {
 
@@ -52,6 +54,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href,'configure')]")
     private WebElement configureButton;
+
+    @FindBy(xpath = "//a//span[2]")
+    private List<WebElement> itemsSidePanel;
 
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
@@ -165,6 +170,14 @@ public class FreestyleProjectDetailsPage extends BasePage {
         deleteProject.click();
         getDriver().switchTo().alert().accept();
         return new HomePage(getDriver());
+    }
+
+    public List<String> getTextItemsSidePanel() {
+        List<String> textValue = new ArrayList<>();
+        for (WebElement item: itemsSidePanel) {
+            textValue.add(item.getText());
+        }
+        return textValue;
     }
   
     public String getCurrentUrl() {

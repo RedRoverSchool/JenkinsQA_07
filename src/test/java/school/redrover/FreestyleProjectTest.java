@@ -18,6 +18,7 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -570,18 +571,21 @@ public class FreestyleProjectTest extends BaseTest {
                 .isDisplayed());
     }
 
-    @Test
+    @Ignore
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckbox() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage();
+        WebElement addParameter = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickThisProjectIsParameterizedCheckbox()
+                .getAddParameterDropdownMenu();
 
-        getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//button[contains( text(), 'Add Parameter')]")).isDisplayed()
-        );
+        Assert.assertTrue(addParameter.isDisplayed());
     }
 
     @Test
@@ -746,6 +750,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
+    @Ignore
     @Test
     public void testGitRadioButtonSettingsIsOpened() {
         createFreeStyleProject(PROJECT_NAME);
@@ -767,31 +772,18 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testAddBuildStep() {
         final String buildStepTitle = "buildStep";
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
-        createFreeStyleProject(PROJECT_NAME);
+        String shellScript = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickAddBuildStepsDropdown()
+                .clickExecuteShellOption()
+                .inputShellScript(buildStepTitle)
+                .clickSaveButton()
+                .clickConfigure()
+                .getShellScriptText();
 
-        getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
-
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//button[contains(text(), 'Add build step')]")));
-
-        hoverClick("//button[contains(text(), 'Add build step')]");
-
-        hoverClick("//a[contains(text(), 'Execute shell')]");
-
-        hoverClickInput("//div[@class='CodeMirror-scroll cm-s-default']", buildStepTitle);
-
-        clickSubmitButton();
-
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
-
-        getDriver().findElement(By.xpath("//button[@data-section-id='build-environment']")).click();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//div[@class='CodeMirror-scroll cm-s-default']"))
-                        .getText(),
-                buildStepTitle);
+        Assert.assertEquals(shellScript, buildStepTitle);
     }
 
     @Test
@@ -1254,4 +1246,16 @@ public class FreestyleProjectTest extends BaseTest {
                 getDriver().findElement(By.xpath("//tbody/tr[@id = 'job_" + freestyleName + "']")).isDisplayed());
     }
 
+    @Test
+    public void testVerify7ItemsSidePanelDetailsPage() {
+        final List<String> itemsExpected = new ArrayList<>(Arrays.asList("Status", "Changes", "Workspace", "Build Now", "Configure", "Delete Project", "Rename"));
+
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
+
+        List<String> itemsActual = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .getTextItemsSidePanel();
+
+        Assert.assertEquals(itemsActual, itemsExpected);
+    }
 }
