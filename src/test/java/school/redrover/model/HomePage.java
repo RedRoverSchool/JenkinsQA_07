@@ -208,7 +208,7 @@ public class HomePage extends BasePage {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                     .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
-                .pause(300)
+                .pause(400)
                 .moveToElement(getDriver().findElement(By.cssSelector("#job_" + jobName + " > td:nth-child(3) > a > button")))
                 .click()
                 .perform();
@@ -216,7 +216,7 @@ public class HomePage extends BasePage {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                     .findElement(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']")))
-                .pause(300)
+                .pause(400)
                 .click()
                 .perform();
 
