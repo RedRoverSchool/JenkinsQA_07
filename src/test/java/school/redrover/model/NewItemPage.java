@@ -50,6 +50,9 @@ public class NewItemPage extends BasePage {
     @FindBy(xpath = "//span[normalize-space()='Pipeline']")
     private WebElement pipeLineCategory;
 
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
+
     public NewItemPage(WebDriver driver) {
         super(driver);
     }
@@ -165,8 +168,28 @@ public class NewItemPage extends BasePage {
                 .isEmpty();
     }
 
-    public NewItemPage clickPipeLineCategory() {
-        pipeLineCategory.click();
-        return this;
+    public PipelineConfigurationPage createPipelinePage(String projectName) {
+        inputName.sendKeys(projectName);
+        pipeline.click();
+        okButton.click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
+    public PipelinePage createPipelineProject(String projectName) {
+        inputName.sendKeys(projectName);
+        pipeline.click();
+        okButton.click();
+        saveButton.click();
+
+        return new PipelinePage(getDriver());
+    }
+
+
+    public FolderConfigurationPage createFolder(String folderName) {
+        inputName.sendKeys(folderName);
+        folder.click();
+        okButton.click();
+
+        return new FolderConfigurationPage(getDriver());
     }
 }
