@@ -6,11 +6,14 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class HeaderTest extends BaseTest {
@@ -117,6 +120,41 @@ public class HeaderTest extends BaseTest {
         boolean isFocused = (Boolean) ((JavascriptExecutor) getDriver()).executeScript(
                 "return document.activeElement === arguments[0]", getDriver().findElement(By.name("q")));
         assertTrue(isFocused);
+    }
+
+    @DataProvider(name = "userData")
+    public String[][] createSingleUser(){
+        return new String[][]{{"Max", "123", "123", "Max@mail.com"}};
+    }
+
+    @Test(dataProvider = "userData")
+    public void testUserIsDisplayed(String firstName, String password, String confirmPassword, String email) {
+
+        boolean isNameDisplayed = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(firstName)
+                .inputPassword(password)
+                .inputPasswordConfirm(confirmPassword)
+                .inputEmail(email)
+                .clickSubmit()
+                .clickLogout()
+                .logInToJenkins(firstName, password)
+                .userNameIsDisplayed();
+
+        assertTrue(isNameDisplayed);
+    }
+
+    @Test(dependsOnMethods = "testUserIsDisplayed")
+    public void testDropDownItems() {
+        List<String> items = List.of("Builds", "Configure", "My Views", "Credentials");
+
+        List <String> listOfItems = new HomePage(getDriver())
+                .clickUserDropdown()
+                .getDropDownItems();
+
+        assertEquals(listOfItems, items);
     }
 
 
