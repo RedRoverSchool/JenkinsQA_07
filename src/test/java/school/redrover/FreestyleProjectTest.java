@@ -878,9 +878,8 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
 
-    @Ignore
     @Test
-    public void testRenameProjectFromDashboard() {
+    public void RF_01.002.18 | Freestyle project > Rename project() {
         new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)

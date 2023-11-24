@@ -207,18 +207,18 @@ public class HomePage extends BasePage {
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
-                .perform();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName + "/']/button")));
-
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath("//a[@href='job/" + jobName + "/']/button")))
+                    .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .pause(300)
+                .moveToElement(getDriver().findElement(By.cssSelector("#job_" + jobName + " > td:nth-child(3) > a > button")))
                 .click()
                 .perform();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                    .findElement(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']")))
+                .pause(300)
+                .click()
+                .perform();
 
         return page;
     }
