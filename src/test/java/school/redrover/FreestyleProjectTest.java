@@ -1254,12 +1254,13 @@ public class FreestyleProjectTest extends BaseTest {
                 getDriver().findElement(By.xpath("//tbody/tr[@id = 'job_" + freestyleName + "']")).isDisplayed());
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test
     public void testVerify7ItemsSidePanelDetailsPage() {
         final List<String> itemsExpected = new ArrayList<>(Arrays.asList("Status", "Changes", "Workspace", "Build Now", "Configure", "Delete Project", "Rename"));
 
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
+
         List<String> itemsActual = new HomePage(getDriver())
-                .wait10UntilVisibilityOfJob(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getTextItemsSidePanel();
 
