@@ -18,6 +18,7 @@ import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -1253,4 +1254,14 @@ public class FreestyleProjectTest extends BaseTest {
                 getDriver().findElement(By.xpath("//tbody/tr[@id = 'job_" + freestyleName + "']")).isDisplayed());
     }
 
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    public void testVerify7ItemsSidePanelDetailsPage() {
+        List<String> itemsExpected = new ArrayList<>(Arrays.asList("Status", "Changes", "Workspace", "Build Now", "Configure", "Delete Project", "Rename"));
+
+        List<String> itemsActual = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .getTextItemsSidePanel();
+
+        Assert.assertEquals(itemsActual, itemsExpected);
+    }
 }
