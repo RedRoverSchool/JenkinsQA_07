@@ -1277,5 +1277,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(home.getJobList().size(), 0);
     }
-
 }
