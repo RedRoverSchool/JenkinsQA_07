@@ -222,11 +222,11 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testRenameMultibranchDropdownDashboard() {
         HomePage homePage = new HomePage(getDriver())
-        .clickJobName(MULTIBRANCH_PIPELINE_NAME)
-        .clickRenameDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
-        .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
-        .clickSubmit()
-        .goHomePage();
+                .clickJobName(MULTIBRANCH_PIPELINE_NAME)
+                .clickRenameDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
+                .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .clickSubmit()
+                .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
@@ -281,7 +281,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testMultibranchNameDisplayBreadcrumbTrail() {
         createMultibranchPipelineWithCreateAJob();
-        String pipelineNameExpected =  getDriver().findElement(By.xpath("//a[contains(text(),'"
+        String pipelineNameExpected = getDriver().findElement(By.xpath("//a[contains(text(),'"
                 + MULTIBRANCH_PIPELINE_NAME + "')]")).getText();
         Assert.assertEquals(pipelineNameExpected, MULTIBRANCH_PIPELINE_NAME);
     }
@@ -319,60 +319,44 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
 
-    @Test(dependsOnMethods = "testRenameResultOnPageHeading")
+    @Test
     public void testErrorForUnsafeChar() {
-        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NEW_NAME);
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+        String error_message = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME + "!")
+                .clickBlank()
+                .getErrorMessage();
 
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
-                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME + "!");
-
-        Actions actions = new Actions(getDriver());
-        WebElement element = getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"));
-        actions.moveToElement(element).moveByOffset(100, 50).click().build().perform();
-
-        WebElement error_message = getDriver().findElement(By.xpath("//div[@class='error']"));
-
-        getWait2().until(d -> error_message.isDisplayed());
-
-        Assert.assertEquals(error_message.getText(), "‘!’ is an unsafe character");
+        Assert.assertEquals(error_message, "‘!’ is an unsafe character");
     }
 
     @Test
     public void testRenameUsingSidebar() {
-       createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
+        createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+        String name = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .clickSubmit()
+                .getTitle();
 
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
-                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[contains(text(),'"
-                + MULTIBRANCH_PIPELINE_NEW_NAME + "')]")).getText(), MULTIBRANCH_PIPELINE_NEW_NAME);
+        Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
     @Test
     public void testRenameResultInBreadcrumb() {
         createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
-
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
-                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        List<WebElement> elements = getDriver().findElements(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"));
-        List<String> breadcrumb = new ArrayList<>();
-        for (WebElement element : elements) {
-            breadcrumb.add(element.getText());
-        }
+        List<String> breadcrumb = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .clickSubmit()
+                .getBreadcrumbChain();
 
         Assert.assertTrue(breadcrumb.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
@@ -380,37 +364,28 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testRenameResultOnPageHeading() {
         createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
+        String name = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .clickSubmit()
+                .getTitle();
 
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
-                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), MULTIBRANCH_PIPELINE_NEW_NAME);
+        Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
     @Test
     public void testRenameResultOnDashboard() {
         createMultibranchPipelineAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-        goMultibranchPipelinePage(MULTIBRANCH_PIPELINE_NAME);
 
-        getDriver().findElement(By.xpath("//div[8]/span/a")).click();
-
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']")).clear();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input validated  ']"))
-                .sendKeys(MULTIBRANCH_PIPELINE_NEW_NAME);
-        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--primary ']")).click();
-
-        getDashboardLink();
-
-        List<WebElement> elements = getDriver().findElements(By.xpath("//td/a"));
-        List<String> jobs = new ArrayList<>();
-        for (WebElement element : elements) {
-            jobs.add(element.getText());
-        }
+        List<String> jobs = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
+                .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .clickSubmit()
+                .goHomePage()
+                .getJobList();
 
         Assert.assertTrue(jobs.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
@@ -475,7 +450,7 @@ public class MultibranchPipelineTest extends BaseTest {
         createMultibranchPipeline(name);
         returnToJenkinsHomePage();
 
-        getDriver().findElement(By.xpath("//tr[@id='job_Test_Folder']//a[@href='job/" +name + "/']")).click();
+        getDriver().findElement(By.xpath("//tr[@id='job_Test_Folder']//a[@href='job/" + name + "/']")).click();
         getDriver().findElement(By.xpath("//form[@id='disable-project']/button")).click();
 
         WebElement enableButton = getDriver().findElement(By.xpath("//form[@id='enable-project']/button"));

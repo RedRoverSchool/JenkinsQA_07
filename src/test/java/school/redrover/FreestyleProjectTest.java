@@ -274,13 +274,14 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")
     public void testDeleteTheExistingDescription() {
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+        String actualEmptyDescriptionInputField = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickAddOrEditDescriptionButton()
+                .deleteDescriptionText()
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
-
-        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
+        Assert.assertEquals(actualEmptyDescriptionInputField, "");
     }
 
     @Test
@@ -653,8 +654,12 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
        boolean helpMessageDisplay = new HomePage(getDriver())
-               .clickOnJob()
-               .goToConfigureFromSideMenu()
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage()
+                .clickOnJob()
+                .goToConfigureFromSideMenu()
                .clickAdvancedButton()
                .clickOnQuietPeriodToolTip()
                .helpMessageDisplay();
