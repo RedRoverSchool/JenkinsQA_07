@@ -7,7 +7,10 @@ import org.openqa.selenium.support.FindBy;
 public abstract class BaseErrorPage extends BaseModel {
 
     @FindBy(xpath = "//h1")
-    WebElement errorNotification;
+    private WebElement errorNotification;
+
+    @FindBy(id = "main-panel")
+    private WebElement mainPanel;
 
     public BaseErrorPage(WebDriver driver) {
         super(driver);
@@ -15,5 +18,9 @@ public abstract class BaseErrorPage extends BaseModel {
 
     public String getErrorNotification() {
         return errorNotification.getText().trim();
+    }
+
+    public String getErrorFromMainPanel() {
+        return mainPanel.getText();
     }
 }

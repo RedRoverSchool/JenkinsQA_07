@@ -12,7 +12,7 @@ public class ErrorPage extends BaseErrorPage {
     }
 
     @FindBy(xpath = "//h1/following-sibling::p")
-    WebElement errorMessage;
+    private WebElement errorMessage;
 
     public String getErrorMessage() {
         return errorMessage.getText();
