@@ -64,7 +64,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
@@ -104,8 +104,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return new WorkspacePage(getDriver());
     }
 
-    public FreestyleProjectRenamePage clickRename() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+    public FreestyleProjectRenamePage clickRenameItem() {
+        renamePageLink.click();
 
         return new FreestyleProjectRenamePage(getDriver());
     }
