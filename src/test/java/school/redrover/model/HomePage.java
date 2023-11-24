@@ -45,6 +45,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement buttonPeople;
 
+    @FindBy(xpath = "//a[@tooltip = 'New View']")
+    private WebElement newViewPlusButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -241,5 +244,10 @@ public class HomePage extends BasePage {
     public PeoplePage clickPeople() {
         buttonPeople.click();
         return new PeoplePage(getDriver());
+    }
+
+    public NewViewPage clickNewViewPlus() {
+        newViewPlusButton.click();
+        return new NewViewPage(getDriver());
     }
 }

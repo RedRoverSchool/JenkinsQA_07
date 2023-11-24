@@ -16,6 +16,9 @@ public class NewViewConfigurePage extends BasePage {
     @FindBy(xpath = "//button[@name = 'Submit']")
     private WebElement configurationOKButton;
 
+    @FindBy(xpath = "//div/a[contains(@href,'/view/')]")
+    private WebElement linkToView;
+
     public NewViewConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -57,5 +60,9 @@ public class NewViewConfigurePage extends BasePage {
         configurationOKButton.click();
 
         return page;
+    }
+
+    public String checkLinkToView() {
+        return linkToView.getText();
     }
 }

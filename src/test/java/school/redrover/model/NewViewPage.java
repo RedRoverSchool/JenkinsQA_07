@@ -2,12 +2,19 @@ package school.redrover.model;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
 public class NewViewPage extends BasePage {
     private By nameInput = By.id("name");
     private By ViewTypeRadioButton = By.xpath("//label[@for='hudson.model.ListView']");
-    private By createButton = By.name("Submit");
+
+    @FindBy(xpath = "//label[@for='hudson.model.MyView']")
+    private WebElement myViewTypeRadioButton;
+
+    @FindBy(xpath = "//button[@name = 'Submit']")
+    private WebElement createButton;
 
     public NewViewPage(WebDriver driver) {super(driver);}
 
@@ -25,8 +32,14 @@ public class NewViewPage extends BasePage {
     }
 
     public NewViewConfigurePage clickCreateButton() {
-        getDriver().findElement(createButton).click();
+        createButton.click();
 
         return new NewViewConfigurePage(getDriver());
     }
+
+    public NewViewConfigurePage clickMyViewRadioButton() {
+        myViewTypeRadioButton.click();
+        return new NewViewConfigurePage(getDriver());
+    }
+
 }

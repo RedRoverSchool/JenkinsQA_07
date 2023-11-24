@@ -5,10 +5,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.GlobalViewPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.ListViewPage;
-import school.redrover.model.MyViewPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -22,6 +19,7 @@ public class ViewTest extends BaseTest {
     private static final String JOB_NAME_2 = "FreestyleProject-3";
     private static final String VIEW_NAME = "ListView-1";
     private static final String VIEW_NAME_1 = "ListView-new";
+    private static final String My_VIEW_NAME = "My new view name";
     private static final String NEW_FREE_STYLE_PROJECT_NAME = "FreeStyleTestProject";
     private static final String NEW_LIST_VIEW_NAME = "ListViewTest";
     private static final String NEW_DESCRIPTION_FOR_THE_VIEW = "Test description for the List View";
@@ -140,25 +138,23 @@ public class ViewTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewView2() {
-        final String myProjectName = "My new freestyle project name";
-        final String newViewName = "My new view name";
+    public void testCreateMyView() {
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(myProjectName);
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
+        boolean myViewIsCreated  = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(JOB_NAME)
+                .selectFreestyleProject()
+                .clickOk(new NewJobPage(getDriver()))
+                .clickSaveButton()
+                .goHomePage()
+                .clickNewViewPlus()
+                .typeNewViewName(My_VIEW_NAME)
+                .clickMyViewRadioButton()
+                .clickOKButton(new NewViewConfigurePage(getDriver()))
+                .checkLinkToView()
+                .equals(My_VIEW_NAME);
 
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        getDriver().findElement(By.xpath("//a[@tooltip = 'New View']")).click();
-
-        getDriver().findElement(By.id("name")).sendKeys(newViewName);
-        getDriver().findElement(By.xpath("//label[@for='hudson.model.MyView']")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id= 'projectstatus-tabBar']/div/div[1]/div[2]/a")).getText(),  newViewName);
+        Assert.assertTrue(myViewIsCreated);
     }
 
     @Test
