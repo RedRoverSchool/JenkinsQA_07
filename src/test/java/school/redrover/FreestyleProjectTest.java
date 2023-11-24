@@ -655,19 +655,19 @@ public class FreestyleProjectTest extends BaseTest {
     @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
-       boolean helpMessageDisplay = new HomePage(getDriver())
+        boolean helpMessageDisplay = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
                 .goHomePage()
                 .clickOnJob()
                 .goToConfigureFromSideMenu()
-               .clickAdvancedButton()
-               .clickOnQuietPeriodToolTip()
-               .helpMessageDisplay();
+                .clickAdvancedButton()
+                .clickOnQuietPeriodToolTip()
+                .helpMessageDisplay();
 
         Assert.assertTrue(helpMessageDisplay);
-   }
+    }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testStatusPageUrlCheck() {
@@ -1254,6 +1254,28 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText().trim(), folderName);
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//tbody/tr[@id = 'job_" + freestyleName + "']")).isDisplayed());
+    }
+
+    @Test
+    public void testCreateNewFreestyleProject() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectDetailsPage(getDriver()))
+                .goHomePage();
+
+        Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateNewFreestyleProject")
+    public void testDeleteFreestyleProject() {
+        HomePage home = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickDeleteProject()
+                .clickAlertDeleteTheProject();
+
+        Assert.assertEquals(home.getJobList().size(), 0);
     }
 
 }
