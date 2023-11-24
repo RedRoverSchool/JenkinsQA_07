@@ -47,7 +47,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public HomePage clickUserDropdown() {
-        new Actions(getDriver()).moveToElement(userDropdown, 5, 0).click().perform();
+        new Actions(getDriver()).moveToElement(userDropdown, 15, 0).click().perform();
 
         return new HomePage(getDriver());
     }
