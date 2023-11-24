@@ -234,7 +234,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage waitUntilVisibilityOfJob(String projectName) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + projectName + "/']")));
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + projectName + "/']")));
         return this;
     }
 
