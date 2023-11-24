@@ -261,7 +261,7 @@ public class FolderTest extends BaseTest {
                 .selectItemFolder()
                 .clickOk(new AngryErrorPage(getDriver()));
 
-        Assert.assertEquals(angryErrorPage.getErrorNotification(), "Error");
+        Assert.assertEquals(angryErrorPage.getErrorNotification(), "Oops!");
         Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
     }
 
