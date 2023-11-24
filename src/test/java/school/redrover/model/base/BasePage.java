@@ -1,6 +1,7 @@
 package school.redrover.model.base;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -47,7 +48,8 @@ public abstract class BasePage extends BaseModel {
     }
 
     public HomePage clickUserDropdown() {
-        new Actions(getDriver()).moveToElement(userDropdown, 15, 0).click().perform();
+        new Actions(getDriver()).moveToElement(user).perform();
+        userDropdown.click();
 
         return new HomePage(getDriver());
     }
