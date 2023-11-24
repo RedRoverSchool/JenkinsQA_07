@@ -215,7 +215,8 @@ public class HomePage extends BasePage {
 
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                    .findElement(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']")))
+                    .findElement(By.cssSelector("#tippy-5 > div > div > div > a:nth-child(6) > div")))
+//                    .findElement(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']")))
                 .pause(400)
                 .click()
                 .perform();
