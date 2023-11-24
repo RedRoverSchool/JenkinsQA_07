@@ -671,8 +671,9 @@ public class FreestyleProjectTest extends BaseTest {
     public void testStatusPageUrlCheck() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
 
+        new HomePage(getDriver()).getWait10().until(ExpectedConditions.visibilityOfElementLocated(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE));
+
         String currentUrl = new HomePage(getDriver())
-                .waitUntilVisibilityOfJob(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getCurrentUrl();
 
