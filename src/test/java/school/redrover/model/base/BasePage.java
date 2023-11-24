@@ -44,8 +44,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public HomePage clickUserDropdown() {
-        new Actions(getDriver()).moveToElement(userDropdown).build().perform();
-        getWait5().until(ExpectedConditions.visibilityOf(userDropdown)).click();
+        new Actions(getDriver()).moveToElement(userDropdown).click().build().perform();
 
         return new HomePage(getDriver());
     }
