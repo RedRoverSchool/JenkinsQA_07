@@ -1256,7 +1256,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testVerify7ItemsSidePanelDetailsPage() {
-        List<String> itemsExpected = new ArrayList<>(Arrays.asList("Status", "Changes", "Workspace", "Build Now", "Configure", "Delete Project", "Rename"));
+        final List<String> itemsExpected = new ArrayList<>(Arrays.asList("Status", "Changes", "Workspace", "Build Now", "Configure", "Delete Project", "Rename"));
 
         List<String> itemsActual = new HomePage(getDriver())
                 .wait10UntilVisibilityOfJob(PROJECT_NAME)
