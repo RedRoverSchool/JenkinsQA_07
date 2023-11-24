@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.GlobalViewPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.ListViewPage;
+import school.redrover.model.MyViewPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class ViewTest extends BaseTest {
     private static final String NEW_LIST_VIEW_NAME = "ListViewTest";
     private static final String NEW_DESCRIPTION_FOR_THE_VIEW = "Test description for the List View";
     private static final String EDITED_DESCRIPTION_FOR_THE_VIEW = "New Test description for the List View instead of the previous one";
+    private static final String NO_ASSOCIATED_JOBS_FOR_THE_VIEW_MESSAGE = "This view has no jobs associated with it. " +
+            "You can either add some existing jobs to this view or create a new job in this view.";
 
 
     private void goHome() {
@@ -57,13 +60,14 @@ public class ViewTest extends BaseTest {
     }
 
     private void createListViewWithAssociatedJob(String newListViewName) {
-        goHome();
-        getDriver().findElement(By.xpath("//a[@href = '/newView']")).click();
-        getDriver().findElement(By.xpath("//input[@name = 'name']")).sendKeys(newListViewName);
-        getDriver().findElement(By.xpath("//label[@for = 'hudson.model.ListView']")).click();
-        getDriver().findElement(By.xpath("//button[@id = 'ok']")).click();
-        getDriver().findElement(By.xpath("//div[@class = 'listview-jobs']/span/span[1]")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        new HomePage(getDriver())
+                .clickNewViewButton()
+                .typeNewViewName(newListViewName)
+                .selectListViewType()
+                .clickCreateButton()
+                .checkFirstJobCheckbox()
+                .clickOKButton(new ListViewPage(getDriver()))
+                .goHomePage();
     }
 
     private void addNewDescriptionForTheView(String listViewName, String newDescriptionForTheView) {
@@ -75,11 +79,11 @@ public class ViewTest extends BaseTest {
     }
 
     private void associateJobToTheView(String listViewName, String jobName) {
-        goHome();
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + listViewName + "/configure']")).click();
-        getDriver().findElement(By.xpath("//label[@title = '" + jobName + "']")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        new HomePage(getDriver())
+                .clickViewByName(listViewName, new ListViewPage(getDriver()))
+                .clickEditView()
+                .checkSelectedJobCheckbox(jobName)
+                .clickOKButton();
     }
 
     private void createNewFolder(String folderName) {
@@ -316,56 +320,44 @@ public class ViewTest extends BaseTest {
 
     @Test
     public void testNoJobsShownForTheViewWithoutAssociatedJob() {
-        final String newFreeStyleProjectName = "FreeStyleTestProject";
-        final String newListViewName = "ListViewTest";
-        final String noAssociatedJobsForTheViewMessage = "This view has no jobs associated with it. " +
-                "You can either add some existing jobs to this view or create a new job in this view.";
-
-        createNewFreestyleProject(newFreeStyleProjectName);
-        createListViewWithoutAssociatedJob(newListViewName);
+        createNewFreestyleProject(NEW_FREE_STYLE_PROJECT_NAME);
+        createListViewWithoutAssociatedJob(NEW_LIST_VIEW_NAME);
         goHome();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        String mainPanelText = new HomePage(getDriver())
+                .clickViewByName(NEW_LIST_VIEW_NAME, new ListViewPage(getDriver()))
+                .getMainPanelText();
 
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//div[@id = 'main-panel']")).getText().
-                        contains(noAssociatedJobsForTheViewMessage));
+        Assert.assertTrue(mainPanelText.contains(NO_ASSOCIATED_JOBS_FOR_THE_VIEW_MESSAGE));
     }
 
     @Test
     public void testProjectCouldBeAddedToTheView() {
-        final String newFreeStyleProjectName = "FreeStyleTestProject";
-        final String newListViewName = "ListViewTest";
-
-        createNewFreestyleProject(newFreeStyleProjectName);
-        createListViewWithoutAssociatedJob(newListViewName);
+        createNewFreestyleProject(NEW_FREE_STYLE_PROJECT_NAME);
+        createListViewWithoutAssociatedJob(NEW_LIST_VIEW_NAME);
         goHome();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/configure']")).click();
-        getDriver().findElement(By.xpath("//label[@title = '" + newFreeStyleProjectName + "']")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        List<String> jobList = new HomePage(getDriver())
+                .clickViewByName(NEW_LIST_VIEW_NAME, new ListViewPage(getDriver()))
+                .clickEditView()
+                .checkSelectedJobCheckbox(NEW_FREE_STYLE_PROJECT_NAME)
+                .clickOKButton()
+                .getJobList();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
-                newFreeStyleProjectName);
+        Assert.assertTrue(jobList.contains(NEW_FREE_STYLE_PROJECT_NAME));
     }
 
     @Test
     public void testAssociatedJobIsShownOnTheViewDashboard() {
-        final String newFreeStyleProjectName = "FreeStyleTestProject";
-        final String newListViewName = "ListViewTest";
-
-        createNewFreestyleProject(newFreeStyleProjectName);
-        createListViewWithoutAssociatedJob(newListViewName);
-        associateJobToTheView(newListViewName, newFreeStyleProjectName);
+        createNewFreestyleProject(NEW_FREE_STYLE_PROJECT_NAME);
+        createListViewWithAssociatedJob(NEW_LIST_VIEW_NAME);
         goHome();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/" + newListViewName + "/']")).click();
+        List<String> jobList = new HomePage(getDriver())
+                .clickViewByName(NEW_LIST_VIEW_NAME, new ListViewPage(getDriver()))
+                .getJobList();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).getText(),
-                newFreeStyleProjectName);
+        Assert.assertTrue(jobList.contains(NEW_FREE_STYLE_PROJECT_NAME));
     }
 
     @Test
@@ -583,7 +575,7 @@ public class ViewTest extends BaseTest {
                 .selectListViewType()
                 .clickCreateButton()
                 .clickCheckboxByTitle(multibranchPipelineName)
-                .clickOKButton()
+                .clickOKButton(new MyViewPage(getDriver()))
                 .getActiveViewName();
 
         Assert.assertEquals(VIEW_NAME, expectedListViewName);

@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,22 +24,32 @@ public class FreestyleProjectRenamePage extends BasePage {
 
     public FreestyleProjectRenamePage clearInputField() {
         inputField.clear();
+
         return this;
     }
 
     public FreestyleProjectRenamePage enterName(String newProjectName) {
         inputField.sendKeys(newProjectName);
+
         return this;
     }
 
     public FreestyleProjectDetailsPage clickRenameButton() {
         renameButton.click();
+
         return new FreestyleProjectDetailsPage(getDriver());
     }
 
     public String getErrorMessage() {
-        getWait2().until(ExpectedConditions.visibilityOf(errorMessage));
-        return errorMessage.getText();
+        inputField.sendKeys(Keys.TAB);
+
+        return getWait2().until(ExpectedConditions.visibilityOf(errorMessage)).getText();
     }
 
+    public RenameErrorPage clickRenameButtonEmptyName() {
+        inputField.clear();
+        renameButton.click();
+
+        return new RenameErrorPage(getDriver());
+    }
 }

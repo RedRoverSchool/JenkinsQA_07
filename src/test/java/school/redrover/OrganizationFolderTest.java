@@ -14,7 +14,6 @@ import school.redrover.model.OrganizationFolderDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -22,27 +21,22 @@ public class OrganizationFolderTest extends BaseTest {
     private static final String PROJECT_NAME = "Organization Folder";
     private static final String NEW_PROJECT_NAME = "Organization Folder Renamed";
 
-    @DataProvider(name = "random unsafe character")
-    public Object[][] provideUnsafeCharacters() {
+    @DataProvider
+    public Object[][] provideRandomUnsafeCharacter() {
         String[] wrongCharacters = {"!", "@", "#", "$", "%", "^", "&", "*", "?", "|", ">", "[", "]"};
         int randomIndex = new Random().nextInt(wrongCharacters.length);
         return new Object[][]{{wrongCharacters[randomIndex]}};
     }
 
-    private String getName(int nameLength) {
-        return "a".repeat(nameLength);
-    }
-
     @Test
     public void testCreateOrganizationFolderWithValidName() {
-        HomePage homePage = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(PROJECT_NAME)
-                .selectOrganizationFolder()
-                .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
-                .goHomePage();
+                .createOrganizationFolder(PROJECT_NAME)
+                .goHomePage()
+                .getJobList();
 
-        Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
+        Assert.assertTrue(jobList.contains(PROJECT_NAME));
     }
 
     @Test(dependsOnMethods = "testCreateOrganizationFolderWithValidName")
@@ -56,7 +50,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "» A job already exists with the name ‘" + PROJECT_NAME + "’");
     }
 
-    @Test(dataProvider = "random unsafe character")
+    @Test(dependsOnMethods = "testCreateOrganizationFolderWithExistingName", dataProvider = "provideRandomUnsafeCharacter")
     public void testCreateProjectWithUnsafeCharacters(String unsafeChar) {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
@@ -67,46 +61,48 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
     }
 
-    @Test
+    @Test (dependsOnMethods = "testCreateProjectWithUnsafeCharacters")
     public void testCreateOrganizationFolderWithEmptyName() {
-        String errorMessage = new HomePage(getDriver())
+        NewItemPage newItemPage = new HomePage(getDriver())
                 .clickNewItem()
-                .selectOrganizationFolder()
-                .getRequiredNameErrorMessage();
+                .selectOrganizationFolder();
 
-        Assert.assertEquals(errorMessage, "» This field cannot be empty, please enter a valid name");
-        Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
+        Assert.assertEquals(newItemPage.getRequiredNameErrorMessage(), "» This field cannot be empty, please enter a valid name");
+        Assert.assertFalse(newItemPage.isOkButtonEnabled(), "OK button should NOT be enabled");
     }
 
-    @Test
+    @Test (dependsOnMethods = "testCreateOrganizationFolderWithEmptyName")
     public void testCreateOrganizationFolderWithSpaceInsteadOfName() {
         final String nameWithSpace = " ";
+
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(nameWithSpace)
                 .selectOrganizationFolder()
-                .clickOk(new NewItemPage(getDriver()))
-                .getNoNameErrorMessage();
+                .clickOkWithError()
+                .getErrorMessage();
 
-        Assert.assertEquals(errorMessage, "No name is specified");
+        Assert.assertEquals(errorMessage, "Error\n" + "No name is specified");
     }
 
-    @Test
+    @Test (dependsOnMethods = "testCreateOrganizationFolderWithSpaceInsteadOfName")
     public void testCreateOrganizationFolderWithLongName() {
-        final String longName = getName(256);
+        final String longName = "a".repeat(256);
+
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(longName)
                 .selectOrganizationFolder()
-                .clickOk(new NewItemPage(getDriver()))
+                .clickOkWithError()
                 .getRequestErrorMessage();
 
         Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
     }
 
-    @Test
+    @Test (dependsOnMethods = "testCreateOrganizationFolderWithLongName")
     public void testCreateOrganizationFolderWithInvalidNameWithTwoDots() {
         final String name = "..";
+
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(name)
@@ -117,9 +113,10 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
-    @Test
+    @Test (dependsOnMethods = "testCreateOrganizationFolderWithInvalidNameWithTwoDots")
     public void testCreateOrganizationFolderWithInvalidNameWithDotAtEnd() {
         final String name = "name.";
+
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(name)
@@ -303,6 +300,6 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
                 .clickSave().clickDelete();
 
-        Assert.assertTrue(homePage.getTitle().equals("Dashboard [Jenkins]"));
+        Assert.assertEquals(homePage.getTitle(), "Dashboard [Jenkins]");
     }
 }

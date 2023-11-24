@@ -63,4 +63,9 @@ public class NodeCreatePage extends BasePage {
     public String getErrorMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(errorMessage)).getText();
     }
+
+    public boolean enabledCreateButton() {
+
+        return createButton.isEnabled();
+    }
 }

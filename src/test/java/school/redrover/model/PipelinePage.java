@@ -10,6 +10,9 @@ public class PipelinePage extends BasePage {
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
     private WebElement buildNowButton;
 
+    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameButton;
+
     public PipelinePage(WebDriver driver) {
         super(driver);
     }
@@ -19,4 +22,11 @@ public class PipelinePage extends BasePage {
 
         return new BuildWithParametersPage(getDriver());
     }
+
+    public PipelineRenamePage clickRenameOnSideMenu() {
+        renameButton.click();
+
+        return new PipelineRenamePage(getDriver());
+    }
+
 }

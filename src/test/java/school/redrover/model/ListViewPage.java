@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class ListViewPage extends BasePage {
     @FindBy(xpath = "//a[@id = 'description-link']")
     private WebElement addOrEditDescriptionButton;
@@ -18,6 +20,12 @@ public class ListViewPage extends BasePage {
 
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement description;
+
+    @FindBy(xpath = "//div[@id = 'main-panel']")
+    private WebElement mainPanelContent;
+
+    @FindBy(linkText = "Edit View")
+    private WebElement editViewLink;
 
     public ListViewPage(WebDriver driver) {
         super(driver);
@@ -50,5 +58,22 @@ public class ListViewPage extends BasePage {
 
     public String getDescription() {
         return description.getText();
+    }
+
+    public String getMainPanelText() {
+        return mainPanelContent.getText();
+    }
+
+    public List<String> getJobList() {
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//a[@class = 'jenkins-table__link model-link inside']"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        return resultList;
+    }
+
+    public ListViewConfigurationPage clickEditView() {
+        editViewLink.click();
+
+        return new ListViewConfigurationPage(getDriver());
     }
 }

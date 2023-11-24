@@ -5,17 +5,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderConfigurationPage;
-import school.redrover.model.FolderDetailsPage;
-import school.redrover.model.FreestyleProjectConfigurePage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class FolderTest extends BaseTest {
@@ -24,6 +23,13 @@ public class FolderTest extends BaseTest {
     private static final String RENAMED_FOLDER = "RenamedFolder";
     private static final String NESTED_FOLDER = "Nested";
     private static final String JOB_NAME = "New Job";
+
+    @DataProvider
+    public Object[][] provideUnsafeCharacters() {
+        String[] wrongCharacters = {"#", "&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";"};
+        int randomIndex = new Random().nextInt(wrongCharacters.length);
+        return new Object[][]{{wrongCharacters[randomIndex]}};
+    }
 
     private void getDashboardLink() {
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
@@ -220,48 +226,45 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.className("h4")).getText(), "This folder is empty");
     }
 
-    @Ignore
-    @Test
-    public void testCreateNameSpecialCharacters() {
-        List<String> invalidNames = Arrays.asList("#", "&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";");
 
-        utilsGoNameField();
+    @Test(dataProvider = "provideUnsafeCharacters")
+    public void testCreateNameSpecialCharacters(String unsafeChar) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(unsafeChar)
+                .selectItemFolder()
+                .getInvalidNameErrorMessage();
 
-        WebElement inputName = getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']"));
-
-        for (String invalidName : invalidNames) {
-
-            inputName.sendKeys(invalidName);
-
-            Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id = 'itemname-invalid']")).getText(), "» ‘" + invalidName + "’ is an unsafe character");
-
-            inputName.clear();
-        }
+        Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
     }
 
     @Test
-    public void testBoundaryValuesName() {
-        utilsGoNameField();
+    public void testPositiveBoundaryValuesName() {
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFolder(NAME_FOR_BOUNDARY_VALUES)
+                .goHomePage()
+                .clickNewItem()
+                .createFolder(NAME_FOR_BOUNDARY_VALUES.repeat(255))
+                .goHomePage();
 
-        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(NAME_FOR_BOUNDARY_VALUES.repeat(1));
-        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
-        getDriver().findElement(By.xpath("//h1[text() = 'Configuration']"));
-
-        getDashboardLink();
-        utilsGoNameField();
-
-        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(NAME_FOR_BOUNDARY_VALUES.repeat(255));
-        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
-        getDriver().findElement(By.xpath("//h1[text() = 'Configuration']"));
-
-        getDashboardLink();
-        utilsGoNameField();
-
-        getDriver().findElement(By.xpath("//input[@class = 'jenkins-input']")).sendKeys(NAME_FOR_BOUNDARY_VALUES.repeat(256));
-        getDriver().findElement(By.xpath("//button[@type = 'submit']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h2[@style = 'text-align: center']")).getText(), "A problem occurred while processing the request.");
+        Assert.assertTrue(homePage.getJobList().contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
     }
+
+    @Test
+    public void testNegativeBoundaryValuesName() {
+        HomePage homePage = new HomePage(getDriver());
+
+        String errorMessage = homePage
+                .clickNewItem()
+                .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
+                .selectItemFolder()
+                .clickOk(new ErrorPage(getDriver()))
+                .getRequestErrorMessage();
+
+        Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
+    }
+
 
     @Ignore
     @Test(dependsOnMethods = "testCreate")
