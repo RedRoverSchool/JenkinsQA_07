@@ -57,10 +57,6 @@ public class ManageJenkinsPage extends BasePage {
     public boolean shortcutTooltipIsVisible() {
         boolean shortcutTooltipIsVisible = true;
 
-        new Actions(getDriver())
-                .moveToElement(shortcutIcon)
-                .perform();
-
         if (!shortcutIcon.getAttribute("title").isEmpty()) {
             return false;
         }
