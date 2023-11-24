@@ -673,7 +673,7 @@ public class FreestyleProjectTest extends BaseTest {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
 
         String currentUrl = new HomePage(getDriver())
-                .waitUntilVisibilityOfJob(PROJECT_NAME)
+                .wait10UntilVisibilityOfJob(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getCurrentUrl();
 
@@ -1259,6 +1259,7 @@ public class FreestyleProjectTest extends BaseTest {
         List<String> itemsExpected = new ArrayList<>(Arrays.asList("Status", "Changes", "Workspace", "Build Now", "Configure", "Delete Project", "Rename"));
 
         List<String> itemsActual = new HomePage(getDriver())
+                .wait10UntilVisibilityOfJob(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getTextItemsSidePanel();
 
