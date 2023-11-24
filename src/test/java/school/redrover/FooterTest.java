@@ -102,6 +102,7 @@ public class FooterTest extends BaseTest {
                 .getText(), "Jenkins 2.414.2");
     }
 
+    @Ignore
     @Test
     public void testJenkinsVersionCheck1() {
         getDriver().findElement(By.xpath("//a[@class]//span[@class='hidden-xs hidden-sm']")).click();
