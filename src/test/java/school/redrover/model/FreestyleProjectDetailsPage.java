@@ -185,5 +185,6 @@ public class FreestyleProjectDetailsPage extends BasePage {
         getDriver().switchTo().alert().accept();
         return new HomePage(getDriver());
     }
+
 }
 
