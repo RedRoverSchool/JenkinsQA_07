@@ -26,7 +26,7 @@ public abstract class BasePage extends BaseModel {
     @FindBy(xpath = "//a[@href ='/logout']")
     private WebElement logout;
 
-    @FindBy(xpath = "//a[contains(@href,'user')]/button")
+    @FindBy(xpath = "//button[@class='jenkins-menu-dropdown-chevron'][1]")
     private WebElement userDropdown;
 
     @FindAll({@FindBy(xpath = "//a[@class='jenkins-dropdown__item']")})
@@ -48,8 +48,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public HomePage clickUserDropdown() {
-        new Actions(getDriver()).moveToElement(userDropdown, 15, 0).click().build().perform();
-
+        new Actions(getDriver()).moveToElement(userDropdown).click().perform();
 
         return new HomePage(getDriver());
     }
