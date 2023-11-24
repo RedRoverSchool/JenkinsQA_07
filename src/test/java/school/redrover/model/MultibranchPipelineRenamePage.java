@@ -11,6 +11,9 @@ public class MultibranchPipelineRenamePage extends BasePage {
     @FindBy (name = "newName")
     private WebElement inputName;
 
+    @FindBy(name = "Submit")
+    private WebElement submitButton;
+
     public MultibranchPipelineRenamePage(WebDriver driver) {
         super(driver);
     }
@@ -35,7 +38,7 @@ public class MultibranchPipelineRenamePage extends BasePage {
     }
 
     public MultibranchPipelineRenameErrorsPage clickSubmitError() {
-        getDriver().findElement(By.name("Submit")).click();
+        submitButton.click();
 
         return new MultibranchPipelineRenameErrorsPage(getDriver());
     }
