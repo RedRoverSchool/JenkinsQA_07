@@ -233,6 +233,11 @@ public class HomePage extends BasePage {
         return new FreestyleProjectDetailsPage(getDriver());
     }
 
+    public HomePage waitUntilVisibilityOfJob(String projectName) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + projectName + "/']")));
+        return this;
+    }
+
     public PeoplePage clickPeople() {
         buttonPeople.click();
         return new PeoplePage(getDriver());

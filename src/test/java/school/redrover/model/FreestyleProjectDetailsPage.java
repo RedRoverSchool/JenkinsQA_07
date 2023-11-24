@@ -165,7 +165,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return this;
     }
-
+  
     public HomePage deleteProject() {
         deleteProject.click();
         getDriver().switchTo().alert().accept();
@@ -178,5 +178,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
             textValue.add(item.getText());
         }
         return textValue;
+    }
+  
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
     }
 }
