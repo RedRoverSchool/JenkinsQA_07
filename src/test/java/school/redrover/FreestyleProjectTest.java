@@ -879,7 +879,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void RF_01.002.18 | Freestyle project > Rename project() {
+    public void testRenameProjectFromDashboard() {
         new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
