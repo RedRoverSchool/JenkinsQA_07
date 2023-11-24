@@ -64,7 +64,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
