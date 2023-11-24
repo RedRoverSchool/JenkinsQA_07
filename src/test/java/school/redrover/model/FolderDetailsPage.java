@@ -20,6 +20,9 @@ public class FolderDetailsPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(tagName = "h1")
+    private WebElement folderName;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -67,5 +70,9 @@ public class FolderDetailsPage extends BasePage {
     public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//a[@class='content-block__link']")).click();
         return new NewItemPage(getDriver());
+    }
+
+    public String getFolderName() {
+        return folderName.getText();
     }
 }

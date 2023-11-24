@@ -137,23 +137,23 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
     }
 
-    @Ignore
     @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
         final String NEW_FOLDER_NAME = "FolderNew";
 
-        createFolder(FOLDER_NAME);
+        String folderName = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(FOLDER_NAME)
+                .selectItemFolder()
+                .clickOk(new FolderConfigurationPage(getDriver()))
+                .goHomePage()
+                .clickRenameInDropdownMenu(FOLDER_NAME, new FolderRenamePage(getDriver()))
+                .typeNewName(NEW_FOLDER_NAME)
+                .clickSubmit()
+                .getFolderName();
 
-        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME,
-                FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
+        Assert.assertEquals(folderName, NEW_FOLDER_NAME,folderName + " is not equal " + NEW_FOLDER_NAME);
     }
 
     @Ignore
