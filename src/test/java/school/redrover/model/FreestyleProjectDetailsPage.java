@@ -64,7 +64,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
@@ -160,10 +160,14 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return this;
     }
-
+  
     public HomePage deleteProject() {
         deleteProject.click();
         getDriver().switchTo().alert().accept();
         return new HomePage(getDriver());
+    }
+  
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
     }
 }

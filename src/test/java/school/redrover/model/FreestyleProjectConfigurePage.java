@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import org.openqa.selenium.JavascriptExecutor;
 
 import java.util.List;
 
@@ -88,6 +89,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     @FindBy(xpath = "//div[@class='tbody dropdownList-container']//div[@class='help']//div")
     private WebElement helpMessage;
+
+    @FindBy(xpath = "//button[contains( text(), 'Add Parameter')]")
+    private WebElement addParameterDropdownMenu;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -276,16 +280,26 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage clickAdvancedButton() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });",
+                advancedButton);
         advancedButton.click();
         return this;
     }
 
     public FreestyleProjectConfigurePage clickOnQuietPeriodToolTip() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });",
+                quietPeriodToolTip);
         quietPeriodToolTip.click();
         return this;
     }
 
     public boolean helpMessageDisplay() {
         return helpMessage.isDisplayed();
+    }
+
+    public WebElement getAddParameterDropdownMenu(){
+        return addParameterDropdownMenu;
     }
 }

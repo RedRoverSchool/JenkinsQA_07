@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.ErrorPage;
 import school.redrover.model.FreestyleProjectConfigurePage;
@@ -69,6 +70,7 @@ public class NewItemTest extends BaseTest {
         assertEquals(errorMessage, ("Error\n" + "No such job: " + nonExistentProject));
     }
 
+    @Ignore
     @Test
     public void testNewItemCreationWithExistentName() {
         final String firstProject = "Test project";

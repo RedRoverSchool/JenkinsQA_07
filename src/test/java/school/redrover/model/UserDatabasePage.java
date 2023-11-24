@@ -11,12 +11,15 @@ public class UserDatabasePage extends BasePage {
     @FindBy(css = "a[href = 'addUser']")
     private WebElement createUser;
 
+    @FindBy(xpath = "(//span[@class='hidden-xs hidden-sm'])[1]")
+    private WebElement loginUserName;
+
     public UserDatabasePage(WebDriver driver) {
         super(driver);
     }
 
     public String getLoginUserName() {
-        return getDriver().findElement(By.xpath("(//span[@class='hidden-xs hidden-sm'])[1]"))
+        return loginUserName
                 .getText();
     }
 

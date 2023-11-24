@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineConfigurationPage extends BasePage {
@@ -19,6 +20,9 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
 
     @FindBy (xpath = "//h1")
     private WebElement nameH1;
+
+    @FindBy (xpath = "//a[contains(@href, 'delete')]")
+    private WebElement buttonDelete;
 
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
 
@@ -62,4 +66,12 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
 
         return nameH1.getText();
     }
+
+    public MultibranchPipelineDeletePage clickButtonDelete() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
+        buttonDelete.click();
+
+        return new MultibranchPipelineDeletePage(getDriver());
+    }
+
 }

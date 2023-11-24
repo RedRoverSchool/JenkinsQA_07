@@ -39,6 +39,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//div[@class = 'jenkins-table__cell__button-wrapper']/a[contains(@aria-describedby,'tippy')]")
     private WebElement runningBuildIndicator;
 
+    @FindBy(xpath = "//td//a[@href]/span")
+    private WebElement multibranchPipelineNameOnHomePage;
+
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement buttonPeople;
 
@@ -201,7 +204,7 @@ public class HomePage extends BasePage {
         return new OrganizationFolderRenamePage(getDriver());
     }
 
-       public <T> T clickRenameInDropdownMenu(String jobName, T page) {
+    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
                 .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
@@ -220,10 +223,19 @@ public class HomePage extends BasePage {
         return page;
     }
 
+    public String multibranchPipelineName() {
+        return multibranchPipelineNameOnHomePage.getText();
+    }
+
     public FreestyleProjectDetailsPage clickOnJob() {
         getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
 
         return new FreestyleProjectDetailsPage(getDriver());
+    }
+
+    public HomePage waitUntilVisibilityOfJob(String projectName) {
+        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + projectName + "/']")));
+        return this;
     }
 
     public PeoplePage clickPeople() {

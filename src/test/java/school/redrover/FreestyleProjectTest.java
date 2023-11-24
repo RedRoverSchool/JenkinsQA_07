@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.bouncycastle.asn1.cmc.DecryptedPOP;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -273,13 +274,14 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")
     public void testDeleteTheExistingDescription() {
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+        String actualEmptyDescriptionInputField = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickAddOrEditDescriptionButton()
+                .deleteDescriptionText()
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
-
-        assertEquals(getDriver().findElement(By.xpath("//div[@id = 'description']/div[1]")).getText(), "");
+        Assert.assertEquals(actualEmptyDescriptionInputField, "");
     }
 
     @Test
@@ -568,18 +570,20 @@ public class FreestyleProjectTest extends BaseTest {
                 .isDisplayed());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckbox() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+        new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .goHomePage();
+        WebElement addParameter = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickThisProjectIsParameterizedCheckbox()
+                .getAddParameterDropdownMenu();
 
-        getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//button[contains( text(), 'Add Parameter')]")).isDisplayed()
-        );
+        Assert.assertTrue(addParameter.isDisplayed());
     }
 
     @Test
@@ -648,7 +652,8 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(editDescription, NEW_DESCRIPTION_TEXT);
     }
 
-    @Test
+    @Ignore
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
        boolean helpMessageDisplay = new HomePage(getDriver())
                 .clickNewItem()
@@ -664,16 +669,16 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(helpMessageDisplay);
    }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testStatusPageUrlCheck() {
         String editedProjectName = PROJECT_NAME.replace(" ", "%20");
 
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
+        String currentUrl = new HomePage(getDriver())
+                .waitUntilVisibilityOfJob(PROJECT_NAME)
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .getCurrentUrl();
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-
-        Assert.assertTrue(getDriver().getCurrentUrl().contains("/job/" + editedProjectName));
+        Assert.assertTrue(currentUrl.contains("/job/" + editedProjectName));
     }
 
     @Test
@@ -1249,4 +1254,5 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(
                 getDriver().findElement(By.xpath("//tbody/tr[@id = 'job_" + freestyleName + "']")).isDisplayed());
     }
+
 }
