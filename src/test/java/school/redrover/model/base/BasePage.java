@@ -1,5 +1,6 @@
 package school.redrover.model.base;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -10,6 +11,8 @@ import school.redrover.model.HomePage;
 import school.redrover.model.SignInToJenkinsPage;
 
 import java.util.List;
+
+import static school.redrover.runner.SeleniumUtils.jsClick;
 
 public abstract class BasePage extends BaseModel {
 
@@ -44,7 +47,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public HomePage clickUserDropdown() {
-        new Actions(getDriver()).moveToElement(userDropdown).click().build().perform();
+        new Actions(getDriver()).moveToElement(userDropdown, 5, 0).click().perform();
 
         return new HomePage(getDriver());
     }
