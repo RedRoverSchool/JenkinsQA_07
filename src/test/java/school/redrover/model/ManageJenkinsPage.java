@@ -98,7 +98,7 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public <T> T clickResult(String request, T page) {
-        getWait2().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream()
+        getWait10().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream()
                 .filter(el -> el.getText().contains(request))
                 .findFirst()
                 .ifPresent(WebElement::click);
@@ -106,6 +106,6 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public List<String> getResultsList() {
-        return getWait5().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream().map(WebElement::getText).toList();
+        return getWait10().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream().map(WebElement::getText).toList();
     }
 }
