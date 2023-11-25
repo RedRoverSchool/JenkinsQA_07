@@ -55,6 +55,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@href,'configure')]")
     private WebElement configureButton;
 
+    @FindBy(xpath = "//a[contains(@href,'ws')]")
+    private WebElement workspaceButton;
+
     @FindBy(xpath = "//a//span[2]")
     private List<WebElement> itemsSidePanel;
 
@@ -104,8 +107,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return new FreestyleProjectRenamePage(getDriver());
     }
 
-    public WorkspacePage goToWorkspaceFromSideMenu(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/ws/']")).click();
+    public WorkspacePage goToWorkspaceFromSideMenu() {
+        workspaceButton.click();
         return new WorkspacePage(getDriver());
     }
 

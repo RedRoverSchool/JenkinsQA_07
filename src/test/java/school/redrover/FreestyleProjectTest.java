@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.bouncycastle.asn1.cmc.DecryptedPOP;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -646,15 +645,15 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
-       boolean helpMessageDisplay = new HomePage(getDriver())
-               .clickOnJob()
-               .goToConfigureFromSideMenu()
-               .clickAdvancedButton()
-               .clickOnQuietPeriodToolTip()
-               .helpMessageDisplay();
+        boolean helpMessageDisplay = new HomePage(getDriver())
+                .clickOnJob()
+                .goToConfigureFromSideMenu()
+                .clickAdvancedButton()
+                .clickOnQuietPeriodToolTip()
+                .helpMessageDisplay();
 
         Assert.assertTrue(helpMessageDisplay);
-   }
+    }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testStatusPageUrlCheck() {
@@ -1076,21 +1075,19 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testSelectExecuteConcurrentBuilds() {
 
-        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
 
-        List<WebElement> quantityOfElementsBeforeClicking = new FreestyleProjectDetailsPage(getDriver())
+        String checkBoxDisplayStyle = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .goToConfigureFromSideMenu()
                 .scrollPage(0, 300)
-                .getExecuteConcurrentBuilds();
-
-        List<WebElement> quantityOfElementsAfterClicking = new FreestyleProjectConfigurePage(getDriver())
                 .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
                 .clickSaveButton()
                 .goToConfigureFromSideMenu()
                 .scrollPage(0, 300)
-                .getExecuteConcurrentBuilds();
+                .getExecuteConcurrentBuildsIfNecessaryCheckBoxValue("display");
 
-        Assert.assertEquals(quantityOfElementsAfterClicking.size(), quantityOfElementsBeforeClicking.size());
+        Assert.assertNotEquals(checkBoxDisplayStyle, "none");
     }
 
     @Test
@@ -1100,7 +1097,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String titleBeforeWorkspaceCreating = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToWorkspaceFromSideMenu(PROJECT_NAME)
+                .goToWorkspaceFromSideMenu()
                 .getTitleText();
 
         Assert.assertEquals(titleBeforeWorkspaceCreating, "Error: no workspace");
@@ -1109,7 +1106,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJenkinsIcon()
                 .clickBuildByGreenArrow(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToWorkspaceFromSideMenu(PROJECT_NAME)
+                .goToWorkspaceFromSideMenu()
                 .getTitleText();
 
         Assert.assertEquals(titleAfterWorkspaceCreating, "Workspace of " + PROJECT_NAME + " on Built-In Node");
