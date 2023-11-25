@@ -45,6 +45,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement buttonPeople;
 
+    @FindBy(className = "jenkins_ver")
+    private WebElement jenkinsVersion;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -235,5 +238,9 @@ public class HomePage extends BasePage {
     public PeoplePage clickPeople() {
         buttonPeople.click();
         return new PeoplePage(getDriver());
+    }
+
+    public String getVersion() {
+        return jenkinsVersion.getText();
     }
 }
