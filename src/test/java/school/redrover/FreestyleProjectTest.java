@@ -145,7 +145,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .click()
                 .perform();
     }
-
     private void configureParameterizedBuild(String projectName, String choiceName, String choiceOptions) {
         getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
