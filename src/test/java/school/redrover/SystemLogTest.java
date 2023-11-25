@@ -25,13 +25,13 @@ public class SystemLogTest extends BaseTest {
     @Test(dependsOnMethods = "testDeleteAllCustomLogRecorders")
     public void testCreateCustomLogRecorder() {
         String newLogName = new HomePage(getDriver())
-                .clickManageJenkins()
-                .goSystemLogPage()
-                .clickAddRecorder()
-                .typeName(SYSLOG_NAME)
-                .clickCreate()
-                .backToSystemLog()
-                .getNameCustomLog();
+            .clickManageJenkins()
+            .goSystemLogPage()
+            .clickAddRecorder()
+            .typeName(SYSLOG_NAME)
+            .clickCreate()
+            .backToSystemLog()
+            .getNameCustomLog();
 
         Assert.assertEquals(newLogName, SYSLOG_NAME);
     }
