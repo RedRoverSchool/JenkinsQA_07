@@ -835,21 +835,18 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testSetNumberDaysToKeepBuildsIsSaved() {
-        createAnItem("Freestyle project");
-        WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
-        new Actions(getDriver())
-                .click(checkbox)
-                .perform();
-        WebElement daysToKeepBuildsField = getDriver().findElement(By.cssSelector("input[name='_.daysToKeepStr']"));
-        daysToKeepBuildsField.click();
-        daysToKeepBuildsField.sendKeys("2");
-        clickSubmitButton();
-        getDriver().findElement(By.cssSelector(".task-link-wrapper  [href='/job/New%20Freestyle%20project/configure']"))
-                .click();
+        final String daysToKeepBuilds = "2";
 
-        Assert.assertEquals(getDriver().findElement(
-                        By.cssSelector("input[name='_.daysToKeepStr']")).getAttribute("value"),
-                "2");
+        String daysToKeepBuildsFieldValue = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickDiscardOldBuildsCheckBox()
+                .inputDaysToKeepBuilds(daysToKeepBuilds)
+                .clickSaveButton()
+                .clickConfigure()
+                .getInputDaysToKeepBuildsFieldValue();
+
+        Assert.assertEquals(daysToKeepBuildsFieldValue, daysToKeepBuilds);
     }
 
     @Test
