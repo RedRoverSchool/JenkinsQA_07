@@ -3,8 +3,12 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+
+import java.util.List;
 
 public class ManageJenkinsPage extends BasePage {
 
@@ -23,6 +27,15 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//dl/dt[text()='Plugins']")
     private WebElement plugins;
 
+    @FindBy(css = ".jenkins-search > input")
+    private WebElement searchInput;
+
+    @FindBy(xpath = "//div[@class='jenkins-search__results']/p")
+    private WebElement searchNoResults;
+
+    @FindAll({@FindBy(xpath = "//div[@class='jenkins-search__results']/a")})
+    private List<WebElement> searchResults;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -32,7 +45,6 @@ public class ManageJenkinsPage extends BasePage {
 
         return new PluginsPage(getDriver());
     }
-
 
     public UserDatabasePage goUserDatabasePage() {
         userSection.click();
@@ -72,5 +84,38 @@ public class ManageJenkinsPage extends BasePage {
         }
 
         return shortcutTooltipIsVisible;
+    }
+
+    public ManageJenkinsPage typeSearchInputField(String request) {
+        searchInput.sendKeys(request);
+
+        return this;
+    }
+
+    public String getNoResultText() {
+
+        return getWait2().until(ExpectedConditions.visibilityOf(searchNoResults)).getText();
+    }
+
+    /*public <T> T clickResult(String request, T page) {
+        for (WebElement el : searchResults) {
+            if (el.getText().contains(request)) {
+                el.click();
+            }
+        }
+        return page;
+
+    }*/
+
+    public <T> T clickResult(String request, T page) {
+        getWait2().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream()
+                .filter(el -> el.getText().contains(request))
+                .findFirst()
+                .ifPresent(WebElement::click);
+        return page;
+    }
+
+    public List<String> getResultsList() {
+        return getWait2().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream().map(WebElement::getText).toList();
     }
 }
