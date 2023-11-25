@@ -184,7 +184,6 @@ public class NewItemPage extends BasePage {
         return new PipelinePage(getDriver());
     }
 
-
     public FolderConfigurationPage createFolder(String folderName) {
         inputName.sendKeys(folderName);
         folder.click();

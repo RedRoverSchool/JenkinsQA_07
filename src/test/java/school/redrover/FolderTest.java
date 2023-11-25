@@ -468,5 +468,22 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(previewText, description);
     }
-}
 
+    @Test
+    public void testAddChildHealthMetric() {
+
+        boolean isChildHealthMetricDisplayed = new HomePage(getDriver())
+                .clickNewItem()
+                .createFolder(FOLDER_NAME)
+                .clickHealthMetricsInSideMenu()
+                .clickHealthMetrics()
+                .clickAddHealthMetric()
+                .selectChildHealthMetric()
+                .clickSaveButton()
+                .clickConfigureInSideMenu()
+                .clickHealthMetrics()
+                .isChildHealthMetricDisplayed();
+
+        Assert.assertTrue(isChildHealthMetricDisplayed);
+    }
+}

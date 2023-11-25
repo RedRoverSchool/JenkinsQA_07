@@ -68,4 +68,10 @@ public class FolderDetailsPage extends BasePage {
         getDriver().findElement(By.xpath("//a[@class='content-block__link']")).click();
         return new NewItemPage(getDriver());
     }
+
+    public FolderConfigurationPage clickConfigureInSideMenu() {
+        configure.click();
+
+        return new FolderConfigurationPage(getDriver());
+    }
 }

@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,6 +12,28 @@ public class FolderConfigurationPage extends BasePage {
 
     @FindBy(className = "textarea-show-preview")
     private WebElement previewSwitch;
+
+    @FindBy(xpath = "//button[@name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(className = "textarea-preview")
+    private WebElement descriptionPreview;
+
+    @FindBy(xpath = "//button[@data-section-id='health-metrics']")
+    private WebElement healthMetricsSideMenuOption;
+
+    @FindBy(xpath = "//button[@class='jenkins-button advanced-button advancedButton']")
+    private WebElement healthMetricsButton;
+
+    @FindBy(id = "yui-gen1-button")
+    private WebElement addMetricButton;
+
+    @FindBy(linkText = "Child item with worst health")
+    private WebElement childHealthMetric;
+
+    @FindBy(xpath = "//div[@class='repeated-chunk__header' and contains(text(), 'Child item with worst health')]")
+    private WebElement childHealthMetricSection;
+
 
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
@@ -31,12 +52,40 @@ public class FolderConfigurationPage extends BasePage {
     }
 
     public String getFolderDescription() {
-
-        return getDriver().findElement(By.className("textarea-preview")).getText();
+        return descriptionPreview.getText();
     }
 
-    public HomePage clickSave() {
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        return new HomePage(getDriver());
+    public FolderDetailsPage clickSaveButton() {
+        saveButton.click();
+
+        return new FolderDetailsPage(getDriver());
+    }
+
+    public FolderConfigurationPage clickHealthMetricsInSideMenu() {
+        healthMetricsSideMenuOption.click();
+
+        return this;
+    }
+
+    public FolderConfigurationPage clickHealthMetrics() {
+        healthMetricsButton.click();
+
+        return this;
+    }
+
+    public FolderConfigurationPage clickAddHealthMetric() {
+        addMetricButton.click();
+
+        return this;
+    }
+
+    public FolderConfigurationPage selectChildHealthMetric() {
+        childHealthMetric.click();
+
+        return this;
+    }
+
+    public boolean  isChildHealthMetricDisplayed () {
+        return childHealthMetricSection.isDisplayed();
     }
 }
