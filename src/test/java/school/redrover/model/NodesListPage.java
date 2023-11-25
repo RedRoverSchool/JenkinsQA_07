@@ -39,4 +39,9 @@ public class NodesListPage extends BasePage {
 
         return getDriver().findElements(By.xpath(xpath)).isEmpty();
     }
+
+    public String getCurrentURL(){
+
+        return getDriver().getCurrentUrl();
+    }
 }
