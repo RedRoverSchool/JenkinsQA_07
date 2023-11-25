@@ -48,6 +48,12 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@tooltip = 'New View']")
     private WebElement newViewPlusButton;
 
+    @FindBy(xpath = "//a[contains(@href,'/me/my-views')]")
+    private WebElement myViewsOnDashboard;
+
+    @FindBy(xpath = "//table[@id='projectstatus']/tbody/tr/td[3]")
+    private WebElement folderNameOnTable;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -249,5 +255,14 @@ public class HomePage extends BasePage {
     public NewViewPage clickNewViewPlus() {
         newViewPlusButton.click();
         return new NewViewPage(getDriver());
+    }
+
+    public MyViewPage myViewsOnDashboard() {
+        myViewsOnDashboard.click();
+        return new MyViewPage(getDriver());
+    }
+
+    public String getFolderName() {
+        return folderNameOnTable.getText();
     }
 }

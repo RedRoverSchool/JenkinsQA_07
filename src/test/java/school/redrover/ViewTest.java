@@ -160,16 +160,17 @@ public class ViewTest extends BaseTest {
     @Test
     public void testCreateNewView3(){
 
-        getDriver().findElement(By.xpath("//*[@id=\'tasks\']/div[5]/span/a")).click();
-        getDriver().findElement(By.xpath("//*[@id=\'tasks\']/div[1]/span/a")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys("Bob");
-        getDriver().findElement(By.xpath("//*[@id=\'j-add-item-type-nested-projects\']/ul/li[1]")).click();
-        getDriver().findElement(By.xpath("//*[@id=\'ok-button\']")).click();
-        getDriver().findElement(By.xpath("//*[@id=\'breadcrumbs\']/li[1]/a")).click();
-        getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]"));
+        boolean nameAsExpected = new HomePage(getDriver())
+                .myViewsOnDashboard()
+                .clickNewItem()
+                .enterItemName(JOB_NAME)
+                .clickFolderCategory()
+                .clickOkButton()
+                .goHomePage()
+                .getFolderName()
+                .equals(JOB_NAME);
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//*[@id=\'job_Bob\']/td[3]")).getText(),"Bob");
-
+        Assert.assertTrue(nameAsExpected);
     }
 
     @Test
