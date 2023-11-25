@@ -628,12 +628,11 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertFalse(projectExist);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testEditDescriptionFreestyleProject() {
-        createFreeStyleProject(PROJECT_NAME);
 
-        String editDescription = new FreestyleProjectDetailsPage(getDriver())
-                .clickSaveButton()
+        String editDescription = new HomePage(getDriver())
+                .clickOnJob()
                 .goToConfigureFromSideMenu()
                 .editProjectDescriptionField(DESCRIPTION_TEXT)
                 .clickSaveButton()
