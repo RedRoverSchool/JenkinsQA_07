@@ -105,6 +105,15 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//button[@data-section-id='build-environment']")
     private WebElement buildEnvironmentSidebarItem;
 
+    @FindBy(xpath = "//a[contains(text(), 'Boolean Parameter')]")
+    private WebElement booleanParameterOption;
+
+    @FindBy(xpath = "//input[@name = 'parameter.name']")
+    private WebElement parameterNameInputBox;
+
+    @FindBy(xpath = "//textarea[@name = 'parameter.description']")
+    private WebElement parameterDescriptionInputBox;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -350,5 +359,44 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getShellScriptText() {
         return shellScriptInput.getText();
+    }
+
+    public FreestyleProjectConfigurePage clickAddParameterDropdown() {
+        addParameterDropdownMenu.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickBooleanParameterOption() {
+        booleanParameterOption.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputParameterName(String name) {
+        parameterNameInputBox.sendKeys(name);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputParameterDescription(String description) {
+        parameterDescriptionInputBox.sendKeys(description);
+
+        return this;
+    }
+
+    public String getParameterName() {
+        return parameterNameInputBox.getAttribute("value");
+    }
+
+    public String getParameterDescription() {
+        return parameterDescriptionInputBox.getAttribute("value");
+    }
+
+    public List<String> getParameterNameAndDescription() {
+        return List.of(
+                getParameterName(),
+                getParameterDescription()
+        );
     }
 }

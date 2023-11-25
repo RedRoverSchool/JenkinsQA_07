@@ -921,36 +921,26 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testThisProjectIsParameterizedCheckboxAddBooleanParameter() {
-        final String name = "Ņame";
-        final String description = "Description";
+        List<String> parameters = List.of("Ņame", "Description");
 
-        createProject("Freestyle project", PROJECT_NAME, true);
+        List<String> savedParametersList = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickSaveButton()
+                .clickConfigure()
+                .clickThisProjectIsParameterizedCheckbox()
+                .clickAddParameterDropdown()
+                .clickBooleanParameterOption()
+                .inputParameterName(parameters.get(0))
+                .inputParameterDescription(parameters.get(1))
+                .clickSaveButton()
+                .goHomePage()
+                .clickOnJob()
+                .clickConfigure().getParameterNameAndDescription();
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
-
-        getDriver().findElement(By.
-                        xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"))
-                .click();
-        getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]")).click();
-
-        getDriver().findElement(By.xpath("//a[contains(text(), 'Boolean Parameter')]")).click();
-        getDriver().findElement(By.xpath("//input[@name = 'parameter.name']"))
-                .sendKeys(name);
-        getDriver().findElement(By.xpath("//textarea[@name = 'parameter.description']"))
-                .sendKeys(description);
-        clickSubmitButton();
-
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//input[@name = 'parameter.name']"))
-                        .getAttribute("value"),
-                name);
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath("//textarea[@name = 'parameter.description']"))
-                        .getAttribute("value"),
-                description);
+        for (int i = 0; i < savedParametersList.size(); i++) {
+            Assert.assertEquals(savedParametersList.get(i), parameters.get(i));
+        }
     }
 
     @Test
