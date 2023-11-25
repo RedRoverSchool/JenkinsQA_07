@@ -4,7 +4,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
-import school.redrover.model.NodeDetailsPage;
 import school.redrover.model.NodesListPage;
 import school.redrover.runner.BaseTest;
 
@@ -34,7 +33,6 @@ public class ManageJenkinsTest extends BaseTest {
                 .getNoResultText();
 
         Assert.assertEquals(resultText, "No results");
-
     }
 
     @Test
