@@ -645,16 +645,11 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(editDescription, NEW_DESCRIPTION_TEXT);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testFreestyleProjectAdvancedSetting() {
        boolean helpMessageDisplay = new HomePage(getDriver())
-                .clickNewItem()
-                .createFreestyleProject(PROJECT_NAME)
-                .clickSaveButton()
-                .goHomePage()
-                .clickOnJob()
-                .goToConfigureFromSideMenu()
+               .clickOnJob()
+               .goToConfigureFromSideMenu()
                .clickAdvancedButton()
                .clickOnQuietPeriodToolTip()
                .helpMessageDisplay();
