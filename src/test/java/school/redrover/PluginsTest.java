@@ -28,7 +28,7 @@ public class PluginsTest extends BaseTest {
                 .clickOnGoToPluginManagerButton()
                 .clickInstalledPlugins()
                 .typePluginNameIntoSearchField(pluginName)
-                .isPluginNamePresents(pluginName);
+                .isPluginNamePresent(pluginName);
 
         Assert.assertTrue(pluginNamePresents);
     }

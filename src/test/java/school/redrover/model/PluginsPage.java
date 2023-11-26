@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.SeleniumUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PluginsPage extends BasePage {
@@ -42,7 +41,7 @@ public class PluginsPage extends BasePage {
         return this;
     }
 
-    public boolean isPluginNamePresents(String pluginName) {
+    public boolean isPluginNamePresent(String pluginName) {
         if (installedPluginsLinks.size() != 0) {
             return installedPluginsLinks.stream().anyMatch(text -> text.getText().contains(pluginName));
         }
