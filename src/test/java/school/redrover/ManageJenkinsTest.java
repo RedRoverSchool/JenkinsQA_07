@@ -25,7 +25,7 @@ public class ManageJenkinsTest extends BaseTest {
             Assert.assertTrue(manageJenkinsPage.shortcutTooltipIsVisible(), TOOLTIP + " is not visible");
     }
 
-    @Ignore
+
     @Test
     public void testNoResultsTextVisibility() {
 
