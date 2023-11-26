@@ -576,7 +576,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .isDisplayed());
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test
     public void testFreestyleProjectConfigureGeneralSettingsThisProjectIsParameterizedCheckbox() {
         new HomePage(getDriver())
                 .clickNewItem()
