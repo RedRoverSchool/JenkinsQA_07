@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class NodesListPage extends BasePage {
+public class   NodesListPage extends BasePage {
 
     @FindBy(xpath = "//a[@href='new']")
     private WebElement newNodeButton;
