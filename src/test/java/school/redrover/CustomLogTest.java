@@ -6,9 +6,9 @@ import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import java.util.*;
 
-public class CustomConfigureLogTest extends BaseTest {
+public class CustomLogTest extends BaseTest {
 
-    private final static String LOG_NAME = "Inform";
+    private final static String LOG_NAME = "Test_Log";
 
     private final static String LOGGER_NAME = "com";
 
@@ -20,8 +20,7 @@ public class CustomConfigureLogTest extends BaseTest {
         List<String> loggersAndLevels = List.of(
                 LOG_NAME,
                 LOGGER_NAME,
-                LEVEL_LOG
-        );
+                LEVEL_LOG);
 
         List <String> loggersAndLevelsSavedList = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -36,9 +35,24 @@ public class CustomConfigureLogTest extends BaseTest {
                 .chooseLastLogLevel(LEVEL_LOG)
                 .clickSave()
                 .clickConfigure()
-                .getLoggersAndLevelsSavedList()
-        ;
+                .getLoggersAndLevelsSavedList();
 
         Assert.assertEquals(loggersAndLevelsSavedList, loggersAndLevels);
+    }
+
+    @Test(dependsOnMethods = "testConfigureCustomLogRecorder")
+    public void testDeleteLogger() {
+
+        Boolean clearHistory = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage()
+                .clickGearIcon(LOG_NAME)
+                .clickDeleteLogger()
+                .clickSave()
+                .clickSystemLog()
+                .clickGearIcon(LOG_NAME)
+                .getLogHistoryEmpty();
+
+       Assert.assertTrue(clearHistory);
     }
 }
