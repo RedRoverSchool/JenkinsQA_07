@@ -723,4 +723,26 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
     }
+        @Test
+    public void testUserChangFullName() {
+        final String existedUsername= "Usertest2";
+        final String password = "5679";
+        final String email = "rv@gmail.com";
+        final String fullname = "User User";
+
+       new HomePage(getDriver())
+               .clickManageJenkins();
+
+       createUser(existedUsername, password, email);
+       new UserConfigurationPage(getDriver())
+               .username()
+               .configurationPage()
+               .userFull()
+               .fullUser()
+               .saveButton();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
+                fullname);
+    }
 }
