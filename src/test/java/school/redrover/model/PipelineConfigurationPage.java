@@ -33,6 +33,15 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@class='samples']/select")
     private WebElement pipelineScriptSamplesDropdown;
 
+    @FindBy(xpath = "//label[text()='Build after other projects are built']")
+    private WebElement buildAfterOtherProjectsCheckbox;
+
+    @FindBy(name = "_.upstreamProjects")
+    private WebElement projectsToWatchField;
+
+    @FindBy(xpath = "//label[text()='Always trigger, even if the build is aborted']")
+    private WebElement alwaysTriggerRadio;
+
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -82,8 +91,28 @@ public class PipelineConfigurationPage extends BasePage {
         return page;
     }
 
-    public PipelineConfigurationPage selectPipelineScriptSampleByValue (String value) {
+    public PipelineConfigurationPage selectPipelineScriptSampleByValue(String value) {
         new Select(pipelineScriptSamplesDropdown).selectByValue(value);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage setBuildAfterOtherProjectsCheckbox() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage setProjectsToWatch(String projectName) {
+        projectsToWatchField.sendKeys(projectName);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage clickAlwaysTriggerRadio() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", alwaysTriggerRadio);
 
         return this;
     }

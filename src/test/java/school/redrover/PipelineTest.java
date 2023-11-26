@@ -167,34 +167,23 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testBuildRunTriggeredByAnotherProject() {
-
         final String upstreamPipelineName = "Upstream Pipe";
 
         createPipeline(PIPELINE_NAME, true);
         createPipeline(upstreamPipelineName, false);
 
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
-                .click();
-        WebElement buildAfterOtherProjectsCheckbox = getDriver()
-                .findElement(By.xpath("//label[text()='Build after other projects are built']"));
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
-        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(PIPELINE_NAME);
-        WebElement alwaysTriggerRadio = getDriver().findElement(
-                By.xpath("//label[text()='Always trigger, even if the build is aborted']"));
-        js.executeScript("arguments[0].click();", alwaysTriggerRadio);
-        clickSaveConfiguration();
+        boolean isJobInBuildQueue = new PipelineConfigurationPage(getDriver())
+                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickConfigureInSideMenu()
+                .setBuildAfterOtherProjectsCheckbox()
+                .setProjectsToWatch(PIPELINE_NAME)
+                .clickAlwaysTriggerRadio()
+                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .goHomePage()
+                .clickBuildByGreenArrow(PIPELINE_NAME)
+                .isJobInBuildQueue(upstreamPipelineName);
 
-        goToDashboard();
-        getDriver().findElement(
-                        By.xpath(String.format("//span[text()='%s']/../../..//a[contains(@href,'build?')]", PIPELINE_NAME)))
-                .click();
-
-        Assert.assertTrue(getWait5().until(ExpectedConditions
-                        .visibilityOfElementLocated(By.xpath("//td[@class='pane pane-grow']")))
-                .getText()
-                .contains(upstreamPipelineName));
+        Assert.assertTrue(isJobInBuildQueue);
     }
 
     @Test
