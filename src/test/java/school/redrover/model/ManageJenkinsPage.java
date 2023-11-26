@@ -115,7 +115,7 @@ public class ManageJenkinsPage extends BasePage {
         return searchInput.getAttribute("placeholder");
     }
 
-    public boolean placeholderIsVisible() {
+    public boolean isPlaceholderVisible() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         String typedInSearchText = (String) js.executeScript("return arguments[0].value;", searchInput);
 
@@ -132,7 +132,7 @@ public class ManageJenkinsPage extends BasePage {
         return this;
     }
 
-    public boolean activeElementIsSearchField() {
+    public boolean isSearchFieldActiveElement() {
 
         return searchInput.equals(getDriver().switchTo().activeElement());
     }
@@ -149,7 +149,7 @@ public class ManageJenkinsPage extends BasePage {
         return (String) js.executeScript("return arguments[0].value;", searchInput);
     }
 
-    public boolean searchTextAfterShortcutIsVisible() {
+    public boolean isSearchTextAfterShortcutVisible() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         String typedInSearchText = (String) js.executeScript("return arguments[0].value;", searchInput);
 

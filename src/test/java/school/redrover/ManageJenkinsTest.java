@@ -73,7 +73,7 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins();
 
         Assert.assertEquals(manageJenkinsPage.getPlaceholderText(), PLACEHOLDER);
-        Assert.assertTrue(manageJenkinsPage.placeholderIsVisible(), PLACEHOLDER + " is not visible");
+        Assert.assertTrue(manageJenkinsPage.isPlaceholderVisible(), PLACEHOLDER + " is not visible");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ManageJenkinsTest extends BaseTest {
         boolean searchFieldIsActiveElement = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goToSearchFieldUsingShortcut()
-                .activeElementIsSearchField();
+                .isSearchFieldActiveElement();
 
         Assert.assertTrue(searchFieldIsActiveElement, "Search field is not the active element");
     }
@@ -96,6 +96,6 @@ public class ManageJenkinsTest extends BaseTest {
                 .typeTextBeingInSearchFieldWithoutLocator(SEARCH_SYSTEM);
 
         Assert.assertEquals(manageJenkinsPage.getSearchFieldText(), SEARCH_SYSTEM);
-        Assert.assertTrue(manageJenkinsPage.searchTextAfterShortcutIsVisible(), SEARCH_SYSTEM + " is not visible");
+        Assert.assertTrue(manageJenkinsPage.isSearchTextAfterShortcutVisible(), SEARCH_SYSTEM + " is not visible");
     }
 }
