@@ -171,8 +171,10 @@ public class HomePage extends BasePage {
     public boolean isAlertVisible() {
         try {
             getDriver().switchTo().alert();
+
             return true;
         } catch (NoAlertPresentException ex) {
+
             return false;
         }
     }
@@ -232,11 +234,13 @@ public class HomePage extends BasePage {
 
     public FreestyleProjectDetailsPage clickOnJob() {
         getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
+
         return new FreestyleProjectDetailsPage(getDriver());
     }
 
     public PeoplePage clickPeople() {
         buttonPeople.click();
+
         return new PeoplePage(getDriver());
     }
 
