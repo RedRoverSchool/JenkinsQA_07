@@ -49,8 +49,7 @@ public class CustomLogTest extends BaseTest {
                 .clickGearIcon(LOG_NAME)
                 .clickDeleteLogger()
                 .clickSave()
-                .clickSystemLog()
-                .clickGearIcon(LOG_NAME)
+                .clickConfigure()
                 .getLogHistoryEmpty();
 
        Assert.assertTrue(clearHistory);
