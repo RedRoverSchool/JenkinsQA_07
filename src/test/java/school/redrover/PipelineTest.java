@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
@@ -15,7 +14,6 @@ import school.redrover.runner.TestUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PipelineTest extends BaseTest {
     private static final String JOB_NAME = "NewPipeline";
@@ -45,7 +43,6 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipeline() {
-
         boolean pipeLineCreated = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(PIPELINE_NAME)
@@ -140,7 +137,6 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipelineProject() {
-
         List<String> jobList = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(PIPELINE_NAME)
@@ -193,17 +189,11 @@ public class PipelineTest extends BaseTest {
 
         createPipeline(PIPELINE_NAME, false);
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].scrollIntoView(true)", getDriver().findElement(By.xpath("//div[@class='ace_line']")));
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(pipelineScript);
-        clickSaveConfiguration();
-        new PipelinePage(getDriver()).clickBuildNow();
-
-        List<String> actualStageNames = getDriver()
-                .findElements(By.xpath("//th[contains(@class, 'stage-header-name-')]"))
-                .stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        List<String> actualStageNames = new PipelineConfigurationPage(getDriver())
+                .setPipelineScript(pipelineScript)
+                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickBuildNowInSideMenu()
+                .getStagesNames();
 
         Assert.assertEquals(actualStageNames, stageNames);
     }
@@ -242,7 +232,6 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testVerifyChoiceParameterCanBeSet() {
-
         List<String> parameterChoices = Arrays.asList("one", "two");
 
         List<String> buildParameters = new HomePage(getDriver())

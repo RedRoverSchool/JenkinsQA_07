@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PipelineDetailsPage extends BasePage {
-    
+
     public PipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -49,6 +48,9 @@ public class PipelineDetailsPage extends BasePage {
 
     @FindBy(xpath = "//pre[@class='console-output']")
     private WebElement stageLogsModal;
+
+    @FindBy(xpath = "//th[contains(@class, 'stage-header-name-')]")
+    private List<WebElement> stagesNamesList;
 
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
@@ -108,5 +110,9 @@ public class PipelineDetailsPage extends BasePage {
 
     public String getStageLogsModalText() {
         return getWait5().until(ExpectedConditions.visibilityOf(stageLogsModal)).getText();
+    }
+
+    public List<String> getStagesNames() {
+        return stagesNamesList.stream().map(WebElement::getText).toList();
     }
 }

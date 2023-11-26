@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,6 +40,12 @@ public class PipelineConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//label[text()='Always trigger, even if the build is aborted']")
     private WebElement alwaysTriggerRadio;
+
+    @FindBy(xpath = "//div[@class='ace_line']")
+    private WebElement pipelineScriptTextAreaLine;
+
+    @FindBy(className = "ace_text-input")
+    private WebElement pipelineScriptTextArea;
 
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
@@ -113,6 +118,14 @@ public class PipelineConfigurationPage extends BasePage {
     public PipelineConfigurationPage clickAlwaysTriggerRadio() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", alwaysTriggerRadio);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage setPipelineScript(String pipelineScript) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true)", pipelineScriptTextAreaLine);
+        pipelineScriptTextArea.sendKeys(pipelineScript);
 
         return this;
     }
