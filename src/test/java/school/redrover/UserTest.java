@@ -32,7 +32,7 @@ public class UserTest extends BaseTest {
     private static final String NAME = "ivan";
     public static final String FULL_NAME = "User Full Name";
     final private static String PASSWORD = "12345";
-    final private static String DESCRIPTION = "Test description";
+    private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
 
     private void createUser(String userName, String password, String email) {
@@ -690,19 +690,15 @@ public class UserTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateUserWithValidData")
     public void testAddUserDescription() {
-        goToHomePage();
+        String actualDescription = new HomePage(getDriver())
+                .clickPeople()
+                .clickOnTheCreatedUser(USER_NAME)
+                .clickAddDescription()
+                .addAUserDescription(DESCRIPTION)
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getDriver().findElement(By.xpath("//div[@id = 'tasks']//descendant::div[2]")).click();
-
-        getDriver().findElement(
-                By.xpath("//tr[@id = 'person-" + USER_NAME + "']/td[2]/a")).click();
-
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//div[@id = 'description']/div[1]")).getText(), DESCRIPTION);
+        Assert.assertEquals(actualDescription, DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testDeleteUser")
