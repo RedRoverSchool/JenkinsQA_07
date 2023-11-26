@@ -21,25 +21,6 @@ public class PipelineTest extends BaseTest {
     private static final String CHECKBOX_TEXT = "Do not allow concurrent build";
     private final String PIPELINE_NAME = "Name of the pipe";
 
-    private void createPipeline(String pipelineName, boolean returnToDashboard) {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(pipelineName);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getDriver().findElement(By.xpath("//button[@id = 'ok-button']")).click();
-
-        if (returnToDashboard) {
-            goToDashboard();
-        }
-    }
-
-    private void clickSaveConfiguration() {
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-    }
-
-    private void goToDashboard() {
-        getDriver().findElement(By.id("jenkins-home-link")).click();
-    }
-
     @Test
     public void testCreatePipeline() {
         boolean pipeLineCreated = new HomePage(getDriver())
@@ -84,7 +65,7 @@ public class PipelineTest extends BaseTest {
     @Ignore
     @Test
     public void testCreateWithDuplicateName() {
-        createPipeline(JOB_NAME, true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
 
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
@@ -164,8 +145,8 @@ public class PipelineTest extends BaseTest {
     public void testBuildRunTriggeredByAnotherProject() {
         final String upstreamPipelineName = "Upstream Pipe";
 
-        createPipeline(PIPELINE_NAME, true);
-        createPipeline(upstreamPipelineName, false);
+        TestUtils.createPipeline(this, PIPELINE_NAME, true);
+        TestUtils.createPipeline(this, upstreamPipelineName, false);
 
         boolean isJobInBuildQueue = new PipelineConfigurationPage(getDriver())
                 .clickSaveButton(new PipelineDetailsPage(getDriver()))
@@ -186,7 +167,7 @@ public class PipelineTest extends BaseTest {
         final List<String> stageNames = List.of(new String[]{"test", "build", "deploy"});
         final String pipelineScript = "stage('test') {}\nstage('build') {}\nstage('deploy') {}";
 
-        createPipeline(PIPELINE_NAME, false);
+        TestUtils.createPipeline(this, PIPELINE_NAME, false);
 
         List<String> actualStageNames = new PipelineConfigurationPage(getDriver())
                 .setPipelineScript(pipelineScript)
@@ -203,7 +184,7 @@ public class PipelineTest extends BaseTest {
         final String parameterValue = "some text";
         final String pipelineScript = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
 
-        createPipeline(PIPELINE_NAME, false);
+        TestUtils.createPipeline(this, PIPELINE_NAME, false);
 
         String logsText = new PipelineConfigurationPage(getDriver())
                 .clickProjectIsParameterized()
