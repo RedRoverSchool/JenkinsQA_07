@@ -96,7 +96,7 @@ public class ManageJenkinsPage extends BasePage {
 
     public String getNoResultText() {
 
-        return getWait2().until(ExpectedConditions.visibilityOf(searchNoResults)).getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(searchNoResults)).getText();
     }
 
     public <T> T clickResult(String request, T page) {
