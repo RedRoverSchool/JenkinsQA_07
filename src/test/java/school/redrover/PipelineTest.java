@@ -79,10 +79,10 @@ public class PipelineTest extends BaseTest {
     public void testPipelineRename() {
         TestUtils.createPipeline(this, JOB_NAME, false);
 
-        String currentName = new PipelinePage(getDriver())
-                .clickRenameOnSideMenu()
+        String currentName = new PipelineDetailsPage(getDriver())
+                .clickRenameInSideMenu()
                 .enterNewName(PIPELINE_NAME)
-                .clickRenameButton(new PipelinePage(getDriver()))
+                .clickRenameButton(new PipelineDetailsPage(getDriver()))
                 .goHomePage()
                 .getJobDisplayName();
 
@@ -93,7 +93,7 @@ public class PipelineTest extends BaseTest {
     public void testVerifyBuildIconOnDashboard() {
         TestUtils.createPipeline(this, JOB_NAME, false);
 
-        boolean buildIconIsDisplayed = new PipelinePage(getDriver())
+        boolean buildIconIsDisplayed = new PipelineDetailsPage(getDriver())
                 .clickBuildNow()
                 .isBuildIconDisplayed();
 
@@ -105,9 +105,10 @@ public class PipelineTest extends BaseTest {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .createPipelinePage(JOB_NAME)
-                .clickSaveButton(new PipelineConfigurationPage(getDriver()))
-                .goHomePage().clickJobByName(JOB_NAME, new PipelinePage(getDriver()))
-                .clickRenameOnSideMenu()
+                .clickSaveButton()
+                .goHomePage()
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickRenameInSideMenu()
                 .clearInputName()
                 .clickRenameButton(new ErrorPage(getDriver()))
                 .getErrorFromMainPanel();
@@ -134,7 +135,7 @@ public class PipelineTest extends BaseTest {
                 .clickJobByName(PIPELINE_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .selectPipelineScriptSampleByValue("hello")
-                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickSaveButton()
                 .clickBuildNow()
                 .clickLogsInStageView().getStageLogsModalText();
 
@@ -153,7 +154,7 @@ public class PipelineTest extends BaseTest {
                 .setBuildAfterOtherProjectsCheckbox()
                 .setProjectsToWatch(PIPELINE_NAME)
                 .clickAlwaysTriggerRadio()
-                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickSaveButton()
                 .goHomePage()
                 .clickBuildByGreenArrow(PIPELINE_NAME)
                 .isJobInBuildQueue(upstreamPipelineName);
@@ -171,7 +172,7 @@ public class PipelineTest extends BaseTest {
         List<String> actualStageNames = new PipelineDetailsPage(getDriver())
                 .clickConfigure()
                 .setPipelineScript(pipelineScript)
-                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickSaveButton()
                 .clickBuildNow()
                 .getStagesNames();
 
@@ -193,7 +194,7 @@ public class PipelineTest extends BaseTest {
                 .selectStringParameter()
                 .setParameterName(parameterName)
                 .setPipelineScript(pipelineScript)
-                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickSaveButton()
                 .clickBuildWithParameters()
                 .setStringParameterValue(parameterValue)
                 .clickBuildButton(new PipelineDetailsPage(getDriver()))
@@ -216,7 +217,7 @@ public class PipelineTest extends BaseTest {
                 .clickAddParameter()
                 .selectChoiceParameter().setParameterName("parameterName")
                 .setParameterChoices(parameterChoices)
-                .clickSaveButton(new PipelinePage(getDriver()))
+                .clickSaveButton()
                 .clickBuildWithParameters()
                 .getChoiceParameterOptions();
 

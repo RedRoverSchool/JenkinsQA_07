@@ -52,6 +52,12 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//th[contains(@class, 'stage-header-name-')]")
     private List<WebElement> stagesNamesList;
 
+    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameSideMenuOption;
+
+    @FindBy(xpath = "//div[@class='build-icon']/a")
+    private WebElement buildIcon;
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -120,5 +126,16 @@ public class PipelineDetailsPage extends BasePage {
 
     public List<String> getStagesNames() {
         return stagesNamesList.stream().map(WebElement::getText).toList();
+    }
+
+    public PipelineRenamePage clickRenameInSideMenu() {
+        renameSideMenuOption.click();
+
+        return new PipelineRenamePage(getDriver());
+    }
+
+    public boolean isBuildIconDisplayed() {
+
+        return getWait2().until(ExpectedConditions.visibilityOf(buildIcon)).isDisplayed();
     }
 }

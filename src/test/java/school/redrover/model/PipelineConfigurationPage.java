@@ -93,10 +93,10 @@ public class PipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public <T> T clickSaveButton(T page) {
+    public PipelineDetailsPage clickSaveButton() {
         saveButton.click();
 
-        return page;
+        return new PipelineDetailsPage(getDriver());
     }
 
     public PipelineConfigurationPage selectPipelineScriptSampleByValue(String value) {
