@@ -1,9 +1,11 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -27,6 +29,9 @@ public class PipelineConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//button[@name = 'Submit']")
     private WebElement saveButton;
+
+    @FindBy(xpath = "//div[@class='samples']/select")
+    private WebElement pipelineScriptSamplesDropdown;
 
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
@@ -77,4 +82,9 @@ public class PipelineConfigurationPage extends BasePage {
         return page;
     }
 
+    public PipelineConfigurationPage selectPipelineScriptSampleByValue (String value) {
+        new Select(pipelineScriptSamplesDropdown).selectByValue(value);
+
+        return this;
+    }
 }

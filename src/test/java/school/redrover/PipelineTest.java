@@ -39,20 +39,8 @@ public class PipelineTest extends BaseTest {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
 
-
-
-    private void clickConfigure() {
-        getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'configure')]"))
-                .click();
-    }
-
     private void goToDashboard() {
         getDriver().findElement(By.id("jenkins-home-link")).click();
-    }
-
-    private void clickProjectOnDashboard(String projectName) {
-        getDriver().findElement(By
-                .xpath(String.format("//a[@href='job/%s/']", projectName.replace(" ", "%20")))).click();
     }
 
     @Test
@@ -164,30 +152,17 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(jobList.contains(PIPELINE_NAME));
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testOpenLogsFromStageView() {
+        String stageLogsText = new HomePage(getDriver())
+                .clickJobByName(PIPELINE_NAME, new PipelineDetailsPage(getDriver()))
+                .clickConfigureInSideMenu()
+                .selectPipelineScriptSampleByValue("hello")
+                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickBuildNowInSideMenu()
+                .clickLogsInStageView().getStageLogsModalText();
 
-        clickProjectOnDashboard(PIPELINE_NAME);
-        clickConfigure();
-
-        Select select = new Select(getDriver().findElement(By.xpath("//div[@class='samples']/select")));
-        select.selectByValue("hello");
-        clickSaveConfiguration();
-
-        new PipelinePage(getDriver()).clickBuildNow();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='badge']/a[text()='#1']")));
-        WebElement buildRecordInStageView = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tbody[@class='tobsTable-body']//div[@class='duration']")));
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(buildRecordInStageView).perform();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']"))).click();
-
-        String consoleLog = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//pre[@class='console-output']"))).getText();
-        Assert.assertEquals(consoleLog, "Hello World");
+        Assert.assertEquals(stageLogsText, "Hello World");
     }
 
     @Test
