@@ -148,8 +148,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, PIPELINE_NAME, true);
         TestUtils.createPipeline(this, upstreamPipelineName, false);
 
-        boolean isJobInBuildQueue = new PipelineConfigurationPage(getDriver())
-                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+        boolean isJobInBuildQueue = new PipelineDetailsPage(getDriver())
                 .clickConfigure()
                 .setBuildAfterOtherProjectsCheckbox()
                 .setProjectsToWatch(PIPELINE_NAME)
@@ -169,7 +168,8 @@ public class PipelineTest extends BaseTest {
 
         TestUtils.createPipeline(this, PIPELINE_NAME, false);
 
-        List<String> actualStageNames = new PipelineConfigurationPage(getDriver())
+        List<String> actualStageNames = new PipelineDetailsPage(getDriver())
+                .clickConfigure()
                 .setPipelineScript(pipelineScript)
                 .clickSaveButton(new PipelineDetailsPage(getDriver()))
                 .clickBuildNow()
@@ -186,7 +186,8 @@ public class PipelineTest extends BaseTest {
 
         TestUtils.createPipeline(this, PIPELINE_NAME, false);
 
-        String logsText = new PipelineConfigurationPage(getDriver())
+        String logsText = new PipelineDetailsPage(getDriver())
+                .clickConfigure()
                 .clickProjectIsParameterized()
                 .clickAddParameter()
                 .selectStringParameter()
