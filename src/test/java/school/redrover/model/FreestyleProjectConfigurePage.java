@@ -13,6 +13,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement helpButtonDiscardOldBuilds;
 
+    @FindBy(css = "[nameref='rowSetStart26'] .help")
+    private WebElement helpDescriptionDiscardOldBuilds;
+
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;
 
@@ -357,5 +360,10 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getShellScriptText() {
         return shellScriptInput.getText();
+    }
+
+    public String clickHelpDescriptionOfDiscardOldBuilds(){
+        helpButtonDiscardOldBuilds.click();
+        return helpDescriptionDiscardOldBuilds.getAttribute("style");
     }
 }

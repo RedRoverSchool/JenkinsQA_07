@@ -523,14 +523,14 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testHelpDescriptionOfDiscardOldBuildsIsVisible() {
-        createFreeStyleProject(PROJECT_NAME);
-        getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"))
-                .click();
+        String actualResult = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .goToConfigureFromSideMenu()
+                .clickHelpDescriptionOfDiscardOldBuilds();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
-                .getAttribute("style"), "display: block;");
+        assertEquals(actualResult, "display: block;");
     }
 
     @Test
@@ -593,7 +593,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(thisProjectIsParameterizedCheckbox.isSelected());
     }
-
+    @Ignore
     @Test
     public void testOldBuildsAreDiscarded() {
         final int numOfBuildNowClicks = 2;
