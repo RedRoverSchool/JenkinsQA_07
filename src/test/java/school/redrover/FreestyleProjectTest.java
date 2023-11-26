@@ -924,10 +924,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testThisProjectIsParameterizedCheckboxAddBooleanParameter() {
-        new HomePage(getDriver())
-                .clickNewItem()
-                .createFreestyleProject(PROJECT_NAME)
-                .goHomePage();
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
 
         FreestyleProjectConfigurePage configurePage = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
