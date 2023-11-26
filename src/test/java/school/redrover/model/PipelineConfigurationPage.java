@@ -47,6 +47,9 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(className = "ace_text-input")
     private WebElement pipelineScriptTextArea;
 
+    @FindBy(id = "yui-gen10")
+    private WebElement stringParameterOption;
+
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -126,6 +129,12 @@ public class PipelineConfigurationPage extends BasePage {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView(true)", pipelineScriptTextAreaLine);
         pipelineScriptTextArea.sendKeys(pipelineScript);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage selectStringParameter() {
+        stringParameterOption.click();
 
         return this;
     }

@@ -85,16 +85,22 @@ public class PipelineDetailsPage extends BasePage {
         return permalinks;
     }
 
-    public PipelineConfigurationPage clickConfigureInSideMenu() {
+    public PipelineConfigurationPage clickConfigure() {
         configureSideMenuOption.click();
 
         return new PipelineConfigurationPage(getDriver());
     }
 
-    public PipelineDetailsPage clickBuildNowInSideMenu() {
+    public PipelineDetailsPage clickBuildNow() {
         buildNowSideMenuOption.click();
 
         return this;
+    }
+
+    public BuildWithParametersPage clickBuildWithParameters() {
+        buildNowSideMenuOption.click();
+
+        return new BuildWithParametersPage(getDriver());
     }
 
     public PipelineDetailsPage clickLogsInStageView() {

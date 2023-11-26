@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -152,10 +151,10 @@ public class PipelineTest extends BaseTest {
     public void testOpenLogsFromStageView() {
         String stageLogsText = new HomePage(getDriver())
                 .clickJobByName(PIPELINE_NAME, new PipelineDetailsPage(getDriver()))
-                .clickConfigureInSideMenu()
+                .clickConfigure()
                 .selectPipelineScriptSampleByValue("hello")
                 .clickSaveButton(new PipelineDetailsPage(getDriver()))
-                .clickBuildNowInSideMenu()
+                .clickBuildNow()
                 .clickLogsInStageView().getStageLogsModalText();
 
         Assert.assertEquals(stageLogsText, "Hello World");
@@ -170,7 +169,7 @@ public class PipelineTest extends BaseTest {
 
         boolean isJobInBuildQueue = new PipelineConfigurationPage(getDriver())
                 .clickSaveButton(new PipelineDetailsPage(getDriver()))
-                .clickConfigureInSideMenu()
+                .clickConfigure()
                 .setBuildAfterOtherProjectsCheckbox()
                 .setProjectsToWatch(PIPELINE_NAME)
                 .clickAlwaysTriggerRadio()
@@ -192,7 +191,7 @@ public class PipelineTest extends BaseTest {
         List<String> actualStageNames = new PipelineConfigurationPage(getDriver())
                 .setPipelineScript(pipelineScript)
                 .clickSaveButton(new PipelineDetailsPage(getDriver()))
-                .clickBuildNowInSideMenu()
+                .clickBuildNow()
                 .getStagesNames();
 
         Assert.assertEquals(actualStageNames, stageNames);
@@ -202,32 +201,24 @@ public class PipelineTest extends BaseTest {
     public void testBuildWithStringParameter() {
         final String parameterName = "textParam";
         final String parameterValue = "some text";
-        final String scriptText = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
+        final String pipelineScript = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
 
         createPipeline(PIPELINE_NAME, false);
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click()",
-                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
-        WebElement addParameterBtn = getWait5().until(ExpectedConditions
-                .visibilityOfElementLocated(By.id("yui-gen1-button")));
-        js.executeScript("arguments[0].scrollIntoView(true)",
-                getDriver().findElement(By.xpath("//label[text()='This project is parameterized']")));
-        addParameterBtn.click();
-        getDriver().findElement(By.id("yui-gen10")).click();
+        String logsText = new PipelineConfigurationPage(getDriver())
+                .clickProjectIsParameterized()
+                .clickAddParameter()
+                .selectStringParameter()
+                .setParameterName(parameterName)
+                .setPipelineScript(pipelineScript)
+                .clickSaveButton(new PipelineDetailsPage(getDriver()))
+                .clickBuildWithParameters()
+                .setStringParameterValue(parameterValue)
+                .clickBuildButton(new PipelineDetailsPage(getDriver()))
+                .clickLogsInStageView()
+                .getStageLogsModalText();
 
-        getDriver().findElement(By.name("parameter.name")).sendKeys(parameterName);
-        getDriver().findElement(By.className("ace_text-input")).sendKeys(scriptText);
-        clickSaveConfiguration();
-
-        new PipelinePage(getDriver()).clickBuildNow();
-        getDriver().findElement(By.name("value")).sendKeys(parameterValue);
-        getDriver().findElement(
-                By.xpath("//button[@class='jenkins-button jenkins-button--primary jenkins-!-build-color']")).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='badge']/a[text()='#1']"))).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, '/console')]")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.className("console-output")).getText().contains(parameterValue));
+        Assert.assertTrue(logsText.contains(parameterValue));
     }
 
     @Test
