@@ -1,6 +1,6 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -20,6 +20,15 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(xpath = "//h2[contains(text(),'Status')]/following::dl")
     private List<WebElement> iconLegendHeaders;
 
+    @FindBy(xpath = "//tr[1]/td//button")
+    private  WebElement lastTimeSinceInLineBuild;
+
+    @FindBy(css = "div[class='tippy-content']")
+    private WebElement visibleTippyBox;
+
+    @FindBy(css = "#timeline-band-1")
+    private WebElement timelineBand;
+
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
@@ -37,14 +46,33 @@ public class BuildHistoryPage extends BasePage {
         return this;
     }
 
-    public String timeSinceTableLinkText() {
-        WebElement timeSince = getDriver().findElement(By.xpath("//tr/td[3]/button[1]"));
-
+    public String getTextLastTimeSinceInLineBuild() {
         new Actions(getDriver()).
-                moveToElement(timeSince).
+                moveToElement(lastTimeSinceInLineBuild).
                 perform();
 
-        return  getDriver().findElement(By.cssSelector("div[class='tippy-content']"))
-                .getText();
+        return visibleTippyBox.getText();
+    }
+
+    public BuildHistoryPage clickLastTimeSinceInLineBuild() {
+        lastTimeSinceInLineBuild.click();
+
+        return this;
+    }
+
+    public BuildHistoryPage scrollTimelineBuildHistory() {
+        new Actions(getDriver())
+                .clickAndHold(timelineBand)
+                .moveByOffset(-500,0)
+                .release()
+                .pause(1000)
+                .perform();
+
+        return this;
+    }
+
+    public Point getPointLocation() {
+
+        return timelineBand.getLocation();
     }
 }
