@@ -29,6 +29,8 @@ public class FreestyleProjectTest extends BaseTest {
     private final static By LOCATOR_CREATED_JOB_LINK_MAIN_PAGE = By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]");
 
     private final static String NEW_DESCRIPTION_TEXT = "New freestyle project description";
+    private final static String NAME = "Ņame";
+    private final static String DESCRIPTION = "Description";
 
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -921,26 +923,26 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testThisProjectIsParameterizedCheckboxAddBooleanParameter() {
-        List<String> parameters = List.of("Ņame", "Description");
-
-        List<String> savedParametersList = new HomePage(getDriver())
+        new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
-                .clickSaveButton()
+                .goHomePage();
+
+        FreestyleProjectConfigurePage configurePage = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
                 .clickAddParameterDropdown()
                 .clickBooleanParameterOption()
-                .inputParameterName(parameters.get(0))
-                .inputParameterDescription(parameters.get(1))
+                .inputParameterName(NAME)
+                .inputParameterDescription(DESCRIPTION)
                 .clickSaveButton()
                 .goHomePage()
-                .clickOnJob()
-                .clickConfigure().getParameterNameAndDescription();
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure();
 
-        for (int i = 0; i < savedParametersList.size(); i++) {
-            Assert.assertEquals(savedParametersList.get(i), parameters.get(i));
-        }
+        Assert.assertTrue(configurePage.getParameterName().equals(NAME) &&
+                configurePage.getParameterDescription().equals(DESCRIPTION));
     }
 
     @Test
