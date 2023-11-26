@@ -1,16 +1,13 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,22 +24,16 @@ public class SystemLogTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDeleteAllCustomLogRecorders")
     public void testCreateCustomLogRecorder() {
-        openSyslogPage();
+        String newLogName = new HomePage(getDriver())
+            .clickManageJenkins()
+            .goSystemLogPage()
+            .clickAddRecorder()
+            .typeName(SYSLOG_NAME)
+            .clickCreate()
+            .backToSystemLog()
+            .getNameCustomLog();
 
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        new Actions(getDriver()).moveToElement(getDriver()
-                .findElement(By.cssSelector("input[checkurl='checkNewName']")))
-            .click()
-            .perform();
-        getDriver().findElement(By.cssSelector("input[checkurl='checkNewName']")).sendKeys(SYSLOG_NAME);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
-
-        Assert.assertEquals(getDriver()
-            .findElement(By.xpath("//*[@id='logRecorders']/tbody/tr[2]/td[1]/a"))
-            .getText(), SYSLOG_NAME);
+        Assert.assertEquals(newLogName, SYSLOG_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateCustomLogRecorder")
