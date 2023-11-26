@@ -632,7 +632,6 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
 
-    @Ignore("Expected condition failed: waiting for element to be clickable")
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testEditDescriptionFreestyleProject() {
 
