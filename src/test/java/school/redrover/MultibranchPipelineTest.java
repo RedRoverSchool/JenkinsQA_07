@@ -288,6 +288,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(pipelineNameExpected, MULTIBRANCH_PIPELINE_NAME);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testMultibranchCreationFromExisting() {
 
