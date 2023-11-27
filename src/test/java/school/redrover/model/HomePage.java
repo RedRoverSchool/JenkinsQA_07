@@ -51,6 +51,13 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//td[@class='pane pane-grow']")
     private WebElement buildQueueSection;
 
+    @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
+    private WebElement myView;
+
+    @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
+    private WebElement itemNameInTable;
+
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -252,5 +259,14 @@ public class HomePage extends BasePage {
 
     public boolean isJobInBuildQueue(String jobName) {
         return getWait10().until(ExpectedConditions.visibilityOf(buildQueueSection)).getText().contains(jobName);
+    }
+
+    public MyViewPage clickMyView() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(myView)).click();
+        return new MyViewPage(getDriver());
+    }
+
+    public String getItemNameInTable() {
+        return itemNameInTable.getText();
     }
 }

@@ -66,6 +66,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     private WebElement deleteProjectButton;
 
 
+    @FindBy(className = "warning")
+    private WebElement projectDisabledWarning;
+
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -201,4 +204,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
         getDriver().switchTo().alert().accept();
         return new HomePage(getDriver());
     }
+    public boolean isProjectDisabled() {
+        return projectDisabledWarning.isEnabled();
+    }
+
 }
