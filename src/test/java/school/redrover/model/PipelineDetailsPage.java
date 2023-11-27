@@ -154,6 +154,7 @@ public class PipelineDetailsPage extends BasePage {
 
         return getWait2().until(ExpectedConditions.visibilityOf(buildIcon)).isDisplayed();
     }
+
     public PipelineDetailsPage clickBuildNowButton() {
         buildNowButton.click();
 
@@ -163,7 +164,6 @@ public class PipelineDetailsPage extends BasePage {
     public String getTooltipAttributeValue() {
         return tooltipValue.getAttribute("tooltip");
     }
-
 
     public PipelineDetailsPage clickLastBuildLink(){
         lastBuildLink.click();
@@ -181,11 +181,11 @@ public class PipelineDetailsPage extends BasePage {
 
         return lastBuildLink.getText();
     }
+
     public FolderDetailsPage deletePipelineJobInsideOfFolder() {
         deletePipelineButton.click();
         getDriver().switchTo().alert().accept();
 
         return new FolderDetailsPage(getDriver());
     }
-
 }
