@@ -6,10 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.annotations.DataProvider;
-import school.redrover.MultibranchPipelineTest;
 import school.redrover.model.base.BasePage;
-import java.util.Random;
 
 public class NewItemPage extends BasePage {
 
@@ -48,7 +45,6 @@ public class NewItemPage extends BasePage {
 
     @FindBy(css = "div[class='add-item-name']")
     private WebElement inputValidationMessage;
-
 
     @FindBy(xpath = "//span[normalize-space()='Pipeline']")
     private WebElement pipeLineCategory;
