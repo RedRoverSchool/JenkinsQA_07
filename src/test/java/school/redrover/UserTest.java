@@ -728,21 +728,21 @@ public class UserTest extends BaseTest {
         final String existedUsername= "Usertest2";
         final String password = "5679";
         final String email = "rv@gmail.com";
-        final String fullname = "User User";
+        final String fullName = "User User";
 
        new HomePage(getDriver())
                .clickManageJenkins();
-
        createUser(existedUsername, password, email);
+
        new UserConfigurationPage(getDriver())
-               .username()
-               .configurationPage()
-               .userFull()
-               .fullUser()
-               .saveButton();
+               .clickUsername()
+               .clickConfigurationPage()
+               .clearUserFull()
+               .sendKeysFullNameUser()
+               .clickSaveButton();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
-                fullname);
+                fullName);
     }
 }
