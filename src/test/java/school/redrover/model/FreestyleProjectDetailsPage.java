@@ -191,7 +191,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public boolean isProjectDisabled() {
-        return projectDisabledWarning.isDisplayed();
+        return projectDisabledWarning.isEnabled();
     }
 
 }
