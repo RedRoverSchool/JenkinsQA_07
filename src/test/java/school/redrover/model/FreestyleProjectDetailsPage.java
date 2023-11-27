@@ -200,6 +200,5 @@ public class FreestyleProjectDetailsPage extends BasePage {
     public HomePage clickAlertDeleteTheProject() {
         getDriver().switchTo().alert().accept();
         return new HomePage(getDriver());
-
     }
 }

@@ -1229,25 +1229,29 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(itemsActual, itemsExpected);
     }
+
     @Test
     public void testCreateNewFreestyleProject() {
-        HomePage homePage = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(PROJECT_NAME)
                 .selectFreestyleProject()
                 .clickOk(new FreestyleProjectDetailsPage(getDriver()))
-                .goHomePage();
+                .goHomePage()
+                .getJobList();
 
-        Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
+        Assert.assertTrue(jobList.contains(PROJECT_NAME));
     }
+
     @Test(dependsOnMethods = "testCreateNewFreestyleProject")
     public void testDeleteFreestyleProject() {
-        HomePage home = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickDeleteProject()
-                .clickAlertDeleteTheProject();
+                .clickAlertDeleteTheProject()
+                .getJobList();
 
-        Assert.assertEquals(home.getJobList().size(), 0);
+        Assert.assertEquals(jobList.size(), 0);
     }
 
 }
