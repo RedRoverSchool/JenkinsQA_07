@@ -482,15 +482,16 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(description = "Creating Freestyle project using an empty name")
     public void testFreestyleProjectWithEmptyName() {
+        NewItemPage newItemPage = new HomePage(getDriver())
+                .clickNewItem();
+        String textResult = newItemPage
+                .clickOk(new NewItemPage(getDriver()))
+                .getRequiredNameErrorMessage();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-
-        String textResult = getDriver().findElement(By.id("itemname-required")).getText();
-        WebElement buttonOk = getDriver().findElement(By.id("ok-button"));
+        boolean okButtonEnabled = newItemPage.isOkButtonEnabled();
 
         Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
-        Assert.assertFalse(buttonOk.isEnabled());
+        Assert.assertFalse(okButtonEnabled);
     }
 
     @Test
