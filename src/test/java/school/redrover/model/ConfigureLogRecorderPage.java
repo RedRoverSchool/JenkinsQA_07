@@ -36,6 +36,9 @@ public class ConfigureLogRecorderPage extends BasePage {
     @FindBy(xpath = "//a[@href='/manage/log/']")
     private WebElement systemLog;
 
+    @FindBy(xpath = "//*[@id='breadcrumbs']/li[5]/a")
+    private WebElement backToSystemLogButton;
+
     public ConfigureLogRecorderPage(WebDriver driver) {
         super(driver);
     }
@@ -79,6 +82,12 @@ public class ConfigureLogRecorderPage extends BasePage {
 
     public SystemLogPage clickSystemLog(){
         systemLog.click();
+
+        return new SystemLogPage(getDriver());
+    }
+
+    public SystemLogPage backToSystemLog() {
+        backToSystemLogButton.click();
 
         return new SystemLogPage(getDriver());
     }

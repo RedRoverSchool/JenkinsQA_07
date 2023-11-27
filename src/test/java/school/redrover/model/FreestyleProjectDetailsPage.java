@@ -28,7 +28,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(linkText = "Status")
     private WebElement statusPageLink;
 
-    @FindBy(linkText = "Rename")
+    @FindBy(xpath = "//*[@id=\"tasks\"]/div[7]/span/a")
     private WebElement renamePageLink;
 
     @FindBy(xpath = "//a[@href='lastBuild/']")
@@ -49,14 +49,22 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
 
-    @FindBy(xpath = "//span[contains(text(), 'Delete Project')]/..")
+    @FindBy(xpath = "//*[@id=\"tasks\"]/div[6]/span/a/span[2]")
     private WebElement deleteProject;
 
     @FindBy(xpath = "//a[contains(@href,'configure')]")
     private WebElement configureButton;
 
+    @FindBy(xpath = "//a[contains(@href,'ws')]")
+    private WebElement workspaceButton;
+
     @FindBy(xpath = "//a//span[2]")
     private List<WebElement> itemsSidePanel;
+
+
+    @FindBy(xpath = "//*[@class='icon-edit-delete icon-md']")
+    private WebElement deleteProjectButton;
+
 
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
@@ -104,8 +112,8 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return new FreestyleProjectRenamePage(getDriver());
     }
 
-    public WorkspacePage goToWorkspaceFromSideMenu(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/ws/']")).click();
+    public WorkspacePage goToWorkspaceFromSideMenu() {
+        workspaceButton.click();
         return new WorkspacePage(getDriver());
     }
 
@@ -165,7 +173,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return this;
     }
-  
+
     public HomePage deleteProject() {
         deleteProject.click();
         getDriver().switchTo().alert().accept();
@@ -174,13 +182,23 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
     public List<String> getTextItemsSidePanel() {
         List<String> textValue = new ArrayList<>();
-        for (WebElement item: itemsSidePanel) {
+        for (WebElement item : itemsSidePanel) {
             textValue.add(item.getText());
         }
         return textValue;
     }
-  
+
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
+    }
+
+    public FreestyleProjectDetailsPage clickDeleteProject() {
+        deleteProjectButton.click();
+        return this;
+    }
+
+    public HomePage clickAlertDeleteTheProject() {
+        getDriver().switchTo().alert().accept();
+        return new HomePage(getDriver());
     }
 }

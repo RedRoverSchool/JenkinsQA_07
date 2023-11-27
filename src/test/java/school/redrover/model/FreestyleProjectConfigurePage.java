@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -11,6 +12,9 @@ import java.util.List;
 public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement helpButtonDiscardOldBuilds;
+
+    @FindBy(css = "[nameref='rowSetStart26'] .help")
+    private WebElement helpDescriptionDiscardOldBuilds;
 
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;
@@ -81,7 +85,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//span[@class = 'jenkins-edited-section-label']")
     private WebElement labelEditedInGitHubProject;
 
-    @FindBy (xpath = "//div[@class ='jenkins-form-item tr jenkins-form-item--tight']//button")
+    @FindBy(xpath = "//div[@class ='jenkins-form-item tr jenkins-form-item--tight']//button")
     private WebElement advancedButton;
 
     @FindBy(xpath = "//a[@title='Help for feature: Quiet period']")
@@ -104,6 +108,15 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     @FindBy(xpath = "//button[@data-section-id='build-environment']")
     private WebElement buildEnvironmentSidebarItem;
+
+    @FindBy(xpath = "//a[contains(text(), 'Boolean Parameter')]")
+    private WebElement booleanParameterOption;
+
+    @FindBy(xpath = "//input[@name = 'parameter.name']")
+    private WebElement parameterNameInputBox;
+
+    @FindBy(xpath = "//textarea[@name = 'parameter.description']")
+    private WebElement parameterDescriptionInputBox;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -174,15 +187,21 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage selectTimePeriod(String period) {
-        getDriver().findElement(By.xpath("//select[@name='_.durationName']")).click();
-        getDriver().findElement(By.xpath("//option[@value='" + period + "']")).click();
+
+        Select select = new Select(selectTimePeriod);
+        select.selectByValue(period);
+        selectTimePeriod.click();
+
         return this;
     }
-
 
     public FreestyleProjectConfigurePage clickExecuteConcurrentBuildsIfNecessaryCheckBox() {
         executeConcurrentBuildsIfNecessaryCheckBox.click();
         return this;
+    }
+
+    public String getExecuteConcurrentBuildsIfNecessaryCheckBoxValue(String value) {
+        return executeConcurrentBuildsIfNecessaryCheckBox.getCssValue(value);
     }
 
     public FreestyleProjectConfigurePage clickDisableToggle() {
@@ -311,7 +330,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return helpMessage.isDisplayed();
     }
 
-    public WebElement getAddParameterDropdownMenu(){
+    public WebElement getAddParameterDropdownMenu() {
         return addParameterDropdownMenu;
     }
 
@@ -350,5 +369,49 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getShellScriptText() {
         return shellScriptInput.getText();
+    }
+
+    public String clickHelpDescriptionOfDiscardOldBuilds(){
+        helpButtonDiscardOldBuilds.click();
+        return helpDescriptionDiscardOldBuilds.getAttribute("style");
+    }
+
+    public FreestyleProjectConfigurePage clickAddParameterDropdown() {
+        addParameterDropdownMenu.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickBooleanParameterOption() {
+        booleanParameterOption.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputParameterName(String name) {
+        parameterNameInputBox.sendKeys(name);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputParameterDescription(String description) {
+        parameterDescriptionInputBox.sendKeys(description);
+
+        return this;
+    }
+
+    public String getParameterName() {
+        return parameterNameInputBox.getAttribute("value");
+    }
+
+    public String getParameterDescription() {
+        return parameterDescriptionInputBox.getAttribute("value");
+    }
+
+    public List<String> getParameterNameAndDescription() {
+        return List.of(
+                getParameterName(),
+                getParameterDescription()
+        );
     }
 }

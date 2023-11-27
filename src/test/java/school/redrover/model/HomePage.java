@@ -45,12 +45,18 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement buttonPeople;
 
+    @FindBy(className = "jenkins_ver")
+    private WebElement jenkinsVersion;
+
+    @FindBy(xpath = "//td[@class='pane pane-grow']")
+    private WebElement buildQueueSection;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
     public <T> T clickJobByName(String name, T page) {
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + name + "/']")).click();
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
         return page;
     }
@@ -131,7 +137,7 @@ public class HomePage extends BasePage {
     }
 
     public MultibranchPipelineRenamePage clickRenameDropdownMenu(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/job/" + name.replace(" ", "%20") + "/confirm-rename']")).click();
 
         return new MultibranchPipelineRenamePage(getDriver());
     }
@@ -168,8 +174,10 @@ public class HomePage extends BasePage {
     public boolean isAlertVisible() {
         try {
             getDriver().switchTo().alert();
+
             return true;
         } catch (NoAlertPresentException ex) {
+
             return false;
         }
     }
@@ -183,8 +191,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickBuildByGreenArrow(String name) {
-        getDriver().findElement(By.xpath("//a[@href='job/" + name + "/build?delay=0sec']")).click();
-        getWait5().until(ExpectedConditions.invisibilityOf(runningBuildIndicator));
+        getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
 
         return this;
     }
@@ -210,15 +217,15 @@ public class HomePage extends BasePage {
                 .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
                 .perform();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName + "/']/button")));
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
 
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                        .findElement(By.xpath("//a[@href='job/" + jobName + "/']/button")))
+                        .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
                 .click()
                 .perform();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName + "/confirm-rename']"))).click();
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
 
         return page;
     }
@@ -228,18 +235,22 @@ public class HomePage extends BasePage {
     }
 
     public FreestyleProjectDetailsPage clickOnJob() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(jobName)).click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(jobName)).click();
 
         return new FreestyleProjectDetailsPage(getDriver());
     }
 
-    public HomePage wait10UntilVisibilityOfJob(String projectName) {
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td/a[@href='job/" + projectName + "/']")));
-        return this;
-    }
-
     public PeoplePage clickPeople() {
         buttonPeople.click();
+
         return new PeoplePage(getDriver());
+    }
+
+    public String getVersion() {
+        return jenkinsVersion.getText();
+    }
+
+    public boolean isJobInBuildQueue(String jobName) {
+        return getWait10().until(ExpectedConditions.visibilityOf(buildQueueSection)).getText().contains(jobName);
     }
 }
