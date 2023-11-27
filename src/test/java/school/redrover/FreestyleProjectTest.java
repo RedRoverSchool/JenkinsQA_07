@@ -649,7 +649,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
-    public void testFreestyleProjectAdvancedSetting() {
+    public void testFreestyleProjectAdvancedSettingVisibilityOfHelpDescriptionQuietPeriod() {
         boolean helpMessageDisplay = new HomePage(getDriver())
                 .clickOnJob()
                 .goToConfigureFromSideMenu()
@@ -671,16 +671,14 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(currentUrl.contains("/job/" + editedProjectName));
     }
 
-    @Test
-    public void testDisableFreestyleProject() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    public void testDisableFreestyleProjectFromFreestyleProjectDetailPage() {
+        String homePage = new HomePage(getDriver())
+                .clickOnJob()
+                .clickEnableDisableButton()
+                .getWarningMessageWhenDisabled();
 
-        getDriver().findElement(By.cssSelector("a[class='jenkins-table__link model-link inside']")).click();
-        clickSubmitButton();
-        String result = getDriver().findElement(By.cssSelector("form[id='enable-project']")).getText();
-
-        Assert.assertEquals("This project is currently disabled", result.substring(0, 34));
+        Assert.assertEquals("This project is currently disabled", homePage);
     }
 
     @Test
