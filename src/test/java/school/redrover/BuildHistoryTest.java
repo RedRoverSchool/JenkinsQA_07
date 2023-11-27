@@ -76,6 +76,11 @@ public class BuildHistoryTest extends BaseTest {
 
         Assert.assertEquals(tooltipIsVisible, "Click to center timeline on event");
     }
+
+    @Test (dependsOnMethods = "testTooltipIsVisibleInTheTimeSinceSection")
+    public void testEditBuildInformation(){
+
+    }
     
     @Test(dependsOnMethods = "testTooltipIsVisibleInTheTimeSinceSection")
     public void testReturnBuildPoint() {
