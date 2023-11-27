@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PipelineDetailsPage extends BasePage {
-    
+
     public PipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -64,6 +64,12 @@ public class PipelineDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/1/console')]")
     private WebElement tooltipValue;
+
+    @FindBy(xpath = "//a[contains(@href, 'lastBuild/')]")
+    private WebElement lastBuildLink;
+
+    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
+    private WebElement replayButtonSideMenu;
 
     @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
     private WebElement deletePipelineButton;
@@ -158,6 +164,23 @@ public class PipelineDetailsPage extends BasePage {
         return tooltipValue.getAttribute("tooltip");
     }
 
+
+    public PipelineDetailsPage clickLastBuildLink(){
+        lastBuildLink.click();
+
+        return new PipelineDetailsPage(getDriver());
+    }
+
+    public ReplayBuildPipelinePage clickReplaySideMenu(){
+        replayButtonSideMenu.click();
+
+        return new ReplayBuildPipelinePage(getDriver());
+    }
+
+    public String getLastBuildLinkText(){
+
+        return lastBuildLink.getText();
+    }
     public FolderDetailsPage deletePipelineJobInsideOfFolder() {
         deletePipelineButton.click();
         getDriver().switchTo().alert().accept();
