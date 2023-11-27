@@ -25,12 +25,10 @@ public class PipelineTest extends BaseTest {
     public void testCreatePipeline() {
         boolean pipeLineCreated = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(PIPELINE_NAME)
-                .selectPipelineProject()
-                .clickOk(new NewJobPage(getDriver()))
-                .clickSaveButton()
-                .getCreatedJobName()
-                .equals("Pipeline " + PIPELINE_NAME);
+                .createPipelinePage(PIPELINE_NAME)
+                .goHomePage()
+                .getJobList()
+                .contains(PIPELINE_NAME);
 
         Assert.assertTrue(pipeLineCreated);
     }
