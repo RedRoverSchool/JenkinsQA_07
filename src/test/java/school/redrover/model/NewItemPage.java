@@ -180,6 +180,14 @@ public class NewItemPage extends BasePage {
         return new PipelineConfigurationPage(getDriver());
     }
 
+    public PipelineConfigurationPage createNewPipelineProject(String projectName) {
+        inputName.sendKeys(projectName);
+        pipeline.click();
+        okButton.click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
+
     public FolderConfigurationPage createFolder(String folderName) {
         inputName.sendKeys(folderName);
         folder.click();

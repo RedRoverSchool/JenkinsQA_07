@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -94,33 +93,22 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isJobCreated);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testCreateNewJob")
     public void testMoveFolderToFolder() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        FolderDetailsPage folderDetailsPage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFolder(NESTED_FOLDER)
+                .goHomePage()
+                .clickJobByName(NESTED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickMove()
+                .clickArrowDropDownMenu()
+                .clickFolderByName(RENAMED_FOLDER)
+                .clickMove()
+                .goHomePage()
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()));
 
-        getDriver().findElement(By.cssSelector("#name")).sendKeys(NESTED_FOLDER);
-        getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDashboardLink();
-
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//td/a[@href='job/" + NESTED_FOLDER + "/']"))).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + NESTED_FOLDER + "/move']")).click();
-        getDriver().findElement(By.name("destination")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//option[@value='/" + RENAMED_FOLDER + "']"))).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDashboardLink();
-
-        getDriver().findElement(By.xpath("//li[@class='children'][1]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/view/all/']")).click();
-        getDriver().findElement(By.xpath("//li[@class='children'][2]")).click();
-        getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item']")).click();
-
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//td/a[@class='jenkins-table__link model-link inside']")).getText(), NESTED_FOLDER);
+        Assert.assertTrue(folderDetailsPage.getJobListInsideFolder().contains(NESTED_FOLDER));
     }
-
 
     @Test(dependsOnMethods = {"testCreate", "testRename"})
     public void testAddDisplayName() {
@@ -181,31 +169,19 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
-    @Ignore
     @Test
     public void testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder() {
+        String actualTooltipValue = new HomePage(getDriver())
+                .clickNewItem()
+                .createFolder(FOLDER_NAME)
+                .clickSaveButton()
+                .clickNewItemButton()
+                .createNewPipelineProject(JOB_NAME)
+                .clickSaveButton()
+                .clickBuildNowButton()
+                .getTooltipAttributeValue();
 
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Folder");
-        getDriver().findElement(By.xpath("//span[text()='Folder']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/Folder/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys("Pipeline");
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/Folder/job/Pipeline/build?delay=0sec']")).click();
-
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Folder/job/Pipeline/1/console']")))
-                .perform();
-
-        Assert.assertEquals(getDriver().findElement(
-                        By.xpath("//a[@href='/job/Folder/job/Pipeline/1/console']")).getAttribute("tooltip"),
-                "Success > Console Output");
+        Assert.assertEquals(actualTooltipValue, "Success > Console Output");
     }
 
     @Ignore

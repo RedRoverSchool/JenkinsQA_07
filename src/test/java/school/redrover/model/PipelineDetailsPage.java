@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -57,6 +58,12 @@ public class PipelineDetailsPage extends BasePage {
 
     @FindBy(xpath = "//div[@class='build-icon']/a")
     private WebElement buildIcon;
+
+    @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
+    private WebElement buildNowButton;
+
+    @FindBy(xpath = "//a[contains(@href, '/1/console')]")
+    private WebElement tooltipValue;
 
     @FindBy(xpath = "//*[@id='main-panel']/ul/li[1]/a")
     private WebElement lastBuildLink;
@@ -144,6 +151,16 @@ public class PipelineDetailsPage extends BasePage {
 
         return getWait2().until(ExpectedConditions.visibilityOf(buildIcon)).isDisplayed();
     }
+    public PipelineDetailsPage clickBuildNowButton() {
+        buildNowButton.click();
+
+        return this;
+    }
+
+    public String getTooltipAttributeValue() {
+        return tooltipValue.getAttribute("tooltip");
+    }
+
 
     public PipelineDetailsPage clickLastBuildLink(){
         lastBuildLink.click();
