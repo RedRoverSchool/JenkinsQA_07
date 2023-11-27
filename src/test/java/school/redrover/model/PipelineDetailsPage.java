@@ -65,7 +65,7 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/1/console')]")
     private WebElement tooltipValue;
 
-    @FindBy(xpath = "//*[@id='main-panel']/ul/li[1]/a")
+    @FindBy(xpath = "//a[contains(@href, 'lastBuild/')]")
     private WebElement lastBuildLink;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
