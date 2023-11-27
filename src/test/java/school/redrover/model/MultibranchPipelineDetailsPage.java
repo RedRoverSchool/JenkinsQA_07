@@ -2,17 +2,44 @@ package school.redrover.model;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.WebElement;
+import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MultibranchPipelineDetailsPage extends BasePage {
-    
-  public MultibranchPipelineDetailsPage(WebDriver driver) {
+
+    @FindBy(xpath = "//span[@class='task-link-wrapper ']")
+    private List<WebElement> sidebarMenuTasksList;
+
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
+    private List<WebElement> breadcrumbChain;
+
+    @FindBy(tagName = "h1")
+    private WebElement pageTitle;
+
+    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameButton;
+
+    public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
+    }
+
+
+    public String getTitle() {
+        return pageTitle.getText();
+    }
+    public List<String> getBreadcrumbChain() {
+        List<String> breadcrumb = new ArrayList<>();
+        for (WebElement element : breadcrumbChain) {
+            breadcrumb.add(element.getText());
+        }
+        return breadcrumb;
     }
 
     public List<String> getTasksText() {
@@ -28,8 +55,13 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     }
 
     public MultibranchPipelineRenamePage clickRename() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+        renameButton.click();
 
         return new MultibranchPipelineRenamePage(getDriver());
+    }
+
+    public List<String> getNameOfTasksFromSidebarMenu() {
+        return TestUtils.getTextOfWebElements(getWait2().until(
+                ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
     }
 }

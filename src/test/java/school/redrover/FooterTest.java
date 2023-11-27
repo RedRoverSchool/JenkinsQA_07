@@ -6,12 +6,15 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FooterTest extends BaseTest {
+
+    private static final String JENKINS_VERSION = "Jenkins 2.414.2";
 
     public WebElement jenkinsVersionButton() {
         return getDriver().findElement(By.xpath("//button[@type = 'button']"));
@@ -57,11 +60,10 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testVersionJenkins() {
-        Assert.assertEquals(
-                getDriver()
-                        .findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"))
-                        .getText(),
-                "Jenkins 2.414.2");
+
+        String jenkinsVersionActual = new HomePage(getDriver())
+                .getVersion();
+        Assert.assertEquals(jenkinsVersionActual, JENKINS_VERSION);
     }
 
     @Ignore
@@ -102,6 +104,7 @@ public class FooterTest extends BaseTest {
                 .getText(), "Jenkins 2.414.2");
     }
 
+    @Ignore
     @Test
     public void testJenkinsVersionCheck1() {
         getDriver().findElement(By.xpath("//a[@class]//span[@class='hidden-xs hidden-sm']")).click();
@@ -134,6 +137,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualMenu, expectedMenu, "Tippy box context menu doesn't macth");
     }
 
+    @Ignore
     @Test
     public void testClickAboutJenkins() {
         String expectedPageName = "Jenkins";

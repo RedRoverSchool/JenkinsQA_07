@@ -13,6 +13,9 @@ public class NodeCofigurationPage extends BasePage {
     @FindBy(name = "_.name")
     private WebElement inputName;
 
+    @FindBy(xpath = "//input[contains(@name, 'numExecutors')]")
+    private WebElement NumberOfExecutorsField;
+
     public NodeCofigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -29,4 +32,17 @@ public class NodeCofigurationPage extends BasePage {
         return this;
     }
 
+    public ErrorPage inputInvalidNumberOfExecutors(int number) {
+        NumberOfExecutorsField.sendKeys(String.valueOf(number));
+        saveButton.click();
+
+        return new ErrorPage(getDriver());
+    }
+
+    public AngryErrorPage inputEnormousNumberOfExecutors(int number) {
+        NumberOfExecutorsField.sendKeys(String.valueOf(number));
+        saveButton.click();
+
+        return new AngryErrorPage(getDriver());
+    }
 }

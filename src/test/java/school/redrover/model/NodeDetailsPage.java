@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,11 +19,27 @@ public class NodeDetailsPage extends BasePage {
     @FindBy(className = "message")
     private WebElement message;
 
-    @FindBy(xpath = "//a[@href='/computer/NewNode/configure']")
+    @FindBy(xpath = "//span/a[contains(@href, '/configure')]")
     private WebElement configure;
 
     @FindBy(xpath = "//div[@id='tasks']/div[2]/span/a")
     private WebElement deleteButton;
+
+    @FindBy(id = "description-link")
+    private WebElement descriptionButton;
+
+    @FindBy(xpath = "//textarea[@name = 'description']")
+    private WebElement descriptionField;
+
+    @FindBy(xpath = "//div/button[@name = 'Submit']")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//div[@id= 'description']/div[1]")
+    private WebElement descriptionText;
+
+    @FindBy(xpath = "//span/a[contains(@href, '/configure')]")
+    private WebElement configureButton;
+
 
     public NodeDetailsPage(WebDriver driver) {
         super(driver);
@@ -76,5 +91,18 @@ public class NodeDetailsPage extends BasePage {
         getDriver().switchTo().alert().accept();
 
         return new NodesListPage(getDriver());
+    }
+
+    public NodeDetailsPage inputDescription(String description) {
+        descriptionButton.click();
+        descriptionField.clear();
+        descriptionField.sendKeys(description);
+        saveButton.click();
+
+        return this;
+    }
+
+    public String getDescriptionText() {
+        return descriptionText.getText();
     }
 }
