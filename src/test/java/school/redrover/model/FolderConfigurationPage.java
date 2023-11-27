@@ -14,6 +14,12 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(className = "textarea-show-preview")
     private WebElement previewSwitch;
 
+    @FindBy(xpath = "//button[@name='Submit']")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//a[contains(@href, '/newJob')]")
+    private WebElement newItemButton;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -38,5 +44,17 @@ public class FolderConfigurationPage extends BasePage {
     public HomePage clickSave() {
         getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
         return new HomePage(getDriver());
+    }
+
+    public FolderConfigurationPage clickSaveButton() {
+        saveButton.click();
+
+        return this;
+    }
+
+    public NewItemPage clickNewItemButton() {
+        newItemButton.click();
+
+        return new NewItemPage(getDriver());
     }
 }

@@ -31,6 +31,12 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
 
+    @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
+    private WebElement buildNowButton;
+
+    @FindBy(xpath = "//a[contains(@href, '/1/console')]")
+    private WebElement tooltipValue;
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -62,6 +68,16 @@ public class PipelineDetailsPage extends BasePage {
         }
 
         return permalinks;
+    }
+
+    public PipelineDetailsPage clickBuildNowButton() {
+        buildNowButton.click();
+
+        return this;
+    }
+
+    public String getTooltipAttributeValue() {
+        return tooltipValue.getAttribute("tooltip");
     }
 
 }
