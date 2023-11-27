@@ -10,6 +10,12 @@ public class LogRecordersDetailsPage extends BasePage {
     @FindBy(xpath = "//a[@href = 'configure']")
     private WebElement buttonConfigure;
 
+    @FindBy(xpath = "//a[@href='/manage/log/']")
+    private WebElement breadcrumbSystemLog;
+
+    @FindBy(id = "clear-logrecorder")
+    private WebElement buttonClearThisLog;
+
     public LogRecordersDetailsPage(WebDriver driver) {
         super (driver);
     }
@@ -18,5 +24,11 @@ public class LogRecordersDetailsPage extends BasePage {
         buttonConfigure.click();
 
         return new ConfigureLogRecorderPage(getDriver());
+    }
+
+    public LogRecordersDetailsPage clickClearThisLog() {
+        buttonClearThisLog.click();
+
+        return this;
     }
 }

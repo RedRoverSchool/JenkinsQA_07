@@ -24,9 +24,6 @@ public class ConfigureLogRecorderPage extends BasePage {
     @FindBy(xpath = "//div[@name='loggers'])[last()]//li[1]")
     private WebElement loggerDropDownList;
 
-    @FindBy(xpath = "(//select)[last()")
-    private WebElement lastLogLevel;
-
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement buttonSave;
 
@@ -49,8 +46,7 @@ public class ConfigureLogRecorderPage extends BasePage {
         return this;
     }
 
-    public ConfigureLogRecorderPage chooseLastLogger(String loggerName) {
-
+    public ConfigureLogRecorderPage chooseLastLoggerFromDropDown(String loggerName) {
         WebElement lastLoggerField = getDriver().findElement(By.xpath("(//input[@name = '_.name'])[last()]"));
         WebElement loggerDropDownList = getDriver().findElement(By.xpath("(//div[@name = 'loggers'])[last()]//li[1]"));
 
@@ -93,12 +89,18 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public List<String> getLoggersAndLevelsSavedList() {
-
-        List<String> resultlist = List.of(
+        List<String> resultList = List.of(
                 name.getAttribute("value"),
                 lastLoggerField.getAttribute("value"),
-                selectedLogLevel.getText()
-        );
-        return resultlist;
+                selectedLogLevel.getText());
+
+        return resultList;
+    }
+
+    public ConfigureLogRecorderPage changeLogger(String name) {
+        lastLoggerField.clear();
+        lastLoggerField.sendKeys(name);
+
+        return this;
     }
 }
