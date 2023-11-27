@@ -516,25 +516,36 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(errorText, "No name is specified");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDisable() {
-        createFreeStyleProject(PROJECT_NAME);
-        clickSubmitButton();
+//        createFreeStyleProject(PROJECT_NAME);
+//        clickSubmitButton();
+//
+//        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
+//
+//        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='enable']/button")).isEnabled());
 
-        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
+        FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickEnableDisableButton();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='enable']/button")).isEnabled());
+        Assert.assertTrue(detailsPage.isProjectDisabled());
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
-        createFreeStyleProject(PROJECT_NAME);
-        clickSubmitButton();
+//        createFreeStyleProject(PROJECT_NAME);
+//        clickSubmitButton();
+//
+//        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
+//        getDriver().findElement(By.xpath("//form[@action='enable']/button")).click();
+//
+//        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
+        FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickEnableDisableButton();
 
-        getDriver().findElement(By.xpath("//form[@action='disable']/button")).click();
-        getDriver().findElement(By.xpath("//form[@action='enable']/button")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//form[@action='disable']")).isEnabled());
+        Assert.assertFalse(detailsPage.isProjectDisabled());
     }
 
     @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")

@@ -61,6 +61,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//a//span[2]")
     private List<WebElement> itemsSidePanel;
 
+    @FindBy(className = "warning")
+    private WebElement projectDisabledWarning;
+
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -185,6 +188,10 @@ public class FreestyleProjectDetailsPage extends BasePage {
   
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
+    }
+
+    public boolean isProjectDisabled() {
+        return projectDisabledWarning.isDisplayed();
     }
 
 }
