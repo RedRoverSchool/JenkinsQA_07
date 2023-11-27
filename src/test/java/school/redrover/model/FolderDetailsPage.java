@@ -20,6 +20,9 @@ public class FolderDetailsPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(xpath = "//a[contains(@href, '/newJob')]")
+    private WebElement newItemButton;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -66,6 +69,12 @@ public class FolderDetailsPage extends BasePage {
 
     public NewItemPage clickCreateJob() {
         getDriver().findElement(By.xpath("//a[@class='content-block__link']")).click();
+        return new NewItemPage(getDriver());
+    }
+
+    public NewItemPage clickNewItemButton() {
+        newItemButton.click();
+
         return new NewItemPage(getDriver());
     }
 

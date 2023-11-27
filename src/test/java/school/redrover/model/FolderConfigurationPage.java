@@ -35,9 +35,6 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@class='repeated-chunk__header' and contains(text(), 'Child item with worst health')]")
     private WebElement childHealthMetricSection;
 
-    @FindBy(xpath = "//a[contains(@href, '/newJob')]")
-    private WebElement newItemButton;
-
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -90,17 +87,5 @@ public class FolderConfigurationPage extends BasePage {
 
     public boolean  isChildHealthMetricDisplayed () {
         return childHealthMetricSection.isDisplayed();
-    }
-
-    public FolderConfigurationPage clickSaveButton() {
-        saveButton.click();
-
-        return this;
-    }
-
-    public NewItemPage clickNewItemButton() {
-        newItemButton.click();
-
-        return new NewItemPage(getDriver());
     }
 }
