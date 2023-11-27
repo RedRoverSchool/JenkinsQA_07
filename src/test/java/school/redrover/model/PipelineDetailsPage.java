@@ -65,6 +65,9 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/1/console')]")
     private WebElement tooltipValue;
 
+    @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
+    private WebElement deletePipelineButton;
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -153,6 +156,13 @@ public class PipelineDetailsPage extends BasePage {
 
     public String getTooltipAttributeValue() {
         return tooltipValue.getAttribute("tooltip");
+    }
+
+    public FolderDetailsPage deletePipelineJobInsideOfFolder() {
+        deletePipelineButton.click();
+        getDriver().switchTo().alert().accept();
+
+        return new FolderDetailsPage(getDriver());
     }
 
 }

@@ -184,24 +184,16 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualTooltipValue, "Success > Console Output");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder")
     public void testDeletePipelineInsideOfFolder() {
-        getDriver().findElement(By.xpath("//a[@href='job/Folder/']")).click();
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[@href='/job/Folder/configure']")))
-                .click()
-                .perform();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        int sizeOfEmptyJobListInsideOfFolderAfterJobDeletion = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .deletePipelineJobInsideOfFolder()
+                .getJobListInsideFolder().size();
 
-        getDriver().findElement(By.xpath("//a[@href='job/Pipeline/']")).click();
-        getDriver().findElement(By.xpath("//a[@data-url='/job/Folder/job/Pipeline/doDelete']")).click();
-
-        getDriver().switchTo().alert().accept();
-
-        Assert.assertEquals(getDriver().findElement(By.className("h4")).getText(), "This folder is empty");
+        Assert.assertEquals(sizeOfEmptyJobListInsideOfFolderAfterJobDeletion, 0);
     }
-
 
     @Test(dataProvider = "provideUnsafeCharacters")
     public void testCreateNameSpecialCharacters(String unsafeChar) {

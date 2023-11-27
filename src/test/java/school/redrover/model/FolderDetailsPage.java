@@ -99,4 +99,10 @@ public class FolderDetailsPage extends BasePage {
 
         return resultList;
     }
+
+    public <T> T clickJobByName(String name, T page) {
+        getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
+
+        return page;
+    }
 }
