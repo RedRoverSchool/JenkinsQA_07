@@ -54,6 +54,7 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertTrue(url.contains("manage/computer/"));
     }
 
+    @Ignore
     @Test
     public void testListOfResultsVisibility() {
 

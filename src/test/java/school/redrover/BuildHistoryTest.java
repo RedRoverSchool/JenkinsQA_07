@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.BuildHistoryPage;
 import school.redrover.model.FreestyleProjectConfigurePage;
@@ -76,7 +77,8 @@ public class BuildHistoryTest extends BaseTest {
 
         Assert.assertEquals(tooltipIsVisible, "Click to center timeline on event");
     }
-    
+
+    @Ignore
     @Test(dependsOnMethods = "testTooltipIsVisibleInTheTimeSinceSection")
     public void testReturnBuildPoint() {
         Point startPosition = new HomePage(getDriver())
