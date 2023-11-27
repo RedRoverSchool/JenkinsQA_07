@@ -147,6 +147,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .click()
                 .perform();
     }
+
     private void configureParameterizedBuild(String projectName, String choiceName, String choiceOptions) {
         getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
@@ -609,6 +610,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertTrue(thisProjectIsParameterizedCheckbox.isSelected());
     }
+
     @Ignore
     @Test
     public void testOldBuildsAreDiscarded() {
@@ -1227,4 +1229,29 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(itemsActual, itemsExpected);
     }
+
+    @Test
+    public void testCreateNewFreestyleProject() {
+        List<String> jobList = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(PROJECT_NAME)
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectDetailsPage(getDriver()))
+                .goHomePage()
+                .getJobList();
+
+        Assert.assertTrue(jobList.contains(PROJECT_NAME));
+    }
+
+    @Test(dependsOnMethods = "testCreateNewFreestyleProject")
+    public void testDeleteFreestyleProject() {
+        List<String> jobList = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickDeleteProject()
+                .clickAlertDeleteTheProject()
+                .getJobList();
+
+        Assert.assertEquals(jobList.size(), 0);
+    }
+
 }

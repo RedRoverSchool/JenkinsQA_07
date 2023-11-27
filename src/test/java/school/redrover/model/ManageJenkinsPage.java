@@ -29,6 +29,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//dl/dt[text()='Plugins']")
     private WebElement plugins;
 
+    @FindBy(xpath = "//button[@name='fix']")
+    private WebElement goToPluginManagerButton;
+
     @FindBy(id = "settings-search-bar")
     private WebElement searchInput;
 
@@ -45,6 +48,10 @@ public class ManageJenkinsPage extends BasePage {
     public PluginsPage goPluginsPage() {
         plugins.click();
 
+        return new PluginsPage(getDriver());
+    }
+    public PluginsPage clickOnGoToPluginManagerButton() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(goToPluginManagerButton)).click();
         return new PluginsPage(getDriver());
     }
 
