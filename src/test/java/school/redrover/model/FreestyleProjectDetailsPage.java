@@ -61,6 +61,11 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//a//span[2]")
     private List<WebElement> itemsSidePanel;
 
+
+    @FindBy(xpath = "//*[@class='icon-edit-delete icon-md']")
+    private WebElement deleteProjectButton;
+
+
     @FindBy(className = "warning")
     private WebElement projectDisabledWarning;
 
@@ -171,7 +176,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return this;
     }
-  
+
     public HomePage deleteProject() {
         deleteProject.click();
         getDriver().switchTo().alert().accept();
@@ -180,16 +185,25 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
     public List<String> getTextItemsSidePanel() {
         List<String> textValue = new ArrayList<>();
-        for (WebElement item: itemsSidePanel) {
+        for (WebElement item : itemsSidePanel) {
             textValue.add(item.getText());
         }
         return textValue;
     }
-  
+
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
     }
 
+    public FreestyleProjectDetailsPage clickDeleteProject() {
+        deleteProjectButton.click();
+        return this;
+    }
+
+    public HomePage clickAlertDeleteTheProject() {
+        getDriver().switchTo().alert().accept();
+        return new HomePage(getDriver());
+    }
     public boolean isProjectDisabled() {
         return projectDisabledWarning.isEnabled();
     }

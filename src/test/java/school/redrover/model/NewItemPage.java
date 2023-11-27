@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.MultibranchPipelineTest;
 import school.redrover.model.base.BasePage;
 
 public class NewItemPage extends BasePage {
@@ -52,6 +53,9 @@ public class NewItemPage extends BasePage {
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
+
+    @FindBy(xpath = "//input[@id='from']")
+    private WebElement fieldCopyFrom;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -176,11 +180,25 @@ public class NewItemPage extends BasePage {
         return new PipelineConfigurationPage(getDriver());
     }
 
+    public PipelineConfigurationPage createNewPipelineProject(String projectName) {
+        inputName.sendKeys(projectName);
+        pipeline.click();
+        okButton.click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
+
     public FolderConfigurationPage createFolder(String folderName) {
         inputName.sendKeys(folderName);
         folder.click();
         okButton.click();
 
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public NewItemPage populateFieldCopyFrom(String multibranchPipelineName) {
+        fieldCopyFrom.click();
+        fieldCopyFrom.sendKeys(multibranchPipelineName);
+        return this;
     }
 }

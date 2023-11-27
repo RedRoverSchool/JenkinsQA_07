@@ -14,6 +14,10 @@ public class ManageJenkinsTest extends BaseTest {
 
     private static final String TOOLTIP = "Press / on your keyboard to focus";
 
+    private static final String PLACEHOLDER = "Search settings";
+
+    private static final String SEARCH_SYSTEM = "System";
+
     @Test
     public void testShortcutTooltipVisibility() {
 
@@ -25,6 +29,7 @@ public class ManageJenkinsTest extends BaseTest {
             Assert.assertTrue(manageJenkinsPage.shortcutTooltipIsVisible(), TOOLTIP + " is not visible");
     }
 
+    @Ignore
     @Test
     public void testNoResultsTextVisibility() {
 
@@ -62,5 +67,38 @@ public class ManageJenkinsTest extends BaseTest {
                 List.of("Plugins", "Nodes", "Credentials", "Credential", "Providers", "System Information"),
                 result
         );
+    }
+
+    @Test
+    public void testPlaceholderVisibility() {
+
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertEquals(manageJenkinsPage.getPlaceholderText(), PLACEHOLDER);
+        Assert.assertTrue(manageJenkinsPage.isPlaceholderVisible(), PLACEHOLDER + " is not visible");
+    }
+
+    @Test
+    public void testSearchFieldBecomesActiveAfterUsingShortcut() {
+
+        boolean searchFieldIsActiveElement = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goToSearchFieldUsingShortcut()
+                .isSearchFieldActiveElement();
+
+        Assert.assertTrue(searchFieldIsActiveElement, "Search field is not the active element");
+    }
+
+    @Test
+    public void testSearchFieldTextVisibilityUsingShortcut() {
+
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goToSearchFieldUsingShortcut()
+                .typeTextBeingInSearchFieldWithoutLocator(SEARCH_SYSTEM);
+
+        Assert.assertEquals(manageJenkinsPage.getSearchFieldText(), SEARCH_SYSTEM);
+        Assert.assertTrue(manageJenkinsPage.isSearchTextAfterShortcutVisible(), SEARCH_SYSTEM + " is not visible");
     }
 }

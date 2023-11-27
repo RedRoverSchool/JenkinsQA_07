@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -33,7 +34,6 @@ public class FolderConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[@class='repeated-chunk__header' and contains(text(), 'Child item with worst health')]")
     private WebElement childHealthMetricSection;
-
 
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
