@@ -446,4 +446,19 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(permalinksBuildHistory.get(2).getText().contains("Last successful build"));
         Assert.assertTrue(permalinksBuildHistory.get(3).getText().contains("Last completed build"));
     }
+
+    @Test
+    public void testReplayBuildPipeline(){
+        TestUtils.createPipeline(this,PIPELINE_NAME, true);
+
+        String lastBuildLink = new HomePage(getDriver())
+                .clickBuildByGreenArrow(PIPELINE_NAME)
+                .clickJobByName(PIPELINE_NAME, new PipelineDetailsPage(getDriver()))
+                .clickLastBuildLink()
+                .clickReplaySideMenu()
+                .clickRunButton()
+                .getLastBuildLinkText();
+
+        Assert.assertTrue(lastBuildLink.contains("Last build (#2)"));
+    }
 }

@@ -58,6 +58,12 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//div[@class='build-icon']/a")
     private WebElement buildIcon;
 
+    @FindBy(xpath = "//*[@id='main-panel']/ul/li[1]/a")
+    private WebElement lastBuildLink;
+
+    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
+    private WebElement replayButtonSideMenu;
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -137,5 +143,22 @@ public class PipelineDetailsPage extends BasePage {
     public boolean isBuildIconDisplayed() {
 
         return getWait2().until(ExpectedConditions.visibilityOf(buildIcon)).isDisplayed();
+    }
+
+    public PipelineDetailsPage clickLastBuildLink(){
+        lastBuildLink.click();
+
+        return new PipelineDetailsPage(getDriver());
+    }
+
+    public ReplayBuildPipelinePage clickReplaySideMenu(){
+        replayButtonSideMenu.click();
+
+        return new ReplayBuildPipelinePage(getDriver());
+    }
+
+    public String getLastBuildLinkText(){
+
+        return lastBuildLink.getText();
     }
 }
