@@ -162,10 +162,7 @@ public class HomePage extends BasePage {
     }
 
     public String getProjectBuildStatusByName(String projectName) {
-        return getDriver()
-                .findElement(By.id("job_" + projectName))
-                .findElement(By.className("svg-icon"))
-                .getAttribute("tooltip");
+        return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
     }
 
     public String getHeadLineText() {
@@ -206,8 +203,7 @@ public class HomePage extends BasePage {
     public HomePage hoverOverJobDropdownMenu(String name) {
         WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + name + "']"));
 
-        new Actions(getDriver())
-                .moveToElement(projectName).click().perform();
+        new Actions(getDriver()).moveToElement(projectName).click().perform();
 
         return this;
     }
@@ -219,18 +215,11 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
-                .perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
 
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
-                .click()
-                .perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
 

@@ -569,7 +569,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigureFromSideMenu()
                 .clickOnParametrizedCheckBox()
-                .clickOnAddParameterDropDownBtn();
+                .checkIsParameteresDropDownMenuAvailable();
 
         Assert.assertTrue(addParameterFromCheckBox.isDisplayed());
     }
