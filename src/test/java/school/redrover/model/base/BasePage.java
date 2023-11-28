@@ -24,7 +24,7 @@ public abstract class BasePage extends BaseModel {
         return page;
     }
 
-    public <T> T quickSearch(T page, String str) {
+    public <T> T searchBox(T page, String str) {
         new Actions(getDriver())
                 .keyDown(Keys.CONTROL)
                 .sendKeys("k")
