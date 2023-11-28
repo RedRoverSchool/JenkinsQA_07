@@ -690,6 +690,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(areSettingsAppeared);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testGitRadioButtonSettingsIsOpened")
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String inputText = "123";

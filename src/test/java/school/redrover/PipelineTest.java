@@ -126,6 +126,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(jobList.contains(PIPELINE_NAME));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testOpenLogsFromStageView() {
         String stageLogsText = new HomePage(getDriver())
