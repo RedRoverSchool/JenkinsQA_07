@@ -44,7 +44,7 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//a[@data-url='reload']")
     private WebElement reloadConfigurationSection;
 
-    @FindAll({@FindBy(className = "jenkins-section__item")})
+    @FindAll({@FindBy(xpath = "//div[@class='jenkins-section__item']")})
     private List<WebElement> settingsSections;
 
     public ManageJenkinsPage(WebDriver driver) {
