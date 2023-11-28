@@ -60,8 +60,8 @@ public class ManageJenkinsTest extends BaseTest {
                 .typeSearchInputField("N")
                 .getResultsList();
 
-        Assert.assertNotEquals(
-                List.of("Plugins", "Nodes", "Credentials", "Credential", "Providers", "System Information"),
+        Assert.assertEquals(
+                List.of("Plugins", "Nodes", "Credentials", "Credential Providers", "System Information"),
                 result
         );
     }
