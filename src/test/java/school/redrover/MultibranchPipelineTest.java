@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
@@ -331,7 +332,7 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
-                .quickSerch(MULTIBRANCH_PIPELINE_NAME);
+                .quickSearch(new MultibranchPipelineDetailsPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
 
         Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
     }
@@ -349,8 +350,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error_message, "‘!’ is an unsafe character");
     }
 
-    @Test(dependsOnMethods = "testFindByQuickSearch")
+    @Test
     public void testRenameUsingSidebar() {
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -361,8 +364,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Test(dependsOnMethods = "testFindByQuickSearch")
+    @Test
     public void testRenameResultInBreadcrumb() {
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+
         List<String> breadcrumb = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -373,8 +378,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(breadcrumb.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Test(dependsOnMethods = "testFindByQuickSearch")
+    @Test
     public void testRenameResultOnPageHeading() {
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -385,8 +392,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Test(dependsOnMethods = "testFindByQuickSearch")
+    @Test
     public void testRenameResultOnDashboard() {
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+
         List<String> jobs = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()

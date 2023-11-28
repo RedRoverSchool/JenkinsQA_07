@@ -158,17 +158,6 @@ public class HomePage extends BasePage {
         return getDriver().getTitle();
     }
 
-    public MultibranchPipelineDetailsPage quickSerch(String str) {
-        new Actions(getDriver())
-                .keyDown(Keys.CONTROL)
-                .sendKeys("k")
-                .keyUp(Keys.CONTROL)
-                .sendKeys(str)
-                .keyDown(Keys.ENTER)
-                .perform();
-
-        return new MultibranchPipelineDetailsPage(getDriver());
-    }
 
     public String getProjectBuildStatusByName(String projectName) {
         return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
