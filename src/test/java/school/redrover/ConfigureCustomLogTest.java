@@ -46,7 +46,7 @@ public class ConfigureCustomLogTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddNewLogger")
 
-    public void testClearCustomLogRecorder() {
+    public void testClearCustomLog() {
         LogRecordersDetailsPage clearLog = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
