@@ -60,6 +60,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineConfigurationPage buttonSubmit() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(buttonSubmit)).click();
         buttonSubmit.click();
 
         return this;
