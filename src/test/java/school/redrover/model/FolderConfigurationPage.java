@@ -35,6 +35,12 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@class='repeated-chunk__header' and contains(text(), 'Child item with worst health')]")
     private WebElement childHealthMetricSection;
 
+    @FindBy(css = "a[tooltip='Help']")
+    private WebElement helpButtonRecursive;
+
+    @FindBy(xpath = "//div[@class='help']/div[1]")
+    private  WebElement helpBlock;
+
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -87,5 +93,16 @@ public class FolderConfigurationPage extends BasePage {
 
     public boolean  isChildHealthMetricDisplayed () {
         return childHealthMetricSection.isDisplayed();
+    }
+
+    public FolderConfigurationPage clickHelpButtonRecursive() {
+        helpButtonRecursive.click();
+
+        return this;
+    }
+
+    public String getHelpBlockText() {
+
+        return helpBlock.getText();
     }
 }

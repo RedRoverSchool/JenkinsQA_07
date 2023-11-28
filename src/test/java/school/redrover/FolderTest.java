@@ -462,4 +462,18 @@ public class FolderTest extends BaseTest {
 
         Assert.assertTrue(isChildHealthMetricDisplayed);
     }
+
+    @Test(dependsOnMethods = "testAddChildHealthMetric")
+    public void testDisplayingHelpTextButtonRecursive() {
+        final String expectedText = "Controls whether items within sub-folders will be considered as contributing to the health of this folder.";
+
+        String helpText = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickConfigureFolder()
+                .clickHealthMetrics()
+                .clickHelpButtonRecursive()
+                .getHelpBlockText();
+
+        Assert.assertEquals(helpText, expectedText);
+    }
 }
