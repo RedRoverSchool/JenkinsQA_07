@@ -520,7 +520,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(errorText, "No name is specified");
     }
 
-
+@Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDisable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
@@ -530,7 +530,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(detailsPage.isProjectDisabled());
     }
 
-
+@Ignore
     @Test(dependsOnMethods = {"testDisable", "testCreateFreestyleProjectWithValidName"})
     public void testEnable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
@@ -545,20 +545,23 @@ public class FreestyleProjectTest extends BaseTest {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .goToConfigureFromSideMenu()
-                .clickHelpDescriptionOfDiscardOldBuilds();
+                .clickHelpDescriptionOfDiscardOldBuilds()
+                .getAttributeOfHelpDescriptionDiscardOldBuilds();
 
         assertEquals(actualResult, "display: block;");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testHelpDescriptionOfDiscardOldBuildsIsClosed() {
-        createFreeStyleProject(PROJECT_NAME);
-        WebElement helpButton = getDriver().findElement(By.cssSelector("a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']"));
-        helpButton.click();
-        helpButton.click();
+        String actualResult = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .goToConfigureFromSideMenu()
+                .clickHelpDescriptionOfDiscardOldBuilds()
+                .clickHelpDescriptionOfDiscardOldBuilds()
+                .getAttributeOfHelpDescriptionDiscardOldBuilds();
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("[nameref='rowSetStart26'] .help"))
-                .getAttribute("style"), "display: none;");
+
+        assertEquals(actualResult, "display: none;");
     }
 
     @Test

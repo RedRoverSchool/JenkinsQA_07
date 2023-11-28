@@ -371,9 +371,12 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return shellScriptInput.getText();
     }
 
-    public String clickHelpDescriptionOfDiscardOldBuilds(){
-        helpButtonDiscardOldBuilds.click();
+    public String getAttributeOfHelpDescriptionDiscardOldBuilds (){
         return helpDescriptionDiscardOldBuilds.getAttribute("style");
+    }
+    public FreestyleProjectConfigurePage clickHelpDescriptionOfDiscardOldBuilds(){
+        helpButtonDiscardOldBuilds.click();
+        return this;
     }
 
     public FreestyleProjectConfigurePage clickAddParameterDropdown() {
