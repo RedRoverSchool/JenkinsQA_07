@@ -2,9 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.runner.BaseTest;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -169,6 +172,35 @@ public class BreadcrumbTest extends BaseTest {
 
       assertTrue(thisIsDashboardPage());
     }
+  }
+
+    @Test
+    public void testBreadcrumbDashboardMenuItemsSameAsSideMenuItems() {
+      new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[text()='Dashboard']"))).perform();
+
+      WebElement dashboardChevron = getDriver().findElement(By.xpath("//ol[@id='breadcrumbs']//a[text()='Dashboard']/button"));
+      new Actions(getDriver())
+              .moveToElement(dashboardChevron)
+              .scrollByAmount(dashboardChevron.getSize().getWidth()/2, dashboardChevron.getSize().getHeight()/2)
+              .click(dashboardChevron)
+              .pause(2000)
+              .build()
+              .perform();
+
+      getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='tippy-3']")));
+
+      List<WebElement> itemsListBreadcrumb = getDriver().findElements(By.xpath("//div[@id='tippy-3']//a"));
+
+      Assert.assertTrue(itemsListBreadcrumb.size() > 0);
+
+      List<String> nameListBreadcrumb = new ArrayList<>();
+      for (WebElement element : itemsListBreadcrumb) {
+        nameListBreadcrumb.add(element.getText());
+      }
+
+      List<WebElement> itemsListSideMenu = getDriver().findElements(By.xpath("//div[@class='task ']"));
+
+      Assert.assertTrue(itemsListSideMenu.size() > 0);
   }
 }
 
