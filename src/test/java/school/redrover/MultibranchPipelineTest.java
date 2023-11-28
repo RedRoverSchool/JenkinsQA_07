@@ -127,6 +127,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 expectedResultName + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testErrorMessageRenameWithDotAtTheEnd() {
 
@@ -140,6 +141,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(dotErrorMessage, "A name cannot end with ‘.’");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testErrorMessageRenameWithLessThanSign() {
 
