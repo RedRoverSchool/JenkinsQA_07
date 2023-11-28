@@ -571,8 +571,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOnParametrizedCheckBox()
                 .clickOnAddParameterDropDownBtn();
 
-        Assert.assertTrue(addParameterFromCheckBox
-                .isDisplayed());
+        Assert.assertTrue(addParameterFromCheckBox.isDisplayed());
     }
 
     @Test
