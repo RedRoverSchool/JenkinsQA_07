@@ -127,9 +127,10 @@ public class MultibranchPipelineTest extends BaseTest {
                 expectedResultName + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testErrorMessageRenameWithDotAtTheEnd() {
+
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         String dotErrorMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
@@ -141,9 +142,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(dotErrorMessage, "A name cannot end with ‘.’");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testErrorMessageRenameWithLessThanSign() {
+
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         String lessThanSignErrorMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
@@ -155,15 +157,13 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(lessThanSignErrorMessage, "‘&lt;’ is an unsafe character");
     }
 
+
     @Test
     public void testErrorMessageRenameWithTwoUnsafeChars() {
 
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+
         String twoUnsafeCharsErrorMessage = new HomePage(getDriver())
-                .clickCreateAJob()
-                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineOption()
-                .clickOk()
-                .goHomePage()
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
                 .addCharsToExistingName("#" + Keys.SHIFT + ".")

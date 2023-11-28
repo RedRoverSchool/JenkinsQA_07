@@ -222,23 +222,22 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(buildParameters, parameterChoices);
     }
 
-    @Test(dependsOnMethods = "testDescriptionDisplays")
+    @Test(dependsOnMethods = "testPermalinksIsEmpty")
     public void testDelete() {
-        getDriver().findElement((By.xpath(JOB_ON_DASHBOARD_XPATH))).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Delete')]"))).click();
+        String homePageHeaderText = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickDeleteButton()
+                .acceptAlert()
+                .getHeaderText();
 
-        getWait2().until(ExpectedConditions.alertIsPresent()).accept();
-
-        getWait5().until(ExpectedConditions.numberOfElementsToBe(By.xpath("//li[@class='jenkins-breadcrumbs__list-item']"), 1));
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), "Welcome to Jenkins!");
+        Assert.assertEquals(homePageHeaderText, "Welcome to Jenkins!");
     }
 
     @Test
     public void testDescriptionDisplays() {
         final String description = "Description of the Pipeline";
 
-        TestUtils.createPipeline(this, JOB_NAME,true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
 
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -250,15 +249,13 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, description);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDescriptionDisplays")
     public void testPermalinksIsEmpty() {
-        TestUtils.createPipeline(this, JOB_NAME, true);
+        boolean isPermalinksEmpty = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .isPermalinksEmpty();
 
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + JOB_NAME + "/']")).click();
-
-        String permalinksInfo = getDriver().findElement(By.xpath("//ul[@class = 'permalinks-list']")).getText();
-
-        Assert.assertTrue(permalinksInfo.isEmpty());
+        Assert.assertTrue(isPermalinksEmpty);
     }
 
     @Test
@@ -294,7 +291,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testSaveSettingsWhileConfigure() {
-        TestUtils.createPipeline(this,JOB_NAME,true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
 
         getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
         getDriver().findElement(By.xpath(CONFIGURE_ON_SIDE_PANEL_XPATH)).click();
@@ -327,7 +324,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testTooltipsDescriptionCompliance() {
-        TestUtils.createPipeline(this,JOB_NAME,true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
 
         getDriver().findElement(By.xpath("//tr[@id ='job_" + JOB_NAME + "']//a[@href = 'job/" + JOB_NAME + "/']")).click();
         getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + JOB_NAME + "/configure']")).click();
@@ -344,7 +341,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPermalinksBuildData() {
-        TestUtils.createPipeline(this,JOB_NAME,true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
 
         getDriver().findElement(By.xpath("//td/a[@href='job/" + JOB_NAME + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + JOB_NAME + "/build?delay=0sec']")).click();
@@ -361,8 +358,8 @@ public class PipelineTest extends BaseTest {
     }
 
     @Test
-    public void testReplayBuildPipeline(){
-        TestUtils.createPipeline(this,PIPELINE_NAME, true);
+    public void testReplayBuildPipeline() {
+        TestUtils.createPipeline(this, PIPELINE_NAME, true);
 
         String lastBuildLink = new HomePage(getDriver())
                 .clickBuildByGreenArrow(PIPELINE_NAME)

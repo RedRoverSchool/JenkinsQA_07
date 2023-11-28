@@ -55,6 +55,8 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
+    @FindBy(xpath = "//h1")
+    private WebElement header;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -255,5 +257,9 @@ public class HomePage extends BasePage {
 
     public String getItemNameInTable() {
         return itemNameInTable.getText();
+    }
+
+    public String getHeaderText() {
+        return header.getText();
     }
 }
