@@ -565,15 +565,13 @@ public class FreestyleProjectTest extends BaseTest {
     public void testSelectThisProjectIsParameterizedCheckbox() {
         createFreeStyleProject(PROJECT_NAME);
         goToJenkinsHomePage();
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
+        WebElement addParameterFromCheckBox = (WebElement) new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigureFromSideMenu()
+                .clickOnParametrizedCheckBox()
+                .clickOnAddParameterDropDownBtn();
 
-        getDriver().findElement(By.xpath("//div[5]//span[1]//a[1]//span[1]//*[name()='svg']")).click();
-
-        getDriver().findElement
-                        (By.xpath("//label[normalize-space()='This project is parameterized']"))
-                .click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]"))
+        Assert.assertTrue(addParameterFromCheckBox
                 .isDisplayed());
     }
 

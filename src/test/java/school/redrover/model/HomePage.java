@@ -221,7 +221,7 @@ public class HomePage extends BasePage {
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver())
                 .moveToElement(getDriver()
-                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                        .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
                 .perform();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
@@ -269,4 +269,5 @@ public class HomePage extends BasePage {
     public String getItemNameInTable() {
         return itemNameInTable.getText();
     }
+
 }
