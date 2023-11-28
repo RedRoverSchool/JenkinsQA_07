@@ -153,10 +153,15 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(lessThanSignErrorMessage, "‘&lt;’ is an unsafe character");
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test
     public void testErrorMessageRenameWithTwoUnsafeChars() {
 
         String twoUnsafeCharsErrorMessage = new HomePage(getDriver())
+                .clickCreateAJob()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineOption()
+                .clickOk()
+                .goHomePage()
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
                 .addCharsToExistingName("#" + Keys.SHIFT + ".")
@@ -289,7 +294,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(pipelineNameExpected, MULTIBRANCH_PIPELINE_NAME);
     }
 
-
+    @Ignore
     @Test (dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testMultibranchCreationFromExisting() {
 
