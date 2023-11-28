@@ -41,6 +41,12 @@ public class ManageJenkinsPage extends BasePage {
     @FindAll({@FindBy(xpath = "//div[@class='jenkins-search__results']/a")})
     private List<WebElement> searchResults;
 
+    @FindBy(xpath = "//a[@data-url='reload']")
+    private WebElement reloadConfigurationSection;
+
+    @FindAll({@FindBy(className = "jenkins-section__item")})
+    private List<WebElement> settingsSections;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -140,7 +146,6 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public boolean isSearchFieldActiveElement() {
-
         return searchInput.equals(getDriver().switchTo().activeElement());
     }
 
@@ -161,5 +166,19 @@ public class ManageJenkinsPage extends BasePage {
         String typedInSearchText = (String) js.executeScript("return arguments[0].value;", searchInput);
 
         return !typedInSearchText.isEmpty();
+    }
+
+    public ManageJenkinsPage clickReloadConfiguration() {
+        reloadConfigurationSection.click();
+
+        return this;
+    }
+
+    public String getAlertText() {
+        return getDriver().switchTo().alert().getText();
+    }
+
+    public Integer getSettingsSectionsQuantity() {
+        return settingsSections.size();
     }
 }
