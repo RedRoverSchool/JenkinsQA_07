@@ -349,10 +349,8 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error_message, "‘!’ is an unsafe character");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testRenameUsingSidebar() {
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -363,10 +361,8 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testRenameResultInBreadcrumb() {
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-
         List<String> breadcrumb = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -377,10 +373,8 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(breadcrumb.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testRenameResultOnPageHeading() {
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
@@ -391,10 +385,8 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testRenameResultOnDashboard() {
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-
         List<String> jobs = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()
