@@ -15,7 +15,6 @@ import school.redrover.runner.TestUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.testng.Assert.*;
 
@@ -104,18 +103,6 @@ public class FreestyleProjectTest extends BaseTest {
         return res;
     }
 
-    private void addDescriptionInConfiguration(String text) {
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
-        clickSubmitButton();
-    }
-
-    private void changeDescriptionTextInStatus(String text) {
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).clear();
-        getDriver().findElement(By.xpath("//textarea[@name = 'description']")).sendKeys(text);
-        getDriver().findElement(By.xpath("//button[contains(text(),'Save')]")).click();
-    }
-
     private void clickBuildNow() {
         getDriver().findElement(By.xpath("//a[@class='task-link ' and contains(@href, 'build')]")).click();
         getWait5().until(ExpectedConditions.visibilityOfAllElements(getDriver()
@@ -124,28 +111,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     private void clickSubmitButton() {
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-    }
-
-    private void clickProjectOnDashboard(String projectName) {
-        getDriver().findElement(By
-                .xpath(String.format("//a[@href='job/%s/']", projectName.replace(" ", "%20")))).click();
-    }
-
-    private void hoverClickInput(String xpathLocator, String inputText) {
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath(xpathLocator)))
-                .click()
-                .sendKeys(inputText)
-                .perform();
-    }
-
-    private void hoverClick(String xpathLocator) {
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath(xpathLocator)))
-                .click()
-                .perform();
     }
 
     private void configureParameterizedBuild(String projectName, String choiceName, String choiceOptions) {
@@ -162,29 +127,6 @@ public class FreestyleProjectTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void addTimeStampToConsoleOutput(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
-
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(getDriver().findElement(By.linkText("REST API"))).perform();
-
-        getDriver().findElement(By.xpath("//div[@id = 'tasks']//div[5]/span")).click();
-
-        getDriver().findElement(By.xpath("//label[contains(text(), 'Add timestamps')]")).click();
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
-    private String createUniqueTextValue() {
-        int desiredLength = 5;
-
-        String testFreeStyleProjectName = UUID.randomUUID()
-                .toString()
-                .substring(0, desiredLength);
-        return testFreeStyleProjectName;
-    }
-
     @Test
     public void testCreateFreestyleProjectWithValidName() {
         String homePage = new HomePage(getDriver())
@@ -199,14 +141,11 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDeleteFreestyleProjectSideMenu() {
-        String homePage = new HomePage(getDriver())
+        boolean projectExist = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject("other" + PROJECT_NAME)
                 .clickSaveButton()
                 .goHomePage()
-                .getJobDisplayName();
-
-        boolean projectExist = new HomePage(getDriver())
                 .clickJobByName("other" + PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .deleteProject()
                 .isProjectExist("other" + PROJECT_NAME);
@@ -740,23 +679,31 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(errorMessage.isDisplayed());
     }
 
-    @Ignore
     @Test
     public void testGitRadioButtonSettingsIsOpened() {
-        createFreeStyleProject(PROJECT_NAME);
+        boolean areSettingsAppeared = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .clickGitRadioButtonWithScroll()
+                .isGitRadioButtonSettingsFormAppears();
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.id("source-code-management")));
+        Assert.assertTrue(areSettingsAppeared);
+    }
 
-        new Actions(getDriver())
-                .moveToElement(getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("label[for='radio-block-1']"))))
-                .click()
-                .perform();
+    @Test(dependsOnMethods = "testGitRadioButtonSettingsIsOpened")
+    public void testVerifyValueOfInsertedGitSourceLink() {
+        final String inputText = "123";
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@tooltip = 'Help for feature: Repositories']"))
-                        .getText(),
-                "?");
+        String repositoryUrlText = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickGitRadioButtonWithScroll()
+                .inputGitHubRepositoryURLWithScroll(inputText)
+                .clickApply()
+                .refreshPage(new FreestyleProjectConfigurePage(getDriver()))
+                .getValueGitHubRepositoryURL();
+
+        Assert.assertEquals(repositoryUrlText, inputText);
     }
 
     @Test
@@ -778,59 +725,40 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testGitHubEditedLabelAppears() {
-        new HomePage(getDriver())
+        boolean isLabelAppears = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickCheckboxGitHubProject()
-                .scrollToElement(By.name("_.projectUrlStr"))
-                .clickAdvancedDropdownGitHubProject()
-                .inputDisplayNameGitHubProject("GitHubURL");
+                .clickAdvancedDropdownGitHubProjectWithScroll()
+                .inputDisplayNameGitHubProject("GitHubURL")
+                .editedLabelInGitHubProjectIsDisplayed();
 
-        Assert.assertTrue(new FreestyleProjectConfigurePage(getDriver()).editedLabelInGitHubProjectIsDisplayed());
+        Assert.assertTrue(isLabelAppears);
     }
 
     @Test
     public void testDescriptionPreviewAppears() {
-        new HomePage(getDriver())
+        String previewText = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .inputDescription(DESCRIPTION_TEXT)
                 .clickApply()
-                .clickPreviewDescription();
+                .clickPreviewDescription()
+                .getPreviewDescriptionText();
 
-        Assert.assertEquals(
-                new FreestyleProjectConfigurePage(getDriver()).getPreviewDescriptionText(),
-                DESCRIPTION_TEXT);
+        Assert.assertEquals(previewText, DESCRIPTION_TEXT);
     }
 
     @Test(dependsOnMethods = "testDescriptionPreviewAppears")
     public void testDescriptionPreviewHides() {
-        new HomePage(getDriver())
+        boolean isTextDisplayed = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickPreviewDescription()
-                .clickHidePreviewDescription();
+                .clickHidePreviewDescription()
+                .isPreviewDescriptionTextDisplayed();
 
-        Assert.assertEquals(
-                new FreestyleProjectConfigurePage(getDriver()).getCssValue(By.xpath("//div[@class = 'textarea-preview']"), "display"),
-                "none");
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testGitRadioButtonSettingsIsOpened")
-    public void testVerifyValueOfInsertedGitSourceLink() {
-        final String xpathLocator = "//input[@checkdependson='credentialsId']";
-        final String inputText = "123";
-
-        hoverClickInput(xpathLocator, inputText);
-
-        getDriver().findElement(By.xpath("//button[@name='Apply']")).click();
-        getDriver().navigate().refresh();
-
-        Assert.assertEquals(getDriver()
-                        .findElement(By.xpath(xpathLocator))
-                        .getAttribute("value"),
-                inputText);
+        Assert.assertFalse(isTextDisplayed);
     }
 
     @Test
@@ -906,7 +834,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testMoveJobToFolder() {
+    public void testMoveFreestyleProjectToFolder() {
         final String folderName = "FolderWrapper";
         final String destinationOption = "Jenkins » " + folderName;
 
@@ -998,27 +926,6 @@ public class FreestyleProjectTest extends BaseTest {
             permalinksTexts.add(permalinks.get(i).getText());
             Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
         }
-
-    }
-
-    @Test
-    public void testAddLinkToGitHubInGitHubProjectSection() {
-
-        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
-
-        String inputUrlField = new FreestyleProjectDetailsPage(getDriver())
-                .goToConfigureFromSideMenu()
-                .clickSourseCodeManagementLinkFromSideMenu()
-                .scrollPage(0, 600)
-                .clickGitRadioButton()
-                .inputGitLink("https://github.com/RedRoverSchool/JenkinsQA_07")
-                .clickSaveButton()
-                .goToConfigureFromSideMenu()
-                .clickSourseCodeManagementLinkFromSideMenu()
-                .scrollPage(0, 600)
-                .getInputGitLinkFieldValue();
-
-        Assert.assertEquals(inputUrlField, "https://github.com/RedRoverSchool/JenkinsQA_07");
     }
 
     @Test
@@ -1195,30 +1102,6 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testMoveFreestyleToFolder() {
-        final String freestyleName = "freestyleName";
-        final String folderName = "folderName";
-
-        createProject("Freestyle project", freestyleName, true);
-        createProject("Folder", folderName, true);
-
-        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + freestyleName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href = '/job/" + freestyleName + "/move']")).click();
-
-        Select select = new Select(getDriver().findElement(By.xpath("//select[@name = 'destination']")));
-        select.selectByValue("/" + folderName);
-
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        getDriver().findElement(By.cssSelector("#jenkins-name-icon")).click();
-
-        getDriver().findElement(By.xpath("//td/a[@href = 'job/" + folderName + "/']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText().trim(), folderName);
-        Assert.assertTrue(
-                getDriver().findElement(By.xpath("//tbody/tr[@id = 'job_" + freestyleName + "']")).isDisplayed());
-    }
-
-    @Test
     public void testVerify7ItemsSidePanelDetailsPage() {
         final List<String> itemsExpected = new ArrayList<>(Arrays.asList("Status", "Changes", "Workspace", "Build Now", "Configure", "Delete Project", "Rename"));
 
@@ -1230,29 +1113,4 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(itemsActual, itemsExpected);
     }
-
-    @Test
-    public void testCreateNewFreestyleProject() {
-        List<String> jobList = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(PROJECT_NAME)
-                .selectFreestyleProject()
-                .clickOk(new FreestyleProjectDetailsPage(getDriver()))
-                .goHomePage()
-                .getJobList();
-
-        Assert.assertTrue(jobList.contains(PROJECT_NAME));
-    }
-
-    @Test(dependsOnMethods = "testCreateNewFreestyleProject")
-    public void testDeleteFreestyleProject() {
-        List<String> jobList = new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickDeleteProject()
-                .clickAlertDeleteTheProject()
-                .getJobList();
-
-        Assert.assertEquals(jobList.size(), 0);
-    }
-
 }

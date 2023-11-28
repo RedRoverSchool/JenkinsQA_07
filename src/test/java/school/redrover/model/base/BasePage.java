@@ -15,4 +15,10 @@ public abstract class BasePage extends BaseModel {
 
         return new HomePage(getDriver());
     }
+
+    public <T> T refreshPage(T page) {
+        getDriver().navigate().refresh();
+
+        return page;
+    }
 }

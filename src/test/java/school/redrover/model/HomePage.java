@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.PeopleTest;
 import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
@@ -56,7 +55,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
-
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -258,5 +256,4 @@ public class HomePage extends BasePage {
     public String getItemNameInTable() {
         return itemNameInTable.getText();
     }
-
 }
