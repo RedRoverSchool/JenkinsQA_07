@@ -179,16 +179,6 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public Integer getSettingsSectionsQuantity() {
-        Integer settingsCount = 0;
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-
-        for (WebElement section : settingsSections) {
-            js.executeScript("arguments[0].scrollIntoView();", section);
-
-            if (section.isDisplayed()) {
-                settingsCount++;
-            }
-        }
-        return settingsCount;
+        return settingsSections.size();
     }
 }

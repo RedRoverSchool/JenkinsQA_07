@@ -121,6 +121,6 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins()
                 .getSettingsSectionsQuantity();
 
-        Assert.assertEquals(settingsSectionsQuantity, 19);
+        Assert.assertEquals(settingsSectionsQuantity, 18);
     }
 }
