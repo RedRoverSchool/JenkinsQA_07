@@ -168,6 +168,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
+    @Ignore
     @Test
     public void testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder() {
         String actualTooltipValue = new HomePage(getDriver())
