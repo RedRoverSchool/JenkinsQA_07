@@ -23,7 +23,8 @@ public class ConfigureCustomLogTest extends BaseTest {
         List<String> loggersAndLevels = List.of(
                 LOG_NAME,
                 LOGGER_NAME,
-                LEVEL_LOG);
+                LEVEL_LOG
+        );
 
         List <String> loggersAndLevelsSavedList = new HomePage(getDriver())
                 .clickManageJenkins()
