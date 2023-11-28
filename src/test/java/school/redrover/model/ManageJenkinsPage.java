@@ -179,7 +179,7 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public Integer getSettingsSectionsQuantity() {
-        getWait2().until(ExpectedConditions.visibilityOfAllElements(settingsSections));
+        getWait10().until(ExpectedConditions.visibilityOfAllElements(settingsSections));
         return settingsSections.size();
     }
 }
