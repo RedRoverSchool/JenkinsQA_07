@@ -1,13 +1,12 @@
 package school.redrover.model;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
@@ -51,6 +50,11 @@ public class ManageJenkinsPage extends BasePage {
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
+
+    Wait<WebDriver> wait = new FluentWait<>(getDriver())
+                    .withTimeout(Duration.ofSeconds(2))
+                    .pollingEvery(Duration.ofMillis(300))
+                    .ignoring(JavascriptException.class);
 
     public PluginsPage goPluginsPage() {
         plugins.click();
@@ -109,15 +113,11 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public String getNoResultText() {
-
-        return getWait5()
-                .pollingEvery(Duration.ofMillis(500))
-                .until(ExpectedConditions.visibilityOf(searchNoResults))
-                .getText();
+        return wait.until(ExpectedConditions.visibilityOf(searchNoResults)).getText();
     }
 
     public <T> T clickResult(String request, T page) {
-        getWait5().pollingEvery(Duration.ofMillis(500)).until(ExpectedConditions.visibilityOfAllElements(searchResults))
+        wait.until(ExpectedConditions.visibilityOfAllElements(searchResults))
                 .stream()
                 .filter(el -> el.getText().contains(request))
                 .findFirst()
@@ -126,7 +126,7 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public List<String> getResultsList() {
-        return getWait5().pollingEvery(Duration.ofMillis(500)).until(ExpectedConditions.visibilityOfAllElements(searchResults))
+        return wait.until(ExpectedConditions.visibilityOfAllElements(searchResults))
                 .stream()
                 .map(WebElement::getText)
                 .toList();
