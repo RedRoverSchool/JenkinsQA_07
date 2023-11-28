@@ -22,6 +22,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
     @FindBy(linkText = "Configure")
     private WebElement configureLink;
+
     @FindBy(xpath = "//div[5]//span[1]//a[1]//span[1]//*[name()='svg']")
     private WebElement configureBtn;
 
