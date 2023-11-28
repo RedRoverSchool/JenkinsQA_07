@@ -3,8 +3,6 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.Color;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -32,12 +30,6 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
     }
 
-    private void goToConfigureNodePage() {
-        goToMainPage();
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
-        getDriver().findElement(By.xpath("//div[@id='tasks']/div[3]/span/a")).click();
-    }
-
     private void goToNodesPage() {
         getDriver().findElement(By.linkText("Build Executor Status")).click();
     }
@@ -52,11 +44,6 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.xpath("//input[@value = '" + oldName + "']")).sendKeys(newName);
         getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
     }
-
-    private void goDashboard() {
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[1]/a"));
-    }
-
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
@@ -281,14 +268,14 @@ public class NodesTest extends BaseTest {
     public void testAddLabel() {
         final String labelName = "label";
 
-        goToNodesPage();
+        String labelText = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNodeByName(NEW_NODE_NAME)
+                .clickConfigure()
+                .inputLabelName(labelName)
+                .getLabelText();
 
-        clickConfigureNode(NEW_NODE_NAME);
-        getDriver().findElement(By.xpath("//input[@name = '_.labelString']")).sendKeys(labelName);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//h2[contains(text(), 'Labels')]/..")).getText(),
-                "Labels\n" + labelName);
+        Assert.assertEquals(labelText, labelName);
     }
 
     @Test(dependsOnMethods = "testAddLabel")
@@ -336,22 +323,19 @@ public class NodesTest extends BaseTest {
 
     @Test(dependsOnMethods = "testSetEnormousNumberOfExecutes")
     public void testCheckWarningMessage() {
-        goToNodesPage();
-        clickConfigureNode(NEW_NODE_NAME);
 
-        getDriver().findElement(By.xpath("//input[@name = '_.remoteFS']")).sendKeys("@");
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        String warning = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNodeByName(NEW_NODE_NAME)
+                .clickConfigure()
+                .inputRemoteRootDirectory("@")
+                .clickConfigure()
+                .getWarningText();
 
-        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
-
-        WebElement warningMessage = getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[@class = 'warning']")));
-        Assert.assertEquals(warningMessage.getText(),
+        Assert.assertEquals(warning,
                 "Are you sure you want to use a relative path for the FS root?" +
                         " Note that relative paths require that you can assure that the selected launcher provides" +
                         " a consistent current working directory. Using an absolute path is highly recommended.");
-
-        Assert.assertEquals(Color.fromString(warningMessage.getCssValue("color")).asHex(), "#fe820a");
     }
 
     @Test

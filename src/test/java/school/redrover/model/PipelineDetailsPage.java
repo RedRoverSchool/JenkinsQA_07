@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -57,6 +58,21 @@ public class PipelineDetailsPage extends BasePage {
 
     @FindBy(xpath = "//div[@class='build-icon']/a")
     private WebElement buildIcon;
+
+    @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
+    private WebElement buildNowButton;
+
+    @FindBy(xpath = "//a[contains(@href, '/1/console')]")
+    private WebElement tooltipValue;
+
+    @FindBy(xpath = "//a[contains(@href, 'lastBuild/')]")
+    private WebElement lastBuildLink;
+
+    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
+    private WebElement replayButtonSideMenu;
+
+    @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
+    private WebElement deletePipelineButton;
 
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
@@ -137,5 +153,39 @@ public class PipelineDetailsPage extends BasePage {
     public boolean isBuildIconDisplayed() {
 
         return getWait2().until(ExpectedConditions.visibilityOf(buildIcon)).isDisplayed();
+    }
+
+    public PipelineDetailsPage clickBuildNowButton() {
+        buildNowButton.click();
+
+        return this;
+    }
+
+    public String getTooltipAttributeValue() {
+        return tooltipValue.getAttribute("tooltip");
+    }
+
+    public PipelineDetailsPage clickLastBuildLink(){
+        lastBuildLink.click();
+
+        return new PipelineDetailsPage(getDriver());
+    }
+
+    public ReplayBuildPipelinePage clickReplaySideMenu(){
+        replayButtonSideMenu.click();
+
+        return new ReplayBuildPipelinePage(getDriver());
+    }
+
+    public String getLastBuildLinkText(){
+
+        return lastBuildLink.getText();
+    }
+
+    public FolderDetailsPage deletePipelineJobInsideOfFolder() {
+        deletePipelineButton.click();
+        getDriver().switchTo().alert().accept();
+
+        return new FolderDetailsPage(getDriver());
     }
 }

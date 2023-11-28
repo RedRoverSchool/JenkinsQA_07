@@ -46,12 +46,14 @@ public class NewItemPage extends BasePage {
     @FindBy(css = "div[class='add-item-name']")
     private WebElement inputValidationMessage;
 
-
     @FindBy(xpath = "//span[normalize-space()='Pipeline']")
     private WebElement pipeLineCategory;
 
     @FindBy(name = "Submit")
     private WebElement saveButton;
+
+    @FindBy(xpath = "//input[@id='from']")
+    private WebElement fieldCopyFrom;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -176,11 +178,25 @@ public class NewItemPage extends BasePage {
         return new PipelineConfigurationPage(getDriver());
     }
 
+    public PipelineConfigurationPage createNewPipelineProject(String projectName) {
+        inputName.sendKeys(projectName);
+        pipeline.click();
+        okButton.click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
+
     public FolderConfigurationPage createFolder(String folderName) {
         inputName.sendKeys(folderName);
         folder.click();
         okButton.click();
 
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public NewItemPage populateFieldCopyFrom(String multibranchPipelineName) {
+        fieldCopyFrom.click();
+        fieldCopyFrom.sendKeys(multibranchPipelineName);
+        return this;
     }
 }

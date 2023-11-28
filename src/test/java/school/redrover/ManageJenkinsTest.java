@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
@@ -40,7 +39,6 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(resultText, "No results");
     }
 
-    @Ignore("Ignored in PR 1943, error : this.each is not a function")
     @Test
     public void testRedirectPage() {
         final String request = "Nodes";
@@ -99,5 +97,26 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertEquals(manageJenkinsPage.getSearchFieldText(), SEARCH_SYSTEM);
         Assert.assertTrue(manageJenkinsPage.isSearchTextAfterShortcutVisible(), SEARCH_SYSTEM + " is not visible");
+    }
+
+    @Test
+    public void testReloadConfigurationAlertText() {
+
+        String reloadConfigurationAlertText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfiguration()
+                .getAlertText();
+
+        Assert.assertEquals(reloadConfigurationAlertText, "Reload Configuration from Disk: are you sure?");
+    }
+
+    @Test
+    public void testSettingsSectionsQuantity() {
+
+        Integer settingsSectionsQuantity = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSettingsSectionsQuantity();
+
+        Assert.assertEquals(settingsSectionsQuantity, 18);
     }
 }
