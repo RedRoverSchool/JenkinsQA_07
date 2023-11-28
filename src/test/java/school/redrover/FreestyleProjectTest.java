@@ -701,6 +701,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputGitHubRepositoryURLWithScroll(inputText)
                 .clickApply()
                 .refreshPage(new FreestyleProjectConfigurePage(getDriver()))
+                .clickGitRadioButtonWithScroll()
                 .getValueGitHubRepositoryURL();
 
         Assert.assertEquals(repositoryUrlText, inputText);
