@@ -24,6 +24,9 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
 
+    @FindBy (xpath = "//h1")
+    private WebElement error;
+
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
 
         super(driver);
@@ -74,4 +77,8 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
         return new MultibranchPipelineDeletePage(getDriver());
     }
 
+    public String error() {
+
+        return error.getText();
+    }
 }

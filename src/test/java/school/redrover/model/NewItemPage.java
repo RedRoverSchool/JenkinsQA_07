@@ -199,6 +199,7 @@ public class NewItemPage extends BasePage {
     public NewItemPage populateFieldCopyFrom(String multibranchPipelineName) {
         fieldCopyFrom.click();
         fieldCopyFrom.sendKeys(multibranchPipelineName);
+
         return this;
     }
 }

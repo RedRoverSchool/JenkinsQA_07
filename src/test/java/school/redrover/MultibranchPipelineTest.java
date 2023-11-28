@@ -25,6 +25,8 @@ public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
+
+    private static final String MULTIBRANCH_PIPELINE_NON_EXISTING_NAME = "MultibranchPipelineNonExistingName";
     private final static String HOME_PAGE = "jenkins-home-link";
     private final List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
             "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
@@ -303,18 +305,16 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Test
+    @Test (dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testMultibranchCreationFromNonExisting() {
 
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-        getDriver().findElement(By.className("task-link")).click();
+        String error = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .populateFieldCopyFrom(MULTIBRANCH_PIPELINE_NON_EXISTING_NAME)
+                .clickOk()
+                .error();
 
-        getDriver().findElement(By.id("name")).sendKeys("Multi3");
-        getDriver().findElement(By.xpath("//input[@id='from']")).sendKeys("Multi0");
-        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
-
-        String error = getDriver().findElement(By.xpath("//h1")).getText();
         Assert.assertEquals(error, "Error");
     }
 
