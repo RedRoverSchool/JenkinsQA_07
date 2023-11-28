@@ -297,7 +297,7 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Ignore
-    @Test (dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testMultibranchCreationFromExisting() {
 
         HomePage homePage = new HomePage(getDriver())
@@ -327,8 +327,17 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
+    public void testFindByQuickSearch() {
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+
+        MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
+                .quickSerch(MULTIBRANCH_PIPELINE_NAME);
+
+        Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
+    }
+
+    @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testErrorForUnsafeChar() {
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
 
         String error_message = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
