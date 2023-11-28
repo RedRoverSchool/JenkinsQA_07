@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
+import java.time.Duration;
 import java.util.List;
 
 public class ManageJenkinsPage extends BasePage {
@@ -35,7 +36,7 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(id = "settings-search-bar")
     private WebElement searchInput;
 
-    @FindBy(xpath = "//div[@class='jenkins-search__results']/p")
+    @FindBy(className = "jenkins-search__results__no-results-label")
     private WebElement searchNoResults;
 
     @FindAll({@FindBy(xpath = "//div[@class='jenkins-search__results']/a")})
@@ -109,11 +110,15 @@ public class ManageJenkinsPage extends BasePage {
 
     public String getNoResultText() {
 
-        return getWait10().until(ExpectedConditions.visibilityOf(searchNoResults)).getText();
+        return getWait5()
+                .pollingEvery(Duration.ofMillis(500))
+                .until(ExpectedConditions.visibilityOf(searchNoResults))
+                .getText();
     }
 
     public <T> T clickResult(String request, T page) {
-        getWait10().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream()
+        getWait5().pollingEvery(Duration.ofMillis(500)).until(ExpectedConditions.visibilityOfAllElements(searchResults))
+                .stream()
                 .filter(el -> el.getText().contains(request))
                 .findFirst()
                 .ifPresent(WebElement::click);
@@ -121,7 +126,10 @@ public class ManageJenkinsPage extends BasePage {
     }
 
     public List<String> getResultsList() {
-        return getWait10().until(ExpectedConditions.visibilityOfAllElements(searchResults)).stream().map(WebElement::getText).toList();
+        return getWait5().pollingEvery(Duration.ofMillis(500)).until(ExpectedConditions.visibilityOfAllElements(searchResults))
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 
     public String getPlaceholderText() {

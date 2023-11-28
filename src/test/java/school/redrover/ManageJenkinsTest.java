@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
@@ -29,7 +28,6 @@ public class ManageJenkinsTest extends BaseTest {
             Assert.assertTrue(manageJenkinsPage.shortcutTooltipIsVisible(), TOOLTIP + " is not visible");
     }
 
-    @Ignore
     @Test
     public void testNoResultsTextVisibility() {
 
@@ -41,7 +39,6 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(resultText, "No results");
     }
 
-    @Ignore("Ignored in PR 1943, error : this.each is not a function")
     @Test
     public void testRedirectPage() {
         final String request = "Nodes";
@@ -55,7 +52,6 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertTrue(url.contains("manage/computer/"));
     }
 
-    @Ignore
     @Test
     public void testListOfResultsVisibility() {
 
