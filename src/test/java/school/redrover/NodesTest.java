@@ -109,7 +109,6 @@ public class NodesTest extends BaseTest {
 
     @Test(dependsOnMethods = "testMarkNodeTemporarilyOffline")
     public void testRenameNodeWithValidName() {
-        final String newName = "Renamed node";
 
         String actualName = new HomePage(getDriver())
                 .goNodesListPage()
@@ -159,16 +158,8 @@ public class NodesTest extends BaseTest {
         );
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromManageJenkinsPage")
     public void testCreateNewNodeCopyingExistingWithNotExistingName() {
-        HomePage newNode = new HomePage(getDriver())
-                .goNodesListPage()
-                .clickNewNodeButton()
-                .sendNodeName(NODE_NAME)
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new HomePage(getDriver()))
-                .goHomePage();
 
         String errorMassage = new HomePage(getDriver())
                 .goNodesListPage()
