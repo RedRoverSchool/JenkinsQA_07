@@ -15,7 +15,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@class ='setting-main']/input")
     private WebElement nameField;
 
-    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button")
+    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement buttonSubmit;
 
     @FindBy (xpath = "//h1")
@@ -60,7 +60,6 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     }
 
     public MultibranchPipelineConfigurationPage buttonSubmit() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(buttonSubmit)).click();
         buttonSubmit.click();
 
         return this;
