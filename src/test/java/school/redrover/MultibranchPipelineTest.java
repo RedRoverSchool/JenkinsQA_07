@@ -332,7 +332,6 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
                 .searchBox(new MultibranchPipelineDetailsPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
 
-
         Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
     }
 
