@@ -58,9 +58,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
 
-    @FindBy(xpath = "//a[@href='/logout']")
-    private WebElement logOutButton;
-
     public HomePage(WebDriver driver) {
         super(driver);
     }
