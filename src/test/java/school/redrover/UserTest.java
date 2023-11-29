@@ -187,6 +187,7 @@ public class UserTest extends BaseTest {
 
         assertTrue(getDriver().findElement(By.xpath(String.format("//a[@href='user/%s/']", USER_NAME.toLowerCase()))).isDisplayed());
     }
+
     @Ignore
     @Test(dependsOnMethods = {"testCreateUserAndCheckOnUserDatabase"})
     public void testSetDefaultUserView() {
@@ -438,9 +439,10 @@ public class UserTest extends BaseTest {
 
     @Test(dependsOnMethods = "testUserCreation")
     public void testDeleteLoggedInUser() {
-        HomePage homePage = new HomePage(getDriver());
-
-        Assert.assertFalse(homePage.clickManageJenkins().goUserDatabasePage().deleteLoggedUser());
+        UserDatabasePage userDatabasePage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage();
+        Assert.assertFalse(userDatabasePage.deleteLoggedUser());
     }
 
     @Test

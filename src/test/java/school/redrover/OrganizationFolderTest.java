@@ -58,7 +58,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
     }
 
-    @Test (dependsOnMethods = "testCreateProjectWithUnsafeCharacters")
+    @Test(dependsOnMethods = "testCreateProjectWithUnsafeCharacters")
     public void testCreateOrganizationFolderWithEmptyName() {
         NewItemPage newItemPage = new HomePage(getDriver())
                 .clickNewItem()
@@ -68,7 +68,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertFalse(newItemPage.isOkButtonEnabled(), "OK button should NOT be enabled");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolderWithEmptyName")
+    @Test(dependsOnMethods = "testCreateOrganizationFolderWithEmptyName")
     public void testCreateOrganizationFolderWithSpaceInsteadOfName() {
         final String nameWithSpace = " ";
 
@@ -82,7 +82,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "No name is specified");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolderWithSpaceInsteadOfName")
+    @Test(dependsOnMethods = "testCreateOrganizationFolderWithSpaceInsteadOfName")
     public void testCreateOrganizationFolderWithLongName() {
         final String longName = "a".repeat(256);
 
@@ -96,7 +96,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolderWithLongName")
+    @Test(dependsOnMethods = "testCreateOrganizationFolderWithLongName")
     public void testCreateOrganizationFolderWithInvalidNameWithTwoDots() {
         final String name = "..";
 
@@ -110,7 +110,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertFalse(getDriver().findElement(By.id("ok-button")).isEnabled(), "OK button should NOT be enabled");
     }
 
-    @Test (dependsOnMethods = "testCreateOrganizationFolderWithInvalidNameWithTwoDots")
+    @Test(dependsOnMethods = "testCreateOrganizationFolderWithInvalidNameWithTwoDots")
     public void testCreateOrganizationFolderWithInvalidNameWithDotAtEnd() {
         final String name = "name.";
 
@@ -275,28 +275,29 @@ public class OrganizationFolderTest extends BaseTest {
 
     @Test
     public void testOnDeletingOrganizationFolder() {
-        HomePage homePage = new HomePage(getDriver());
-
-        homePage.clickNewItem()
+        List<String> jobList = new HomePage(getDriver())
+                .clickNewItem()
                 .typeItemName(PROJECT_NAME)
                 .selectOrganizationFolder()
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
-                .clickSave().clickDelete();
+                .clickSave()
+                .clickDelete()
+                .getJobList();
 
-        Assert.assertFalse(homePage.getJobList().contains(PROJECT_NAME));
+        Assert.assertFalse(jobList.contains(PROJECT_NAME));
     }
 
 
     @Test
     public void testRedirectAfterDeleting() {
-        HomePage homePage = new HomePage(getDriver());
-
-        homePage.clickNewItem()
+        String pageTitle = new HomePage(getDriver())
+                .clickNewItem()
                 .typeItemName(PROJECT_NAME)
                 .selectOrganizationFolder()
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
-                .clickSave().clickDelete();
+                .clickSave()
+                .clickDelete().getTitle();
 
-        Assert.assertEquals(homePage.getTitle(), "Dashboard [Jenkins]");
+        Assert.assertEquals(pageTitle, "Dashboard [Jenkins]");
     }
 }

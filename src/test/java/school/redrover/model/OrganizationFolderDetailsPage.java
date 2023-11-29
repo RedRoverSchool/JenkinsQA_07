@@ -13,4 +13,13 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
+
+    public HomePage clickDelete() {
+        getDriver().findElement(By.linkText("Delete Organization Folder"))
+                .click();
+        getDriver().findElement(By.xpath("//button[@name='Submit']"))
+                .click();
+
+        return new HomePage(getDriver());
+    }
 }
