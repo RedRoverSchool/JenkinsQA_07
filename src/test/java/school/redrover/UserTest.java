@@ -4,6 +4,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.SourceType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -75,28 +76,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    @Test
-    public void testFullNameAppearsSameAsUserID() {
-        final String username = SeleniumUtils.generateRandomName();
-        final String password = SeleniumUtils.generateRandomPassword(12);
-        final String email = SeleniumUtils.generateRandomName() + "@" + "mail.com";
-
-        getDriver().findElement(By.xpath(MANAGE_JENKINS_ELEMENT)).click();
-        getDriver().findElement(By.xpath(SECURITY_ELEMENT)).click();
-        getDriver().findElement(By.xpath(ADD_USER_ELEMENT)).click();
-
-        getDriver().findElement(By.name("username")).sendKeys(username);
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(password);
-        getDriver().findElement(By.name("email")).sendKeys(email);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String name = getDriver().findElement(By.xpath("(//td/a[@href='user/" + username + "/']/following::td[1])"))
-                .getText();
-
-        assertEquals(name, username);
-    }
-
     private void goToHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
@@ -134,6 +113,39 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.cssSelector("div[class='error jenkins-!-margin-bottom-2']")).getText(),
                 "Invalid e-mail address");
     }
+    @Test
+    public void testCreateUserWithEmptyFullName() {
+        final String name = "Hello";
+        final String password = "123";
+        final String email = "Hello@gmail.com";
+
+        String fullName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .fillUserInformationField(name, password, email)
+                .getFullNameByName(name);
+
+        assertEquals(name, fullName);
+    }
+
+    @Test
+    public void testCreateUserWithWrongEmail() {
+        final String name = "Hello";
+        final String password = "123";
+        final String fullName = "Bye"
+        final String email = "Hello@gmail.com";
+
+        String error = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(name)
+                .inputPassword(password).inputFullName(fullName).
+
+        assertEquals(name, fullName);
+    }
+
 
     @Test
     public void testCreateUserAndLogIn() {

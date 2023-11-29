@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class UserDatabasePage extends BasePage {
 
     @FindBy(css = "a[href = 'addUser']")
@@ -13,6 +15,9 @@ public class UserDatabasePage extends BasePage {
 
     @FindBy(xpath = "(//span[@class='hidden-xs hidden-sm'])[1]")
     private WebElement loginUserName;
+
+    @FindBy(xpath = "//tbody/tr")
+    private List<WebElement> users;
 
     public UserDatabasePage(WebDriver driver) {
         super(driver);
@@ -44,4 +49,19 @@ public class UserDatabasePage extends BasePage {
     public boolean isUserCreated(String userName) {
         return getDriver().findElement(By.linkText(userName)).isDisplayed();
     }
+
+    public String getFullNameByName(String name) {
+        String fullName = "";
+        int trCounter = 1;
+
+        for (WebElement user:users) {
+            if (user.getText().contains(name)) {
+                fullName = user.findElement(By.xpath("//tbody/tr[2]/td[3]")).getText();
+            } else {
+                trCounter++;
+            }
+        }
+        return fullName;
+    }
+
 }
