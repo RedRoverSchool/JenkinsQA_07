@@ -58,6 +58,8 @@ public class HomePage extends BasePage {
     private WebElement itemNameInTable;
 
 
+
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -268,5 +270,10 @@ public class HomePage extends BasePage {
 
     public String getItemNameInTable() {
         return itemNameInTable.getText();
+    }
+
+    public NodeDetailsPage clickOnNodeName(String nodeName) {
+        getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
+        return new NodeDetailsPage(getDriver());
     }
 }

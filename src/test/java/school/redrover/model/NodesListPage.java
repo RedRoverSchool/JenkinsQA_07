@@ -13,6 +13,7 @@ public class   NodesListPage extends BasePage {
     @FindBy(xpath = "//a[@href='new']")
     private WebElement newNodeButton;
 
+
     public NodesListPage(WebDriver driver) {
         super(driver);
     }
@@ -44,4 +45,5 @@ public class   NodesListPage extends BasePage {
 
         return getDriver().getCurrentUrl();
     }
+
 }

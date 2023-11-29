@@ -43,6 +43,9 @@ public class NodeDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, 'label')]")
     private WebElement labelText;
 
+    @FindBy(xpath = "//form[@action = 'setOfflineCause']/button")
+    private WebElement updateOfflineReasonButton;
+
     public NodeDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -79,17 +82,17 @@ public class NodeDetailsPage extends BasePage {
         return this;
     }
 
-    public String switchToAlertAndGetText () {
+    public String switchToAlertAndGetText() {
         return getDriver().switchTo().alert().getText();
     }
 
-    public NodeDetailsPage dismissAlert () {
+    public NodeDetailsPage dismissAlert() {
         getDriver().switchTo().alert().dismiss();
 
         return this;
     }
 
-    public NodesListPage acceptAlert () {
+    public NodesListPage acceptAlert() {
         getDriver().switchTo().alert().accept();
 
         return new NodesListPage(getDriver());
@@ -110,5 +113,10 @@ public class NodeDetailsPage extends BasePage {
 
     public String getLabelText() {
         return labelText.getText();
+    }
+
+    public NodeUpdateOfflineReason clickUpdateOfflineReason() {
+        updateOfflineReasonButton.click();
+        return new NodeUpdateOfflineReason(getDriver());
     }
 }

@@ -19,11 +19,13 @@ public class NodesTest extends BaseTest {
     private static final String NEW_NODE_NAME = "newNodeName";
 
     private void createNewNode(String nodeName) {
+
         getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(nodeName);
         getDriver().findElement(By.xpath("//label")).click();
         getDriver().findElement(By.id("ok")).click();
         getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
     }
 
     private void goToMainPage() {
@@ -196,11 +198,27 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testNodeStatusUpdateOfflineReason() {
+        final String reasonMessage = "Original Offline Reason Message";
+        final String updatedReasonMessage = "Updated Offline Reason Message";
         createNewNode(NODE_NAME);
-        goToMainPage();
-        final String reasonMessage = "New No Reason";
+        String offlineReasonMessage = new HomePage(getDriver())
+                .clickOnNodeName(NODE_NAME)
+                .clickMarkOffline()
+                .takingNewNodeOffline(reasonMessage)
+                .clickUpdateOfflineReason()
+                .clearOfflineReasonMessageField(updatedReasonMessage)
+                        .
+
+
+
+
+
+        //createNewNode(NODE_NAME);
+        //goToMainPage();
+        //final String reasonMessage = "New No Reason";
 
         getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
+
         getDriver().findElement(By.name("Submit")).click();
 
         getDriver().findElement(By.name("offlineMessage")).sendKeys("No Reason");
