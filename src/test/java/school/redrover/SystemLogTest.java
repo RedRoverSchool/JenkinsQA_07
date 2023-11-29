@@ -93,7 +93,6 @@ public class SystemLogTest extends BaseTest {
                 .goSystemLogPage()
                 .clickGearIcon(SYSLOG_NAME)
                 .clickDeleteLogger()
-                .clickNameField()
                 .clickSave()
                 .clickConfigure()
                 .getEmptyLoggersList();
