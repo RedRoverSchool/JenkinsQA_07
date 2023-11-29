@@ -259,7 +259,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
-    @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testCreate"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
