@@ -146,10 +146,18 @@ public class FolderTest extends BaseTest {
                 .moveToElement(dropdownArrow)
                 .scrollByAmount(deltaXX, deltaYY)
                 .click()
+                .pause(2000)
                 .build()
                 .perform();
 
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/"+ FOLDER_NAME + "/confirm-rename']"))).click();
+        WebElement renameButton = getDriver().findElement(By.xpath("//div[@class='tippy-box']//a[contains ( @href, 'rename')]"));
+
+        actions
+                .moveToElement(renameButton)
+                .scrollByAmount(renameButton.getSize().getWidth()/2, 5)
+                .click()
+                .build()
+                .perform();
 
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
