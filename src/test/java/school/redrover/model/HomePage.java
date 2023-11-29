@@ -266,6 +266,7 @@ public class HomePage extends BasePage {
 
     public NodeDetailsPage clickOnNodeName(String nodeName) {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
+
         return new NodeDetailsPage(getDriver());
     }
 }

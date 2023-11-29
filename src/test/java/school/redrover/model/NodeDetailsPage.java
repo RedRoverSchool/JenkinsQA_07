@@ -118,12 +118,13 @@ public class NodeDetailsPage extends BasePage {
         return labelText.getText();
     }
 
-    public NodeUpdateOfflineReason clickUpdateOfflineReason() {
+    public NodeUpdateOfflineReasonPage clickUpdateOfflineReason() {
         updateOfflineReasonButton.click();
-        return new NodeUpdateOfflineReason(getDriver());
+
+        return new NodeUpdateOfflineReasonPage(getDriver());
     }
 
-    public String offlineReasonMessage () {
+    public String offlineReasonMessage() {
         return offlineReasonByMessage.getText().split(":")[1].trim();
     }
 }

@@ -26,9 +26,10 @@ public class NodeMarkOfflinePage extends BasePage {
         return new NodeDetailsPage(getDriver());
     }
 
-    public NodeDetailsPage takingNewNodeOffline (String reasonMessage) {
+    public NodeDetailsPage takingNewNodeOffline(String reasonMessage) {
        messageInputField.sendKeys(reasonMessage);
        markThisNodeTemporarilyOfflineButton.click();
+
        return new NodeDetailsPage(getDriver());
     }
 }
