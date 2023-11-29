@@ -27,6 +27,9 @@ public class ListViewPage extends BasePage {
     @FindBy(linkText = "Edit View")
     private WebElement editViewLink;
 
+    @FindBy(linkText = "add some existing jobs")
+    private WebElement addJobsLinkFromMainPanel;
+
     public ListViewPage(WebDriver driver) {
         super(driver);
     }
@@ -73,6 +76,12 @@ public class ListViewPage extends BasePage {
 
     public ListViewConfigurationPage clickEditView() {
         editViewLink.click();
+
+        return new ListViewConfigurationPage(getDriver());
+    }
+
+    public ListViewConfigurationPage clickAddJobsFromMainPanel() {
+        addJobsLinkFromMainPanel.click();
 
         return new ListViewConfigurationPage(getDriver());
     }
