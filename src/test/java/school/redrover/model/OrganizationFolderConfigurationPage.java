@@ -10,6 +10,9 @@ import school.redrover.model.base.BasePage;
 
 public class OrganizationFolderConfigurationPage extends BasePage {
 
+    @FindBy(xpath = "//section[2]//label")
+    private WebElement periodicallyCheckbox;
+
     public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -26,5 +29,14 @@ public class OrganizationFolderConfigurationPage extends BasePage {
                 .click();
 
         return new HomePage(getDriver());
+    }
+
+    public OrganizationFolderConfigurationPage clickPeriodicallyCheckbox() {
+        new Actions(getDriver())
+                .moveToElement(periodicallyCheckbox)
+                .click()
+                .perform();
+
+        return this;
     }
 }
