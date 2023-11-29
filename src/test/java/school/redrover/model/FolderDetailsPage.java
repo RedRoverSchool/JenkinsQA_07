@@ -25,6 +25,9 @@ public class FolderDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
 
+    @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
+    private WebElement newProject;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -105,4 +108,15 @@ public class FolderDetailsPage extends BasePage {
 
         return page;
     }
+    public NewItemPage clickCreateAJob(){
+        newItemButton.click();
+        return new  NewItemPage(getDriver());
+    }
+
+    public boolean  isNewCreatedProjectDisplayed(){
+        return  newProject.isDisplayed();
+
+    }
+
+
 }

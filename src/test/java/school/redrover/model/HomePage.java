@@ -269,4 +269,14 @@ public class HomePage extends BasePage {
     public String getItemNameInTable() {
         return itemNameInTable.getText();
     }
+
+    public FolderDetailsPage clickFolderName(String FOLDER_NAME){
+        getDriver().findElement(By.xpath("//span[text()='" + FOLDER_NAME + "']")).click();
+        return new FolderDetailsPage(getDriver());
+
+    }
+
+
+
+
 }

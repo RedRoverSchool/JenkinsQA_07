@@ -69,6 +69,9 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(className = "warning")
     private WebElement projectDisabledWarning;
 
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item'][2]//a[@class='model-link']")
+    private WebElement folderBreadCrumbs;
+
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -206,6 +209,12 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
     public boolean isProjectDisabled() {
         return projectDisabledWarning.isEnabled();
+    }
+
+    public FolderDetailsPage clickFolderBreadCrumbs(){
+        folderBreadCrumbs.click();
+        return new FolderDetailsPage(getDriver());
+
     }
 
 }

@@ -454,4 +454,35 @@ public class FolderTest extends BaseTest {
 
         Assert.assertTrue(isChildHealthMetricDisplayed);
     }
+
+    @Test(dependsOnMethods = "testCreate")
+    public void testCreateFreestyleProjectInsideFolder() {
+
+        boolean isNewCreatedProjectDisplayed = new HomePage(getDriver())
+                .clickFolderName(FOLDER_NAME)
+                .clickCreateAJob()
+                .createFreestyleProject(JOB_NAME)
+                .clickSaveButton()
+                .clickFolderBreadCrumbs()
+                .isNewCreatedProjectDisplayed();
+
+        Assert.assertTrue(isNewCreatedProjectDisplayed);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
