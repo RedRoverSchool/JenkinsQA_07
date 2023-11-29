@@ -13,6 +13,8 @@ import school.redrover.runner.TestUtils;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public class PipelineTest extends BaseTest {
 
     private static final String JOB_NAME = "NewPipeline";
@@ -56,6 +58,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testPipelineRename() {
         final String updatedJobName = "Updated job name";
+
         TestUtils.createPipeline(this, JOB_NAME, false);
 
         String currentName = new PipelineDetailsPage(getDriver())
@@ -307,17 +310,17 @@ public class PipelineTest extends BaseTest {
     public void testTooltipsDescriptionCompliance() {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
-        getDriver().findElement(By.xpath("//tr[@id ='job_" + JOB_NAME + "']//a[@href = 'job/" + JOB_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + JOB_NAME + "/configure']")).click();
+        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickConfigure();
 
-        List<WebElement> toolTips = getDriver().findElements(By.xpath("//div[@hashelp = 'true']//a[contains(@tooltip, '')]"));
-        List<WebElement> checkBoxesWithTooltips = getDriver().findElements(By.xpath("//div[@hashelp = 'true']//label[@class = 'attach-previous ']"));
-
-        Assert.assertEquals(toolTips.size(), 11);
-        Assert.assertEquals(toolTips.size(), checkBoxesWithTooltips.size());
-        for (int i = 0; i < toolTips.size(); i++) {
-            Assert.assertEquals("Help for feature: " + checkBoxesWithTooltips.get(i).getText(), toolTips.get(i).getAttribute("title"));
-        }
+        Assert.assertEquals(pipelineConfigurationPage.getNumOfTooltips(), 11);
+        Assert.assertEquals(pipelineConfigurationPage.getNumOfCheckboxesWithHelp(), 11);
+        Assert.assertEquals(pipelineConfigurationPage.getTooltipsTitlesList(), pipelineConfigurationPage
+                .getCheckboxesWithHelpText()
+                .stream()
+                .map(element -> {return "Help for feature: " + element;})
+                .toList());
     }
 
     @Test
