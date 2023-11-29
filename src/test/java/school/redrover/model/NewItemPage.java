@@ -119,9 +119,7 @@ public class NewItemPage extends BasePage {
         return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
-    public boolean isOkButtonEnabled() {
-        return okButton.isEnabled();
-    }
+    public boolean isOkButtonEnabled() { return okButton.isEnabled(); }
 
     public String getRequiredNameErrorMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(requiredNameErrorMessage)).getText();
