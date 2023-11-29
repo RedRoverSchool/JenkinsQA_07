@@ -34,7 +34,7 @@ public class SystemLogTest extends BaseTest {
         Assert.assertEquals(newLogName, SYSLOG_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateCustomLogRecorder")
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
     public void testDeleteCustomLogRecorder() {
         List<WebElement> lst = new HomePage(getDriver())
                 .clickManageJenkins()
