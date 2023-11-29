@@ -154,15 +154,14 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
-    @Ignore
     @Test
     public void testOKButtonIsNotClickableWithoutFolderName() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        boolean okButtonDisabled = "true".equals(okButton.getAttribute("disabled"));
+        boolean isOkButtonDisabled = new HomePage(getDriver())
+                .clickNewItem()
+                .selectItemFolder()
+                .isOkButtonEnabled();
 
-        Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
+        Assert.assertFalse(isOkButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
     @Test

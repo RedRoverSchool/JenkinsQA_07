@@ -12,7 +12,6 @@ import school.redrover.model.HomePage;
 import school.redrover.model.UserPage;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.SeleniumUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,15 +22,13 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class UserTest extends BaseTest {
-    private final static String MANAGE_JENKINS_ELEMENT = "//a[@href = '/manage']";
-    private final static String SECURITY_ELEMENT = "//a[@href = 'securityRealm/']";
-    private final static String ADD_USER_ELEMENT = "//a[@href = 'addUser']";
 
     private static final String USER_NAME = "Jane";
     private final String USER_NAME_2 = "FirstUser";
     private static final String NAME = "ivan";
     public static final String FULL_NAME = "User Full Name";
     final private static String PASSWORD = "12345";
+    final private static String WRONG_CONFIRM_PASSWORD = "123";
     private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
 
@@ -75,28 +72,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    @Test
-    public void testFullNameAppearsSameAsUserID() {
-        final String username = SeleniumUtils.generateRandomName();
-        final String password = SeleniumUtils.generateRandomPassword(12);
-        final String email = SeleniumUtils.generateRandomName() + "@" + "mail.com";
-
-        getDriver().findElement(By.xpath(MANAGE_JENKINS_ELEMENT)).click();
-        getDriver().findElement(By.xpath(SECURITY_ELEMENT)).click();
-        getDriver().findElement(By.xpath(ADD_USER_ELEMENT)).click();
-
-        getDriver().findElement(By.name("username")).sendKeys(username);
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(password);
-        getDriver().findElement(By.name("email")).sendKeys(email);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String name = getDriver().findElement(By.xpath("(//td/a[@href='user/" + username + "/']/following::td[1])"))
-                .getText();
-
-        assertEquals(name, username);
-    }
-
     private void goToHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
     }
@@ -120,19 +95,65 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testCreateUser() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+    public void testCreateUserWithEmptyFullName() {
 
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        String fullName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .fillUserInformationField(USER_NAME, PASSWORD, EMAIL)
+                .getFullNameByName(USER_NAME);
 
-        getDriver().findElement(By.cssSelector("#username")).sendKeys("Tetiana");
-        getDriver().findElement(By.name("password1")).sendKeys("123456");
-        getDriver().findElement(By.name("password2")).sendKeys("123456");
-        getDriver().findElement(By.name("Submit")).click();
+        assertEquals(USER_NAME, fullName);
+    }
 
-        Assert.assertEquals(getDriver().findElement(By.cssSelector("div[class='error jenkins-!-margin-bottom-2']")).getText(),
-                "Invalid e-mail address");
+    @Test
+    public void testCreateUserWithWrongEmail() {
+
+        String error = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputFullName(FULL_NAME)
+                .clickCreateUser()
+                .getErrorMassage();
+
+        Assert.assertEquals(error, "Invalid e-mail address");
+    }
+
+    @Test
+    public void testCreateUserWithoutPassword() {
+
+        String error = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(USER_NAME)
+                .inputFullName(FULL_NAME)
+                .clickCreateUser()
+                .getErrorMassage();
+
+        Assert.assertEquals(error, "Password is required");
+    }
+
+    @Test
+    public void testCreateUserWithNotMatchedPassword() {
+
+        String error = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(WRONG_CONFIRM_PASSWORD)
+                .inputFullName(FULL_NAME)
+                .clickCreateUser()
+                .getErrorMassage();
+
+        Assert.assertEquals(error, "Password didn't match");
     }
 
     @Test
@@ -573,22 +594,6 @@ public class UserTest extends BaseTest {
         boolean userId = new UserPage(getDriver())
                 .userIdIsClickable();
         Assert.assertTrue(userId, "Button should be enabled and displayed");
-    }
-
-    @Ignore("no such element: Unable to locate element: {\"method\":\"xpath\",\"selector\":\"//a[@href='addUser']\"}")
-    @Test
-    public void testCreateUserEmptyName() {
-        goToUsersTab();
-
-        getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys("Test_Test");
-        getDriver().findElement(By.xpath("//input[@name='password2']")).sendKeys("Test_Test");
-        getDriver().findElement(By.xpath("//input[@name='fullname']")).sendKeys("TestName");
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("Test@mail.ru");
-
-        getDriver().findElement(By.xpath("//div[@id='bottom-sticker']/div/button")).click();
-
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//div[@id='main-panel']/form/div[1]/div[2]")).getText(), "\"\" is prohibited as a username for security reasons.");
     }
 
     @Test
