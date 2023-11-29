@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.GlobalViewPage;
 import school.redrover.model.HomePage;
@@ -11,7 +10,6 @@ import school.redrover.model.ListViewPage;
 import school.redrover.model.MyViewPage;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
