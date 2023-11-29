@@ -14,9 +14,6 @@ public class NodesListPage extends BasePage {
     @FindBy(xpath = "//a[@href='new']")
     private WebElement newNodeButton;
 
-    @FindBy(xpath = "//tr/td/a")
-    private List<WebElement> nodesList;
-
     @FindBy(xpath = "//th[@initialsortdir='down']")
     private WebElement sortByNameButton;
 
@@ -25,7 +22,9 @@ public class NodesListPage extends BasePage {
     }
 
     public List<String> getNodeList() {
-        return getWait2().until(ExpectedConditions.visibilityOfAllElements(nodesList)).stream().map(WebElement::getText).toList();
+        List<WebElement> nodesList = getDriver().findElements(By.xpath("//tr/td/a"));
+
+        return nodesList.stream().map(WebElement::getText).toList();
     }
 
     public NodeCreatePage clickNewNodeButton() {
@@ -49,7 +48,7 @@ public class NodesListPage extends BasePage {
     }
 
     public NodesListPage clickSortByNameButton() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(sortByNameButton)).click();
+        sortByNameButton.click();
 
         return this;
     }
