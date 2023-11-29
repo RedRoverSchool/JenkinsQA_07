@@ -17,7 +17,7 @@ public class NodeUpdateOfflineReason extends BasePage {
         super(driver);
     }
 
-    public NodeDetailsPage clearOfflineReasonMessageField(String message) {
+    public NodeDetailsPage setNewNodeOfflineReason(String message) {
         offlineReasonInputField.clear();
         offlineReasonInputField.sendKeys(message);
         submitButton.click();

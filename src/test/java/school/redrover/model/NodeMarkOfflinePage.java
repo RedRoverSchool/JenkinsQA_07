@@ -13,6 +13,9 @@ public class NodeMarkOfflinePage extends BasePage {
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveChangesButton;
 
+    @FindBy(name = "Submit")
+    private WebElement markThisNodeTemporarilyOfflineButton;
+
     public NodeMarkOfflinePage(WebDriver driver) {
         super(driver);
     }
@@ -25,6 +28,7 @@ public class NodeMarkOfflinePage extends BasePage {
 
     public NodeDetailsPage takingNewNodeOffline (String reasonMessage) {
        messageInputField.sendKeys(reasonMessage);
+       markThisNodeTemporarilyOfflineButton.click();
        return new NodeDetailsPage(getDriver());
     }
 }

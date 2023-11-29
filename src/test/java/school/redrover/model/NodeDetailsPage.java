@@ -46,6 +46,9 @@ public class NodeDetailsPage extends BasePage {
     @FindBy(xpath = "//form[@action = 'setOfflineCause']/button")
     private WebElement updateOfflineReasonButton;
 
+    @FindBy(xpath = "//div[@class='message']")
+    private WebElement offlineReasonByMessage;
+
     public NodeDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -118,5 +121,9 @@ public class NodeDetailsPage extends BasePage {
     public NodeUpdateOfflineReason clickUpdateOfflineReason() {
         updateOfflineReasonButton.click();
         return new NodeUpdateOfflineReason(getDriver());
+    }
+
+    public String offlineReasonMessage () {
+        return offlineReasonByMessage.getText().split(":")[1].trim();
     }
 }

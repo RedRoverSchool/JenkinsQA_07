@@ -185,33 +185,10 @@ public class NodesTest extends BaseTest {
                 .clickMarkOffline()
                 .takingNewNodeOffline(reasonMessage)
                 .clickUpdateOfflineReason()
-                .clearOfflineReasonMessageField(updatedReasonMessage)
-                        .
+                .setNewNodeOfflineReason(updatedReasonMessage)
+                .offlineReasonMessage();
 
-
-
-
-
-        //createNewNode(NODE_NAME);
-        //goToMainPage();
-        //final String reasonMessage = "New No Reason";
-
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.name("offlineMessage")).sendKeys("No Reason");
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.xpath("//form[@action = 'setOfflineCause']/button")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).clear();
-
-        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys(reasonMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String message = getDriver().findElement(By.xpath("//div[@class='message']")).getText();
-
-        Assert.assertEquals(message.substring(message.indexOf(':') + 1).trim(), reasonMessage);
+        Assert.assertEquals(offlineReasonMessage,"Updated Offline Reason Message");
     }
 
     @Test(dependsOnMethods = "testRenameNodeWithValidName")
