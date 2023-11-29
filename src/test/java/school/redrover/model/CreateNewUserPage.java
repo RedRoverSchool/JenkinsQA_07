@@ -26,6 +26,9 @@ public class CreateNewUserPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(xpath = "//div[@class = 'error jenkins-!-margin-bottom-2']")
+    private WebElement errorMassage;
+
     public CreateNewUserPage(WebDriver driver) {
 
         super(driver);
@@ -96,6 +99,12 @@ public class CreateNewUserPage extends BasePage {
         return clickSubmit();
     }
 
-
+    public CreateNewUserPage clickCreateUser() {
+        submitButton.click();
+        return this;
+    }
+    public String getErrorMassage() {
+        return errorMassage.getText();
+    }
 }
 
