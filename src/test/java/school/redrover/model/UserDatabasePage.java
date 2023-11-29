@@ -57,6 +57,7 @@ public class UserDatabasePage extends BasePage {
         for (WebElement user:users) {
             if (user.getText().contains(name)) {
                 fullName = user.findElement(By.xpath("//tbody/tr["+ trCounter +"]/td[3]")).getText();
+                break;
             } else {
                 trCounter++;
             }
