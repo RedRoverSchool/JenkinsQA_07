@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
@@ -12,13 +13,13 @@ import java.util.List;
 
 public class ConfigureLogRecorderPage extends BasePage {
 
-    @FindBy(xpath = "(//div[@class = 'setting-main'])[1]/input")
+    @FindBy(xpath = "(//div[@class='setting-main'])[1]/input")
     private WebElement name;
 
     @FindBy(xpath = "//div[@class='repeated-container']/button")
     private WebElement addButton;
 
-    @FindBy(xpath = "(//input[@name = '_.name'])[last()]")
+    @FindBy(xpath = "(//input[@name='_.name'])[last()]")
     private WebElement lastLoggerField;
 
     @FindBy(xpath = "//div[@name='loggers'])[last()]//li[1]")
@@ -101,6 +102,27 @@ public class ConfigureLogRecorderPage extends BasePage {
     public ConfigureLogRecorderPage changeLogger(String name) {
         lastLoggerField.clear();
         lastLoggerField.sendKeys(name);
+
+        return this;
+    }
+
+    public ConfigureLogRecorderPage clickDeleteLogger() {
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@name='loggers']/div/button"));
+        for (WebElement el: elementList) {
+            getWait2().until(ExpectedConditions.elementToBeClickable(el)).click();
+        }
+
+        return this;
+    }
+
+    public boolean getEmptyLoggersList() {
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@name='loggers']"));
+
+        return elementList.isEmpty();
+    }
+
+    public ConfigureLogRecorderPage clickNameField() {
+        name.click();
 
         return this;
     }
