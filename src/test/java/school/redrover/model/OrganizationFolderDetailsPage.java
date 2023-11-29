@@ -13,4 +13,16 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
+    @FindBy(linkText = "Delete Organization Folder")
+    private WebElement buttonDelete;
+
+    @FindBy(name = "Submit")
+    private WebElement buttonSubmit;
+
+    public HomePage clickDelete() {
+        buttonDelete.click();
+        buttonSubmit.click();
+
+        return new HomePage(getDriver());
+    }
 }

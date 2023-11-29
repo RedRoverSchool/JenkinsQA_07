@@ -9,22 +9,15 @@ import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
 public class OrganizationFolderConfigurationPage extends BasePage {
+    @FindBy(name = "Submit")
+    private WebElement buttonSubmit;
 
     public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
-    public OrganizationFolderConfigurationPage clickSave() {
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        return this;
-    }
-
-    public HomePage clickDelete() {
-        getDriver().findElement(By.linkText("Delete Organization Folder"))
-                .click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']"))
-                .click();
-
-        return new HomePage(getDriver());
+    public OrganizationFolderDetailsPage clickSave() {
+        buttonSubmit.click();
+        return new OrganizationFolderDetailsPage(getDriver());
     }
 }
