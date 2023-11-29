@@ -33,17 +33,6 @@ public class NodesTest extends BaseTest {
         getDriver().findElement(By.linkText("Build Executor Status")).click();
     }
 
-    private void clickConfigureNode(String nodeName) {
-        getDriver().findElement(By.xpath("//a[contains(text(), '" + nodeName + "')]")).click();
-        getDriver().findElement(By.xpath("//span[contains(text(), 'Configure')]/..")).click();
-    }
-
-    private void renameNode(String oldName, String newName) {
-        getDriver().findElement(By.xpath("//input[@value = '" + oldName + "']")).clear();
-        getDriver().findElement(By.xpath("//input[@value = '" + oldName + "']")).sendKeys(newName);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-    }
-
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
         List<String> nodeList = new HomePage(getDriver())
@@ -120,17 +109,16 @@ public class NodesTest extends BaseTest {
 
     @Test(dependsOnMethods = "testMarkNodeTemporarilyOffline")
     public void testRenameNodeWithValidName() {
-        final String newName = "Renamed node";
 
         String actualName = new HomePage(getDriver())
                 .goNodesListPage()
                 .clickNodeByName(NODE_NAME)
                 .clickConfigure(new NodeCofigurationPage(getDriver()))
-                .clearAndInputNewName(newName)
+                .clearAndInputNewName(NEW_NODE_NAME)
                 .saveButtonClick(new NodeDetailsPage(getDriver()))
                 .getNodeName();
 
-        Assert.assertTrue(actualName.contains(newName));
+        Assert.assertTrue(actualName.contains(NEW_NODE_NAME));
     }
 
     @Test
@@ -170,16 +158,8 @@ public class NodesTest extends BaseTest {
         );
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromManageJenkinsPage")
     public void testCreateNewNodeCopyingExistingWithNotExistingName() {
-        HomePage newNode = new HomePage(getDriver())
-                .goNodesListPage()
-                .clickNewNodeButton()
-                .sendNodeName(NODE_NAME)
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new HomePage(getDriver()))
-                .goHomePage();
 
         String errorMassage = new HomePage(getDriver())
                 .goNodesListPage()
@@ -216,38 +196,19 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(message.substring(message.indexOf(':') + 1).trim(), reasonMessage);
     }
 
-    @Test
-    public void testCreate() {
-        goToNodesPage();
-
-        getDriver().findElement(By.xpath("//a[contains(text(), 'New Node')]")).click();
-        getDriver().findElement(By.id("name")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.xpath("//label[@class ='jenkins-radio__label']")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-    }
-
-    @Test(dependsOnMethods = "testCreate")
-    public void testRename() {
-        goToNodesPage();
-        clickConfigureNode(NODE_NAME);
-        renameNode(NODE_NAME, NEW_NODE_NAME);
-
-        getDriver().findElement(By.xpath("//a[contains(text(), 'Nodes')]")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[contains(text(), '" + NEW_NODE_NAME + "')]"))
-                .isDisplayed());
-    }
-
-    @Test(dependsOnMethods = "testRename")
+    @Test(dependsOnMethods = "testRenameNodeWithValidName")
     public void testRenameWithIncorrectName() {
         final String incorrectNodeName = "@";
 
-        goToNodesPage();
-        clickConfigureNode(NEW_NODE_NAME);
-        renameNode(NEW_NODE_NAME, incorrectNodeName);
+        String errorText = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNodeByName(NEW_NODE_NAME)
+                .clickConfigure(new NodeCofigurationPage(getDriver()))
+                .clearAndInputNewName(incorrectNodeName)
+                .saveButtonClick(new ErrorPage(getDriver()))
+                .getErrorFromMainPanel();
 
-        Assert.assertEquals(getDriver().findElement(By.id("main-panel")).getText(), "Error\n‘" + incorrectNodeName + "’ is an unsafe character");
+        Assert.assertEquals(errorText, "Error\n‘" + incorrectNodeName + "’ is an unsafe character");
     }
 
     @Test(dependsOnMethods = "testRenameWithIncorrectName")
@@ -312,7 +273,7 @@ public class NodesTest extends BaseTest {
         int number = new HomePage(getDriver())
                 .goNodesListPage()
                 .clickNodeByName("")
-                .clickConfigure(new BuildInNodeConfigurationPage(getDriver()))
+                .clickConfigure(new BuiltInNodeConfigurationPage(getDriver()))
                 .inputNumbersOfExecutors(numberOfExecutors)
                 .getSizeListBuildExecutors();
 

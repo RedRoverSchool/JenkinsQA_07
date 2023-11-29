@@ -5,9 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class BuildInNodeConfigurationPage extends BasePage {
+public class BuiltInNodeConfigurationPage extends BasePage {
 
-    public BuildInNodeConfigurationPage(WebDriver driver) {
+    public BuiltInNodeConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
