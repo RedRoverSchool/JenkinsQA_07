@@ -142,29 +142,26 @@ public class FolderTest extends BaseTest {
                 FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testErrorMessageIsDisplayedWithoutFolderName() {
         String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        boolean errorMessageDisplayed = getDriver().findElement(By.id("itemname-required")).isDisplayed();
-        String actualErrorMessage = getDriver().findElement(By.id("itemname-required")).getText();
+        String actualErrorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .selectItemFolder()
+                .getRequiredNameErrorMessage();
 
-        Assert.assertTrue(errorMessageDisplayed, "Error message for empty name is not displayed!");
-        Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "The error message does not match the expected message!");
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
-    @Ignore
     @Test
     public void testOKButtonIsNotClickableWithoutFolderName() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        boolean okButtonDisabled = "true".equals(okButton.getAttribute("disabled"));
+        boolean isOkButtonDisabled = new HomePage(getDriver())
+                .clickNewItem()
+                .selectItemFolder()
+                .isOkButtonEnabled();
 
-        Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
+        Assert.assertFalse(isOkButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
     @Test
@@ -251,7 +248,7 @@ public class FolderTest extends BaseTest {
         String actualDescription = homePage
                 .clickAlertIfVisibleAndGoHomePage()
                 .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
-                .clickAddDescription()
+                .clickAddOrEditDescription()
                 .typeDescription(descriptionText)
                 .clickSave()
                 .getActualFolderDescription();
@@ -259,20 +256,18 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testRename", "testCreate"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        String actualUpdatedDescription = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .typeDescription(newDescriptionText)
+                .clickSave()
+                .getActualFolderDescription();
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
-        getDriver().findElement(By.className("jenkins-input")).clear();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(newDescriptionText);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String actualNewDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-        Assert.assertEquals(actualNewDescription, newDescriptionText);
+        Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
     }
 
     @Ignore

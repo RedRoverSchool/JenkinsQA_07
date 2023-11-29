@@ -282,6 +282,12 @@ public class HomePage extends BasePage {
         return header.getText();
     }
 
+    public NodeDetailsPage clickOnNodeName(String nodeName) {
+        getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
+
+        return new NodeDetailsPage(getDriver());
+    }
+
     public HomePage clickJenkinsVersion() {
         jenkinsVersionButton.click();
 

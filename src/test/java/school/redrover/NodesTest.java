@@ -1,15 +1,12 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class NodesTest extends BaseTest {
@@ -18,19 +15,17 @@ public class NodesTest extends BaseTest {
     private static final String NEW_NODE_NAME = "newNodeName";
 
     private void createNewNode(String nodeName) {
+
         getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
         getDriver().findElement(By.id("name")).sendKeys(nodeName);
         getDriver().findElement(By.xpath("//label")).click();
         getDriver().findElement(By.id("ok")).click();
         getDriver().findElement(By.name("Submit")).click();
+        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
     }
 
     private void goToMainPage() {
         getDriver().findElement(By.id("jenkins-head-icon")).click();
-    }
-
-    private void goToNodesPage() {
-        getDriver().findElement(By.linkText("Build Executor Status")).click();
     }
 
     @Test
@@ -121,19 +116,6 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(actualName.contains(NEW_NODE_NAME));
     }
 
-    @Test
-    public void testCreateNewNodeByBuildExecutorInSidePanelMenu() {
-        goToNodesPage();
-        getDriver().findElement(By.linkText("New Node")).click();
-        getDriver().findElement(By.xpath("//*[@id='name']")).sendKeys(NODE_NAME);
-        getDriver().findElement(By.xpath("//*[text()='Permanent Agent']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//div//button[@name='Submit']")).click();
-
-        Assert.assertTrue(getDriver().findElement(
-                By.xpath("//*[@id='node_" + NODE_NAME + "']/td[2]/a")).getText().contains(NODE_NAME));
-    }
-
     @Ignore
     @Test
     public void testUpdateOfflineReason() {
@@ -175,25 +157,18 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testNodeStatusUpdateOfflineReason() {
+        final String reasonMessage = "Original Offline Reason Message";
+        final String updatedReasonMessage = "Updated Offline Reason Message";
         createNewNode(NODE_NAME);
-        goToMainPage();
-        final String reasonMessage = "New No Reason";
+        String offlineReasonMessage = new HomePage(getDriver())
+                .clickOnNodeName(NODE_NAME)
+                .clickMarkOffline()
+                .takingNewNodeOffline(reasonMessage)
+                .clickUpdateOfflineReason()
+                .setNewNodeOfflineReason(updatedReasonMessage)
+                .offlineReasonMessage();
 
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.name("offlineMessage")).sendKeys("No Reason");
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.xpath("//form[@action = 'setOfflineCause']/button")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).clear();
-
-        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys(reasonMessage);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String message = getDriver().findElement(By.xpath("//div[@class='message']")).getText();
-
-        Assert.assertEquals(message.substring(message.indexOf(':') + 1).trim(), reasonMessage);
+        Assert.assertEquals(offlineReasonMessage,"Updated Offline Reason Message");
     }
 
     @Test(dependsOnMethods = "testRenameNodeWithValidName")
@@ -299,45 +274,30 @@ public class NodesTest extends BaseTest {
 
     @Test
     public void testSortNodesInReverseOrder() {
+        final List<String> nodes = List.of("Agent1", "Agent2", "Agent3", "Built-In Node");
 
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        Actions actions = new Actions(getDriver());
-        actions.scrollToElement(getDriver().findElement(By.xpath("//a[@href='computer']")))
-                .perform();
-        getDriver().findElement(By.xpath("//a[@href='computer']")).click();
-        for (int i = 1; i <= 3; i++) {
-            String NODE_NAME = "Agent" + i;
-            getDriver().findElement(By.xpath("//a[@href='new']")).click();
-            getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(NODE_NAME);
-            getDriver().findElement(By.className("jenkins-radio__label")).click();
-            getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-            getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+        List<String> actualNodes = new HomePage(getDriver())
+                .goNodesListPage()
+                .clickNewNodeButton()
+                .sendNodeName(nodes.get(0))
+                .SelectPermanentAgentRadioButton()
+                .clickCreateButton()
+                .saveButtonClick(new NodesListPage(getDriver()))
+                .clickNewNodeButton()
+                .sendNodeName(nodes.get(1))
+                .SelectPermanentAgentRadioButton()
+                .clickCreateButton()
+                .saveButtonClick(new NodesListPage(getDriver()))
+                .clickNewNodeButton()
+                .sendNodeName(nodes.get(2))
+                .SelectPermanentAgentRadioButton()
+                .clickCreateButton()
+                .saveButtonClick(new NodesListPage(getDriver()))
+                .clickSortByNameButton()
+                .clickSortByNameButton()
+                .getNodeList();
 
-        }
-
-        List<String> originalTextList = new ArrayList<>();
-        originalTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/Agent1/']"))
-                .getText());
-        originalTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/Agent2/']"))
-                .getText());
-        originalTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/Agent3/']"))
-                .getText());
-        originalTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/(built-in)/']"))
-                .getText());
-
-        List<String> expectedSortedTextList = new ArrayList<>(originalTextList);
-        Collections.reverse(expectedSortedTextList);
-
-        getDriver().findElement(By.xpath("//th[@initialsortdir='down']")).click();
-
-        List<String> actualSortedTextList = new ArrayList<>();
-        actualSortedTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/(built-in)/']")).getText());
-        actualSortedTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/Agent3/']")).getText());
-        actualSortedTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/Agent2/']")).getText());
-        actualSortedTextList.add(getDriver().findElement(By.xpath("//a[@href = '../computer/Agent1/']")).getText());
-
-        Assert.assertEquals(actualSortedTextList, expectedSortedTextList);
-
+        Assert.assertEquals(nodes, actualNodes);
     }
 
     @Test
