@@ -4,6 +4,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
@@ -49,6 +50,12 @@ public class PipelineConfigurationPage extends BasePage {
 
     @FindBy(id = "yui-gen10")
     private WebElement stringParameterOption;
+
+    @FindBy(xpath = "//label[text()='Do not allow concurrent builds']")
+    private WebElement concurrentBuildsCheckboxLabel;
+
+    @FindBy(id = "cb3")
+    private WebElement concurrentBuildsCheckbox;
 
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
@@ -137,5 +144,16 @@ public class PipelineConfigurationPage extends BasePage {
         stringParameterOption.click();
 
         return this;
+    }
+
+    public PipelineConfigurationPage clickDoNotAllowConcurrentBuilds() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(concurrentBuildsCheckboxLabel)).click();
+
+        return this;
+    }
+
+    public boolean isDoNotAllowConcurrentBuildsSelected() {
+
+        return concurrentBuildsCheckbox.isSelected();
     }
 }

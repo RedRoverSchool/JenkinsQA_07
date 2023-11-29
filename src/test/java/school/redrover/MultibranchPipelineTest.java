@@ -327,10 +327,8 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testFindByQuickSearch() {
-        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
-
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
                 .searchBox(new MultibranchPipelineDetailsPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
 
@@ -339,7 +337,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testErrorForUnsafeChar() {
-
         String error_message = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename()

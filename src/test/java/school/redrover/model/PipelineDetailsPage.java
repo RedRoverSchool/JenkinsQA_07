@@ -79,6 +79,9 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//ul[@class = 'permalinks-list']")
     private WebElement permalinkText;
 
+    @FindBy(css = "div#pipeline-box > div")
+    private WebElement stageViewAlertText;
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -201,19 +204,12 @@ public class PipelineDetailsPage extends BasePage {
         return new FolderDetailsPage(getDriver());
     }
 
-    public PipelineDetailsPage clickDeleteButton() {
-        deletePipelineButton.click();
-
-        return this;
-    }
-
-    public HomePage acceptAlert() {
-        getDriver().switchTo().alert().accept();
-
-        return new HomePage(getDriver());
-    }
-
     public boolean isPermalinksEmpty() {
         return permalinkText.getText().isEmpty();
+    }
+
+    public String getStageViewAlertText() {
+
+        return stageViewAlertText.getText();
     }
 }

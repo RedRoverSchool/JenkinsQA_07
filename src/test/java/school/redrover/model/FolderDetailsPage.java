@@ -14,7 +14,7 @@ public class FolderDetailsPage extends BasePage {
     private WebElement configure;
 
     @FindBy(id = "description-link")
-    private WebElement addDescription;
+    private WebElement addOrEditDescription;
 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
@@ -52,8 +52,8 @@ public class FolderDetailsPage extends BasePage {
         return new FolderConfigurationPage(getDriver());
     }
 
-    public FolderDetailsPage clickAddDescription() {
-        addDescription.click();
+    public FolderDetailsPage clickAddOrEditDescription() {
+        addOrEditDescription.click();
 
         return this;
     }
