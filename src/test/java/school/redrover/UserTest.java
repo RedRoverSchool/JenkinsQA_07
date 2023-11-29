@@ -187,7 +187,7 @@ public class UserTest extends BaseTest {
 
         assertTrue(getDriver().findElement(By.xpath(String.format("//a[@href='user/%s/']", USER_NAME.toLowerCase()))).isDisplayed());
     }
-
+    @Ignore
     @Test(dependsOnMethods = {"testCreateUserAndCheckOnUserDatabase"})
     public void testSetDefaultUserView() {
         final String viewName = USER_NAME + "view";

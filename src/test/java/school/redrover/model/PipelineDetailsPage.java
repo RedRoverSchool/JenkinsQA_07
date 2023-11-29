@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -59,6 +58,9 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//div[@class='build-icon']/a")
     private WebElement buildIcon;
 
+    @FindBy(xpath = "//span[contains(text(), 'Delete')]/../..")
+    private WebElement deleteSideMenuOption;
+
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
     private WebElement buildNowButton;
 
@@ -73,6 +75,9 @@ public class PipelineDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
     private WebElement deletePipelineButton;
+
+    @FindBy(xpath = "//ul[@class = 'permalinks-list']")
+    private WebElement permalinkText;
 
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
@@ -155,6 +160,13 @@ public class PipelineDetailsPage extends BasePage {
         return getWait2().until(ExpectedConditions.visibilityOf(buildIcon)).isDisplayed();
     }
 
+    public HomePage deleteFromSideMenu() {
+        deleteSideMenuOption.click();
+        getDriver().switchTo().alert().accept();
+
+        return new HomePage(getDriver());
+    }
+
     public PipelineDetailsPage clickBuildNowButton() {
         buildNowButton.click();
 
@@ -165,19 +177,19 @@ public class PipelineDetailsPage extends BasePage {
         return tooltipValue.getAttribute("tooltip");
     }
 
-    public PipelineDetailsPage clickLastBuildLink(){
+    public PipelineDetailsPage clickLastBuildLink() {
         lastBuildLink.click();
 
         return new PipelineDetailsPage(getDriver());
     }
 
-    public ReplayBuildPipelinePage clickReplaySideMenu(){
+    public ReplayBuildPipelinePage clickReplaySideMenu() {
         replayButtonSideMenu.click();
 
         return new ReplayBuildPipelinePage(getDriver());
     }
 
-    public String getLastBuildLinkText(){
+    public String getLastBuildLinkText() {
 
         return lastBuildLink.getText();
     }
@@ -187,5 +199,21 @@ public class PipelineDetailsPage extends BasePage {
         getDriver().switchTo().alert().accept();
 
         return new FolderDetailsPage(getDriver());
+    }
+
+    public PipelineDetailsPage clickDeleteButton() {
+        deletePipelineButton.click();
+
+        return this;
+    }
+
+    public HomePage acceptAlert() {
+        getDriver().switchTo().alert().accept();
+
+        return new HomePage(getDriver());
+    }
+
+    public boolean isPermalinksEmpty() {
+        return permalinkText.getText().isEmpty();
     }
 }

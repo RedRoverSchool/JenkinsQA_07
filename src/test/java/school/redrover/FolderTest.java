@@ -2,14 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -160,7 +158,7 @@ public class FolderTest extends BaseTest {
 
     @Ignore
     @Test
-    public void testOKbuttonIsNotClickableWithoutFolderName() {
+    public void testOKButtonIsNotClickableWithoutFolderName() {
         getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
         getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
         WebElement okButton = getDriver().findElement(By.id("ok-button"));
@@ -196,7 +194,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
-    public void testCreateNameSpecialCharacters(String unsafeChar) {
+    public void testCreateNameSpecialCharactersGetMessage(String unsafeChar) {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(unsafeChar)
@@ -204,6 +202,18 @@ public class FolderTest extends BaseTest {
                 .getInvalidNameErrorMessage();
 
         Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
+    }
+
+    @Test(dataProvider = "provideUnsafeCharacters")
+    public void testCreateNameSpecialCharactersAbsenceOnHomePage(String unsafeChar) {
+        boolean createdNameSpecialCharacters = new HomePage(getDriver())
+                .clickNewItem()
+                .createFolder(unsafeChar)
+                .goHomePage()
+                .getJobList()
+                .contains(unsafeChar);
+
+        Assert.assertFalse(createdNameSpecialCharacters);
     }
 
     @Test
@@ -233,8 +243,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
     }
 
-
-    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
@@ -453,5 +461,19 @@ public class FolderTest extends BaseTest {
                 .isChildHealthMetricDisplayed();
 
         Assert.assertTrue(isChildHealthMetricDisplayed);
+    }
+
+    @Test(dependsOnMethods = "testAddChildHealthMetric")
+    public void testDisplayingHelpTextButtonRecursive() {
+        final String expectedText = "Controls whether items within sub-folders will be considered as contributing to the health of this folder.";
+
+        String helpText = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickConfigureFolder()
+                .clickHealthMetrics()
+                .clickHelpButtonRecursive()
+                .getHelpBlockText();
+
+        Assert.assertEquals(helpText, expectedText);
     }
 }

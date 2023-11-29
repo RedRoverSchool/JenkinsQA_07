@@ -25,6 +25,12 @@ public class FolderDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
 
+    @FindBy(xpath = "//a[contains(@href,'move')]")
+    private WebElement moveJob;
+
+    @FindBy(xpath = "//a[@class='content-block__link']")
+    private WebElement createJob;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -70,7 +76,7 @@ public class FolderDetailsPage extends BasePage {
     }
 
     public NewItemPage clickCreateJob() {
-        getDriver().findElement(By.xpath("//a[@class='content-block__link']")).click();
+        createJob.click();
 
         return new NewItemPage(getDriver());
     }
@@ -88,7 +94,7 @@ public class FolderDetailsPage extends BasePage {
     }
 
     public FolderMovePage clickMove() {
-        getDriver().findElement(By.xpath("//a[contains(@href,'move')]")).click();
+        moveJob.click();
 
         return new FolderMovePage(getDriver());
     }
