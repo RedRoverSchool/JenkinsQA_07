@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PipelineTest extends BaseTest {
+
     private static final String JOB_NAME = "NewPipeline";
 
     @Test
