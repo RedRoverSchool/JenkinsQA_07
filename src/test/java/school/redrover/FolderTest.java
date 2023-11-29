@@ -251,7 +251,7 @@ public class FolderTest extends BaseTest {
         String actualDescription = homePage
                 .clickAlertIfVisibleAndGoHomePage()
                 .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
-                .clickAddDescription()
+                .clickAddOrEditDescription()
                 .typeDescription(descriptionText)
                 .clickSave()
                 .getActualFolderDescription();
@@ -259,20 +259,18 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testCreate"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        String actualUpdatedDescription = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .typeDescription(newDescriptionText)
+                .clickSave()
+                .getActualFolderDescription();
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
-        getDriver().findElement(By.className("jenkins-input")).clear();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(newDescriptionText);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String actualNewDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-        Assert.assertEquals(actualNewDescription, newDescriptionText);
+        Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
     }
 
     @Ignore
