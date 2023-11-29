@@ -13,13 +13,17 @@ public class NodesListPage extends BasePage {
     @FindBy(xpath = "//a[@href='new']")
     private WebElement newNodeButton;
 
+    @FindBy(xpath = "//th[@initialsortdir='down']")
+    private WebElement sortByNameButton;
+
+    @FindBy(xpath = "//tr/td/a")
+    private List<WebElement> nodesList;
+
     public NodesListPage(WebDriver driver) {
         super(driver);
     }
 
     public List<String> getNodeList() {
-        List<WebElement> nodesList = getDriver().findElements(By.xpath("//tr/td/a"));
-
         return nodesList.stream().map(WebElement::getText).toList();
     }
 
@@ -36,7 +40,16 @@ public class NodesListPage extends BasePage {
     }
 
     public boolean elementIsNotPresent(String xpath){
-
         return getDriver().findElements(By.xpath(xpath)).isEmpty();
+    }
+
+    public String getCurrentURL(){
+        return getDriver().getCurrentUrl();
+    }
+
+    public NodesListPage clickSortByNameButton() {
+        sortByNameButton.click();
+
+        return this;
     }
 }

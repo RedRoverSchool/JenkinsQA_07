@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -11,6 +12,12 @@ import java.util.List;
 public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement helpButtonDiscardOldBuilds;
+
+    @FindBy(css = "[nameref='rowSetStart26'] .help")
+    private WebElement helpDescriptionDiscardOldBuilds;
+
+    @FindBy(id = "source-code-management")
+    private WebElement sourceCodeManagementSectionHeader;
 
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;
@@ -30,8 +37,11 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//label[@for='radio-block-1']")
     private WebElement gitRadioButton;
 
+    @FindBy(xpath = "//div[@class = 'form-container tr']")
+    private WebElement gitRadioButtonSettingsForm;
+
     @FindBy(xpath = "//input[@name='_.url']")
-    private WebElement inputGitLinkField;
+    private WebElement inputGitRadioButtonRepositoryUrlField;
 
     @FindBy(xpath = "//input[@name='_.daysToKeepStr']")
     private WebElement inputDaysToKeepBuildsField;
@@ -54,14 +64,20 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//label[contains(text(), 'This project is parameterized')]")
     private WebElement getThisProjectIsParameterizedCheckbox;
 
+    @FindBy(xpath = "//label[normalize-space()='This project is parameterized']")
+    private WebElement clickCheckBoxThisProjectIsParametrized;
+
+    @FindBy(xpath = "//button[contains( text(), 'Add Parameter')]")
+    private WebElement clickAddParameterDropDownBtn;
+
     @FindBy(xpath = "//label[contains(text(), 'This project is parameterized')]/../input")
     private WebElement getThisProjectIsParameterizedCheckboxInput;
 
     @FindBy(xpath = "//a[@previewendpoint = '/markupFormatter/previewDescription']")
-    private WebElement previewDescription;
+    private WebElement previewDescriptionButton;
 
     @FindBy(xpath = "//a[@class = 'textarea-hide-preview']")
-    private WebElement hidePreviewDescription;
+    private WebElement hidePreviewDescriptionButton;
 
     @FindBy(xpath = "//div[@class = 'textarea-preview']")
     private WebElement descriptionPreviewText;
@@ -72,6 +88,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//label[contains(text(), 'GitHub project')]")
     private WebElement checkboxGitHubProject;
 
+    @FindBy(xpath = "_.projectUrlStr")
+    private WebElement inputGitHubProjectUrl;
+
     @FindBy(xpath = "//section[@nameref = 'rowSetStart30']/div[@nameref = 'rowSetStart27']//button")
     private WebElement advancedDropdownGitHubProject;
 
@@ -81,7 +100,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//span[@class = 'jenkins-edited-section-label']")
     private WebElement labelEditedInGitHubProject;
 
-    @FindBy (xpath = "//div[@class ='jenkins-form-item tr jenkins-form-item--tight']//button")
+    @FindBy(xpath = "//div[@class ='jenkins-form-item tr jenkins-form-item--tight']//button")
     private WebElement advancedButton;
 
     @FindBy(xpath = "//a[@title='Help for feature: Quiet period']")
@@ -104,6 +123,15 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     @FindBy(xpath = "//button[@data-section-id='build-environment']")
     private WebElement buildEnvironmentSidebarItem;
+
+    @FindBy(xpath = "//a[contains(text(), 'Boolean Parameter')]")
+    private WebElement booleanParameterOption;
+
+    @FindBy(xpath = "//input[@name = 'parameter.name']")
+    private WebElement parameterNameInputBox;
+
+    @FindBy(xpath = "//textarea[@name = 'parameter.description']")
+    private WebElement parameterDescriptionInputBox;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -128,24 +156,36 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public FreestyleProjectConfigurePage clickSourseCodeManagementLinkFromSideMenu() {
         sourseCodeManagementLink.click();
+
         return this;
     }
 
     public FreestyleProjectConfigurePage scrollPage(int x, int y) {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("window.scrollBy(" + x + "," + y + ")");
+
         return this;
     }
 
-    public FreestyleProjectConfigurePage clickGitRadioButton() {
+    public FreestyleProjectConfigurePage clickGitRadioButtonWithScroll() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView();", sourceCodeManagementSectionHeader);
+
         gitRadioButton.click();
+
         return this;
     }
 
-    public FreestyleProjectConfigurePage inputGitLink(String url) {
-        inputGitLinkField.sendKeys(url);
+    public FreestyleProjectConfigurePage inputGitHubRepositoryURLWithScroll(String repositoryUrl) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView();", sourceCodeManagementSectionHeader);
+
+        inputGitRadioButtonRepositoryUrlField.sendKeys(repositoryUrl);
+
         return this;
     }
+
+    public String getValueGitHubRepositoryURL() {return inputGitRadioButtonRepositoryUrlField.getAttribute("value");}
 
     public FreestyleProjectConfigurePage clickDiscardOldBuildsCheckBox() {
         discardOldBuildsCheckBox.click();
@@ -164,34 +204,36 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public FreestyleProjectConfigurePage clickThrottleBuildsCheckBox() {
         throttleBuildsCheckBox.click();
+
         return this;
     }
 
     public FreestyleProjectConfigurePage inputNumberOfBuilds(String num) {
         numberOfBuilds.clear();
         numberOfBuilds.sendKeys(num);
+
         return this;
     }
 
     public FreestyleProjectConfigurePage selectTimePeriod(String period) {
-        getDriver().findElement(By.xpath("//select[@name='_.durationName']")).click();
-        getDriver().findElement(By.xpath("//option[@value='" + period + "']")).click();
+        Select select = new Select(selectTimePeriod);
+        select.selectByValue(period);
+        selectTimePeriod.click();
+
         return this;
     }
-
 
     public FreestyleProjectConfigurePage clickExecuteConcurrentBuildsIfNecessaryCheckBox() {
         executeConcurrentBuildsIfNecessaryCheckBox.click();
         return this;
     }
 
+    public String getExecuteConcurrentBuildsIfNecessaryCheckBoxValue(String value) { return executeConcurrentBuildsIfNecessaryCheckBox.getCssValue(value); }
+
     public FreestyleProjectConfigurePage clickDisableToggle() {
         disableToggle.click();
-        return this;
-    }
 
-    public String getInputGitLinkFieldValue() {
-        return inputGitLinkField.getAttribute("value");
+        return this;
     }
 
     public String getInputDaysToKeepBuildsFieldValue() {
@@ -210,23 +252,31 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return selectTimePeriod.getAttribute("value");
     }
 
-    public List<WebElement> getExecuteConcurrentBuilds() {
-        return getDriver().findElements(By.xpath("//div[@class='form-container']"));
-    }
+    public List<WebElement> getExecuteConcurrentBuilds() { return getDriver().findElements(By.xpath("//div[@class='form-container']")); }
 
     public FreestyleProjectConfigurePage editProjectDescriptionField(String editDescription) {
         inputProjectDescription.clear();
         inputProjectDescription.sendKeys(editDescription);
+
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
     public FreestyleProjectConfigurePage clickThisProjectIsParameterizedCheckbox() {
         getThisProjectIsParameterizedCheckbox.click();
+
         return this;
     }
 
     public WebElement getThisProjectIsParameterizedCheckbox() {
         return getThisProjectIsParameterizedCheckboxInput;
+    }
+
+    public FreestyleProjectConfigurePage clickOnParametrizedCheckBox(){
+        clickCheckBoxThisProjectIsParametrized.click();
+        return this;
+    }
+    public WebElement checkIsParameteresDropDownMenuAvailable(){
+       return clickAddParameterDropDownBtn;
     }
 
     public FreestyleProjectConfigurePage inputDescription(String description) {
@@ -236,13 +286,13 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public FreestyleProjectConfigurePage clickPreviewDescription() {
-        previewDescription.click();
+        previewDescriptionButton.click();
 
         return this;
     }
 
     public FreestyleProjectConfigurePage clickHidePreviewDescription() {
-        hidePreviewDescription.click();
+        hidePreviewDescriptionButton.click();
 
         return this;
     }
@@ -251,20 +301,10 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return descriptionPreviewText.getText();
     }
 
-    public String getCssValue(By locator, String cssValueName) {
-        return getDriver().findElement(locator).getCssValue(cssValueName);
-    }
+    public boolean isPreviewDescriptionTextDisplayed() {return descriptionPreviewText.isDisplayed();}
 
     public FreestyleProjectConfigurePage clickApply() {
         applyButton.click();
-
-        return this;
-    }
-
-    public FreestyleProjectConfigurePage scrollToElement(By elementLocator) {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(elementLocator));
 
         return this;
     }
@@ -275,7 +315,10 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return this;
     }
 
-    public FreestyleProjectConfigurePage clickAdvancedDropdownGitHubProject() {
+    public FreestyleProjectConfigurePage clickAdvancedDropdownGitHubProjectWithScroll() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView();", checkboxGitHubProject);
+
         advancedDropdownGitHubProject.click();
 
         return this;
@@ -295,6 +338,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });",
                 advancedButton);
+
         advancedButton.click();
         return this;
     }
@@ -303,6 +347,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });",
                 quietPeriodToolTip);
+
         quietPeriodToolTip.click();
         return this;
     }
@@ -311,7 +356,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
         return helpMessage.isDisplayed();
     }
 
-    public WebElement getAddParameterDropdownMenu(){
+    public WebElement getAddParameterDropdownMenu() {
         return addParameterDropdownMenu;
     }
 
@@ -351,4 +396,53 @@ public class FreestyleProjectConfigurePage extends BasePage {
     public String getShellScriptText() {
         return shellScriptInput.getText();
     }
+
+    public String getAttributeOfHelpDescriptionDiscardOldBuilds (){
+        return helpDescriptionDiscardOldBuilds.getAttribute("style");
+    }
+    public FreestyleProjectConfigurePage clickHelpDescriptionOfDiscardOldBuilds(){
+        helpButtonDiscardOldBuilds.click();
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAddParameterDropdown() {
+        addParameterDropdownMenu.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickBooleanParameterOption() {
+        booleanParameterOption.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputParameterName(String name) {
+        parameterNameInputBox.sendKeys(name);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputParameterDescription(String description) {
+        parameterDescriptionInputBox.sendKeys(description);
+
+        return this;
+    }
+
+    public String getParameterName() {
+        return parameterNameInputBox.getAttribute("value");
+    }
+
+    public String getParameterDescription() {
+        return parameterDescriptionInputBox.getAttribute("value");
+    }
+
+    public List<String> getParameterNameAndDescription() {
+        return List.of(
+                getParameterName(),
+                getParameterDescription()
+        );
+    }
+
+    public boolean isGitRadioButtonSettingsFormAppears() {return gitRadioButtonSettingsForm.isDisplayed();}
 }

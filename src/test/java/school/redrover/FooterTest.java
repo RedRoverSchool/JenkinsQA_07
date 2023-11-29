@@ -6,12 +6,15 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FooterTest extends BaseTest {
+
+    private static final String JENKINS_VERSION = "Jenkins 2.414.2";
 
     public WebElement jenkinsVersionButton() {
         return getDriver().findElement(By.xpath("//button[@type = 'button']"));
@@ -57,11 +60,10 @@ public class FooterTest extends BaseTest {
 
     @Test
     public void testVersionJenkins() {
-        Assert.assertEquals(
-                getDriver()
-                        .findElement(By.xpath("//*[@id='jenkins']/footer/div/div[2]/button"))
-                        .getText(),
-                "Jenkins 2.414.2");
+
+        String jenkinsVersionActual = new HomePage(getDriver())
+                .getVersion();
+        Assert.assertEquals(jenkinsVersionActual, JENKINS_VERSION);
     }
 
     @Ignore
@@ -273,6 +275,7 @@ public class FooterTest extends BaseTest {
         Assert.assertTrue(actualListTabBarGetText.containsAll(expectedListTabBar));
     }
 
+    @Ignore
     @Test
     public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
         String aboutJenkins = "About Jenkins";

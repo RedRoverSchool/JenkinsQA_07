@@ -1,113 +1,89 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
-
-import java.util.ArrayList;
-import java.util.Iterator;
+import school.redrover.runner.TestUtils;
 import java.util.List;
 
 public class SystemLogTest extends BaseTest {
-
     private final static String SYSLOG_NAME = "NewSystemLog";
 
-    private void openSyslogPage() {
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        js.executeScript("arguments[0].scrollIntoView();",
-                getDriver().findElement(By.xpath("//a[@href='log']")));
-        getDriver().findElement(By.xpath("//a[@href='log']")).click();
+    private final static String LOGGER_NAME = "com";
+
+    private final static String LEVEL_LOG = "INFO";
+
+    @Test
+    public void testCreateCustomLogRecorder() {
+        TestUtils.clearAllCustomLogRecorders(this);
+
+        String newLogName = new HomePage(getDriver())
+            .clickManageJenkins()
+            .goSystemLogPage()
+            .clickAddRecorder()
+            .typeName(SYSLOG_NAME)
+            .clickCreate()
+            .backToSystemLog()
+            .getNameCustomLog();
+
+        Assert.assertEquals(newLogName, SYSLOG_NAME);
     }
 
-    @Test(dependsOnMethods = "testDeleteAllCustomLogRecorders")
-    public void testCreateCustomLogRecorder() {
-        openSyslogPage();
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
+    public void testDeleteCustomLogRecorder() {
+        List<WebElement> lst = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage()
+                .clickCustomLogRecorderName()
+                .clickMoreActions()
+                .deleteLogRecorder()
+                .getListLogRecorders();
 
-        getDriver().findElement(By.xpath("//a[@href='new']")).click();
-        new Actions(getDriver()).moveToElement(getDriver()
-                .findElement(By.cssSelector("input[checkurl='checkNewName']")))
-            .click()
-            .perform();
-        getDriver().findElement(By.cssSelector("input[checkurl='checkNewName']")).sendKeys(SYSLOG_NAME);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
-
-        Assert.assertEquals(getDriver()
-            .findElement(By.xpath("//*[@id='logRecorders']/tbody/tr[2]/td[1]/a"))
-            .getText(), SYSLOG_NAME);
+        Assert.assertEquals(lst.size(),1);
     }
 
     @Test(dependsOnMethods = "testCreateCustomLogRecorder")
-    public void testDeleteCustomLogRecorder() {
-        List<WebElement> lst = new ArrayList<>();
-        openSyslogPage();
+    public void testAddNewLogger() {
 
-        do {
-            getDriver().findElement(By.xpath("//a[@href='" + SYSLOG_NAME + "/'][1]")).click();
-            getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
-            Actions actions = new Actions(getDriver());
-            actions.pause(400)
-                .moveToElement(getDriver()
-                    .findElement(By.xpath("//a[@data-post='true']")))
-                .click()
-                .perform();
-            getWait5().until(ExpectedConditions.alertIsPresent()).accept();
+        List<String> loggersAndLevels = List.of(
+                SYSLOG_NAME,
+                LOGGER_NAME,
+                LEVEL_LOG);
 
-            lst = getDriver().findElements(By.className("jenkins-table__link"));
-            getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
-        } while (lst.size() > 1);
-        Assert.assertEquals(lst.size(), 1);
+        List <String> loggersAndLevelsSavedList = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage()
+                .clickGearIcon(SYSLOG_NAME)
+                .clickAdd()
+                .chooseLastLogger(LOGGER_NAME)
+                .chooseLastLogLevel(LEVEL_LOG)
+                .clickSave()
+                .clickConfigure()
+                .getLoggersAndLevelsSavedList();
+
+        Assert.assertEquals(loggersAndLevelsSavedList, loggersAndLevels);
     }
 
-    @Test
-    public void testDeleteAllCustomLogRecorders() {
-        List<WebElement> lst = new ArrayList<>();
-        openSyslogPage();
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
 
-        lst = getDriver().findElements(By.className("jenkins-table__link"));
-        if (lst.size() > 1) {
-            Iterator<WebElement> it = lst.iterator();
+    public void testClearCustomLog() {
+        String getTextNoLogsAvailable = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage()
+                .clickGearIcon(SYSLOG_NAME)
+                .changeLogger("")
+                .chooseLastLogLevel("FINE")
+                .clickSave()
+                .clickConfigure()
+                .chooseLastLogLevel(LEVEL_LOG)
+                .clickSave()
+                .clickClearThisLog()
+                .getTextNoLogsAvailable();
 
-            while (it.hasNext()) {
-                WebElement wb = it.next();
-                if (!wb.getText().equals("All Jenkins Logs")) {
-                    wb.click();
-                    getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
-                    Actions actions = new Actions(getDriver());
-                    actions.pause(400)
-                        .moveToElement(getDriver()
-                            .findElement(By.xpath("//a[@data-post='true']")))
-                        .click()
-                        .perform();
-                    getWait5().until(ExpectedConditions.alertIsPresent()).accept();
-                    getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
-                    lst = getDriver().findElements(By.className("jenkins-table__link"));
-                } else if (lst.size() > 1) {
-                    lst.get(1).click();
-                    getDriver().findElement(By.xpath("//button[@tooltip='More actions']")).click();
-                    Actions actions = new Actions(getDriver());
-                    actions.pause(400)
-                        .moveToElement(getDriver()
-                            .findElement(By.xpath("//a[@data-post='true']")))
-                        .click()
-                        .perform();
-                    getWait5().until(ExpectedConditions.alertIsPresent()).accept();
-                    getDriver().findElement(By.xpath("//*[@id='breadcrumbs']/li[5]/a")).click();
-                    lst = getDriver().findElements(By.className("jenkins-table__link"));
-                }
-                if (lst.size() == 1) break;
-                it = lst.iterator();
-            }
-        }
-        Assert.assertEquals(lst.size(), 1);
+        Assert.assertEquals(getTextNoLogsAvailable, "No logs available");
     }
 }

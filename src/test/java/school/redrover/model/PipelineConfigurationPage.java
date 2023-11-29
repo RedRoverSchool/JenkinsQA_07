@@ -4,6 +4,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -27,6 +29,33 @@ public class PipelineConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//button[@name = 'Submit']")
     private WebElement saveButton;
+
+    @FindBy(xpath = "//div[@class='samples']/select")
+    private WebElement pipelineScriptSamplesDropdown;
+
+    @FindBy(xpath = "//label[text()='Build after other projects are built']")
+    private WebElement buildAfterOtherProjectsCheckbox;
+
+    @FindBy(name = "_.upstreamProjects")
+    private WebElement projectsToWatchField;
+
+    @FindBy(xpath = "//label[text()='Always trigger, even if the build is aborted']")
+    private WebElement alwaysTriggerRadio;
+
+    @FindBy(xpath = "//div[@class='ace_line']")
+    private WebElement pipelineScriptTextAreaLine;
+
+    @FindBy(className = "ace_text-input")
+    private WebElement pipelineScriptTextArea;
+
+    @FindBy(id = "yui-gen10")
+    private WebElement stringParameterOption;
+
+    @FindBy(xpath = "//label[text()='Do not allow concurrent builds']")
+    private WebElement concurrentBuildsCheckboxLabel;
+
+    @FindBy(id = "cb3")
+    private WebElement concurrentBuildsCheckbox;
 
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
@@ -71,10 +100,60 @@ public class PipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public <T> T clickSaveButton(T page) {
+    public PipelineDetailsPage clickSaveButton() {
         saveButton.click();
 
-        return page;
+        return new PipelineDetailsPage(getDriver());
     }
 
+    public PipelineConfigurationPage selectPipelineScriptSampleByValue(String value) {
+        new Select(pipelineScriptSamplesDropdown).selectByValue(value);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage setBuildAfterOtherProjectsCheckbox() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage setProjectsToWatch(String projectName) {
+        projectsToWatchField.sendKeys(projectName);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage clickAlwaysTriggerRadio() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", alwaysTriggerRadio);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage setPipelineScript(String pipelineScript) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true)", pipelineScriptTextAreaLine);
+        pipelineScriptTextArea.sendKeys(pipelineScript);
+
+        return this;
+    }
+
+    public PipelineConfigurationPage selectStringParameter() {
+        stringParameterOption.click();
+
+        return this;
+    }
+
+    public PipelineConfigurationPage clickDoNotAllowConcurrentBuilds() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(concurrentBuildsCheckboxLabel)).click();
+
+        return this;
+    }
+
+    public boolean isDoNotAllowConcurrentBuildsSelected() {
+
+        return concurrentBuildsCheckbox.isSelected();
+    }
 }

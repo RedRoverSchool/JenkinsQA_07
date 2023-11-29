@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FreestyleProjectDetailsPage extends BasePage {
 
@@ -20,13 +22,16 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(linkText = "Configure")
     private WebElement configureLink;
 
+    @FindBy(xpath = "//div[5]//span[1]//a[1]//span[1]//*[name()='svg']")
+    private WebElement configureBtn;
+
     @FindBy(className = "warning")
     private WebElement warningMessage;
 
     @FindBy(linkText = "Status")
     private WebElement statusPageLink;
 
-    @FindBy(linkText = "Rename")
+    @FindBy(xpath = "//*[@id=\"tasks\"]/div[7]/span/a")
     private WebElement renamePageLink;
 
     @FindBy(xpath = "//a[@href='lastBuild/']")
@@ -47,11 +52,20 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
 
-    @FindBy(xpath = "//span[contains(text(), 'Delete Project')]/..")
+    @FindBy(xpath = "//*[@id=\"tasks\"]/div[6]/span/a/span[2]")
     private WebElement deleteProject;
 
     @FindBy(xpath = "//a[contains(@href,'configure')]")
     private WebElement configureButton;
+
+    @FindBy(xpath = "//a[contains(@href,'ws')]")
+    private WebElement workspaceButton;
+
+    @FindBy(xpath = "//a//span[2]")
+    private List<WebElement> itemsSidePanel;
+
+    @FindBy(className = "warning")
+    private WebElement projectDisabledWarning;
 
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
@@ -65,16 +79,25 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
     public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
         getWait10().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
+
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
     public FreestyleProjectDetailsPage clickEnableDisableButton() {
         enableDisableButton.click();
+
         return this;
     }
 
     public FreestyleProjectConfigurePage clickConfigure() {
         configureLink.click();
+
+        return new FreestyleProjectConfigurePage(getDriver());
+    }
+
+    public FreestyleProjectConfigurePage clickConfigureFromSideMenu(){
+        configureBtn.click();
+
         return new FreestyleProjectConfigurePage(getDriver());
     }
 
@@ -96,11 +119,13 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
     public FreestyleProjectRenamePage clickRenameLink() {
         renamePageLink.click();
+
         return new FreestyleProjectRenamePage(getDriver());
     }
 
-    public WorkspacePage goToWorkspaceFromSideMenu(String projectName) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/ws/']")).click();
+    public WorkspacePage goToWorkspaceFromSideMenu() {
+        workspaceButton.click();
+
         return new WorkspacePage(getDriver());
     }
 
@@ -120,10 +145,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return this;
     }
 
-    public boolean isJobExist() {
-
-        return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).isDisplayed();
-    }
+    public boolean isJobExist() { return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).isDisplayed(); }
 
     public FreestyleProjectDetailsPage refreshPage() {
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
@@ -138,10 +160,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return new FreestyleProjectBuildDetailsPage(getDriver());
     }
 
-    public String getPermalinksText() {
-
-        return listPermalinks.getText();
-    }
+    public String getPermalinksText() { return listPermalinks.getText(); }
 
     public FreestyleProjectDetailsPage clickAddOrEditDescriptionButton() {
         addOrEditDescriptionButton.click();
@@ -160,14 +179,26 @@ public class FreestyleProjectDetailsPage extends BasePage {
 
         return this;
     }
-  
+
     public HomePage deleteProject() {
         deleteProject.click();
         getDriver().switchTo().alert().accept();
         return new HomePage(getDriver());
     }
-  
+
+    public List<String> getTextItemsSidePanel() {
+        List<String> textValue = new ArrayList<>();
+        for (WebElement item : itemsSidePanel) {
+            textValue.add(item.getText());
+        }
+        return textValue;
+    }
+
     public String getCurrentUrl() {
         return getDriver().getCurrentUrl();
+    }
+
+    public boolean isProjectDisabled() {
+        return projectDisabledWarning.isEnabled();
     }
 }
