@@ -16,7 +16,7 @@ public class ConfigureLogRecorderPage extends BasePage {
     private WebElement name;
 
     @FindBy(xpath = "//div[@class='repeated-container']/button")
-    private WebElement buttonAdd;
+    private WebElement addButton;
 
     @FindBy(xpath = "(//input[@name = '_.name'])[last()]")
     private WebElement lastLoggerField;
@@ -25,7 +25,7 @@ public class ConfigureLogRecorderPage extends BasePage {
     private WebElement loggerDropDownList;
 
     @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement buttonSave;
+    private WebElement saveButton;
 
     @FindBy(xpath = "(//select)[last()]/option[@selected='true']")
     private WebElement selectedLogLevel;
@@ -41,7 +41,7 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public ConfigureLogRecorderPage clickAdd() {
-        buttonAdd.click();
+        addButton.click();
 
         return this;
     }
@@ -71,7 +71,7 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public LogRecordersDetailsPage clickSave() {
-        buttonSave.click();
+        saveButton.click();
 
         return new LogRecordersDetailsPage(getDriver());
     }

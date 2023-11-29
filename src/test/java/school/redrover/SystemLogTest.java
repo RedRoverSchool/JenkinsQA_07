@@ -71,7 +71,7 @@ public class SystemLogTest extends BaseTest {
     @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
 
     public void testClearCustomLog() {
-        new HomePage(getDriver())
+        String getTextNoLogsAvailable = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
                 .clickGearIcon(SYSLOG_NAME)
@@ -81,9 +81,9 @@ public class SystemLogTest extends BaseTest {
                 .clickConfigure()
                 .chooseLastLogLevel(LEVEL_LOG)
                 .clickSave()
-                .clickClearThisLog();
+                .clickClearThisLog()
+                .getTextNoLogsAvailable();
 
-        Assert.assertEquals(getWait2().until(ExpectedConditions
-                .presenceOfElementLocated(By.xpath("//div[@id='main-panel']/div[2]"))).getText(), "No logs available");
+        Assert.assertEquals(getTextNoLogsAvailable, "No logs available");
     }
 }
