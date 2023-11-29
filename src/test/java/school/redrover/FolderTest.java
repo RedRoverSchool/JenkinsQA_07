@@ -144,13 +144,13 @@ public class FolderTest extends BaseTest {
                 .moveToElement(breadrcumbNameButton)
                 .scrollByAmount(deltaX, deltaY)
                 .moveToElement(dropdownArrow)
-                .scrollByAmount(deltaXX, deltaYY)
+                .scrollByAmount(deltaXX, 5)
                 .click()
                 .pause(2000)
                 .build()
                 .perform();
 
-        WebElement renameButton = getDriver().findElement(By.xpath("//div[@class='tippy-box']//a[contains ( @href, 'rename')]"));
+        WebElement renameButton = getDriver().findElement(By.xpath("//div[@class='tippy-box']//a[contains (@href, 'rename')]"));
 
         actions
                 .moveToElement(renameButton)
