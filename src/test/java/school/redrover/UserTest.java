@@ -22,15 +22,13 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class UserTest extends BaseTest {
-    private final static String MANAGE_JENKINS_ELEMENT = "//a[@href = '/manage']";
-    private final static String SECURITY_ELEMENT = "//a[@href = 'securityRealm/']";
-    private final static String ADD_USER_ELEMENT = "//a[@href = 'addUser']";
 
     private static final String USER_NAME = "Jane";
     private final String USER_NAME_2 = "FirstUser";
     private static final String NAME = "ivan";
     public static final String FULL_NAME = "User Full Name";
     final private static String PASSWORD = "12345";
+    final private static String WRONG_CONFIRM_PASSWORD = "123";
     private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
 
@@ -98,34 +96,28 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserWithEmptyFullName() {
-        final String name = "Hello";
-        final String password = "123";
-        final String email = "Hello@gmail.com";
 
         String fullName = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goUserDatabasePage()
                 .createUser()
-                .fillUserInformationField(name, password, email)
-                .getFullNameByName(name);
+                .fillUserInformationField(USER_NAME, PASSWORD, EMAIL)
+                .getFullNameByName(USER_NAME);
 
-        assertEquals(name, fullName);
+        assertEquals(USER_NAME, fullName);
     }
 
     @Test
     public void testCreateUserWithWrongEmail() {
-        final String name = "Hello";
-        final String password = "123";
-        final String fullName = "Bye";
 
         String error = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goUserDatabasePage()
                 .createUser()
-                .inputUserName(name)
-                .inputPassword(password)
-                .inputPasswordConfirm(password)
-                .inputFullName(fullName)
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputFullName(FULL_NAME)
                 .clickCreateUser()
                 .getErrorMassage();
 
@@ -134,15 +126,13 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserWithoutPassword() {
-        final String name = "Hello";
-        final String fullName = "Bye";
 
         String error = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goUserDatabasePage()
                 .createUser()
-                .inputUserName(name)
-                .inputFullName(fullName)
+                .inputUserName(USER_NAME)
+                .inputFullName(FULL_NAME)
                 .clickCreateUser()
                 .getErrorMassage();
 
@@ -151,19 +141,15 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserWithNotMatchedPassword() {
-        final String name = "Hello";
-        final String password1 = "123";
-        final String password2 = "321";
-        final String fullName = "Bye";
 
         String error = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goUserDatabasePage()
                 .createUser()
-                .inputUserName(name)
-                .inputPassword(password1)
-                .inputPasswordConfirm(password2)
-                .inputFullName(fullName)
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(WRONG_CONFIRM_PASSWORD)
+                .inputFullName(FULL_NAME)
                 .clickCreateUser()
                 .getErrorMassage();
 
