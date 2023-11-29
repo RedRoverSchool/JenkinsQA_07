@@ -79,6 +79,9 @@ public class PipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//ul[@class = 'permalinks-list']")
     private WebElement permalinkText;
 
+    @FindBy(css = "div#pipeline-box > div")
+    private WebElement stageViewAlertText;
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -215,5 +218,9 @@ public class PipelineDetailsPage extends BasePage {
 
     public boolean isPermalinksEmpty() {
         return permalinkText.getText().isEmpty();
+    }
+
+    public String getStageViewAlertText() {
+        return stageViewAlertText.getText();
     }
 }

@@ -296,11 +296,11 @@ public class PipelineTest extends BaseTest {
     public void testStageViewBeforeBuild() {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
-        getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
+        String stageViewText = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .getStageViewAlertText();
 
-        String stageViewInfo = getDriver().findElement(By.cssSelector("div#pipeline-box > div")).getText();
-
-        Assert.assertEquals(stageViewInfo, "No data available. This Pipeline has not yet run.");
+        Assert.assertEquals(stageViewText, "No data available. This Pipeline has not yet run.");
     }
 
     @Test
