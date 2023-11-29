@@ -132,17 +132,18 @@ public class FolderTest extends BaseTest {
         createFolder(FOLDER_NAME);
 
         Actions actions = new Actions (getDriver());
-        WebElement dashboardButton =  getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a)[2]"));
-        int deltaX = dashboardButton.getSize().getWidth()/2;
-        int deltaY = dashboardButton.getSize().getHeight()/2;
+        WebElement breadrcumbNameButton =  getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a)[2]"));
+        int deltaX = breadrcumbNameButton.getSize().getWidth()/2;
+        int deltaY = breadrcumbNameButton.getSize().getHeight()/2;
+        WebElement dropdownArrow = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a//button)[2]"));
 
         actions
-                .moveToElement(dashboardButton)
+                .moveToElement(breadrcumbNameButton)
                 .scrollByAmount(deltaX, deltaY)
+                .moveToElement(dropdownArrow)
+                .click()
                 .build()
                 .perform();
-
-        getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a//button)[2]")).click();
 
         getDriver().findElement(By.xpath("//a[@href='/job/"+ FOLDER_NAME + "/confirm-rename']")).click();
 
