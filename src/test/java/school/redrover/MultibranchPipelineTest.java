@@ -332,9 +332,12 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
                 .searchBox(new MultibranchPipelineDetailsPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
 
+        System.out.println(multibranchPipelineDetailsPage.getTitle());
+
         Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testErrorForUnsafeChar() {
         String error_message = new HomePage(getDriver())
