@@ -200,4 +200,9 @@ public class NewItemPage extends BasePage {
 
         return this;
     }
+
+    public String getRequiredNameErrorMessageColor() {
+
+        return requiredNameErrorMessage.getCssValue("color");
+    }
 }

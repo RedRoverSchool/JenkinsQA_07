@@ -36,23 +36,7 @@ public class PipelineTest extends BaseTest {
 
         Assert.assertEquals(newItemPage.getRequiredNameErrorMessage(), "» This field cannot be empty, please enter a valid name");
         Assert.assertFalse(newItemPage.isOkButtonEnabled());
-    }
-
-    @Test
-    public void testPipelineEmptyNameHandling() {
-        final String errorTextExpected = "» This field cannot be empty, please enter a valid name";
-
-        NewItemPage newPipeline = new HomePage(getDriver())
-                .clickNewItem()
-                .selectPipelineProject();
-
-        WebElement error = getDriver().findElement(By.id("itemname-required"));
-        String errorTextActual = error.getText();
-        String errorTextColor = error.getCssValue("color");
-
-        Assert.assertEquals(errorTextActual, errorTextExpected);
-        Assert.assertEquals(errorTextColor, "rgba(255, 0, 0, 1)");
-        Assert.assertEquals(getDriver().findElement(By.id("ok-button")).getAttribute("disabled"), "true");
+        Assert.assertEquals(newItemPage.getRequiredNameErrorMessageColor(), "rgba(255, 0, 0, 1)");
     }
 
     @Ignore
