@@ -335,7 +335,6 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testFindByQuickSearch")
     public void testErrorForUnsafeChar() {
         String error_message = new HomePage(getDriver())
