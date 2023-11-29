@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.HomePage;
 
 public abstract class BasePage extends BaseModel {
@@ -32,6 +33,12 @@ public abstract class BasePage extends BaseModel {
                 .sendKeys(str)
                 .keyDown(Keys.ENTER)
                 .perform();
+
+        return page;
+    }
+
+    public <T> T acceptAlert(T page) {
+        getWait2().until(ExpectedConditions.alertIsPresent()).accept();
 
         return page;
     }

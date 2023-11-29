@@ -12,23 +12,18 @@ import school.redrover.runner.TestUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class PipelineTest extends BaseTest {
     private static final String JOB_NAME = "NewPipeline";
-    private static final String JOB_ON_DASHBOARD_XPATH = "//tr[@id ='job_" + JOB_NAME + "']//a[@href = 'job/" + JOB_NAME + "/']";
-    private static final String CONFIGURE_ON_SIDE_PANEL_XPATH = "//div[@id = 'tasks']//a[@href = '/job/" + JOB_NAME + "/configure']";
-    private static final String CHECKBOX_TEXT = "Do not allow concurrent build";
-    private final String PIPELINE_NAME = "Name of the pipe";
 
     @Test
     public void testCreatePipeline() {
         boolean pipeLineCreated = new HomePage(getDriver())
                 .clickNewItem()
-                .createPipelinePage(PIPELINE_NAME)
+                .createPipelinePage(JOB_NAME)
                 .goHomePage()
                 .getJobList()
-                .contains(PIPELINE_NAME);
+                .contains(JOB_NAME);
 
         Assert.assertTrue(pipeLineCreated);
     }
@@ -75,16 +70,17 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testPipelineRename() {
+        final String updatedJobName = "Updated job name";
         TestUtils.createPipeline(this, JOB_NAME, false);
 
         String currentName = new PipelineDetailsPage(getDriver())
                 .clickRenameInSideMenu()
-                .enterNewName(PIPELINE_NAME)
+                .enterNewName(updatedJobName)
                 .clickRenameButton(new PipelineDetailsPage(getDriver()))
                 .goHomePage()
                 .getJobDisplayName();
 
-        Assert.assertEquals(currentName, PIPELINE_NAME);
+        Assert.assertEquals(currentName, updatedJobName);
     }
 
     @Test
@@ -118,20 +114,20 @@ public class PipelineTest extends BaseTest {
     public void testCreatePipelineProject() {
         List<String> jobList = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(PIPELINE_NAME)
+                .typeItemName(JOB_NAME)
                 .selectPipelineProject()
                 .clickOk(new PipelineConfigurationPage(getDriver()))
                 .goHomePage()
                 .getJobList();
 
-        Assert.assertTrue(jobList.contains(PIPELINE_NAME));
+        Assert.assertTrue(jobList.contains(JOB_NAME));
     }
 
     @Ignore
     @Test(dependsOnMethods = "testCreatePipeline")
     public void testOpenLogsFromStageView() {
         String stageLogsText = new HomePage(getDriver())
-                .clickJobByName(PIPELINE_NAME, new PipelineDetailsPage(getDriver()))
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .selectPipelineScriptSampleByValue("hello")
                 .clickSaveButton()
@@ -145,17 +141,17 @@ public class PipelineTest extends BaseTest {
     public void testBuildRunTriggeredByAnotherProject() {
         final String upstreamPipelineName = "Upstream Pipe";
 
-        TestUtils.createPipeline(this, PIPELINE_NAME, true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
         TestUtils.createPipeline(this, upstreamPipelineName, false);
 
         boolean isJobInBuildQueue = new PipelineDetailsPage(getDriver())
                 .clickConfigure()
                 .setBuildAfterOtherProjectsCheckbox()
-                .setProjectsToWatch(PIPELINE_NAME)
+                .setProjectsToWatch(JOB_NAME)
                 .clickAlwaysTriggerRadio()
                 .clickSaveButton()
                 .goHomePage()
-                .clickBuildByGreenArrow(PIPELINE_NAME)
+                .clickBuildByGreenArrow(JOB_NAME)
                 .isJobInBuildQueue(upstreamPipelineName);
 
         Assert.assertTrue(isJobInBuildQueue);
@@ -166,7 +162,7 @@ public class PipelineTest extends BaseTest {
         final List<String> stageNames = List.of(new String[]{"test", "build", "deploy"});
         final String pipelineScript = "stage('test') {}\nstage('build') {}\nstage('deploy') {}";
 
-        TestUtils.createPipeline(this, PIPELINE_NAME, false);
+        TestUtils.createPipeline(this, JOB_NAME, false);
 
         List<String> actualStageNames = new PipelineDetailsPage(getDriver())
                 .clickConfigure()
@@ -185,7 +181,7 @@ public class PipelineTest extends BaseTest {
         final String parameterValue = "some text";
         final String pipelineScript = String.format("stage('test') {\necho \"${%s}\"\n", parameterName);
 
-        TestUtils.createPipeline(this, PIPELINE_NAME, false);
+        TestUtils.createPipeline(this, JOB_NAME, false);
 
         String logsText = new PipelineDetailsPage(getDriver())
                 .clickConfigure()
@@ -210,7 +206,7 @@ public class PipelineTest extends BaseTest {
 
         List<String> buildParameters = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(PIPELINE_NAME)
+                .typeItemName(JOB_NAME)
                 .selectPipelineProject()
                 .clickOk(new PipelineConfigurationPage(getDriver()))
                 .clickProjectIsParameterized()
@@ -222,17 +218,6 @@ public class PipelineTest extends BaseTest {
                 .getChoiceParameterOptions();
 
         Assert.assertEquals(buildParameters, parameterChoices);
-    }
-
-
-    private void createAPipeline(String jobName) {
-        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.id("name"))).sendKeys(jobName);
-        getDriver().findElement(By.className("org_jenkinsci_plugins_workflow_job_WorkflowJob")).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.name("Submit"))).click();
     }
 
     @Test(dependsOnMethods = {"testCreate", "testDescriptionDisplays"})
@@ -307,33 +292,30 @@ public class PipelineTest extends BaseTest {
     public void testSaveSettingsWhileConfigure() {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
-        getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
-        getDriver().findElement(By.xpath(CONFIGURE_ON_SIDE_PANEL_XPATH)).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//label[contains(text(), '" + CHECKBOX_TEXT + "')]"))).click();
-        getDriver().findElement(By.name("Submit")).click();
+        boolean isDoNotAllowConcurrentBuildsSelected = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickDoNotAllowConcurrentBuilds()
+                .clickSaveButton()
+                .clickConfigure()
+                .isDoNotAllowConcurrentBuildsSelected();
 
-        getDriver().findElement(By.xpath(CONFIGURE_ON_SIDE_PANEL_XPATH)).click();
-
-        Assert.assertTrue(getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//label[contains(text(), '" + CHECKBOX_TEXT + "')]/../input"))).isSelected());
+        Assert.assertTrue(isDoNotAllowConcurrentBuildsSelected);
     }
 
     @Test(dependsOnMethods = "testSaveSettingsWhileConfigure")
     public void testUnsavedSettingsWhileConfigure() {
-        getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
-        getDriver().findElement(By.xpath(CONFIGURE_ON_SIDE_PANEL_XPATH)).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//label[contains(text(), '" + CHECKBOX_TEXT + "')]"))).click();
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
+        boolean isDoNotAllowConcurrentBuildSelected = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickDoNotAllowConcurrentBuilds()
+                .goHomePage()
+                .acceptAlert(new HomePage(getDriver()))
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickConfigure()
+                .isDoNotAllowConcurrentBuildsSelected();
 
-        getWait2().until(ExpectedConditions.alertIsPresent()).accept();
-
-        getDriver().findElement(By.xpath(JOB_ON_DASHBOARD_XPATH)).click();
-        getDriver().findElement(By.xpath(CONFIGURE_ON_SIDE_PANEL_XPATH)).click();
-
-        Assert.assertTrue(getWait5().until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//label[contains(text(), '" + CHECKBOX_TEXT + "')]/../input"))).isSelected());
+        Assert.assertTrue(isDoNotAllowConcurrentBuildSelected);
     }
 
     @Test
@@ -373,11 +355,11 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testReplayBuildPipeline() {
-        TestUtils.createPipeline(this, PIPELINE_NAME, true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
 
         String lastBuildLink = new HomePage(getDriver())
-                .clickBuildByGreenArrow(PIPELINE_NAME)
-                .clickJobByName(PIPELINE_NAME, new PipelineDetailsPage(getDriver()))
+                .clickBuildByGreenArrow(JOB_NAME)
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickLastBuildLink()
                 .clickReplaySideMenu()
                 .clickRunButton()

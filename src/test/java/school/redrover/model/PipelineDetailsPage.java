@@ -221,6 +221,7 @@ public class PipelineDetailsPage extends BasePage {
     }
 
     public String getStageViewAlertText() {
+
         return stageViewAlertText.getText();
     }
 }
