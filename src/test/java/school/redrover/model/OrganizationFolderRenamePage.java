@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 public class OrganizationFolderRenamePage extends BasePage {
@@ -36,6 +37,6 @@ public class OrganizationFolderRenamePage extends BasePage {
 
     public String getWarningMessageText() {
 
-        return warningMessage.getText();
+        return getWait5().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
     }
 }

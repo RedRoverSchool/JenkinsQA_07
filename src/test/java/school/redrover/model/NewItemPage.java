@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.MultibranchPipelineTest;
 import school.redrover.model.base.BasePage;
 
 public class NewItemPage extends BasePage {
@@ -46,7 +45,6 @@ public class NewItemPage extends BasePage {
 
     @FindBy(css = "div[class='add-item-name']")
     private WebElement inputValidationMessage;
-
 
     @FindBy(xpath = "//span[normalize-space()='Pipeline']")
     private WebElement pipeLineCategory;
@@ -180,6 +178,14 @@ public class NewItemPage extends BasePage {
         return new PipelineConfigurationPage(getDriver());
     }
 
+    public PipelineConfigurationPage createNewPipelineProject(String projectName) {
+        inputName.sendKeys(projectName);
+        pipeline.click();
+        okButton.click();
+
+        return new PipelineConfigurationPage(getDriver());
+    }
+
     public FolderConfigurationPage createFolder(String folderName) {
         inputName.sendKeys(folderName);
         folder.click();
@@ -191,6 +197,7 @@ public class NewItemPage extends BasePage {
     public NewItemPage populateFieldCopyFrom(String multibranchPipelineName) {
         fieldCopyFrom.click();
         fieldCopyFrom.sendKeys(multibranchPipelineName);
+
         return this;
     }
 }

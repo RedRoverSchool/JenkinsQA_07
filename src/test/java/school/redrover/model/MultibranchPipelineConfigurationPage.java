@@ -15,7 +15,7 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@class ='setting-main']/input")
     private WebElement nameField;
 
-    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button")
+    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement buttonSubmit;
 
     @FindBy (xpath = "//h1")
@@ -23,6 +23,9 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
 
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
+
+    @FindBy (xpath = "//h1")
+    private WebElement error;
 
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
 
@@ -74,4 +77,8 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
         return new MultibranchPipelineDeletePage(getDriver());
     }
 
+    public String error() {
+
+        return error.getText();
+    }
 }
