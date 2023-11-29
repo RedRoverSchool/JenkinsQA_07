@@ -281,7 +281,7 @@ public class NodesTest extends BaseTest {
     public void testSortNodesInReverseOrder() {
         final List<String> nodes = List.of("Agent1", "Agent2", "Agent3", "Built-In Node");
 
-        List<String> reversedNodes = new HomePage(getDriver())
+        List<String> actualNodes = new HomePage(getDriver())
                 .goNodesListPage()
                 .clickNewNodeButton()
                 .sendNodeName(nodes.get(0))
@@ -299,9 +299,10 @@ public class NodesTest extends BaseTest {
                 .clickCreateButton()
                 .saveButtonClick(new NodesListPage(getDriver()))
                 .clickSortByNameButton()
+                .clickSortByNameButton()
                 .getNodeList();
 
-        Assert.assertEquals(nodes, reversedNodes);
+        Assert.assertEquals(nodes, actualNodes);
     }
 
     @Test
