@@ -259,12 +259,12 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
-    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testRename", "testCreate"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
         String actualUpdatedDescription = new HomePage(getDriver())
-                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeDescription(newDescriptionText)
                 .clickSave()
