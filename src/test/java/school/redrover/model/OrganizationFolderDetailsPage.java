@@ -15,6 +15,9 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(linkText = "Delete Organization Folder")
+    private WebElement buttonDelete;
+
     public OrganizationFolderDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -34,5 +37,12 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage {
     public String submitButtonText() {
 
         return submitButton.getText();
+    }
+
+    public HomePage clickDelete() {
+        buttonDelete.click();
+        submitButton.click();
+
+        return new HomePage(getDriver());
     }
 }

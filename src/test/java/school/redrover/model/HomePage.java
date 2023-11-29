@@ -55,6 +55,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//h1")
     private WebElement header;
 
+    @FindBy(xpath = "//a[@href = '/manage']")
+    private WebElement goManageJenkinsPage;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -66,7 +69,7 @@ public class HomePage extends BasePage {
     }
 
     public ManageJenkinsPage clickManageJenkins() {
-        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+        goManageJenkinsPage.click();
 
         return new ManageJenkinsPage(getDriver());
     }
