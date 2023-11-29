@@ -21,7 +21,7 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     private List<WebElement> breadcrumbChain;
 
     @FindBy(tagName = "h1")
-    private WebElement pageTitle;
+    private WebElement pageH1;
 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
@@ -31,8 +31,8 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     }
 
 
-    public String getTitle() {
-        return pageTitle.getText();
+    public String getH1Text() {
+        return pageH1.getText();
     }
     public List<String> getBreadcrumbChain() {
         List<String> breadcrumb = new ArrayList<>();

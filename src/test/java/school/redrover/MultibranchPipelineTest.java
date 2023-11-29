@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
@@ -332,7 +331,7 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
                 .searchBox(new MultibranchPipelineDetailsPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
 
-        Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchPipelineDetailsPage.getH1Text(), MULTIBRANCH_PIPELINE_NAME);
     }
 
     @Test(dependsOnMethods = "testFindByQuickSearch")
@@ -356,7 +355,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRename()
                 .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickSubmit()
-                .getTitle();
+                .getH1Text();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
@@ -384,7 +383,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRename()
                 .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickSubmit()
-                .getTitle();
+                .getH1Text();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
