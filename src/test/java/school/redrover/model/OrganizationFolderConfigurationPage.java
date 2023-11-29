@@ -20,5 +20,4 @@ public class OrganizationFolderConfigurationPage extends BasePage {
         buttonSubmit.click();
         return new OrganizationFolderDetailsPage(getDriver());
     }
-
 }
