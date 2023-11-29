@@ -138,16 +138,15 @@ public class FolderTest extends BaseTest {
         int deltaY = breadrcumbNameButton.getSize().getHeight()/2;
         WebElement dropdownArrow = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a//button)[2]"));
         int deltaXX = dropdownArrow.getSize().getWidth()/3*2;
-        int deltaYY = dropdownArrow.getSize().getHeight()/2;
+        int deltaYY = dropdownArrow.getSize().getHeight()/3;
 
         actions
                 .moveToElement(breadrcumbNameButton)
                 .scrollByAmount(deltaX, deltaY)
                 .moveToElement(dropdownArrow)
-                .scrollByAmount(deltaXX, 5)
+                .scrollByAmount(deltaXX, deltaYY)
                 .click()
-                .pause(2000)
-                .build()
+                .pause(5000)
                 .perform();
 
         WebElement renameButton = getDriver().findElement(By.xpath("//div[@class='tippy-box']//a[contains (@href, 'rename')]"));
@@ -156,7 +155,6 @@ public class FolderTest extends BaseTest {
                 .moveToElement(renameButton)
                 .scrollByAmount(renameButton.getSize().getWidth()/2, 5)
                 .click()
-                .build()
                 .perform();
 
         getDriver().findElement(By.name("newName")).clear();
