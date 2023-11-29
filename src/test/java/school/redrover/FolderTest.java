@@ -137,11 +137,14 @@ public class FolderTest extends BaseTest {
         int deltaX = breadrcumbNameButton.getSize().getWidth()/2;
         int deltaY = breadrcumbNameButton.getSize().getHeight()/2;
         WebElement dropdownArrow = getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a//button)[2]"));
+        int deltaXX = dropdownArrow.getSize().getWidth()/2;
+        int deltaYY = dropdownArrow.getSize().getHeight()/2;
 
         actions
                 .moveToElement(breadrcumbNameButton)
                 .scrollByAmount(deltaX, deltaY)
                 .moveToElement(dropdownArrow)
+                .scrollByAmount(deltaXX, deltaYY)
                 .click()
                 .build()
                 .perform();
