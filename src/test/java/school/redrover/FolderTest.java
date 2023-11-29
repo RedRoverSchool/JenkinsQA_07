@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -123,7 +124,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
     }
 
-    @Ignore
     @Test
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
@@ -131,8 +131,20 @@ public class FolderTest extends BaseTest {
 
         createFolder(FOLDER_NAME);
 
-        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
+        Actions actions = new Actions (getDriver());
+        WebElement dashboardButton =  getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a)[2]"));
+        int deltaX = dashboardButton.getSize().getWidth()/2;
+        int deltaY = dashboardButton.getSize().getHeight()/2;
+
+        actions
+                .moveToElement(dashboardButton)
+                .scrollByAmount(deltaX, deltaY)
+                .build()
+                .perform();
+
+        getDriver().findElement(By.xpath("(//div[@id='breadcrumbBar']//a//button)[2]")).click();
+
+        getDriver().findElement(By.xpath("//a[@href='/job/"+ FOLDER_NAME + "/confirm-rename']")).click();
 
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
