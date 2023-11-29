@@ -25,7 +25,7 @@ public class NodesListPage extends BasePage {
     }
 
     public List<String> getNodeList() {
-        return nodesList.stream().map(WebElement::getText).toList();
+        return getWait2().until(ExpectedConditions.visibilityOfAllElements(nodesList)).stream().map(WebElement::getText).toList();
     }
 
     public NodeCreatePage clickNewNodeButton() {
