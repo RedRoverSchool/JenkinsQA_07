@@ -72,7 +72,7 @@ public class SystemLogTest extends BaseTest {
     @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
 
     public void testClearCustomLog() {
-        LogRecordersDetailsPage clearLog = new HomePage(getDriver())
+        new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
                 .clickGearIcon(SYSLOG_NAME)
