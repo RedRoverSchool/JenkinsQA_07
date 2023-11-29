@@ -220,7 +220,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(buildParameters, parameterChoices);
     }
 
-    @Test(dependsOnMethods = {"testCreate", "testDescriptionDisplays"})
+    @Test(dependsOnMethods = "testDescriptionDisplays")
     public void testDelete() {
         boolean isPipelineExist = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))

@@ -204,18 +204,6 @@ public class PipelineDetailsPage extends BasePage {
         return new FolderDetailsPage(getDriver());
     }
 
-    public PipelineDetailsPage clickDeleteButton() {
-        deletePipelineButton.click();
-
-        return this;
-    }
-
-    public HomePage acceptAlert() {
-        getDriver().switchTo().alert().accept();
-
-        return new HomePage(getDriver());
-    }
-
     public boolean isPermalinksEmpty() {
         return permalinkText.getText().isEmpty();
     }
