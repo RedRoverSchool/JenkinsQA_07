@@ -4,8 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class FreestyleProjectBuildDetailsPage extends BasePage {
+public class FreestyleProjectBuildDetailsPage extends BaseProjectPage {
     @FindBy(name = "Submit")
     private WebElement clickSubmitCancel;
 

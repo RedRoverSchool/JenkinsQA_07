@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.OrganizationFolderRenamePage;
+import school.redrover.model.RenamePage;
 
 public abstract class BaseProjectPage extends BasePage {
 
@@ -26,10 +27,10 @@ public abstract class BaseProjectPage extends BasePage {
         return projectName.getText();
     }
 
-    public OrganizationFolderRenamePage clickRenameOptionFromLeftSideMenu() {
+    public <RenamePage extends school.redrover.model.RenamePage> RenamePage clickRenameOptionFromLeftSideMenu(RenamePage renamePage) {
         renameSubmenu.click();
 
-        return new OrganizationFolderRenamePage(getDriver());
+        return renamePage;
     }
 
     public BaseProjectPage clickDisableButton() {

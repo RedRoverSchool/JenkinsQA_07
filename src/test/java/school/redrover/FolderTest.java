@@ -70,8 +70,8 @@ public class FolderTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
                 .clickRename()
-                .typeNewName(RENAMED_FOLDER)
-                .clickSubmit()
+                .enterNewName(RENAMED_FOLDER)
+                .clickRenameButton(new FolderDetailsPage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));

@@ -156,12 +156,10 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testRenameProject() {
         final HomePage homePage = new HomePage(getDriver())
-                .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRenameItem()
-                .clearInputField()
-                .enterName(NEW_PROJECT_NAME)
-                .clickRenameButton()
+                .clickRenameOptionFromLeftSideMenu(new FreestyleProjectRenamePage(getDriver()))
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickRenameButton(new FreestyleProjectDetailsPage(getDriver()))
                 .goHomePage();
 
         assertTrue(isProjectExist(NEW_PROJECT_NAME));
@@ -381,7 +379,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @DataProvider(name = "ValidName")
-    public String[][] validCredentials() {
+    public Object[][] validCredentials() {
         return new String[][]{
                 {"Акико"}, {"Ак,ко"}, {"Акико"}, {"Akiko"}, {"12345`67890"}
         };
