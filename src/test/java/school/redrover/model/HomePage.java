@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import com.beust.ah.A;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -8,6 +9,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomePage extends BasePage {
 
@@ -57,6 +59,12 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
+
+    @FindBy(xpath = "//a[@href='api/']")
+    private WebElement buttonRestApi;
+
+    @FindBy(tagName = "h1")
+    private WebElement actualPageName;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -268,5 +276,24 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
 
         return new NodeDetailsPage(getDriver());
+    }
+
+    public ApiPage clickRestApi() {
+        buttonRestApi.click();
+        return new ApiPage(getDriver());
+    }
+
+    public HomePage clickJenkinsVersion() {
+        jenkinsVersion.click();
+        return this;
+    }
+
+    public HomePage clickDropDownItem(String itemText) {
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + itemText + "')]")).click();
+        return this;
+    }
+
+    public String getActualPageName() {
+        return actualPageName.getText();
     }
 }
