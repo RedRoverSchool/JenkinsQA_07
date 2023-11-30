@@ -85,7 +85,7 @@ public class SystemLogTest extends BaseTest {
         Assert.assertEquals(getTextNoLogsAvailable, "No logs available");
     }
 
-    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
 
     public void testDeleteLoggers() {
 
