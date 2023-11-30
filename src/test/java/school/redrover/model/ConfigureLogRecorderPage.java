@@ -72,7 +72,11 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public LogRecordersDetailsPage clickSave() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(saveButton)).click();
+            new Actions(getDriver())
+                    .pause(500)
+                    .moveToElement(saveButton)
+                    .click()
+                    .perform();
 
         return new LogRecordersDetailsPage(getDriver());
     }

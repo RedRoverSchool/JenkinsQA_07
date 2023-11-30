@@ -31,7 +31,7 @@ public class SystemLogTest extends BaseTest {
         Assert.assertEquals(newLogName, SYSLOG_NAME);
     }
 
-    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog", "testDeleteLoggers"})
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testDeleteLoggers"})
     public void testDeleteCustomLogRecorder() {
         List<WebElement> lst = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -85,9 +85,10 @@ public class SystemLogTest extends BaseTest {
         Assert.assertEquals(getTextNoLogsAvailable, "No logs available");
     }
 
-    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
 
     public void testDeleteLoggers() {
+
         Boolean emptyLoggers = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
