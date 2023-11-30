@@ -15,22 +15,15 @@ import java.util.List;
 public class FooterTest extends BaseTest {
 
     public void clickDropdownItemJenkinsVersion(String itemText) {
-//        WebElement jenkinsVersionButton = new HomePage(getDriver())
-//                .clickJenkinsVersion()
-//                .
-       // WebElement jenkinsVersionButton = getDriver().findElement(By.xpath("//button[@type = 'button']"));
-       // jenkinsVersionButton.click();
-
-//        WebElement dropdownItem = getDriver().findElement(By.xpath("//a[contains(text(),'" + itemText + "')]"));
-//        dropdownItem.click();
+        HomePage dropDown = new HomePage(getDriver())
+                .clickJenkinsVersion()
+                .clickDropDownItem(itemText);
     }
 
     public void clickDropdownItemJenkinsVersionButton(String dropdownItem) {
         String startWindow = getDriver().getWindowHandle();
 
-        String homepage = new HomePage(getDriver())
-                .clickDropDownItem(dropdownItem);
-//        clickDropdownItemJenkinsVersion(dropdownItem);
+        clickDropdownItemJenkinsVersion(dropdownItem);
 
         for (String windowHandle : getDriver().getWindowHandles()) {
             if (!startWindow.contentEquals(windowHandle)) {
@@ -40,12 +33,41 @@ public class FooterTest extends BaseTest {
         }
     }
 
-    @Test
-    public void testVersionJenkins() {
+    private void clickRestApi() {
+        HomePage goRestApt = new HomePage(getDriver())
+                .clickRestApi();
+       // getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+    }
 
-        String jenkinsVersionActual = new HomePage(getDriver())
+    @Ignore
+    @Test
+    public void testVersionCheck() {
+        getDriver().findElement(By.xpath("//div/button")).click();
+        Assert.assertEquals(
+                getDriver().findElement(By.xpath("//div/button")).getText(),
+                "Jenkins 2.414.2");
+
+        getDriver().findElement(By.xpath("//a[@href = '/manage/about']")).click();
+
+        Assert.assertEquals(
+                getDriver().findElement(By.className("page-footer__links")).getText(),
+                "Jenkins 2.414.2");
+    }
+
+    @Ignore
+    @Test
+    public void testVersion() {
+        getDriver().findElement(By.xpath("//button[@class='jenkins-button jenkins-button--tertiary jenkins_ver']")).click();
+        getDriver().findElement(By.xpath("//a[@href='/manage/about']")).click();
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".app-about-version")).getText(), "Version 2.414.2");
+    }
+
+    @Test
+    public void testCheckTheVersion() {
+        String verJenkins = new HomePage(getDriver())
                 .getVersion();
-        Assert.assertEquals(jenkinsVersionActual, "Jenkins 2.414.2");
+
+        Assert.assertEquals(verJenkins, "Jenkins 2.414.2");
     }
 
     @Ignore
@@ -68,6 +90,22 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualMenu, expectedMenu, "Tippy box context menu doesn't macth");
     }
 
+   // @Ignore
+    @Test
+    public void testClickAboutJenkins() {
+        String expectedPageName = "Jenkins";
+        String expectedPageTitle = "About Jenkins 2.414.2 [Jenkins]";
+        // String expectedItem = "About Jenkins";
+
+        clickDropdownItemJenkinsVersionButton("About Jenkins");
+
+        String actualPageName = getDriver().findElement(By.tagName("h1")).getText();
+        String actualPageTitle = getDriver().getTitle();
+
+        Assert.assertEquals(actualPageName, expectedPageName, "The page name is not Jenkins");
+        Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not About Jenkins 2.414.2 [Jenkins]");
+    }
+
     @Ignore
     @Test
     public void testGetInvolved() throws InterruptedException {
@@ -81,26 +119,23 @@ public class FooterTest extends BaseTest {
         ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(tab.get(1));
 
-       getWait10();
-
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.jenkins.io/participate/");
     }
 
-   // @Ignore
+    @Ignore
     @Test
     public void testClickGetInvolved() {
-        String homepage = new HomePage(getDriver())
-                .clickJenkinsVersion()
-               .clickDropDownItem("Get involved");
+        String expectedPageName = "Participate and Contribute";
+        String expectedPageTitle = "Participate and Contribute";
+        String expectedItem = "Get involved";
 
-        String actualPageName = new HomePage(getDriver())
-                .getActualPageName();
+        clickDropdownItemJenkinsVersionButton(expectedItem);
 
-        String actualPageTitle = new HomePage(getDriver())
-                .getTitle();
+        String actualPageName = getDriver().findElement(By.tagName("h1")).getText();
+        String actualPageTitle = getDriver().getTitle();
 
-        Assert.assertEquals(actualPageName, "Participate and Contribute", "The page name is not Participate and Contribute");
-        Assert.assertEquals(actualPageTitle, "Participate and Contribute", "The title is not Participate and Contribute");
+        Assert.assertEquals(actualPageName, expectedPageName, "The page name is not Participate and Contribute");
+        Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Participate and Contribute");
     }
 
     @Ignore
@@ -133,6 +168,36 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualPageName, expectedPageName, "The page name is not Jenkins");
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Jenkins");
+    }
+
+    @Test
+    public void testVerifyClickabilityOfRestAPILink() {
+        String getTitleRestApt = new HomePage(getDriver())
+                .clickRestApi()
+                .getTitlePage();
+
+        Assert.assertEquals(getTitleRestApt, "Remote API [Jenkins]");
+    }
+
+    @Ignore
+    @Test(description = "Кликабельность ссылки и отображение страницы REST API")
+    public void testvisabilityAndClickabilityRestApiLink() {
+        String link = getDriver().findElement(By.xpath("//a[@href='api/']")).getText();
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        String getTitle = getDriver().findElement(By.xpath("//h1[contains(text(),'REST API')]")).getText();
+
+        Assert.assertEquals(link, "REST API", "заголовок не совпадает");
+        Assert.assertEquals(getTitle, "REST API", "заголовок страницы не совпадает");
+    }
+
+    @Ignore
+    @Test
+    public void testRestApiLinkClickable() {
+        getDriver().findElement(By.id("executors")).click();
+        getDriver().findElement(By.xpath("//a[@href='api/']")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@id='main-panel']/h1")).getText(), "REST API");
     }
 
     @Ignore
@@ -184,13 +249,22 @@ public class FooterTest extends BaseTest {
         }
     }
 
+    @Test
+    public void testVerifyRedirectedRestApi() {
+        boolean urlApi = new HomePage(getDriver())
+                .clickRestApi()
+                .getApiUrl();
 
+        Assert.assertTrue(urlApi);
+    }
 
     @Test
     public void testClickRestApi() {
-        getDriver().findElement(By.xpath("//a[@class='jenkins-button jenkins-button--tertiary rest-api']")).click();
+        Boolean expectNameApi = new HomePage(getDriver())
+                .clickRestApi()
+                .getRestApi();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//*[text()='REST API']")).isDisplayed());
+        Assert.assertTrue(expectNameApi);
     }
 
     @Test(dependsOnMethods = "testClickRestApi")

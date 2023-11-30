@@ -288,9 +288,9 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public String clickDropDownItem(String itemText) {
-        return getDriver().findElement(By.xpath("//a[contains(text(),'" + itemText + "')]")).getText();
-
+    public HomePage clickDropDownItem(String itemText) {
+        getDriver().findElement(By.xpath("//a[contains(text(),'" + itemText + "')]")).click();
+        return this;
     }
 
     public String getActualPageName() {
