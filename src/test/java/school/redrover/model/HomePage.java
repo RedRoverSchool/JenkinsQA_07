@@ -176,25 +176,6 @@ public class HomePage extends BasePage {
         return page;
     }
 
-    public boolean isAlertVisible() {
-        try {
-            getDriver().switchTo().alert();
-
-            return true;
-        } catch (NoAlertPresentException ex) {
-
-            return false;
-        }
-    }
-
-    public HomePage clickAlertIfVisibleAndGoHomePage() {
-        if (isAlertVisible()) {
-            getDriver().switchTo().alert().accept();
-        }
-
-        return this;
-    }
-
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
 
