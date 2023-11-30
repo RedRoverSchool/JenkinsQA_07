@@ -465,6 +465,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public boolean isDiscardOldBuildsSettingsFieldDisplayed() { return discardOldBuildsSettingsField.isDisplayed(); }
+
     public String getSavedNotificationMessage() {
 
         return savedNotificationMessage.getText();
