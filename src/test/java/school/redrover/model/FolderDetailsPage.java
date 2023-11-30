@@ -114,6 +114,16 @@ public class FolderDetailsPage extends BasePage {
 
         return page;
     }
+
+    public FolderDetailsPage clearDescriptionTextArea() {
+        descriptionTextArea.clear();
+
+        return this;
+    }
+
+    public String getDescriptionButtonText() {
+        return getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
+    }
     public NewItemPage clickCreateAJob(){
         newItemButton.click();
         return new  NewItemPage(getDriver());

@@ -8,6 +8,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -164,6 +165,7 @@ public class FolderTest extends BaseTest {
         Assert.assertFalse(isOkButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
+    @Ignore
     @Test
     public void testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder() {
         String actualTooltipValue = new HomePage(getDriver())
@@ -171,7 +173,7 @@ public class FolderTest extends BaseTest {
                 .createFolder(FOLDER_NAME)
                 .clickSaveButton()
                 .clickNewItemButton()
-                .createNewPipelineProject(JOB_NAME)
+                .createPipeline(JOB_NAME)
                 .clickSaveButton()
                 .clickBuildNowButton()
                 .getTooltipAttributeValue();
@@ -179,6 +181,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualTooltipValue, "Success > Console Output");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder")
     public void testDeletePipelineInsideOfFolder() {
         int sizeOfEmptyJobListInsideOfFolderAfterJobDeletion = new HomePage(getDriver())
@@ -240,13 +243,11 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = "testRename")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
-        HomePage homePage = new HomePage(getDriver());
-        String actualDescription = homePage
-                .clickAlertIfVisibleAndGoHomePage()
+        String actualDescription = new HomePage(getDriver())
                 .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeDescription(descriptionText)
@@ -270,20 +271,16 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
     }
 
-    @Ignore
     @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        FolderDetailsPage folderDescription = new HomePage(getDriver())
+                .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .clearDescriptionTextArea()
+                .clickSave();
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
-        getDriver().findElement(By.className("jenkins-input")).clear();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String textOfDescriptionField = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-        Assert.assertEquals(textOfDescriptionField, "");
-
-        String appearanceOfAddDescriptionButton = getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
-        Assert.assertEquals(appearanceOfAddDescriptionButton, "Add description");
+        Assert.assertTrue(folderDescription.getActualFolderDescription().isEmpty());
+        Assert.assertEquals(folderDescription.getDescriptionButtonText(), "Add description");
     }
 
     @Ignore

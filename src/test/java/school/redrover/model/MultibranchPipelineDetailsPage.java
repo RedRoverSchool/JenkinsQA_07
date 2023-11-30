@@ -26,6 +26,9 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
+    @FindBy(linkText = "Configure")
+    private WebElement configureLink;
+
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -63,5 +66,11 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     public List<String> getNameOfTasksFromSidebarMenu() {
         return TestUtils.getTextOfWebElements(getWait2().until(
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
+    }
+
+    public MultibranchPipelineConfigurationPage clickConfigure() {
+        configureLink.click();
+
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 }

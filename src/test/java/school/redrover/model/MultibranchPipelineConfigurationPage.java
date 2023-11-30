@@ -27,6 +27,9 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy (xpath = "//h1")
     private WebElement error;
 
+    @FindBy(className = "jenkins-toggle-switch__label")
+    private WebElement disableEnableToggle;
+
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
 
         super(driver);
@@ -80,5 +83,15 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     public String error() {
 
         return error.getText();
+    }
+
+    public MultibranchPipelineConfigurationPage clickDisableToggle() {
+        disableEnableToggle.click();
+
+        return this;
+    }
+
+    public String getDisableToggleText() {
+        return disableEnableToggle.getText();
     }
 }
