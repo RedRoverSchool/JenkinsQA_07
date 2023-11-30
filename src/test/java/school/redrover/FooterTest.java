@@ -117,7 +117,6 @@ public class FooterTest extends BaseTest {
                 .getText().contains("Version 2.414.2"));
     }
 
-    @Ignore
     @Test
     public void checkTippyBox() throws InterruptedException {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);",
