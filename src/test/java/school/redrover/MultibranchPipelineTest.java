@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
@@ -28,23 +27,9 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
 
     private static final String MULTIBRANCH_PIPELINE_NON_EXISTING_NAME = "MultibranchPipelineNonExistingName";
-    private final static String HOME_PAGE = "jenkins-home-link";
+
     private final List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
             "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
-
-    private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")))).click();
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//input[@class='jenkins-input']")))).sendKeys(nameOfProject);
-        getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-
-        if (goToHomePage) {
-            getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id(HOME_PAGE)))).click();
-        }
-    }
 
     private List<String> getTextOfWebElements(List<WebElement> elements) {
         List<String> textOfWebElements = new ArrayList<>();
@@ -55,31 +40,13 @@ public class MultibranchPipelineTest extends BaseTest {
         return textOfWebElements;
     }
 
-    private void createMultibranchPipelineWithNewItemAndClickDashboard(String pipelineName) {
-        getDriver().findElement(By.xpath("//a[@href= '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(pipelineName);
-        getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
-        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-        getDriver().findElement(By.linkText("Dashboard")).click();
-
-    }
-
-    private void createMultibranchPipelineWithCreateAJob() {
+     private void createMultibranchPipelineWithCreateAJob() {
 
         getDriver().findElement(By.linkText("Create a job")).click();
         getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
         getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']"))
                 .click();
         getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void goMultibranchPipelinePage(String pipelineName) {
-        getDriver().findElement(By.xpath("//span[normalize-space()='" + pipelineName + "']")).click();
-    }
-
-    private void getDashboardLink() {
-        getDriver().findElement(By.xpath("//a[normalize-space()='Dashboard']")).click();
     }
 
     private void returnToJenkinsHomePage() {
@@ -112,7 +79,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         String expectedResultName = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineConfigurationPage(getDriver()))
@@ -190,7 +157,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 "Pipeline Syntax",
                 "Credentials");
 
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         List<String> actualTasksText = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
@@ -202,16 +169,17 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test
     public void testDeleteMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NEW_NAME);
-        String expectedResult = new HomePage(getDriver())
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NEW_NAME, true);
+
+        String actualResult = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineConfigurationPage(getDriver()))
                 .clickButtonDelete()
                 .clickRedButtonYes()
                 .multibranchPipelineName();
 
         Assert.assertNotEquals(
-                expectedResult, MULTIBRANCH_PIPELINE_NAME);
+                actualResult, MULTIBRANCH_PIPELINE_NAME);
     }
 
     @Test
@@ -280,7 +248,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
-        createMultibranchPipelineWithNewItemAndClickDashboard(MULTIBRANCH_PIPELINE_NAME);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         getDriver().findElement(By.cssSelector("a[href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
         getDriver().findElement(By.cssSelector("button[formNoValidate]")).click();
@@ -299,19 +267,19 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(pipelineNameExpected, MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testMultibranchCreationFromExisting() {
 
-        HomePage homePage = new HomePage(getDriver())
+        boolean homePage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .populateFieldCopyFrom(MULTIBRANCH_PIPELINE_NAME)
                 .clickOk()
-                .buttonSubmit()
-                .goHomePage();
+                .goHomePage()
+                .getJobList()
+                .contains(MULTIBRANCH_PIPELINE_NEW_NAME);
 
-        Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
+        Assert.assertTrue(homePage);
     }
 
     @Test (dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
@@ -431,8 +399,9 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testVisibilityOfAdditionalTaskOfSidebarMenuIfFolderIsCreated() {
-        createProject("Folder", "Nested Folder", true);
-        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+
+        TestUtils.createFolder(this, "Nested Folder", true);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
 
@@ -447,8 +416,8 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testVisibilityOfAdditionalTaskOfSidebarMenuIfProjectInsideFolder() {
         final String folderName = "Wrapper Folder";
 
-        createProject("Folder", folderName, false);
-        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+        TestUtils.createFolder(this, folderName, false);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
         getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
