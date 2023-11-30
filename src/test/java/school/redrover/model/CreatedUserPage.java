@@ -19,6 +19,12 @@ public class CreatedUserPage extends BasePage {
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
+    @FindBy(className = "jenkins_ver")
+    private WebElement jenkinsVersionButton;
+
+    @FindBy(css = "a[href='/manage/about']")
+    private WebElement aboutJenkinsButton;
+
     public CreatedUserPage(WebDriver driver) {
         super(driver);
     }
@@ -43,5 +49,22 @@ public class CreatedUserPage extends BasePage {
 
     public String getDescriptionText() {
         return descriptionText.getText();
+    }
+
+    public String getJenkinsVersion() {
+
+        return jenkinsVersionButton.getText();
+    }
+
+    public CreatedUserPage clickVersionJenkins() {
+        jenkinsVersionButton.click();
+
+        return this;
+    }
+
+    public AboutJenkinsPage clickAboutJenkins() {
+        aboutJenkinsButton.click();
+
+        return new AboutJenkinsPage(getDriver());
     }
 }

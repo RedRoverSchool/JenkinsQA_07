@@ -59,6 +59,24 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
 
+    @FindBy(css = "a[href='/manage/about']")
+    private WebElement aboutJenkinsButton;
+
+    @FindBy(className = "tippy-content")
+    private WebElement jenkinsVersionTippyBox;
+
+    @FindBy(css = "a[href='https://www.jenkins.io/participate/']")
+    private WebElement getInvolved;
+
+    @FindBy(css = "a[href='https://www.jenkins.io/']")
+    private WebElement websiteJenkins;
+
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
+
+    @FindBy(xpath = "//div[@class='tippy-box']//div//a")
+    private WebElement tippyBox;
+
     @FindBy(xpath = "//a[@href = '/logout']/span")
     private WebElement logOut;
 
@@ -263,5 +281,64 @@ public class HomePage extends BasePage {
         logOut.click();
 
         return new LoginToJenkinsPage(getDriver());
+    }
+
+    public HomePage clickJenkinsVersion() {
+        jenkinsVersionButton.click();
+
+        return this;
+    }
+
+    public AboutJenkinsPage clickAboutJenkins() {
+        aboutJenkinsButton.click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    public WebsiteJenkinsIOPage clickGetInvolved() {
+        getInvolved.click();
+
+        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tab.get(1));
+
+        return new WebsiteJenkinsIOPage(getDriver());
+    }
+
+    public WebsiteJenkinsIOPage clickWebsite() {
+        websiteJenkins.click();
+
+        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tab.get(1));
+
+        return new WebsiteJenkinsIOPage(getDriver());
+    }
+
+    public CreatedUserPage clickUserNameHeader(String userName) {
+        getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
+
+        return new CreatedUserPage(getDriver());
+    }
+
+    public List<String> getVersionJenkinsTippyBoxText() {
+        getWait10().until(ExpectedConditions.visibilityOf(tippyBox));
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='tippy-box']//div//a"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        return resultList;
+    }
+
+    public AboutJenkinsPage moveAboutJenkinsPage() {
+        jenkinsVersionButton.click();
+        aboutJenkinsButton.click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    public RestAPIPage clickRestApiButton() {
+        restApiButton.click();
+
+        return new RestAPIPage(getDriver());
+
     }
 }
