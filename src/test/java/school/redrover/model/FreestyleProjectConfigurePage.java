@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.JavascriptExecutor;
@@ -467,6 +468,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     public boolean isDiscardOldBuildsSettingsFieldDisplayed() { return discardOldBuildsSettingsField.isDisplayed(); }
 
     public String getSavedNotificationMessage() {
+
+        getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.xpath("//div[@id='notification-bar']/span")));
 
         return savedNotificationMessage.getText();
     }
