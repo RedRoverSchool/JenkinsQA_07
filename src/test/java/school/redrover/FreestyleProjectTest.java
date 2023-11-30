@@ -1060,7 +1060,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         FreestyleProjectRenamePage error = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRenameOptionFromLeftSideMenu(new FreestyleProjectRenamePage(getDriver()))
+                .clickRenameOptionFromLeftSideMenu(new FreestyleProjectRenamePage(getDriver()));
 
         for (String x : unsafeCharacters) {
             error.clearInputField()
