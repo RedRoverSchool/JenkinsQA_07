@@ -446,7 +446,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public boolean isGitRadioButtonSettingsFormAppears() {return gitRadioButtonSettingsForm.isDisplayed();}
 
-    public List<String> getTextOfAddPerimeterDropDown() {
+    public List<String> getAddParameterDropdownText() {
 
         List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
         List<String> getTextOfDropDownElements = new ArrayList<>();
@@ -456,10 +456,5 @@ public class FreestyleProjectConfigurePage extends BasePage {
         }
 
         return getTextOfDropDownElements;
-    }
-
-    public List<String> sortDropDownElementsAlphabetically() {
-
-        return getTextOfAddPerimeterDropDown().stream().sorted().toList();
     }
 }

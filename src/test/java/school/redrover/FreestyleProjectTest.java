@@ -879,14 +879,24 @@ public class FreestyleProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testAddBooleanParameterDropdownIsSortedAlphabetically() {
 
+        List<String> expectedResult = List.of(
+                "Boolean Parameter",
+                "Choice Parameter",
+                "Credentials Parameter",
+                "File Parameter",
+                "Multi-line String Parameter",
+                "Password Parameter",
+                "Run Parameter",
+                "String Parameter");
+
         FreestyleProjectConfigurePage freestyleProjectConfigurePage = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
                 .clickAddParameterDropdown();
 
-        Assert.assertEquals(freestyleProjectConfigurePage.getTextOfAddPerimeterDropDown()
-                , freestyleProjectConfigurePage.sortDropDownElementsAlphabetically());
+        Assert.assertEquals(freestyleProjectConfigurePage.getAddParameterDropdownText()
+                , expectedResult);
     }
 
     @Test
