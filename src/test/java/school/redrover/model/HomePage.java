@@ -228,6 +228,7 @@ public class HomePage extends BasePage {
 
         new Actions(getDriver())
                 .pause(400)
+                .scrollToElement(getDriver().findElement(By.xpath("//a[@href='/job/NewFreestyleProject/confirm-rename']")))
                 .moveToElement(getDriver()
                     .findElement(By.xpath("//a[@href='/job/NewFreestyleProject/confirm-rename']")))
                 .click()
