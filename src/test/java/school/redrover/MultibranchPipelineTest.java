@@ -188,7 +188,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
         nameField.clear();
-        nameField.sendKeys("MyMultiConfigurationPipeline");
+        nameField.sendKeys(MULTIBRANCH_PIPELINE_NAME);
 
         getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline'] ")).click();
 
@@ -196,7 +196,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
 
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).isDisplayed());
+        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).isDisplayed());
     }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
@@ -237,13 +237,13 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
-    public void testEnableByDefault() {
-        getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).click();
+    public void testEnabledByDefault() {
+        String status = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickConfigure()
+                .getDisableToggleText();
 
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/a")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath(
-                "//*[@id='toggle-switch-enable-disable-project']/label")).getText(), "Enabled");
+        Assert.assertEquals(status, "Enabled");
     }
 
     @Test
