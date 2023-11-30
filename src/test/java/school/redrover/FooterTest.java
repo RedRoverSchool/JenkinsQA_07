@@ -28,7 +28,7 @@ public class FooterTest extends BaseTest {
     public void clickDropdownItemJenkinsVersionButton(String dropdownItem) {
         String startWindow = getDriver().getWindowHandle();
 
-        HomePage homepage = new HomePage(getDriver())
+        String homepage = new HomePage(getDriver())
                 .clickDropDownItem(dropdownItem);
 //        clickDropdownItemJenkinsVersion(dropdownItem);
 
@@ -89,9 +89,9 @@ public class FooterTest extends BaseTest {
    // @Ignore
     @Test
     public void testClickGetInvolved() {
-        HomePage homepage = new HomePage(getDriver())
+        String homepage = new HomePage(getDriver())
                 .clickJenkinsVersion()
-                .clickDropDownItem("Get involved");
+               .clickDropDownItem("Get involved");
 
         String actualPageName = new HomePage(getDriver())
                 .getActualPageName();
