@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
     @FindBy(linkText = "Status")
     private WebElement statusPageLink;
 
-    @FindBy(xpath = "//*[@id=\"tasks\"]/div[7]/span/a")
+    @FindBy(xpath = "//*[@id='tasks']/div[7]/span/a")
     private WebElement renamePageLink;
 
     @FindBy(xpath = "//a[@href='lastBuild/']")
@@ -117,7 +116,7 @@ public class FreestyleProjectDetailsPage extends BasePage {
         return statusPageLink.getAttribute("class").contains("active");
     }
 
-    public FreestyleProjectRenamePage clickRenameLink() {
+    public FreestyleProjectRenamePage clickRename() {
         renamePageLink.click();
 
         return new FreestyleProjectRenamePage(getDriver());
@@ -127,12 +126,6 @@ public class FreestyleProjectDetailsPage extends BasePage {
         workspaceButton.click();
 
         return new WorkspacePage(getDriver());
-    }
-
-    public FreestyleProjectRenamePage clickRenameItem() {
-        renamePageLink.click();
-
-        return new FreestyleProjectRenamePage(getDriver());
     }
 
     public String getDescriptionText() {
@@ -146,13 +139,6 @@ public class FreestyleProjectDetailsPage extends BasePage {
     }
 
     public boolean isJobExist() { return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).isDisplayed(); }
-
-    public FreestyleProjectDetailsPage refreshPage() {
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-        getDriver().navigate().refresh();
-
-        return this;
-    }
 
     public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
         lastBuild.click();
