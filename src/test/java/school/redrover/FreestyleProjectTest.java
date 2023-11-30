@@ -1018,13 +1018,15 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testDisableProjectMessage() {
-        createFreeStyleProject(PROJECT_NAME);
-        goToJenkinsHomePage();
-
-        getDriver().findElement(By.cssSelector(".jenkins-table__link.model-link.inside")).click();
-        clickSubmitButton();
-
-        boolean isMessageVisible = getDriver().findElement(By.className("warning")).isDisplayed();
+        boolean isMessageVisible = new HomePage(getDriver())
+                .clickNewItem()
+                .selectFreestyleProject()
+                .typeItemName(PROJECT_NAME)
+                .clickOk(new ConfigurationPage(getDriver()))
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickEnableDisableButton()
+                .isProjectDisabled();
 
         Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
     }

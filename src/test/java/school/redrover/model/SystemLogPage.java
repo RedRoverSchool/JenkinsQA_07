@@ -12,7 +12,7 @@ import java.util.List;
 public class SystemLogPage extends BasePage {
 
     @FindBy(xpath = "//a[@href = 'new']")
-    private WebElement buttonAddRecorder;
+    private WebElement addRecorderButton;
 
     @FindBy(xpath = "//*[@id='logRecorders']/tbody/tr[2]/td[1]/a")
     private WebElement customLogName;
@@ -23,7 +23,7 @@ public class SystemLogPage extends BasePage {
     public SystemLogPage(WebDriver driver) { super(driver); }
 
     public NewLogRecorderPage clickAddRecorder() {
-        buttonAddRecorder.click();
+        addRecorderButton.click();
 
         return new NewLogRecorderPage(getDriver());
     }

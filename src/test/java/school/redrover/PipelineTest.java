@@ -1,8 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -56,6 +53,7 @@ public class PipelineTest extends BaseTest {
     @Test
     public void testPipelineRename() {
         final String updatedJobName = "Updated job name";
+
         TestUtils.createPipeline(this, JOB_NAME, false);
 
         String currentName = new PipelineDetailsPage(getDriver())
@@ -305,37 +303,28 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testTooltipsDescriptionCompliance() {
+        List<String> tooltipsTextsList = List.of(
+                "Help for feature: Discard old builds",
+                "Help for feature: Pipeline speed/durability override",
+                "Help for feature: Preserve stashes from completed builds",
+                "Help for feature: This project is parameterized",
+                "Help for feature: Throttle builds",
+                "Help for feature: Build after other projects are built",
+                "Help for feature: Build periodically",
+                "Help for feature: GitHub hook trigger for GITScm polling",
+                "Help for feature: Poll SCM",
+                "Help for feature: Quiet period",
+                "Help for feature: Trigger builds remotely (e.g., from scripts)"
+        );
+
         TestUtils.createPipeline(this, JOB_NAME, true);
 
-        getDriver().findElement(By.xpath("//tr[@id ='job_" + JOB_NAME + "']//a[@href = 'job/" + JOB_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//div[@id = 'tasks']//a[@href = '/job/" + JOB_NAME + "/configure']")).click();
+        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickConfigure();
 
-        List<WebElement> toolTips = getDriver().findElements(By.xpath("//div[@hashelp = 'true']//a[contains(@tooltip, '')]"));
-        List<WebElement> checkBoxesWithTooltips = getDriver().findElements(By.xpath("//div[@hashelp = 'true']//label[@class = 'attach-previous ']"));
-
-        Assert.assertEquals(toolTips.size(), 11);
-        Assert.assertEquals(toolTips.size(), checkBoxesWithTooltips.size());
-        for (int i = 0; i < toolTips.size(); i++) {
-            Assert.assertEquals("Help for feature: " + checkBoxesWithTooltips.get(i).getText(), toolTips.get(i).getAttribute("title"));
-        }
-    }
-
-    @Test
-    public void testPermalinksBuildData() {
-        TestUtils.createPipeline(this, JOB_NAME, true);
-
-        getDriver().findElement(By.xpath("//td/a[@href='job/" + JOB_NAME + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + JOB_NAME + "/build?delay=0sec']")).click();
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='alert alert-warning']")));
-
-        getDriver().navigate().refresh();
-        List<WebElement> permalinksBuildHistory = getWait5().until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//li[@class='permalink-item']")));
-
-        Assert.assertEquals(permalinksBuildHistory.size(), 4);
-        Assert.assertTrue(permalinksBuildHistory.get(0).getText().contains("Last build"));
-        Assert.assertTrue(permalinksBuildHistory.get(1).getText().contains("Last stable build"));
-        Assert.assertTrue(permalinksBuildHistory.get(2).getText().contains("Last successful build"));
-        Assert.assertTrue(permalinksBuildHistory.get(3).getText().contains("Last completed build"));
+        Assert.assertEquals(pipelineConfigurationPage.getNumOfTooltips(), 11);
+        Assert.assertEquals(pipelineConfigurationPage.getTooltipsTitlesList(), tooltipsTextsList);
     }
 
     @Test

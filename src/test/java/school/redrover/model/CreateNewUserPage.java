@@ -17,11 +17,17 @@ public class CreateNewUserPage extends BasePage {
     @FindBy(name = "password2")
     private WebElement passwordConfirm;
 
+    @FindBy(name = "fullname")
+    private WebElement fullNameField;
+
     @FindBy(name = "email")
     private WebElement email;
 
     @FindBy(name = "Submit")
     private WebElement submitButton;
+
+    @FindBy(xpath = "//div[@class = 'error jenkins-!-margin-bottom-2']")
+    private WebElement errorMassage;
 
     public CreateNewUserPage(WebDriver driver) {
 
@@ -56,6 +62,12 @@ public class CreateNewUserPage extends BasePage {
         return this;
     }
 
+    public CreateNewUserPage inputFullName(String fullName) {
+        fullNameField.sendKeys(fullName);
+
+        return this;
+    }
+
     public CreateNewUserPage inputEmail(String email) {
         this.email.sendKeys(email);
 
@@ -68,5 +80,31 @@ public class CreateNewUserPage extends BasePage {
         return new UserDatabasePage(getDriver());
     }
 
+    public UserDatabasePage fillUserInformationField(String name, String password, String email) {
+        inputUserName(name);
+        inputPassword(password);
+        inputPasswordConfirm(password);
+        inputEmail(email);
+
+        return clickSubmit();
+    }
+
+    public UserDatabasePage fillUserInformationField(String name, String password,String fullName, String email) {
+        inputUserName(name);
+        inputPassword(password);
+        inputPasswordConfirm(password);
+        inputFullName(fullName);
+        inputEmail(email);
+
+        return clickSubmit();
+    }
+
+    public CreateNewUserPage clickCreateUser() {
+        submitButton.click();
+        return this;
+    }
+    public String getErrorMassage() {
+        return errorMassage.getText();
+    }
 }
 
