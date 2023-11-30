@@ -23,14 +23,14 @@ import static org.testng.Assert.assertTrue;
 
 public class UserTest extends BaseTest {
 
-    private static final String USER_NAME = "Jane";
-    private final String USER_NAME_2 = "FirstUser";
+    private final static String USER_NAME = "Jane";
+    private final static String USER_NAME_2 = "FirstUser";
     private static final String NAME = "ivan";
-    public static final String FULL_NAME = "User Full Name";
-    final private static String PASSWORD = "12345";
-    final private static String WRONG_CONFIRM_PASSWORD = "123";
-    private static final String DESCRIPTION = "Test description";
-    private static final String EMAIL = "asd@gmail.com";
+    private final static String FULL_NAME = "User Full Name";
+    private final static String PASSWORD = "12345";
+    private final static String WRONG_CONFIRM_PASSWORD = "123";
+    private final static String DESCRIPTION = "Test description";
+    private final static String EMAIL = "asd@gmail.com";
 
     private void createUser(String userName, String password, String email) {
         getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
@@ -72,11 +72,7 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void goToHomePage() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
-
-    private void goToUsersPage() {
+        private void goToUsersPage() {
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
         getDriver().findElement(By.xpath("//dt[contains(text(),'Users')]")).click();
     }
@@ -711,15 +707,16 @@ public class UserTest extends BaseTest {
 
     @Test(dependsOnMethods = "testDeleteUser")
     public void testLoginAsARemoteUser() {
-        getDriver().findElement(By.xpath("//span[text() = 'log out']")).click();
+        final String expectedErrorMessage = "Invalid username or password";
 
-        getDriver().findElement(By.id("j_username")).sendKeys(USER_NAME);
-        getDriver().findElement(By.id("j_password")).sendKeys(PASSWORD);
+        String actualErrorMessage = new HomePage(getDriver())
+                .clickLogOut()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .clickSignIn()
+                .getErrorMassage();
 
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertTrue(getDriver().findElement(
-                By.xpath("//div[contains(text(), 'Invalid')]")).isDisplayed(), "Invalid username or password");
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
     @Test
@@ -731,6 +728,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
     }
+
         @Test
     public void testUserChangFullName() {
         final String existedUsername= "Usertest2";

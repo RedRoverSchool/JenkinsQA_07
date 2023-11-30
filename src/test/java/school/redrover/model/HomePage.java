@@ -52,11 +52,15 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
+
     @FindBy(xpath = "//h1")
     private WebElement header;
 
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
+
+    @FindBy(xpath = "//a[@href = '/logout']/span")
+    private WebElement logOut;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -253,5 +257,11 @@ public class HomePage extends BasePage {
 
     public boolean isScheduleABuildButtonNotDisplayed(String jobName){
        return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
+    }
+
+    public LoginToJenkinsPage clickLogOut() {
+        logOut.click();
+
+        return new LoginToJenkinsPage(getDriver());
     }
 }
