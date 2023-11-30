@@ -3,7 +3,6 @@ package school.redrover;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.GlobalViewPage;
 import school.redrover.model.HomePage;
@@ -11,7 +10,6 @@ import school.redrover.model.ListViewPage;
 import school.redrover.model.MyViewPage;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -450,95 +448,67 @@ public class ViewTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewListView_WithoutJobs() {
-        final String jobName = "FreestyleProject-1";
-        final String newViewName = "ListView-1";
-
-        createNewFreestyleProject(jobName);
-        goHome();
-
-        List<String> viewsNamesList = new HomePage(getDriver())
+    public void testCreateListViewWithoutJobs() {
+        boolean isListViewCreated = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(JOB_NAME)
+                .goHomePage()
                 .clickNewViewButton()
-                .typeNewViewName(newViewName)
+                .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
                 .clickCreateButton()
                 .goHomePage()
+                .getViewsList()
+                .contains(VIEW_NAME);
+
+        Assert.assertTrue(isListViewCreated);
+    }
+
+    @Test(dependsOnMethods = "testCreateListViewWithoutJobs")
+    public void testRenameListView() {
+        List<String> viewsList = new HomePage(getDriver())
+                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickEditView()
+                .typeNewName(VIEW_NAME_1)
+                .clickOKButton()
+                .goHomePage()
                 .getViewsList();
 
-        Assert.assertTrue(viewsNamesList.contains(newViewName));
+        Assert.assertTrue(viewsList.contains(VIEW_NAME_1));
     }
 
-    @Test(dependsOnMethods = "testCreateNewListView_WithoutJobs")
-    public void testRenameListView() {
-        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME + "/']"))
-                .click();
-        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME + "/configure']")).click();
-        getDriver().findElement(By.xpath("//input[@name='name']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='name']")).sendKeys(VIEW_NAME_1);
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+    @Test(dependsOnMethods = {"testCreateListViewWithoutJobs", "testRenameListView"})
+    public void testJobCanBeAddedFromMainPanel() {
+        boolean noJobsMessage = new HomePage(getDriver())
+                .clickViewByName(VIEW_NAME_1, new ListViewPage(getDriver()))
+                .getMainPanelText()
+                .contains(NO_ASSOCIATED_JOBS_FOR_THE_VIEW_MESSAGE);
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class = 'tab active']/a"))
-                        .getText(),
-                VIEW_NAME_1);
+        Assert.assertTrue(noJobsMessage);
+
+        List<String> jobList = new ListViewPage(getDriver())
+                .clickAddJobsFromMainPanel()
+                .checkFirstJobCheckboxWithJavaExecutor()
+                .clickOKButton()
+                .getJobList();
+
+        Assert.assertTrue(jobList.contains(JOB_NAME));
     }
 
-    @Test(dependsOnMethods = "testRenameListView")
-    public void testAddJobToListViewWithoutJobs_fromMainSectionLink() {
-        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME_1 + "/']"))
-                .click();
+    @Test(dependsOnMethods = {"testCreateListViewWithoutJobs", "testRenameListView","testJobCanBeAddedFromMainPanel"})
+    public void testAddSeveralJobsToView() {
+        List<String> jobList = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(JOB_NAME_1)
+                .goHomePage()
+                .clickViewByName(VIEW_NAME_1, new ListViewPage(getDriver()))
+                .clickEditView()
+                .checkJobsCheckboxesWithJavaExecutor()
+                .clickOKButton()
+                .goHomePage()
+                .getJobList();
 
-        Assert.assertTrue(getDriver().findElement(By.id("main-panel")).getText()
-                .contains("This view has no jobs associated with it. You can either add some existing jobs to this " +
-                        "view or create a new job in this view."));
-
-        getDriver().findElement(By.xpath("//a[@href='configure']")).click();
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,600)");
-        getDriver().findElement(By.xpath("//label[@title='" + JOB_NAME + "']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='projectstatus']/tbody/tr/td[3]"))
-                        .getText(),
-                JOB_NAME);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testAddJobToListViewWithoutJobs_fromMainSectionLink")
-    public void testAddAllJobsToView() {
-        createNewFreestyleProject(JOB_NAME_1);
-        goHome();
-        createNewFreestyleProject(JOB_NAME_2);
-        goHome();
-
-        getDriver().findElement(By.xpath("//div[@class='tabBar']/div/a[@href='/view/" + VIEW_NAME_1 + "/']"))
-                .click();
-        getDriver().findElement(By.xpath("//a[@href='/view/" + VIEW_NAME_1 + "/configure']")).click();
-
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("window.scrollBy(0,600)");
-
-        getDriver().findElement(By.xpath("//label[@title='" + JOB_NAME + "']")).click();
-        List<WebElement> listOfJobs = getDriver().findElements(
-                By.xpath("//div[@class='listview-jobs']/span/span/label"));
-        for (WebElement job : listOfJobs) {
-            job.click();
-        }
-        getDriver().findElement(By.name("Submit")).click();
-
-        List<String> jobNames = List.of(JOB_NAME, JOB_NAME_1, JOB_NAME_2);
-        List<WebElement> dashboardItems = getDriver().findElements(
-                By.xpath("//table[@id='projectstatus']/tbody/tr/td"));
-        List<String> jobNamesDashboard = new ArrayList<>();
-        for (WebElement item : dashboardItems) {
-            if (item.getText().contains("FreestyleProject")) {
-                jobNamesDashboard.add(item.getText());
-            }
-        }
-
-        Assert.assertEquals(jobNamesDashboard.size(), jobNames.size());
-        for (int i = 0; i < jobNamesDashboard.size(); i++) {
-            Assert.assertEquals(jobNames.get(i), jobNamesDashboard.get(i));
-        }
+        Assert.assertTrue(jobList.containsAll(List.of(JOB_NAME, JOB_NAME_1)));
     }
 
     @Test
