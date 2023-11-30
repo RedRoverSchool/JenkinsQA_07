@@ -221,6 +221,8 @@ public class HomePage extends BasePage {
                 .perform();
 
         new Actions(getDriver())
+            .scrollToElement(getDriver()
+                .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
             .moveToElement(getDriver()
                 .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
             .click()
@@ -228,7 +230,6 @@ public class HomePage extends BasePage {
 
         new Actions(getDriver())
                 .pause(400)
-                .scrollToElement(getDriver().findElement(By.xpath("//a[@href='/job/NewFreestyleProject/confirm-rename']")))
                 .moveToElement(getDriver()
                     .findElement(By.xpath("//a[@href='/job/NewFreestyleProject/confirm-rename']")))
                 .click()
