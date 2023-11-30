@@ -418,7 +418,7 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
-    public void testEnabledOkButtonCreateWithInvalidName(String name) {
+    public void testDisabledOkButtonCreateWithInvalidName(String name) {
        boolean enabledOkButton = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(name)

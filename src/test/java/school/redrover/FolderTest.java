@@ -204,7 +204,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
-    public void testEnabledOkButtonCreateWithInvalidName(String unsafeChar) {
+    public void testDisabledOkButtonCreateWithInvalidName(String unsafeChar) {
         boolean enabledOkButton = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(unsafeChar)
@@ -216,16 +216,18 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testPositiveBoundaryValuesName() {
-        boolean createdValidName = new  HomePage(getDriver())
+        String createdValidName = new  HomePage(getDriver())
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES)
                 .goHomePage()
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES.repeat(255))
                 .goHomePage()
-                .getJobList().contains(NAME_FOR_BOUNDARY_VALUES.repeat(255));
+                .getJobList()
+                .toString();
 
-        Assert.assertTrue(createdValidName);
+        Assert.assertTrue(createdValidName.contains(NAME_FOR_BOUNDARY_VALUES));
+        Assert.assertTrue(createdValidName.contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
     }
 
     @Test
