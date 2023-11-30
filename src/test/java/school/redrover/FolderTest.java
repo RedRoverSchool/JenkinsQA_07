@@ -441,7 +441,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testAddChildHealthMetric() {
+    public void testAddChildHealthMetric()  {
 
         boolean isChildHealthMetricDisplayed = new HomePage(getDriver())
                 .clickNewItem()
