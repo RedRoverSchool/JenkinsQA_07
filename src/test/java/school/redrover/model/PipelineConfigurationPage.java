@@ -57,6 +57,9 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(id = "cb3")
     private WebElement concurrentBuildsCheckbox;
 
+    @FindBy(xpath = "//div[@hashelp = 'true']//a[contains(@tooltip, '')]")
+    private List<WebElement> tooltipsList;
+
     public PipelineConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -155,5 +158,18 @@ public class PipelineConfigurationPage extends BasePage {
     public boolean isDoNotAllowConcurrentBuildsSelected() {
 
         return concurrentBuildsCheckbox.isSelected();
+    }
+
+    public int getNumOfTooltips() {
+
+        return tooltipsList.size();
+    }
+
+    public List<String> getTooltipsTitlesList() {
+
+        return tooltipsList
+                .stream()
+                .map(element -> element.getAttribute("title"))
+                .toList();
     }
 }
