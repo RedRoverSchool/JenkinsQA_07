@@ -14,7 +14,7 @@ public class FolderDetailsPage extends BasePage {
     private WebElement configure;
 
     @FindBy(id = "description-link")
-    private WebElement addDescription;
+    private WebElement addOrEditDescription;
 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
@@ -24,6 +24,12 @@ public class FolderDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
+
+    @FindBy(xpath = "//a[contains(@href,'move')]")
+    private WebElement moveJob;
+
+    @FindBy(xpath = "//a[@class='content-block__link']")
+    private WebElement createJob;
 
     @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
     private WebElement newProject;
@@ -49,8 +55,8 @@ public class FolderDetailsPage extends BasePage {
         return new FolderConfigurationPage(getDriver());
     }
 
-    public FolderDetailsPage clickAddDescription() {
-        addDescription.click();
+    public FolderDetailsPage clickAddOrEditDescription() {
+        addOrEditDescription.click();
 
         return this;
     }
@@ -73,7 +79,7 @@ public class FolderDetailsPage extends BasePage {
     }
 
     public NewItemPage clickCreateJob() {
-        getDriver().findElement(By.xpath("//a[@class='content-block__link']")).click();
+        createJob.click();
 
         return new NewItemPage(getDriver());
     }
@@ -91,7 +97,7 @@ public class FolderDetailsPage extends BasePage {
     }
 
     public FolderMovePage clickMove() {
-        getDriver().findElement(By.xpath("//a[contains(@href,'move')]")).click();
+        moveJob.click();
 
         return new FolderMovePage(getDriver());
     }

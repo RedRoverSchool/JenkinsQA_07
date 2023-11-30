@@ -1,13 +1,9 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.PeopleTest;
 import school.redrover.model.base.BasePage;
 
 import java.util.ArrayList;
@@ -56,7 +52,11 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
+    @FindBy(xpath = "//h1")
+    private WebElement header;
 
+    @FindBy(xpath = "//a[@href = '/manage']")
+    private WebElement goManageJenkinsPage;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -69,7 +69,7 @@ public class HomePage extends BasePage {
     }
 
     public ManageJenkinsPage clickManageJenkins() {
-        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
+        goManageJenkinsPage.click();
 
         return new ManageJenkinsPage(getDriver());
     }
@@ -161,11 +161,9 @@ public class HomePage extends BasePage {
         return getDriver().getTitle();
     }
 
+
     public String getProjectBuildStatusByName(String projectName) {
-        return getDriver()
-                .findElement(By.id("job_" + projectName))
-                .findElement(By.className("svg-icon"))
-                .getAttribute("tooltip");
+        return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
     }
 
     public String getHeadLineText() {
@@ -206,8 +204,7 @@ public class HomePage extends BasePage {
     public HomePage hoverOverJobDropdownMenu(String name) {
         WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + name + "']"));
 
-        new Actions(getDriver())
-                .moveToElement(projectName).click().perform();
+        new Actions(getDriver()).moveToElement(projectName).click().perform();
 
         return this;
     }
@@ -219,18 +216,11 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
-                .perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
 
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                        .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
-                .click()
-                .perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
 
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
 
@@ -268,6 +258,16 @@ public class HomePage extends BasePage {
 
     public String getItemNameInTable() {
         return itemNameInTable.getText();
+    }
+
+    public String getHeaderText() {
+        return header.getText();
+    }
+
+    public NodeDetailsPage clickOnNodeName(String nodeName) {
+        getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
+
+        return new NodeDetailsPage(getDriver());
     }
 
     public FolderDetailsPage clickFolderName(String FOLDER_NAME){

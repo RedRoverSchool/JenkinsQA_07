@@ -2,14 +2,12 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -144,29 +142,26 @@ public class FolderTest extends BaseTest {
                 FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
     }
 
-    @Ignore
     @Test
     public void testErrorMessageIsDisplayedWithoutFolderName() {
         String expectedErrorMessage = "» This field cannot be empty, please enter a valid name";
 
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        boolean errorMessageDisplayed = getDriver().findElement(By.id("itemname-required")).isDisplayed();
-        String actualErrorMessage = getDriver().findElement(By.id("itemname-required")).getText();
+        String actualErrorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .selectItemFolder()
+                .getRequiredNameErrorMessage();
 
-        Assert.assertTrue(errorMessageDisplayed, "Error message for empty name is not displayed!");
-        Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "The error message does not match the expected message!");
+        Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
-    @Ignore
     @Test
-    public void testOKbuttonIsNotClickableWithoutFolderName() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        boolean okButtonDisabled = "true".equals(okButton.getAttribute("disabled"));
+    public void testOKButtonIsNotClickableWithoutFolderName() {
+        boolean isOkButtonDisabled = new HomePage(getDriver())
+                .clickNewItem()
+                .selectItemFolder()
+                .isOkButtonEnabled();
 
-        Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
+        Assert.assertFalse(isOkButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
     @Test
@@ -196,7 +191,7 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
-    public void testCreateNameSpecialCharacters(String unsafeChar) {
+    public void testCreateNameSpecialCharactersGetMessage(String unsafeChar) {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(unsafeChar)
@@ -204,6 +199,18 @@ public class FolderTest extends BaseTest {
                 .getInvalidNameErrorMessage();
 
         Assert.assertEquals(errorMessage, "» ‘" + unsafeChar + "’ is an unsafe character");
+    }
+
+    @Test(dataProvider = "provideUnsafeCharacters")
+    public void testCreateNameSpecialCharactersAbsenceOnHomePage(String unsafeChar) {
+        boolean createdNameSpecialCharacters = new HomePage(getDriver())
+                .clickNewItem()
+                .createFolder(unsafeChar)
+                .goHomePage()
+                .getJobList()
+                .contains(unsafeChar);
+
+        Assert.assertFalse(createdNameSpecialCharacters);
     }
 
     @Test
@@ -233,8 +240,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
     }
 
-
-    @Ignore
     @Test(dependsOnMethods = "testCreate")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
@@ -243,7 +248,7 @@ public class FolderTest extends BaseTest {
         String actualDescription = homePage
                 .clickAlertIfVisibleAndGoHomePage()
                 .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
-                .clickAddDescription()
+                .clickAddOrEditDescription()
                 .typeDescription(descriptionText)
                 .clickSave()
                 .getActualFolderDescription();
@@ -251,20 +256,18 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testRename", "testCreate"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        String actualUpdatedDescription = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .typeDescription(newDescriptionText)
+                .clickSave()
+                .getActualFolderDescription();
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
-        getDriver().findElement(By.className("jenkins-input")).clear();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(newDescriptionText);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String actualNewDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-        Assert.assertEquals(actualNewDescription, newDescriptionText);
+        Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
     }
 
     @Ignore
@@ -453,6 +456,20 @@ public class FolderTest extends BaseTest {
                 .isChildHealthMetricDisplayed();
 
         Assert.assertTrue(isChildHealthMetricDisplayed);
+    }
+
+    @Test(dependsOnMethods = "testAddChildHealthMetric")
+    public void testDisplayingHelpTextButtonRecursive() {
+        final String expectedText = "Controls whether items within sub-folders will be considered as contributing to the health of this folder.";
+
+        String helpText = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickConfigureFolder()
+                .clickHealthMetrics()
+                .clickHelpButtonRecursive()
+                .getHelpBlockText();
+
+        Assert.assertEquals(helpText, expectedText);
     }
 
     @Test(dependsOnMethods = "testCreate")
