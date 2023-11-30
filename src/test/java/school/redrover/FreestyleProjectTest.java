@@ -834,7 +834,7 @@ public class FreestyleProjectTest extends BaseTest {
             Assert.assertTrue(timestamp.getText().trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
         }
     }
-
+    @Test
     public void testMoveFreestyleProjectToFolder() {
         final String folderName = "FolderWrapper";
         final String destinationOption = "Jenkins » " + folderName;
