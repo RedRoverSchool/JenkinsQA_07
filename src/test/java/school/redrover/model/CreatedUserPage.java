@@ -25,6 +25,12 @@ public class CreatedUserPage extends BasePage {
     @FindBy(css = "a[href='/manage/about']")
     private WebElement aboutJenkinsButton;
 
+    @FindBy(css = "a[href*='my-views']")
+    private WebElement myViewsButton;
+
+    @FindBy(css = "a[href*='configure']")
+    private WebElement configureButton;
+
     public CreatedUserPage(WebDriver driver) {
         super(driver);
     }
@@ -66,5 +72,17 @@ public class CreatedUserPage extends BasePage {
         aboutJenkinsButton.click();
 
         return new AboutJenkinsPage(getDriver());
+    }
+
+    public UserViewPage clickUserMyViews() {
+        myViewsButton.click();
+
+        return new UserViewPage(getDriver());
+    }
+
+    public UserConfigurationPage clickConfigure() {
+        configureButton.click();
+
+        return new UserConfigurationPage(getDriver());
     }
 }
