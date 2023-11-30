@@ -835,7 +835,6 @@ public class FreestyleProjectTest extends BaseTest {
         }
     }
 
-    @Test
     public void testMoveFreestyleProjectToFolder() {
         final String folderName = "FolderWrapper";
         final String destinationOption = "Jenkins » " + folderName;
@@ -877,27 +876,17 @@ public class FreestyleProjectTest extends BaseTest {
                 configurePage.getParameterDescription().equals(DESCRIPTION));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testAddBooleanParameterDropdownIsSortedAlphabetically() {
-        createProject("Freestyle project", PROJECT_NAME, true);
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[5]")).click();
+        FreestyleProjectConfigurePage freestyleProjectConfigurePage = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickThisProjectIsParameterizedCheckbox()
+                .clickAddParameterDropdown();
 
-        getDriver().findElement(
-                        By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"))
-                .click();
-        getDriver().findElement(By.xpath("//button[contains(text(), 'Add Parameter')]")).click();
-
-        List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
-        List<String> getTextOfDropDownElements = new ArrayList<>();
-        for (WebElement element : listDropDownElements) {
-            getTextOfDropDownElements.add(element.getText());
-        }
-
-        List<String> expectedListResult = getTextOfDropDownElements.stream().sorted().toList();
-
-        Assert.assertEquals(getTextOfDropDownElements, expectedListResult);
+        Assert.assertEquals(freestyleProjectConfigurePage.getTextOfAddPerimeterDropDown()
+                , freestyleProjectConfigurePage.sortDropDownElementsAlphabetically());
     }
 
     @Test

@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.JavascriptExecutor;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class FreestyleProjectConfigurePage extends BasePage {
@@ -445,4 +445,21 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public boolean isGitRadioButtonSettingsFormAppears() {return gitRadioButtonSettingsForm.isDisplayed();}
+
+    public List<String> getTextOfAddPerimeterDropDown() {
+
+        List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
+        List<String> getTextOfDropDownElements = new ArrayList<>();
+
+        for (WebElement element : listDropDownElements) {
+            getTextOfDropDownElements.add(element.getText());
+        }
+
+        return getTextOfDropDownElements;
+    }
+
+    public List<String> sortDropDownElementsAlphabetically() {
+
+        return getTextOfAddPerimeterDropDown().stream().sorted().toList();
+    }
 }
