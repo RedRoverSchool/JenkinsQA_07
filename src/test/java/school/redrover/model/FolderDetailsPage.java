@@ -129,7 +129,7 @@ public class FolderDetailsPage extends BasePage {
         return new  NewItemPage(getDriver());
     }
 
-    public boolean  isNewCreatedProjectDisplayed(){
+    public boolean   isNewCreatedProjectDisplayed(){
         return  newProject.isDisplayed();
 
     }
