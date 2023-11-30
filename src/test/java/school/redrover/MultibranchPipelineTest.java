@@ -11,7 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
@@ -28,23 +27,9 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
 
     private static final String MULTIBRANCH_PIPELINE_NON_EXISTING_NAME = "MultibranchPipelineNonExistingName";
-    private final static String HOME_PAGE = "jenkins-home-link";
+
     private final List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
             "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
-
-    private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//div[@id='side-panel']//a[contains(@href,'newJob')]")))).click();
-        getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(
-                By.xpath("//input[@class='jenkins-input']")))).sendKeys(nameOfProject);
-        getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id='ok-button']"))).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='Submit']"))).click();
-
-        if (goToHomePage) {
-            getWait5().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.id(HOME_PAGE)))).click();
-        }
-    }
 
     private List<String> getTextOfWebElements(List<WebElement> elements) {
         List<String> textOfWebElements = new ArrayList<>();
@@ -414,8 +399,9 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testVisibilityOfAdditionalTaskOfSidebarMenuIfFolderIsCreated() {
-        createProject("Folder", "Nested Folder", true);
-        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+
+        TestUtils.createFolder(this, "Nested Folder", true);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
 
@@ -430,8 +416,8 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testVisibilityOfAdditionalTaskOfSidebarMenuIfProjectInsideFolder() {
         final String folderName = "Wrapper Folder";
 
-        createProject("Folder", folderName, false);
-        createProject("Multibranch Pipeline", MULTIBRANCH_PIPELINE_NAME, true);
+        TestUtils.createFolder(this, folderName, false);
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
         getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
