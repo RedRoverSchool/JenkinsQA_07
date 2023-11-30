@@ -220,10 +220,10 @@ public class HomePage extends BasePage {
                 .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
                 .perform();
 
+        JavascriptExecutor js = ((JavascriptExecutor) getDriver());
+        js.executeScript("document.querySelector('#job_NewFreestyleProjectName > td:nth-child(3) > a > button')");
+
         new Actions(getDriver())
-                .pause(500)
-            .scrollToElement(getDriver()
-                .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
             .moveToElement(getDriver()
                 .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
             .click()
