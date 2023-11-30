@@ -200,18 +200,14 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public HomePage hoverOverJobDropdownMenu(String name) {
-        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + name + "']"));
+    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOrganizationFolderDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
+        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
 
         new Actions(getDriver()).moveToElement(projectName).click().perform();
 
-        return this;
-    }
-
-    public OrganizationFolderRenamePage clickRenameOrganizationFolderDropdownMenu() {
         renameOptionProjectDropdown.click();
 
-        return new OrganizationFolderRenamePage(getDriver());
+        return projectRenamePage;
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
