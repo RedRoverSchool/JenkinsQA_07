@@ -215,15 +215,29 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
-
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
-
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
 
         return page;
+    }
+
+    public HomePage clickChevronForDropDownJobName(String jobName) {
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName.replace(" ", "%20") + "')]")))
+                .perform();
+
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
+
+        WebElement chevron = getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"));
+        Integer x = chevron.getSize().getHeight();
+        Integer y = chevron.getSize().getWidth();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
+                .scrollByAmount(x/2, y/2)
+                .click(chevron)
+                .perform();
+
+        return this;
     }
 
     public String multibranchPipelineName() {

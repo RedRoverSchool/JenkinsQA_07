@@ -749,14 +749,13 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
     }
 
-    @Ignore
     @Test
     public void testRenameProjectFromDashboard() {
         new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
-                .clickSaveButton()
                 .goHomePage()
+                .clickChevronForDropDownJobName(PROJECT_NAME)
                 .clickRenameInDropdownMenu(PROJECT_NAME, new FreestyleProjectRenamePage(getDriver()))
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
