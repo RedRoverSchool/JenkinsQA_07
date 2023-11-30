@@ -215,13 +215,23 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
+        new Actions(getDriver())
+                .moveToElement(getDriver()
+                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+                .perform();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
+        new Actions(getDriver())
+            .moveToElement(getDriver()
+                .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
+            .click()
+            .perform();
 
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
+        new Actions(getDriver())
+                .pause(400)
+                .moveToElement(getDriver()
+                    .findElement(By.xpath("//a[@href='/job/NewFreestyleProject/confirm-rename']")))
+                .click()
+                .perform();
 
         return page;
     }
