@@ -119,4 +119,13 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertEquals(settingsSectionsQuantity, 18);
     }
+
+    @Test
+    public void testTroubleshootingVisibility() {
+
+        String manageOldData = new HomePage(getDriver()).clickManageJenkins()
+                .getManageOldDataText();
+
+        Assert.assertEquals(manageOldData, "Manage Old Data");
+    }
 }
