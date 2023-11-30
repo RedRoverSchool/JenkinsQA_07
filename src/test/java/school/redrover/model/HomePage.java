@@ -333,7 +333,7 @@ public class HomePage extends BasePage {
     }
 
     public FolderDetailsPage clickFolderName(String FOLDER_NAME){
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='" + FOLDER_NAME + "']"))).click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+ FOLDER_NAME +"']"))).click();
         return new FolderDetailsPage(getDriver());
 
     }
