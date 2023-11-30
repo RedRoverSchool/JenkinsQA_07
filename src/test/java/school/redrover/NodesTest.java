@@ -159,9 +159,10 @@ public class NodesTest extends BaseTest {
     public void testNodeStatusUpdateOfflineReason() {
         final String reasonMessage = "Original Offline Reason Message";
         final String updatedReasonMessage = "Updated Offline Reason Message";
+
         createNewNode(NODE_NAME);
         String offlineReasonMessage = new HomePage(getDriver())
-                .clickOnNodeName(NODE_NAME)
+                .clickOnNodeName()
                 .clickMarkOffline()
                 .takingNewNodeOffline(reasonMessage)
                 .clickUpdateOfflineReason()
