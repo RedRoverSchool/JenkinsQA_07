@@ -254,4 +254,25 @@ public class HomePage extends BasePage {
     public boolean isScheduleABuildButtonNotDisplayed(String jobName){
        return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
     }
+
+    public WebElement findJobByName(String jobName) {
+        return getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a"));
+    }
+
+    public HomePage openDashboardDropDownMenu(String jobName) {
+        Actions actions = new Actions(getDriver());
+        WebElement dashboard = findJobByName(jobName);
+        int deltaX = dashboard.getSize().getWidth() / 2;
+        int deltaY = dashboard.getSize().getHeight() / 2;
+
+        actions
+                .moveToElement(dashboard)
+                .scrollByAmount(deltaX, deltaY)
+                .build()
+                .perform();
+
+        getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a/button")).click();
+
+        return this;
+    }
 }
