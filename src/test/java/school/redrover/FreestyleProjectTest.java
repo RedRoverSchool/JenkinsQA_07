@@ -373,9 +373,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
                 .clickRenameOptionFromLeftSideMenu(new FreestyleProjectRenamePage(getDriver()))
-                .clearInputField()
-                .enterName(NEW_PROJECT_NAME)
-                .clickRenameButton()
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickRenameButton(new FreestyleProjectDetailsPage(getDriver()))
                 .isStatusPageSelected();
 
         assertTrue(isStatusPageSelected);
@@ -798,9 +797,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .clickRenameInDropdownMenu(PROJECT_NAME, new FreestyleProjectRenamePage(getDriver()))
-                .clearInputField()
-                .enterName(NEW_PROJECT_NAME)
-                .clickRenameButton()
+                .enterNewName(NEW_PROJECT_NAME)
+                .clickRenameButton(new FreestyleProjectDetailsPage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(new HomePage(getDriver())

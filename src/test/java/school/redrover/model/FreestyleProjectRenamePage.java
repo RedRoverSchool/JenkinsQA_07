@@ -34,12 +34,6 @@ public class FreestyleProjectRenamePage extends RenamePage {
         return this;
     }
 
-    public FreestyleProjectDetailsPage clickRenameButton() {
-        renameButton.click();
-
-        return new FreestyleProjectDetailsPage(getDriver());
-    }
-
     public String getErrorMessage() {
         inputField.sendKeys(Keys.TAB);
 
