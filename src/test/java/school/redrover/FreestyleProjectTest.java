@@ -158,7 +158,7 @@ public class FreestyleProjectTest extends BaseTest {
         final HomePage homePage = new HomePage(getDriver())
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRenameItem()
+                .clickRename()
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -175,7 +175,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRenameLink()
+                .clickRename()
                 .clearInputField()
                 .getErrorMessage();
 
@@ -184,7 +184,6 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testAddDescriptionFreestyleProject() {
-
         String actualDescription = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
@@ -356,13 +355,17 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @Test
-    public void testScheduleBuildButtonOnDashboardWhenDisabled() {
-        createFreeStyleProject(PROJECT_NAME);
-        disableProjectByName(PROJECT_NAME);
-        goToJenkinsHomePage();
+    public void testScheduleBuildButtonNotVisibleWhenProjectDisabled() {
+        boolean isScheduleABuildButtonNotDisplayed = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goHomePage()
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickEnableDisableButton()
+                .goHomePage()
+                .isScheduleABuildButtonNotDisplayed(PROJECT_NAME);
 
-        boolean isDisabled = getDriver().findElements(By.xpath("//*[@id='job_" + PROJECT_NAME + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
-        assertTrue(isDisabled);
+        assertTrue(isScheduleABuildButtonNotDisplayed);
     }
 
     @Test
@@ -371,7 +374,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRenameLink()
+                .clickRename()
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -439,20 +442,20 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRenameLink()
+                .clickRename()
                 .clickRenameButtonAndRedirectErrorPage();
 
         Assert.assertEquals(errorPage.getErrorMessage(), "The new name is the same as the current name.");
     }
 
     @Test
-    public void testRenameToEmptyName() {
+    public void testRenameToEmptyNameAndGoErrorPage() {
         String errorText = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRenameItem()
+                .clickRename()
                 .clickRenameButtonEmptyName()
                 .getErrorText();
 
@@ -1041,7 +1044,7 @@ public class FreestyleProjectTest extends BaseTest {
         String permaLinks = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickBuildNowButton()
-                .refreshPage()
+                .refreshPage(new FreestyleProjectDetailsPage(getDriver()))
                 .clickPermalinkLastBuild()
                 .clickDeleteBuildSidePanel()
                 .clickButtonDeleteBuild()
@@ -1058,7 +1061,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         FreestyleProjectRenamePage error = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRenameLink();
+                .clickRename();
 
         for (String x : unsafeCharacters) {
             error.clearInputField()

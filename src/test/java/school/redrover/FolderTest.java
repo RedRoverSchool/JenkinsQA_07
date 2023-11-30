@@ -171,7 +171,7 @@ public class FolderTest extends BaseTest {
                 .createFolder(FOLDER_NAME)
                 .clickSaveButton()
                 .clickNewItemButton()
-                .createNewPipelineProject(JOB_NAME)
+                .createPipeline(JOB_NAME)
                 .clickSaveButton()
                 .clickBuildNowButton()
                 .getTooltipAttributeValue();

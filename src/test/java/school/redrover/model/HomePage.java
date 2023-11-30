@@ -269,4 +269,8 @@ public class HomePage extends BasePage {
 
         return new NodeDetailsPage(getDriver());
     }
+
+    public boolean isScheduleABuildButtonNotDisplayed(String jobName){
+       return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
+    }
 }

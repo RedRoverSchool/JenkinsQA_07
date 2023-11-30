@@ -69,7 +69,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickCreateAJob()
                 .typeItemName(MULTIBRANCH_PIPELINE_NAME)
                 .selectMultibranchPipelineOption()
-                .clickOk()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .getJobNameFromBreadcrumb();
 
         Assert.assertEquals(multibranchBreadcrumbName, MULTIBRANCH_PIPELINE_NAME,
@@ -274,7 +274,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .populateFieldCopyFrom(MULTIBRANCH_PIPELINE_NAME)
-                .clickOk()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .goHomePage()
                 .getJobList()
                 .contains(MULTIBRANCH_PIPELINE_NEW_NAME);
@@ -289,7 +289,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .populateFieldCopyFrom(MULTIBRANCH_PIPELINE_NON_EXISTING_NAME)
-                .clickOk()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .error();
 
         Assert.assertEquals(error, "Error");
