@@ -18,7 +18,7 @@ public class PipelineTest extends BaseTest {
     public void testCreatePipeline() {
         boolean pipeLineCreated = new HomePage(getDriver())
                 .clickNewItem()
-                .createPipelinePage(JOB_NAME)
+                .createPipeline(JOB_NAME)
                 .goHomePage()
                 .getJobList()
                 .contains(JOB_NAME);
@@ -81,7 +81,7 @@ public class PipelineTest extends BaseTest {
     public void testPipelineNoNameError() {
         String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
-                .createPipelinePage(JOB_NAME)
+                .createPipeline(JOB_NAME)
                 .clickSaveButton()
                 .goHomePage()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
