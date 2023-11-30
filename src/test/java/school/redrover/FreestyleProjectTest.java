@@ -779,13 +779,16 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(daysToKeepBuildsFieldValue, daysToKeepBuilds);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testSavedNotificationIsDisplayed() {
-        createAnItem("Freestyle project");
-        getDriver().findElement(By.name("Apply")).click();
-        String notificationIsDisplayed = getDriver().findElement(By.id("notification-bar")).getAttribute("class");
 
-        Assert.assertTrue(notificationIsDisplayed.contains("--visible"));
+        String notificationMessage = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickApply()
+                .getSavedNotificationMessage();
+
+        Assert.assertEquals(notificationMessage, "Saved");
     }
 
     @Ignore

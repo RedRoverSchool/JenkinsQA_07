@@ -133,6 +133,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//textarea[@name = 'parameter.description']")
     private WebElement parameterDescriptionInputBox;
 
+    @FindBy(xpath = "//div[@id='notification-bar']/span")
+    private WebElement savedNotificationMessage;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -456,5 +459,8 @@ public class FreestyleProjectConfigurePage extends BasePage {
         }
 
         return getTextOfDropDownElements;
+    }
+    public String getSavedNotificationMessage() {
+        return savedNotificationMessage.getText();
     }
 }
