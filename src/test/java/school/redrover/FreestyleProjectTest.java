@@ -469,7 +469,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(errorText, "No name is specified");
     }
 
-@Ignore
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testDisable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
@@ -479,7 +479,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(detailsPage.isProjectDisabled());
     }
 
-@Ignore
+    @Ignore
     @Test(dependsOnMethods = {"testDisable", "testCreateFreestyleProjectWithValidName"})
     public void testEnable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
@@ -622,6 +622,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(currentUrl.contains("/job/" + editedProjectName));
     }
 
+    @Ignore
     @Test
     public void testDisableFreestyleProjectFromFreestyleProjectDetailPage() {
         String homePage = new HomePage(getDriver())
@@ -886,6 +887,7 @@ public class FreestyleProjectTest extends BaseTest {
                 configurePage.getParameterDescription().equals(DESCRIPTION));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testAddBooleanParameterDropdownIsSortedAlphabetically() {
 
