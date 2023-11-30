@@ -176,25 +176,6 @@ public class HomePage extends BasePage {
         return page;
     }
 
-    public boolean isAlertVisible() {
-        try {
-            getDriver().switchTo().alert();
-
-            return true;
-        } catch (NoAlertPresentException ex) {
-
-            return false;
-        }
-    }
-
-    public HomePage clickAlertIfVisibleAndGoHomePage() {
-        if (isAlertVisible()) {
-            getDriver().switchTo().alert().accept();
-        }
-
-        return this;
-    }
-
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
 
@@ -268,5 +249,9 @@ public class HomePage extends BasePage {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
 
         return new NodeDetailsPage(getDriver());
+    }
+
+    public boolean isScheduleABuildButtonNotDisplayed(String jobName){
+       return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
     }
 }
