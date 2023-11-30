@@ -14,7 +14,14 @@ public class ErrorPage extends BaseErrorPage {
     @FindBy(xpath = "//h1/following-sibling::p")
     private WebElement errorMessage;
 
+    @FindBy(xpath = "//h2")
+    private WebElement errorMassageFromOopsPage;
+
     public String getErrorMessage() {
         return errorMessage.getText();
+    }
+
+    public String getErrorMassageFromOopsPage() {
+        return errorMassageFromOopsPage.getText();
     }
 }
