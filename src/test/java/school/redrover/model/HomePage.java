@@ -262,6 +262,7 @@ public class HomePage extends BasePage {
     public HomePage openDashboardDropDownMenu(String jobName) {
         Actions actions = new Actions(getDriver());
         WebElement dashboard = findJobByName(jobName);
+        WebElement dashboardButton = getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a/button"));
         int deltaX = dashboard.getSize().getWidth() / 2;
         int deltaY = dashboard.getSize().getHeight() / 2;
 
@@ -271,7 +272,7 @@ public class HomePage extends BasePage {
                 .build()
                 .perform();
 
-        getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a/button")).click();
+        dashboardButton.click();
 
         return this;
     }
