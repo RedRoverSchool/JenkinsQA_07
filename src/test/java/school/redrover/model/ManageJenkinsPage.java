@@ -47,7 +47,7 @@ public class ManageJenkinsPage extends BasePage {
     @FindAll({@FindBy(className = "jenkins-section__item")})
     private List<WebElement> settingsSections;
 
-    @FindBy(xpath = "//dl/dt[text()='Manage Old Data']")
+    @FindBy(xpath = "//a[contains (@href, 'OldData')]//dt")
     private WebElement manageOldData;
 
     public ManageJenkinsPage(WebDriver driver) {

@@ -123,7 +123,8 @@ public class ManageJenkinsTest extends BaseTest {
     @Test
     public void testTroubleshootingVisibility() {
 
-        String manageOldData = new HomePage(getDriver()).clickManageJenkins()
+        String manageOldData = new HomePage(getDriver())
+                .clickManageJenkins()
                 .getManageOldDataText();
 
         Assert.assertEquals(manageOldData, "Manage Old Data");
