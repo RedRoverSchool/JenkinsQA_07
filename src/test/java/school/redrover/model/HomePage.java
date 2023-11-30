@@ -221,6 +221,7 @@ public class HomePage extends BasePage {
                 .perform();
 
         new Actions(getDriver())
+                .pause(500)
             .scrollToElement(getDriver()
                 .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
             .moveToElement(getDriver()
