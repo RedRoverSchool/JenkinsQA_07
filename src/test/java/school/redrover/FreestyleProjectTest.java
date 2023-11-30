@@ -740,7 +740,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(daysToKeepBuildsFieldValue, daysToKeepBuilds);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test(dependsOnMethods = "testThisProjectIsParameterizedCheckboxAddBooleanParameter")
     public void testSavedNotificationIsDisplayed() {
 
         String notificationMessage = new HomePage(getDriver())
