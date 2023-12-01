@@ -344,7 +344,7 @@ public class HomePage extends BasePage {
                 .build()
                 .perform();
 
-        getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a/button")).click();
+        getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a//button")).click();
 
         return this;
     }
