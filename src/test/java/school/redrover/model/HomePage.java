@@ -318,13 +318,4 @@ public class HomePage extends BasePage {
         return new RestAPIPage(getDriver());
     }
 
-    public HomePage getHotKeysFocusSearch() {
-        new Actions(getDriver())
-                .keyDown(Keys.CONTROL)
-                .sendKeys("k")
-                .keyUp(Keys.CONTROL)
-                .perform();
-
-        return this;
-    }
 }

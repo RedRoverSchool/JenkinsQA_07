@@ -32,18 +32,6 @@ public abstract class BasePage extends BaseModel {
         return page;
     }
 
-    public <T> T getSearchBox(T page, String str) {
-        new Actions(getDriver())
-                .keyDown(Keys.CONTROL)
-                .sendKeys("k")
-                .keyUp(Keys.CONTROL)
-                .sendKeys(str)
-                .keyDown(Keys.ENTER)
-                .perform();
-
-        return page;
-    }
-
     public <T> T acceptAlert(T page) {
         getWait2().until(ExpectedConditions.alertIsPresent()).accept();
 
@@ -55,15 +43,29 @@ public abstract class BasePage extends BaseModel {
         return heading.getText();
     }
 
-    public <T> T setSearchBoxText(String searchText, T page) {
+    public <T> T useSearchBox(String searchText, T page) {
         searchBoxHeader.click();
         searchBoxHeader.sendKeys(searchText);
-        new Actions(getDriver()).sendKeys(Keys.ENTER).perform();
+
+        new Actions(getDriver())
+                .sendKeys(Keys.ENTER)
+                .perform();
+
+        return page;
+    }
+
+    public <T> T getHotKeysFocusSearch(T page) {
+        new Actions(getDriver())
+                .keyDown(Keys.CONTROL)
+                .sendKeys("k")
+                .keyUp(Keys.CONTROL)
+                .perform();
 
         return page;
     }
 
     public WebElement getSearchBox() {
+
         return searchBoxHeader;
     }
 }
