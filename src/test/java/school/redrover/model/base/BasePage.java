@@ -3,11 +3,18 @@ package school.redrover.model.base;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.HomePage;
 
 public abstract class BasePage extends BaseModel {
+    @FindBy(tagName = "h1")
+    private WebElement heading;
+
+    @FindBy(name = "q")
+    private WebElement searchBoxHeader;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -25,7 +32,7 @@ public abstract class BasePage extends BaseModel {
         return page;
     }
 
-    public <T> T searchBox(T page, String str) {
+    public <T> T getSearchBox(T page, String str) {
         new Actions(getDriver())
                 .keyDown(Keys.CONTROL)
                 .sendKeys("k")
@@ -41,5 +48,22 @@ public abstract class BasePage extends BaseModel {
         getWait2().until(ExpectedConditions.alertIsPresent()).accept();
 
         return page;
+    }
+
+    public String getHeadLineText() {
+
+        return heading.getText();
+    }
+
+    public <T> T setSearchBoxText(String searchText, T page) {
+        searchBoxHeader.click();
+        searchBoxHeader.sendKeys(searchText);
+        new Actions(getDriver()).sendKeys(Keys.ENTER).perform();
+
+        return page;
+    }
+
+    public WebElement getSearchBox() {
+        return searchBoxHeader;
     }
 }
