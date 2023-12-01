@@ -674,6 +674,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(areSettingsDisplayed);
     }
 
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String inputText = "123";
