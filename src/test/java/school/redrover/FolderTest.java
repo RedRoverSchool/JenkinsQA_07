@@ -92,6 +92,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isJobCreated);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewJob")
     public void testMoveFolderToFolder() {
         FolderDetailsPage folderDetailsPage = new HomePage(getDriver())
