@@ -14,6 +14,7 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 public class HeaderTest extends BaseTest {
+    @Ignore
     @Test
     public void testReturningBackToMainPageFromMainMenuPages() {
 

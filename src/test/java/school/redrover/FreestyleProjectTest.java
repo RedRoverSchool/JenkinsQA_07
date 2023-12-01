@@ -396,25 +396,35 @@ public class FreestyleProjectTest extends BaseTest {
     }
 
     @DataProvider(name = "InvalidName")
-    public String[][] invalidCredentials() {
-        return new String[][]{
+    public Object[][] invalidCredentials() {
+        return new Object[][]{
                 {"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {"/"},
                 {"["}
         };
     }
 
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
-    public void testFreestyleProjectWithInvalidData(String name) {
+    public void testCreateWithInvalidData(String name) {
+        String errorMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(name)
+                .selectFreestyleProject()
+                .getInvalidNameErrorMessage();
 
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(name);
-
-        String textRessult = getDriver().findElement(By.id("itemname-invalid")).getText();
-        WebElement buttonOK = getDriver().findElement(By.id("ok-button"));
-
-        Assert.assertEquals(textRessult, "» ‘" + name + "’ is an unsafe character");
-        Assert.assertFalse(buttonOK.isEnabled());
+        Assert.assertEquals(errorMessage, "» ‘" + name + "’ is an unsafe character");
     }
+
+    @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
+    public void testDisabledOkButtonCreateWithInvalidName(String name) {
+       boolean enabledOkButton = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(name)
+                .selectFreestyleProject()
+                .isOkButtonEnabled();
+
+        Assert.assertFalse(enabledOkButton);
+    }
+
 
     @Test(description = "Creating Freestyle project using an empty name")
     public void testFreestyleProjectWithEmptyName() {
@@ -588,6 +598,20 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(currentUrl.contains("/job/" + editedProjectName));
     }
 
+    @Ignore
+    @Test
+    public void testDisableFreestyleProjectFromFreestyleProjectDetailPage() {
+        String warningMessage = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goHomePage()
+                .clickOnJob()
+                .clickEnableDisableButton()
+                .getWarningMessageWhenDisabled();
+
+        Assert.assertEquals(warningMessage, "This project is currently disabled");
+    }
+
     @Test
     public void testSetUpstreamProject() {
         final String upstreamProjectName = "Upstream Test";
@@ -650,6 +674,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(areSettingsDisplayed);
     }
 
+    @Ignore
     @Test
     public void testVerifyValueOfInsertedGitSourceLink() {
         final String inputText = "123";

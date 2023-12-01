@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-import org.xml.sax.Locator;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
@@ -50,6 +49,9 @@ public class ManageJenkinsPage extends BasePage {
 
     @FindBy(xpath = "//a[contains (@href, 'OldData')]//dt")
     private WebElement manageOldData;
+
+    @FindAll({@FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]/div[contains (@class, 'item')]//dt")})
+    private List<WebElement> statusInformationSectionsList;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
@@ -152,7 +154,7 @@ public class ManageJenkinsPage extends BasePage {
         return false;
     }
 
-    public ManageJenkinsPage goToSearchFieldUsingShortcut() {
+    public ManageJenkinsPage moveToSearchFieldUsingShortcut() {
         getDriver().switchTo().activeElement().sendKeys("/");
 
         return this;
@@ -202,5 +204,23 @@ public class ManageJenkinsPage extends BasePage {
     public boolean isManageOldDataClickable() {
         getWait2().until(ExpectedConditions.elementToBeClickable(manageOldData));
         return true;
+    }
+
+    public boolean areStatusInformationSectionsVisible() {
+        for (WebElement section : statusInformationSectionsList) {
+            return section.isDisplayed();
+        }
+        return false;
+    }
+
+    public boolean areStatusInformationSectionsClickable() {
+        for (WebElement section : statusInformationSectionsList) {
+            return section.isEnabled();
+        }
+        return false;
+    }
+
+    public Integer getStatusInformationSectionsQuantity() {
+        return statusInformationSectionsList.size();
     }
 }

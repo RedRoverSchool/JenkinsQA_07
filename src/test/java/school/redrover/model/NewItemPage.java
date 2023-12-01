@@ -86,7 +86,7 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public NewItemPage selectMultibranchPipelineOption() {
+    public NewItemPage selectMultibranchPipeline() {
         multibranchPipeline.click();
 
         return this;

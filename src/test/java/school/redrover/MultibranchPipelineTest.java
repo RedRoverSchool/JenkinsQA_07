@@ -68,7 +68,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String multibranchBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
                 .typeItemName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineOption()
+                .selectMultibranchPipeline()
                 .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .getJobNameFromBreadcrumb();
 
@@ -187,7 +187,7 @@ public class MultibranchPipelineTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineOption()
+                .selectMultibranchPipeline()
                 .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .goHomePage();
 
