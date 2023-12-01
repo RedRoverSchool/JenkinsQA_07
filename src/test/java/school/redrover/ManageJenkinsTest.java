@@ -156,4 +156,20 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(manageJenkinsPage.isManageOldDataClickable());
     }
+
+    @Test
+    public void testVisibilitySecuritySections() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areSecuritySectionsVisible());
+    }
+
+    @Test
+    public void testClickabilitySecuritySections() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areSecuritySectionsClickable());
+    }
 }
