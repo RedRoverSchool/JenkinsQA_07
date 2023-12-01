@@ -732,34 +732,37 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='people']/tbody")).
                 getText().contains(USER_NAME), true);
     }
-        @Test
+
+    @Test
     public void testUserChangFullName() {
-        final String existedUsername= "Usertest2";
+        final String existedUsername = "Usertest2";
         final String password = "5679";
         final String email = "rv@gmail.com";
         final String fullName = "User User";
 
-       new HomePage(getDriver())
-               .clickManageJenkins();
-       createUser(existedUsername, password, email);
+        new HomePage(getDriver())
+                .clickManageJenkins();
+        createUser(existedUsername, password, email);
 
-       new UserConfigurationPage(getDriver())
-               .clickUsername()
-               .clickConfigurationPage()
-               .clearUserFull()
-               .sendKeysFullNameUser()
-               .clickSaveButton();
+        new UserConfigurationPage(getDriver())
+                .clickUsername()
+                .clickConfigurationPage()
+                .clearUserFull()
+                .sendKeysFullNameUser()
+                .clickSaveButton();
 
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
                 fullName);
     }
+
     @Test
     public void testDeleteUsingBreadcrumb() {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
         Actions actions = new Actions(getDriver());
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
 
         WebElement breadcrumbName = getDriver().findElement(By.linkText(USER_NAME));
         actions.moveToElement(breadcrumbName);
@@ -767,19 +770,19 @@ public class UserTest extends BaseTest {
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
         actions.moveToElement(chevron);
-        actions.clickAndHold(chevron).release().perform();
+        //actions.clickAndHold(chevron).release().perform();
+        js.executeScript("arguments[0].click();", chevron);
+        //   Thread.sleep(5000);
 
-     //   Thread.sleep(5000);
-
-       // WebElement buttonDeleteSVG = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+        // WebElement buttonDeleteSVG = getWait10().until(ExpectedConditions.presenceOfElementLocated(
         WebElement buttonDeleteSVG = getDriver().findElement(
-            //    By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+                //    By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
                 By.cssSelector("button[class='jenkins-dropdown__item']"));
 //        WebElement buttonDelete = getDriver().findElement(
 //                By.xpath("//button[@href='/job/" + USER_NAME.toLowerCase() + "/doDelete']"));
 
-       // actions.moveToElement(buttonDeleteSVG).click().perform();
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        // actions.moveToElement(buttonDeleteSVG).click().perform();
+        //   JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", buttonDeleteSVG);
         //js.executeScript("arguments[0].click();", buttonDelete);
 
