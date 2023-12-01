@@ -115,15 +115,15 @@ public class FolderTest extends BaseTest {
     public void testAddDisplayName() {
         final String expectedFolderDisplayName = "Best folder";
 
-        String actualFolderDisplayName = new HomePage(getDriver())
+        List jobList = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureFolder()
                 .typeDisplayName(expectedFolderDisplayName)
-                .clickSave()
+                .clickSaveButton()
                 .goHomePage()
-                .getJobDisplayName();
+                .getJobList();
 
-        Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
+        Assert.assertTrue(jobList.contains(expectedFolderDisplayName));
     }
 
     @Ignore

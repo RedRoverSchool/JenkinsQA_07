@@ -128,9 +128,10 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
                 .goHomePage()
-                .getJobDisplayName();
+                .getJobList()
+                .toString();
 
-        Assert.assertEquals(homePage, PROJECT_NAME);
+        Assert.assertTrue(homePage.contains(PROJECT_NAME));
     }
 
     @Test
@@ -1001,9 +1002,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testDisableProjectMessage() {
         boolean isMessageVisible = new HomePage(getDriver())
                 .clickNewItem()
-                .selectFreestyleProject()
-                .typeItemName(PROJECT_NAME)
-                .clickOk(new ConfigurationPage(getDriver()))
+                .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickEnableDisableButton()
