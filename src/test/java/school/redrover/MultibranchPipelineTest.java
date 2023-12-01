@@ -68,7 +68,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String multibranchBreadcrumbName = new HomePage(getDriver())
                 .clickCreateAJob()
                 .typeItemName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipelineOption()
+                .selectMultibranchPipeline()
                 .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .getJobNameFromBreadcrumb();
 
@@ -184,19 +184,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testCreateMultiConfigurationPipeline() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipeline()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
+                .goHomePage();
 
-        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
-        nameField.clear();
-        nameField.sendKeys(MULTIBRANCH_PIPELINE_NAME);
-
-        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline'] ")).click();
-
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).isDisplayed());
+        Assert.assertTrue(homePage.isProjectExist(MULTIBRANCH_PIPELINE_NAME));
     }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
