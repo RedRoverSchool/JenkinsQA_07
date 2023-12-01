@@ -136,6 +136,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//textarea[@name = 'parameter.description']")
     private WebElement parameterDescriptionInputBox;
 
+    @FindBy(css = "div[name='strategy'] div[class='error']")
+    private WebElement notAPositiveNumberErrorMessage;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -462,4 +465,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     }
 
     public boolean isDiscardOldBuildsSettingsFieldDisplayed() { return discardOldBuildsSettingsField.isDisplayed(); }
+
+    public String getErrorMessageText() {
+
+        return notAPositiveNumberErrorMessage.getText();
+    }
 }
