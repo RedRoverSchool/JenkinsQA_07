@@ -486,7 +486,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(helpText, expectedText);
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods =  "testCreate")
     public void testCreateFreestyleProjectInsideFolder() {
 
         boolean isNewCreatedProjectDisplayed = new HomePage(getDriver())
