@@ -126,7 +126,7 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
         String newProjectName = new HomePage(getDriver())
-                .clickRenameOrganizationFolderDropdownMenu(PROJECT_NAME, new OrganizationFolderRenamePage(getDriver()))
+                .clickRenameJobDropdownMenu(PROJECT_NAME, new OrganizationFolderRenamePage(getDriver()))
                 .enterNewName(NEW_PROJECT_NAME)
                 .clickRenameButton(new OrganizationFolderDetailsPage(getDriver()))
                 .getProjectName();
@@ -152,7 +152,7 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
         String message = new HomePage(getDriver())
-                .clickRenameOrganizationFolderDropdownMenu(PROJECT_NAME, new OrganizationFolderRenamePage(getDriver()))
+                .clickRenameJobDropdownMenu(PROJECT_NAME, new OrganizationFolderRenamePage(getDriver()))
                 .getWarningMessageText();
 
         Assert.assertEquals(message, "The new name is the same as the current name.");

@@ -72,9 +72,9 @@ public class FolderTest extends BaseTest {
     public void testRename() {
         HomePage homePage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
-                .clickRename()
-                .typeNewName(RENAMED_FOLDER)
-                .clickSubmit()
+                .clickRenameOption(new FolderRenamePage(getDriver()))
+                .enterNewName(RENAMED_FOLDER)
+                .clickRenameButton(new FolderDetailsPage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));
@@ -126,23 +126,19 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
     }
 
-    @Ignore
-    @Test
+
+    @Test(dependsOnMethods = "testCreate")
     public void testRenameFolderUsingBreadcrumbDropdownOnFolderPage() {
 
-        final String NEW_FOLDER_NAME = "FolderNew";
+        String projectName = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .getJobDropdownMenuBreadcrumb()
+                .clickRenameOptionDropdownBreadcrumb(new FolderRenamePage(getDriver()))
+                .enterNewName(RENAMED_FOLDER)
+                .clickRenameButton(new FolderDetailsPage(getDriver()))
+                .getProjectName();
 
-        createFolder(FOLDER_NAME);
-
-        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + FOLDER_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(NEW_FOLDER_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), NEW_FOLDER_NAME,
-                FOLDER_NAME + " is not equal " + NEW_FOLDER_NAME);
+        Assert.assertEquals(projectName, RENAMED_FOLDER);
     }
 
     @Test
@@ -347,7 +343,8 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testRenameWithEndingPeriod() {
+    public void
+    testRenameWithEndingPeriod() {
         char period = '.';
 
         createFolder(FOLDER_NAME);
@@ -396,17 +393,18 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualBreadcrumbs, expectedBreadcrumbs, "Breadcrumbs don't match");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testRename")
-    public void testRenameFolderThroughLeftPanelWithEmptyName() {
-        getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
-        getDriver().findElement(By.xpath("//a[@ href='/job/Renamed%20Folder/confirm-rename']")).click();
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys("");
-        getDriver().findElement(By.name("Submit")).click();
 
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//*[@id='main-panel']/p")).getText(), "No name is specified");
+    @Test(dependsOnMethods = "testCreate")
+    public void testRenameFolderThroughLeftPanelWithEmptyName() {
+
+        String message = new HomePage(getDriver())
+                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickRenameOption(new FolderRenamePage(getDriver()))
+                .enterNewName("")
+                .clickRenameButton(new RenameErrorPage(getDriver()))
+                .getErrorText();
+
+        Assert.assertEquals(message, "No name is specified");
     }
 
     @Ignore

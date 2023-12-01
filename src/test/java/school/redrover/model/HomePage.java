@@ -200,7 +200,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOrganizationFolderDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
+    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameJobDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
         WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
 
         new Actions(getDriver()).moveToElement(projectName).click().perform();
