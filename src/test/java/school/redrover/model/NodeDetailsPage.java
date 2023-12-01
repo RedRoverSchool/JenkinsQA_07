@@ -16,9 +16,6 @@ public class NodeDetailsPage extends BasePage {
     @FindBy(xpath = "//div[@class='jenkins-app-bar__content']/h1")
     private WebElement nodeName;
 
-    @FindBy(className = "message")
-    private WebElement message;
-
     @FindBy(xpath = "//span/a[contains(@href, '/configure')]")
     private WebElement configure;
 
@@ -67,10 +64,6 @@ public class NodeDetailsPage extends BasePage {
         markThisNodeTemporarilyOfflineButton.click();
 
         return new NodeMarkOfflinePage(getDriver());
-    }
-
-    public String getMessage() {
-        return message.getText();
     }
 
     public <T> T clickConfigure(T page) {

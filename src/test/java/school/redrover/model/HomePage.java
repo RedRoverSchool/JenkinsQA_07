@@ -52,6 +52,7 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
+
     @FindBy(xpath = "//h1")
     private WebElement header;
 
@@ -325,6 +326,5 @@ public class HomePage extends BasePage {
         restApiButton.click();
 
         return new RestAPIPage(getDriver());
-
     }
 }
