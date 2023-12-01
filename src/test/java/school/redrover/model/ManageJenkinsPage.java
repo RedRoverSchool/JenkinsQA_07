@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.xml.sax.Locator;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
@@ -196,5 +197,10 @@ public class ManageJenkinsPage extends BasePage {
 
     public String getManageOldDataText() {
         return manageOldData.getText();
+    }
+
+    public boolean isManageOldDataClickable() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(manageOldData));
+        return true;
     }
 }
