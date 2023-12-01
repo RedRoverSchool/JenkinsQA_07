@@ -1,11 +1,8 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 
@@ -73,7 +70,7 @@ public class ConfigureLogRecorderPage extends BasePage {
 
     public LogRecordersDetailsPage clickSave() {
             new Actions(getDriver())
-                    .pause(500)
+                    .pause(200)
                     .moveToElement(saveButton)
                     .click()
                     .perform();
@@ -113,21 +110,15 @@ public class ConfigureLogRecorderPage extends BasePage {
     public ConfigureLogRecorderPage clickDeleteLogger() {
         List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@name='loggers']/div/button"));
         for (WebElement el: elementList) {
-            getWait2().until(ExpectedConditions.elementToBeClickable(el)).click();
+            el.click();
         }
 
         return this;
     }
 
-    public boolean getEmptyLoggersList() {
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@name='loggers']"));
+    public int getEmptyLoggers() {
+         int elementList = getDriver().findElements(By.name("loggers")).size();
 
-        return elementList.isEmpty();
-    }
-
-    public ConfigureLogRecorderPage clickNameField() {
-        name.click();
-
-        return this;
+        return elementList;
     }
 }

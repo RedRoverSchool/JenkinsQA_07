@@ -1,8 +1,10 @@
 package school.redrover;
 
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.ConfigureLogRecorderPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -67,8 +69,8 @@ public class SystemLogTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
-
     public void testClearCustomLog() {
+
         String getTextNoLogsAvailable = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
@@ -89,15 +91,15 @@ public class SystemLogTest extends BaseTest {
 
     public void testDeleteLoggers() {
 
-        Boolean emptyLoggers = new HomePage(getDriver())
+        int emptyLoggers = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
                 .clickGearIcon(SYSLOG_NAME)
                 .clickDeleteLogger()
                 .clickSave()
                 .clickConfigure()
-                .getEmptyLoggersList();
+                .getEmptyLoggers();
 
-        Assert.assertTrue(emptyLoggers);
+        Assert.assertEquals(emptyLoggers, 0);
     }
 }
