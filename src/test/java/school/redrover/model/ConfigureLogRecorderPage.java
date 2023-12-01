@@ -1,7 +1,10 @@
 package school.redrover.model;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
@@ -34,6 +37,15 @@ public class ConfigureLogRecorderPage extends BasePage {
     @FindBy(xpath = "//*[@id='breadcrumbs']/li[5]/a")
     private WebElement backToSystemLogButton;
 
+    @FindAll({@FindBy (name = "loggers")})
+    private List<WebElement> loggersBlock;
+
+    @FindAll({@FindBy (xpath = "//div[@name='loggers']/div/button")})
+    private List<WebElement> elementList;
+
+    @FindBy(xpath = "(//select)[last()]")
+    private WebElement lastLogLevel;
+
     public ConfigureLogRecorderPage(WebDriver driver) {
         super(driver);
     }
@@ -61,7 +73,6 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public ConfigureLogRecorderPage chooseLastLogLevel(String level) {
-        WebElement lastLogLevel = getDriver().findElement(By.xpath("(//select)[last()]"));
         Select select = new Select(lastLogLevel);
         select.selectByVisibleText(level);
 
@@ -69,11 +80,11 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public LogRecordersDetailsPage clickSave() {
-            new Actions(getDriver())
-                    .pause(300)
-                    .moveToElement(saveButton)
-                    .click()
-                    .perform();
+        new Actions(getDriver())
+                .pause(300)
+                .moveToElement(saveButton)
+                .click()
+                .perform();
 
         return new LogRecordersDetailsPage(getDriver());
     }
@@ -91,7 +102,6 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public List<String> getLoggersAndLevelsSavedList() {
-
         List<String> resultList = List.of(
                 name.getAttribute("value"),
                 lastLoggerField.getAttribute("value"),
@@ -108,7 +118,6 @@ public class ConfigureLogRecorderPage extends BasePage {
     }
 
     public ConfigureLogRecorderPage clickDeleteLogger() {
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@name='loggers']/div/button"));
         for (WebElement el: elementList) {
             el.click();
         }
@@ -116,9 +125,8 @@ public class ConfigureLogRecorderPage extends BasePage {
         return this;
     }
 
-    public int getEmptyLoggers() {
-         int elementList = getDriver().findElements(By.name("loggers")).size();
+    public int getCountLoggersBlock() {
 
-        return elementList;
+        return loggersBlock.size();
     }
 }

@@ -1,10 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.ConfigureLogRecorderPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
@@ -98,7 +96,7 @@ public class SystemLogTest extends BaseTest {
                 .clickDeleteLogger()
                 .clickSave()
                 .clickConfigure()
-                .getEmptyLoggers();
+                .getCountLoggersBlock();
 
         Assert.assertEquals(emptyLoggers, 0);
     }
