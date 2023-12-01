@@ -472,16 +472,13 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getSavedNotificationMessage() {
 
-        getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//div[@id='notification-bar']/span")));
-
-        return savedNotificationMessage.getText();
+        return getWait2().until(ExpectedConditions
+                .visibilityOf(savedNotificationMessage)).getText();
     }
 
     public String getErrorMessageText() {
 
-        getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.cssSelector("div[name='strategy'] div[class='error']")));
-        return notAPositiveNumberErrorMessage.getText();
+        return getWait2().until(ExpectedConditions
+                .visibilityOf(notAPositiveNumberErrorMessage)).getText();
     }
 }
