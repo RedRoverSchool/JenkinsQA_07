@@ -267,7 +267,7 @@ public class HomePage extends BasePage {
     }
 
     public NodeDetailsPage clickOnNodeName() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(clickOnNode)).click();
+        getWait10().until(ExpectedConditions.visibilityOf(clickOnNode)).click();
 
         return new NodeDetailsPage(getDriver());
     }
