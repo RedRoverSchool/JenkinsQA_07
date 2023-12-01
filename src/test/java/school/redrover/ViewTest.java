@@ -166,7 +166,7 @@ public class ViewTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(newItemName)
                 .selectItemFolder()
-                .clickOk(new FolderConfigurationPage(getDriver()))
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .goHomePage()
                 .getItemNameInTable()
                 .equals(newItemName );

@@ -184,19 +184,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testCreateMultiConfigurationPipeline() {
-        getDriver().findElement(By.xpath("//a[@href='/view/all/newJob']")).click();
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipeline()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
+                .goHomePage();
 
-        WebElement nameField = getDriver().findElement(By.xpath("//input[@name='name']"));
-        nameField.clear();
-        nameField.sendKeys("MyMultiConfigurationPipeline");
-
-        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline'] ")).click();
-
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        getDriver().findElement(By.xpath("//li/a[@href='/']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).isDisplayed());
+        Assert.assertTrue(homePage.isProjectExist(MULTIBRANCH_PIPELINE_NAME));
     }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
@@ -237,13 +232,13 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
-    public void testEnableByDefault() {
-        getDriver().findElement(By.xpath("//a[@href='job/MyMultiConfigurationPipeline/']")).click();
+    public void testEnabledByDefault() {
+        String status = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickConfigure()
+                .getDisableToggleText();
 
-        getDriver().findElement(By.xpath("//*[@id='tasks']/div[2]/span/a")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath(
-                "//*[@id='toggle-switch-enable-disable-project']/label")).getText(), "Enabled");
+        Assert.assertEquals(status, "Enabled");
     }
 
     @Test

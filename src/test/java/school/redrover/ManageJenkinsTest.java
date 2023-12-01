@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
@@ -119,6 +118,16 @@ public class ManageJenkinsTest extends BaseTest {
                 .getSettingsSectionsQuantity();
 
         Assert.assertEquals(settingsSectionsQuantity, 18);
+    }
+
+    @Test
+    public void testTroubleshootingVisibility() {
+
+        String manageOldData = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getManageOldDataText();
+
+        Assert.assertEquals(manageOldData, "Manage Old Data");
     }
 
     @Test
