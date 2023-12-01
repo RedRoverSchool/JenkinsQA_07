@@ -53,6 +53,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindAll({@FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]/div[contains (@class, 'item')]//dt")})
     private List<WebElement> statusInformationSectionsList;
 
+    @FindAll({@FindBy (xpath = "(//div[2]/div[2]/section[3]/div/div/a/dl/dt)")})
+    private List<WebElement> securitySectionsList;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -222,5 +225,13 @@ public class ManageJenkinsPage extends BasePage {
 
     public Integer getStatusInformationSectionsQuantity() {
         return statusInformationSectionsList.size();
+    }
+
+    public boolean areSecuritySectionsVisible() {
+        return securitySectionsList.stream().allMatch(WebElement::isDisplayed);
+    }
+
+    public boolean areSecuritySectionsClickable() {
+        return securitySectionsList.stream().allMatch(WebElement::isEnabled);
     }
 }
