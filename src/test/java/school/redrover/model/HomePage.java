@@ -76,6 +76,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//div[@class='tippy-box']//div//a")
     private WebElement tippyBox;
 
+    @FindBy(xpath = "//div[@id='executors']//table//tbody//tr[4]//a")
+    private WebElement clickOnNode;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -263,8 +266,8 @@ public class HomePage extends BasePage {
         return header.getText();
     }
 
-    public NodeDetailsPage clickOnNodeName(String nodeName) {
-        getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
+    public NodeDetailsPage clickOnNodeName() {
+        clickOnNode.click();
 
         return new NodeDetailsPage(getDriver());
     }
