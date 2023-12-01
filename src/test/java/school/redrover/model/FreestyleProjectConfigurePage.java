@@ -480,6 +480,8 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getErrorMessageText() {
 
+        getWait2().until(ExpectedConditions
+                .visibilityOfElementLocated(By.cssSelector("div[name='strategy'] div[class='error']")));
         return notAPositiveNumberErrorMessage.getText();
     }
 }
