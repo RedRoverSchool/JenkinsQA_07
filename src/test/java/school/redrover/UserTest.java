@@ -757,7 +757,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteUsingBreadcrumb() {
+    public void testDeleteUsingBreadcrumb() throws InterruptedException {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
@@ -772,7 +772,7 @@ public class UserTest extends BaseTest {
         actions.moveToElement(chevron);
         //actions.clickAndHold(chevron).release().perform();
         js.executeScript("arguments[0].click();", chevron);
-        //   Thread.sleep(5000);
+        Thread.sleep(12000);
 
         // WebElement buttonDeleteSVG = getWait10().until(ExpectedConditions.presenceOfElementLocated(
         WebElement buttonDeleteSVG = getDriver().findElement(
