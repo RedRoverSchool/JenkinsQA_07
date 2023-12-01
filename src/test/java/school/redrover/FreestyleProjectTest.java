@@ -603,7 +603,7 @@ public class FreestyleProjectTest extends BaseTest {
     @Ignore
     @Test
     public void testDisableFreestyleProjectFromFreestyleProjectDetailPage() {
-        String homePage = new HomePage(getDriver())
+        String warningMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
@@ -611,7 +611,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickEnableDisableButton()
                 .getWarningMessageWhenDisabled();
 
-        Assert.assertEquals("This project is currently disabled", homePage);
+        Assert.assertEquals(warningMessage, "This project is currently disabled");
     }
 
     @Test

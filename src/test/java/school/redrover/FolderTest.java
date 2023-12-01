@@ -219,7 +219,7 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testPositiveBoundaryValuesName() {
-        String listCreated = new  HomePage(getDriver())
+        String listJob = new  HomePage(getDriver())
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES)
                 .goHomePage()
@@ -229,8 +229,8 @@ public class FolderTest extends BaseTest {
                 .getJobList()
                 .toString();
 
-        Assert.assertTrue(listCreated.contains(NAME_FOR_BOUNDARY_VALUES));
-        Assert.assertTrue(listCreated.contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
+        Assert.assertTrue(listJob.contains(NAME_FOR_BOUNDARY_VALUES));
+        Assert.assertTrue(listJob.contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
     }
 
     @Test
@@ -240,22 +240,23 @@ public class FolderTest extends BaseTest {
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
                 .clickOk(new ErrorPage(getDriver()))
-                .getErrorMassageFromOopsPage();
+                .getErrorMessageFromOopsPage();
 
         Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
     }
 
     @Test
     public void testNegativeBoundaryValuesNameAbsenceOnHomePage() {
-        boolean createdInvalidBoundaryValues= new HomePage(getDriver())
+        String listJob = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
                 .clickOk(new ErrorPage(getDriver()))
                 .goHomePage()
-                .getJobList().contains(NAME_FOR_BOUNDARY_VALUES.repeat(256));
+                .getJobList()
+                .toString();
 
-        Assert.assertFalse(createdInvalidBoundaryValues);
+        Assert.assertFalse(listJob.contains(NAME_FOR_BOUNDARY_VALUES.repeat(256)));
     }
 
     @Test(dependsOnMethods = "testRename")

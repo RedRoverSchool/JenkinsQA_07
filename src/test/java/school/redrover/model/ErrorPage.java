@@ -15,13 +15,13 @@ public class ErrorPage extends BaseErrorPage {
     private WebElement errorMessage;
 
     @FindBy(xpath = "//h2")
-    private WebElement errorMassageFromOopsPage;
+    private WebElement errorMessageFromOopsPage;
 
     public String getErrorMessage() {
         return errorMessage.getText();
     }
 
-    public String getErrorMassageFromOopsPage() {
-        return errorMassageFromOopsPage.getText();
+    public String getErrorMessageFromOopsPage() {
+        return errorMessageFromOopsPage.getText();
     }
 }
