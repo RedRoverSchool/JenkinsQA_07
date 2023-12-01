@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
 
 public class NewItemPage extends BasePage {
@@ -86,7 +87,7 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public NewItemPage selectMultibranchPipelineOption() {
+    public NewItemPage selectMultibranchPipeline() {
         multibranchPipeline.click();
 
         return this;
@@ -98,13 +99,13 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public <T> T clickOk(T page) {
+    public <T extends BaseConfigurationPage> T clickOk(T page) {
         okButton.click();
 
         return page;
     }
 
-    public <E> E clickOkWithError(E page) {
+    public <T> T clickOkWithError(T page) {
         okButton.click();
 
         return page;

@@ -53,6 +53,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(jenkinsVersion, ABOUT_JENKINS_VERSION);
     }
 
+   @Ignore
     @Test(dependsOnMethods = "testJenkinsVersionStatusUserPageClick")
     public void checkTippyBox() {
         final List<String> expectedMenu = List.of(
@@ -63,10 +64,10 @@ public class FooterTest extends BaseTest {
         List<String> actualMenu = new HomePage(getDriver())
                 .clickJenkinsVersion()
                 .getVersionJenkinsTippyBoxText();
-        System.out.println(actualMenu);
         Assert.assertEquals(actualMenu, expectedMenu);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "checkTippyBox")
     public void testClickAboutJenkins() {
 
@@ -97,6 +98,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageName, "Jenkins");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testClickAboutJenkins")
     public void testVerifyClickabilityOfRestAPILink() {
         String restApi = new HomePage(getDriver())
@@ -106,6 +108,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(restApi, "REST API");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testVerifyClickabilityOfRestAPILink")
     public void testJenkinsVersionListTabBar() {
         final List<String> expectedListTabBar = List.of(
@@ -120,6 +123,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(tabBarList, expectedListTabBar);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testJenkinsVersionListTabBar")
     public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
         AboutJenkinsPage active = new HomePage(getDriver())

@@ -24,9 +24,11 @@ public class FolderTest extends BaseTest {
 
     @DataProvider
     public Object[][] provideUnsafeCharacters() {
-        String[] wrongCharacters = {"#", "&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";"};
-        int randomIndex = new Random().nextInt(wrongCharacters.length);
-        return new Object[][]{{wrongCharacters[randomIndex]}};
+
+        return new Object[][]{
+                {"#"}, {"&"}, {"?"}, {"!"}, {"@"}, {"$"}, {"%"}, {"^"}, {"*"}, {"|"}, {"/"}, {"\\"}, {"<"}, {">"},
+                {"["}, {"]"}, {":"}, {";"}
+        };
     }
 
     private void getDashboardLink() {
@@ -114,15 +116,15 @@ public class FolderTest extends BaseTest {
     public void testAddDisplayName() {
         final String expectedFolderDisplayName = "Best folder";
 
-        String actualFolderDisplayName = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureFolder()
                 .typeDisplayName(expectedFolderDisplayName)
-                .clickSave()
+                .clickSaveButton()
                 .goHomePage()
-                .getJobDisplayName();
+                .getJobList();
 
-        Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
+        Assert.assertTrue(jobList.contains(expectedFolderDisplayName));
     }
 
     @Ignore
@@ -206,42 +208,56 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
-    public void testCreateNameSpecialCharactersAbsenceOnHomePage(String unsafeChar) {
-        boolean createdNameSpecialCharacters = new HomePage(getDriver())
+    public void testDisabledOkButtonCreateWithInvalidName(String unsafeChar) {
+        boolean enabledOkButton = new HomePage(getDriver())
                 .clickNewItem()
-                .createFolder(unsafeChar)
-                .goHomePage()
-                .getJobList()
-                .contains(unsafeChar);
+                .typeItemName(unsafeChar)
+                .selectItemFolder()
+                .isOkButtonEnabled();
 
-        Assert.assertFalse(createdNameSpecialCharacters);
+        Assert.assertFalse(enabledOkButton);
     }
 
     @Test
     public void testPositiveBoundaryValuesName() {
-        HomePage homePage = new HomePage(getDriver())
+        String listJob = new  HomePage(getDriver())
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES)
                 .goHomePage()
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES.repeat(255))
-                .goHomePage();
+                .goHomePage()
+                .getJobList()
+                .toString();
 
-        Assert.assertTrue(homePage.getJobList().contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
+        Assert.assertTrue(listJob.contains(NAME_FOR_BOUNDARY_VALUES));
+        Assert.assertTrue(listJob.contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
     }
 
     @Test
-    public void testNegativeBoundaryValuesName() {
-        HomePage homePage = new HomePage(getDriver());
-
-        AngryErrorPage angryErrorPage = new HomePage(getDriver())
+    public void testNegativeBoundaryValuesNameGetErrorMessage() {
+        String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
-                .clickOk(new AngryErrorPage(getDriver()));
+                .clickOkWithError(new ErrorPage(getDriver()))
+                .getErrorMessageFromOopsPage();
 
-        Assert.assertEquals(angryErrorPage.getErrorNotification(), "Oops!");
-        Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
+        Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
+    }
+
+    @Test
+    public void testNegativeBoundaryValuesNameAbsenceOnHomePage() {
+        String listJob = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
+                .selectItemFolder()
+                .clickOkWithError(new ErrorPage(getDriver()))
+                .goHomePage()
+                .getJobList()
+                .toString();
+
+        Assert.assertFalse(listJob.contains(NAME_FOR_BOUNDARY_VALUES.repeat(256)));
     }
 
     @Test(dependsOnMethods = "testRename")

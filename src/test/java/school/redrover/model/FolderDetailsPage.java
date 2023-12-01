@@ -44,12 +44,6 @@ public class FolderDetailsPage extends BasePage {
         return new FolderRenamePage(getDriver());
     }
 
-    public ConfigurationPage clickConfigure() {
-        configure.click();
-
-        return new ConfigurationPage(getDriver());
-    }
-
     public FolderConfigurationPage clickConfigureFolder() {
         configure.click();
         return new FolderConfigurationPage(getDriver());

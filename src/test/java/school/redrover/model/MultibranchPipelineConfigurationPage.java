@@ -5,9 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
 
-public class MultibranchPipelineConfigurationPage extends BasePage {
+public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage {
 
     @FindBy(xpath = "//a[@class='model-link'][contains(@href, 'job')]")
     private WebElement breadcrumbJobName;
