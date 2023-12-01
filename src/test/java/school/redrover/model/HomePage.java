@@ -52,6 +52,7 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
+
     @FindBy(xpath = "//h1")
     private WebElement header;
 
@@ -75,6 +76,9 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//div[@class='tippy-box']//div//a")
     private WebElement tippyBox;
+
+    @FindBy(xpath = "//a[@href = '/logout']/span")
+    private WebElement logOut;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -330,5 +334,11 @@ public class HomePage extends BasePage {
 
         return new RestAPIPage(getDriver());
 
+    }
+
+    public LoginToJenkinsPage clickLogOut() {
+        logOut.click();
+
+        return new LoginToJenkinsPage(getDriver());
     }
 }
