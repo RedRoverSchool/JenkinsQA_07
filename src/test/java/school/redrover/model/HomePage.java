@@ -284,7 +284,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickJenkinsVersion() {
-        jenkinsVersionButton.click();
+        jenkinsVersion.click();
 
         return this;
     }
@@ -329,7 +329,7 @@ public class HomePage extends BasePage {
     }
 
     public AboutJenkinsPage moveAboutJenkinsPage() {
-        jenkinsVersionButton.click();
+        jenkinsVersion.click();
         aboutJenkinsButton.click();
 
         return new AboutJenkinsPage(getDriver());
@@ -340,11 +340,5 @@ public class HomePage extends BasePage {
 
         return new RestAPIPage(getDriver());
 
-    }
-
-    public LoginToJenkinsPage clickLogOut() {
-        logOut.click();
-
-        return new LoginToJenkinsPage(getDriver());
     }
 }
