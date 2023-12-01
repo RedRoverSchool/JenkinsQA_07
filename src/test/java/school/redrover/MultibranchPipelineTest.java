@@ -184,9 +184,14 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testCreateMultiConfigurationPipeline() {
-        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+        HomePage homePage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipelineOption()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
+                .goHomePage();
 
-        Assert.assertTrue(new HomePage(getDriver()).isProjectExist(MULTIBRANCH_PIPELINE_NAME));
+        Assert.assertTrue(homePage.isProjectExist(MULTIBRANCH_PIPELINE_NAME));
     }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
