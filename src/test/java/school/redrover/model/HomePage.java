@@ -48,7 +48,7 @@ public class HomePage extends BasePage {
     private WebElement buildQueueSection;
 
     @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
-    private WebElement myView;
+    private WebElement myViews;
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
@@ -250,8 +250,8 @@ public class HomePage extends BasePage {
         return getWait10().until(ExpectedConditions.visibilityOf(buildQueueSection)).getText().contains(jobName);
     }
 
-    public MyViewPage clickMyView() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(myView)).click();
+    public MyViewPage clickMyViews() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(myViews)).click();
         return new MyViewPage(getDriver());
     }
 

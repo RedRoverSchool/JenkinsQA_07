@@ -11,6 +11,13 @@ public class MyViewPage extends BasePage {
     @FindBy(xpath = "//span[contains(text(),'New Item')]/parent::a")
     private WebElement newItem;
 
+    @FindBy(className = "addTab")
+    private WebElement plusNewViewButton;
+
+    @FindBy(xpath = "//li/a[contains(@href,'/user/admin/my-views/view/')]")
+    private WebElement myViewsName;
+
+
     public MyViewPage(WebDriver driver) {super(driver);}
 
     public String getActiveViewName() {
@@ -21,5 +28,14 @@ public class MyViewPage extends BasePage {
     public NewItemPage clickNewItem() {
         newItem.click();
         return new NewItemPage(getDriver());
+    }
+
+    public NewViewPage clickPlusNewViewButton() {
+        plusNewViewButton.click();
+        return new NewViewPage(getDriver());
+    }
+
+    public String getMyViewsName() {
+        return myViewsName.getText();
     }
 }
