@@ -33,7 +33,7 @@ public class LogRecordersDetailsPage extends BasePage {
         return this;
     }
 
-    public String getTextNoLogsAvailable() {
+    public String getEmptyHistoryLog() {
 
         return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='main-panel']/div[2]"))).getText();
     }

@@ -341,4 +341,10 @@ public class HomePage extends BasePage {
         return new RestAPIPage(getDriver());
 
     }
+
+    public LoginToJenkinsPage clickLogOut() {
+        logOut.click();
+
+        return new LoginToJenkinsPage(getDriver());
+    }
 }
