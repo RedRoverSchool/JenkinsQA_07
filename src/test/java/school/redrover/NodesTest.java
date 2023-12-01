@@ -72,7 +72,7 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(nodeName.contains(newNode));
     }
 
-    @Test(dependsOnMethods = "testNodeStatusUpdateOfflineReason")
+    @Test(dependsOnMethods = "testCreateNodeByCopyingExistingNode")
     public void testRenameNodeWithValidName() {
 
         String actualName = new HomePage(getDriver())
