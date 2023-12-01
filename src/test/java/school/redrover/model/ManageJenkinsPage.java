@@ -47,6 +47,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindAll({@FindBy(className = "jenkins-section__item")})
     private List<WebElement> settingsSections;
 
+    @FindAll({@FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]/div[contains (@class, 'item')]//dt")})
+    private List<WebElement> statusInformationSectionsList;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -147,7 +150,7 @@ public class ManageJenkinsPage extends BasePage {
         return false;
     }
 
-    public ManageJenkinsPage goToSearchFieldUsingShortcut() {
+    public ManageJenkinsPage moveToSearchFieldUsingShortcut() {
         getDriver().switchTo().activeElement().sendKeys("/");
 
         return this;
@@ -188,5 +191,23 @@ public class ManageJenkinsPage extends BasePage {
 
     public Integer getSettingsSectionsQuantity() {
         return settingsSections.size();
+    }
+
+    public boolean areStatusInformationSectionsVisible() {
+        for (WebElement section : statusInformationSectionsList) {
+            return section.isDisplayed();
+        }
+        return false;
+    }
+
+    public boolean areStatusInformationSectionsClickable() {
+        for (WebElement section : statusInformationSectionsList) {
+            return section.isEnabled();
+        }
+        return false;
+    }
+
+    public Integer getStatusInformationSectionsQuantity() {
+        return statusInformationSectionsList.size();
     }
 }

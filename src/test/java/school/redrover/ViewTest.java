@@ -4,10 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.GlobalViewPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.ListViewPage;
-import school.redrover.model.MyViewPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -169,7 +166,7 @@ public class ViewTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(newItemName)
                 .selectItemFolder()
-                .clickOk()
+                .clickOk(new FolderConfigurationPage(getDriver()))
                 .goHomePage()
                 .getItemNameInTable()
                 .equals(newItemName );

@@ -89,7 +89,7 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public NewItemPage selectMultibranchPipelineOption() {
+    public NewItemPage selectMultibranchPipeline() {
         multibranchPipeline.click();
 
         return this;
@@ -111,12 +111,6 @@ public class NewItemPage extends BasePage {
         okButton.click();
 
         return page;
-    }
-
-    public MultibranchPipelineConfigurationPage clickOk() {
-        okButton.click();
-
-        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public boolean isOkButtonEnabled() {

@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
@@ -81,7 +82,7 @@ public class ManageJenkinsTest extends BaseTest {
 
         boolean searchFieldIsActiveElement = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToSearchFieldUsingShortcut()
+                .moveToSearchFieldUsingShortcut()
                 .isSearchFieldActiveElement();
 
         Assert.assertTrue(searchFieldIsActiveElement, "Search field is not the active element");
@@ -92,7 +93,7 @@ public class ManageJenkinsTest extends BaseTest {
 
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToSearchFieldUsingShortcut()
+                .moveToSearchFieldUsingShortcut()
                 .typeTextBeingInSearchFieldWithoutLocator(SEARCH_SYSTEM);
 
         Assert.assertEquals(manageJenkinsPage.getSearchFieldText(), SEARCH_SYSTEM);
@@ -118,5 +119,24 @@ public class ManageJenkinsTest extends BaseTest {
                 .getSettingsSectionsQuantity();
 
         Assert.assertEquals(settingsSectionsQuantity, 18);
+    }
+
+    @Test
+    public void testStatusInformationSectionsVisibleAndClickable() {
+
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areStatusInformationSectionsVisible());
+        Assert.assertTrue(manageJenkinsPage.areStatusInformationSectionsClickable());
+    }
+
+    @Test
+    public void testStatusInformationSectionsQuantity() {
+        Integer statusInformationSectionsQuantity = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getStatusInformationSectionsQuantity();
+
+        Assert.assertEquals(statusInformationSectionsQuantity, 4);
     }
 }
