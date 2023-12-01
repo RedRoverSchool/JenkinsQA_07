@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -470,15 +471,15 @@ public class FolderTest extends BaseTest {
     }
 
     @Test
-    public void testFolderDropDownMenu() {
-        List<String> dropDownMenuItems = new HomePage(getDriver())
+    public void testFoldersDropDownMenu() {
+        List<String> folderDropDownMenuItems = new HomePage(getDriver())
                 .clickNewItem()
-                .createFolder("FolderNum1")
+                .createFolder(FOLDER_NAME)
                 .goHomePage()
-                .openDashboardDropDownMenu("FolderNum1")
+                .openDashboardDropDownMenu(FOLDER_NAME)
                 .getFoldersDropDownMenuList();
 
         List<String> expectedDropDownMenuItems = List.of("Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
-        Assert.assertEquals(dropDownMenuItems, expectedDropDownMenuItems);
+        Assert.assertEquals(folderDropDownMenuItems, expectedDropDownMenuItems);
     }
 }
