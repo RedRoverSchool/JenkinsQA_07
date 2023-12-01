@@ -331,4 +331,29 @@ public class HomePage extends BasePage {
         return new RestAPIPage(getDriver());
 
     }
+
+    public HomePage openDashboardDropDownMenu(String jobName) {
+        Actions actions = new Actions(getDriver());
+        WebElement dashboard = getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a"));
+        WebElement dashboardButton = getDriver().findElement(By.xpath("//tr[@id='job_" + jobName + "']//a/button"));
+        int deltaX = dashboard.getSize().getWidth() / 2;
+        int deltaY = dashboard.getSize().getHeight() / 2;
+
+        actions
+                .moveToElement(dashboard)
+                .scrollByAmount(deltaX, deltaY)
+                .build()
+                .perform();
+
+        dashboardButton.click();
+
+        return this;
+    }
+
+    public List<String> getFoldersDropDownMenuList() {
+        List<WebElement> itemsList = getDriver().findElements(By.xpath("//div[@class='jenkins-dropdown']/a"));
+        List<String> resultList = itemsList.stream().map(WebElement::getText).toList();
+
+        return resultList;
+    }
 }

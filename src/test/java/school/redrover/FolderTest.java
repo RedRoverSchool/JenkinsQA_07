@@ -468,4 +468,17 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(helpText, expectedText);
     }
+
+    @Test
+    public void testFolderDropDownMenu() {
+        List<String> dropDownMenuItems = new HomePage(getDriver())
+                .clickNewItem()
+                .createFolder("FolderNum1")
+                .goHomePage()
+                .openDashboardDropDownMenu("FolderNum1")
+                .getFoldersDropDownMenuList();
+
+        List<String> expectedDropDownMenuItems = List.of("Configure", "New Item", "Delete Folder", "People", "Build History", "Rename", "Credentials");
+        Assert.assertEquals(dropDownMenuItems, expectedDropDownMenuItems);
+    }
 }
