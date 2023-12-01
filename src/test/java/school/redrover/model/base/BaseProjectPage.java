@@ -6,8 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.BreadcrumbPage;
-import school.redrover.model.OrganizationFolderRenamePage;
 import school.redrover.model.RenamePage;
 
 public abstract class BaseProjectPage extends BasePage {
@@ -65,9 +63,10 @@ public abstract class BaseProjectPage extends BasePage {
 
         new Actions(getDriver())
                 .moveToElement(jobChevronBreadcrumb)
-                .pause(500)
+                .click(jobChevronBreadcrumb)
+                .pause(2000)
+                .build()
                 .perform();
-        jobChevronBreadcrumb.sendKeys(Keys.RETURN);
 
         return this;
     }
