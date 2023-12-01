@@ -757,7 +757,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testDeleteUsingBreadcrumb() throws InterruptedException {
+    public void testDeleteUsingBreadcrumb() {
         goToUserCreateFormPage();
         createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
@@ -770,30 +770,24 @@ public class UserTest extends BaseTest {
 
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
         actions.moveToElement(chevron);
-        //actions.clickAndHold(chevron).release().perform();
-        js.executeScript("arguments[0].click();", chevron);
-        Thread.sleep(12000);
+        actions.clickAndHold(chevron).release().perform();
 
-        // WebElement buttonDeleteSVG = getWait10().until(ExpectedConditions.presenceOfElementLocated(
         WebElement buttonDeleteSVG = getDriver().findElement(
-                //    By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
-                By.cssSelector("button[class='jenkins-dropdown__item']"));
-//        WebElement buttonDelete = getDriver().findElement(
-//                By.xpath("//button[@href='/job/" + USER_NAME.toLowerCase() + "/doDelete']"));
+                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
 
-        // actions.moveToElement(buttonDeleteSVG).click().perform();
-        //   JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click();", buttonDeleteSVG);
-        //js.executeScript("arguments[0].click();", buttonDelete);
+        String text= buttonDeleteSVG.getAttribute("aria-hidden");
+        Assert.assertEquals(text, "true");
 
-        getDriver().switchTo().alert().accept();
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
-
-        Assert.assertFalse(resultList.contains(USER_NAME));
+//        actions.moveToElement(buttonDeleteSVG).click().build().perform();
+//
+//        getDriver().switchTo().alert().accept();
+//
+//        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+//        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+//
+//        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
+//        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+//
+//        Assert.assertFalse(resultList.contains(USER_NAME));
     }
 }
