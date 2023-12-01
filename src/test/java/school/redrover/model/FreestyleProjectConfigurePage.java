@@ -28,6 +28,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//label[normalize-space()='Discard old builds']")
     private WebElement discardOldBuildsCheckBox;
 
+    @FindBy(css = "[nameref='rowSetStart26'] .form-container.tr")
+    private WebElement discardOldBuildsSettingsField;
+
     @FindBy(xpath = "//label[normalize-space()='Throttle builds']")
     private WebElement throttleBuildsCheckBox;
 
@@ -56,7 +59,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
     private WebElement selectTimePeriod;
 
     @FindBy(className = "jenkins-toggle-switch__label")
-    private WebElement disableToggle;
+    private WebElement disableEnableToggle;
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement inputProjectDescription;
@@ -230,8 +233,8 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getExecuteConcurrentBuildsIfNecessaryCheckBoxValue(String value) { return executeConcurrentBuildsIfNecessaryCheckBox.getCssValue(value); }
 
-    public FreestyleProjectConfigurePage clickDisableToggle() {
-        disableToggle.click();
+    public FreestyleProjectConfigurePage clickDisableEnableToggle() {
+        disableEnableToggle.click();
 
         return this;
     }
@@ -444,7 +447,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
         );
     }
 
-    public boolean isGitRadioButtonSettingsFormAppears() {return gitRadioButtonSettingsForm.isDisplayed();}
+    public boolean isGitRadioButtonSettingsFormDisplayed() {return gitRadioButtonSettingsForm.isDisplayed();}
 
     public List<String> getAddParameterDropdownText() {
 
@@ -457,4 +460,6 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
         return getTextOfDropDownElements;
     }
+
+    public boolean isDiscardOldBuildsSettingsFieldDisplayed() { return discardOldBuildsSettingsField.isDisplayed(); }
 }
