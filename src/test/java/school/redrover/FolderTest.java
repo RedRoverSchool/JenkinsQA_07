@@ -115,7 +115,7 @@ public class FolderTest extends BaseTest {
     public void testAddDisplayName() {
         final String expectedFolderDisplayName = "Best folder";
 
-        List jobList = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickConfigureFolder()
                 .typeDisplayName(expectedFolderDisplayName)
