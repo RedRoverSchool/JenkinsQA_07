@@ -201,6 +201,11 @@ public class ManageJenkinsPage extends BasePage {
         return manageOldData.getText();
     }
 
+    public boolean isManageOldDataClickable() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(manageOldData));
+        return true;
+    }
+
     public boolean areStatusInformationSectionsVisible() {
         for (WebElement section : statusInformationSectionsList) {
             return section.isDisplayed();
