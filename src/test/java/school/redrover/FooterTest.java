@@ -72,7 +72,7 @@ public class FooterTest extends BaseTest {
 
         String actualPageName = new HomePage(getDriver())
                 .moveAboutJenkinsPage()
-                .getHeadingText();
+                .getHeadLineText();
 
         Assert.assertEquals(actualPageName, "Jenkins");
     }
@@ -82,7 +82,7 @@ public class FooterTest extends BaseTest {
         String actualPageName = new HomePage(getDriver())
                 .clickJenkinsVersion()
                 .clickGetInvolved()
-                .getHeadingText();
+                .getHeadLineText();
 
         Assert.assertEquals(actualPageName, "Participate and Contribute");
     }
@@ -92,7 +92,7 @@ public class FooterTest extends BaseTest {
         String actualPageName = new HomePage(getDriver())
                 .clickJenkinsVersion()
                 .clickWebsite()
-                .getHeadingText();
+                .getHeadLineText();
 
         Assert.assertEquals(actualPageName, "Jenkins");
     }
@@ -101,7 +101,7 @@ public class FooterTest extends BaseTest {
     public void testVerifyClickabilityOfRestAPILink() {
         String restApi = new HomePage(getDriver())
                 .clickRestApiButton()
-                .getHeadingText();
+                .getHeadLineText();
 
         Assert.assertEquals(restApi, "REST API");
     }

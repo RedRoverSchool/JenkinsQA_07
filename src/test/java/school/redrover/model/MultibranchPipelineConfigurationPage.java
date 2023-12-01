@@ -18,9 +18,6 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement buttonSubmit;
 
-    @FindBy (xpath = "//h1")
-    private WebElement nameH1;
-
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
 
@@ -66,11 +63,6 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
         buttonSubmit.click();
 
         return this;
-    }
-
-    public String headerName() {
-
-        return nameH1.getText();
     }
 
     public MultibranchPipelineDeletePage clickButtonDelete() {

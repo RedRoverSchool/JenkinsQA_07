@@ -89,7 +89,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .buttonSubmit()
                 .getJobName();
 
-        String nameH1 = new MultibranchPipelineConfigurationPage(getDriver()).headerName();
+        String nameH1 = new MultibranchPipelineConfigurationPage(getDriver()).getHeadLineText();
 
         Assert.assertTrue(nameH1.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
 
@@ -296,7 +296,7 @@ public class MultibranchPipelineTest extends BaseTest {
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
                 .getSearchBox(new MultibranchPipelineDetailsPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
 
-        Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchPipelineDetailsPage.getHeadLineText(), MULTIBRANCH_PIPELINE_NAME);
     }
 
 
@@ -322,7 +322,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRename()
                 .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickSubmit()
-                .getTitle();
+                .getHeadLineText();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
@@ -350,7 +350,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRename()
                 .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickSubmit()
-                .getTitle();
+                .getHeadLineText();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }

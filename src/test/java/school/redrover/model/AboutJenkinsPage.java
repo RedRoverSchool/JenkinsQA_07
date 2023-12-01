@@ -12,9 +12,6 @@ public class AboutJenkinsPage extends BasePage {
     @FindBy (css = ".app-about-version")
     private WebElement jenkinsVersionText;
 
-    @FindBy (css = "h1")
-    private WebElement heading;
-
     public AboutJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -24,10 +21,6 @@ public class AboutJenkinsPage extends BasePage {
         return jenkinsVersionText.getText();
     }
 
-    public String getHeadingText() {
-
-        return heading.getText();
-    }
 
     public List<String> getTabBarText() {
         List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='tabBar']//div"));
