@@ -215,19 +215,17 @@ public class HomePage extends BasePage {
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver())
-                .moveToElement(getDriver()
-                .findElement(By.xpath("//span[contains(text(),'" + jobName + "')]")))
+        Actions actions = new Actions(getDriver());
+        WebElement dashboard = getDriver().findElement(By.xpath("//button[contains(@data-href, 'job/" + jobName + "')]"));
+        int deltaX = dashboard.getSize().getWidth() / 2;
+        int deltaY = dashboard.getSize().getHeight() / 2;
+
+        actions
+                .moveToElement(dashboard)
+                .scrollByAmount(deltaX, deltaY)
+                .build()
                 .perform();
-
-        JavascriptExecutor js = ((JavascriptExecutor) getDriver());
-        js.executeScript("document.querySelector('#job_NewFreestyleProjectName > td:nth-child(3) > a > button')");
-
-        new Actions(getDriver())
-            .moveToElement(getDriver()
-                .findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")))
-            .click()
-            .perform();
+        dashboard.click();
 
         new Actions(getDriver())
                 .pause(400)
