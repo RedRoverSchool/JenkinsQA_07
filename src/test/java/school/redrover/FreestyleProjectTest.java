@@ -456,19 +456,19 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(errorText, "No name is specified");
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test(dependsOnMethods = "testRenameProject")
     public void testDisable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickEnableDisableButton();
 
         Assert.assertTrue(detailsPage.isProjectDisabled());
     }
 
-    @Test(dependsOnMethods = {"testDisable", "testCreateFreestyleProjectWithValidName"})
+    @Test(dependsOnMethods = {"testDisable"})
     public void testEnable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickEnableDisableButton();
 
         Assert.assertTrue(detailsPage.isEnabled());
@@ -625,20 +625,18 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertTrue(isDiscardOldBuildsSettingsFieldDisplayed);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testSettingsOfDiscardOldBuildsIsDisplayed")
     public void testDaysToKeepBuildsErrorMessageIsDisplayed() {
-        createAnItem("Freestyle project");
-        WebElement checkbox = getDriver().findElement(By.cssSelector(" #cb4[type='checkbox']"));
-        new Actions(getDriver())
-                .click(checkbox)
-                .perform();
-        WebElement daysToKeepBuildsField = getDriver().findElement(By.cssSelector("input[name='_.daysToKeepStr']"));
-        daysToKeepBuildsField.click();
-        daysToKeepBuildsField.sendKeys("-2");
-        getDriver().findElement(By.cssSelector("input[name='_.numToKeepStr']")).click();
-        WebElement errorMessage = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@nameref='rowSetStart26']//div[@class='jenkins-form-item tr '][1]//div[@class='error']")));
 
-        Assert.assertTrue(errorMessage.isDisplayed());
+        String errorMessage = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickDiscardOldBuildsCheckBox()
+                .inputDaysToKeepBuilds("-2")
+                .clickApply()
+                .getErrorMessageText();
+
+        Assert.assertEquals(errorMessage, "Not a positive integer");
     }
 
     @Test
@@ -840,7 +838,7 @@ public class FreestyleProjectTest extends BaseTest {
                 configurePage.getParameterDescription().equals(DESCRIPTION));
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test(dependsOnMethods = "testRenameProject")
     public void testAddBooleanParameterDropdownIsSortedAlphabetically() {
         List<String> expectedResult = List.of(
                 "Boolean Parameter",
@@ -853,7 +851,7 @@ public class FreestyleProjectTest extends BaseTest {
                 "String Parameter");
 
         FreestyleProjectConfigurePage freestyleProjectConfigurePage = new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
                 .clickAddParameterDropdown();

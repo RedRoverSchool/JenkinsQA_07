@@ -140,6 +140,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
     @FindBy(xpath = "//div[@id='notification-bar']/span")
     private WebElement savedNotificationMessage;
 
+    @FindBy(css = "div[name='strategy'] div[class='error']")
+    private WebElement notAPositiveNumberErrorMessage;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -469,9 +472,13 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getSavedNotificationMessage() {
 
-        getWait2().until(ExpectedConditions
-                .visibilityOfElementLocated(By.xpath("//div[@id='notification-bar']/span")));
+        return getWait2().until(ExpectedConditions
+                .visibilityOf(savedNotificationMessage)).getText();
+    }
 
-        return savedNotificationMessage.getText();
+    public String getErrorMessageText() {
+
+        return getWait2().until(ExpectedConditions
+                .visibilityOf(notAPositiveNumberErrorMessage)).getText();
     }
 }
