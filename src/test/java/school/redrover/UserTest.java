@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -752,5 +753,44 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
                 fullName);
+    }
+    @Test
+    public void testDeleteUsingBreadcrumb() {
+        goToUserCreateFormPage();
+        createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
+
+        Actions actions = new Actions(getDriver());
+
+        WebElement breadcrumbName = getDriver().findElement(By.linkText(USER_NAME));
+        actions.moveToElement(breadcrumbName);
+        actions.moveToElement(breadcrumbName).build().perform();
+
+        WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
+        actions.moveToElement(chevron);
+        actions.clickAndHold(chevron).release().perform();
+
+     //   Thread.sleep(5000);
+
+       // WebElement buttonDeleteSVG = getWait10().until(ExpectedConditions.presenceOfElementLocated(
+        WebElement buttonDeleteSVG = getDriver().findElement(
+            //    By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+                By.cssSelector("button[class='jenkins-dropdown__item']"));
+//        WebElement buttonDelete = getDriver().findElement(
+//                By.xpath("//button[@href='/job/" + USER_NAME.toLowerCase() + "/doDelete']"));
+
+       // actions.moveToElement(buttonDeleteSVG).click().perform();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", buttonDeleteSVG);
+        //js.executeScript("arguments[0].click();", buttonDelete);
+
+        getDriver().switchTo().alert().accept();
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        Assert.assertFalse(resultList.contains(USER_NAME));
     }
 }
