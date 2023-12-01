@@ -42,7 +42,7 @@ public class HomePage extends BasePage {
     private WebElement buttonPeople;
 
     @FindBy(className = "jenkins_ver")
-    private WebElement jenkinsVersion;
+    private WebElement jenkinsVersionButton;
 
     @FindBy(xpath = "//td[@class='pane pane-grow']")
     private WebElement buildQueueSection;
@@ -52,11 +52,30 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
+
     @FindBy(xpath = "//h1")
     private WebElement header;
 
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
+
+    @FindBy(css = "a[href='/manage/about']")
+    private WebElement aboutJenkinsButton;
+
+    @FindBy(className = "tippy-content")
+    private WebElement jenkinsVersionTippyBox;
+
+    @FindBy(css = "a[href='https://www.jenkins.io/participate/']")
+    private WebElement getInvolved;
+
+    @FindBy(css = "a[href='https://www.jenkins.io/']")
+    private WebElement websiteJenkins;
+
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
+
+    @FindBy(xpath = "//div[@class='tippy-box']//div//a")
+    private WebElement tippyBox;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -176,43 +195,20 @@ public class HomePage extends BasePage {
         return page;
     }
 
-    public boolean isAlertVisible() {
-        try {
-            getDriver().switchTo().alert();
-
-            return true;
-        } catch (NoAlertPresentException ex) {
-
-            return false;
-        }
-    }
-
-    public HomePage clickAlertIfVisibleAndGoHomePage() {
-        if (isAlertVisible()) {
-            getDriver().switchTo().alert().accept();
-        }
-
-        return this;
-    }
-
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
 
         return this;
     }
 
-    public HomePage hoverOverJobDropdownMenu(String name) {
-        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + name + "']"));
+    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOrganizationFolderDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
+        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
 
         new Actions(getDriver()).moveToElement(projectName).click().perform();
 
-        return this;
-    }
-
-    public OrganizationFolderRenamePage clickRenameOrganizationFolderDropdownMenu() {
         renameOptionProjectDropdown.click();
 
-        return new OrganizationFolderRenamePage(getDriver());
+        return projectRenamePage;
     }
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
@@ -244,7 +240,7 @@ public class HomePage extends BasePage {
     }
 
     public String getVersion() {
-        return jenkinsVersion.getText();
+        return jenkinsVersionButton.getText();
     }
 
     public boolean isJobInBuildQueue(String jobName) {
@@ -262,5 +258,73 @@ public class HomePage extends BasePage {
 
     public String getHeaderText() {
         return header.getText();
+    }
+
+    public NodeDetailsPage clickOnNodeName(String nodeName) {
+        getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
+
+        return new NodeDetailsPage(getDriver());
+    }
+
+    public boolean isScheduleABuildButtonNotDisplayed(String jobName){
+       return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
+    }
+
+    public HomePage clickJenkinsVersion() {
+        jenkinsVersionButton.click();
+
+        return this;
+    }
+
+    public AboutJenkinsPage clickAboutJenkins() {
+        aboutJenkinsButton.click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    public WebsiteJenkinsIOPage clickGetInvolved() {
+        getInvolved.click();
+
+        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tab.get(1));
+
+        return new WebsiteJenkinsIOPage(getDriver());
+    }
+
+    public WebsiteJenkinsIOPage clickWebsite() {
+        websiteJenkins.click();
+
+        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tab.get(1));
+
+        return new WebsiteJenkinsIOPage(getDriver());
+    }
+
+    public CreatedUserPage clickUserNameHeader(String userName) {
+        getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
+
+        return new CreatedUserPage(getDriver());
+    }
+
+    public List<String> getVersionJenkinsTippyBoxText() {
+        getWait10().until(ExpectedConditions.visibilityOf(tippyBox));
+
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='tippy-box']//div//a"));
+        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
+
+        return resultList;
+    }
+
+    public AboutJenkinsPage moveAboutJenkinsPage() {
+        jenkinsVersionButton.click();
+        aboutJenkinsButton.click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    public RestAPIPage clickRestApiButton() {
+        restApiButton.click();
+
+        return new RestAPIPage(getDriver());
     }
 }

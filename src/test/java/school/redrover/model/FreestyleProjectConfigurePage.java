@@ -3,10 +3,11 @@ package school.redrover.model;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.JavascriptExecutor;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class FreestyleProjectConfigurePage extends BasePage {
@@ -27,6 +28,9 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     @FindBy(xpath = "//label[normalize-space()='Discard old builds']")
     private WebElement discardOldBuildsCheckBox;
+
+    @FindBy(css = "[nameref='rowSetStart26'] .form-container.tr")
+    private WebElement discardOldBuildsSettingsField;
 
     @FindBy(xpath = "//label[normalize-space()='Throttle builds']")
     private WebElement throttleBuildsCheckBox;
@@ -56,7 +60,7 @@ public class FreestyleProjectConfigurePage extends BasePage {
     private WebElement selectTimePeriod;
 
     @FindBy(className = "jenkins-toggle-switch__label")
-    private WebElement disableToggle;
+    private WebElement disableEnableToggle;
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement inputProjectDescription;
@@ -132,6 +136,12 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     @FindBy(xpath = "//textarea[@name = 'parameter.description']")
     private WebElement parameterDescriptionInputBox;
+
+    @FindBy(xpath = "//div[@id='notification-bar']/span")
+    private WebElement savedNotificationMessage;
+
+    @FindBy(css = "div[name='strategy'] div[class='error']")
+    private WebElement notAPositiveNumberErrorMessage;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -230,8 +240,8 @@ public class FreestyleProjectConfigurePage extends BasePage {
 
     public String getExecuteConcurrentBuildsIfNecessaryCheckBoxValue(String value) { return executeConcurrentBuildsIfNecessaryCheckBox.getCssValue(value); }
 
-    public FreestyleProjectConfigurePage clickDisableToggle() {
-        disableToggle.click();
+    public FreestyleProjectConfigurePage clickDisableEnableToggle() {
+        disableEnableToggle.click();
 
         return this;
     }
@@ -444,5 +454,31 @@ public class FreestyleProjectConfigurePage extends BasePage {
         );
     }
 
-    public boolean isGitRadioButtonSettingsFormAppears() {return gitRadioButtonSettingsForm.isDisplayed();}
+    public boolean isGitRadioButtonSettingsFormDisplayed() {return gitRadioButtonSettingsForm.isDisplayed();}
+
+    public List<String> getAddParameterDropdownText() {
+
+        List<WebElement> listDropDownElements = getDriver().findElements(By.xpath("//li[@index]"));
+        List<String> getTextOfDropDownElements = new ArrayList<>();
+
+        for (WebElement element : listDropDownElements) {
+            getTextOfDropDownElements.add(element.getText());
+        }
+
+        return getTextOfDropDownElements;
+    }
+
+    public boolean isDiscardOldBuildsSettingsFieldDisplayed() { return discardOldBuildsSettingsField.isDisplayed(); }
+
+    public String getSavedNotificationMessage() {
+
+        return getWait2().until(ExpectedConditions
+                .visibilityOf(savedNotificationMessage)).getText();
+    }
+
+    public String getErrorMessageText() {
+
+        return getWait2().until(ExpectedConditions
+                .visibilityOf(notAPositiveNumberErrorMessage)).getText();
+    }
 }

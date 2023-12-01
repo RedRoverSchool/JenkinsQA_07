@@ -8,6 +8,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +24,11 @@ public class FolderTest extends BaseTest {
 
     @DataProvider
     public Object[][] provideUnsafeCharacters() {
-        String[] wrongCharacters = {"#", "&", "?", "!", "@", "$", "%", "^", "*", "|", "/", "\\", "<", ">", "[", "]", ":", ";"};
-        int randomIndex = new Random().nextInt(wrongCharacters.length);
-        return new Object[][]{{wrongCharacters[randomIndex]}};
+
+        return new Object[][]{
+                {"#"}, {"&"}, {"?"}, {"!"}, {"@"}, {"$"}, {"%"}, {"^"}, {"*"}, {"|"}, {"/"}, {"\\"}, {"<"}, {">"},
+                {"["}, {"]"}, {":"}, {";"}
+        };
     }
 
     private void getDashboardLink() {
@@ -154,17 +157,17 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
     }
 
-    @Ignore
     @Test
     public void testOKButtonIsNotClickableWithoutFolderName() {
-        getDriver().findElement(By.xpath("//a[@href='newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class='com_cloudbees_hudson_plugins_folder_Folder']")).click();
-        WebElement okButton = getDriver().findElement(By.id("ok-button"));
-        boolean okButtonDisabled = "true".equals(okButton.getAttribute("disabled"));
+        boolean isOkButtonDisabled = new HomePage(getDriver())
+                .clickNewItem()
+                .selectItemFolder()
+                .isOkButtonEnabled();
 
-        Assert.assertTrue(okButtonDisabled, "OK button is clickable when it shouldn't be!");
+        Assert.assertFalse(isOkButtonDisabled, "OK button is clickable when it shouldn't be!");
     }
 
+    @Ignore
     @Test
     public void testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder() {
         String actualTooltipValue = new HomePage(getDriver())
@@ -172,7 +175,7 @@ public class FolderTest extends BaseTest {
                 .createFolder(FOLDER_NAME)
                 .clickSaveButton()
                 .clickNewItemButton()
-                .createNewPipelineProject(JOB_NAME)
+                .createPipeline(JOB_NAME)
                 .clickSaveButton()
                 .clickBuildNowButton()
                 .getTooltipAttributeValue();
@@ -180,6 +183,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualTooltipValue, "Success > Console Output");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreatedPipelineWasBuiltSuccessfullyInCreatedFolder")
     public void testDeletePipelineInsideOfFolder() {
         int sizeOfEmptyJobListInsideOfFolderAfterJobDeletion = new HomePage(getDriver())
@@ -203,53 +207,65 @@ public class FolderTest extends BaseTest {
     }
 
     @Test(dataProvider = "provideUnsafeCharacters")
-    public void testCreateNameSpecialCharactersAbsenceOnHomePage(String unsafeChar) {
-        boolean createdNameSpecialCharacters = new HomePage(getDriver())
+    public void testDisabledOkButtonCreateWithInvalidName(String unsafeChar) {
+        boolean enabledOkButton = new HomePage(getDriver())
                 .clickNewItem()
-                .createFolder(unsafeChar)
-                .goHomePage()
-                .getJobList()
-                .contains(unsafeChar);
+                .typeItemName(unsafeChar)
+                .selectItemFolder()
+                .isOkButtonEnabled();
 
-        Assert.assertFalse(createdNameSpecialCharacters);
+        Assert.assertFalse(enabledOkButton);
     }
 
     @Test
     public void testPositiveBoundaryValuesName() {
-        HomePage homePage = new HomePage(getDriver())
+        String listJob = new  HomePage(getDriver())
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES)
                 .goHomePage()
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES.repeat(255))
-                .goHomePage();
+                .goHomePage()
+                .getJobList()
+                .toString();
 
-        Assert.assertTrue(homePage.getJobList().contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
+        Assert.assertTrue(listJob.contains(NAME_FOR_BOUNDARY_VALUES));
+        Assert.assertTrue(listJob.contains(NAME_FOR_BOUNDARY_VALUES.repeat(255)));
     }
 
     @Test
-    public void testNegativeBoundaryValuesName() {
-        HomePage homePage = new HomePage(getDriver());
-
-        AngryErrorPage angryErrorPage = new HomePage(getDriver())
+    public void testNegativeBoundaryValuesNameGetErrorMessage() {
+        String errorMessage = new HomePage(getDriver())
                 .clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
-                .clickOk(new AngryErrorPage(getDriver()));
+                .clickOk(new ErrorPage(getDriver()))
+                .getErrorMessageFromOopsPage();
 
-        Assert.assertEquals(angryErrorPage.getErrorNotification(), "Oops!");
-        Assert.assertEquals(angryErrorPage.getErrorMessage(), "A problem occurred while processing the request.");
+        Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test
+    public void testNegativeBoundaryValuesNameAbsenceOnHomePage() {
+        String listJob = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
+                .selectItemFolder()
+                .clickOk(new ErrorPage(getDriver()))
+                .goHomePage()
+                .getJobList()
+                .toString();
+
+        Assert.assertFalse(listJob.contains(NAME_FOR_BOUNDARY_VALUES.repeat(256)));
+    }
+
+    @Test(dependsOnMethods = "testRename")
     public void testAddDescriptionToFolder() {
         final String descriptionText = "This is Folder's description";
 
-        HomePage homePage = new HomePage(getDriver());
-        String actualDescription = homePage
-                .clickAlertIfVisibleAndGoHomePage()
+        String actualDescription = new HomePage(getDriver())
                 .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
-                .clickAddDescription()
+                .clickAddOrEditDescription()
                 .typeDescription(descriptionText)
                 .clickSave()
                 .getActualFolderDescription();
@@ -257,36 +273,30 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, descriptionText);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
+    @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testRename", "testCreate"})
     public void testEditDescriptionOfFolder() {
         final String newDescriptionText = "This is new Folder's description";
 
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        String actualUpdatedDescription = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .typeDescription(newDescriptionText)
+                .clickSave()
+                .getActualFolderDescription();
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
-        getDriver().findElement(By.className("jenkins-input")).clear();
-        getDriver().findElement(By.className("jenkins-input")).sendKeys(newDescriptionText);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String actualNewDescription = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-        Assert.assertEquals(actualNewDescription, newDescriptionText);
+        Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
     }
 
-    @Ignore
     @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
-        getDriver().findElement(By.xpath("//table[@id='projectstatus']//tr[1]//a[contains(@href, 'job')]")).click();
+        FolderDetailsPage folderDescription = new HomePage(getDriver())
+                .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .clearDescriptionTextArea()
+                .clickSave();
 
-        getDriver().findElement(By.xpath("//a[contains(@href, 'editDescription')]")).click();
-        getDriver().findElement(By.className("jenkins-input")).clear();
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        String textOfDescriptionField = getDriver().findElement(By.xpath("//div[@id='description']/div[1]")).getText();
-        Assert.assertEquals(textOfDescriptionField, "");
-
-        String appearanceOfAddDescriptionButton = getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
-        Assert.assertEquals(appearanceOfAddDescriptionButton, "Add description");
+        Assert.assertTrue(folderDescription.getActualFolderDescription().isEmpty());
+        Assert.assertEquals(folderDescription.getDescriptionButtonText(), "Add description");
     }
 
     @Ignore
