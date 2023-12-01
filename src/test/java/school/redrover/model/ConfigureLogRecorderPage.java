@@ -70,7 +70,7 @@ public class ConfigureLogRecorderPage extends BasePage {
 
     public LogRecordersDetailsPage clickSave() {
             new Actions(getDriver())
-                    .pause(200)
+                    .pause(300)
                     .moveToElement(saveButton)
                     .click()
                     .perform();
