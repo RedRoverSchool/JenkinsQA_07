@@ -910,54 +910,36 @@ public class FreestyleProjectTest extends BaseTest {
     public void testRenameUnsafeCharacters() {
         final List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
 
-        FreestyleProjectRenamePage error = new HomePage(getDriver())
+        FreestyleProjectRenamePage renamePage = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickRename();
 
         for (String x : unsafeCharacters) {
-            error.clearInputField()
-                    .enterName(x);
+            renamePage.enterName(x);
 
-            assertEquals(error.getErrorMessage(), "‘" + x + "’ is an unsafe character");
+            assertEquals(renamePage.getErrorMessage(), "‘" + x + "’ is an unsafe character");
         }
-    }
-
-    private void configureParameterizedBuild(String projectName, String choiceName, String choiceOptions) {
-        getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
-
-        WebElement parameterizedOption = getDriver().findElement(By.xpath("//div[@nameref='rowSetStart28']//span[@class='jenkins-checkbox']"));
-        parameterizedOption.click();
-        getDriver().findElement(By.xpath("//button[@suffix='parameterDefinitions']")).click();
-        getDriver().findElement(By.linkText("Choice Parameter")).click();
-        getDriver().findElement(By.name("parameter.name")).sendKeys(choiceName);
-        getDriver().findElement(By.name("parameter.choices"))
-                .sendKeys(choiceOptions.replace(" ", Keys.chord(Keys.SHIFT, Keys.ENTER)));
-        getDriver().findElement(By.name("Submit")).click();
     }
 
     @Test
     public void testParameterizedBuildWithChoices() {
-        final String choices = "Chrome Firefox Edge Safari";
+        List<String> choices = List.of("Chrome", "Firefox", "Edge", "Safari");
         final String choiceName = "browsers";
 
-        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        configureParameterizedBuild(PROJECT_NAME, choiceName, choices);
+        List<String> actualChoiceList = new FreestyleProjectDetailsPage(getDriver())
+                .clickConfigure(new FreestyleProjectConfigurePage(getDriver()))
+                .clickThisProjectIsParameterizedCheckbox()
+                .clickAddParameter()
+                .selectParameterType("Choice Parameter")
+                .inputParameterName(choiceName)
+                .setParameterChoices(choices)
+                .clickSaveButton(new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildWithParameters()
+                .getChoiceParameterOptions();
 
-
-        WebElement build = getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a"));
-        build.click();
-
-        List<WebElement> actualChoiceList = getDriver().findElements(By.xpath("//div[@class='setting-main']//select/option"));
-
-        assertNotEquals(getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a")).getText(), "Build Now");
-        assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), choiceName);
-        assertTrue(getDriver().findElement(By.xpath("//div[@class='setting-main']//select/option[1]")).isSelected());
-        assertFalse(actualChoiceList.isEmpty());
-        for (WebElement ch : actualChoiceList) {
-            assertTrue(choices.contains(ch.getText()));
-        }
+        assertEquals(actualChoiceList, choices);
     }
 
     @Test
