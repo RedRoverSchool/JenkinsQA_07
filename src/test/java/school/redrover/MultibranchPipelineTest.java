@@ -409,7 +409,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(disabledText.contains("This Multibranch Pipeline is currently disabled"));
     }
 
-    @Test(dependsOnMethods = "testDisableMultibranchPipelineWithHomePage")
+    @Test(dependsOnMethods = "testDisable")
     public void testEnableFromStatusPage() {
         getDriver().findElement(By.xpath("//*[@id=\"job_Test_Folder\"]/td[3]/a")).click();
 
