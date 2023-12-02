@@ -1,6 +1,7 @@
 package school.redrover.model.base;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -39,6 +40,15 @@ public abstract class BasePage extends BaseModel {
 
     public <T> T acceptAlert(T page) {
         getWait2().until(ExpectedConditions.alertIsPresent()).accept();
+
+        return page;
+    }
+
+    public <T> T waitAndRefresh(T page) {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("setTimeout(function(){\n" +
+                "    location.reload();\n" +
+                "}, 500);");
 
         return page;
     }

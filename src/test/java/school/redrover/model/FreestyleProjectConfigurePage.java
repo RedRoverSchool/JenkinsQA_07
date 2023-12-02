@@ -1,13 +1,15 @@
 package school.redrover.model;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BaseConfigurationPage;
-import school.redrover.model.base.BasePage;
-import org.openqa.selenium.JavascriptExecutor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,6 +147,15 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
     @FindBy(css = "div[name='strategy'] div[class='error']")
     private WebElement notAPositiveNumberErrorMessage;
 
+    @FindBy(xpath = "//label[text()='Build after other projects are built']")
+    private WebElement buildAfterOtherProjectsCheckboxLabel;
+
+    @FindBy(name = "_.upstreamProjects")
+    private WebElement upstreamProjectField;
+
+    @FindBy(xpath = "//label[text()='Always trigger, even if the build is aborted']")
+    private WebElement alwaysTriggerRadio;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -197,7 +208,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         return this;
     }
 
-    public String getValueGitHubRepositoryURL() {return inputGitRadioButtonRepositoryUrlField.getAttribute("value");}
+    public String getValueGitHubRepositoryURL() {
+        return inputGitRadioButtonRepositoryUrlField.getAttribute("value");
+    }
 
     public FreestyleProjectConfigurePage clickDiscardOldBuildsCheckBox() {
         discardOldBuildsCheckBox.click();
@@ -240,7 +253,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         return this;
     }
 
-    public String getExecuteConcurrentBuildsIfNecessaryCheckBoxValue(String value) { return executeConcurrentBuildsIfNecessaryCheckBox.getCssValue(value); }
+    public String getExecuteConcurrentBuildsIfNecessaryCheckBoxValue(String value) {
+        return executeConcurrentBuildsIfNecessaryCheckBox.getCssValue(value);
+    }
 
     public FreestyleProjectConfigurePage clickDisableEnableToggle() {
         disableEnableToggle.click();
@@ -264,7 +279,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         return selectTimePeriod.getAttribute("value");
     }
 
-    public List<WebElement> getExecuteConcurrentBuilds() { return getDriver().findElements(By.xpath("//div[@class='form-container']")); }
+    public List<WebElement> getExecuteConcurrentBuilds() {
+        return getDriver().findElements(By.xpath("//div[@class='form-container']"));
+    }
 
     public FreestyleProjectConfigurePage editProjectDescriptionField(String editDescription) {
         inputProjectDescription.clear();
@@ -283,12 +300,13 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         return getThisProjectIsParameterizedCheckboxInput;
     }
 
-    public FreestyleProjectConfigurePage clickOnParametrizedCheckBox(){
+    public FreestyleProjectConfigurePage clickOnParametrizedCheckBox() {
         clickCheckBoxThisProjectIsParametrized.click();
         return this;
     }
-    public WebElement checkIsParameteresDropDownMenuAvailable(){
-       return clickAddParameterDropDownBtn;
+
+    public WebElement checkIsParameteresDropDownMenuAvailable() {
+        return clickAddParameterDropDownBtn;
     }
 
     public FreestyleProjectConfigurePage inputDescription(String description) {
@@ -313,7 +331,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         return descriptionPreviewText.getText();
     }
 
-    public boolean isPreviewDescriptionTextDisplayed() {return descriptionPreviewText.isDisplayed();}
+    public boolean isPreviewDescriptionTextDisplayed() {
+        return descriptionPreviewText.isDisplayed();
+    }
 
     public FreestyleProjectConfigurePage clickApply() {
         applyButton.click();
@@ -409,10 +429,11 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         return shellScriptInput.getText();
     }
 
-    public String getAttributeOfHelpDescriptionDiscardOldBuilds (){
+    public String getAttributeOfHelpDescriptionDiscardOldBuilds() {
         return helpDescriptionDiscardOldBuilds.getAttribute("style");
     }
-    public FreestyleProjectConfigurePage clickHelpDescriptionOfDiscardOldBuilds(){
+
+    public FreestyleProjectConfigurePage clickHelpDescriptionOfDiscardOldBuilds() {
         helpButtonDiscardOldBuilds.click();
         return this;
     }
@@ -456,7 +477,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         );
     }
 
-    public boolean isGitRadioButtonSettingsFormDisplayed() {return gitRadioButtonSettingsForm.isDisplayed();}
+    public boolean isGitRadioButtonSettingsFormDisplayed() {
+        return gitRadioButtonSettingsForm.isDisplayed();
+    }
 
     public List<String> getAddParameterDropdownText() {
 
@@ -470,7 +493,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         return getTextOfDropDownElements;
     }
 
-    public boolean isDiscardOldBuildsSettingsFieldDisplayed() { return discardOldBuildsSettingsField.isDisplayed(); }
+    public boolean isDiscardOldBuildsSettingsFieldDisplayed() {
+        return discardOldBuildsSettingsField.isDisplayed();
+    }
 
     public String getSavedNotificationMessage() {
 
@@ -482,5 +507,26 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
         return getWait2().until(ExpectedConditions
                 .visibilityOf(notAPositiveNumberErrorMessage)).getText();
+    }
+
+    public FreestyleProjectConfigurePage clickBuildAfterOtherProjectsAreBuilt() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckboxLabel);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputUpstreamProject(String projectName) {
+        upstreamProjectField.sendKeys(projectName);
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAlwaysTrigger() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true);", buildAfterOtherProjectsCheckboxLabel);
+        alwaysTriggerRadio.click();
+
+        return this;
     }
 }

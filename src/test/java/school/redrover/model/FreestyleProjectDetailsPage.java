@@ -67,6 +67,9 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
     @FindBy(className = "warning")
     private WebElement projectDisabledWarning;
 
+    @FindBy(xpath = "//ul[@style='list-style-type: none;']/li/a")
+    private List<WebElement> upstreamProjectsList;
+
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -187,5 +190,9 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
 
     public boolean isProjectDisabled() {
         return projectDisabledWarning.isEnabled();
+    }
+
+    public List<String> getUpstreamProjectsList() {
+        return upstreamProjectsList.stream().map(WebElement::getText).toList();
     }
 }

@@ -559,30 +559,23 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(warningMessage, "This project is currently disabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testOldBuildsAreDiscarded")
     public void testSetUpstreamProject() {
         final String upstreamProjectName = "Upstream Test";
 
-        createFreeStyleProject(upstreamProjectName);
-        goToJenkinsHomePage();
-        createFreeStyleProject(PROJECT_NAME);
+        TestUtils.createFreestyleProject(this, upstreamProjectName, true);
 
-        WebElement buildAfterOtherProjectsCheckbox = getDriver()
-                .findElement(By.xpath("//label[text()='Build after other projects are built']"));
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
-        getDriver().findElement(By.name("_.upstreamProjects")).sendKeys(upstreamProjectName);
-        js.executeScript("arguments[0].scrollIntoView(true);", buildAfterOtherProjectsCheckbox);
-        getDriver().findElement(
-                By.xpath("//label[text()='Always trigger, even if the build is aborted']")).click();
-        clickSubmitButton();
+        List<String> upstreamProjectsList = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure(new FreestyleProjectConfigurePage(getDriver()))
+                .clickBuildAfterOtherProjectsAreBuilt()
+                .inputUpstreamProject(upstreamProjectName)
+                .clickAlwaysTrigger()
+                .clickSaveButton(new FreestyleProjectDetailsPage(getDriver()))
+                .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
+                .getUpstreamProjectsList();
 
-        js.executeScript("setTimeout(function(){\n" +
-                "    location.reload();\n" +
-                "}, 500);");
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//ul[@style='list-style-type: none;']/li/a")).getText(),
-                upstreamProjectName);
+        Assert.assertEquals(upstreamProjectsList, List.of(upstreamProjectName));
     }
 
     @Test
