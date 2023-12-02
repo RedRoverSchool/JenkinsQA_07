@@ -66,6 +66,9 @@ public class HomePage extends BasePage {
     @FindBy(tagName = "h1")
     private WebElement actualPageName;
 
+    @FindBy(xpath = "//a[@href='/manage/about']")
+    private WebElement aboutJenkins;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -295,5 +298,15 @@ public class HomePage extends BasePage {
 
     public String getActualPageName() {
         return actualPageName.getText();
+    }
+
+    public List<WebElement> getListJenkins() {
+        return getDriver()
+                .findElements(By.xpath("//div[@class = 'tippy-content']/a"));
+    }
+
+    public AboutJenkinsPage clickAboutJenkins() {
+        aboutJenkins.click();
+        return new AboutJenkinsPage(getDriver());
     }
 }
