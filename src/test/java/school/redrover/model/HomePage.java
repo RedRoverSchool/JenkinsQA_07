@@ -214,12 +214,6 @@ public class HomePage extends BasePage {
         return multibranchPipelineNameOnHomePage.getText();
     }
 
-    public FreestyleProjectDetailsPage clickOnJob() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(jobName)).click();
-
-        return new FreestyleProjectDetailsPage(getDriver());
-    }
-
     public PeoplePage clickPeople() {
         buttonPeople.click();
 
