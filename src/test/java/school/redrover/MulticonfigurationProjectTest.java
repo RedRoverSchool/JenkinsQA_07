@@ -121,7 +121,8 @@ public class MulticonfigurationProjectTest extends BaseTest {
         String page = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
                 .taskLinkDeleteMultiConfigurationProject()
-                .acceptAlert().getHeadLineText();
+                .acceptAlert()
+                .getHeadLineText();
 
         Assert.assertEquals(page, "Welcome to Jenkins!");
     }

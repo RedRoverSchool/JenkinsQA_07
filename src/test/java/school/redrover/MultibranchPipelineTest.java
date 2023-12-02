@@ -89,7 +89,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .buttonSubmit()
                 .getJobName();
 
-        String nameH1 = new MultibranchPipelineConfigurationPage(getDriver()).headerName();
+        String nameH1 = new MultibranchPipelineConfigurationPage(getDriver()).getHeadLineText();
 
         Assert.assertTrue(nameH1.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
 
@@ -241,16 +241,14 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(status, "Enabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testEnabledByDefault"})
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
-        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+        String actualStatusMessage = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickDisable()
+                .getDisableStatusMessage();
 
-        getDriver().findElement(By.cssSelector("a[href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(By.cssSelector("button[formNoValidate]")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.cssSelector("form[method='post']")).getText().
-                        contains("This Multibranch Pipeline is currently disabled"),
+        Assert.assertTrue(actualStatusMessage.contains("This Multibranch Pipeline is currently disabled"),
                 "Incorrect or missing text");
     }
 
@@ -290,13 +288,14 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
 
-    @Ignore
+
+    @Ignore("PR#2042, failed with error: expected [MultibranchPipeline] but found [Search for 'MultibranchPipeline']")
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testFindByQuickSearch() {
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
-                .searchBox(new MultibranchPipelineDetailsPage(getDriver()), MULTIBRANCH_PIPELINE_NAME);
+                .useSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()));
 
-        Assert.assertEquals(multibranchPipelineDetailsPage.getTitle(), MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchPipelineDetailsPage.getHeadLineText(), MULTIBRANCH_PIPELINE_NAME);
     }
 
 
@@ -322,7 +321,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRename()
                 .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickSubmit()
-                .getTitle();
+                .getHeadLineText();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
@@ -350,7 +349,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickRename()
                 .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickSubmit()
-                .getTitle();
+                .getHeadLineText();
 
         Assert.assertEquals(name, MULTIBRANCH_PIPELINE_NEW_NAME);
     }

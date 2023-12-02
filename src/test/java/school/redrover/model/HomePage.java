@@ -1,6 +1,8 @@
 package school.redrover.model;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -52,9 +54,6 @@ public class HomePage extends BasePage {
 
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
-
-    @FindBy(xpath = "//h1")
-    private WebElement header;
 
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
@@ -180,10 +179,6 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
     }
 
-    public String getHeadLineText() {
-        return getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")).getText();
-    }
-
     public <T> T clickAnyJobCreated(T page) {
         getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
 
@@ -200,7 +195,6 @@ public class HomePage extends BasePage {
         WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
 
         new Actions(getDriver()).moveToElement(projectName).click().perform();
-
         renameOptionProjectDropdown.click();
 
         return projectRenamePage;
@@ -208,11 +202,9 @@ public class HomePage extends BasePage {
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
-
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
 
         new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
-
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
 
         return page;
@@ -220,12 +212,6 @@ public class HomePage extends BasePage {
 
     public String multibranchPipelineName() {
         return multibranchPipelineNameOnHomePage.getText();
-    }
-
-    public FreestyleProjectDetailsPage clickOnJob() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(jobName)).click();
-
-        return new FreestyleProjectDetailsPage(getDriver());
     }
 
     public PeoplePage clickPeople() {
@@ -251,9 +237,6 @@ public class HomePage extends BasePage {
         return itemNameInTable.getText();
     }
 
-    public String getHeaderText() {
-        return header.getText();
-    }
 
     public NodeDetailsPage clickOnNodeName(String nodeName) {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
@@ -261,8 +244,8 @@ public class HomePage extends BasePage {
         return new NodeDetailsPage(getDriver());
     }
 
-    public boolean isScheduleABuildButtonNotDisplayed(String jobName){
-       return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
+    public boolean isScheduleABuildButtonNotDisplayed(String jobName) {
+        return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
     }
 
     public HomePage clickJenkinsVersion() {
@@ -322,4 +305,5 @@ public class HomePage extends BasePage {
 
         return new RestAPIPage(getDriver());
     }
+
 }
