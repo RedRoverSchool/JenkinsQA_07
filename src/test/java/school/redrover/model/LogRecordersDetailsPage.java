@@ -11,6 +11,7 @@ public class LogRecordersDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[@href = 'configure']")
     private WebElement configureButton;
+
     @FindBy(xpath = "//a[@href='/manage/log/']")
     private WebElement breadcrumbSystemLog;
 
