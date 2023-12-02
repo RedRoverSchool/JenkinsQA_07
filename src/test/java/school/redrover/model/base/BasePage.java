@@ -10,6 +10,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.HomePage;
 
+import java.util.List;
+
 public abstract class BasePage extends BaseModel {
 
     @FindBy(tagName = "h1")
@@ -20,6 +22,9 @@ public abstract class BasePage extends BaseModel {
 
     @FindBy(xpath = "//li//a[@href='/']")
     private WebElement dashboard;
+
+    @FindBy(xpath = "//div[@id='breadcrumbBar']/ol/li/a")
+    private List<WebElement> breadcrumbBarItemsList;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -81,6 +86,11 @@ public abstract class BasePage extends BaseModel {
                 "}, 500);");
 
         return page;
+    }
+
+    public boolean isItemExistInBreadcrumbBar(String item) {
+
+        return breadcrumbBarItemsList.stream().map(WebElement::getText).anyMatch(e -> e.equals(item));
     }
 
     public HomePage clickDashboardBreadCrumb() {
