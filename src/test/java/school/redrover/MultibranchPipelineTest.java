@@ -19,6 +19,7 @@ import java.util.List;
 public class MultibranchPipelineTest extends BaseTest {
 
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
+
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
 
     private static final String MULTIBRANCH_PIPELINE_NON_EXISTING_NAME = "MultibranchPipelineNonExistingName";
@@ -33,28 +34,6 @@ public class MultibranchPipelineTest extends BaseTest {
             textOfWebElements.add(element.getText());
         }
         return textOfWebElements;
-    }
-
-     private void createMultibranchPipelineWithCreateAJob() {
-
-        getDriver().findElement(By.linkText("Create a job")).click();
-        getDriver().findElement(By.id("name")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.xpath("//span[@class='label' and text()='Multibranch Pipeline']"))
-                .click();
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void returnToJenkinsHomePage() {
-        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
-    }
-
-    private void createMultibranchPipeline(String name) {
-        returnToJenkinsHomePage();
-
-        getDriver().findElement(By.xpath("//div[@id='tasks']//a[@href='/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//input[@id='name']")).sendKeys(name);
-        getDriver().findElement(By.xpath("//span[text()='Multibranch Pipeline']")).click();
-        getDriver().findElement(By.id("ok-button")).click();
     }
 
     @Test
@@ -249,7 +228,9 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test
     public void testMultibranchNameDisplayBreadcrumbTrail() {
-        createMultibranchPipelineWithCreateAJob();
+
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, false);
+
         String pipelineNameExpected = getDriver().findElement(By.xpath("//a[contains(text(),'"
                 + MULTIBRANCH_PIPELINE_NAME + "')]")).getText();
         Assert.assertEquals(pipelineNameExpected, MULTIBRANCH_PIPELINE_NAME);
