@@ -78,9 +78,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
     @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
     public void testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
-
-//        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
-
         String expectedResultName = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineConfigurationPage(getDriver()))
                 .confirmRename(MULTIBRANCH_PIPELINE_NAME)
