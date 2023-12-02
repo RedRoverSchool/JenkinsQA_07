@@ -293,7 +293,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testFindByQuickSearch() {
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
-                .useSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()));
+                .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()));
 
         Assert.assertEquals(multibranchPipelineDetailsPage.getHeadLineText(), MULTIBRANCH_PIPELINE_NAME);
     }

@@ -65,4 +65,9 @@ public class UserDatabasePage extends BasePage {
         return fullName;
     }
 
+    public UserPage clickUserByName(String name) {
+        getDriver().findElement(By.cssSelector("a[href='user/" + name + "/']")).click();
+
+        return new UserPage(getDriver());
+    }
 }

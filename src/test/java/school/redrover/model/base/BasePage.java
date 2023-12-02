@@ -18,6 +18,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(name = "q")
     private WebElement searchBoxHeader;
 
+    @FindBy(xpath = "//li//a[@href='/']")
+    private WebElement dashboard;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
@@ -45,7 +48,7 @@ public abstract class BasePage extends BaseModel {
         return heading.getText();
     }
 
-    public <T> T useSearchBox(String searchText, T page) {
+    public <T> T goSearchBox(String searchText, T page) {
         searchBoxHeader.click();
         searchBoxHeader.sendKeys(searchText);
 
@@ -78,5 +81,11 @@ public abstract class BasePage extends BaseModel {
                 "}, 500);");
 
         return page;
+    }
+
+    public HomePage clickDashboardBreadCrumb() {
+        dashboard.click();
+
+        return new HomePage(getDriver());
     }
 }
