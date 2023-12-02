@@ -68,7 +68,7 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement projectDescriptionTextarea;
-    
+
     @FindBy(xpath = "//label[normalize-space()='This project is parameterized']")
     private WebElement parametrizedProjectCheckboxLabel;
 
@@ -156,14 +156,14 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
     public boolean tooltipDiscardOldBuildsIsVisible() {
         boolean tooltipIsVisible = true;
-        
+
         new Actions(getDriver())
                 .moveToElement(discardOldBuildsHelpButton)
                 .perform();
         if (discardOldBuildsHelpButton.getAttribute("title").equals("Help for feature: Discard old builds")) {
             tooltipIsVisible = false;
         }
-        
+
         return tooltipIsVisible;
     }
 
@@ -204,19 +204,19 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
     public FreestyleProjectConfigurePage clickDiscardOldBuildsCheckBox() {
         discardOldBuildsCheckBox.click();
-        
+
         return this;
     }
 
     public FreestyleProjectConfigurePage inputDaysToKeepBuilds(String num) {
         daysToKeepBuildsField.sendKeys(num);
-        
+
         return this;
     }
 
     public FreestyleProjectConfigurePage inputMaxNumberOfBuildsToKeep(String num) {
         maxNumberOfBuildsToKeepField.sendKeys(num);
-        
+
         return this;
     }
 
@@ -243,7 +243,7 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
     public FreestyleProjectConfigurePage clickExecuteConcurrentBuildsIfNecessaryCheckBox() {
         executeConcurrentBuildsIfNecessaryCheckBox.click();
-        
+
         return this;
     }
 
@@ -515,7 +515,7 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
         return this;
     }
-    
+
     public boolean isParametrizedProjectCheckboxSelected() {
         return parameterizedProjectCheckbox.isSelected();
     }

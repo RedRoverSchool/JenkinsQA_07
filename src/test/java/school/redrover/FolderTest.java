@@ -12,7 +12,6 @@ import school.redrover.runner.BaseTest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class FolderTest extends BaseTest {
@@ -40,11 +39,6 @@ public class FolderTest extends BaseTest {
         getDriver().findElement(By.cssSelector("#name")).sendKeys(folderName);
         getDriver().findElement(By.className("com_cloudbees_hudson_plugins_folder_Folder")).click();
         getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void utilsGoNameField() {
-        getDriver().findElement(By.xpath("//a[@href = '/view/all/newJob']")).click();
-        getDriver().findElement(By.xpath("//li[@class = 'com_cloudbees_hudson_plugins_folder_Folder']")).click();
     }
 
     private void create(String folderName) {
@@ -219,7 +213,7 @@ public class FolderTest extends BaseTest {
 
     @Test
     public void testPositiveBoundaryValuesName() {
-        String listJob = new  HomePage(getDriver())
+        String listJob = new HomePage(getDriver())
                 .clickNewItem()
                 .createFolder(NAME_FOR_BOUNDARY_VALUES)
                 .goHomePage()
