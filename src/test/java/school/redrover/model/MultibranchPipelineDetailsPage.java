@@ -26,6 +26,15 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     @FindBy(linkText = "Configure")
     private WebElement configureLink;
 
+    @FindBy(xpath = "//button[contains(text(), 'Disable Multibranch Pipeline')]")
+    private WebElement disableButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Enable')]")
+    private WebElement enableButton;
+
+    @FindBy(id = "enable-project")
+    private WebElement disabledStatusMessage;
+
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -65,5 +74,21 @@ public class MultibranchPipelineDetailsPage extends BasePage {
         configureLink.click();
 
         return new MultibranchPipelineConfigurationPage(getDriver());
+    }
+
+    public MultibranchPipelineDetailsPage clickDisable() {
+        disableButton.click();
+
+        return this;
+    }
+
+    public MultibranchPipelineDetailsPage clickEnable() {
+        enableButton.click();
+
+        return this;
+    }
+
+    public String getDisableStatusMessage() {
+        return disabledStatusMessage.getText();
     }
 }

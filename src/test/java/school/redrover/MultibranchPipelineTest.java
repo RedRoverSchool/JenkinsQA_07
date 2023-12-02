@@ -241,16 +241,14 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(status, "Enabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
-        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+        String actualStatusMessage = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickDisable()
+                .getDisableStatusMessage();
 
-        getDriver().findElement(By.cssSelector("a[href='job/" + MULTIBRANCH_PIPELINE_NAME + "/']")).click();
-        getDriver().findElement(By.cssSelector("button[formNoValidate]")).click();
-
-        Assert.assertTrue(
-                getDriver().findElement(By.cssSelector("form[method='post']")).getText().
-                        contains("This Multibranch Pipeline is currently disabled"),
+        Assert.assertTrue(actualStatusMessage.contains("This Multibranch Pipeline is currently disabled"),
                 "Incorrect or missing text");
     }
 
