@@ -924,7 +924,7 @@ public class FreestyleProjectTest extends BaseTest {
         String titleBeforeWorkspaceCreating = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .goToWorkspaceFromSideMenu()
-                .getTitleText();
+                .getHeadLineText();
 
         Assert.assertEquals(titleBeforeWorkspaceCreating, "Error: no workspace");
 
@@ -933,7 +933,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickBuildByGreenArrow(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .goToWorkspaceFromSideMenu()
-                .getTitleText();
+                .getHeadLineText();
 
         Assert.assertEquals(titleAfterWorkspaceCreating, "Workspace of " + PROJECT_NAME + " on Built-In Node");
     }

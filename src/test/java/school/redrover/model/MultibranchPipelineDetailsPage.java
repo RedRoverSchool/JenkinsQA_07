@@ -20,9 +20,6 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
-    @FindBy(tagName = "h1")
-    private WebElement pageTitle;
-
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
@@ -33,10 +30,6 @@ public class MultibranchPipelineDetailsPage extends BasePage {
         super(driver);
     }
 
-
-    public String getTitle() {
-        return pageTitle.getText();
-    }
     public List<String> getBreadcrumbChain() {
         List<String> breadcrumb = new ArrayList<>();
         for (WebElement element : breadcrumbChain) {
