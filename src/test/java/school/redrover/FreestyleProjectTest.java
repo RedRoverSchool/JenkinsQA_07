@@ -461,21 +461,21 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testSelectThisProjectIsParameterizedCheckbox() {
-        WebElement addParameterFromCheckBox = new HomePage(getDriver())
+        boolean isAddParameterButtonDisplayed = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigureFromSideMenu()
-                .clickOnParametrizedCheckBox()
-                .checkIsParameteresDropDownMenuAvailable();
+                .clickThisProjectIsParameterizedCheckbox()
+                .isAddParameterButtonDisplayed();
 
-        Assert.assertTrue(addParameterFromCheckBox.isDisplayed());
+        Assert.assertTrue(isAddParameterButtonDisplayed);
     }
 
     @Test
     public void testFreestyleProjectConfigureIsParameterizedCheckboxSelected() {
-        WebElement thisProjectIsParameterizedCheckbox = new HomePage(getDriver())
+        boolean isParametrizedProjectCheckboxSelected = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
@@ -483,9 +483,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
-                .getThisProjectIsParameterizedCheckbox();
+                .isParametrizedProjectCheckboxSelected();
 
-        Assert.assertTrue(thisProjectIsParameterizedCheckbox.isSelected());
+        Assert.assertTrue(isParametrizedProjectCheckboxSelected);
     }
 
     @Test
@@ -511,10 +511,10 @@ public class FreestyleProjectTest extends BaseTest {
         String editDescription = new HomePage(getDriver())
                 .clickOnJob()
                 .goToConfigureFromSideMenu()
-                .editProjectDescriptionField(PROJECT_DESCRIPTION)
+                .inputProjectDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
                 .goToConfigureFromSideMenu()
-                .editProjectDescriptionField(NEW_PROJECT_DESCRIPTION)
+                .inputProjectDescription(NEW_PROJECT_DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
 
@@ -527,8 +527,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOnJob()
                 .goToConfigureFromSideMenu()
                 .clickAdvancedButton()
-                .clickOnQuietPeriodToolTip()
-                .helpMessageDisplay();
+                .clickQuietPeriodHelpIcon()
+                .isQuietPeriodHelpTextDisplayed();
 
         Assert.assertTrue(helpMessageDisplay);
     }
@@ -656,7 +656,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickCheckboxGitHubProject()
                 .clickAdvancedDropdownGitHubProjectWithScroll()
                 .inputDisplayNameGitHubProject("GitHubURL")
-                .editedLabelInGitHubProjectIsDisplayed();
+                .isEditedLabelInGitHubProjectDisplayed();
 
         Assert.assertTrue(isLabelAppears);
     }
@@ -781,7 +781,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
-                .clickAddParameterDropdown()
+                .clickAddParameter()
                 .clickBooleanParameterOption()
                 .inputParameterName(PARAMETER_NAME)
                 .inputParameterDescription(PARAMETER_DESCRIPTION)
@@ -810,7 +810,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
-                .clickAddParameterDropdown();
+                .clickAddParameter();
 
         Assert.assertEquals(freestyleProjectConfigurePage.getAddParameterDropdownText()
                 , expectedResult);
@@ -979,19 +979,6 @@ public class FreestyleProjectTest extends BaseTest {
         }
     }
 
-    @Test
-    public void testVisibilityHelDescriptionQuietPeriod() {
-        createProject("Freestyle project", PROJECT_NAME, true);
-
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
-        getDriver().findElement(By.cssSelector(".config-table > .jenkins-form-item .jenkins-button")).click();
-        getDriver().findElement(By.xpath("//a[@title='Help for feature: Quiet period']")).click();
-
-        Assert.assertTrue(getDriver().findElement(By.
-                        xpath("//div[@class='tbody dropdownList-container']//div[@class='help']//div")).isDisplayed(),
-                "Help description of Quiet Period is not displayed!");
-    }
 
     @Test
     public void testParameterizedBuildWithChoices() {
