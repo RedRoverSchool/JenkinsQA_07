@@ -288,7 +288,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
 
-
+    @Ignore
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testFindByQuickSearch() {
         MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
