@@ -928,8 +928,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         Assert.assertEquals(titleBeforeWorkspaceCreating, "Error: no workspace");
 
-        String titleAfterWorkspaceCreating = new BreadcrumbPage(getDriver())
-                .clickJenkinsIcon()
+        String titleAfterWorkspaceCreating = new HomePage(getDriver())
+                .goHomePage()
                 .clickBuildByGreenArrow(PROJECT_NAME)
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .goToWorkspaceFromSideMenu()
