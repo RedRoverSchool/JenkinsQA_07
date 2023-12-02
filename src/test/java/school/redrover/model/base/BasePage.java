@@ -21,7 +21,7 @@ public abstract class BasePage extends BaseModel {
     private WebElement searchBoxHeader;
 
     @FindBy(xpath = "//li//a[@href='/']")
-    private WebElement dashboard;
+    private WebElement dashboardBreadCrumb;
 
     @FindBy(xpath = "//div[@id='breadcrumbBar']/ol/li/a")
     private List<WebElement> breadcrumbBarItemsList;
@@ -94,7 +94,7 @@ public abstract class BasePage extends BaseModel {
     }
 
     public HomePage clickDashboardBreadCrumb() {
-        dashboard.click();
+        dashboardBreadCrumb.click();
 
         return new HomePage(getDriver());
     }
