@@ -329,23 +329,18 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(enabledOkButton);
     }
 
-    @Ignore
     @Test(description = "Creating Freestyle project using an empty name")
-    public void testFreestyleProjectWithEmptyName() {
+    public void testCreateWithEmptyName() {
         NewItemPage newItemPage = new HomePage(getDriver())
-                .clickNewItem();
-        String textResult = newItemPage
-                .clickOkWithError(new NewItemPage(getDriver()))
-                .getRequiredNameErrorMessage();
+                .clickNewItem()
+                .clickOkWithError(new NewItemPage(getDriver()));
 
-        boolean okButtonEnabled = newItemPage.isOkButtonEnabled();
-
-        assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
-        assertFalse(okButtonEnabled);
+        assertEquals(newItemPage.getRequiredNameErrorMessage(), "» This field cannot be empty, please enter a valid name");
+        assertFalse(newItemPage.isOkButtonEnabled());
     }
 
     @Test
-    public void testFreestyleProjectWithDuplicateName() {
+    public void testCreateWithDuplicateName() {
         ErrorPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
