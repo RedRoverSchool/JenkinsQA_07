@@ -27,33 +27,6 @@ public class FreestyleProjectTest extends BaseTest {
     private final static String PARAMETER_NAME = "Ņame";
     private final static String PARAMETER_DESCRIPTION = "Description";
 
-    private void goToJenkinsHomePage() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
-
-    private void createProject(String typeOfProject, String nameOfProject, boolean goToHomePage) {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.xpath("//input[@class='jenkins-input']"))
-                .sendKeys(nameOfProject);
-        getDriver().findElement(By.xpath("//span[text()='" + typeOfProject + "']/..")).click();
-        getDriver().findElement(By.xpath("//button[@id='ok-button']")).click();
-
-        if (goToHomePage) {
-            goToJenkinsHomePage();
-        }
-    }
-
-    private void createFreeStyleProject(String projectName) {
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    private void clickSubmitButton() {
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-    }
-
     private void configureParameterizedBuild(String projectName, String choiceName, String choiceOptions) {
         getDriver().findElement(By.xpath("//a[@href='job/" + projectName + "/']")).click();
         getDriver().findElement(By.xpath("//a[@href='/job/" + projectName + "/configure']")).click();
@@ -334,9 +307,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(description = "Creating new Freestyle project using valid data", dataProvider = "ValidName")
     public void testFreestyleProjectWithValidData(String name) {
-        createFreeStyleProject(name);
-        clickSubmitButton();
-        goToJenkinsHomePage();
+        TestUtils.createFreestyleProject(this, name, true);
 
         String result = getDriver().findElement(By.xpath("//*[@id =\"job_" + name + "\"]/td[3]/a/span")).getText();
 
@@ -816,8 +787,7 @@ public class FreestyleProjectTest extends BaseTest {
         final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
                 "Last completed build"};
 
-        createFreeStyleProject(PROJECT_NAME);
-        clickSubmitButton();
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
         for (int i = 0; i < 4; i++) {
             getWait2().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Build Now"))).click();
@@ -979,7 +949,8 @@ public class FreestyleProjectTest extends BaseTest {
         final String choices = "Chrome Firefox Edge Safari";
         final String choiceName = "browsers";
 
-        createProject("Freestyle project", PROJECT_NAME, true);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
+
         configureParameterizedBuild(PROJECT_NAME, choiceName, choices);
 
         WebElement build = getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a"));
