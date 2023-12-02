@@ -268,7 +268,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "“.” is not an allowed name");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = {"testCreate", "testRenameWithEndingPeriod"})
     public void testRenameFolderThroughLeftPanelWithEmptyName() {
         String errorMessage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
