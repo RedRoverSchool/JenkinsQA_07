@@ -156,6 +156,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
     @FindBy(xpath = "//label[text()='Always trigger, even if the build is aborted']")
     private WebElement alwaysTriggerRadio;
 
+    @FindBy(xpath = "//label[text()='Add timestamps to the Console Output']")
+    private WebElement addTimestampsToConsoleCheckbox;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -526,6 +529,14 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView(true);", buildAfterOtherProjectsCheckboxLabel);
         alwaysTriggerRadio.click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAddTimestampsToConsoleOutput() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true);", addTimestampsToConsoleCheckbox);
+        addTimestampsToConsoleCheckbox.click();
 
         return this;
     }

@@ -145,10 +145,10 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         return getDriver().findElement(By.xpath("//div[@id='main-panel']//h1")).isDisplayed();
     }
 
-    public FreestyleProjectBuildDetailsPage clickPermalinkLastBuild() {
+    public BuildPage clickPermalinkLastBuild() {
         lastBuild.click();
 
-        return new FreestyleProjectBuildDetailsPage(getDriver());
+        return new BuildPage(getDriver());
     }
 
     public String getPermalinksText() {

@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.BuildPage;
 import school.redrover.model.RenamePage;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public abstract class BaseProjectPage extends BasePage {
 
     @FindBy(xpath = "//a[@class='model-link inside build-link display-name']")
     private List<WebElement> buildLinksInBuildHistory;
+
+    @FindBy(xpath = "//span[@class='build-status-icon__outer']")
+    private WebElement buildIconInBuildHistory;
 
     @FindBy(linkText = "Configure")
     private WebElement configureSideMenuOption;
@@ -81,5 +85,11 @@ public abstract class BaseProjectPage extends BasePage {
         configureSideMenuOption.click();
 
         return projectConfigurationPage;
+    }
+
+    public BuildPage clickBuildIconInBuildHistory() {
+        buildIconInBuildHistory.click();
+
+        return new BuildPage(getDriver());
     }
 }

@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -733,32 +732,23 @@ public class FreestyleProjectTest extends BaseTest {
                 .isProjectExist(NEW_PROJECT_NAME));
     }
 
-    @Ignore
     @Test
     public void testConfigureBuildEnvironmentSettingsAddTimestamp() {
-        createProject("Freestyle project", PROJECT_NAME, true);
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR).click();
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
 
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement addTimestampsCheckbox = getDriver().findElement(
-                By.xpath("//label[text()='Add timestamps to the Console Output']"));
-        js.executeScript("arguments[0].scrollIntoView(true);", addTimestampsCheckbox);
-        addTimestampsCheckbox.click();
-        clickSubmitButton();
+        List<String> timestampsList = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickAddTimestampsToConsoleOutput()
+                .clickSaveButton(new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNow(new FreestyleProjectDetailsPage(getDriver()))
+                .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildIconInBuildHistory().getTimestampsList();
 
-        getDriver().findElement(By.xpath("//span[text()='Build Now']/..")).click();
-        js.executeScript("setTimeout(function() {location.reload();}, 2000);");
-        getDriver().navigate().refresh();
-        getWait10().until(ExpectedConditions.visibilityOf(getDriver().findElement(By.xpath("//span[@class='build-status-icon__outer']")))).click();
-
-        List<WebElement> timestamps = getDriver().findElements(
-                By.xpath("//pre[@class='console-output']//span[@class='timestamp']"));
-
-        Assert.assertNotEquals(timestamps.size(), 0);
-        for (WebElement timestamp : timestamps) {
-            Assert.assertTrue(timestamp.getText().trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
+        Assert.assertNotEquals(timestampsList.size(), 0);
+        for (String timestamp : timestampsList) {
+            Assert.assertTrue(timestamp.trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
         }
     }
 
@@ -965,7 +955,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .refreshPage(new FreestyleProjectDetailsPage(getDriver()))
                 .clickPermalinkLastBuild()
                 .clickDeleteBuildSidePanel()
-                .clickButtonDeleteBuild()
+                .clickButtonDeleteBuild(new FreestyleProjectDetailsPage(getDriver()))
                 .getPermalinksText();
 
         for (String x : removedPermalinks) {
