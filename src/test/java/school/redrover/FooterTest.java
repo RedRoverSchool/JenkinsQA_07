@@ -55,7 +55,7 @@ public class FooterTest extends BaseTest {
 
 
     @Test
-    public void checkTippyBox() {
+    public void testCheckTippyBox() {
         final List<String> expectedMenu = List.of(
                 "About Jenkins",
                 "Get involved",
