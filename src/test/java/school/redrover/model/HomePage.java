@@ -17,7 +17,7 @@ public class HomePage extends BasePage {
     private WebElement setUpAgent;
 
     @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
-    public WebElement buildHistoryButton;
+    private WebElement buildHistoryButton;
 
     @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
     private WebElement createJob;
@@ -76,6 +76,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//div[@class='tippy-box']//div//a")
     private WebElement tippyBox;
 
+    @FindBy(className = "addTab")
+    private WebElement newViewButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -94,9 +97,8 @@ public class HomePage extends BasePage {
 
     public List<String> getJobList() {
         List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]/span[1]"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
 
-        return resultList;
+        return elementList.stream().map(WebElement::getText).toList();
     }
 
     public NewItemPage clickNewItem() {
@@ -115,12 +117,6 @@ public class HomePage extends BasePage {
         buildHistoryButton.click();
 
         return new BuildHistoryPage(getDriver());
-    }
-
-    public NewViewPage clickNewViewButton() {
-        getDriver().findElement(By.xpath("//a[@tooltip='New View']")).click();
-
-        return new NewViewPage(getDriver());
     }
 
     public NewItemPage clickCreateAJob() {
@@ -306,4 +302,9 @@ public class HomePage extends BasePage {
         return new RestAPIPage(getDriver());
     }
 
+    public NewViewPage clickNewViewButton() {
+        newViewButton.click();
+
+        return new NewViewPage(getDriver());
+    }
 }
