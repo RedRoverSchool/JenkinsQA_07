@@ -76,10 +76,10 @@ public class MultibranchPipelineTest extends BaseTest {
                 multibranchBreadcrumbName + " name doesn't match " + MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
     public void testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
-        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
+//        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         String expectedResultName = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineConfigurationPage(getDriver()))
@@ -252,12 +252,13 @@ public class MultibranchPipelineTest extends BaseTest {
                 "Incorrect or missing text");
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage"})
     public void testMultibranchNameDisplayBreadcrumbTrail() {
-        createMultibranchPipelineWithCreateAJob();
-        String pipelineNameExpected = getDriver().findElement(By.xpath("//a[contains(text(),'"
-                + MULTIBRANCH_PIPELINE_NAME + "')]")).getText();
-        Assert.assertEquals(pipelineNameExpected, MULTIBRANCH_PIPELINE_NAME);
+        List<String> breadCumbList = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getBreadcrumbChain();
+
+        Assert.assertTrue(breadCumbList.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
