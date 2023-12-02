@@ -51,7 +51,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getJobList()
                 .toString();
 
-        Assert.assertTrue(homePage.contains(PROJECT_NAME));
+        assertTrue(homePage.contains(PROJECT_NAME));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .deleteProject()
                 .isProjectExist("other" + PROJECT_NAME);
 
-        Assert.assertFalse(projectExist);
+        assertFalse(projectExist);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
@@ -121,7 +121,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getDescriptionText();
 
-        Assert.assertEquals(actualDescription, PROJECT_DESCRIPTION);
+        assertEquals(actualDescription, PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")
@@ -134,7 +134,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getDescriptionText();
 
-        Assert.assertEquals(actualNewDescriptionText, NEW_PROJECT_DESCRIPTION);
+        assertEquals(actualNewDescriptionText, NEW_PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testAddDescriptionFreestyleProject")
@@ -146,7 +146,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getDescriptionText();
 
-        Assert.assertEquals(actualEmptyDescriptionInputField, "");
+        assertEquals(actualEmptyDescriptionInputField, "");
     }
 
     @Test
@@ -156,7 +156,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .tooltipDiscardOldBuildsIsVisible();
 
-        Assert.assertTrue(tooltipIsVisible, "The tooltip is not displayed.");
+        assertTrue(tooltipIsVisible, "The tooltip is not displayed.");
     }
 
     @Test
@@ -311,7 +311,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String result = getDriver().findElement(By.xpath("//*[@id =\"job_" + name + "\"]/td[3]/a/span")).getText();
 
-        Assert.assertEquals(result, name);
+        assertEquals(result, name);
     }
 
     @DataProvider(name = "InvalidName")
@@ -330,7 +330,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreestyleProject()
                 .getInvalidNameErrorMessage();
 
-        Assert.assertEquals(errorMessage, "» ‘" + name + "’ is an unsafe character");
+        assertEquals(errorMessage, "» ‘" + name + "’ is an unsafe character");
     }
 
     @Test(description = "Creating new Freestyle project using invalid data", dataProvider = "InvalidName")
@@ -341,7 +341,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectFreestyleProject()
                 .isOkButtonEnabled();
 
-        Assert.assertFalse(enabledOkButton);
+        assertFalse(enabledOkButton);
     }
 
     @Ignore
@@ -355,8 +355,8 @@ public class FreestyleProjectTest extends BaseTest {
 
         boolean okButtonEnabled = newItemPage.isOkButtonEnabled();
 
-        Assert.assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
-        Assert.assertFalse(okButtonEnabled);
+        assertEquals(textResult, "» This field cannot be empty, please enter a valid name");
+        assertFalse(okButtonEnabled);
     }
 
     @Test
@@ -368,7 +368,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickRename()
                 .clickRenameButtonAndRedirectErrorPage();
 
-        Assert.assertEquals(errorPage.getErrorMessage(), "The new name is the same as the current name.");
+        assertEquals(errorPage.getErrorMessage(), "The new name is the same as the current name.");
     }
 
     @Test
@@ -382,7 +382,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickRenameButtonEmptyName()
                 .getErrorText();
 
-        Assert.assertEquals(errorText, "No name is specified");
+        assertEquals(errorText, "No name is specified");
     }
 
     @Test(dependsOnMethods = "testRenameProject")
@@ -391,7 +391,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickEnableDisableButton();
 
-        Assert.assertTrue(detailsPage.isProjectDisabled());
+        assertTrue(detailsPage.isProjectDisabled());
     }
 
     @Test(dependsOnMethods = {"testDisable"})
@@ -400,7 +400,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickEnableDisableButton();
 
-        Assert.assertTrue(detailsPage.isEnabled());
+        assertTrue(detailsPage.isEnabled());
     }
 
     @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
@@ -438,7 +438,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickThisProjectIsParameterizedCheckbox()
                 .isAddParameterButtonDisplayed();
 
-        Assert.assertTrue(isAddParameterButtonDisplayed);
+        assertTrue(isAddParameterButtonDisplayed);
     }
 
     @Test
@@ -453,7 +453,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickThisProjectIsParameterizedCheckbox()
                 .isParametrizedProjectCheckboxSelected();
 
-        Assert.assertTrue(isParametrizedProjectCheckboxSelected);
+        assertTrue(isParametrizedProjectCheckboxSelected);
     }
 
     @Test
@@ -471,7 +471,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .refreshPage(new FreestyleProjectDetailsPage(getDriver()))
                 .getBuildsInBuildHistoryList();
 
-        Assert.assertEquals(buildsList.get(buildsList.size() - 1), "#2");
+        assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
@@ -486,7 +486,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getDescriptionText();
 
-        Assert.assertEquals(editDescription, NEW_PROJECT_DESCRIPTION);
+        assertEquals(editDescription, NEW_PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
@@ -498,7 +498,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickQuietPeriodHelpIcon()
                 .isQuietPeriodHelpTextDisplayed();
 
-        Assert.assertTrue(helpMessageDisplay);
+        assertTrue(helpMessageDisplay);
     }
 
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
@@ -509,7 +509,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOnJob()
                 .getCurrentUrl();
 
-        Assert.assertTrue(currentUrl.contains("/job/" + editedProjectName));
+        assertTrue(currentUrl.contains("/job/" + editedProjectName));
     }
 
     @Ignore
@@ -523,7 +523,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickEnableDisableButton()
                 .getWarningMessageWhenDisabled();
 
-        Assert.assertEquals(warningMessage, "This project is currently disabled");
+        assertEquals(warningMessage, "This project is currently disabled");
     }
 
     @Test(dependsOnMethods = "testOldBuildsAreDiscarded")
@@ -542,7 +542,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
                 .getUpstreamProjectsList();
 
-        Assert.assertEquals(upstreamProjectsList, List.of(upstreamProjectName));
+        assertEquals(upstreamProjectsList, List.of(upstreamProjectName));
     }
 
     @Test
@@ -553,7 +553,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickDiscardOldBuildsCheckBox()
                 .isDiscardOldBuildsSettingsFieldDisplayed();
 
-        Assert.assertTrue(isDiscardOldBuildsSettingsFieldDisplayed);
+        assertTrue(isDiscardOldBuildsSettingsFieldDisplayed);
     }
 
     @Test(dependsOnMethods = "testSettingsOfDiscardOldBuildsIsDisplayed")
@@ -567,7 +567,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickApply()
                 .getErrorMessageText();
 
-        Assert.assertEquals(errorMessage, "Not a positive integer");
+        assertEquals(errorMessage, "Not a positive integer");
     }
 
     @Test
@@ -578,7 +578,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickGitRadioButtonWithScroll()
                 .isGitRadioButtonSettingsFormDisplayed();
 
-        Assert.assertTrue(areSettingsDisplayed);
+        assertTrue(areSettingsDisplayed);
     }
 
     @Ignore
@@ -596,7 +596,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickGitRadioButtonWithScroll()
                 .getValueGitHubRepositoryURL();
 
-        Assert.assertEquals(repositoryUrlText, inputText);
+        assertEquals(repositoryUrlText, inputText);
     }
 
     @Test
@@ -613,7 +613,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .getShellScriptText();
 
-        Assert.assertEquals(shellScript, buildStepTitle);
+        assertEquals(shellScript, buildStepTitle);
     }
 
     @Test
@@ -626,7 +626,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputDisplayNameGitHubProject("GitHubURL")
                 .isEditedLabelInGitHubProjectDisplayed();
 
-        Assert.assertTrue(isLabelAppears);
+        assertTrue(isLabelAppears);
     }
 
     @Test
@@ -639,7 +639,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickPreviewDescription()
                 .getPreviewDescriptionText();
 
-        Assert.assertEquals(previewText, PROJECT_DESCRIPTION);
+        assertEquals(previewText, PROJECT_DESCRIPTION);
     }
 
     @Test(dependsOnMethods = "testDescriptionPreviewAppears")
@@ -651,7 +651,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickHidePreviewDescription()
                 .isPreviewDescriptionTextDisplayed();
 
-        Assert.assertFalse(isTextDisplayed);
+        assertFalse(isTextDisplayed);
     }
 
     @Test
@@ -667,7 +667,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .getInputDaysToKeepBuildsFieldValue();
 
-        Assert.assertEquals(daysToKeepBuildsFieldValue, daysToKeepBuilds);
+        assertEquals(daysToKeepBuildsFieldValue, daysToKeepBuilds);
     }
 
     @Test(dependsOnMethods = "testThisProjectIsParameterizedCheckboxAddBooleanParameter")
@@ -679,7 +679,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickApply()
                 .getSavedNotificationMessage();
 
-        Assert.assertEquals(notificationMessage, "Saved");
+        assertEquals(notificationMessage, "Saved");
     }
 
     @Ignore
@@ -696,7 +696,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickRenameButton()
                 .goHomePage();
 
-        Assert.assertTrue(new HomePage(getDriver())
+        assertTrue(new HomePage(getDriver())
                 .isProjectExist(NEW_PROJECT_NAME));
     }
 
@@ -714,9 +714,9 @@ public class FreestyleProjectTest extends BaseTest {
                 .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
                 .clickBuildIconInBuildHistory().getTimestampsList();
 
-        Assert.assertNotEquals(timestampsList.size(), 0);
+        assertNotEquals(timestampsList.size(), 0);
         for (String timestamp : timestampsList) {
-            Assert.assertTrue(timestamp.trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
+            assertTrue(timestamp.trim().matches("[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}"));
         }
     }
 
@@ -736,7 +736,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(folderName, new FolderDetailsPage(getDriver()))
                 .isJobInJobsList(PROJECT_NAME);
 
-        Assert.assertTrue(isJobInJobsListInDestinationFolder);
+        assertTrue(isJobInJobsListInDestinationFolder);
     }
 
     @Test
@@ -756,7 +756,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure();
 
-        Assert.assertTrue(configurePage.getParameterName().equals(PARAMETER_NAME) &&
+        assertTrue(configurePage.getParameterName().equals(PARAMETER_NAME) &&
                 configurePage.getParameterDescription().equals(PARAMETER_DESCRIPTION));
     }
 
@@ -778,7 +778,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickThisProjectIsParameterizedCheckbox()
                 .clickAddParameter();
 
-        Assert.assertEquals(freestyleProjectConfigurePage.getAddParameterDropdownText()
+        assertEquals(freestyleProjectConfigurePage.getAddParameterDropdownText()
                 , expectedResult);
     }
 
@@ -803,11 +803,11 @@ public class FreestyleProjectTest extends BaseTest {
 
         ArrayList<String> permalinksTexts = new ArrayList<>();
 
-        Assert.assertEquals(permalinks.size(), 4);
+        assertEquals(permalinks.size(), 4);
 
         for (int i = 0; i < permalinks.size(); i++) {
             permalinksTexts.add(permalinks.get(i).getText());
-            Assert.assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
+            assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
         }
     }
 
@@ -828,8 +828,8 @@ public class FreestyleProjectTest extends BaseTest {
         String inputMaxNumberOfBuildsToKeep = new FreestyleProjectConfigurePage(getDriver())
                 .getInputMaxNumberOfBuildsToKeepFieldValue();
 
-        Assert.assertEquals(inputDaysToKeepBuilds, "3");
-        Assert.assertEquals(inputMaxNumberOfBuildsToKeep, "2");
+        assertEquals(inputDaysToKeepBuilds, "3");
+        assertEquals(inputMaxNumberOfBuildsToKeep, "2");
     }
 
     @Test
@@ -849,8 +849,8 @@ public class FreestyleProjectTest extends BaseTest {
         String timePeriod = new FreestyleProjectConfigurePage(getDriver())
                 .getTimePeriodFieldValue();
 
-        Assert.assertEquals(numberOfBuilds, "4");
-        Assert.assertEquals(timePeriod, "day");
+        assertEquals(numberOfBuilds, "4");
+        assertEquals(timePeriod, "day");
     }
 
     @Test
@@ -868,7 +868,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .scrollPage(0, 300)
                 .getExecuteConcurrentBuildsIfNecessaryCheckBoxValue("display");
 
-        Assert.assertNotEquals(checkBoxDisplayStyle, "none");
+        assertNotEquals(checkBoxDisplayStyle, "none");
     }
 
     @Test
@@ -881,7 +881,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goToWorkspaceFromSideMenu()
                 .getHeadLineText();
 
-        Assert.assertEquals(titleBeforeWorkspaceCreating, "Error: no workspace");
+        assertEquals(titleBeforeWorkspaceCreating, "Error: no workspace");
 
         String titleAfterWorkspaceCreating = new BreadcrumbPage(getDriver())
                 .clickJenkinsIcon()
@@ -890,7 +890,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goToWorkspaceFromSideMenu()
                 .getHeadLineText();
 
-        Assert.assertEquals(titleAfterWorkspaceCreating, "Workspace of " + PROJECT_NAME + " on Built-In Node");
+        assertEquals(titleAfterWorkspaceCreating, "Workspace of " + PROJECT_NAME + " on Built-In Node");
     }
 
     @Test
@@ -903,7 +903,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickEnableDisableButton()
                 .isProjectDisabled();
 
-        Assert.assertTrue(isMessageVisible, "The warning message is not visible.");
+        assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 
     @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
@@ -924,7 +924,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getPermalinksText();
 
         for (String x : removedPermalinks) {
-            Assert.assertFalse(permaLinks.contains(x));
+            assertFalse(permaLinks.contains(x));
         }
     }
 
@@ -940,7 +940,7 @@ public class FreestyleProjectTest extends BaseTest {
             error.clearInputField()
                     .enterName(x);
 
-            Assert.assertEquals(error.getErrorMessage(), "‘" + x + "’ is an unsafe character");
+            assertEquals(error.getErrorMessage(), "‘" + x + "’ is an unsafe character");
         }
     }
 
@@ -958,12 +958,12 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<WebElement> actualChoiceList = getDriver().findElements(By.xpath("//div[@class='setting-main']//select/option"));
 
-        Assert.assertNotEquals(getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a")).getText(), "Build Now");
-        Assert.assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), choiceName);
-        Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='setting-main']//select/option[1]")).isSelected());
-        Assert.assertFalse(actualChoiceList.isEmpty());
+        assertNotEquals(getDriver().findElement(By.xpath("//div[@id='tasks']//div[4]//a")).getText(), "Build Now");
+        assertEquals(getDriver().findElement(By.className("jenkins-form-label")).getText(), choiceName);
+        assertTrue(getDriver().findElement(By.xpath("//div[@class='setting-main']//select/option[1]")).isSelected());
+        assertFalse(actualChoiceList.isEmpty());
         for (WebElement ch : actualChoiceList) {
-            Assert.assertTrue(choices.contains(ch.getText()));
+            assertTrue(choices.contains(ch.getText()));
         }
     }
 
@@ -977,6 +977,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getTextItemsSidePanel();
 
-        Assert.assertEquals(itemsActual, itemsExpected);
+        assertEquals(itemsActual, itemsExpected);
     }
 }
