@@ -11,16 +11,12 @@ import java.util.List;
 
 public class FooterTest extends BaseTest {
 
-    public void clickDropdownItemJenkinsVersion(String itemText) {
-        HomePage dropDown = new HomePage(getDriver())
-                .clickJenkinsVersion()
-                .clickDropDownItem(itemText);
-    }
-
     public void clickDropdownItemJenkinsVersionButton(String dropdownItem) {
         String startWindow = getDriver().getWindowHandle();
 
-        clickDropdownItemJenkinsVersion(dropdownItem);
+        HomePage dropDown = new HomePage(getDriver())
+                .clickJenkinsVersion()
+                .clickDropDownItem(dropdownItem);
 
         for (String windowHandle : getDriver().getWindowHandles()) {
             if (!startWindow.contentEquals(windowHandle)) {
@@ -69,15 +65,6 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualPageName, expectedPageName, "The page name is not Participate and Contribute");
         Assert.assertEquals(actualPageTitle, expectedPageTitle, "The title is not Participate and Contribute");
-    }
-
-    @Test
-    public void testVerifyClickabilityOfRestAPILink() {
-        String getTitleRestApt = new HomePage(getDriver())
-                .clickRestApi()
-                .getTitlePage();
-
-        Assert.assertEquals(getTitleRestApt, "Remote API [Jenkins]");
     }
 
     @Test
