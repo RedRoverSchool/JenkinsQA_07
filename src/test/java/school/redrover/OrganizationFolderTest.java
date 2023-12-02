@@ -176,7 +176,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(CLONE_NAME)
                 .enterExistentItemNameToClone(wrongName)
-                .clickOk(new ErrorPage(getDriver()))
+                .clickOkWithError(new ErrorPage(getDriver()))
                 .getErrorMessage();
 
         Assert.assertEquals(errorPage, "No such job: " + wrongName);

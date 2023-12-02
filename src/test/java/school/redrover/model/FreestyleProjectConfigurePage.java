@@ -5,12 +5,14 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
 import org.openqa.selenium.JavascriptExecutor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectConfigurePage extends BasePage {
+public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
+
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement helpButtonDiscardOldBuilds;
 

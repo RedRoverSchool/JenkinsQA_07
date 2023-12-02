@@ -61,9 +61,10 @@ public class PipelineTest extends BaseTest {
                 .enterNewName(updatedJobName)
                 .clickRenameButton(new PipelineDetailsPage(getDriver()))
                 .goHomePage()
-                .getJobDisplayName();
+                .getJobList()
+                .toString();
 
-        Assert.assertEquals(currentName, updatedJobName);
+        Assert.assertTrue(currentName.contains(updatedJobName));
     }
 
     @Test

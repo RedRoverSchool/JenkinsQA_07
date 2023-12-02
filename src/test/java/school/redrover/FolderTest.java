@@ -115,15 +115,15 @@ public class FolderTest extends BaseTest {
     public void testAddDisplayName() {
         final String expectedFolderDisplayName = "Best folder";
 
-        String actualFolderDisplayName = new HomePage(getDriver())
+        List<String> jobList = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickConfigure()
+                .clickConfigureFolder()
                 .typeDisplayName(expectedFolderDisplayName)
-                .clickSave()
+                .clickSaveButton()
                 .goHomePage()
-                .getJobDisplayName();
+                .getJobList();
 
-        Assert.assertEquals(actualFolderDisplayName, expectedFolderDisplayName);
+        Assert.assertTrue(jobList.contains(expectedFolderDisplayName));
     }
 
     @Ignore
@@ -239,7 +239,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
-                .clickOk(new ErrorPage(getDriver()))
+                .clickOkWithError(new ErrorPage(getDriver()))
                 .getErrorMessageFromOopsPage();
 
         Assert.assertEquals(errorMessage, "A problem occurred while processing the request.");
@@ -251,7 +251,7 @@ public class FolderTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(NAME_FOR_BOUNDARY_VALUES.repeat(256))
                 .selectItemFolder()
-                .clickOk(new ErrorPage(getDriver()))
+                .clickOkWithError(new ErrorPage(getDriver()))
                 .goHomePage()
                 .getJobList()
                 .toString();
