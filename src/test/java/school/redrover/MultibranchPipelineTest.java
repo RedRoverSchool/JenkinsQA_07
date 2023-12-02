@@ -241,7 +241,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(status, "Enabled");
     }
 
-    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
+    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testEnabledByDefault"})
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
         String actualStatusMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
