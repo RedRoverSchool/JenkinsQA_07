@@ -66,7 +66,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualMenu, expectedMenu);
     }
 
-    @Test(dependsOnMethods = "checkTippyBox")
+    @Test(dependsOnMethods = "testCheckTippyBox")
     public void testClickAboutJenkins() {
 
         String actualPageName = new HomePage(getDriver())
