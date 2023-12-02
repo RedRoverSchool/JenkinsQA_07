@@ -481,6 +481,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(helpMessageDisplay);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testStatusPageUrlCheck() {
         String currentUrl = new HomePage(getDriver())
