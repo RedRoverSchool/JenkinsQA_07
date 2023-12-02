@@ -11,7 +11,6 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class FooterTest extends BaseTest {
-
     private static final String JENKINS_VERSION = "Jenkins 2.414.2";
     private static final String ABOUT_JENKINS_VERSION = "Version 2.414.2";
 
