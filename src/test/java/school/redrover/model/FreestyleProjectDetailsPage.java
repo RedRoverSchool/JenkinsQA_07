@@ -6,11 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectDetailsPage extends BasePage {
+public class FreestyleProjectDetailsPage extends BaseProjectPage {
 
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
     private WebElement buildNowButton;

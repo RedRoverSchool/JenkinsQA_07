@@ -200,7 +200,6 @@ public class HomePage extends BasePage {
         WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
 
         new Actions(getDriver()).moveToElement(projectName).click().perform();
-
         renameOptionProjectDropdown.click();
 
         return projectRenamePage;
@@ -208,11 +207,9 @@ public class HomePage extends BasePage {
 
     public <T> T clickRenameInDropdownMenu(String jobName, T page) {
         new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
-
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
 
         new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
-
         getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
 
         return page;
