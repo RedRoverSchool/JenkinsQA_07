@@ -34,12 +34,15 @@ public class FolderDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
     private List<WebElement> jobsList;
 
+    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameButton;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
 
     public FolderRenamePage clickRename() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+        renameButton.click();
 
         return new FolderRenamePage(getDriver());
     }

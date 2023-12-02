@@ -16,7 +16,7 @@ public class FolderConfigurationPage extends BaseConfigurationPage {
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;
 
-    @FindBy(className = "textarea-preview")
+    @FindBy(xpath = "//div[@class = 'textarea-preview']")
     private WebElement descriptionPreview;
 
     @FindBy(xpath = "//button[@data-section-id='health-metrics']")
