@@ -104,7 +104,7 @@ public class FolderTest extends BaseTest {
                 .clickMove()
                 .clickArrowDropDownMenu()
                 .clickFolderByName(RENAMED_FOLDER)
-                .clickMove()
+                .clickMove(new FolderDetailsPage(getDriver()))
                 .goHomePage()
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()));
 

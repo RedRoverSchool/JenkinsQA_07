@@ -176,6 +176,7 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
     public HomePage deleteProject() {
         deleteProject.click();
         getDriver().switchTo().alert().accept();
+
         return new HomePage(getDriver());
     }
 
@@ -184,6 +185,7 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         for (WebElement item : itemsSidePanel) {
             textValue.add(item.getText());
         }
+
         return textValue;
     }
 

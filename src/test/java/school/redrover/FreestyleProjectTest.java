@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -27,8 +26,6 @@ public class FreestyleProjectTest extends BaseTest {
     private final static String NEW_PROJECT_DESCRIPTION = "New freestyle project description";
     private final static String PARAMETER_NAME = "Ņame";
     private final static String PARAMETER_DESCRIPTION = "Description";
-    private static final By LOCATOR_JOB_CONFIGURE_LINK_SIDE_BAR = By.xpath("//a[@href='/job/" + PROJECT_NAME + "/configure']");
-    private final static By LOCATOR_CREATED_JOB_LINK_MAIN_PAGE = By.xpath("//span[contains(text(),'" + PROJECT_NAME + "')]");
 
     private void goToJenkinsHomePage() {
         getDriver().findElement(By.id("jenkins-name-icon")).click();
@@ -755,22 +752,20 @@ public class FreestyleProjectTest extends BaseTest {
     @Test
     public void testMoveFreestyleProjectToFolder() {
         final String folderName = "FolderWrapper";
-        final String destinationOption = "Jenkins » " + folderName;
 
-        createProject("Freestyle project", PROJECT_NAME, true);
-        createProject("Folder", folderName, true);
+        TestUtils.createFolder(this, folderName, true);
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
-        getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).click();
-        getDriver().findElement(By.xpath("//span[text()='Move']/..")).click();
+        boolean isJobInJobsListInDestinationFolder = new FreestyleProjectDetailsPage(getDriver())
+                .clickMove()
+                .clickArrowDropDownMenu()
+                .clickFolderByName(folderName)
+                .clickMove(new FolderDetailsPage(getDriver()))
+                .goHomePage()
+                .clickJobByName(folderName, new FolderDetailsPage(getDriver()))
+                .isJobInJobsList(PROJECT_NAME);
 
-        Select destinationDropdown = new Select(getDriver().findElement(By.xpath("//select[@name='destination']")));
-        destinationDropdown.selectByVisibleText(destinationOption);
-        clickSubmitButton();
-        goToJenkinsHomePage();
-
-        getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
-
-        Assert.assertTrue(getDriver().findElement(LOCATOR_CREATED_JOB_LINK_MAIN_PAGE).isDisplayed());
+        Assert.assertTrue(isJobInJobsListInDestinationFolder);
     }
 
     @Test
@@ -978,7 +973,6 @@ public class FreestyleProjectTest extends BaseTest {
             Assert.assertEquals(error.getErrorMessage(), "‘" + x + "’ is an unsafe character");
         }
     }
-
 
     @Test
     public void testParameterizedBuildWithChoices() {
