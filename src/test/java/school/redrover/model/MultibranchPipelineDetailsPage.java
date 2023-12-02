@@ -20,20 +20,25 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
-    @FindBy(tagName = "h1")
-    private WebElement pageTitle;
-
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
+
+    @FindBy(linkText = "Configure")
+    private WebElement configureLink;
+
+    @FindBy(xpath = "//button[contains(text(), 'Disable Multibranch Pipeline')]")
+    private WebElement disableButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Enable')]")
+    private WebElement enableButton;
+
+    @FindBy(id = "enable-project")
+    private WebElement disabledStatusMessage;
 
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
 
-
-    public String getTitle() {
-        return pageTitle.getText();
-    }
     public List<String> getBreadcrumbChain() {
         List<String> breadcrumb = new ArrayList<>();
         for (WebElement element : breadcrumbChain) {
@@ -63,5 +68,27 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     public List<String> getNameOfTasksFromSidebarMenu() {
         return TestUtils.getTextOfWebElements(getWait2().until(
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
+    }
+
+    public MultibranchPipelineConfigurationPage clickConfigure() {
+        configureLink.click();
+
+        return new MultibranchPipelineConfigurationPage(getDriver());
+    }
+
+    public MultibranchPipelineDetailsPage clickDisable() {
+        disableButton.click();
+
+        return this;
+    }
+
+    public MultibranchPipelineDetailsPage clickEnable() {
+        enableButton.click();
+
+        return this;
+    }
+
+    public String getDisableStatusMessage() {
+        return disabledStatusMessage.getText();
     }
 }

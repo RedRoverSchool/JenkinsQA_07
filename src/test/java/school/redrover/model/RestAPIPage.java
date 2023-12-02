@@ -3,10 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import school.redrover.model.base.BasePage;
 
-public class WorkspacePage extends BasePage {
+public class RestAPIPage extends BasePage {
 
-    public WorkspacePage(WebDriver driver) {
+    public RestAPIPage(WebDriver driver) {
         super(driver);
     }
-
 }

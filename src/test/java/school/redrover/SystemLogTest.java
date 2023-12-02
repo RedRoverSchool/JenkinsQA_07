@@ -1,8 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -33,7 +31,7 @@ public class SystemLogTest extends BaseTest {
         Assert.assertEquals(newLogName, SYSLOG_NAME);
     }
 
-    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testDeleteLoggers"})
     public void testDeleteCustomLogRecorder() {
         List<WebElement> lst = new HomePage(getDriver())
                 .clickManageJenkins()
@@ -69,8 +67,8 @@ public class SystemLogTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
-
     public void testClearCustomLog() {
+
         String getTextNoLogsAvailable = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
@@ -82,8 +80,24 @@ public class SystemLogTest extends BaseTest {
                 .chooseLastLogLevel(LEVEL_LOG)
                 .clickSave()
                 .clickClearThisLog()
-                .getTextNoLogsAvailable();
+                .getEmptyHistoryLog();
 
         Assert.assertEquals(getTextNoLogsAvailable, "No logs available");
+    }
+
+    @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
+
+    public void testDeleteLoggers() {
+
+        int emptyLoggers = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage()
+                .clickGearIcon(SYSLOG_NAME)
+                .clickDeleteLogger()
+                .clickSave()
+                .clickConfigure()
+                .getCountLoggersBlock();
+
+        Assert.assertEquals(emptyLoggers, 0);
     }
 }

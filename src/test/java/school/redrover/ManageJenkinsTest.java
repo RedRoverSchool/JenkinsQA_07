@@ -81,7 +81,7 @@ public class ManageJenkinsTest extends BaseTest {
 
         boolean searchFieldIsActiveElement = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToSearchFieldUsingShortcut()
+                .moveToSearchFieldUsingShortcut()
                 .isSearchFieldActiveElement();
 
         Assert.assertTrue(searchFieldIsActiveElement, "Search field is not the active element");
@@ -92,7 +92,7 @@ public class ManageJenkinsTest extends BaseTest {
 
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToSearchFieldUsingShortcut()
+                .moveToSearchFieldUsingShortcut()
                 .typeTextBeingInSearchFieldWithoutLocator(SEARCH_SYSTEM);
 
         Assert.assertEquals(manageJenkinsPage.getSearchFieldText(), SEARCH_SYSTEM);
@@ -118,5 +118,58 @@ public class ManageJenkinsTest extends BaseTest {
                 .getSettingsSectionsQuantity();
 
         Assert.assertEquals(settingsSectionsQuantity, 18);
+    }
+
+    @Test
+    public void testTroubleshootingVisibility() {
+
+        String manageOldData = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getManageOldDataText();
+
+        Assert.assertEquals(manageOldData, "Manage Old Data");
+    }
+
+    @Test
+    public void testStatusInformationSectionsVisibleAndClickable() {
+
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areStatusInformationSectionsVisible());
+        Assert.assertTrue(manageJenkinsPage.areStatusInformationSectionsClickable());
+    }
+
+    @Test
+    public void testStatusInformationSectionsQuantity() {
+        Integer statusInformationSectionsQuantity = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getStatusInformationSectionsQuantity();
+
+        Assert.assertEquals(statusInformationSectionsQuantity, 4);
+    }
+
+    @Test
+    public void testTroubleshootingClick() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.isManageOldDataClickable());
+    }
+
+    @Test
+    public void testVisibilitySecuritySections() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areSecuritySectionsVisible());
+    }
+
+    @Test
+    public void testClickabilitySecuritySections() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areSecuritySectionsClickable());
     }
 }

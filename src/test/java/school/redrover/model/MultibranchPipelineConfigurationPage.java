@@ -5,9 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
 
-public class MultibranchPipelineConfigurationPage extends BasePage {
+public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage {
 
     @FindBy(xpath = "//a[@class='model-link'][contains(@href, 'job')]")
     private WebElement breadcrumbJobName;
@@ -18,14 +19,14 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement buttonSubmit;
 
-    @FindBy (xpath = "//h1")
-    private WebElement nameH1;
-
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
 
     @FindBy (xpath = "//h1")
     private WebElement error;
+
+    @FindBy(className = "jenkins-toggle-switch__label")
+    private WebElement disableEnableToggle;
 
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
 
@@ -65,11 +66,6 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public String headerName() {
-
-        return nameH1.getText();
-    }
-
     public MultibranchPipelineDeletePage clickButtonDelete() {
         getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
         buttonDelete.click();
@@ -80,5 +76,15 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     public String error() {
 
         return error.getText();
+    }
+
+    public MultibranchPipelineConfigurationPage clickDisableToggle() {
+        disableEnableToggle.click();
+
+        return this;
+    }
+
+    public String getDisableToggleText() {
+        return disableEnableToggle.getText();
     }
 }

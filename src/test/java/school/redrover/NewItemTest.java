@@ -64,7 +64,7 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(secondProject)
                 .enterExistentItemNameToClone(nonExistentProject)
-                .clickOk(new ErrorPage(getDriver()))
+                .clickOkWithError(new ErrorPage(getDriver()))
                 .getErrorFromMainPanel();
 
         assertEquals(errorMessage, ("Error\n" + "No such job: " + nonExistentProject));

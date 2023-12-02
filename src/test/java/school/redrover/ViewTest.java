@@ -161,17 +161,16 @@ public class ViewTest extends BaseTest {
 
         String newItemName = "Bob";
 
-        boolean newItemCreated = new HomePage(getDriver())
+        String newItemNameActual = new HomePage(getDriver())
                 .clickMyView()
                 .clickNewItem()
                 .typeItemName(newItemName)
                 .selectItemFolder()
                 .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .goHomePage()
-                .getItemNameInTable()
-                .equals(newItemName );
+                .getItemNameInTable();
 
-        Assert.assertTrue(newItemCreated);
+        Assert.assertEquals(newItemNameActual, newItemName);
     }
 
     @Test
@@ -515,19 +514,16 @@ public class ViewTest extends BaseTest {
 
         createNewFreestyleProject(UUID.randomUUID().toString());
 
-        getDriver().findElement(By.id("jenkins-home-link")).click();
+        String nameViewNameActual = new HomePage(getDriver())
+                .clickMyView()
+                .clickAddTabButton()
+                .typeNewViewName(VIEW_NAME)
+                .clickIncludeGlobalViewTypeRadioBTN()
+                .clickCreateButton()
+                .clickOKButton(new MyViewPage(getDriver()))
+                .getMyViewName();
 
-        getDriver().findElement(By.xpath("//a[@href='/me/my-views']")).click();
-        getDriver().findElement(By.className("addTab")).click();
-        getDriver().findElement(By.name("name")).sendKeys(VIEW_NAME);
-
-        getDriver().findElement(By.xpath("//div/label[@for='hudson.model.ProxyView']")).click();
-        getDriver().findElement(By.id("ok")).click();
-
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//div/ol/li/a[@href='/user/admin/my-views/view/"+VIEW_NAME+"/']")).getText(), VIEW_NAME);
-
+        Assert.assertEquals(nameViewNameActual, VIEW_NAME);
     }
 
     @Test
