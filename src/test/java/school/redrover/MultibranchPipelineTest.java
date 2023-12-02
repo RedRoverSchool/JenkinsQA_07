@@ -2,12 +2,8 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -17,7 +13,6 @@ import school.redrover.model.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -422,37 +417,15 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(namesOfTasks.contains("Move"), "Move is not the additional task of sidebar menu on the left");
     }
 
-    @Test
-    public void testDisableMultibranchPipelineWithHomePage() {
-        String name = "Test_Folder";
-        String expectedResult = "Enable";
+    @Test(dependsOnMethods = "testRenameUsingSidebar")
+    public void testDisable() {
 
-        createMultibranchPipeline(name);
-        returnToJenkinsHomePage();
+        String disabledText = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickDisable()
+                .getDisableStatusMessage();
 
-        getDriver().findElement(By.xpath("//tr[@id='job_Test_Folder']//a[@href='job/" + name + "/']")).click();
-        getDriver().findElement(By.xpath("//form[@id='disable-project']/button")).click();
-
-        WebElement enableButton = getDriver().findElement(By.xpath("//form[@id='enable-project']/button"));
-        String actualResult = enableButton.getText();
-
-        Assert.assertEquals(actualResult, expectedResult);
-    }
-
-    @Test
-    public void testDisableMultibranchPipeline() {
-        createMultibranchPipeline("Test_Folder");
-        String expectedResult = "Disabled";
-
-        getDriver().findElement(By.xpath("//span[@id='toggle-switch-enable-disable-project']/label")).click();
-
-        Wait<WebDriver> wait = new WebDriverWait(getDriver(), Duration.ofSeconds(2));
-
-        WebElement elementPage = wait.until(ExpectedConditions.visibilityOfElementLocated((By.xpath(
-                "//span[@id='toggle-switch-enable-disable-project']/label/span[text()='Disabled']"))));
-        String nameToggle = elementPage.getText();
-
-        Assert.assertEquals(nameToggle, expectedResult);
+        Assert.assertTrue(disabledText.contains("This Multibranch Pipeline is currently disabled"));
     }
 
     @Test(dependsOnMethods = "testDisableMultibranchPipelineWithHomePage")
