@@ -35,6 +35,9 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     @FindBy(id = "enable-project")
     private WebElement disabledStatusMessage;
 
+    @FindBy(name = "Submit")
+    private WebElement buttonText;
+
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -90,5 +93,9 @@ public class MultibranchPipelineDetailsPage extends BasePage {
 
     public String getDisableStatusMessage() {
         return disabledStatusMessage.getText();
+    }
+
+    public String getButtonText() {
+        return buttonText.getText();
     }
 }
