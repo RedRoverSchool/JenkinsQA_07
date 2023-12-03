@@ -410,12 +410,13 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testDisable")
-    public void testEnableFromStatusPage() {
-        getDriver().findElement(By.xpath("//*[@id=\"job_Test_Folder\"]/td[3]/a")).click();
+    public void testEnable() {
 
-        getDriver().findElement(By.xpath("//form[@id='enable-project']/button")).click();
+        String disabledText = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickEnable()
+                .getButtonText();
 
-        Assert.assertEquals(getDriver().findElement(By.name(
-                "Submit")).getText(), "Disable Multibranch Pipeline");
+        Assert.assertEquals(disabledText, "Disable Multibranch Pipeline");
     }
 }
