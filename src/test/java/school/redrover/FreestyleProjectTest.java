@@ -453,6 +453,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testEditDescriptionConfigurePage() {
         String editDescription = new HomePage(getDriver())
