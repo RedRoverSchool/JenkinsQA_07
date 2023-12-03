@@ -41,11 +41,11 @@ public class NodesListPage extends BasePage {
         return new NodeDetailsPage(getDriver());
     }
 
-    public boolean elementIsNotPresent(String xpath){
+    public boolean elementIsNotPresent(String xpath) {
         return getDriver().findElements(By.xpath(xpath)).isEmpty();
     }
 
-    public String getCurrentURL(){
+    public String getCurrentURL() {
         return getDriver().getCurrentUrl();
     }
 
@@ -53,11 +53,5 @@ public class NodesListPage extends BasePage {
         sortByNameButton.click();
 
         return this;
-    }
-    public List<String> reverseList(List<String> originalList) {
-        List<String> reversedList = new ArrayList<>(originalList);
-        Collections.reverse(reversedList);
-        return reversedList;
-
     }
 }

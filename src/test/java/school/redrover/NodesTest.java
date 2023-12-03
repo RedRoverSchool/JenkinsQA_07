@@ -218,16 +218,16 @@ public class NodesTest extends BaseTest {
                         " a consistent current working directory. Using an absolute path is highly recommended.");
     }
 
-    @Test(dependsOnMethods ="testCreateNewNodeWithValidNameFromManageJenkinsPage")
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromManageJenkinsPage")
     public void testSortNodesInReverseOrder() {
-        List<String> originalNodes = new HomePage(getDriver())
+        final List<String> expectedSortedNodes = List.of("NewNode", "Built-In Node");
+
+        List<String> actualSortedNodes = new HomePage(getDriver())
                 .goNodesListPage()
-                .getNodeList();
-        List<String> expectedSortedNodes = new NodesListPage(getDriver()).reverseList(originalNodes);
-        List<String> actualSortedNodes = new NodesListPage(getDriver())
                 .clickSortByNameButton()
                 .getNodeList();
-     Assert.assertEquals(expectedSortedNodes, actualSortedNodes);
+
+        Assert.assertEquals(actualSortedNodes, expectedSortedNodes);
     }
 
     @Test
