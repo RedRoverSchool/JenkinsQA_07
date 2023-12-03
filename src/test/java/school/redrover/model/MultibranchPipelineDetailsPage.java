@@ -4,15 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
 import org.openqa.selenium.WebElement;
+import school.redrover.model.base.BaseProjectPage;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BasePage {
+public class MultibranchPipelineDetailsPage extends BaseProjectPage {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
@@ -20,23 +20,28 @@ public class MultibranchPipelineDetailsPage extends BasePage {
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
-    @FindBy(tagName = "h1")
-    private WebElement pageTitle;
-
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
     @FindBy(linkText = "Configure")
     private WebElement configureLink;
 
+    @FindBy (xpath = "//a[contains(@href, 'delete')]")
+    private WebElement buttonDelete;
+
+    @FindBy(xpath = "//button[contains(text(), 'Disable Multibranch Pipeline')]")
+    private WebElement disableButton;
+
+    @FindBy(xpath = "//button[contains(text(), 'Enable')]")
+    private WebElement enableButton;
+
+    @FindBy(id = "enable-project")
+    private WebElement disabledStatusMessage;
+
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
 
-
-    public String getTitle() {
-        return pageTitle.getText();
-    }
     public List<String> getBreadcrumbChain() {
         List<String> breadcrumb = new ArrayList<>();
         for (WebElement element : breadcrumbChain) {
@@ -72,5 +77,33 @@ public class MultibranchPipelineDetailsPage extends BasePage {
         configureLink.click();
 
         return new MultibranchPipelineConfigurationPage(getDriver());
+    }
+
+    public MultibranchPipelineDetailsPage clickDisable() {
+        disableButton.click();
+
+        return this;
+    }
+
+    public MultibranchPipelineDetailsPage clickEnable() {
+        enableButton.click();
+
+        return this;
+    }
+
+    public String getDisableStatusMessage() {
+        return disabledStatusMessage.getText();
+    }
+
+
+    public MultibranchPipelineDeletePage clickButtonDelete() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
+        buttonDelete.click();
+
+        return new MultibranchPipelineDeletePage(getDriver());
+    }
+
+    public String getDisableButtonText() {
+        return disableButton.getText();
     }
 }

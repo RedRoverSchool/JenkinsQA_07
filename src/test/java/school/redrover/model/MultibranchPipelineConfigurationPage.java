@@ -1,12 +1,9 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
-import school.redrover.model.base.BasePage;
 
 public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage {
 
@@ -18,12 +15,6 @@ public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage 
 
     @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement buttonSubmit;
-
-    @FindBy (xpath = "//h1")
-    private WebElement nameH1;
-
-    @FindBy (xpath = "//a[contains(@href, 'delete')]")
-    private WebElement buttonDelete;
 
     @FindBy (xpath = "//h1")
     private WebElement error;
@@ -39,16 +30,6 @@ public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage 
     public String getJobNameFromBreadcrumb() {
 
         return breadcrumbJobName.getText();
-    }
-
-    public String getJobName() {
-
-        return breadcrumbJobName.getText();
-    }
-    public MultibranchPipelineConfigurationPage confirmRename(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
-
-        return this;
     }
 
     public  MultibranchPipelineConfigurationPage clearField() {
@@ -67,18 +48,6 @@ public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage 
         buttonSubmit.click();
 
         return this;
-    }
-
-    public String headerName() {
-
-        return nameH1.getText();
-    }
-
-    public MultibranchPipelineDeletePage clickButtonDelete() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
-        buttonDelete.click();
-
-        return new MultibranchPipelineDeletePage(getDriver());
     }
 
     public String error() {

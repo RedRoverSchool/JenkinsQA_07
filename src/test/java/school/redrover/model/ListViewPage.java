@@ -30,6 +30,9 @@ public class ListViewPage extends BasePage {
     @FindBy(linkText = "add some existing jobs")
     private WebElement addJobsLinkFromMainPanel;
 
+    @FindBy(xpath = "//table[@id='projectstatus']/thead/tr/th/a")
+    private List<WebElement> columnNames;
+
     public ListViewPage(WebDriver driver) {
         super(driver);
     }
@@ -85,4 +88,10 @@ public class ListViewPage extends BasePage {
 
         return new ListViewConfigurationPage(getDriver());
     }
+
+    public List<String> getColumnNamesList() {
+
+        return columnNames.stream().map(WebElement::getText).toList();
+    }
+
 }
