@@ -68,7 +68,7 @@ public class HeaderTest extends BaseTest {
     public void testExactMatchSearchFunctionality() {
         String header = new HomePage(getDriver()).clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
-                .useSearchBox(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .goSearchBox(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getHeadLineText();
 
         Assert.assertEquals(header, "Project " + PROJECT_NAME);
@@ -84,7 +84,7 @@ public class HeaderTest extends BaseTest {
                 .goHomePage()
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME + "2")
-                .useSearchBox(searchingRequest, new SearchResultQueryPage(getDriver()))
+                .goSearchBox(searchingRequest, new SearchResultQueryPage(getDriver()))
                 .getSearchResultQueryText();
 
         for (String x : resultSearch) {
@@ -97,7 +97,7 @@ public class HeaderTest extends BaseTest {
         final String searchingRequest = PROJECT_NAME.substring(0, 5);
 
         String statusPage = new HomePage(getDriver())
-                .useSearchBox(searchingRequest, new SearchResultQueryPage(getDriver()))
+                .goSearchBox(searchingRequest, new SearchResultQueryPage(getDriver()))
                 .clickSearchResultQuery(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getHeadLineText();
 

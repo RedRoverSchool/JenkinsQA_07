@@ -29,10 +29,22 @@ public class RenamePage extends BasePage {
         return this;
     }
 
+    public RenamePage addCharsToExistingName(String chars) {
+        inputNewName.sendKeys(chars);
+
+        return this;
+    }
+
     public <ProjectPage extends BaseProjectPage> ProjectPage clickRenameButton(ProjectPage projectPage) {
         renameButton.click();
 
         return projectPage;
+    }
+
+    public RenameErrorPage clickRenameWithError() {
+        renameButton.click();
+
+        return new RenameErrorPage(getDriver());
     }
 
     public String getWarningMessageText() {

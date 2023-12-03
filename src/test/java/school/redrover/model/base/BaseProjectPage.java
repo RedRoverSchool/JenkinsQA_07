@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.BuildPage;
+import school.redrover.model.BuildWithParametersPage;
 import school.redrover.model.MovePage;
 import school.redrover.model.RenamePage;
 
@@ -70,6 +71,12 @@ public abstract class BaseProjectPage extends BasePage {
         getWait5().until(ExpectedConditions.visibilityOfAllElements(buildLinksInBuildHistory));
 
         return projectDetailsPage;
+    }
+
+    public BuildWithParametersPage clickBuildWithParameters() {
+        buildNowSideMenuOption.click();
+
+        return new BuildWithParametersPage(getDriver());
     }
 
     public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {

@@ -4,11 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class FolderDetailsPage extends BasePage {
+public class FolderDetailsPage extends BaseProjectPage {
 
     @FindBy(linkText = "Configure")
     private WebElement configure;
@@ -34,12 +34,15 @@ public class FolderDetailsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
     private List<WebElement> jobsList;
 
+    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameButton;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
 
     public FolderRenamePage clickRename() {
-        getDriver().findElement(By.xpath("//a[contains(@href, '/confirm-rename')]")).click();
+        renameButton.click();
 
         return new FolderRenamePage(getDriver());
     }
