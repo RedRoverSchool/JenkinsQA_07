@@ -40,6 +40,11 @@ public class SeleniumUtils {
         executor.executeScript("arguments[0].click();", element);
     }
 
+    public static void jsScroll(WebDriver driver, WebElement element) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].scrollIntoView(true)", element);
+    }
+
     public static String findTextInPseudoElement(WebDriver driver, WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String script = "return window.getComputedStyle(arguments[0], '::before').getPropertyValue('content');";

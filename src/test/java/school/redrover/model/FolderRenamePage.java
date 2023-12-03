@@ -8,23 +8,32 @@ import school.redrover.model.base.BasePage;
 
 public class FolderRenamePage extends BasePage {
 
-    @FindBy(xpath = "//input[@name='newName']")
-    private WebElement inputName;
+    @FindBy(name = "newName")
+    private WebElement inputField;
+
+    @FindBy(name = "Submit")
+    private WebElement renameButton;
 
     public FolderRenamePage(WebDriver driver) {
         super(driver);
     }
 
     public FolderRenamePage typeNewName(String name) {
-        inputName.clear();
-        inputName.sendKeys(name);
+        inputField.clear();
+        inputField.sendKeys(name);
 
         return this;
     }
 
-    public FolderDetailsPage clickSubmit() {
-        getDriver().findElement(By.name("Submit")).click();
+    public FolderDetailsPage clickRename() {
+        renameButton.click();
 
         return new FolderDetailsPage(getDriver());
+    }
+
+    public <T> T clickRenameWithError(T page) {
+        renameButton.click();
+
+        return page;
     }
 }

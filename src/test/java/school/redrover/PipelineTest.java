@@ -100,7 +100,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(JOB_NAME)
                 .selectPipelineProject()
-                .clickOk(new PipelineConfigurationPage(getDriver()))
+                .clickOk(new PipelineConfigurePage(getDriver()))
                 .goHomePage()
                 .getJobList();
 
@@ -192,7 +192,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(JOB_NAME)
                 .selectPipelineProject()
-                .clickOk(new PipelineConfigurationPage(getDriver()))
+                .clickOk(new PipelineConfigurePage(getDriver()))
                 .clickProjectIsParameterized()
                 .clickAddParameter()
                 .selectChoiceParameter().setParameterName("parameterName")
@@ -321,7 +321,7 @@ public class PipelineTest extends BaseTest {
 
         TestUtils.createPipeline(this, JOB_NAME, true);
 
-        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+        PipelineConfigurePage pipelineConfigurationPage = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure();
 

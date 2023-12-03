@@ -10,6 +10,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.HomePage;
 
+import java.util.List;
+
 public abstract class BasePage extends BaseModel {
 
     @FindBy(tagName = "h1")
@@ -17,6 +19,12 @@ public abstract class BasePage extends BaseModel {
 
     @FindBy(name = "q")
     private WebElement searchBoxHeader;
+
+    @FindBy(xpath = "//li//a[@href='/']")
+    private WebElement dashboardBreadCrumb;
+
+    @FindBy(xpath = "//div[@id='breadcrumbBar']/ol/li/a")
+    private List<WebElement> breadcrumbBarItemsList;
 
     public BasePage(WebDriver driver) {
         super(driver);
@@ -45,7 +53,7 @@ public abstract class BasePage extends BaseModel {
         return heading.getText();
     }
 
-    public <T> T useSearchBox(String searchText, T page) {
+    public <T> T goSearchBox(String searchText, T page) {
         searchBoxHeader.click();
         searchBoxHeader.sendKeys(searchText);
 
@@ -78,5 +86,16 @@ public abstract class BasePage extends BaseModel {
                 "}, 500);");
 
         return page;
+    }
+
+    public boolean isItemExistInBreadcrumbBar(String item) {
+
+        return breadcrumbBarItemsList.stream().map(WebElement::getText).anyMatch(e -> e.equals(item));
+    }
+
+    public HomePage clickDashboardBreadCrumb() {
+        dashboardBreadCrumb.click();
+
+        return new HomePage(getDriver());
     }
 }
