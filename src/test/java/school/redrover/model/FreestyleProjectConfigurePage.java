@@ -150,6 +150,9 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
     @FindBy(xpath = "//label[text()='Add timestamps to the Console Output']")
     private WebElement addTimestampsToConsoleCheckbox;
 
+    @FindBy(name = "parameter.choices")
+    private WebElement parameterChoicesTextArea;
+
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -522,5 +525,23 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
     public boolean isAddParameterButtonDisplayed() {
         return addParameterButton.isDisplayed();
+    }
+
+    public FreestyleProjectConfigurePage selectParameterType(String parameterName) {
+        getDriver().findElement(By.linkText(parameterName)).click();
+
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage setParameterChoices(List<String> parameterChoices) {
+        for (int i = 0; i < parameterChoices.size(); i++) {
+            if (i != parameterChoices.size() - 1) {
+                parameterChoicesTextArea.sendKeys(parameterChoices.get(i) + "\n");
+            } else {
+                parameterChoicesTextArea.sendKeys(parameterChoices.get(i));
+            }
+        }
+
+        return this;
     }
 }

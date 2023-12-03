@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class HomePage extends BasePage {
     private WebElement setUpAgent;
 
     @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
-    public WebElement buildHistoryButton;
+    private WebElement buildHistoryButton;
 
     @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
     private WebElement createJob;
@@ -76,11 +77,14 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//div[@class='tippy-box']//div//a")
     private WebElement tippyBox;
 
+    @FindBy(className = "addTab")
+    private WebElement newViewButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
-    public <T> T clickJobByName(String name, T page) {
+    public <T extends BaseProjectPage> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
         return page;
@@ -94,9 +98,8 @@ public class HomePage extends BasePage {
 
     public List<String> getJobList() {
         List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]/span[1]"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
 
-        return resultList;
+        return elementList.stream().map(WebElement::getText).toList();
     }
 
     public NewItemPage clickNewItem() {
@@ -115,12 +118,6 @@ public class HomePage extends BasePage {
         buildHistoryButton.click();
 
         return new BuildHistoryPage(getDriver());
-    }
-
-    public NewViewPage clickNewViewButton() {
-        getDriver().findElement(By.xpath("//a[@tooltip='New View']")).click();
-
-        return new NewViewPage(getDriver());
     }
 
     public NewItemPage clickCreateAJob() {
@@ -151,7 +148,7 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobName(String name) {
+    public HomePage clickJobNameDropdown(String name) {
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
 
         Actions actions = new Actions(getDriver());
@@ -179,12 +176,6 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
     }
 
-    public <T> T clickAnyJobCreated(T page) {
-        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
-
-        return page;
-    }
-
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
 
@@ -210,14 +201,9 @@ public class HomePage extends BasePage {
         return page;
     }
 
-    public String multibranchPipelineName() {
+    public String getMultibranchPipelineName() {
+
         return multibranchPipelineNameOnHomePage.getText();
-    }
-
-    public FreestyleProjectDetailsPage clickOnJob() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(jobName)).click();
-
-        return new FreestyleProjectDetailsPage(getDriver());
     }
 
     public PeoplePage clickPeople() {
@@ -312,4 +298,9 @@ public class HomePage extends BasePage {
         return new RestAPIPage(getDriver());
     }
 
+    public NewViewPage clickNewViewButton() {
+        newViewButton.click();
+
+        return new NewViewPage(getDriver());
+    }
 }
