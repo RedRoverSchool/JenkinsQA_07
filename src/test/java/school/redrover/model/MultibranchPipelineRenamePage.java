@@ -5,9 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
 
-public class MultibranchPipelineRenamePage extends BasePage {
+public class MultibranchPipelineRenamePage extends RenamePage {
 
     @FindBy (name = "newName")
     private WebElement inputName;
@@ -45,17 +44,5 @@ public class MultibranchPipelineRenamePage extends BasePage {
         getDriver().findElement(By.name("Submit")).click();
 
         return new MultibranchPipelineDetailsPage(getDriver());
-    }
-
-    public MultibranchPipelineRenamePage addCharsToExistingName (String chars) {
-        inputName.sendKeys(chars);
-
-        return this;
-    }
-
-    public MultibranchPipelineRenameErrorsPage clickSubmitError() {
-        submitButton.click();
-
-        return new MultibranchPipelineRenameErrorsPage(getDriver());
     }
 }

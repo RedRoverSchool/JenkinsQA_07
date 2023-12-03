@@ -44,13 +44,13 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//a[@data-url='reload']")
     private WebElement reloadConfigurationSection;
 
-    @FindAll({@FindBy(className = "jenkins-section__item")})
+    @FindBy(className = "jenkins-section__item")
     private List<WebElement> settingsSections;
 
     @FindBy(xpath = "//a[contains (@href, 'OldData')]//dt")
     private WebElement manageOldData;
 
-    @FindAll({@FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]/div[contains (@class, 'item')]//dt")})
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dt")
     private List<WebElement> statusInformationSectionsList;
 
     @FindAll({@FindBy (xpath = "(//div[2]/div[2]/section[3]/div/div/a/dl/dt)")})
