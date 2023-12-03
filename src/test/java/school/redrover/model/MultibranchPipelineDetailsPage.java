@@ -4,15 +4,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
 import org.openqa.selenium.WebElement;
+import school.redrover.model.base.BaseProjectPage;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BasePage {
+public class MultibranchPipelineDetailsPage extends BaseProjectPage {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
@@ -25,6 +25,9 @@ public class MultibranchPipelineDetailsPage extends BasePage {
 
     @FindBy(linkText = "Configure")
     private WebElement configureLink;
+
+    @FindBy (xpath = "//a[contains(@href, 'delete')]")
+    private WebElement buttonDelete;
 
     @FindBy(xpath = "//button[contains(text(), 'Disable Multibranch Pipeline')]")
     private WebElement disableButton;
@@ -93,6 +96,14 @@ public class MultibranchPipelineDetailsPage extends BasePage {
 
     public String getDisableStatusMessage() {
         return disabledStatusMessage.getText();
+    }
+
+
+    public MultibranchPipelineDeletePage clickButtonDelete() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
+        buttonDelete.click();
+
+        return new MultibranchPipelineDeletePage(getDriver());
     }
 
     public String getButtonText() {
