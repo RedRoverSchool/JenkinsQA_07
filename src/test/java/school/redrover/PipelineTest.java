@@ -241,7 +241,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isPermalinksEmpty);
     }
 
-    @Ignore
     @Test
     public void testPermalinksContainBuildInformation() {
         final List<String> expectedPermalinksList = List.of(

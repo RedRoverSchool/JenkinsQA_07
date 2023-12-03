@@ -71,9 +71,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void goToHomePage() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
 
     private void goToUsersPage() {
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
@@ -86,12 +83,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='addUser']")).click();
     }
 
-
-    private void goToUsersTab() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-    }
 
     @Test
     public void testCreateUserWithEmptyFullName() {
@@ -723,7 +714,7 @@ public class UserTest extends BaseTest {
                 .clickUsername()
                 .clickConfigurationPage()
                 .clearUserFull()
-                .sendKeysFullNameUser()
+                .sendKeysFullNameUser(fullName)
                 .clickSaveButton();
 
         Assert.assertEquals(
