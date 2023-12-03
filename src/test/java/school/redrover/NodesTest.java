@@ -218,32 +218,16 @@ public class NodesTest extends BaseTest {
                         " a consistent current working directory. Using an absolute path is highly recommended.");
     }
 
-    @Test
+    @Test(dependsOnMethods ="testCreateNewNodeWithValidNameFromManageJenkinsPage")
     public void testSortNodesInReverseOrder() {
-        final List<String> nodes = List.of("Agent1", "Agent2", "Agent3", "Built-In Node");
-
-        List<String> actualNodes = new HomePage(getDriver())
+        List<String> originalNodes = new HomePage(getDriver())
                 .goNodesListPage()
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(0))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(1))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(2))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickSortByNameButton()
+                .getNodeList();
+        List<String> expectedSortedNodes = new NodesListPage(getDriver()).reverseList(originalNodes);
+        List<String> actualSortedNodes = new NodesListPage(getDriver())
                 .clickSortByNameButton()
                 .getNodeList();
-
-        Assert.assertEquals(nodes, actualNodes);
+     Assert.assertEquals(expectedSortedNodes, actualSortedNodes);
     }
 
     @Test

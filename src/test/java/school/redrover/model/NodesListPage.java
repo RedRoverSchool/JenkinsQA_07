@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NodesListPage extends BasePage {
@@ -51,5 +53,11 @@ public class NodesListPage extends BasePage {
         sortByNameButton.click();
 
         return this;
+    }
+    public List<String> reverseList(List<String> originalList) {
+        List<String> reversedList = new ArrayList<>(originalList);
+        Collections.reverse(reversedList);
+        return reversedList;
+
     }
 }
