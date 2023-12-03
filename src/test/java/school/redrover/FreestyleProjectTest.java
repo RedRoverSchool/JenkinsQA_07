@@ -453,10 +453,10 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(buildsList.get(buildsList.size() - 1), "#2");
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test(dependsOnMethods = "testRenameProject")
     public void testEditDescriptionConfigurePage() {
         String editDescription = new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .goToConfigureFromSideMenu()
                 .inputProjectDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
