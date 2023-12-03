@@ -255,12 +255,12 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(folderDescription.getDescriptionButtonText(), "Add description");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = {"testCreate", "testRename"})
     public void testRenameWithEndingPeriod() {
         final String point = ".";
 
         String errorMessage = new HomePage(getDriver())
-                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickRename()
                 .typeNewName(point)
                 .clickRenameWithError(new ErrorPage(getDriver())).getErrorMessage();
@@ -271,7 +271,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = {"testCreate", "testRenameWithEndingPeriod"})
     public void testRenameFolderThroughLeftPanelWithEmptyName() {
         String errorMessage = new HomePage(getDriver())
-                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickRename()
                 .typeNewName("")
                 .clickRenameWithError(new ErrorPage(getDriver())).getErrorMessage();
@@ -279,11 +279,11 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "No name is specified");
     }
 
-    @Test(dependsOnMethods = "testCreate")
+    @Test(dependsOnMethods = {"testCreate", "testRename", "testRenameWithEndingPeriod", "testRenameFolderThroughLeftPanelWithEmptyName"})
     public void testFolderDescriptionPreviewWorksCorrectly() {
 
         String previewText = new HomePage(getDriver())
-                .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickConfigureFolder()
                 .typeDescription(DESCRIPTION_NAME)
                 .clickPreviewDescription()
