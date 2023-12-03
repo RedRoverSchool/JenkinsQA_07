@@ -14,48 +14,6 @@ import java.util.List;
 
 public class ManageJenkinsPage extends BasePage {
 
-    @FindBy(xpath = "//a[@href='configure']")
-    private WebElement systemSection;
-
-    @FindBy(xpath = "//a[@href='configureTools']")
-    private WebElement toolsSection;
-
-    @FindBy(xpath = "//a[@href='cloud']")
-    private WebElement cloudsSection;
-
-    @FindBy(xpath = "//a[@href='configureSecurity']")
-    private WebElement securitySection;
-
-    @FindBy(xpath = "//a[@href='credentials']")
-    private WebElement credentialsSection;
-
-    @FindBy(xpath = "//a[@href='configureCredentials']")
-    private WebElement credentialProvidersSection;
-
-    @FindBy(xpath = "//a[@href='scriptApproval']")
-    private WebElement inProcessScriptApprovalSection;
-
-    @FindBy(xpath = "//a[@href='systemInfo']")
-    private WebElement systemInformationSection;
-
-    @FindBy(xpath = "//a[@href='load-statistics']")
-    private WebElement loadStatisticsSection;
-
-    @FindBy(xpath = "//a[@href='about']")
-    private WebElement aboutJenkinsSection;
-
-    @FindBy(xpath = "//a[@href='cli']")
-    private WebElement jenkinsCLISection;
-
-    @FindBy(xpath = "//a[@href='script']")
-    private WebElement scriptConsoleSection;
-
-    @FindBy(xpath = "//a[@href='prepareShutdown']")
-    private WebElement prepareShutdownSection;
-
-    @FindBy(xpath = "//a[@href='administrativeMonitor/OldData/']")
-    private WebElement manageOldDataSection;
-
     @FindBy(xpath = "//a[@href='computer']")
     private WebElement nodeSection;
 
@@ -95,7 +53,7 @@ public class ManageJenkinsPage extends BasePage {
     @FindAll({@FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]/div[contains (@class, 'item')]//dt")})
     private List<WebElement> statusInformationSectionsList;
 
-    @FindAll({@FindBy (xpath = "(//div[2]/div[2]/section[3]/div/div/a/dl/dt)")})
+    @FindAll({@FindBy(xpath = "(//div[2]/div[2]/section[3]/div/div/a/dl/dt)")})
     private List<WebElement> securitySectionsList;
 
     public ManageJenkinsPage(WebDriver driver) {
