@@ -11,10 +11,17 @@ public class ErrorPage extends BaseErrorPage {
         super(driver);
     }
 
-    @FindBy(xpath = "//h1/following-sibling::p")
+    @FindBy(tagName = "p")
     private WebElement errorMessage;
+
+    @FindBy(tagName = "h2")
+    private WebElement errorMessageFromOopsPage;
 
     public String getErrorMessage() {
         return errorMessage.getText();
+    }
+
+    public String getErrorMessageFromOopsPage() {
+        return errorMessageFromOopsPage.getText();
     }
 }

@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class MultibranchPipelineDeletePage extends BasePage{
+public class MultibranchPipelineDeletePage extends BasePage {
     @FindBy(xpath = "//*[@id='main-panel']/form/button")
     private WebElement  redButtonYes;
 

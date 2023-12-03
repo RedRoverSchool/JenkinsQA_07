@@ -3,9 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigurationPage;
 
-public class FolderConfigurationPage extends BasePage {
+public class FolderConfigurationPage extends BaseConfigurationPage {
 
     @FindBy(name = "_.description")
     private WebElement descriptionTextField;
@@ -16,7 +16,7 @@ public class FolderConfigurationPage extends BasePage {
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;
 
-    @FindBy(className = "textarea-preview")
+    @FindBy(xpath = "//div[@class = 'textarea-preview']")
     private WebElement descriptionPreview;
 
     @FindBy(xpath = "//button[@data-section-id='health-metrics']")
@@ -39,6 +39,9 @@ public class FolderConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[@class='help']/div[1]")
     private  WebElement helpBlock;
+
+    @FindBy(xpath = "//input[@name='_.displayNameOrNull']")
+    private WebElement inputDisplayName;
 
     public FolderConfigurationPage(WebDriver driver) {
         super(driver);
@@ -103,5 +106,11 @@ public class FolderConfigurationPage extends BasePage {
     public String getHelpBlockText() {
 
         return helpBlock.getText();
+    }
+
+    public FolderConfigurationPage typeDisplayName(String displayName) {
+        inputDisplayName.sendKeys(displayName);
+
+        return this;
     }
 }

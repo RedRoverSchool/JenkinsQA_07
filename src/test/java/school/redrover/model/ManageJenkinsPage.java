@@ -44,29 +44,39 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//a[@data-url='reload']")
     private WebElement reloadConfigurationSection;
 
-    @FindAll({@FindBy(className = "jenkins-section__item")})
+    @FindBy(className = "jenkins-section__item")
     private List<WebElement> settingsSections;
+
+    @FindBy(xpath = "//a[contains (@href, 'OldData')]//dt")
+    private WebElement manageOldData;
+
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dt")
+    private List<WebElement> statusInformationSectionsList;
+
+    @FindAll({@FindBy(xpath = "(//div[2]/div[2]/section[3]/div/div/a/dl/dt)")})
+    private List<WebElement> securitySectionsList;
 
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
 
     Wait<WebDriver> wait = new FluentWait<>(getDriver())
-                    .withTimeout(Duration.ofSeconds(2))
-                    .pollingEvery(Duration.ofMillis(300))
-                    .ignoring(JavascriptException.class);
+            .withTimeout(Duration.ofSeconds(2))
+            .pollingEvery(Duration.ofMillis(300))
+            .ignoring(JavascriptException.class);
 
     public PluginsPage goPluginsPage() {
         plugins.click();
 
         return new PluginsPage(getDriver());
     }
+
     public PluginsPage clickOnGoToPluginManagerButton() {
         getWait2().until(ExpectedConditions.elementToBeClickable(goToPluginManagerButton)).click();
         return new PluginsPage(getDriver());
     }
 
-    public UserDatabasePage goUserDatabasePage() {
+    public UserDatabasePage clickUsersButton() {
         userSection.click();
 
         return new UserDatabasePage(getDriver());
@@ -147,13 +157,14 @@ public class ManageJenkinsPage extends BasePage {
         return false;
     }
 
-    public ManageJenkinsPage goToSearchFieldUsingShortcut() {
+    public ManageJenkinsPage moveToSearchFieldUsingShortcut() {
         getDriver().switchTo().activeElement().sendKeys("/");
 
         return this;
     }
 
     public boolean isSearchFieldActiveElement() {
+
         return searchInput.equals(getDriver().switchTo().activeElement());
     }
 
@@ -188,5 +199,40 @@ public class ManageJenkinsPage extends BasePage {
 
     public Integer getSettingsSectionsQuantity() {
         return settingsSections.size();
+    }
+
+    public String getManageOldDataText() {
+        return manageOldData.getText();
+    }
+
+    public boolean isManageOldDataClickable() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(manageOldData));
+        return true;
+    }
+
+    public boolean areStatusInformationSectionsVisible() {
+        for (WebElement section : statusInformationSectionsList) {
+            return section.isDisplayed();
+        }
+        return false;
+    }
+
+    public boolean areStatusInformationSectionsClickable() {
+        for (WebElement section : statusInformationSectionsList) {
+            return section.isEnabled();
+        }
+        return false;
+    }
+
+    public Integer getStatusInformationSectionsQuantity() {
+        return statusInformationSectionsList.size();
+    }
+
+    public boolean areSecuritySectionsVisible() {
+        return securitySectionsList.stream().allMatch(WebElement::isDisplayed);
+    }
+
+    public boolean areSecuritySectionsClickable() {
+        return securitySectionsList.stream().allMatch(WebElement::isEnabled);
     }
 }

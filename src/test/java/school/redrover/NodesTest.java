@@ -1,8 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -13,20 +11,6 @@ public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "NewNode";
     private static final String NEW_NODE_NAME = "newNodeName";
-
-    private void createNewNode(String nodeName) {
-
-        getDriver().findElement(By.xpath("//a[@href = 'computer/new']")).click();
-        getDriver().findElement(By.id("name")).sendKeys(nodeName);
-        getDriver().findElement(By.xpath("//label")).click();
-        getDriver().findElement(By.id("ok")).click();
-        getDriver().findElement(By.name("Submit")).click();
-        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
-    }
-
-    private void goToMainPage() {
-        getDriver().findElement(By.id("jenkins-head-icon")).click();
-    }
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
@@ -70,8 +54,7 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(nodeList.contains(NODE_NAME));
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
+    @Test(dependsOnMethods = "testNodeStatusUpdateOfflineReason")
     public void testCreateNodeByCopyingExistingNode() {
         final String newNode = "Copy node";
 
@@ -89,20 +72,7 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(nodeName.contains(newNode));
     }
 
-    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
-    public void testMarkNodeTemporarilyOffline() {
-
-        String message = new HomePage(getDriver())
-                .goNodesListPage()
-                .clickNodeByName(NODE_NAME)
-                .clickMarkOffline()
-                .saveChanges()
-                .getMessage();
-
-        Assert.assertEquals(message, "Disconnected by admin");
-    }
-
-    @Test(dependsOnMethods = "testMarkNodeTemporarilyOffline")
+    @Test(dependsOnMethods = "testCreateNodeByCopyingExistingNode")
     public void testRenameNodeWithValidName() {
 
         String actualName = new HomePage(getDriver())
@@ -114,30 +84,6 @@ public class NodesTest extends BaseTest {
                 .getNodeName();
 
         Assert.assertTrue(actualName.contains(NEW_NODE_NAME));
-    }
-
-    @Ignore
-    @Test
-    public void testUpdateOfflineReason() {
-        final String newReason = "Updated reason";
-
-        createNewNode(NODE_NAME);
-        goToMainPage();
-
-        getDriver().findElement(By.xpath("//span[text()='" + NODE_NAME + "']")).click();
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys("111");
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-
-        getDriver().findElement(By.xpath("//form[@action = 'setOfflineCause']/button")).click();
-        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).clear();
-        getDriver().findElement(By.xpath("//textarea[@name = 'offlineMessage']")).sendKeys(newReason);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@class = 'message']")).getText(),
-                "Disconnected by admin : " + newReason
-        );
     }
 
     @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromManageJenkinsPage")
@@ -155,11 +101,11 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(errorMassage.contains("No such agent"));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromMainPanel")
     public void testNodeStatusUpdateOfflineReason() {
         final String reasonMessage = "Original Offline Reason Message";
         final String updatedReasonMessage = "Updated Offline Reason Message";
-        createNewNode(NODE_NAME);
+
         String offlineReasonMessage = new HomePage(getDriver())
                 .clickOnNodeName(NODE_NAME)
                 .clickMarkOffline()
@@ -272,32 +218,16 @@ public class NodesTest extends BaseTest {
                         " a consistent current working directory. Using an absolute path is highly recommended.");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromManageJenkinsPage")
     public void testSortNodesInReverseOrder() {
-        final List<String> nodes = List.of("Agent1", "Agent2", "Agent3", "Built-In Node");
+        final List<String> expectedSortedNodes = List.of("NewNode", "Built-In Node");
 
-        List<String> actualNodes = new HomePage(getDriver())
+        List<String> actualSortedNodes = new HomePage(getDriver())
                 .goNodesListPage()
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(0))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(1))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(2))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickSortByNameButton()
                 .clickSortByNameButton()
                 .getNodeList();
 
-        Assert.assertEquals(nodes, actualNodes);
+        Assert.assertEquals(actualSortedNodes, expectedSortedNodes);
     }
 
     @Test

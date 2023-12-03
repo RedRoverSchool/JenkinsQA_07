@@ -11,6 +11,7 @@ public class LogRecordersDetailsPage extends BasePage {
 
     @FindBy(xpath = "//a[@href = 'configure']")
     private WebElement configureButton;
+
     @FindBy(xpath = "//a[@href='/manage/log/']")
     private WebElement breadcrumbSystemLog;
 
@@ -33,7 +34,7 @@ public class LogRecordersDetailsPage extends BasePage {
         return this;
     }
 
-    public String getTextNoLogsAvailable() {
+    public String getEmptyHistoryLog() {
 
         return getWait2().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='main-panel']/div[2]"))).getText();
     }
