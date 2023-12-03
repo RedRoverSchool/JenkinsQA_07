@@ -118,7 +118,7 @@ public class UserTest extends BaseTest {
                 .inputPasswordConfirm(PASSWORD)
                 .inputFullName(FULL_NAME)
                 .clickCreateUser()
-                .getErrorMassage();
+                .getErrorMessage();
 
         Assert.assertEquals(error, "Invalid e-mail address");
     }
@@ -133,7 +133,7 @@ public class UserTest extends BaseTest {
                 .inputUserName(USER_NAME)
                 .inputFullName(FULL_NAME)
                 .clickCreateUser()
-                .getErrorMassage();
+                .getErrorMessage();
 
         Assert.assertEquals(error, "Password is required");
     }
@@ -150,7 +150,7 @@ public class UserTest extends BaseTest {
                 .inputPasswordConfirm(WRONG_CONFIRM_PASSWORD)
                 .inputFullName(FULL_NAME)
                 .clickCreateUser()
-                .getErrorMassage();
+                .getErrorMessage();
 
         Assert.assertEquals(error, "Password didn't match");
     }
@@ -393,7 +393,7 @@ public class UserTest extends BaseTest {
                 .inputPasswordConfirm(PASSWORD)
                 .inputEmail(EMAIL)
                 .clickCreateUser()
-                .getErrorMassage();
+                .getErrorMessage();
 
         Assert.assertEquals(warningMessage, "User name is already taken");
     }
