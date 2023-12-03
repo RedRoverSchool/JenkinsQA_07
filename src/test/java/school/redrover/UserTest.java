@@ -118,7 +118,7 @@ public class UserTest extends BaseTest {
                 .inputPasswordConfirm(PASSWORD)
                 .inputFullName(FULL_NAME)
                 .clickCreateUser()
-                .getErrorMassage();
+                .getErrorMessage();
 
         Assert.assertEquals(error, "Invalid e-mail address");
     }
@@ -133,7 +133,7 @@ public class UserTest extends BaseTest {
                 .inputUserName(USER_NAME)
                 .inputFullName(FULL_NAME)
                 .clickCreateUser()
-                .getErrorMassage();
+                .getErrorMessage();
 
         Assert.assertEquals(error, "Password is required");
     }
@@ -150,7 +150,7 @@ public class UserTest extends BaseTest {
                 .inputPasswordConfirm(WRONG_CONFIRM_PASSWORD)
                 .inputFullName(FULL_NAME)
                 .clickCreateUser()
-                .getErrorMassage();
+                .getErrorMessage();
 
         Assert.assertEquals(error, "Password didn't match");
     }
@@ -729,5 +729,18 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(
                 getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
                 fullName);
+    }
+
+    @Test
+    public void testCreateUserWithoutEmail() {
+        CreateNewUserPage userNotCreated= new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .createUser()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .clickCreateUser();
+        Assert.assertEquals(userNotCreated.getErrorMessage(), "Invalid e-mail address");
     }
 }

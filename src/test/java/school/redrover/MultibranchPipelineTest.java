@@ -409,7 +409,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String disabledText = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickEnable()
-                .getButtonText();
+                .getDisableButtonText();
 
         Assert.assertEquals(disabledText, "Disable Multibranch Pipeline");
     }
