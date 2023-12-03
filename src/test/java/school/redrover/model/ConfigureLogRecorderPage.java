@@ -38,7 +38,7 @@ public class ConfigureLogRecorderPage extends BasePage {
     private WebElement backToSystemLogButton;
 
     @FindBy (name = "loggers")
-    private List<WebElement> loggersBlock;
+    private List<WebElement> loggersSections;
 
     @FindAll({@FindBy (xpath = "//div[@name='loggers']/div/button")})
     private List<WebElement> elementList;
@@ -125,8 +125,8 @@ public class ConfigureLogRecorderPage extends BasePage {
         return this;
     }
 
-    public boolean areLoggersBlockNoneVisible() {
+    public boolean areLoggersSectionsNoneVisible() {
 
-        return loggersBlock.stream().noneMatch(WebElement::isDisplayed);
+        return loggersSections.stream().noneMatch(WebElement::isDisplayed);
     }
 }

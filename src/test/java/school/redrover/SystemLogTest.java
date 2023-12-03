@@ -96,7 +96,7 @@ public class SystemLogTest extends BaseTest {
                 .clickDeleteLogger()
                 .clickSave()
                 .clickConfigure()
-                .areLoggersBlockNoneVisible();
+                .areLoggersSectionsNoneVisible();
 
         Assert.assertTrue(emptyLoggersBlock);
     }
