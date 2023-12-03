@@ -56,6 +56,9 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
     private WebElement itemNameInTable;
 
+    @FindBy(xpath = "//h1")
+    private WebElement header;
+
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
 
