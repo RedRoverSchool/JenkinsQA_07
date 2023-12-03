@@ -10,7 +10,7 @@ public class RenameErrorPage extends BasePage {
         super(driver);
     }
 
-    @FindBy(xpath = "//div[@id='main-panel']/p")
+    @FindBy(tagName = "p")
     private WebElement errorText;
 
     public String getErrorText() {

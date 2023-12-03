@@ -115,10 +115,10 @@ public class PipelineDetailsPage extends BaseProjectPage {
         return permalinks;
     }
 
-    public PipelineConfigurationPage clickConfigure() {
+    public PipelineConfigurePage clickConfigure() {
         configureSideMenuOption.click();
 
-        return new PipelineConfigurationPage(getDriver());
+        return new PipelineConfigurePage(getDriver());
     }
 
     public PipelineDetailsPage clickBuildNow() {

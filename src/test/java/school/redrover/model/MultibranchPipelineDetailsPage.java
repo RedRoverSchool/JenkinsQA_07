@@ -102,4 +102,8 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
 
         return new MultibranchPipelineDeletePage(getDriver());
     }
+
+    public String getDisableButtonText() {
+        return disableButton.getText();
+    }
 }
