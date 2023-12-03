@@ -82,19 +82,13 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
         String expectedResultName = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineConfigurationPage(getDriver()))
-                .confirmRename(MULTIBRANCH_PIPELINE_NAME)
-                .clearField()
-                .inputName(MULTIBRANCH_PIPELINE_NEW_NAME)
-                .buttonSubmit()
-                .getJobName();
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage((getDriver())))
+                .clickRename()
+                .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .clickSubmit()
+                .getHeadLineText();
 
-        String nameH1 = new MultibranchPipelineConfigurationPage(getDriver()).getHeadLineText();
-
-        Assert.assertTrue(nameH1.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
-
-        Assert.assertEquals(expectedResultName, MULTIBRANCH_PIPELINE_NEW_NAME,
-                expectedResultName + MULTIBRANCH_PIPELINE_NEW_NAME);
+        Assert.assertTrue(expectedResultName.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
     @Test
@@ -173,10 +167,10 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NEW_NAME, true);
 
         String actualResult = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineConfigurationPage(getDriver()))
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickButtonDelete()
                 .clickRedButtonYes()
-                .multibranchPipelineName();
+                .getMultibranchPipelineName();
 
         Assert.assertNotEquals(
                 actualResult, MULTIBRANCH_PIPELINE_NAME);
@@ -197,7 +191,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testRenameMultibranchDropdownDashboard() {
         HomePage homePage = new HomePage(getDriver())
-                .clickJobName(MULTIBRANCH_PIPELINE_NAME)
+                .clickJobNameDropdown(MULTIBRANCH_PIPELINE_NAME)
                 .clickRenameDropdownMenu(MULTIBRANCH_PIPELINE_NAME)
                 .typeNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickSubmit()

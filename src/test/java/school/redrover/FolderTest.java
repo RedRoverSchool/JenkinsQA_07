@@ -258,7 +258,7 @@ public class FolderTest extends BaseTest {
         final String descriptionText = "This is Folder's description";
 
         String actualDescription = new HomePage(getDriver())
-                .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
+                .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeDescription(descriptionText)
                 .clickSave()
@@ -284,7 +284,7 @@ public class FolderTest extends BaseTest {
     @Test(dependsOnMethods = {"testAddDescriptionToFolder"})
     public void testDeleteDescriptionOfFolder() {
         FolderDetailsPage folderDescription = new HomePage(getDriver())
-                .clickAnyJobCreated(new FolderDetailsPage(getDriver()))
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .clearDescriptionTextArea()
                 .clickSave();

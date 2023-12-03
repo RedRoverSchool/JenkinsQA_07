@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public <T> T clickJobByName(String name, T page) {
+    public <T extends BaseProjectPage> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
         return page;
@@ -147,7 +148,7 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobName(String name) {
+    public HomePage clickJobNameDropdown(String name) {
         WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
 
         Actions actions = new Actions(getDriver());
@@ -175,12 +176,6 @@ public class HomePage extends BasePage {
         return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
     }
 
-    public <T> T clickAnyJobCreated(T page) {
-        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
-
-        return page;
-    }
-
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
 
@@ -206,7 +201,8 @@ public class HomePage extends BasePage {
         return page;
     }
 
-    public String multibranchPipelineName() {
+    public String getMultibranchPipelineName() {
+
         return multibranchPipelineNameOnHomePage.getText();
     }
 
