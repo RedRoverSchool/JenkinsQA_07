@@ -257,6 +257,7 @@ public class ManageJenkinsPage extends BasePage {
 
     public String pressEnterAfterInput(String inputText) {
         searchInput.sendKeys(inputText);
+        getWait2().until(ExpectedConditions.visibilityOf(searchInput));
         searchInput.sendKeys(Keys.ENTER);
 
         return getCurrentURL();
