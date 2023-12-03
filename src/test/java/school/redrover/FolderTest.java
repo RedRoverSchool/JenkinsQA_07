@@ -20,6 +20,7 @@ public class FolderTest extends BaseTest {
     private static final String RENAMED_FOLDER = "RenamedFolder";
     private static final String NESTED_FOLDER = "Nested";
     private static final String JOB_NAME = "New Job";
+    private static final String DESCRIPTION_TEXT = "This is Folder's description";
 
     @DataProvider
     public Object[][] provideUnsafeCharacters() {
@@ -255,16 +256,38 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRename")
     public void testAddDescriptionToFolder() {
-        final String descriptionText = "This is Folder's description";
-
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(descriptionText)
+                .typeDescription(DESCRIPTION_TEXT)
                 .clickSave()
                 .getActualFolderDescription();
 
-        Assert.assertEquals(actualDescription, descriptionText);
+        Assert.assertEquals(actualDescription, DESCRIPTION_TEXT);
+    }
+
+    @Test(dependsOnMethods = "testMoveFolderToFolder")
+    public void testClickPreview() {
+        String previewDescription = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .typeDescription(DESCRIPTION_TEXT)
+                .clickPreview()
+                .getDescriptionPreview();
+
+        Assert.assertEquals(previewDescription, DESCRIPTION_TEXT);
+    }
+
+    @Test(dependsOnMethods = "testClickPreview")
+    public void testHidePreview() {
+        String previewDescription = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .clickPreview()
+                .clickHidePreview()
+                .getDescriptionPreview();
+
+        Assert.assertTrue(previewDescription.isEmpty());
     }
 
     @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testRename", "testCreate"})
@@ -316,28 +339,6 @@ public class FolderTest extends BaseTest {
                 (new String[]{"Dashboard", folderName, subfolderName}));
 
         Assert.assertEquals(listBreadcrumbsItems, listExpectedItems);
-    }
-
-    @Test
-    public void testAddDescription() {
-        final String description = "Test123";
-
-        createFolder("Test");
-
-        getDriver().findElement(By.name("_.description")).sendKeys(description);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.id("view-message")).getText(), description);
-    }
-
-    @Test
-    public void testClickPreview() {
-        createFolder(FOLDER_NAME);
-
-        getDriver().findElement(By.name("_.description")).sendKeys("description123");
-        getDriver().findElement(By.className("textarea-show-preview")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.className("textarea-preview")).getText(), "description123");
     }
 
     @Test
@@ -401,19 +402,6 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/p")).getText(), "No name is specified");
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testAddFolderDescription")
-    public void testChangeFolderDescription() {
-        getDriver().findElement(By.xpath("//a[@href = 'job/Renamed%20Folder/']")).click();
-        getDriver().findElement(By.id("description-link")).click();
-        getDriver().findElement(By.name("description")).clear();
-        getDriver().findElement(By.name("description")).sendKeys("Second description");
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(getDriver().findElement(
-                By.xpath("//*[@id='description']/div[1]")).getText(), "Second description");
     }
 
     @Ignore
