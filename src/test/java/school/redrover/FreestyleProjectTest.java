@@ -481,13 +481,13 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(helpMessageDisplay);
     }
 
-    @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
+    @Test(dependsOnMethods = "testRenameProject")
     public void testStatusPageUrlCheck() {
         String currentUrl = new HomePage(getDriver())
-                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .getCurrentUrl();
 
-        assertTrue(currentUrl.contains("/job/" + PROJECT_NAME.replace(" ", "%20")));
+        assertTrue(currentUrl.contains("/job/" + NEW_PROJECT_NAME.replace(" ", "%20")));
     }
 
     @Ignore
