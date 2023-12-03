@@ -380,8 +380,6 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserWithExistedUsername() {
-        final String email = "test@test.com";
-        final String validationMessage = "User name is already taken";
 
         String existedName = new HomePage(getDriver())
                 .clickManageJenkins()
