@@ -1,7 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -9,10 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "FolderName";
@@ -220,11 +215,11 @@ public class FolderTest extends BaseTest {
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(DESCRIPTION_TEXT)
+                .typeDescription(DESCRIPTION_NAME)
                 .clickSave()
                 .getActualFolderDescription();
 
-        Assert.assertEquals(actualDescription, DESCRIPTION_TEXT);
+        Assert.assertEquals(actualDescription, DESCRIPTION_NAME);
     }
 
     @Test(dependsOnMethods = "testMoveFolderToFolder")
@@ -232,11 +227,11 @@ public class FolderTest extends BaseTest {
         String previewDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(DESCRIPTION_TEXT)
+                .typeDescription(DESCRIPTION_NAME)
                 .clickPreview()
                 .getDescriptionPreview();
 
-        Assert.assertEquals(previewDescription, DESCRIPTION_TEXT);
+        Assert.assertEquals(previewDescription, DESCRIPTION_NAME);
     }
 
     @Test(dependsOnMethods = "testClickPreview")
