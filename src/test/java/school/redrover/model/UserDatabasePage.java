@@ -19,6 +19,10 @@ public class UserDatabasePage extends BasePage {
     @FindBy(xpath = "//tbody/tr")
     private List<WebElement> users;
 
+    @FindBy(xpath = "//a[contains(@class, 'link inside')]")
+    private List<WebElement> userIDs;
+
+
     public UserDatabasePage(WebDriver driver) {
         super(driver);
     }
@@ -26,6 +30,10 @@ public class UserDatabasePage extends BasePage {
     public String getLoginUserName() {
         return loginUserName
                 .getText();
+    }
+
+    public String getUserID(int n) {
+        return userIDs.get(n).getText();
     }
 
     public boolean deleteLoggedUser() {

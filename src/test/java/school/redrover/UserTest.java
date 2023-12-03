@@ -379,24 +379,25 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testUnableToCreateUserWithExistedUsername() {
-        final String existedUsername = "admin";
-        final String password = "1";
+    public void testCreateUserWithExistedUsername() {
         final String email = "test@test.com";
         final String validationMessage = "User name is already taken";
 
-        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//a[@href = 'addUser']")).click();
-        getDriver().findElement(By.xpath("//input[@name = 'username']")).sendKeys(existedUsername);
-        getDriver().findElement(By.xpath("//input[@name = 'password1']")).sendKeys(password);
-        getDriver().findElement(By.xpath("//input[@name = 'password2']")).sendKeys(password);
-        getDriver().findElement(By.xpath("//input[@name = 'email']")).sendKeys(email);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+        String existedName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goUserDatabasePage()
+                .getUserID(0);
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//div[@class = 'error jenkins-!-margin-bottom-2']")).getText(),
-                validationMessage);
+        String warningMessage = new UserDatabasePage(getDriver())
+                .createUser()
+                .inputUserName(existedName)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputEmail(EMAIL)
+                .clickCreateUser()
+                .getErrorMassage();
+
+        Assert.assertEquals(warningMessage, "User name is already taken");
     }
 
     @Test
