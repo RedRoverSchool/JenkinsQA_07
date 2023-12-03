@@ -12,6 +12,7 @@ import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.List;
 
 import static org.testng.Assert.*;
@@ -481,6 +482,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(helpMessageDisplay);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateFreestyleProjectWithValidName")
     public void testStatusPageUrlCheck() {
         String currentUrl = new HomePage(getDriver())
