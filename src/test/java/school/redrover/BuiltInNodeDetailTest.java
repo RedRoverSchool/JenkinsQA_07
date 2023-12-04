@@ -22,9 +22,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class BuiltInNodeDetailTest extends BaseTest {
-
-    public static class UserTest extends BaseTest {
-
         private static final String USER_NAME = "Jane";
         private final String USER_NAME_2 = "FirstUser";
         private static final String NAME = "ivan";
@@ -751,6 +748,5 @@ public class BuiltInNodeDetailTest extends BaseTest {
                     .getUserID(1);
             Assert.assertEquals(userId, USER_NAME);
         }
-
-    }
 }
+
