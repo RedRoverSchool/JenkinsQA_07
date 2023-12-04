@@ -254,14 +254,13 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
 
-
-    @Ignore("PR#2042, failed with error: expected [MultibranchPipeline] but found [Search for 'MultibranchPipeline']")
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testFindByQuickSearch() {
-        MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
-                .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()));
+        String multibranchPipelineDetailsPage = new HomePage(getDriver())
+                .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getHeadLineText();
 
-        Assert.assertEquals(multibranchPipelineDetailsPage.getHeadLineText(), MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchPipelineDetailsPage,"Search for " + MULTIBRANCH_PIPELINE_NAME);
     }
 
 

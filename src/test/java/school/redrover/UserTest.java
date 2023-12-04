@@ -715,20 +715,18 @@ public class UserTest extends BaseTest {
         final String email = "rv@gmail.com";
         final String fullName = "User User";
 
-        new HomePage(getDriver())
-                .clickManageJenkins();
-        createUser(existedUsername, password, email);
+        String userName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .fillUserInformationField(existedUsername, password, email)
+                .clickUserByName(existedUsername)
+                .goConfigurePage()
+                .sendKeysFullNameUser(fullName)
+                .clickSaveButton()
+                .getHeadLineText();
 
-        new UserConfigurationPage(getDriver())
-                .clickUsername()
-                .clickConfigurationPage()
-                .clearUserFull()
-                .sendKeysFullNameUser()
-                .clickSaveButton();
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
-                fullName);
+        Assert.assertEquals(userName, fullName);
     }
 
     @Test

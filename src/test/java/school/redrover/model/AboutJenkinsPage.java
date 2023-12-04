@@ -21,7 +21,6 @@ public class AboutJenkinsPage extends BasePage {
         return jenkinsVersionText.getText();
     }
 
-
     public List<String> getTabBarText() {
         List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='tabBar']//div"));
         List<String> textList = elementList.stream().map(WebElement::getText).toList();
@@ -32,9 +31,5 @@ public class AboutJenkinsPage extends BasePage {
     public List<WebElement> getTabBarElements() {
 
         return getDriver().findElements(By.xpath("//div[@class='tabBar']//div"));
-    }
-    public List<WebElement> getTabPaneElements() {
-
-        return getDriver().findElements(By.xpath("//div[@class='jenkins-tab-pane']"));
     }
 }

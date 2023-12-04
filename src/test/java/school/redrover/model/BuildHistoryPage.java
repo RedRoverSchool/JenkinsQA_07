@@ -29,6 +29,9 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(css = "#timeline-band-1")
     private WebElement timelineBand;
 
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
+
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
@@ -74,5 +77,11 @@ public class BuildHistoryPage extends BasePage {
     public Point getPointLocation() {
 
         return timelineBand.getLocation();
+    }
+
+    public RestApiPage goRestApi() {
+        restApiButton.click();
+
+        return new RestApiPage(getDriver());
     }
 }

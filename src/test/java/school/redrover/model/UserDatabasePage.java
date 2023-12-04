@@ -62,9 +62,9 @@ public class UserDatabasePage extends BasePage {
         String fullName = "";
         int trCounter = 1;
 
-        for (WebElement user:users) {
+        for (WebElement user : users) {
             if (user.getText().contains(name)) {
-                fullName = user.findElement(By.xpath("//tbody/tr["+ trCounter +"]/td[3]")).getText();
+                fullName = user.findElement(By.xpath("//tbody/tr[" + trCounter + "]/td[3]")).getText();
                 break;
             } else {
                 trCounter++;
@@ -73,9 +73,9 @@ public class UserDatabasePage extends BasePage {
         return fullName;
     }
 
-    public UserPage clickUserByName(String name) {
-        getDriver().findElement(By.cssSelector("a[href='user/" + name + "/']")).click();
+    public UserStatusPage clickUserByName(String name) {
+        getDriver().findElement(By.cssSelector("a[href='user/" + name.toLowerCase() + "/']")).click();
 
-        return new UserPage(getDriver());
+        return new UserStatusPage(getDriver());
     }
 }
