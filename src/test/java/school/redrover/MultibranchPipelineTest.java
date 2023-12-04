@@ -260,7 +260,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .getHeadLineText();
 
-        Assert.assertEquals(multibranchPipelineDetailsPage,"Search for " + MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchPipelineDetailsPage,"Search for '" + MULTIBRANCH_PIPELINE_NAME + "'");
     }
 
 
