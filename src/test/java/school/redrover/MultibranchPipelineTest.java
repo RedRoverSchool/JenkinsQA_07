@@ -357,19 +357,15 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(namesOfTasks, requiredNamesOfTasks);
     }
 
-    @Test
-    public void testVisibilityOfAdditionalTaskOfSidebarMenuIfFolderIsCreated() {
-
+    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage"})
+    public void testMoveTaskIsEnabled() {
         TestUtils.createFolder(this, "Nested Folder", true);
-        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+        List<String> namesOfTasks = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getNameOfTasksFromSidebarMenu();
 
-        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
-                By.xpath("//span[@class='task-link-wrapper ']")));
-        namesOfTasks.removeAll(requiredNamesOfTasks);
-
-        Assert.assertEquals(namesOfTasks.toString(), "[Move]");
+        Assert.assertTrue(namesOfTasks.contains("Move"));
     }
 
     @Test
