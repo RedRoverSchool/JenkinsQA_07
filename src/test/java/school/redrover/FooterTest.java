@@ -11,7 +11,6 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class FooterTest extends BaseTest {
-
     private static final String JENKINS_VERSION = "Jenkins 2.414.2";
     private static final String ABOUT_JENKINS_VERSION = "Version 2.414.2";
 
@@ -53,9 +52,9 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(jenkinsVersion, ABOUT_JENKINS_VERSION);
     }
 
-   @Ignore
-    @Test(dependsOnMethods = "testJenkinsVersionStatusUserPageClick")
-    public void checkTippyBox() {
+
+    @Test
+    public void testCheckTippyBox() {
         final List<String> expectedMenu = List.of(
                 "About Jenkins",
                 "Get involved",
@@ -67,8 +66,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualMenu, expectedMenu);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "checkTippyBox")
+    @Test(dependsOnMethods = "testCheckTippyBox")
     public void testClickAboutJenkins() {
 
         String actualPageName = new HomePage(getDriver())
@@ -78,6 +76,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageName, "Jenkins");
     }
 
+    @Ignore
     @Test
     public void testClickGetInvolved() {
         String actualPageName = new HomePage(getDriver())
@@ -98,7 +97,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageName, "Jenkins");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testClickAboutJenkins")
     public void testVerifyClickabilityOfRestAPILink() {
         String restApi = new HomePage(getDriver())
@@ -108,7 +106,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(restApi, "REST API");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testVerifyClickabilityOfRestAPILink")
     public void testJenkinsVersionListTabBar() {
         final List<String> expectedListTabBar = List.of(
@@ -123,7 +120,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(tabBarList, expectedListTabBar);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testJenkinsVersionListTabBar")
     public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
         AboutJenkinsPage active = new HomePage(getDriver())

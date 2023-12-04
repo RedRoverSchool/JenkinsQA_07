@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NodesListPage extends BasePage {
@@ -39,11 +41,11 @@ public class NodesListPage extends BasePage {
         return new NodeDetailsPage(getDriver());
     }
 
-    public boolean elementIsNotPresent(String xpath){
+    public boolean elementIsNotPresent(String xpath) {
         return getDriver().findElements(By.xpath(xpath)).isEmpty();
     }
 
-    public String getCurrentURL(){
+    public String getCurrentURL() {
         return getDriver().getCurrentUrl();
     }
 

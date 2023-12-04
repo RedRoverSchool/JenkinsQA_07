@@ -40,6 +40,9 @@ public abstract class BaseProjectPage extends BasePage {
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'move')]")
     private WebElement moveSideMenuOption;
 
+    @FindBy(id = "description-link")
+    protected WebElement addDescription;
+
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }

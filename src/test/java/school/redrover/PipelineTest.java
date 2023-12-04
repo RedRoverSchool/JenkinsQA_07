@@ -100,7 +100,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(JOB_NAME)
                 .selectPipelineProject()
-                .clickOk(new PipelineConfigurationPage(getDriver()))
+                .clickOk(new PipelineConfigurePage(getDriver()))
                 .goHomePage()
                 .getJobList();
 
@@ -192,7 +192,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(JOB_NAME)
                 .selectPipelineProject()
-                .clickOk(new PipelineConfigurationPage(getDriver()))
+                .clickOk(new PipelineConfigurePage(getDriver()))
                 .clickProjectIsParameterized()
                 .clickAddParameter()
                 .selectChoiceParameter().setParameterName("parameterName")
@@ -241,7 +241,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isPermalinksEmpty);
     }
 
-    @Ignore
     @Test
     public void testPermalinksContainBuildInformation() {
         final List<String> expectedPermalinksList = List.of(
@@ -254,7 +253,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
         List<String> actualPermalinksList = new HomePage(getDriver())
-                .clickBuildByGreenArrow(JOB_NAME)
+                .clickBuildByGreenArrowWithWait(JOB_NAME)
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .getPermalinksList();
 
@@ -321,7 +320,7 @@ public class PipelineTest extends BaseTest {
 
         TestUtils.createPipeline(this, JOB_NAME, true);
 
-        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+        PipelineConfigurePage pipelineConfigurationPage = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure();
 

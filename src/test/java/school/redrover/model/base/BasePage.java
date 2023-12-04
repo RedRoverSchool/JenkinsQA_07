@@ -20,6 +20,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(name = "q")
     private WebElement searchBoxHeader;
 
+    @FindBy(xpath = "//li//a[@href='/']")
+    private WebElement dashboardBreadCrumb;
+
     @FindBy(xpath = "//div[@id='breadcrumbBar']/ol/li/a")
     private List<WebElement> breadcrumbBarItemsList;
 
@@ -50,7 +53,7 @@ public abstract class BasePage extends BaseModel {
         return heading.getText();
     }
 
-    public <T> T useSearchBox(String searchText, T page) {
+    public <T> T goSearchBox(String searchText, T page) {
         searchBoxHeader.click();
         searchBoxHeader.sendKeys(searchText);
 
@@ -88,5 +91,11 @@ public abstract class BasePage extends BaseModel {
     public boolean isItemExistInBreadcrumbBar(String item) {
 
         return breadcrumbBarItemsList.stream().map(WebElement::getText).anyMatch(e -> e.equals(item));
+    }
+
+    public HomePage clickDashboardBreadCrumb() {
+        dashboardBreadCrumb.click();
+
+        return new HomePage(getDriver());
     }
 }

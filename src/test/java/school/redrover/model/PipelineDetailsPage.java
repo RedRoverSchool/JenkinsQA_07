@@ -5,19 +5,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineDetailsPage extends BasePage {
+public class PipelineDetailsPage extends BaseProjectPage {
 
     public PipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
-
-    @FindBy(id = "description-link")
-    private WebElement addDescription;
 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
@@ -115,10 +112,10 @@ public class PipelineDetailsPage extends BasePage {
         return permalinks;
     }
 
-    public PipelineConfigurationPage clickConfigure() {
+    public PipelineConfigurePage clickConfigure() {
         configureSideMenuOption.click();
 
-        return new PipelineConfigurationPage(getDriver());
+        return new PipelineConfigurePage(getDriver());
     }
 
     public PipelineDetailsPage clickBuildNow() {

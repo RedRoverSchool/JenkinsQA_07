@@ -89,15 +89,15 @@ public class SystemLogTest extends BaseTest {
 
     public void testDeleteLoggers() {
 
-        int emptyLoggers = new HomePage(getDriver())
+        Boolean emptyLoggersBlock = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
                 .clickGearIcon(SYSLOG_NAME)
                 .clickDeleteLogger()
                 .clickSave()
                 .clickConfigure()
-                .getCountLoggersBlock();
+                .areLoggersBlockNoneVisible();
 
-        Assert.assertEquals(emptyLoggers, 0);
+        Assert.assertTrue(emptyLoggersBlock);
     }
 }
