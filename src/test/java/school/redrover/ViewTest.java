@@ -1,10 +1,16 @@
 package school.redrover;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.SeleniumUtils;
 import school.redrover.runner.TestUtils;
+
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +72,31 @@ public class ViewTest extends BaseTest {
         Assert.assertEquals(view, VIEW_NAME);
     }
 
+    @Test
+    public void testTest(){
+        Actions actions = new Actions(getDriver());
+
+        WebElement dash = getDriver().findElement(By.cssSelector("#breadcrumbBar a"));
+        actions.moveToElement(dash).moveByOffset(dash.getSize().getWidth() / 2,0).pause(Duration.ofMillis(300)).click().perform();
+
+        getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item'][1]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.cssSelector(".h3")).getText(), "Enter an item name");
+    }
+
+    @Test
+    public void testTest3() {
+        TestUtils.createFreestyleProject(this, SeleniumUtils.generateRandomName(), true);
+        Actions actions = new Actions(getDriver());
+        WebElement job = getDriver().findElement(By.xpath("//td/a[contains(@href,'job/')]"));
+
+        actions.moveToElement(job).moveByOffset(job.getSize().getWidth() / 2,0).pause(Duration.ofMillis(300)).click().perform();
+
+        getDriver().findElement(By.xpath("//a[contains(@href,'configure')]")).click();
+
+        Assert.assertEquals(getDriver().findElement(By.tagName("h2")).getText(), "General");
+    }
+
     @Test(dependsOnMethods = "testCreateNewListView")
     public void testRenameView() {
         final String renamedViewName = "Renamed View Name";
@@ -93,6 +124,15 @@ public class ViewTest extends BaseTest {
                 .getViewsList();
 
         Assert.assertTrue(list.contains(VIEW_NAME));
+    }
+
+    @Test
+    public void testRest() throws InterruptedException {
+        getDriver().findElement(By.xpath("//a[contains(@href,'newJob')]")).click();
+        WebElement a = getDriver().findElement(By.xpath("//a[contains(@href,'api')]"));
+        Thread.sleep(5000);
+                a.click();
+        Thread.sleep(5000);
     }
 
     @Test
