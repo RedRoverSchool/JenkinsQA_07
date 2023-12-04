@@ -78,10 +78,11 @@ public class ViewTest extends BaseTest {
         Actions actions = new Actions(getDriver());
 
         WebElement dash = getDriver().findElement(By.cssSelector("#breadcrumbBar a"));
-        actions.moveToElement(dash).moveByOffset(dash.getSize().getWidth() / 2,0).pause(Duration.ofMillis(500)).click().perform();
+        actions.moveToElement(dash).moveByOffset(dash.getSize().getWidth() / 2,0).pause(Duration.ofMillis(500)).perform();
 
-        actions.pause(Duration.ofMillis(300)).click().perform();
-        actions.pause(Duration.ofMillis(300)).click().perform();
+        //actions.pause(Duration.ofMillis(300)).click().perform();
+
+        getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//button")).click();
 
         getWait5().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item'][1]")))).click();
 
