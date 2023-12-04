@@ -127,7 +127,7 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(restApi, REST_API);
     }
-@Ignore
+    @Ignore
     @Test(dependsOnMethods = "testRestApiLinkRedirectionPeople")
     public void testRestApiLinkRedirectionBuildHistory() {
         String restApi = new HomePage(getDriver())
