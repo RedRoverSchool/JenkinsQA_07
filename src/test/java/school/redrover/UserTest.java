@@ -700,6 +700,27 @@ public class UserTest extends BaseTest {
     }
 
     @Test
+    public void testUserChangFullName() {
+        final String existedUsername = "Usertest2";
+        final String password = "5679";
+        final String email = "rv@gmail.com";
+        final String fullName = "User User";
+
+        String userName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .fillUserInformationField(existedUsername, password, email)
+                .clickUserByName(existedUsername)
+                .goConfigurePage()
+                .sendKeysFullNameUser(fullName)
+                .clickSaveButton()
+                .getHeadLineText();
+
+        Assert.assertEquals(userName, fullName);
+    }
+
+    @Test
     public void testCreateUserWithoutEmail() {
         CreateNewUserPage userNotCreated = new HomePage(getDriver())
                 .clickManageJenkins()
