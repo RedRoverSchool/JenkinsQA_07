@@ -24,11 +24,11 @@ import static org.testng.Assert.assertTrue;
 public class UserTest extends BaseTest {
 
     private static final String USER_NAME = "Jane";
-    private final String USER_NAME_2 = "FirstUser";
+    private static final String USER_NAME_2 = "FirstUser";
     private static final String NAME = "ivan";
-    public static final String FULL_NAME = "User Full Name";
-    final private static String PASSWORD = "12345";
-    final private static String WRONG_CONFIRM_PASSWORD = "123";
+    private static final String FULL_NAME = "User Full Name";
+    private static final String PASSWORD = "12345";
+    private static final String WRONG_CONFIRM_PASSWORD = "123";
     private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
 

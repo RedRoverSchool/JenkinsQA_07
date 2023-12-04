@@ -47,9 +47,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
     private WebElement myView;
 
-    @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
-    private WebElement itemNameInTable;
-
     @FindBy(xpath = "//h1")
     private WebElement header;
 
@@ -215,11 +212,6 @@ public class HomePage extends BasePage {
         getWait2().until(ExpectedConditions.elementToBeClickable(myView)).click();
         return new MyViewPage(getDriver());
     }
-
-    public String getItemNameInTable() {
-        return itemNameInTable.getText();
-    }
-
 
     public NodeDetailsPage clickOnNodeName(String nodeName) {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
