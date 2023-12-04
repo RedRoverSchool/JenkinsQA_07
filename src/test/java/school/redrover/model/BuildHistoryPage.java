@@ -88,12 +88,10 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public BuildHistoryPage getBuildDropdownMenu() {
-        int deltaX = firstBuildButton.getSize().getWidth() / 2;
-        int deltaY = firstBuildButton.getSize().getHeight() / 2;
+
+        getWait5().until(ExpectedConditions.visibilityOf(buildDropDownMenu));
 
         new Actions(getDriver())
-                .moveToElement(firstBuildButton)
-                .scrollByAmount(deltaX, deltaY)
                 .moveToElement(buildDropDownMenu)
                 .click()
                 .perform();
