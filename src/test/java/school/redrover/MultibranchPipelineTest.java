@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
@@ -358,18 +359,15 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     @Test
-    public void testVisibilityOfAdditionalTaskOfSidebarMenuIfFolderIsCreated() {
-
+    public void testMoveTaskIsEnabled() {
         TestUtils.createFolder(this, "Nested Folder", true);
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+        List<String> namesOfTasks = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getNameOfTasksFromSidebarMenu();
 
-        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
-                By.xpath("//span[@class='task-link-wrapper ']")));
-        namesOfTasks.removeAll(requiredNamesOfTasks);
-
-        Assert.assertEquals(namesOfTasks.toString(), "[Move]");
+        Assert.assertTrue(namesOfTasks.contains("Move"));
     }
 
     @Test
@@ -379,13 +377,13 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createFolder(this, folderName, false);
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
-        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+        List<String> namesOfTasks = new HomePage(getDriver())
+                .clickJobByName(folderName, new FolderDetailsPage(getDriver()))
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getNameOfTasksFromSidebarMenu();
 
-        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
-                By.xpath("//span[@class='task-link-wrapper ']")));
-
-        Assert.assertTrue(namesOfTasks.contains("Move"), "Move is not the additional task of sidebar menu on the left");
+        Assert.assertTrue(namesOfTasks.contains("Move"),
+                "Move is not the additional task of sidebar menu on the left");
     }
 
     @Test(dependsOnMethods = "testRenameUsingSidebar")
