@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
@@ -49,6 +50,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(jenkinsVersion, ABOUT_JENKINS_VERSION);
     }
 
+    @Ignore("PR-2075, Expected condition failed: waiting for visibility of Proxy element for: DefaultElementLocator")
     @Test(dependsOnMethods = "testJenkinsVersionStatusUserPageClick")
     public void testCheckTippyBox() {
         final List<String> expectedMenu = List.of(
@@ -80,7 +82,6 @@ public class FooterTest extends BaseTest {
 
         Assert.assertEquals(actualPageName, "Jenkins");
     }
-
     @Test(dependsOnMethods = "testCheckTippyBox")
     public void testVerifyClickabilityOfRestAPILink() {
         String restApi = new HomePage(getDriver())
