@@ -53,6 +53,7 @@ public class BuildHistoryPage extends BasePage {
 
     public BuildHistoryPage clickIconLegendButton() {
         iconLegendButton.click();
+
         return this;
     }
 
