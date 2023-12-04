@@ -3,12 +3,10 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.BuildHistoryPage;
-import school.redrover.model.FreestyleProjectConfigurePage;
-import school.redrover.model.FreestyleProjectDetailsPage;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
 import java.text.SimpleDateFormat;
@@ -77,11 +75,6 @@ public class BuildHistoryTest extends BaseTest {
         Assert.assertEquals(tooltipIsVisible, "Click to center timeline on event");
     }
 
-    @Test (dependsOnMethods = "testTooltipIsVisibleInTheTimeSinceSection")
-    public void testEditBuildInformation(){
-
-    }
-    
     @Test(dependsOnMethods = "testTooltipIsVisibleInTheTimeSinceSection")
     public void testReturnBuildPoint() {
         Point startPosition = new HomePage(getDriver())
@@ -95,5 +88,26 @@ public class BuildHistoryTest extends BaseTest {
                 .getPointLocation();
 
         Assert.assertEquals(actualPosition, startPosition);
+    }
+
+    @Test ()
+    public void testEditBuildInformation(){
+        String buildHistoryPage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(NAME_FREESTYLE_PROJECT)
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .clickSaveButton()
+                .clickBuildNowButton()
+                .goHomePage()
+                .clickBuildHistoryButton()
+                .getBuildDropdownMenu()
+                .clickBuildDropDownMenu()
+                .setDisplayName()
+                .setFieldDescription()
+                .clickSaveButton()
+                .getDescriptionOfBuild();
+
+        Assert.assertEquals(buildHistoryPage, "Edited description");
     }
 }
