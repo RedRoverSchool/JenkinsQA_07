@@ -242,16 +242,17 @@ public class UserTest extends BaseTest {
     @Test
     public void testCreateUserWithoutEmail() {
 
-        CreateNewUserPage userNotCreated= new HomePage(getDriver())
+        String userNotCreatedMessage = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .inputUserName(USER_NAME)
                 .inputPassword(PASSWORD)
                 .inputPasswordConfirm(PASSWORD)
-                .clickCreateUser();
+                .clickCreateUser()
+                .getErrorMessage();
 
-        assertEquals(userNotCreated.getErrorMessage(), "Invalid e-mail address");
+        assertEquals(userNotCreatedMessage, "Invalid e-mail address");
     }
 
     @Test
@@ -328,7 +329,6 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .fillUserInformationField(USER_NAME_2 + unsafeCharacter, PASSWORD, EMAIL);
-
 
         assertTrue(getDriver().findElement(
                 By.xpath("//*[@id='main-panel']/form/div[1]/div[2]")).isDisplayed());
