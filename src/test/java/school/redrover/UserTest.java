@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -743,4 +744,25 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(userId, USER_NAME);
     }
 
+    @Test(dependsOnMethods = "testNewUserDisplayedOnPeopleScreen")
+    public void testDeleteUsingBreadcrumb() {
+        goToUsersPage();
+
+        Actions actions = new Actions(getDriver());
+
+        WebElement breadcrumbName = getDriver().findElement(By.linkText(USER_NAME));
+        actions.moveToElement(breadcrumbName);
+        actions.moveToElement(breadcrumbName).build().perform();
+
+        Actions action = new Actions(getDriver());
+        WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
+        action.moveToElement(chevron);
+        action.clickAndHold(chevron).release().perform();
+
+        WebElement buttonDeleteSVG = getDriver().findElement(
+                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+
+        String text = buttonDeleteSVG.getAttribute("aria-hidden");
+        Assert.assertEquals(text, "true");
+    }
 }
