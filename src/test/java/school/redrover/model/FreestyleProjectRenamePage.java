@@ -29,6 +29,7 @@ public class FreestyleProjectRenamePage extends BasePage {
     }
 
     public FreestyleProjectRenamePage enterName(String newProjectName) {
+        inputField.clear();
         inputField.sendKeys(newProjectName);
 
         return this;

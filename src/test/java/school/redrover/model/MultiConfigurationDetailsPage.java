@@ -4,14 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class MultiConfigurationDetailsPage extends BasePage {
+public class MultiConfigurationDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//div[@id='description']/div[1]")
     private WebElement descriptionText;
-
-    @FindBy(css = "#description-link")
-    private WebElement buttonEditDescription;
 
     @FindBy(name = "description")
     private WebElement inputDescription;
@@ -33,7 +30,7 @@ public class MultiConfigurationDetailsPage extends BasePage {
     }
 
     public MultiConfigurationDetailsPage buttonEditDescription() {
-        buttonEditDescription.click();
+        addDescription.click();
 
         return this;
     }

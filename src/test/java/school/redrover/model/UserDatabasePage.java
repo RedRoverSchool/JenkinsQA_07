@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class UserDatabasePage extends BasePage {
 
     @FindBy(css = "a[href = 'addUser']")
@@ -14,6 +16,13 @@ public class UserDatabasePage extends BasePage {
     @FindBy(xpath = "(//span[@class='hidden-xs hidden-sm'])[1]")
     private WebElement loginUserName;
 
+    @FindBy(xpath = "//tbody/tr")
+    private List<WebElement> users;
+
+    @FindBy(xpath = "//a[contains(@class, 'link inside')]")
+    private List<WebElement> userIDs;
+
+
     public UserDatabasePage(WebDriver driver) {
         super(driver);
     }
@@ -21,6 +30,10 @@ public class UserDatabasePage extends BasePage {
     public String getLoginUserName() {
         return loginUserName
                 .getText();
+    }
+
+    public String getUserID(int n) {
+        return userIDs.get(n).getText();
     }
 
     public boolean deleteLoggedUser() {
@@ -35,7 +48,7 @@ public class UserDatabasePage extends BasePage {
         return doDelete;
     }
 
-    public CreateNewUserPage createUser() {
+    public CreateNewUserPage clickCreateUserButton() {
         createUser.click();
 
         return new CreateNewUserPage(getDriver());
@@ -43,5 +56,26 @@ public class UserDatabasePage extends BasePage {
 
     public boolean isUserCreated(String userName) {
         return getDriver().findElement(By.linkText(userName)).isDisplayed();
+    }
+
+    public String getFullNameByName(String name) {
+        String fullName = "";
+        int trCounter = 1;
+
+        for (WebElement user:users) {
+            if (user.getText().contains(name)) {
+                fullName = user.findElement(By.xpath("//tbody/tr["+ trCounter +"]/td[3]")).getText();
+                break;
+            } else {
+                trCounter++;
+            }
+        }
+        return fullName;
+    }
+
+    public UserPage clickUserByName(String name) {
+        getDriver().findElement(By.cssSelector("a[href='user/" + name + "/']")).click();
+
+        return new UserPage(getDriver());
     }
 }

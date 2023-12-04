@@ -6,18 +6,24 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SystemLogPage extends BasePage {
 
     @FindBy(xpath = "//a[@href = 'new']")
-    private WebElement buttonAddRecorder;
+    private WebElement addRecorderButton;
 
     @FindBy(xpath = "//*[@id='logRecorders']/tbody/tr[2]/td[1]/a")
     private WebElement customLogName;
 
+    @FindBy(xpath = "//*[@id='logRecorders']/tbody/tr[2]/td[1]/a")
+    private WebElement customLogRecorderName;
+
     public SystemLogPage(WebDriver driver) { super(driver); }
 
     public NewLogRecorderPage clickAddRecorder() {
-        buttonAddRecorder.click();
+        addRecorderButton.click();
 
         return new NewLogRecorderPage(getDriver());
     }
@@ -29,9 +35,22 @@ public class SystemLogPage extends BasePage {
     }
 
     public String getNameCustomLog() {
-        String logname;
-        logname = customLogName.getText();
+        String logName;
+        logName = customLogName.getText();
 
-        return logname;
+        return logName;
+    }
+
+    public CustomLogRecorderPage clickCustomLogRecorderName() {
+        customLogName.click();
+
+        return new CustomLogRecorderPage(getDriver());
+    }
+
+    public List<WebElement> getListLogRecorders() {
+        List<WebElement> list = new ArrayList<>();
+        list = getDriver().findElements(By.className("jenkins-table__link"));
+
+        return list;
     }
 }

@@ -4,12 +4,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigurationPage;
 
 import java.util.List;
 
-public class PipelineConfigurationPage extends BasePage {
+public class PipelineConfigurePage extends BaseConfigurationPage {
 
     @FindBy(xpath = "//label[text()='This project is parameterized']")
     private WebElement projectIsParameterizedCheckbox;
@@ -50,18 +51,27 @@ public class PipelineConfigurationPage extends BasePage {
     @FindBy(id = "yui-gen10")
     private WebElement stringParameterOption;
 
-    public PipelineConfigurationPage(WebDriver driver) {
+    @FindBy(xpath = "//label[text()='Do not allow concurrent builds']")
+    private WebElement concurrentBuildsCheckboxLabel;
+
+    @FindBy(id = "cb3")
+    private WebElement concurrentBuildsCheckbox;
+
+    @FindBy(xpath = "//div[@hashelp = 'true']//a[contains(@tooltip, '')]")
+    private List<WebElement> tooltipsList;
+
+    public PipelineConfigurePage(WebDriver driver) {
         super(driver);
     }
 
-    public PipelineConfigurationPage clickProjectIsParameterized() {
+    public PipelineConfigurePage clickProjectIsParameterized() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click()", projectIsParameterizedCheckbox);
 
         return this;
     }
 
-    public PipelineConfigurationPage clickAddParameter() {
+    public PipelineConfigurePage clickAddParameter() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView(true)", projectIsParameterizedCheckbox);
         addParameterButton.click();
@@ -69,19 +79,19 @@ public class PipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public PipelineConfigurationPage selectChoiceParameter() {
+    public PipelineConfigurePage selectChoiceParameter() {
         choiceParameterOption.click();
 
         return this;
     }
 
-    public PipelineConfigurationPage setParameterName(String name) {
+    public PipelineConfigurePage setParameterName(String name) {
         parameterNameField.sendKeys(name);
 
         return this;
     }
 
-    public PipelineConfigurationPage setParameterChoices(List<String> parameterChoices) {
+    public PipelineConfigurePage setParameterChoices(List<String> parameterChoices) {
         for (int i = 0; i < parameterChoices.size(); i++) {
             if (i != parameterChoices.size() - 1) {
                 parameterChoicesField.sendKeys(parameterChoices.get(i) + "\n");
@@ -99,33 +109,33 @@ public class PipelineConfigurationPage extends BasePage {
         return new PipelineDetailsPage(getDriver());
     }
 
-    public PipelineConfigurationPage selectPipelineScriptSampleByValue(String value) {
+    public PipelineConfigurePage selectPipelineScriptSampleByValue(String value) {
         new Select(pipelineScriptSamplesDropdown).selectByValue(value);
 
         return this;
     }
 
-    public PipelineConfigurationPage setBuildAfterOtherProjectsCheckbox() {
+    public PipelineConfigurePage setBuildAfterOtherProjectsCheckbox() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", buildAfterOtherProjectsCheckbox);
 
         return this;
     }
 
-    public PipelineConfigurationPage setProjectsToWatch(String projectName) {
+    public PipelineConfigurePage setProjectsToWatch(String projectName) {
         projectsToWatchField.sendKeys(projectName);
 
         return this;
     }
 
-    public PipelineConfigurationPage clickAlwaysTriggerRadio() {
+    public PipelineConfigurePage clickAlwaysTriggerRadio() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].click();", alwaysTriggerRadio);
 
         return this;
     }
 
-    public PipelineConfigurationPage setPipelineScript(String pipelineScript) {
+    public PipelineConfigurePage setPipelineScript(String pipelineScript) {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView(true)", pipelineScriptTextAreaLine);
         pipelineScriptTextArea.sendKeys(pipelineScript);
@@ -133,9 +143,33 @@ public class PipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public PipelineConfigurationPage selectStringParameter() {
+    public PipelineConfigurePage selectStringParameter() {
         stringParameterOption.click();
 
         return this;
+    }
+
+    public PipelineConfigurePage clickDoNotAllowConcurrentBuilds() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(concurrentBuildsCheckboxLabel)).click();
+
+        return this;
+    }
+
+    public boolean isDoNotAllowConcurrentBuildsSelected() {
+
+        return concurrentBuildsCheckbox.isSelected();
+    }
+
+    public int getNumOfTooltips() {
+
+        return tooltipsList.size();
+    }
+
+    public List<String> getTooltipsTitlesList() {
+
+        return tooltipsList
+                .stream()
+                .map(element -> element.getAttribute("title"))
+                .toList();
     }
 }

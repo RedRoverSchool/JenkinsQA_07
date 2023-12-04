@@ -1,13 +1,11 @@
 package school.redrover.model;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigurationPage;
 
-public class MultibranchPipelineConfigurationPage extends BasePage {
+public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage {
 
     @FindBy(xpath = "//a[@class='model-link'][contains(@href, 'job')]")
     private WebElement breadcrumbJobName;
@@ -15,14 +13,14 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     @FindBy(xpath = "//div[@class ='setting-main']/input")
     private WebElement nameField;
 
-    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button")
+    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement buttonSubmit;
 
     @FindBy (xpath = "//h1")
-    private WebElement nameH1;
+    private WebElement error;
 
-    @FindBy (xpath = "//a[contains(@href, 'delete')]")
-    private WebElement buttonDelete;
+    @FindBy(className = "jenkins-toggle-switch__label")
+    private WebElement disableEnableToggle;
 
     public MultibranchPipelineConfigurationPage(WebDriver driver) {
 
@@ -32,16 +30,6 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
     public String getJobNameFromBreadcrumb() {
 
         return breadcrumbJobName.getText();
-    }
-
-    public String getJobName() {
-
-        return breadcrumbJobName.getText();
-    }
-    public MultibranchPipelineConfigurationPage confirmRename(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name + "/confirm-rename']")).click();
-
-        return this;
     }
 
     public  MultibranchPipelineConfigurationPage clearField() {
@@ -62,16 +50,18 @@ public class MultibranchPipelineConfigurationPage extends BasePage {
         return this;
     }
 
-    public String headerName() {
+    public String error() {
 
-        return nameH1.getText();
+        return error.getText();
     }
 
-    public MultibranchPipelineDeletePage clickButtonDelete() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
-        buttonDelete.click();
+    public MultibranchPipelineConfigurationPage clickDisableToggle() {
+        disableEnableToggle.click();
 
-        return new MultibranchPipelineDeletePage(getDriver());
+        return this;
     }
 
+    public String getDisableToggleText() {
+        return disableEnableToggle.getText();
+    }
 }

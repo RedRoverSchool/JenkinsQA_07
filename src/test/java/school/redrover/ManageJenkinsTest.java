@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
@@ -40,7 +39,6 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertEquals(resultText, "No results");
     }
 
-    @Ignore("Ignored in PR 1943, error : this.each is not a function")
     @Test
     public void testRedirectPage() {
         final String request = "Nodes";
@@ -62,8 +60,8 @@ public class ManageJenkinsTest extends BaseTest {
                 .typeSearchInputField("N")
                 .getResultsList();
 
-        Assert.assertNotEquals(
-                List.of("Plugins", "Nodes", "Credentials", "Credential", "Providers", "System Information"),
+        Assert.assertEquals(
+                List.of("Plugins", "Nodes", "Credentials", "Credential Providers", "System Information"),
                 result
         );
     }
@@ -83,7 +81,7 @@ public class ManageJenkinsTest extends BaseTest {
 
         boolean searchFieldIsActiveElement = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToSearchFieldUsingShortcut()
+                .moveToSearchFieldUsingShortcut()
                 .isSearchFieldActiveElement();
 
         Assert.assertTrue(searchFieldIsActiveElement, "Search field is not the active element");
@@ -94,10 +92,94 @@ public class ManageJenkinsTest extends BaseTest {
 
         ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
                 .clickManageJenkins()
-                .goToSearchFieldUsingShortcut()
+                .moveToSearchFieldUsingShortcut()
                 .typeTextBeingInSearchFieldWithoutLocator(SEARCH_SYSTEM);
 
         Assert.assertEquals(manageJenkinsPage.getSearchFieldText(), SEARCH_SYSTEM);
         Assert.assertTrue(manageJenkinsPage.isSearchTextAfterShortcutVisible(), SEARCH_SYSTEM + " is not visible");
+    }
+
+    @Test
+    public void testReloadConfigurationAlertText() {
+
+        String reloadConfigurationAlertText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfiguration()
+                .getAlertText();
+
+        Assert.assertEquals(reloadConfigurationAlertText, "Reload Configuration from Disk: are you sure?");
+    }
+
+    @Test
+    public void testSettingsSectionsQuantity() {
+
+        Integer settingsSectionsQuantity = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getSettingsSectionsQuantity();
+
+        Assert.assertEquals(settingsSectionsQuantity, 18);
+    }
+
+    @Test
+    public void testTroubleshootingVisibility() {
+
+        String manageOldData = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getManageOldDataText();
+
+        Assert.assertEquals(manageOldData, "Manage Old Data");
+    }
+
+    @Test
+    public void testStatusInformationSectionsVisibleAndClickable() {
+
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areStatusInformationSectionsVisible());
+        Assert.assertTrue(manageJenkinsPage.areStatusInformationSectionsClickable());
+    }
+
+    @Test
+    public void testStatusInformationSectionsQuantity() {
+        Integer statusInformationSectionsQuantity = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getStatusInformationSectionsQuantity();
+
+        Assert.assertEquals(statusInformationSectionsQuantity, 4);
+    }
+
+    @Test
+    public void testTroubleshootingClick() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.isManageOldDataClickable());
+    }
+
+    @Test
+    public void testVisibilitySecuritySections() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areSecuritySectionsVisible());
+    }
+
+    @Test
+    public void testClickabilitySecuritySections() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.areSecuritySectionsClickable());
+    }
+
+    @Test
+    public void testRedirectionPluginsPage() {
+        String urlText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage()
+                .getCurrentUrl();
+
+        Assert.assertTrue(urlText.contains("pluginManager/"));
     }
 }

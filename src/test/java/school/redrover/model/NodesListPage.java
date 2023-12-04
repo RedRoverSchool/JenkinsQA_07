@@ -6,20 +6,26 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class   NodesListPage extends BasePage {
+public class NodesListPage extends BasePage {
 
     @FindBy(xpath = "//a[@href='new']")
     private WebElement newNodeButton;
+
+    @FindBy(xpath = "//th[@initialsortdir='down']")
+    private WebElement sortByNameButton;
+
+    @FindBy(xpath = "//tr/td/a")
+    private List<WebElement> nodesList;
 
     public NodesListPage(WebDriver driver) {
         super(driver);
     }
 
     public List<String> getNodeList() {
-        List<WebElement> nodesList = getDriver().findElements(By.xpath("//tr/td/a"));
-
         return nodesList.stream().map(WebElement::getText).toList();
     }
 
@@ -35,13 +41,17 @@ public class   NodesListPage extends BasePage {
         return new NodeDetailsPage(getDriver());
     }
 
-    public boolean elementIsNotPresent(String xpath){
-
+    public boolean elementIsNotPresent(String xpath) {
         return getDriver().findElements(By.xpath(xpath)).isEmpty();
     }
 
-    public String getCurrentURL(){
-
+    public String getCurrentURL() {
         return getDriver().getCurrentUrl();
+    }
+
+    public NodesListPage clickSortByNameButton() {
+        sortByNameButton.click();
+
+        return this;
     }
 }

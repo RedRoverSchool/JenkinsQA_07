@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.MultibranchPipelineTest;
+import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
 
 public class NewItemPage extends BasePage {
@@ -47,12 +47,8 @@ public class NewItemPage extends BasePage {
     @FindBy(css = "div[class='add-item-name']")
     private WebElement inputValidationMessage;
 
-
     @FindBy(xpath = "//span[normalize-space()='Pipeline']")
     private WebElement pipeLineCategory;
-
-    @FindBy(name = "Submit")
-    private WebElement saveButton;
 
     @FindBy(xpath = "//input[@id='from']")
     private WebElement fieldCopyFrom;
@@ -91,7 +87,7 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public NewItemPage selectMultibranchPipelineOption() {
+    public NewItemPage selectMultibranchPipeline() {
         multibranchPipeline.click();
 
         return this;
@@ -103,27 +99,19 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public <T> T clickOk(T page) {
+    public <T extends BaseConfigurationPage> T clickOk(T page) {
         okButton.click();
 
         return page;
     }
 
-    public <E> E clickOkWithError(E page) {
+    public <T> T clickOkWithError(T page) {
         okButton.click();
 
         return page;
     }
 
-    public MultibranchPipelineConfigurationPage clickOk() {
-        okButton.click();
-
-        return new MultibranchPipelineConfigurationPage(getDriver());
-    }
-
-    public boolean isOkButtonEnabled() {
-        return okButton.isEnabled();
-    }
+    public boolean isOkButtonEnabled() { return okButton.isEnabled(); }
 
     public String getRequiredNameErrorMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(requiredNameErrorMessage)).getText();
@@ -172,12 +160,12 @@ public class NewItemPage extends BasePage {
                 .isEmpty();
     }
 
-    public PipelineConfigurationPage createPipelinePage(String projectName) {
+    public PipelineConfigurePage createPipeline(String projectName) {
         inputName.sendKeys(projectName);
         pipeline.click();
         okButton.click();
 
-        return new PipelineConfigurationPage(getDriver());
+        return new PipelineConfigurePage(getDriver());
     }
 
     public FolderConfigurationPage createFolder(String folderName) {
@@ -191,6 +179,11 @@ public class NewItemPage extends BasePage {
     public NewItemPage populateFieldCopyFrom(String multibranchPipelineName) {
         fieldCopyFrom.click();
         fieldCopyFrom.sendKeys(multibranchPipelineName);
+
         return this;
+    }
+
+    public String getRequiredNameErrorMessageColor() {
+        return requiredNameErrorMessage.getCssValue("color");
     }
 }
