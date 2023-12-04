@@ -32,6 +32,10 @@ public class UserDatabasePage extends BasePage {
                 .getText();
     }
 
+    public String getUserId(String username) {
+        return getDriver().findElement(By.xpath("(//td/a[@href='user/" + username + "/']/following::td[1])")).getText();
+    }
+
     public String getUserID(int n) {
         return userIDs.get(n).getText();
     }
