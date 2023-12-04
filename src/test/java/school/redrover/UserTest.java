@@ -745,7 +745,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testNewUserDisplayedOnPeopleScreen")
-    public void testDeleteUsingBreadcrumb() {
+    public void testDeleteUsingBreadcrumb() throws InterruptedException {
         goToUsersPage();
 
         Actions actions = new Actions(getDriver());
@@ -758,6 +758,8 @@ public class UserTest extends BaseTest {
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
         action.moveToElement(chevron);
         action.clickAndHold(chevron).release().perform();
+
+        Thread.sleep(10000);
 
         WebElement buttonDeleteSVG = getDriver().findElement(
                 By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
