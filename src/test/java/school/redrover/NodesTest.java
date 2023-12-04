@@ -13,11 +13,10 @@ public class NodesTest extends BaseTest {
     private static final String NODE_NAME = "NewNode";
     private static final String NEW_NODE_NAME = "newNodeName";
 
-    @DataProvider(name = "InvalidValues")
+    @DataProvider(name = "invalidCharacters")
     public Object[][] invalidCredentials() {
         return new Object[][]{
-                {"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {"/"},
-                {"["}
+                {"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {"/"}, {"["}
         };
     }
 
@@ -34,7 +33,7 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(nodeList.contains(NODE_NAME));
     }
 
-    @Test(dataProvider = "InvalidValues")
+    @Test(dataProvider = "invalidCharacters")
     public void testCreateNewNodeWithInvalidNameFromMainPanel(String name) {
 
         String errorMessage = new HomePage(getDriver())
@@ -125,7 +124,7 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(offlineReasonMessage,"Updated Offline Reason Message");
     }
 
-    @Test(dependsOnMethods = "testRenameNodeWithValidName", dataProvider = "InvalidValues")
+    @Test(dependsOnMethods = "testRenameNodeWithValidName", dataProvider = "invalidCharacters")
     public void testRenameWithIncorrectName(String name) {
 
         String errorText = new HomePage(getDriver())
