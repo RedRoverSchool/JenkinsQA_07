@@ -756,4 +756,19 @@ public class UserTest extends BaseTest {
 
         assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/firstuser']")).getText(), "Tester");
     }
+
+    @Test
+    public void testNewUserDisplayedOnPeopleScreen() {
+        String userId = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputEmail(EMAIL)
+                .clickSubmit()
+                .getUserID(1);
+        Assert.assertEquals(userId, USER_NAME);
+    }
 }
