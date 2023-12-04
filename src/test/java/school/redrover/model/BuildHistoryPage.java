@@ -33,8 +33,7 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(xpath = "//a[@class = 'jenkins-table__link jenkins-table__badge model-link inside']")
     private WebElement firstBuildButton;
 
-    @FindBy(xpath = "//a[@class = 'jenkins-table__link jenkins-table__badge model-link inside']/button[@class = " +
-            "'jenkins-menu-dropdown-chevron'][1]")
+    @FindBy(xpath = "//a[@class = 'jenkins-table__link jenkins-table__badge model-link inside']/button")
     private WebElement buildDropDownMenu;
 
     @FindBy(xpath = "//span[text() = 'Edit Build Information']")

@@ -110,7 +110,8 @@ public class BuildHistoryTest extends BaseTest {
                 .setDisplayName()
                 .setFieldDescription()
                 .clickSaveButton()
-                .getDescriptionOfBuild();
+                .getDescriptionOfBuild()
+                ;
 
         Assert.assertEquals(buildHistoryPage, "Edited description");
     }
