@@ -77,7 +77,7 @@ public class ViewTest extends BaseTest {
         Actions actions = new Actions(getDriver());
 
         WebElement dash = getDriver().findElement(By.cssSelector("#breadcrumbBar a"));
-        actions.moveToElement(dash).moveByOffset(dash.getSize().getWidth() / 2,0).pause(Duration.ofMillis(300)).click().perform();
+        actions.moveToElement(dash).moveByOffset(dash.getSize().getWidth() / 2,0).pause(Duration.ofMillis(500)).click().perform();
 
         getDriver().findElement(By.xpath("//a[@class='jenkins-dropdown__item'][1]")).click();
 
@@ -90,7 +90,7 @@ public class ViewTest extends BaseTest {
         Actions actions = new Actions(getDriver());
         WebElement job = getDriver().findElement(By.xpath("//td/a[contains(@href,'job/')]"));
 
-        actions.moveToElement(job).moveByOffset(job.getSize().getWidth() / 2,0).pause(Duration.ofMillis(300)).click().perform();
+        actions.moveToElement(job).moveByOffset(job.getSize().getWidth() / 2,0).pause(Duration.ofMillis(500)).click().perform();
 
         getDriver().findElement(By.xpath("//a[contains(@href,'configure')]")).click();
 
