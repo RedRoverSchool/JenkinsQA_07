@@ -131,20 +131,20 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(actualTasksText, expectedTasksText);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testRenameMultibranchDropdownDashboard"})
     public void testDeleteMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
 
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NEW_NAME, true);
 
         String actualResult = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickButtonDelete()
                 .clickRedButtonYes()
                 .getMultibranchPipelineName();
 
         Assert.assertNotEquals(
-                actualResult, MULTIBRANCH_PIPELINE_NAME);
+                actualResult, MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
     @Test
@@ -196,10 +196,10 @@ public class MultibranchPipelineTest extends BaseTest {
                 MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
+    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testRenameMultibranchDropdownDashboard"})
     public void testEnabledByDefault() {
         String status = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .getDisableToggleText();
 
