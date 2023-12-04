@@ -37,7 +37,7 @@ public class ConfigureLogRecorderPage extends BasePage {
     @FindBy(xpath = "//*[@id='breadcrumbs']/li[5]/a")
     private WebElement backToSystemLogButton;
 
-    @FindAll({@FindBy (name = "loggers")})
+    @FindBy (name = "loggers")
     private List<WebElement> loggersBlock;
 
     @FindAll({@FindBy (xpath = "//div[@name='loggers']/div/button")})
@@ -125,8 +125,8 @@ public class ConfigureLogRecorderPage extends BasePage {
         return this;
     }
 
-    public int getCountLoggersBlock() {
+    public boolean areLoggersBlockNoneVisible() {
 
-        return loggersBlock.size();
+        return loggersBlock.stream().noneMatch(WebElement::isDisplayed);
     }
 }
