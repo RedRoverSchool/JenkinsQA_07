@@ -344,14 +344,14 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(helpText, expectedText);
     }
 
-    @Test(dependsOnMethods =  "testCreate")
+    @Test (dependsOnMethods =  "testRename")
     public void testCreateFreestyleProjectInsideFolder() {
 
         boolean isNewCreatedProjectDisplayed = new HomePage(getDriver())
-                .clickFolderName(FOLDER_NAME)
+                .clickFolderName(RENAMED_FOLDER)
                 .clickCreateAJob()
                 .createFreestyleProject(JOB_NAME)
-                .clickSaveButton()
+                .clickSave()
                 .clickFolderBreadCrumbs()
                 .isNewCreatedProjectDisplayed();
 
