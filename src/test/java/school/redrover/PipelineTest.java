@@ -241,7 +241,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isPermalinksEmpty);
     }
 
-    @Ignore
     @Test
     public void testPermalinksContainBuildInformation() {
         final List<String> expectedPermalinksList = List.of(
@@ -254,7 +253,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
         List<String> actualPermalinksList = new HomePage(getDriver())
-                .clickBuildByGreenArrow(JOB_NAME)
+                .clickBuildByGreenArrowWithWait(JOB_NAME)
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .getPermalinksList();
 

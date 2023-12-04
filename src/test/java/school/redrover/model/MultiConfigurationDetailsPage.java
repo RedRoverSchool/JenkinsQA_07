@@ -10,9 +10,6 @@ public class MultiConfigurationDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//div[@id='description']/div[1]")
     private WebElement descriptionText;
 
-    @FindBy(css = "#description-link")
-    private WebElement buttonEditDescription;
-
     @FindBy(name = "description")
     private WebElement inputDescription;
 
@@ -33,7 +30,7 @@ public class MultiConfigurationDetailsPage extends BaseProjectPage {
     }
 
     public MultiConfigurationDetailsPage buttonEditDescription() {
-        buttonEditDescription.click();
+        addDescription.click();
 
         return this;
     }

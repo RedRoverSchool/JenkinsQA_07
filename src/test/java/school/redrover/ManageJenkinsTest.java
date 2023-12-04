@@ -172,4 +172,14 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(manageJenkinsPage.areSecuritySectionsClickable());
     }
+
+    @Test
+    public void testRedirectionPluginsPage() {
+        String urlText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage()
+                .getCurrentUrl();
+
+        Assert.assertTrue(urlText.contains("pluginManager/"));
+    }
 }

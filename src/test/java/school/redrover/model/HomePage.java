@@ -32,9 +32,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement newItemButton;
 
-    @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
-    private WebElement jobName;
-
     @FindBy(xpath = "//div[@class = 'jenkins-table__cell__button-wrapper']/a[contains(@aria-describedby,'tippy')]")
     private WebElement runningBuildIndicator;
 
@@ -61,6 +58,12 @@ public class HomePage extends BasePage {
 
     @FindBy(className = "addTab")
     private WebElement newViewButton;
+
+    @FindBy(xpath = "//span[contains(text(), 'log out')]")
+    private WebElement logOutButton;
+
+    @FindBy(xpath = "//a[contains(@href,'user')]")
+    private WebElement currentUserName;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -164,6 +167,13 @@ public class HomePage extends BasePage {
         return this;
     }
 
+    public HomePage clickBuildByGreenArrowWithWait(String name) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
+        getWait5().until(ExpectedConditions.invisibilityOf(runningBuildIndicator));
+
+        return this;
+    }
+
     public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOrganizationFolderDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
         WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
 
@@ -228,5 +238,15 @@ public class HomePage extends BasePage {
         newViewButton.click();
 
         return new NewViewPage(getDriver());
+    }
+
+    public LogInPage clickLogOut() {
+        logOutButton.click();
+
+        return new LogInPage(getDriver());
+    }
+
+    public String getCurrentUserName() {
+        return currentUserName.getText();
     }
 }

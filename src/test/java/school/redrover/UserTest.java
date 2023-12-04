@@ -71,9 +71,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.name("Submit")).click();
     }
 
-    private void goToHomePage() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
 
     private void goToUsersPage() {
         getDriver().findElement(By.linkText("Manage Jenkins")).click();
@@ -86,12 +83,6 @@ public class UserTest extends BaseTest {
         getDriver().findElement(By.xpath("//*[@href='addUser']")).click();
     }
 
-
-    private void goToUsersTab() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-    }
 
     @Test
     public void testCreateUserWithEmptyFullName() {
@@ -155,20 +146,13 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(error, "Password didn't match");
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateUserWithValidData"})
     public void testCreateUserAndLogIn() {
-        final String password = "Te5t";
-        final String email = "test_redrov@yahoo.com";
+        String userIconText = new HomePage(getDriver())
+                .clickLogOut()
+                .inputNewCredentialsAndLogIn(USER_NAME, PASSWORD)
+                .getCurrentUserName();
 
-        createUser(USER_NAME, password, email);
-
-        getDriver().findElement(By.xpath("//span[contains(text(), 'log out')]")).click();
-
-        getDriver().findElement(By.name("j_username")).sendKeys(USER_NAME);
-        getDriver().findElement(By.name("j_password")).sendKeys(password);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String userIconText = getDriver().findElement(By.xpath("//a[contains(@href,'user')]")).getText();
         assertEquals(userIconText, USER_NAME);
     }
 
@@ -731,7 +715,7 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testCreateUserWithoutEmail() {
-        CreateNewUserPage userNotCreated= new HomePage(getDriver())
+        CreateNewUserPage userNotCreated = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersButton()
                 .clickCreateUserButton()
@@ -741,4 +725,20 @@ public class UserTest extends BaseTest {
                 .clickCreateUser();
         Assert.assertEquals(userNotCreated.getErrorMessage(), "Invalid e-mail address");
     }
+
+    @Test
+    public void testNewUserDisplayedOnPeopleScreen() {
+        String userId = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputEmail(EMAIL)
+                .clickSubmit()
+                .getUserID(1);
+        Assert.assertEquals(userId, USER_NAME);
+    }
+
 }
