@@ -23,13 +23,6 @@ import static org.testng.Assert.assertTrue;
 
 public class BuiltInNodeDetailTest extends BaseTest {
 
-    @FindBy(xpath = "//div[@id = 'executors']//table//tr/td[1]")
-    private List<WebElement> listBuildExecutors;
-
-    public int getSizeListBuildExecutors() {
-        return listBuildExecutors.size();
-    }
-
     public static class UserTest extends BaseTest {
 
         private static final String USER_NAME = "Jane";

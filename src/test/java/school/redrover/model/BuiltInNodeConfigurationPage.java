@@ -18,11 +18,11 @@ public class BuiltInNodeConfigurationPage extends BasePage {
     @FindBy(xpath = "//button[@name = 'Submit']")
     private WebElement saveButton;
 
-    public BuiltInNodeDetailTest inputNumbersOfExecutors(int number) {
+    public BuiltInNodeDetailPage inputNumbersOfExecutors(int number) {
         numberOfExecutorsField.clear();
         numberOfExecutorsField.sendKeys(String.valueOf(number));
         saveButton.click();
 
-        return new BuiltInNodeDetailTest(getDriver());
+        return new BuiltInNodeDetailPage(getDriver());
     }
 }
