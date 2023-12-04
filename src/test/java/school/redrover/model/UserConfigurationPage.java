@@ -25,8 +25,6 @@ public class UserConfigurationPage extends BasePage {
     @FindBy(name = "_.primaryViewName")
     private WebElement defaultViewTextArea;
 
-    final String fullName = "User User";
-
     public UserConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -46,7 +44,7 @@ public class UserConfigurationPage extends BasePage {
         return this;
     }
 
-    public UserConfigurationPage sendKeysFullNameUser() {
+    public UserConfigurationPage sendKeysFullNameUser(String fullName) {
         fullUser.sendKeys(fullName);
         return this;
     }

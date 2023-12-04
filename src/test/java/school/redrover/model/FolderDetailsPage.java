@@ -13,9 +13,6 @@ public class FolderDetailsPage extends BaseProjectPage {
     @FindBy(linkText = "Configure")
     private WebElement configure;
 
-    @FindBy(id = "description-link")
-    private WebElement addOrEditDescription;
-
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
 
@@ -66,7 +63,7 @@ public class FolderDetailsPage extends BaseProjectPage {
     }
 
     public FolderDetailsPage clickAddOrEditDescription() {
-        addOrEditDescription.click();
+        addDescription.click();
 
         return this;
     }

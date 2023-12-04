@@ -16,9 +16,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
-    @FindBy(id = "description-link")
-    private WebElement addDescription;
-
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
 
