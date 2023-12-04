@@ -182,4 +182,37 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(urlText.contains("pluginManager/"));
     }
+
+    @Test
+    public void testVisibilityOfSearchField() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.searchFieldIsVisible());
+    }
+
+    @Test
+    public void testSearchFieldByClick() {
+        final String inputText = "sys";
+
+        boolean searchResultIsClickable = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickOnSearchField()
+                .typeSearchInputField(inputText)
+                .searchResultsAreClickable();
+
+        Assert.assertTrue(searchResultIsClickable);
+    }
+
+    @Test
+    public void testDefaultRedirectionByEnter() {
+        final String inputText = "u";
+        final String url = "/manage/pluginManager/";
+
+        String redirectedUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .pressEnterAfterInput(inputText);
+
+        Assert.assertTrue(redirectedUrl.contains(url));
+    }
 }

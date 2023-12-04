@@ -235,4 +235,34 @@ public class ManageJenkinsPage extends BasePage {
     public boolean areSecuritySectionsClickable() {
         return securitySectionsList.stream().allMatch(WebElement::isEnabled);
     }
+
+    public boolean searchFieldIsVisible() {
+        return searchInput.isDisplayed();
+    }
+
+    public ManageJenkinsPage clickOnSearchField() {
+        searchInput.click();
+
+        return this;
+    }
+
+    public boolean searchResultsAreClickable() {
+
+        return searchResults.get(1).isEnabled();
+    }
+
+    public String getCurrentURL() {
+        return getDriver().getCurrentUrl();
+    }
+
+    public String pressEnterAfterInput(String inputText) {
+        searchInput.sendKeys(inputText);
+
+        getWait5().until(ExpectedConditions.visibilityOf(searchInput));
+
+        searchInput.sendKeys(Keys.ENTER);
+
+        return getCurrentURL();
+    }
+
 }
