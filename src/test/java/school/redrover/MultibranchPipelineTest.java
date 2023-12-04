@@ -196,9 +196,14 @@ public class MultibranchPipelineTest extends BaseTest {
                 MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
+    @Test
     public void testEnabledByDefault() {
         String status = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipeline()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
+                .goHomePage()
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .getDisableToggleText();
@@ -206,10 +211,10 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(status, "Enabled");
     }
 
-    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testEnabledByDefault"})
+    @Test(dependsOnMethods = "testEnabledByDefault")
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
         String actualStatusMessage = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickDisable()
                 .getDisableStatusMessage();
 
@@ -260,7 +265,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .getHeadLineText();
 
-        Assert.assertEquals(multibranchPipelineDetailsPage,"Search for '" + MULTIBRANCH_PIPELINE_NAME + "'");
+        Assert.assertEquals(multibranchPipelineDetailsPage, MULTIBRANCH_PIPELINE_NAME);
     }
 
 
