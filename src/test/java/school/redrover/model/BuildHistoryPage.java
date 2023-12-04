@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -28,6 +29,16 @@ public class BuildHistoryPage extends BasePage {
 
     @FindBy(css = "#timeline-band-1")
     private WebElement timelineBand;
+
+    @FindBy(xpath = "//a[@class = 'jenkins-table__link jenkins-table__badge model-link inside']")
+    private WebElement firstBuildButton;
+
+    @FindBy(xpath = "//a[@class = 'jenkins-table__link jenkins-table__badge model-link inside']/button[@class = " +
+            "'jenkins-menu-dropdown-chevron'][1]")
+    private WebElement buildDropDownMenu;
+
+    @FindBy(xpath = "//span[text() = 'Edit Build Information']")
+    private WebElement editBuildInformationDropDownItem;
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
@@ -74,5 +85,24 @@ public class BuildHistoryPage extends BasePage {
     public Point getPointLocation() {
 
         return timelineBand.getLocation();
+    }
+
+    public BuildHistoryPage getBuildDropdownMenu() {
+
+        getWait10().until(ExpectedConditions.visibilityOf(buildDropDownMenu));
+
+        new Actions(getDriver())
+                .moveToElement(buildDropDownMenu)
+                .click()
+                .perform();
+
+        return this;
+    }
+
+    public EditBuildInformationPage clickBuildDropDownMenu() {
+
+        getWait2().until(ExpectedConditions.visibilityOf(editBuildInformationDropDownItem)).click();
+
+        return new EditBuildInformationPage(getDriver());
     }
 }
