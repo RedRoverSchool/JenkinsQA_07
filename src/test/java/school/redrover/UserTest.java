@@ -755,14 +755,12 @@ public class UserTest extends BaseTest {
         actions.moveToElement(breadcrumbName);
         actions.moveToElement(breadcrumbName).build().perform();
 
-        Actions action = new Actions(getDriver());
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", chevron);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new MouseEvent('click', {view: window, bubbles:true, cancelable: true}))", chevron);
 
         Thread.sleep(10000);
 
         WebElement buttonDeleteSVG = getDriver().findElement(By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
-      //  ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", buttonDeleteSVG);
 
         String text = buttonDeleteSVG.getAttribute("aria-hidden");
         Assert.assertEquals(text, "true");
