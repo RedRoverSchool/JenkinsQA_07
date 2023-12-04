@@ -366,7 +366,11 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .getNameOfTasksFromSidebarMenu();
 
-        Assert.assertTrue(namesOfTasks.contains("Move"));
+        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
+                By.xpath("//span[@class='task-link-wrapper ']")));
+        namesOfTasks.removeAll(requiredNamesOfTasks);
+
+        Assert.assertEquals(namesOfTasks.toString(), "[Move]");
     }
 
     @Test
