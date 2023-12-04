@@ -107,10 +107,5 @@ public class BuildHistoryPage extends BasePage {
         getWait2().until(ExpectedConditions.visibilityOf(editBuildInformationDropDownItem)).click();
 
         return new EditBuildInformationPage(getDriver());
-
-    public RestApiPage goRestApi() {
-        restApiButton.click();
-
-        return new RestApiPage(getDriver());
     }
 }
