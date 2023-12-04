@@ -80,6 +80,12 @@ public class HomePage extends BasePage {
     @FindBy(className = "addTab")
     private WebElement newViewButton;
 
+    @FindBy(xpath = "//span[contains(text(), 'log out')]")
+    private WebElement logOutButton;
+
+    @FindBy(xpath = "//a[contains(@href,'user')]")
+    private WebElement currentUserName;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -309,5 +315,15 @@ public class HomePage extends BasePage {
         newViewButton.click();
 
         return new NewViewPage(getDriver());
+    }
+
+    public LogInPage clickLogOut() {
+        logOutButton.click();
+
+        return new LogInPage(getDriver());
+    }
+
+    public String getCurrentUserName() {
+        return currentUserName.getText();
     }
 }
