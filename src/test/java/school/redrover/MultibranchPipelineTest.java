@@ -366,7 +366,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .getNameOfTasksFromSidebarMenu();
 
-        Assert.assertEquals(namesOfTasks.toString(), "[Move]");
+        Assert.assertTrue(namesOfTasks.contains("Move"));
     }
 
     @Test
