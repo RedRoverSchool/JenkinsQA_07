@@ -258,7 +258,7 @@ public class ManageJenkinsPage extends BasePage {
     public String pressEnterAfterInput(String inputText) {
         searchInput.sendKeys(inputText);
 
-        getWait5().until(ExpectedConditions.visibilityOf(searchInput));
+        wait.until(ExpectedConditions.visibilityOfAllElements(searchResults));
 
         searchInput.sendKeys(Keys.ENTER);
 
