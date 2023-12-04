@@ -209,7 +209,7 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testEnabledByDefault"})
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
         String actualStatusMessage = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickDisable()
                 .getDisableStatusMessage();
 
