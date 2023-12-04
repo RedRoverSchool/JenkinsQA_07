@@ -100,6 +100,7 @@ public class BuildHistoryPage extends BasePage {
     }
 
     public EditBuildInformationPage clickBuildDropDownMenu() {
+
         getWait2().until(ExpectedConditions.visibilityOf(editBuildInformationDropDownItem)).click();
 
         return new EditBuildInformationPage(getDriver());
