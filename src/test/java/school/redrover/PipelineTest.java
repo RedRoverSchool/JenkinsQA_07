@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
@@ -341,5 +342,25 @@ public class PipelineTest extends BaseTest {
                 .getLastBuildLinkText();
 
         Assert.assertTrue(lastBuildLink.contains("Last build (#2)"));
+    }
+
+    @Test
+    public void testMovePipelineToFolder() {
+        String folderName = "Folder";
+
+        TestUtils.createFolder(this, folderName , true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
+
+        List<String> name = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickMove()
+                .clickArrowDropDownMenu()
+                .clickFolderByName(folderName)
+                .clickMove(new PipelineDetailsPage(getDriver()))
+                .goHomePage()
+                .clickJobNameDropdown(folderName)
+                .getJobList();
+
+        Assert.assertTrue(name.contains( JOB_NAME));
     }
 }
