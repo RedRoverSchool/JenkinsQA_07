@@ -21,6 +21,7 @@ public class MultibranchPipelineTest extends BaseTest {
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
 
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
+    private static final String MULTIBRANCH_PIPELINE_NAME_TO_COPY = "MultibranchPipelineCopyProject";
 
     private static final String MULTIBRANCH_PIPELINE_NON_EXISTING_NAME = "MultibranchPipelineNonExistingName";
 
@@ -226,17 +227,17 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(breadCumbList.contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage"})
     public void testMultibranchCreationFromExisting() {
 
         boolean homePage = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(MULTIBRANCH_PIPELINE_NEW_NAME)
-                .populateFieldCopyFrom(MULTIBRANCH_PIPELINE_NAME)
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME_TO_COPY)
+                .populateFieldCopyFrom(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
                 .goHomePage()
                 .getJobList()
-                .contains(MULTIBRANCH_PIPELINE_NEW_NAME);
+                .contains(MULTIBRANCH_PIPELINE_NAME_TO_COPY);
 
         Assert.assertTrue(homePage);
     }
