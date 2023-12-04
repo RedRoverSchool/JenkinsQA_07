@@ -757,7 +757,7 @@ public class UserTest extends BaseTest {
         Actions action = new Actions(getDriver());
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
         action.moveToElement(chevron);
-        action.clickAndHold(chevron).release().perform();
+        action.click(chevron).build().perform();
 
         Thread.sleep(10000);
 
