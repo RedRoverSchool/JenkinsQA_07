@@ -216,7 +216,6 @@ public class PipelineTest extends BaseTest {
                 .isProjectExist(JOB_NAME);
 
         Assert.assertFalse(isPipelineExist);
-
     }
 
     @Test(dependsOnMethods = "testCreatePipeline")
