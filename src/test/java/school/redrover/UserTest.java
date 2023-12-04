@@ -2,6 +2,7 @@ package school.redrover;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -756,13 +757,12 @@ public class UserTest extends BaseTest {
 
         Actions action = new Actions(getDriver());
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
-        action.moveToElement(chevron);
-        action.click(chevron).build().perform();
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", chevron);
 
         Thread.sleep(10000);
 
-        WebElement buttonDeleteSVG = getDriver().findElement(
-                By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+        WebElement buttonDeleteSVG = getDriver().findElement(By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
+      //  ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", buttonDeleteSVG);
 
         String text = buttonDeleteSVG.getAttribute("aria-hidden");
         Assert.assertEquals(text, "true");
