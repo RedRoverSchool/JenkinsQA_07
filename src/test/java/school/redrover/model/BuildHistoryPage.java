@@ -96,7 +96,7 @@ public class BuildHistoryPage extends BasePage {
                 .scrollByAmount(deltaX, deltaY)
                 .moveToElement(buildDropDownMenu)
                 .click()
-                .perform();                ;
+                .perform();
 
         return this;
     }
