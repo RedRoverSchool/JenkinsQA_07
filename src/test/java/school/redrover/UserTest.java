@@ -146,13 +146,20 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(error, "Password didn't match");
     }
 
-    @Test(dependsOnMethods = {"testCreateUserWithValidData"})
+    @Test
     public void testCreateUserAndLogIn() {
-        String userIconText = new HomePage(getDriver())
-                .clickLogOut()
-                .inputNewCredentialsAndLogIn(USER_NAME, PASSWORD)
-                .getCurrentUserName();
+        final String password = "Te5t";
+        final String email = "test_redrov@yahoo.com";
 
+        createUser(USER_NAME, password, email);
+
+        getDriver().findElement(By.xpath("//span[contains(text(), 'log out')]")).click();
+
+        getDriver().findElement(By.name("j_username")).sendKeys(USER_NAME);
+        getDriver().findElement(By.name("j_password")).sendKeys(password);
+        getDriver().findElement(By.name("Submit")).click();
+
+        String userIconText = getDriver().findElement(By.xpath("//a[contains(@href,'user')]")).getText();
         assertEquals(userIconText, USER_NAME);
     }
 
@@ -727,7 +734,6 @@ public class UserTest extends BaseTest {
                 .clickCreateUser();
         Assert.assertEquals(userNotCreated.getErrorMessage(), "Invalid e-mail address");
     }
-
     @Test
     public void testNewUserDisplayedOnPeopleScreen() {
         String userId = new HomePage(getDriver())
