@@ -8,8 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.HomePage;
+import school.redrover.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BasePage extends BaseModel {
@@ -26,12 +27,33 @@ public abstract class BasePage extends BaseModel {
     @FindBy(xpath = "//div[@id='breadcrumbBar']/ol/li/a")
     private List<WebElement> breadcrumbBarItemsList;
 
+    @FindBy(className = "jenkins_ver")
+    private WebElement jenkinsVersionButton;
+
+    @FindBy(css = "a[href='/manage/about']")
+    private WebElement aboutJenkinsButton;
+
+    @FindBy(css = "a[href='https://www.jenkins.io/participate/']")
+    private WebElement getInvolved;
+
+    @FindBy(xpath = "//div[@class='tippy-box']//div//a")
+    private WebElement tippyBox;
+
+    @FindBy(xpath = "//div[@class='tippy-box']//div//a")
+    private List<WebElement> tippyBoxList;
+
+    @FindBy(css = "a[href='https://www.jenkins.io/']")
+    private WebElement websiteJenkins;
+
+    @FindBy(id = "jenkins-home-link")
+    private WebElement homeLink;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
 
     public HomePage goHomePage() {
-        getDriver().findElement(By.xpath("//a[@id = 'jenkins-home-link']")).click();
+       homeLink.click();
 
         return new HomePage(getDriver());
     }
@@ -56,10 +78,7 @@ public abstract class BasePage extends BaseModel {
     public <T> T goSearchBox(String searchText, T page) {
         searchBoxHeader.click();
         searchBoxHeader.sendKeys(searchText);
-
-        new Actions(getDriver())
-                .sendKeys(Keys.ENTER)
-                .perform();
+        searchBoxHeader.sendKeys(Keys.ENTER);
 
         return page;
     }
@@ -74,8 +93,7 @@ public abstract class BasePage extends BaseModel {
         return page;
     }
 
-    public WebElement getSearchBox() {
-
+    public WebElement getSearchBoxWebElement() {
         return searchBoxHeader;
     }
 
@@ -97,5 +115,54 @@ public abstract class BasePage extends BaseModel {
         dashboardBreadCrumb.click();
 
         return new HomePage(getDriver());
+    }
+
+    public String getVersionJenkinsButton() {
+        return jenkinsVersionButton.getText();
+    }
+
+    public UserStatusPage clickUserNameHeader(String userName) {
+        getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
+
+        return new UserStatusPage(getDriver());
+    }
+
+    public <T> T clickJenkinsVersionButton(T page) {
+        jenkinsVersionButton.click();
+
+        return page;
+    }
+
+    public WebsiteJenkinsPage goGetInvolvedWebsite() {
+        jenkinsVersionButton.click();
+        getInvolved.click();
+
+        List<String> tab = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tab.get(1));
+
+        return new WebsiteJenkinsPage(getDriver());
+    }
+
+    public WebsiteJenkinsPage goWebsiteJenkins() {
+        jenkinsVersionButton.click();
+        websiteJenkins.click();
+
+        List<String> tab = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tab.get(1));
+
+        return new WebsiteJenkinsPage(getDriver());
+    }
+
+    public List<String> getVersionJenkinsTippyBoxText() {
+        getWait10().until(ExpectedConditions.visibilityOf(tippyBox));
+
+        return tippyBoxList.stream().map(WebElement::getText).toList();
+    }
+
+    public AboutJenkinsPage goAboutJenkinsPage() {
+        jenkinsVersionButton.click();
+        aboutJenkinsButton.click();
+
+        return new AboutJenkinsPage(getDriver());
     }
 }

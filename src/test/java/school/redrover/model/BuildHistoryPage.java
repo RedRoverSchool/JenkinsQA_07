@@ -40,6 +40,9 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(xpath = "//span[text() = 'Edit Build Information']")
     private WebElement editBuildInformationDropDownItem;
 
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
+
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
     }
@@ -104,5 +107,10 @@ public class BuildHistoryPage extends BasePage {
         getWait2().until(ExpectedConditions.visibilityOf(editBuildInformationDropDownItem)).click();
 
         return new EditBuildInformationPage(getDriver());
+
+    public RestApiPage goRestApi() {
+        restApiButton.click();
+
+        return new RestApiPage(getDriver());
     }
 }
