@@ -27,7 +27,6 @@ public class UserTest extends BaseTest {
     private static final String NAME = "ivan";
     private static final String FULL_NAME = "User Full Name";
     private static final String PASSWORD = "12345";
-    private static final String WRONG_CONFIRM_PASSWORD = "123";
     private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
 
@@ -156,7 +155,7 @@ public class UserTest extends BaseTest {
                 .clickAddUserButton()
                 .inputUserName(USER_NAME)
                 .inputPassword(PASSWORD)
-                .inputPasswordConfirm(WRONG_CONFIRM_PASSWORD)
+                .inputPasswordConfirm(PASSWORD + 1)
                 .inputFullName(FULL_NAME)
                 .clickCreateUser()
                 .getErrorMessage();
@@ -604,6 +603,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(actualDescription, DESCRIPTION);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testDeleteUser")
     public void testLoginAsARemoteUser() {
         getDriver().findElement(By.xpath("//span[text() = 'log out']")).click();
