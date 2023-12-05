@@ -9,14 +9,16 @@ import java.util.List;
 
 public class BuiltInNodeDetailPage extends BasePage {
 
+    @FindBy(xpath = "//div[@id = 'executors']//table//tr/td[1]")
+    private List<WebElement> listBuildExecutors;
+
+
     public BuiltInNodeDetailPage(WebDriver driver) {
         super(driver);
     }
 
-    @FindBy(xpath = "//div[@id = 'executors']//table//tr/td[1]")
-    private List<WebElement> listBuildExecutors;
-
     public int getSizeListBuildExecutors() {
         return listBuildExecutors.size();
     }
+
 }

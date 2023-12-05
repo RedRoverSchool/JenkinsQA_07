@@ -88,7 +88,7 @@ public class BreadcrumbTest extends BaseTest {
 				.clickNewItem()
 				.createFreestyleProject("Project Name")
 				.clickDashboardBreadCrumb()
-				.getTitle();
+				.getPageTitle();
 
 		Assert.assertEquals(homePage, "Dashboard [Jenkins]");
 	}

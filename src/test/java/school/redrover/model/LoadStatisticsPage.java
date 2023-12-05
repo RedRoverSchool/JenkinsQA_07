@@ -3,9 +3,10 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import school.redrover.model.base.BasePage;
 
-public class WebsiteJenkinsIOPage extends BasePage {
+public class LoadStatisticsPage extends BasePage {
 
-    public WebsiteJenkinsIOPage(WebDriver driver) {
+    public LoadStatisticsPage(WebDriver driver) {
+
         super(driver);
     }
 }

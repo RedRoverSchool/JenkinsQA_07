@@ -42,9 +42,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
-    @FindBy(xpath = "//a[@href='editDescription']")
-    private WebElement addOrEditDescriptionButton;
-
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement projectDescriptionInputField;
 
@@ -156,7 +153,7 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
     }
 
     public FreestyleProjectDetailsPage clickAddOrEditDescriptionButton() {
-        addOrEditDescriptionButton.click();
+        addDescription.click();
 
         return this;
     }
@@ -187,10 +184,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         }
 
         return textValue;
-    }
-
-    public String getCurrentUrl() {
-        return getDriver().getCurrentUrl();
     }
 
     public boolean isProjectDisabled() {

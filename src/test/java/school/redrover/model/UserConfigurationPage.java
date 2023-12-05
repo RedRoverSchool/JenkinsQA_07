@@ -3,21 +3,12 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseUserPage;
 
-public class UserConfigurationPage extends BasePage {
+public class UserConfigurationPage extends BaseUserPage {
 
-    @FindBy(xpath = "//*[@id='people']/tbody/tr[2]/td[2]/a")
-    private WebElement username;
-
-    @FindBy(xpath = "//*[@id='tasks']/div[4]/span/a")
-    private WebElement configPage;
-
-    @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")
-    private WebElement userFull;
-
-    @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")
-    private WebElement fullUser;
+    @FindBy(name = "_.fullName")
+    private WebElement fullName;
 
     @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement saveButton;
@@ -25,29 +16,22 @@ public class UserConfigurationPage extends BasePage {
     @FindBy(name = "_.primaryViewName")
     private WebElement defaultViewTextArea;
 
-    final String fullName = "User User";
+    @FindBy(name = "_.description")
+    private WebElement descriptionTextArea;
+
+    @FindBy(xpath = "//a[@class='textarea-show-preview']")
+    private WebElement previewButton;
+
+    @FindBy(xpath = "//div[@class='textarea-preview']")
+    private WebElement previewDescriptionTextArea;
 
     public UserConfigurationPage(WebDriver driver) {
         super(driver);
     }
 
-    public UserConfigurationPage clickUsername() {
-        username.click();
-        return this;
-    }
-
-    public UserConfigurationPage clickConfigurationPage() {
-        configPage.click();
-        return this;
-    }
-
-    public UserConfigurationPage clearUserFull() {
-        userFull.clear();
-        return this;
-    }
-
-    public UserConfigurationPage sendKeysFullNameUser() {
-        fullUser.sendKeys(fullName);
+    public UserConfigurationPage sendKeysFullNameUser(String name) {
+        fullName.clear();
+        fullName.sendKeys(name);
         return this;
     }
 
@@ -61,6 +45,23 @@ public class UserConfigurationPage extends BasePage {
         saveButton.click();
 
         return new CreatedUserPage(getDriver());
+    }
+
+    public UserConfigurationPage typeDescription(String descriptionText) {
+        descriptionTextArea.clear();
+        descriptionTextArea.sendKeys(descriptionText);
+
+        return this;
+    }
+
+    public UserConfigurationPage clickPreviewDescription() {
+        previewButton.click();
+
+        return this;
+    }
+
+    public String getPreviewDescriptionText() {
+        return previewDescriptionTextArea.getText();
     }
 }
 

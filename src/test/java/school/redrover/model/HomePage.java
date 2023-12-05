@@ -32,9 +32,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement newItemButton;
 
-    @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
-    private WebElement jobName;
-
     @FindBy(xpath = "//div[@class = 'jenkins-table__cell__button-wrapper']/a[contains(@aria-describedby,'tippy')]")
     private WebElement runningBuildIndicator;
 
@@ -44,41 +41,29 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement buttonPeople;
 
-    @FindBy(className = "jenkins_ver")
-    private WebElement jenkinsVersionButton;
-
     @FindBy(xpath = "//td[@class='pane pane-grow']")
     private WebElement buildQueueSection;
 
     @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
     private WebElement myView;
 
-    @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
-    private WebElement itemNameInTable;
+    @FindBy(xpath = "//h1")
+    private WebElement header;
 
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
 
-    @FindBy(css = "a[href='/manage/about']")
-    private WebElement aboutJenkinsButton;
-
-    @FindBy(className = "tippy-content")
-    private WebElement jenkinsVersionTippyBox;
-
-    @FindBy(css = "a[href='https://www.jenkins.io/participate/']")
-    private WebElement getInvolved;
-
-    @FindBy(css = "a[href='https://www.jenkins.io/']")
-    private WebElement websiteJenkins;
-
     @FindBy(css = "a[href='api/']")
     private WebElement restApiButton;
 
-    @FindBy(xpath = "//div[@class='tippy-box']//div//a")
-    private WebElement tippyBox;
-
     @FindBy(className = "addTab")
     private WebElement newViewButton;
+
+    @FindBy(xpath = "//span[contains(text(), 'log out')]")
+    private WebElement logOutButton;
+
+    @FindBy(xpath = "//a[contains(@href,'user')]")
+    private WebElement currentUserName;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -168,16 +153,19 @@ public class HomePage extends BasePage {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-    public String getTitle() {
-        return getDriver().getTitle();
-    }
-
     public String getProjectBuildStatusByName(String projectName) {
         return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
     }
 
     public HomePage clickBuildByGreenArrow(String name) {
         getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
+
+        return this;
+    }
+
+    public HomePage clickBuildByGreenArrowWithWait(String name) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
+        getWait5().until(ExpectedConditions.invisibilityOf(runningBuildIndicator));
 
         return this;
     }
@@ -212,10 +200,6 @@ public class HomePage extends BasePage {
         return new PeoplePage(getDriver());
     }
 
-    public String getVersion() {
-        return jenkinsVersionButton.getText();
-    }
-
     public boolean isJobInBuildQueue(String jobName) {
         return getWait10().until(ExpectedConditions.visibilityOf(buildQueueSection)).getText().contains(jobName);
     }
@@ -224,11 +208,6 @@ public class HomePage extends BasePage {
         getWait2().until(ExpectedConditions.elementToBeClickable(myView)).click();
         return new MyViewPage(getDriver());
     }
-
-    public String getItemNameInTable() {
-        return itemNameInTable.getText();
-    }
-
 
     public NodeDetailsPage clickOnNodeName(String nodeName) {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
@@ -240,68 +219,26 @@ public class HomePage extends BasePage {
         return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
     }
 
-    public HomePage clickJenkinsVersion() {
-        jenkinsVersionButton.click();
-
-        return this;
-    }
-
-    public AboutJenkinsPage clickAboutJenkins() {
-        aboutJenkinsButton.click();
-
-        return new AboutJenkinsPage(getDriver());
-    }
-
-    public WebsiteJenkinsIOPage clickGetInvolved() {
-        getInvolved.click();
-
-        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
-        getDriver().switchTo().window(tab.get(1));
-
-        return new WebsiteJenkinsIOPage(getDriver());
-    }
-
-    public WebsiteJenkinsIOPage clickWebsite() {
-        websiteJenkins.click();
-
-        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
-        getDriver().switchTo().window(tab.get(1));
-
-        return new WebsiteJenkinsIOPage(getDriver());
-    }
-
-    public CreatedUserPage clickUserNameHeader(String userName) {
-        getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
-
-        return new CreatedUserPage(getDriver());
-    }
-
-    public List<String> getVersionJenkinsTippyBoxText() {
-        getWait10().until(ExpectedConditions.visibilityOf(tippyBox));
-
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='tippy-box']//div//a"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
-
-        return resultList;
-    }
-
-    public AboutJenkinsPage moveAboutJenkinsPage() {
-        jenkinsVersionButton.click();
-        aboutJenkinsButton.click();
-
-        return new AboutJenkinsPage(getDriver());
-    }
-
-    public RestAPIPage clickRestApiButton() {
+    public RestApiPage goRestApi() {
         restApiButton.click();
 
-        return new RestAPIPage(getDriver());
+        return new RestApiPage(getDriver());
     }
 
     public NewViewPage clickNewViewButton() {
         newViewButton.click();
 
         return new NewViewPage(getDriver());
+    }
+
+    public LogInPage clickLogOut() {
+        logOutButton.click();
+
+        return new LogInPage(getDriver());
+    }
+
+    public String getCurrentUserName() {
+        return currentUserName.getText();
     }
 
     public FolderDetailsPage clickFolderName(String folderName ){
