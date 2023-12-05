@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
@@ -203,6 +202,39 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(systemLogPage.getPageTitle().contains("Log Recorders"));
         Assert.assertTrue(systemLogPage.getCurrentUrl().contains("log"));
+    }
+
+    @Test
+    public void testVisibilityOfSearchField() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.searchFieldIsVisible());
+    }
+
+    @Test
+    public void testSearchFieldByClick() {
+        final String inputText = "sys";
+
+        boolean searchResultIsClickable = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickOnSearchField()
+                .typeSearchInputField(inputText)
+                .searchResultsAreClickable();
+
+        Assert.assertTrue(searchResultIsClickable);
+    }
+
+    @Test
+    public void testDefaultRedirectionByEnter() {
+        final String inputText = "u";
+        final String url = "/manage/pluginManager/";
+
+        String redirectedUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .pressEnterAfterInput(inputText);
+
+        Assert.assertTrue(redirectedUrl.contains(url));
     }
     @Test
     public void testLoadStatisticsRedirection() {

@@ -251,6 +251,31 @@ public class ManageJenkinsPage extends BasePage {
         return new SystemInfoPage(getDriver());
     }
 
+    public boolean searchFieldIsVisible() {
+        return searchInput.isDisplayed();
+    }
+
+    public ManageJenkinsPage clickOnSearchField() {
+        searchInput.click();
+
+        return this;
+    }
+
+    public boolean searchResultsAreClickable() {
+
+        return searchResults.get(1).isEnabled();
+    }
+
+    public String pressEnterAfterInput(String inputText) {
+        searchInput.sendKeys(inputText);
+
+        wait.until(ExpectedConditions.visibilityOfAllElements(searchResults));
+
+        searchInput.sendKeys(Keys.ENTER);
+
+        return getCurrentUrl();
+    }
+
     public LoadStatisticsPage clickLoadStatisticsSection() {
         loadStatisticsSection.click();
 
