@@ -1,8 +1,7 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
@@ -751,6 +750,33 @@ public class UserTest extends BaseTest {
                 .clickSubmit()
                 .getUserID(1);
         Assert.assertEquals(userId, USER_NAME);
+    }
+
+    @Test(dependsOnMethods = "testNewUserDisplayedOnPeopleScreen")
+    public void testDeleteUsingBreadcrumb() {
+        goToUsersPage();
+
+        WebElement cv = getDriver().findElement(By.xpath("//body[@id='jenkins']/div[@id='page-body']/div[@id='main-panel']/table[@id='people']/tbody/tr[2]/td[1]/div[1]/*[1]"));
+
+        new Actions(getDriver())
+                .click(cv)
+                .keyDown(Keys.TAB)
+                .keyUp(Keys.CONTROL)
+                .keyDown(Keys.TAB)
+                .keyUp(Keys.CONTROL)
+                .keyDown(Keys.ENTER)
+                .keyUp(Keys.ENTER)
+                .perform();
+
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[2]/a/button")))
+                .perform();
+        new Actions(getDriver())
+                .moveToElement(getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']")))
+                .click()
+                .perform();
+
+        Assert.assertEquals(getDriver().switchTo().alert().getText(), "Delete: are you sure?");
     }
 
 }
