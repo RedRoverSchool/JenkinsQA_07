@@ -1,9 +1,6 @@
 package school.redrover;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -758,12 +755,27 @@ public class UserTest extends BaseTest {
         WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].dispatchEvent(new MouseEvent('click', {view: window, bubbles:true, cancelable: true}))", chevron);
 
+
+//        if (chevron.getAttribute("aria-expanded").equals(true)) {
+//            ((JavascriptExecutor) getDriver())
+//                    .executeScript("arguments[0].dispatchEvent(new MouseEvent('click', {view: window, bubbles:true, cancelable: true}))",
+//                            (getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']"))));
+//
+//        } else {
+//            new Actions(getDriver())
+//                    .keyDown(Keys.TAB)
+//                    .keyDown(Keys.ENTER)
+//                    .moveToElement(getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']")))
+//                    .click()
+//                    .perform();
+//        }
         Thread.sleep(10000);
-
-        ((JavascriptExecutor) getDriver())
-                .executeScript("arguments[0].dispatchEvent(new MouseEvent('click', {view: window, bubbles:true, cancelable: true}))",
-                        (getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']"))));
-
+        new Actions(getDriver())
+                    .keyDown(Keys.TAB)
+                    .keyDown(Keys.ENTER)
+                    .moveToElement(getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']")))
+                    .click()
+                    .perform();
         Assert.assertEquals(getDriver().switchTo().alert().getText(), "Delete: are you sure?");
     }
 }
