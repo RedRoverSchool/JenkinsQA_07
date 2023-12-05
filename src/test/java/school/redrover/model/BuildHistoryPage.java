@@ -99,7 +99,7 @@ public class BuildHistoryPage extends BasePage {
 
     public BuildHistoryPage getBuildDropdownMenu() {
 
-        getWait10().until(ExpectedConditions.visibilityOf(buildDropDownMenu));
+//        getWait10().until(ExpectedConditions.visibilityOf(buildDropDownMenu));
 
         new Actions(getDriver())
                 .moveToElement(buildDropDownMenu)
