@@ -140,7 +140,7 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, false);
 
         String newProjectName = new OrganizationFolderDetailsPage(getDriver())
-                .clickRenameOption(new OrganizationFolderDetailsPage(getDriver()))
+                .clickRename(new OrganizationFolderDetailsPage(getDriver()))
                 .enterNewName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .getProjectName();

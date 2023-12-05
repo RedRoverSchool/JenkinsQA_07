@@ -79,12 +79,6 @@ public class RenamePage <ProjectPage extends BaseProjectPage> extends BaseProjec
         return getWait2().until(ExpectedConditions.visibilityOf(errorMessage)).getText();
     }
 
-    public ErrorPage clickRenameButtonAndRedirectErrorPage() {
-        renameButton.click();
-
-        return new ErrorPage(getDriver());
-    }
-
     public RenameErrorPage clickRenameButtonEmptyName() {
         inputNewName.clear();
         renameButton.click();

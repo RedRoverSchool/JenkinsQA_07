@@ -9,7 +9,6 @@ import school.redrover.model.BuildWithParametersPage;
 import school.redrover.model.MovePage;
 import school.redrover.model.RenamePage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseProjectPage extends BasePage {
@@ -59,7 +58,7 @@ public abstract class BaseProjectPage extends BasePage {
         return projectName.getText();
     }
 
-    public <ProjectPage extends BaseProjectPage> RenamePage clickRenameOption(ProjectPage projectPage) {
+    public <ProjectPage extends BaseProjectPage> RenamePage clickRename(ProjectPage projectPage) {
         renameSubmenu.click();
 
         return new RenamePage<>(getDriver(), projectPage);
@@ -122,13 +121,5 @@ public abstract class BaseProjectPage extends BasePage {
 
     public boolean isStatusPageSelected() {
         return statusPageLink.getAttribute("class").contains("active");
-    }
-
-    public List<String> getBreadcrumbChain() {
-        List<String> breadcrumb = new ArrayList<>();
-        for (WebElement element : breadcrumbChain) {
-            breadcrumb.add(element.getText());
-        }
-        return breadcrumb;
     }
 }
