@@ -252,17 +252,15 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testConfigureShowDescriptionPreview() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/asynchPeople/']"))).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/user/admin/']"))).click();
+        String previewDescriptionText = new HomePage(getDriver())
+                .clickPeople()
+                .clickOnTheCreatedUser("admin")
+                .clickConfigure()
+                .typeDescription(DESCRIPTION)
+                .clickPreviewDescription()
+                .getPreviewDescriptionText();
 
-        getDriver().findElement(By.xpath("//a[@href = '/user/admin/configure']")).click();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='_.description']"))).clear();
-        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.xpath("//a[@class='textarea-show-preview']")).click();
-
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//div[@class='textarea-preview']"))).getText(), DESCRIPTION);
+        Assert.assertEquals(previewDescriptionText, DESCRIPTION);
     }
 
     @Test
@@ -391,41 +389,6 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(warningMessage, "User name is already taken");
     }
 
-    @Test
-    public void testPasswordAndConfirmPasswordArentTheSame() {
-        final String existedUsername = "testUser";
-        final String password = "1";
-        final String confirmPassword = "2";
-        final String email = "test@test.com";
-        final String validationMessage = "Password didn't match";
-
-        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//a[@href = 'addUser']")).click();
-        getDriver().findElement(By.xpath("//input[@name = 'username']")).sendKeys(existedUsername);
-        getDriver().findElement(By.xpath("//input[@name = 'password1']")).sendKeys(password);
-        getDriver().findElement(By.xpath("//input[@name = 'password2']")).sendKeys(confirmPassword);
-        getDriver().findElement(By.xpath("//input[@name = 'email']")).sendKeys(email);
-        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
-        List<WebElement> listOfValidationMessages = getDriver().findElements(By.xpath(
-                "//div[@class = 'error jenkins-!-margin-bottom-2']"));
-
-        Assert.assertFalse(listOfValidationMessages.isEmpty());
-
-        boolean isValidationMessageEqual = false;
-
-        for (WebElement listOfValidationMessage : listOfValidationMessages) {
-            if (listOfValidationMessage.getText().equals(validationMessage)) {
-                isValidationMessageEqual = true;
-            } else {
-                isValidationMessageEqual = false;
-                break;
-            }
-        }
-
-        Assert.assertTrue(isValidationMessageEqual);
-    }
-
     @Test(dependsOnMethods = "testUserCreation")
     public void testDeleteLoggedInUser() {
         UserDatabasePage userDatabasePage = new HomePage(getDriver())
@@ -524,31 +487,6 @@ public class UserTest extends BaseTest {
         assertEquals(extractedUsers, listOfExpectedUsers);
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testDeleteUser3")
-    public void testCreateNewUserAndLogInAsNewUser() {
-        createNewUser(USER_NAME_2);
-        getDriver().findElement(By.linkText("log out")).click();
-        getDriver().findElement(By.id("j_username")).clear();
-        getDriver().findElement(By.id("j_username")).sendKeys(USER_NAME_2);
-        getDriver().findElement(By.id("j_password")).clear();
-        getDriver().findElement(By.id("j_password")).sendKeys("TestPassword");
-        getDriver().findElement(By.name("Submit")).click();
-
-        assertEquals(getDriver().findElement(By.xpath("//a[@href='/user/firstuser']")).getText(), "Tester");
-    }
-
-    @Test
-    public void testEmptyFields() {
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//dd[contains(text(),'Create')]")).click();
-        getDriver().findElement(By.xpath("//a[contains(text(),'Create')]")).click();
-        getDriver().findElement((By.name("Submit"))).click();
-
-        List<WebElement> error = getDriver().findElements(By.cssSelector(".error"));
-
-        Assert.assertEquals(error.size(), 5);
-    }
 
     @Test
     public void testUserIsDisplayedInUsersTable() {

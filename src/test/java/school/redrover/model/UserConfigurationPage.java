@@ -16,10 +16,19 @@ public class UserConfigurationPage extends BaseUserPage {
     @FindBy(name = "_.primaryViewName")
     private WebElement defaultViewTextArea;
 
+    @FindBy(name = "_.description")
+    private WebElement descriptionTextArea;
+
+    @FindBy(xpath = "//a[@class='textarea-show-preview']")
+    private WebElement previewButton;
+
+    @FindBy(xpath = "//div[@class='textarea-preview']")
+    private WebElement previewDescriptionTextArea;
+
     public UserConfigurationPage(WebDriver driver) {
         super(driver);
     }
-    
+
     public UserConfigurationPage sendKeysFullNameUser(String name) {
         fullName.clear();
         fullName.sendKeys(name);
@@ -36,6 +45,23 @@ public class UserConfigurationPage extends BaseUserPage {
         saveButton.click();
 
         return new CreatedUserPage(getDriver());
+    }
+
+    public UserConfigurationPage typeDescription(String descriptionText) {
+        descriptionTextArea.clear();
+        descriptionTextArea.sendKeys(descriptionText);
+
+        return this;
+    }
+
+    public UserConfigurationPage clickPreviewDescription() {
+        previewButton.click();
+
+        return this;
+    }
+
+    public String getPreviewDescriptionText() {
+        return previewDescriptionTextArea.getText();
     }
 }
 
