@@ -343,7 +343,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(helpText, expectedText);
     }
 
-    @Test (dependsOnMethods =  "testCreateNewJob")
+    @Test (dependsOnMethods = "testCreateNewJob")
     public void testCreatePipelineProjectInsideFolder() {
 
         boolean isNewCreatedProjectDisplayed = new HomePage(getDriver())
