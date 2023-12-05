@@ -544,10 +544,4 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
 
         return this;
     }
-
-    public FreestyleProjectDetailsPage clickSave() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(saveButton)).click();
-        return new FreestyleProjectDetailsPage(getDriver());
-    }
 }
-

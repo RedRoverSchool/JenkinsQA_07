@@ -12,6 +12,8 @@ import java.util.List;
 
 public class PipelineDetailsPage extends BaseProjectPage {
 
+
+
     public PipelineDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -81,6 +83,11 @@ public class PipelineDetailsPage extends BaseProjectPage {
 
     @FindBy(css = "div#pipeline-box > div")
     private WebElement stageViewAlertText;
+
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item'][2]//a[@class='model-link']")
+    private WebElement folderBreadCrumbs;
+
+
 
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
@@ -211,5 +218,10 @@ public class PipelineDetailsPage extends BaseProjectPage {
     public String getStageViewAlertText() {
 
         return stageViewAlertText.getText();
+    }
+
+    public FolderDetailsPage clickFolderBreadCrumbs(){
+        folderBreadCrumbs.click();
+        return new FolderDetailsPage(getDriver());
     }
 }

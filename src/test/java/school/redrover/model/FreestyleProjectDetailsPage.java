@@ -69,9 +69,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//ul[@style='list-style-type: none;']/li/a")
     private List<WebElement> upstreamProjectsList;
 
-    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item'][2]//a[@class='model-link']")
-    private WebElement folderBreadCrumbs;
-
     public FreestyleProjectDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -203,11 +200,4 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
     public List<String> getUpstreamProjectsList() {
         return upstreamProjectsList.stream().map(WebElement::getText).toList();
     }
-
-    public FolderDetailsPage clickFolderBreadCrumbs(){
-        folderBreadCrumbs.click();
-        return new FolderDetailsPage(getDriver());
-
-    }
-
 }

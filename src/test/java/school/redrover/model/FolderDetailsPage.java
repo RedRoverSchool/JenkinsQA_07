@@ -165,10 +165,7 @@ public class FolderDetailsPage extends BaseProjectPage {
 
     public boolean   isNewCreatedProjectDisplayed(){
         return  newProject.isDisplayed();
-
     }
-
-
 }
 
 
