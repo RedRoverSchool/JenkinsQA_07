@@ -59,6 +59,12 @@ public class ManageJenkinsPage extends BasePage {
     @FindBy(xpath = "//a[@href='systemInfo']")
     private WebElement systemInfoSection;
 
+    @FindBy(xpath = "//a[@href='load-statistics']")
+    private WebElement loadStatisticsSection;
+
+    @FindBy(xpath = "//a[@href='about']")
+    private WebElement aboutJenkinsSection;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -243,5 +249,23 @@ public class ManageJenkinsPage extends BasePage {
         systemInfoSection.click();
 
         return new SystemInfoPage(getDriver());
+    }
+
+    public LoadStatisticsPage clickLoadStatisticsSection() {
+        loadStatisticsSection.click();
+
+        return new LoadStatisticsPage(getDriver());
+    }
+    public AboutJenkinsPage clickAboutJenkinsSection() {
+        aboutJenkinsSection.click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    public List<String> getStatusInformationSectionsTitles() {
+        return statusInformationSectionsList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }
