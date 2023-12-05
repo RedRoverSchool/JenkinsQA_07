@@ -760,6 +760,10 @@ public class UserTest extends BaseTest {
 
         Thread.sleep(10000);
 
+        ((JavascriptExecutor) getDriver())
+                .executeScript("arguments[0].dispatchEvent(new MouseEvent('click', {view: window, bubbles:true, cancelable: true}))",
+                        (getDriver().findElement(By.xpath("//div[@data-tippy-root]"))));
+
         WebElement buttonDeleteSVG = getDriver().findElement(By.xpath("//*[name()='svg' and @class='icon-edit-delete icon-md']"));
 
         String text = buttonDeleteSVG.getAttribute("aria-hidden");
