@@ -153,10 +153,6 @@ public class HomePage extends BasePage {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-    public String getTitle() {
-        return getDriver().getTitle();
-    }
-
     public String getProjectBuildStatusByName(String projectName) {
         return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
     }

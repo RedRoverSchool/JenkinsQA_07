@@ -165,4 +165,12 @@ public abstract class BasePage extends BaseModel {
 
         return new AboutJenkinsPage(getDriver());
     }
+
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
+    }
+
+    public String getPageTitle() {
+        return getDriver().getTitle();
+    }
 }

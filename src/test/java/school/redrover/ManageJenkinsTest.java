@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.model.NodesListPage;
+import school.redrover.model.SystemLogPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ManageJenkinsTest extends BaseTest {
                   .hoverOverShortcutIcon();
 
             Assert.assertEquals(manageJenkinsPage.getTooltipText(), TOOLTIP);
-            Assert.assertTrue(manageJenkinsPage.shortcutTooltipIsVisible(), TOOLTIP + " is not visible");
+            Assert.assertTrue(manageJenkinsPage.isShortcutTooltipVisible(), TOOLTIP + " is not visible");
     }
 
     @Test
@@ -181,5 +182,25 @@ public class ManageJenkinsTest extends BaseTest {
                 .getCurrentUrl();
 
         Assert.assertTrue(urlText.contains("pluginManager/"));
+    }
+
+    @Test
+    public void testSystemInfoPageRedirection() {
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickSystemInfoSection()
+                .getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("systemInfo"), currentUrl + " doesn't contain expected text");
+    }
+
+    @Test
+    public void testSystemLogPageRedirection() {
+        SystemLogPage systemLogPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage();
+
+        Assert.assertTrue(systemLogPage.getPageTitle().contains("Log Recorders"));
+        Assert.assertTrue(systemLogPage.getCurrentUrl().contains("log"));
     }
 }

@@ -56,6 +56,9 @@ public class ManageJenkinsPage extends BasePage {
     @FindAll({@FindBy(xpath = "(//div[2]/div[2]/section[3]/div/div/a/dl/dt)")})
     private List<WebElement> securitySectionsList;
 
+    @FindBy(xpath = "//a[@href='systemInfo']")
+    private WebElement systemInfoSection;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -106,7 +109,7 @@ public class ManageJenkinsPage extends BasePage {
         return shortcutIcon.getAttribute("tooltip");
     }
 
-    public boolean shortcutTooltipIsVisible() {
+    public boolean isShortcutTooltipVisible() {
         boolean shortcutTooltipIsVisible = true;
 
         if (!shortcutIcon.getAttribute("title").isEmpty()) {
@@ -234,5 +237,11 @@ public class ManageJenkinsPage extends BasePage {
 
     public boolean areSecuritySectionsClickable() {
         return securitySectionsList.stream().allMatch(WebElement::isEnabled);
+    }
+
+    public SystemInfoPage clickSystemInfoSection() {
+        systemInfoSection.click();
+
+        return new SystemInfoPage(getDriver());
     }
 }

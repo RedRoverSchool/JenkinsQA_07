@@ -186,10 +186,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         return textValue;
     }
 
-    public String getCurrentUrl() {
-        return getDriver().getCurrentUrl();
-    }
-
     public boolean isProjectDisabled() {
         return projectDisabledWarning.isEnabled();
     }
