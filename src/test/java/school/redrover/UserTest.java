@@ -771,8 +771,11 @@ public class UserTest extends BaseTest {
                 .perform();
         Thread.sleep(5000);
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']")))
-                .click()
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ARROW_DOWN)
+                .keyDown(Keys.ENTER)
                 .perform();
 
         Assert.assertEquals(getDriver().switchTo().alert().getText(), "Delete: are you sure?");
