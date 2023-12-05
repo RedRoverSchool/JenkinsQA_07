@@ -460,10 +460,15 @@ public class UserTest extends BaseTest {
     public void testCreateUserWithInvalidName() {
         char unsafeCharacter = '$';
 
-        createNewUser(USER_NAME_2 + unsafeCharacter);
+        String errorMessage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .inputUserName(USER_NAME_2 + unsafeCharacter)
+                .clickCreateUser()
+                .getErrorMessage();
 
-        assertTrue(getDriver().findElement(
-                By.xpath("//*[@id='main-panel']/form/div[1]/div[2]")).isDisplayed());
+        assertEquals(errorMessage, "User name must only contain alphanumeric characters, underscore and dash");
     }
 
     @Ignore
