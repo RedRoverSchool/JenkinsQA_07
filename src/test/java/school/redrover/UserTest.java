@@ -43,7 +43,7 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickCreateUserButton()
                 .fillUserInformationField(username, password, email)
-                .getUserId(username);
+                .getUserFullName(username);
 
         assertEquals(name, username);
     }
@@ -221,25 +221,23 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testCreateUser3() {
-        getDriver().findElement(By.xpath("//a[@href = '/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href = 'securityRealm/']")).click();
+    public void testCreateUser() {
+        String createdUserFullName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .inputUserName(NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputFullName(FULL_NAME)
+                .inputEmail(EMAIL)
+                .clickSubmit()
+                .getUserFullName(NAME);
 
-        getDriver().findElement(By.xpath("//a[@href = 'addUser']")).click();
-
-        getDriver().findElement(By.id("username")).sendKeys(NAME);
-        getDriver().findElement(By.name("password1")).sendKeys("qweqwe12");
-        getDriver().findElement(By.name("password2")).sendKeys("qweqwe12");
-        getDriver().findElement(By.name("email")).sendKeys("hotmail@hotmail.ru");
-        getDriver().findElement(By.xpath("//div[@id='bottom-sticker']//button")).click();
-
-
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//td[contains(text(),'" + NAME + "')]")).getText(), NAME
-        );
+        Assert.assertEquals(createdUserFullName, FULL_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateUser3")
+    @Test(dependsOnMethods = "testCreateUser")
     public void testConfigureUser() {
 
         getDriver().findElement(By.xpath("//a[@href = '/asynchPeople/']")).click();
