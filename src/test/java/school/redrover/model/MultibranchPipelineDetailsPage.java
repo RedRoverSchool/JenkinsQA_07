@@ -20,9 +20,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
-    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameButton;
-
     @FindBy(linkText = "Configure")
     private WebElement configureLink;
 
@@ -42,14 +39,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
-    public List<String> getBreadcrumbChain() {
-        List<String> breadcrumb = new ArrayList<>();
-        for (WebElement element : breadcrumbChain) {
-            breadcrumb.add(element.getText());
-        }
-        return breadcrumb;
-    }
-
     public List<String> getTasksText() {
         WebElement parentElement = getDriver().findElement(By.xpath("//div[@id='tasks']"));
         List<WebElement> childElements = parentElement.findElements(By.xpath("./*"));
@@ -60,12 +49,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
         }
 
         return list;
-    }
-
-    public MultibranchPipelineRenamePage clickRename() {
-        renameButton.click();
-
-        return new MultibranchPipelineRenamePage(getDriver());
     }
 
     public List<String> getNameOfTasksFromSidebarMenu() {

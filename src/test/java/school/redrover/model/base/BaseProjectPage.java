@@ -9,6 +9,7 @@ import school.redrover.model.BuildWithParametersPage;
 import school.redrover.model.MovePage;
 import school.redrover.model.RenamePage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseProjectPage extends BasePage {
@@ -43,6 +44,12 @@ public abstract class BaseProjectPage extends BasePage {
     @FindBy(id = "description-link")
     protected WebElement addDescription;
 
+    @FindBy(linkText = "Status")
+    private WebElement statusPageLink;
+
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
+    private List<WebElement> breadcrumbChain;
+
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -52,10 +59,10 @@ public abstract class BaseProjectPage extends BasePage {
         return projectName.getText();
     }
 
-    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOption(ProjectRenamePage projectRenamePage) {
+    public <ProjectPage extends BaseProjectPage> RenamePage clickRenameOption(ProjectPage projectPage) {
         renameSubmenu.click();
 
-        return projectRenamePage;
+        return new RenamePage<>(getDriver(), projectPage);
     }
 
     public BaseProjectPage clickDisableButton() {
@@ -111,5 +118,17 @@ public abstract class BaseProjectPage extends BasePage {
         moveSideMenuOption.click();
 
         return new MovePage(getDriver());
+    }
+
+    public boolean isStatusPageSelected() {
+        return statusPageLink.getAttribute("class").contains("active");
+    }
+
+    public List<String> getBreadcrumbChain() {
+        List<String> breadcrumb = new ArrayList<>();
+        for (WebElement element : breadcrumbChain) {
+            breadcrumb.add(element.getText());
+        }
+        return breadcrumb;
     }
 }

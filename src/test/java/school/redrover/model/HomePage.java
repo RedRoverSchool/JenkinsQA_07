@@ -164,10 +164,10 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public MultibranchPipelineRenamePage clickRenameDropdownMenu(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name.replace(" ", "%20") + "/confirm-rename']")).click();
+    public <ProjectPage extends BaseProjectPage>RenamePage clickRenameInDropdownMenu(ProjectPage projectPage) {
+        renameOptionProjectDropdown.click();
 
-        return new MultibranchPipelineRenamePage(getDriver());
+        return new RenamePage<>(getDriver(), projectPage);
     }
 
     public boolean isProjectExist(String projectName) {
@@ -193,25 +193,6 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.invisibilityOf(runningBuildIndicator));
 
         return this;
-    }
-
-    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOrganizationFolderDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
-        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
-
-        new Actions(getDriver()).moveToElement(projectName).click().perform();
-        renameOptionProjectDropdown.click();
-
-        return projectRenamePage;
-    }
-
-    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
-
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
-
-        return page;
     }
 
     public String getMultibranchPipelineName() {
