@@ -155,7 +155,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickJobNameDropdown(String name) {
-        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/']"));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(elementToHover).perform();
