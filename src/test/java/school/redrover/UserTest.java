@@ -765,11 +765,10 @@ public class UserTest extends BaseTest {
                 .keyDown(Keys.ENTER)
                 .perform();
 
-        Thread.sleep(5000);
-        new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[2]/a/button")))
-                .perform();
-        Thread.sleep(5000);
+        WebElement chevron = getDriver().findElement(By.xpath("//a[(@href='user/" + USER_NAME.toLowerCase() + "/')]/button"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(chevron).click(chevron).build().perform();
+
         new Actions(getDriver())
                 .keyDown(Keys.ARROW_DOWN)
                 .keyDown(Keys.ARROW_DOWN)
