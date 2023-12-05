@@ -91,7 +91,7 @@ public class PipelineTest extends BaseTest {
                 .clickRenameButtonEmptyName()
                 .getErrorText();
 
-        Assert.assertEquals(errorMessage, "Error" + '\n' + "No name is specified");
+        Assert.assertEquals(errorMessage, "No name is specified");
     }
 
     @Test
