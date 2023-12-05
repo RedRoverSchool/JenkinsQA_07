@@ -753,7 +753,7 @@ public class UserTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testNewUserDisplayedOnPeopleScreen")
-    public void testDeleteUsingBreadcrumb() {
+    public void testDeleteUsingBreadcrumb() throws InterruptedException {
         goToUsersPage();
 
         WebElement cv = getDriver().findElement(By.xpath("//body[@id='jenkins']/div[@id='page-body']/div[@id='main-panel']/table[@id='people']/tbody/tr[2]/td[1]/div[1]/*[1]"));
@@ -761,16 +761,15 @@ public class UserTest extends BaseTest {
         new Actions(getDriver())
                 .click(cv)
                 .keyDown(Keys.TAB)
-                .keyUp(Keys.CONTROL)
                 .keyDown(Keys.TAB)
-                .keyUp(Keys.CONTROL)
                 .keyDown(Keys.ENTER)
-                .keyUp(Keys.ENTER)
                 .perform();
 
+        Thread.sleep(5000);
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.xpath("//*[@id='people']/tbody/tr[2]/td[2]/a/button")))
                 .perform();
+        Thread.sleep(5000);
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.cssSelector("button[class='jenkins-dropdown__item']")))
                 .click()
