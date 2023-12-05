@@ -3,9 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import school.redrover.model.base.BasePage;
 
-public class RestAPIPage extends BasePage {
+public class WebsiteJenkinsPage extends BasePage {
 
-    public RestAPIPage(WebDriver driver) {
+    public WebsiteJenkinsPage(WebDriver driver) {
         super(driver);
     }
 }

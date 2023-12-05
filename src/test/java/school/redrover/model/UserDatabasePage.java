@@ -22,6 +22,15 @@ public class UserDatabasePage extends BasePage {
     @FindBy(xpath = "//a[contains(@class, 'link inside')]")
     private List<WebElement> userIDs;
 
+    @FindBy(xpath = "//tr/td[5]")
+    private List<WebElement> deleteIcon;
+
+
+    public UserDatabasePage clickDeleteIcon (int n) {
+        deleteIcon.get(n).click();
+        return this;
+    }
+
 
     public UserDatabasePage(WebDriver driver) {
         super(driver);
@@ -30,6 +39,10 @@ public class UserDatabasePage extends BasePage {
     public String getLoginUserName() {
         return loginUserName
                 .getText();
+    }
+
+    public String getUserId(String username) {
+        return getDriver().findElement(By.xpath("(//td/a[@href='user/" + username + "/']/following::td[1])")).getText();
     }
 
     public String getUserID(int n) {
@@ -48,7 +61,7 @@ public class UserDatabasePage extends BasePage {
         return doDelete;
     }
 
-    public CreateNewUserPage createUser() {
+    public CreateNewUserPage clickCreateUserButton() {
         createUser.click();
 
         return new CreateNewUserPage(getDriver());
@@ -62,9 +75,9 @@ public class UserDatabasePage extends BasePage {
         String fullName = "";
         int trCounter = 1;
 
-        for (WebElement user:users) {
+        for (WebElement user : users) {
             if (user.getText().contains(name)) {
-                fullName = user.findElement(By.xpath("//tbody/tr["+ trCounter +"]/td[3]")).getText();
+                fullName = user.findElement(By.xpath("//tbody/tr[" + trCounter + "]/td[3]")).getText();
                 break;
             } else {
                 trCounter++;
@@ -73,9 +86,9 @@ public class UserDatabasePage extends BasePage {
         return fullName;
     }
 
-    public UserPage clickUserByName(String name) {
-        getDriver().findElement(By.cssSelector("a[href='user/" + name + "/']")).click();
+    public UserStatusPage clickUserByName(String name) {
+        getDriver().findElement(By.cssSelector("a[href='user/" + name.toLowerCase() + "/']")).click();
 
-        return new UserPage(getDriver());
+        return new UserStatusPage(getDriver());
     }
 }

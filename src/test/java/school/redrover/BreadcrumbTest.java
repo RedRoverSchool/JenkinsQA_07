@@ -74,7 +74,7 @@ public class BreadcrumbTest extends BaseTest {
 	public void testOnAdminPageAndReturnOnMainPage() {
 		String homePage = new HomePage(getDriver())
 				.clickManageJenkins()
-				.goUserDatabasePage()
+				.clickUsersButton()
 				.clickUserByName("admin")
 				.clickDashboardBreadCrumb()
 				.getHeadLineText();
@@ -88,7 +88,7 @@ public class BreadcrumbTest extends BaseTest {
 				.clickNewItem()
 				.createFreestyleProject("Project Name")
 				.clickDashboardBreadCrumb()
-				.getTitle();
+				.getPageTitle();
 
 		Assert.assertEquals(homePage, "Dashboard [Jenkins]");
 	}

@@ -238,7 +238,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .selectOrganizationFolder()
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
                 .clickSave()
-                .clickDelete().getTitle();
+                .clickDelete().getPageTitle();
 
         Assert.assertEquals(pageTitle, "Dashboard [Jenkins]");
     }

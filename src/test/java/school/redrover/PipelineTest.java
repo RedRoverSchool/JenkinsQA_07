@@ -95,21 +95,8 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(errorMessage, "Error" + '\n' + "No name is specified");
     }
 
-    @Test
-    public void testCreatePipelineProject() {
-        List<String> jobList = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(JOB_NAME)
-                .selectPipelineProject()
-                .clickOk(new PipelineConfigurePage(getDriver()))
-                .goHomePage()
-                .getJobList();
-
-        Assert.assertTrue(jobList.contains(JOB_NAME));
-    }
-
     @Ignore
-    @Test(dependsOnMethods = "testCreatePipeline")
+    @Test(dependsOnMethods = "testTooltipsDescriptionCompliance")
     public void testOpenLogsFromStageView() {
         String stageLogsText = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -117,7 +104,8 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineScriptSampleByValue("hello")
                 .clickSaveButton()
                 .clickBuildNow()
-                .clickLogsInStageView().getStageLogsModalText();
+                .clickLogsInStageView()
+                .getStageLogsModalText();
 
         Assert.assertEquals(stageLogsText, "Hello World");
     }
@@ -205,17 +193,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(buildParameters, parameterChoices);
     }
 
-    @Test(dependsOnMethods = "testDescriptionDisplays")
-    public void testDelete() {
-        boolean isPipelineExist = new HomePage(getDriver())
-                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
-                .deleteFromSideMenu()
-                .isProjectExist(JOB_NAME);
-
-        Assert.assertFalse(isPipelineExist);
-
-    }
-
     @Test
     public void testDescriptionDisplays() {
         final String description = "Description of the Pipeline";
@@ -232,8 +209,17 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualDescription, description);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDescriptionDisplays")
+    public void testDelete() {
+        boolean isPipelineExist = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .deleteFromSideMenu()
+                .isProjectExist(JOB_NAME);
+
+        Assert.assertFalse(isPipelineExist);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipeline")
     public void testPermalinksIsEmpty() {
         boolean isPermalinksEmpty = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -242,7 +228,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isPermalinksEmpty);
     }
 
-    @Ignore
     @Test
     public void testPermalinksContainBuildInformation() {
         final List<String> expectedPermalinksList = List.of(
@@ -255,7 +240,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
         List<String> actualPermalinksList = new HomePage(getDriver())
-                .clickBuildByGreenArrow(JOB_NAME)
+                .clickBuildByGreenArrowWithWait(JOB_NAME)
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .getPermalinksList();
 
@@ -263,9 +248,8 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualPermalinksList, expectedPermalinksList);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testPermalinksIsEmpty")
     public void testStageViewBeforeBuild() {
-        TestUtils.createPipeline(this, JOB_NAME, true);
 
         String stageViewText = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -304,7 +288,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isDoNotAllowConcurrentBuildSelected);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testStageViewBeforeBuild")
     public void testTooltipsDescriptionCompliance() {
         List<String> tooltipsTextsList = List.of(
                 "Help for feature: Discard old builds",
@@ -319,8 +303,6 @@ public class PipelineTest extends BaseTest {
                 "Help for feature: Quiet period",
                 "Help for feature: Trigger builds remotely (e.g., from scripts)"
         );
-
-        TestUtils.createPipeline(this, JOB_NAME, true);
 
         PipelineConfigurePage pipelineConfigurationPage = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -343,5 +325,25 @@ public class PipelineTest extends BaseTest {
                 .getLastBuildLinkText();
 
         Assert.assertTrue(lastBuildLink.contains("Last build (#2)"));
+    }
+
+    @Test
+    public void testMovePipelineToFolder() {
+        String folderName = "Folder";
+
+        TestUtils.createFolder(this, folderName , true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
+
+        List<String> name = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickMove()
+                .clickArrowDropDownMenu()
+                .clickFolderByName(folderName)
+                .clickMove(new PipelineDetailsPage(getDriver()))
+                .goHomePage()
+                .clickJobNameDropdown(folderName)
+                .getJobList();
+
+        Assert.assertTrue(name.contains( JOB_NAME));
     }
 }

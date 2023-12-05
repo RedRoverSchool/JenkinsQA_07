@@ -1,7 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -9,10 +7,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FolderTest extends BaseTest {
     private static final String NAME_FOR_SELECT_JOB = "Folder";
@@ -216,16 +211,38 @@ public class FolderTest extends BaseTest {
 
     @Test(dependsOnMethods = "testRename")
     public void testAddDescriptionToFolder() {
-        final String descriptionText = "This is Folder's description";
-
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(descriptionText)
+                .typeDescription(DESCRIPTION_NAME)
                 .clickSave()
                 .getActualFolderDescription();
 
-        Assert.assertEquals(actualDescription, descriptionText);
+        Assert.assertEquals(actualDescription, DESCRIPTION_NAME);
+    }
+
+    @Test(dependsOnMethods = "testMoveFolderToFolder")
+    public void testClickPreview() {
+        String previewDescription = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .typeDescription(DESCRIPTION_NAME)
+                .clickPreview()
+                .getDescriptionPreview();
+
+        Assert.assertEquals(previewDescription, DESCRIPTION_NAME);
+    }
+
+    @Test(dependsOnMethods = "testClickPreview")
+    public void testHidePreview() {
+        String previewDescription = new HomePage(getDriver())
+                .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
+                .clickAddOrEditDescription()
+                .clickPreview()
+                .clickHidePreview()
+                .getDescriptionPreview();
+
+        Assert.assertTrue(previewDescription.isEmpty());
     }
 
     @Test(dependsOnMethods = {"testAddDescriptionToFolder", "testRename", "testCreate"})
