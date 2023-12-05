@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class NewItemPage extends BasePage {
 
     @FindBy(name = "name")
@@ -52,6 +54,9 @@ public class NewItemPage extends BasePage {
 
     @FindBy(xpath = "//input[@id='from']")
     private WebElement fieldCopyFrom;
+
+    @FindBy(id = "items")
+    private List<WebElement> items;
 
     public NewItemPage(WebDriver driver) {
         super(driver);
@@ -174,6 +179,18 @@ public class NewItemPage extends BasePage {
         okButton.click();
 
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public <T> T createJob(String name, String selectedItem, T page) {
+        inputName.sendKeys(name);
+        for (WebElement item : items) {
+             if(item.getText().contains(selectedItem)) {
+                item.click();
+             }
+         }
+        okButton.click();
+
+        return page;
     }
 
     public NewItemPage populateFieldCopyFrom(String multibranchPipelineName) {

@@ -12,13 +12,14 @@ import java.util.List;
 
 public class PipelineTest extends BaseTest {
 
+    private static final String NAME_FOR_SELECT_JOB = "Pipeline";
     private static final String JOB_NAME = "NewPipeline";
 
     @Test
     public void testCreatePipeline() {
         boolean pipeLineCreated = new HomePage(getDriver())
                 .clickNewItem()
-                .createPipeline(JOB_NAME)
+                .createJob(JOB_NAME, NAME_FOR_SELECT_JOB, new PipelineConfigurePage(getDriver()))
                 .goHomePage()
                 .getJobList()
                 .contains(JOB_NAME);

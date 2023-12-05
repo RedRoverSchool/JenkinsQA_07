@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class FreestyleProjectRenamePage extends BasePage {
+public class FreestyleProjectRenamePage extends RenamePage {
 
     @FindBy(name = "newName")
     private WebElement inputField;

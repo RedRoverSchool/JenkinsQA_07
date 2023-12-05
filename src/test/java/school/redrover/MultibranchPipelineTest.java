@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.MultiConfigurationConfigurePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class MultibranchPipelineTest extends BaseTest {
 
+    private static final String NAME_FOR_SELECT_JOB = "Multibranch Pipeline";
     private static final String MULTIBRANCH_PIPELINE_NAME = "MultibranchPipeline";
 
     private static final String MULTIBRANCH_PIPELINE_NEW_NAME = "MultibranchPipelineNewName";
@@ -154,9 +156,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testCreateMultiConfigurationPipeline() {
         HomePage homePage = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
-                .selectMultibranchPipeline()
-                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
+                .createJob(MULTIBRANCH_PIPELINE_NAME, NAME_FOR_SELECT_JOB, new MultiConfigurationConfigurePage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(homePage.isProjectExist(MULTIBRANCH_PIPELINE_NAME));

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FolderTest extends BaseTest {
+    private static final String NAME_FOR_SELECT_JOB = "Folder";
     private static final String FOLDER_NAME = "FolderName";
     private static final String NAME_FOR_BOUNDARY_VALUES = "A";
     private static final String RENAMED_FOLDER = "RenamedFolder";
@@ -35,9 +36,7 @@ public class FolderTest extends BaseTest {
     public void testCreate() {
         HomePage homePage = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(FOLDER_NAME)
-                .selectItemFolder()
-                .clickOk(new FolderConfigurationPage(getDriver()))
+                .createJob(FOLDER_NAME, NAME_FOR_SELECT_JOB, new FolderConfigurationPage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(FOLDER_NAME));

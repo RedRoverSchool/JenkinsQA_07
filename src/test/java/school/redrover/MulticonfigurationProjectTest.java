@@ -13,6 +13,7 @@ import school.redrover.runner.BaseTest;
 import java.util.List;
 
 public class MulticonfigurationProjectTest extends BaseTest {
+    private static final String NAME_FOR_SELECT_JOB = "Multi-configuration project";
     private static final String DESCRIPTION = "This is a description!!!";
     private static final String PROJECT_NAME = "MultiConfigurationProject123";
 
@@ -20,9 +21,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
     public void testCreateWithValidName() {
         HomePage homePage = new HomePage(getDriver())
                 .clickNewItem()
-                .typeItemName(PROJECT_NAME)
-                .selectMultiConfigurationProject()
-                .clickOk(new MultiConfigurationConfigurePage(getDriver()))
+                .createJob(PROJECT_NAME, NAME_FOR_SELECT_JOB, new MultiConfigurationConfigurePage(getDriver()))
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));

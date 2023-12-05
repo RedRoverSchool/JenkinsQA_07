@@ -18,6 +18,7 @@ import static org.testng.Assert.*;
 
 public class FreestyleProjectTest extends BaseTest {
 
+    private static final String NAME_FOR_SELECT_JOB = "Freestyle project";
     private static final String PROJECT_NAME = "NewFreestyleProject";
     private static final String NEW_PROJECT_NAME = "NewFreestyleProjectName";
     private static final String PROJECT_DESCRIPTION = "Freestyle project description";
@@ -29,8 +30,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testCreateFreestyleProjectWithValidName() {
         String homePage = new HomePage(getDriver())
                 .clickNewItem()
-                .createFreestyleProject(PROJECT_NAME)
-                .clickSaveButton()
+                .createJob(PROJECT_NAME, NAME_FOR_SELECT_JOB, new FreestyleProjectConfigurePage(getDriver()))
                 .goHomePage()
                 .getJobList()
                 .toString();

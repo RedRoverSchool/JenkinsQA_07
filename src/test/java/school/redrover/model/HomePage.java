@@ -80,6 +80,9 @@ public class HomePage extends BasePage {
     @FindBy(className = "addTab")
     private WebElement newViewButton;
 
+    @FindBy(xpath = "//tr/td/a[contains(@class, 'jenkins-table__link')]/span[1]")
+    private List<WebElement> list;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -97,9 +100,8 @@ public class HomePage extends BasePage {
     }
 
     public List<String> getJobList() {
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]/span[1]"));
 
-        return elementList.stream().map(WebElement::getText).toList();
+        return list.stream().map(WebElement::getText).toList();
     }
 
     public NewItemPage clickNewItem() {

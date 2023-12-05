@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 
 public class OrganizationFolderTest extends BaseTest {
+
+    private static final String NAME_FOR_SELECT_JOB = "Multibranch Pipeline";
     private static final String PROJECT_NAME = "Organization Folder";
     private static final String NEW_PROJECT_NAME = "Organization Folder Renamed";
     private static final String CLONE_NAME = "Organization Folder Clone";
@@ -27,7 +29,7 @@ public class OrganizationFolderTest extends BaseTest {
     public void testCreateOrganizationFolderWithValidName() {
         List<String> jobList = new HomePage(getDriver())
                 .clickNewItem()
-                .createOrganizationFolder(PROJECT_NAME)
+                .createJob(PROJECT_NAME, NAME_FOR_SELECT_JOB, new OrganizationFolderConfigurationPage(getDriver()))
                 .goHomePage()
                 .getJobList();
 
