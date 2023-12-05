@@ -108,7 +108,7 @@ public class HeaderTest extends BaseTest {
     public void testHotKeysSearchAreaSelection() {
         WebElement searchHotKeys = new HomePage(getDriver())
                 .getHotKeysFocusSearch(new HomePage(getDriver()))
-                .getSearchBox();
+                .getSearchBoxWebElement();
 
         Assert.assertTrue(searchHotKeys.equals(getDriver().switchTo().activeElement()));
     }

@@ -3,21 +3,12 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseUserPage;
 
-public class UserConfigurationPage extends BasePage {
+public class UserConfigurationPage extends BaseUserPage {
 
-    @FindBy(xpath = "//*[@id='people']/tbody/tr[2]/td[2]/a")
-    private WebElement username;
-
-    @FindBy(xpath = "//*[@id='tasks']/div[4]/span/a")
-    private WebElement configPage;
-
-    @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")
-    private WebElement userFull;
-
-    @FindBy(xpath = "//*[@id='main-panel']/form/div[1]/div[1]/div[2]/input")
-    private WebElement fullUser;
+    @FindBy(name = "_.fullName")
+    private WebElement fullName;
 
     @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
     private WebElement saveButton;
@@ -28,24 +19,10 @@ public class UserConfigurationPage extends BasePage {
     public UserConfigurationPage(WebDriver driver) {
         super(driver);
     }
-
-    public UserConfigurationPage clickUsername() {
-        username.click();
-        return this;
-    }
-
-    public UserConfigurationPage clickConfigurationPage() {
-        configPage.click();
-        return this;
-    }
-
-    public UserConfigurationPage clearUserFull() {
-        userFull.clear();
-        return this;
-    }
-
-    public UserConfigurationPage sendKeysFullNameUser(String fullName) {
-        fullUser.sendKeys(fullName);
+    
+    public UserConfigurationPage sendKeysFullNameUser(String name) {
+        fullName.clear();
+        fullName.sendKeys(name);
         return this;
     }
 

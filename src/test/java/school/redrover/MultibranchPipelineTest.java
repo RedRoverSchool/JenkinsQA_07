@@ -7,6 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.FolderDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultibranchPipelineConfigurationPage;
 import school.redrover.model.MultibranchPipelineDetailsPage;
@@ -196,9 +197,14 @@ public class MultibranchPipelineTest extends BaseTest {
                 MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
     }
 
-    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
+    @Test
     public void testEnabledByDefault() {
         String status = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipeline()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
+                .goHomePage()
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .getDisableToggleText();
@@ -206,7 +212,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(status, "Enabled");
     }
 
-    @Test(dependsOnMethods = {"testCreateMultiConfigurationPipeline", "testEnabledByDefault"})
+    @Test(dependsOnMethods = "testEnabledByDefault")
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
         String actualStatusMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
@@ -254,14 +260,13 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
 
-
-    @Ignore("PR#2042, failed with error: expected [MultibranchPipeline] but found [Search for 'MultibranchPipeline']")
     @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testFindByQuickSearch() {
-        MultibranchPipelineDetailsPage multibranchPipelineDetailsPage = new HomePage(getDriver())
-                .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()));
+        String multibranchPipelineDetailsPage = new HomePage(getDriver())
+                .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getHeadLineText();
 
-        Assert.assertEquals(multibranchPipelineDetailsPage.getHeadLineText(), MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(multibranchPipelineDetailsPage, MULTIBRANCH_PIPELINE_NAME);
     }
 
 
@@ -376,13 +381,13 @@ public class MultibranchPipelineTest extends BaseTest {
         TestUtils.createFolder(this, folderName, false);
         TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        getDriver().findElement(By.xpath("//span[text()='" + folderName + "']/..")).click();
-        getDriver().findElement(By.xpath("//span[text()='" + MULTIBRANCH_PIPELINE_NAME + "']/..")).click();
+        List<String> namesOfTasks = new HomePage(getDriver())
+                .clickJobByName(folderName, new FolderDetailsPage(getDriver()))
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .getNameOfTasksFromSidebarMenu();
 
-        List<String> namesOfTasks = getTextOfWebElements(getDriver().findElements(
-                By.xpath("//span[@class='task-link-wrapper ']")));
-
-        Assert.assertTrue(namesOfTasks.contains("Move"), "Move is not the additional task of sidebar menu on the left");
+        Assert.assertTrue(namesOfTasks.contains("Move"),
+                "Move is not the additional task of sidebar menu on the left");
     }
 
     @Test(dependsOnMethods = "testRenameUsingSidebar")

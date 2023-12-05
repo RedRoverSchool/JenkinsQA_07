@@ -11,6 +11,7 @@ import school.redrover.model.HomePage;
 import school.redrover.model.UserPage;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.SeleniumUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,22 @@ public class UserTest extends BaseTest {
     final private static String WRONG_CONFIRM_PASSWORD = "123";
     private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
+
+    @Test
+    public void testFullNameAppearsSameAsUserIdWhenCreatingNewUser() {
+        String username = SeleniumUtils.generateRandomName();
+        String password = SeleniumUtils.generateRandomPassword(12);
+        String email = SeleniumUtils.generateRandomName() + "@" + "mail.com";
+
+        String name = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .fillUserInformationField(username, password, email)
+                .getUserId(username);
+
+        assertEquals(name, username);
+    }
 
     private void createUser(String userName, String password, String email) {
         getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
@@ -146,20 +163,13 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(error, "Password didn't match");
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testCreateUserWithValidData"})
     public void testCreateUserAndLogIn() {
-        final String password = "Te5t";
-        final String email = "test_redrov@yahoo.com";
+        String userIconText = new HomePage(getDriver())
+                .clickLogOut()
+                .inputNewCredentialsAndLogIn(USER_NAME, PASSWORD)
+                .getCurrentUserName();
 
-        createUser(USER_NAME, password, email);
-
-        getDriver().findElement(By.xpath("//span[contains(text(), 'log out')]")).click();
-
-        getDriver().findElement(By.name("j_username")).sendKeys(USER_NAME);
-        getDriver().findElement(By.name("j_password")).sendKeys(password);
-        getDriver().findElement(By.name("Submit")).click();
-
-        String userIconText = getDriver().findElement(By.xpath("//a[contains(@href,'user')]")).getText();
         assertEquals(userIconText, USER_NAME);
     }
 
@@ -706,20 +716,18 @@ public class UserTest extends BaseTest {
         final String email = "rv@gmail.com";
         final String fullName = "User User";
 
-        new HomePage(getDriver())
-                .clickManageJenkins();
-        createUser(existedUsername, password, email);
-
-        new UserConfigurationPage(getDriver())
-                .clickUsername()
-                .clickConfigurationPage()
-                .clearUserFull()
+        String userName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickCreateUserButton()
+                .fillUserInformationField(existedUsername, password, email)
+                .clickUserByName(existedUsername)
+                .goConfigurePage()
                 .sendKeysFullNameUser(fullName)
-                .clickSaveButton();
+                .clickSaveButton()
+                .getHeadLineText();
 
-        Assert.assertEquals(
-                getDriver().findElement(By.xpath("//*[@id='main-panel']/h1")).getText(),
-                fullName);
+        Assert.assertEquals(userName, fullName);
     }
 
     @Test
@@ -734,6 +742,7 @@ public class UserTest extends BaseTest {
                 .clickCreateUser();
         Assert.assertEquals(userNotCreated.getErrorMessage(), "Invalid e-mail address");
     }
+
     @Test
     public void testNewUserDisplayedOnPeopleScreen() {
         String userId = new HomePage(getDriver())
