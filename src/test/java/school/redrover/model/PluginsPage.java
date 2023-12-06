@@ -23,7 +23,7 @@ public class PluginsPage extends BasePage {
     @FindBy(id = "button-update")
     private WebElement updateButton;
 
-    @FindBy(xpath = "//table[@id='plugins']/tbody/tr[1]/td/span/label")
+    @FindBy(xpath = "//table[@id='plugins']//tr[1]//label")
     private WebElement firstCheckbox;
 
     public PluginsPage(WebDriver driver) {
@@ -59,7 +59,7 @@ public class PluginsPage extends BasePage {
         return updateButton.isEnabled();
     }
 
-    public PluginsPage selectFirstCheckbox() {
+    public PluginsPage selectedFirstCheckbox() {
         firstCheckbox.click();
 
         return this;

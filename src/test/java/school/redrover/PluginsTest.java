@@ -48,7 +48,7 @@ public class PluginsTest extends BaseTest {
         boolean updateButtonIsEnabled = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goPluginsPage()
-                .selectFirstCheckbox()
+                .selectedFirstCheckbox()
                 .updateButtonIsEnabled();
 
         Assert.assertTrue(updateButtonIsEnabled);
