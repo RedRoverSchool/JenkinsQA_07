@@ -74,6 +74,18 @@ public class UserTest extends BaseTest {
         };
     }
 
+    @DataProvider
+    public Object[][] provideInvalidCredentials() {
+        return new Object[][]{
+                {"&", "", "test$test.test"},
+                {"@", "", "test.test"},
+                {">", "", "тест\"тест.ком"},
+                {"[", "", "test2test.test"},
+                {":", "", "test-test.test"},
+                {";", "", "test_test.test"}
+        };
+    }
+
     @Test
     public void testFullNameIsSameAsUserIdWhenCreatingNewUser() {
         String fullName = new HomePage(getDriver())
@@ -586,5 +598,21 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(actualResult,"TestUser");
 
+    }
+
+    @Test(dataProvider = "provideInvalidCredentials")
+    public void testCreateUserWithInvalidCredentials(String name, String password, String mail) {
+        List<WebElement> errorList = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickAddUserButton()
+                .inputUserName(name)
+                .inputPassword(password)
+                .inputPasswordConfirm(password)
+                .inputEmail(mail)
+                .clickCreateUser()
+                .getErrorList();
+
+        Assert.assertTrue(errorList.size() == 4);
     }
 }
