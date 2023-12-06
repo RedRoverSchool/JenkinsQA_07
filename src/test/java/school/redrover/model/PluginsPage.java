@@ -1,6 +1,5 @@
 package school.redrover.model;
 
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -55,7 +54,7 @@ public class PluginsPage extends BasePage {
         return false;
     }
 
-    public boolean isUpdateButtonClickable() {
+    public boolean updateButtonIsEnabled() {
 
         return updateButton.isEnabled();
     }
