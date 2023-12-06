@@ -34,24 +34,24 @@ public class PluginsTest extends BaseTest {
     }
 
     @Test
-    public void testUpdateButtonIsDisableByDefault() {
-        boolean updateButtonIsEnable = new HomePage(getDriver())
+    public void testUpdateButtonIsDisabledByDefault() {
+        boolean updateButtonIsEnabled = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goPluginsPage()
                 .updateButtonIsEnabled();
 
-        Assert.assertFalse(updateButtonIsEnable);
+        Assert.assertFalse(updateButtonIsEnabled);
     }
 
     @Test
-    public void testUpdateButtonIsEnable() {
-        boolean updateButtonIsEnable = new HomePage(getDriver())
+    public void testUpdateButtonIsEnabled() {
+        boolean updateButtonIsEnabled = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goPluginsPage()
                 .selectFirstCheckbox()
                 .updateButtonIsEnabled();
 
-        Assert.assertTrue(updateButtonIsEnable);
+        Assert.assertTrue(updateButtonIsEnabled);
     }
 
 }
