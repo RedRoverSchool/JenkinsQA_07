@@ -23,7 +23,7 @@ public class PluginsPage extends BasePage {
     @FindBy(id = "button-update")
     private WebElement updateButton;
 
-    @FindBy(xpath = "//tr[1]/td/span/label")
+    @FindBy(xpath = "//table[@id='plugins']/tbody/tr[1]/td/span/label")
     private WebElement firstCheckbox;
 
     public PluginsPage(WebDriver driver) {
