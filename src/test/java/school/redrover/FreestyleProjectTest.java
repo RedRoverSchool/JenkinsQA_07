@@ -386,7 +386,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testHelpDescriptionOfDiscardOldBuildsIsVisible() {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .clickHelpDescriptionOfDiscardOldBuilds()
                 .getAttributeOfHelpDescriptionDiscardOldBuilds();
 
@@ -397,7 +397,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testHelpDescriptionOfDiscardOldBuildsIsClosed() {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .clickHelpDescriptionOfDiscardOldBuilds()
                 .clickHelpDescriptionOfDiscardOldBuilds()
                 .getAttributeOfHelpDescriptionDiscardOldBuilds();
@@ -413,7 +413,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickConfigureFromSideMenu()
+                .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
                 .isAddParameterButtonDisplayed();
 
@@ -458,10 +458,10 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEditDescriptionConfigurePage() {
         String editDescription = new HomePage(getDriver())
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .inputProjectDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .inputProjectDescription(NEW_PROJECT_DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
@@ -474,7 +474,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testFreestyleProjectAdvancedSettingVisibilityOfHelpDescriptionQuietPeriod() {
         boolean helpMessageDisplay = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .clickAdvancedButton()
                 .clickQuietPeriodHelpIcon()
                 .isQuietPeriodHelpTextDisplayed();
@@ -800,7 +800,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputMaxNumberOfBuildsToKeep("2")
                 .inputDaysToKeepBuilds("3")
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 300)
                 .getInputDaysToKeepBuildsFieldValue();
 
@@ -821,7 +821,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputNumberOfBuilds("4")
                 .selectTimePeriod("day")
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 600)
                 .getNumberOfBuildsFieldValue();
 
@@ -839,11 +839,11 @@ public class FreestyleProjectTest extends BaseTest {
 
         String checkBoxDisplayStyle = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 300)
                 .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 300)
                 .getExecuteConcurrentBuildsIfNecessaryCheckBoxValue("display");
 
