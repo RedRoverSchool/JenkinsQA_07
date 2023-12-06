@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
@@ -63,6 +64,14 @@ public class UserTest extends BaseTest {
                 .clickManageJenkins()
                 .clickUsersButton()
                 .clickAddUserButton();
+    }
+
+    @DataProvider
+    public Object[][] provideUnsafeCharacter() {
+        return new Object[][]{
+                {"#"}, {"&"}, {"?"}, {"!"}, {"@"}, {"$"}, {"%"}, {"^"}, {"*"}, {"|"}, {"/"}, {"\\"}, {"<"}, {">"},
+                {"["}, {"]"}, {":"}, {";"}
+        };
     }
 
     @Test
@@ -309,9 +318,8 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(expectedLabelNames, actualLabelNames);
     }
 
-    @Test
-    public void testCreateUserWithInvalidName() {
-        char unsafeCharacter = '$';
+    @Test(dataProvider = "provideUnsafeCharacter")
+    public void testCreateUserWithInvalidName(String unsafeCharacter) {
 
         String errorMessage = new HomePage(getDriver())
                 .clickManageJenkins()
