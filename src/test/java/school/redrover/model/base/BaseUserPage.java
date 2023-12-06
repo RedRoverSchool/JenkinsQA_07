@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.*;
 
-public abstract class BaseUserPage extends BasePage{
+public abstract class BaseUserPage<Self extends BaseUserPage<?>> extends BasePage<Self>{
     @FindBy(css = "a[href$='builds']")
     private WebElement buildSidePanelButton;
 

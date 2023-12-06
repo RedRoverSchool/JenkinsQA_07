@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class BuildHistoryPage extends BasePage {
+public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
 
     @FindBy(id = "main-panel")
     private WebElement mainPanel;

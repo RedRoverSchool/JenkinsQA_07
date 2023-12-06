@@ -6,7 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class OrganizationFolderConfigurationPage extends BaseConfigurationPage<OrganizationFolderDetailsPage> {
+public class OrganizationFolderConfigurationPage extends BaseConfigurationPage<OrganizationFolderDetailsPage, OrganizationFolderConfigurationPage> {
 
     @FindBy(xpath = "//section[2]//label")
     private WebElement periodicallyCheckbox;

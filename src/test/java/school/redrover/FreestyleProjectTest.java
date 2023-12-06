@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.DataProvider;
@@ -448,7 +449,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputMaxNumberOfBuildsToKeep(String.valueOf(numOfBuildNowClicks))
                 .clickSaveButton()
                 .clickBuildNowSeveralTimes(new FreestyleProjectDetailsPage(getDriver()), numOfBuildNowClicks + 1)
-                .refreshPage(new FreestyleProjectDetailsPage(getDriver()))
+                .refreshPage()
                 .getBuildsInBuildHistoryList();
 
         assertEquals(buildsList.get(buildsList.size() - 1), "#2");
@@ -518,7 +519,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputUpstreamProject(upstreamProjectName)
                 .clickAlwaysTrigger()
                 .clickSaveButton()
-                .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
+                .waitAndRefresh()
                 .getUpstreamProjectsList();
 
         assertEquals(upstreamProjectsList, List.of(upstreamProjectName));
@@ -571,7 +572,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickGitRadioButtonWithScroll()
                 .inputGitHubRepositoryURLWithScroll(inputText)
                 .clickApply()
-                .refreshPage(new FreestyleProjectConfigurePage(getDriver()))
+                .refreshPage()
                 .clickGitRadioButtonWithScroll()
                 .getValueGitHubRepositoryURL();
 
@@ -690,7 +691,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickAddTimestampsToConsoleOutput()
                 .clickSaveButton()
                 .clickBuildNow(new FreestyleProjectDetailsPage(getDriver()))
-                .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
+                .waitAndRefresh()
                 .clickBuildIconInBuildHistory().getTimestampsList();
 
         assertNotEquals(timestampsList.size(), 0);
@@ -896,7 +897,7 @@ public class FreestyleProjectTest extends BaseTest {
         String permaLinks = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickBuildNowButton()
-                .refreshPage(new FreestyleProjectDetailsPage(getDriver()))
+                .refreshPage()
                 .clickPermalinkLastBuild()
                 .clickDeleteBuildSidePanel()
                 .clickButtonDeleteBuild(new FreestyleProjectDetailsPage(getDriver()))

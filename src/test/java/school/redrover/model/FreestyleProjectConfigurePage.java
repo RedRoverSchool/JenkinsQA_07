@@ -13,7 +13,7 @@ import school.redrover.model.base.BaseConfigurationPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectConfigurePage extends BaseConfigurationPage<FreestyleProjectDetailsPage> {
+public class FreestyleProjectConfigurePage extends BaseConfigurationPage<FreestyleProjectDetailsPage, FreestyleProjectConfigurePage> {
 
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement discardOldBuildsHelpButton;

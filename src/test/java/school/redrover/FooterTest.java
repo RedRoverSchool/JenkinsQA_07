@@ -57,7 +57,7 @@ public class FooterTest extends BaseTest {
                 "Website");
 
         List<String> actualMenu = new HomePage(getDriver())
-                .clickJenkinsVersionButton(new HomePage(getDriver()))
+                .clickJenkinsVersionButton()
                 .getVersionJenkinsTippyBoxText();
 
         Assert.assertEquals(actualMenu, expectedMenu);

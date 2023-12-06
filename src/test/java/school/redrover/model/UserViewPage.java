@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class UserViewPage extends BasePage {
+public class UserViewPage extends BasePage<UserViewPage> {
 
     @FindBy(className = "addTab")
     private WebElement addNewViewTab;

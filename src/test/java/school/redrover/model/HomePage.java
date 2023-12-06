@@ -12,7 +12,11 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends BasePage {
+public class HomePage extends BasePage<HomePage> {
+    @Override
+    public HomePage clickJenkinsVersionButton() {
+        return super.clickJenkinsVersionButton();
+    }
 
     @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement setUpAgent;

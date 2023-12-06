@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetailsPage> {
+public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetailsPage, FolderConfigurationPage> {
 
     @FindBy(name = "_.description")
     private WebElement descriptionTextField;

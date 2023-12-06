@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BaseProjectPage;
 
-public class RenamePage <ProjectPage extends BaseProjectPage<?>> extends BaseProjectPage<BaseConfigurationPage<?>> {
+public class RenamePage <ProjectPage extends BaseProjectPage<?, ?>> extends BaseProjectPage<BaseConfigurationPage<?, ?>, RenamePage<?>> {
 
     @FindBy(name = "newName")
     private WebElement inputNewName;
@@ -94,7 +94,7 @@ public class RenamePage <ProjectPage extends BaseProjectPage<?>> extends BasePro
     }
 
     @Override
-    protected BaseConfigurationPage<?> createConfigurationPage() {
+    protected BaseConfigurationPage<?,?> createConfigurationPage() {
         return null;
     }
 }

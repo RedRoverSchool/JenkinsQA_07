@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseUserPage;
 
-public class UserConfigurationPage extends BaseUserPage {
+public class UserConfigurationPage extends BaseUserPage<UserConfigurationPage> {
 
     @FindBy(name = "_.fullName")
     private WebElement fullName;

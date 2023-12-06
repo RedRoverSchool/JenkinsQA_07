@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class NodeUpdateOfflineReasonPage extends BasePage {
+public class NodeUpdateOfflineReasonPage extends BasePage<NodeUpdateOfflineReasonPage> {
 
     @FindBy(xpath = "//textarea[@name = 'offlineMessage']")
     WebElement offlineReasonInputField;

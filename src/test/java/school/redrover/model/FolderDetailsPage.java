@@ -8,7 +8,7 @@ import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> {
+public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, BaseProjectPage<FreestyleProjectConfigurePage, FolderDetailsPage>> {
 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;

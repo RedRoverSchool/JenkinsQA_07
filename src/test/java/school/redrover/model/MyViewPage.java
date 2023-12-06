@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyViewPage extends BasePage {
+public class MyViewPage extends BasePage<MyViewPage> {
 
     @FindBy(xpath = "//span[contains(text(),'New Item')]/parent::a")
     private WebElement newItem;

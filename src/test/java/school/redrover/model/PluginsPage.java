@@ -9,7 +9,7 @@ import school.redrover.runner.SeleniumUtils;
 
 import java.util.List;
 
-public class PluginsPage extends BasePage {
+public class PluginsPage extends BasePage<PluginsPage> {
 
     @FindBy(xpath = "//a[@href = '/manage/pluginManager/installed']")
     private WebElement installedPlugins;

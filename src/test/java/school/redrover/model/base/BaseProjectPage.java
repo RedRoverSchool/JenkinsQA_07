@@ -11,7 +11,8 @@ import school.redrover.model.RenamePage;
 
 import java.util.List;
 
-public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?>> extends BasePage {
+public abstract class BaseProjectPage<ProjectConfigurationPage
+        extends BaseConfigurationPage<?, ?>,Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
@@ -58,13 +59,13 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return projectName.getText();
     }
 
-    public <ProjectPage extends BaseProjectPage<?>> RenamePage<?> clickRename(ProjectPage projectPage) {
+    public <ProjectPage extends BaseProjectPage<?, ?>> RenamePage<?> clickRename(ProjectPage projectPage) {
         renameSubmenu.click();
 
-        return new RenamePage<>(getDriver(), projectPage);
+        return new RenamePage(getDriver(), projectPage);
     }
 
-    public BaseProjectPage<?> clickDisableButton() {
+    public BaseProjectPage<?, ?> clickDisableButton() {
         disableButton.click();
 
         return this;
@@ -75,7 +76,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return disableMessage.getText().substring(0, 46);
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
+    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
         buildNowSideMenuOption.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElements(buildLinksInBuildHistory));
 
@@ -88,7 +89,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return new BuildWithParametersPage(getDriver());
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
+    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
         for (int i = 0; i < numOfClicks; i++) {
             clickBuildNow(projectDetailsPage);
         }

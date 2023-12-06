@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class CreateNewUserPage extends BasePage {
+public class CreateNewUserPage extends BasePage<CreateNewUserPage> {
 
     @FindBy(name = "username")
     private WebElement userName;

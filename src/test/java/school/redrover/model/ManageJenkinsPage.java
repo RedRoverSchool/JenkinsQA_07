@@ -12,7 +12,7 @@ import school.redrover.model.base.BasePage;
 import java.time.Duration;
 import java.util.List;
 
-public class ManageJenkinsPage extends BasePage {
+public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
 
     @FindBy(xpath = "//a[@href='computer']")
     private WebElement nodeSection;

@@ -8,8 +8,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseProjectPage;
 
-public class NewItemPage extends BasePage {
+public class NewItemPage extends BasePage<NewItemPage> {
 
     @FindBy(name = "name")
     private WebElement inputName;
@@ -96,7 +97,7 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public <T extends BaseConfigurationPage<?>> T clickOk(T page) {
+    public <T extends BaseConfigurationPage<?,?>> T clickOk(T page) {
         okButton.click();
 
         return page;

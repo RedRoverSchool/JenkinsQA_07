@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class MultiConfigurationConfigurePage extends BaseConfigurationPage<MultiConfigurationDetailsPage> {
+public class MultiConfigurationConfigurePage extends BaseConfigurationPage<MultiConfigurationDetailsPage, MultiConfigurationConfigurePage> {
     @FindBy(name = "description")
     private WebElement inputDescription;
 

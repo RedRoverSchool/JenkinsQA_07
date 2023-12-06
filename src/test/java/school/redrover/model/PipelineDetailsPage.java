@@ -10,7 +10,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> {
+public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, BaseProjectPage<FreestyleProjectConfigurePage, PipelineDetailsPage>> {
 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;

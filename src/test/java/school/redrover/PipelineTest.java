@@ -279,7 +279,7 @@ public class PipelineTest extends BaseTest {
                 .clickConfigure()
                 .clickDoNotAllowConcurrentBuilds()
                 .goHomePage()
-                .acceptAlert(new HomePage(getDriver()))
+                .acceptAlert()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .isDoNotAllowConcurrentBuildsSelected();

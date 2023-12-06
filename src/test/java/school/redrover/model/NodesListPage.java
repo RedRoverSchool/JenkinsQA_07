@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class NodesListPage extends BasePage {
+public class NodesListPage extends BasePage<NodesListPage> {
 
     @FindBy(xpath = "//a[@href='new']")
     private WebElement newNodeButton;

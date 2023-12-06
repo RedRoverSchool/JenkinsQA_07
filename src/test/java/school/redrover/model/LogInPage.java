@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class LogInPage extends BasePage {
+public class LogInPage extends BasePage<LogInPage> {
 
     @FindBy(name = "j_username")
     private WebElement userNameTextArea;

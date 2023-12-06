@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseErrorPage;
 
-public class AngryErrorPage extends BaseErrorPage {
+public class AngryErrorPage extends BaseErrorPage<AngryErrorPage> {
 
     @FindBy(xpath = "//h2")
     private WebElement errorMessage;
