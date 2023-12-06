@@ -43,7 +43,7 @@ public class FolderTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
                 .clickRename(new FolderDetailsPage(getDriver()))
-                .enterNewName(RENAMED_FOLDER)
+                .enterName(RENAMED_FOLDER)
                 .clickRenameButton()
                 .goHomePage();
 
@@ -279,7 +279,7 @@ public class FolderTest extends BaseTest {
         String errorMessage = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickRename(new FolderDetailsPage(getDriver()))
-                .enterNewName(point)
+                .enterName(point)
                 .clickRenameWithError()
                 .getErrorText();
 
@@ -291,7 +291,7 @@ public class FolderTest extends BaseTest {
         String errorMessage = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickRename(new FolderDetailsPage(getDriver()))
-                .enterNewName("")
+                .enterName("")
                 .clickRenameWithError()
                 .getErrorText();
 

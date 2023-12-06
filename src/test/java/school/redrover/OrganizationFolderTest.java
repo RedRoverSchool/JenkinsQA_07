@@ -128,7 +128,7 @@ public class OrganizationFolderTest extends BaseTest {
         String newProjectName = new HomePage(getDriver())
                 .clickJobNameDropdown(PROJECT_NAME)
                 .clickRenameInDropdownMenu(new OrganizationFolderDetailsPage(getDriver()))
-                .enterNewName(NEW_PROJECT_NAME)
+                .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .getProjectName();
 
@@ -141,7 +141,7 @@ public class OrganizationFolderTest extends BaseTest {
 
         String newProjectName = new OrganizationFolderDetailsPage(getDriver())
                 .clickRename(new OrganizationFolderDetailsPage(getDriver()))
-                .enterNewName(NEW_PROJECT_NAME)
+                .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .getProjectName();
 

@@ -1,6 +1,5 @@
 package school.redrover;
 
-
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -55,7 +54,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String expectedResultName = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage((getDriver())))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
 
@@ -164,7 +163,7 @@ public class MultibranchPipelineTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver())
                 .clickJobNameDropdown(MULTIBRANCH_PIPELINE_NAME)
                 .clickRenameInDropdownMenu(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage();
 
@@ -179,7 +178,7 @@ public class MultibranchPipelineTest extends BaseTest {
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickProjectBreadcrumbDropDownMenu()
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getProjectName();
 
@@ -265,7 +264,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String error_message = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME + "!")
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME + "!")
                 .clickBlank()
                 .getErrorMessage();
 
@@ -279,7 +278,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
 
@@ -293,7 +292,7 @@ public class MultibranchPipelineTest extends BaseTest {
         boolean newNameInBreadcrumb = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .isItemExistInBreadcrumbBar(MULTIBRANCH_PIPELINE_NEW_NAME);
 
@@ -307,7 +306,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
 
@@ -321,7 +320,7 @@ public class MultibranchPipelineTest extends BaseTest {
         List<String> jobs = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage()
                 .getJobList();

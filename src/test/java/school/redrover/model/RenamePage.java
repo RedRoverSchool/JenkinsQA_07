@@ -59,7 +59,7 @@ public class RenamePage <ProjectPage extends BaseProjectPage<?>> extends BasePro
         return getWait5().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
     }
 
-    public RenamePage<ProjectPage> enterNewName(String newProjectName) {
+    public RenamePage<ProjectPage> enterName(String newProjectName) {
         inputNewName.clear();
         inputNewName.sendKeys(newProjectName);
 

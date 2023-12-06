@@ -54,8 +54,6 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//li[3]/a/button")
     private WebElement breadcrumbArrow;
 
-
-
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }
