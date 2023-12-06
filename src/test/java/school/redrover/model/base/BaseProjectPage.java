@@ -11,8 +11,7 @@ import school.redrover.model.RenamePage;
 
 import java.util.List;
 
-public abstract class BaseProjectPage<ProjectConfigurationPage
-        extends BaseConfigurationPage<?, ?>,Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
+public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>,Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
