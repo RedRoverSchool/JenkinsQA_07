@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BaseProjectPage {
+public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage> {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
@@ -40,6 +40,11 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
 
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected MultibranchPipelineConfigurationPage createConfigurationPage() {
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public List<String> getBreadcrumbChain() {
@@ -71,12 +76,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
     public List<String> getNameOfTasksFromSidebarMenu() {
         return TestUtils.getTextOfWebElements(getWait2().until(
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
-    }
-
-    public MultibranchPipelineConfigurationPage clickConfigure() {
-        configureLink.click();
-
-        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public MultibranchPipelineDetailsPage clickDisable() {

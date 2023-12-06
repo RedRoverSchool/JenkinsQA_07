@@ -11,7 +11,7 @@ import school.redrover.model.RenamePage;
 
 import java.util.List;
 
-public abstract class BaseProjectPage extends BasePage {
+public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?>> extends BasePage {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
@@ -58,7 +58,7 @@ public abstract class BaseProjectPage extends BasePage {
         return projectRenamePage;
     }
 
-    public BaseProjectPage clickDisableButton() {
+    public BaseProjectPage<?> clickDisableButton() {
         disableButton.click();
 
         return this;
@@ -95,10 +95,12 @@ public abstract class BaseProjectPage extends BasePage {
         return buildLinksInBuildHistory.stream().map(WebElement::getText).toList();
     }
 
-    public <ProjectConfigurationPage extends BaseConfigurationPage> ProjectConfigurationPage clickConfigure(ProjectConfigurationPage projectConfigurationPage) {
+    protected abstract ProjectConfigurationPage createConfigurationPage();
+
+    public ProjectConfigurationPage clickConfigure() {
         configureSideMenuOption.click();
 
-        return projectConfigurationPage;
+        return createConfigurationPage();
     }
 
     public BuildPage clickBuildIconInBuildHistory() {

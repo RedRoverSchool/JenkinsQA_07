@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseProjectPage;
 
-public class OrganizationFolderDetailsPage extends BaseProjectPage {
+public class OrganizationFolderDetailsPage extends BaseProjectPage<OrganizationFolderConfigurationPage> {
 
     @FindBy(css = "a[href$='configure']")
     private WebElement configureButtonSideMenu;
@@ -18,6 +18,11 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage {
 
     public OrganizationFolderDetailsPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected OrganizationFolderConfigurationPage createConfigurationPage() {
+        return new OrganizationFolderConfigurationPage(getDriver());
     }
 
     public OrganizationFolderConfigurationPage clickConfigureSideMenu() {

@@ -6,7 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class OrganizationFolderConfigurationPage extends BaseConfigurationPage {
+public class OrganizationFolderConfigurationPage extends BaseConfigurationPage<OrganizationFolderDetailsPage> {
     @FindBy(name = "Submit")
     private WebElement buttonSubmit;
 
@@ -15,6 +15,11 @@ public class OrganizationFolderConfigurationPage extends BaseConfigurationPage {
 
     public OrganizationFolderConfigurationPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected OrganizationFolderDetailsPage createProjectPage() {
+        return new OrganizationFolderDetailsPage(getDriver());
     }
 
     public OrganizationFolderDetailsPage clickSave() {

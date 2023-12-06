@@ -10,7 +10,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectDetailsPage extends BaseProjectPage {
+public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjectConfigurePage> {
 
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
     private WebElement buildNowButton;
@@ -70,6 +70,11 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
+    @Override
+    protected FreestyleProjectConfigurePage createConfigurationPage() {
+        return new FreestyleProjectConfigurePage(getDriver());
+    }
+
     public FreestyleProjectDetailsPage clickBuildNowButton() {
         buildNowButton.click();
 
@@ -86,12 +91,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         enableDisableButton.click();
 
         return this;
-    }
-
-    public FreestyleProjectConfigurePage clickConfigure() {
-        configureLink.click();
-
-        return new FreestyleProjectConfigurePage(getDriver());
     }
 
     public FreestyleProjectConfigurePage clickConfigureFromSideMenu() {

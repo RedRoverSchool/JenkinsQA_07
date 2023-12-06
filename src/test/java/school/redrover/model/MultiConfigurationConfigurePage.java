@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class MultiConfigurationConfigurePage extends BaseConfigurationPage {
+public class MultiConfigurationConfigurePage extends BaseConfigurationPage<MultiConfigurationDetailsPage> {
     @FindBy(name = "description")
     private WebElement inputDescription;
 
@@ -14,6 +14,11 @@ public class MultiConfigurationConfigurePage extends BaseConfigurationPage {
 
     public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected MultiConfigurationDetailsPage createProjectPage() {
+        return new MultiConfigurationDetailsPage(getDriver());
     }
 
     public MultiConfigurationConfigurePage inputDescription(String description) {
