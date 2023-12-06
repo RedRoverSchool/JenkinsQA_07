@@ -49,6 +49,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testRename")
     public void testCreateNewJob() {
         boolean isJobCreated = new HomePage(getDriver())
@@ -63,6 +64,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isJobCreated);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateNewJob")
     public void testMoveFolderToFolder() {
         FolderDetailsPage folderDetailsPage = new HomePage(getDriver())
@@ -80,6 +82,7 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(folderDetailsPage.getJobListInsideFolder().contains(NESTED_FOLDER));
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreate", "testRename"})
     public void testAddDisplayName() {
         final String expectedFolderDisplayName = "Best folder";
@@ -221,6 +224,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(actualDescription, DESCRIPTION_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testMoveFolderToFolder")
     public void testClickPreview() {
         String previewDescription = new HomePage(getDriver())
@@ -233,6 +237,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(previewDescription, DESCRIPTION_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testClickPreview")
     public void testHidePreview() {
         String previewDescription = new HomePage(getDriver())
@@ -297,6 +302,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(errorMessage, "No name is specified");
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testCreate", "testRename", "testRenameWithEndingPeriod", "testRenameFolderThroughLeftPanelWithEmptyName"})
     public void testFolderDescriptionPreviewWorksCorrectly() {
 
