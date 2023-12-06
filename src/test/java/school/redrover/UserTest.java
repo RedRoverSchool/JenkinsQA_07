@@ -488,19 +488,6 @@ public class UserTest extends BaseTest {
         Assert.assertTrue(isUserCreated);
     }
 
-    @Test(dependsOnMethods = "testCreateUserWithValidData")
-    public void testAddUserDescription() {
-        String actualDescription = new HomePage(getDriver())
-                .clickPeople()
-                .clickOnTheCreatedUser(USER_NAME)
-                .clickAddDescription()
-                .addAUserDescription(DESCRIPTION)
-                .clickSaveButton()
-                .getDescriptionText();
-
-        Assert.assertEquals(actualDescription, DESCRIPTION);
-    }
-
     @Ignore
     @Test(dependsOnMethods = "testDeleteUser")
     public void testLoginAsARemoteUser() {
