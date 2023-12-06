@@ -94,7 +94,7 @@ public class CreateNewUserPage extends BasePage {
         return clickSubmit();
     }
 
-    public UserDatabasePage fillUserInformationField(String name, String password,String fullName, String email) {
+    public UserDatabasePage fillUserInformationField(String name, String password, String fullName, String email) {
         inputUserName(name);
         inputPassword(password);
         inputPasswordConfirm(password);

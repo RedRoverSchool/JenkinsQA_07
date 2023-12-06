@@ -13,7 +13,7 @@ import school.redrover.model.base.BaseConfigurationPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
+public class FreestyleProjectConfigurePage extends BaseConfigurationPage<FreestyleProjectDetailsPage> {
 
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement discardOldBuildsHelpButton;
@@ -157,6 +157,11 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         super(driver);
     }
 
+    @Override
+    protected FreestyleProjectDetailsPage createProjectPage() {
+        return new FreestyleProjectDetailsPage(getDriver());
+    }
+
     public boolean tooltipDiscardOldBuildsIsVisible() {
         boolean tooltipIsVisible = true;
 
@@ -168,12 +173,6 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage {
         }
 
         return tooltipIsVisible;
-    }
-
-    public FreestyleProjectDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return new FreestyleProjectDetailsPage(getDriver());
     }
 
     public FreestyleProjectConfigurePage scrollPage(int x, int y) {
