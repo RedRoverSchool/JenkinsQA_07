@@ -59,7 +59,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickRename(new FreestyleProjectDetailsPage(getDriver()))
                 .clearInputField()
-                .enterName(NEW_PROJECT_NAME)
+                .enterNewName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .goHomePage();
 
@@ -275,7 +275,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .clickRename(new FreestyleProjectDetailsPage(getDriver()))
                 .clearInputField()
-                .enterName(NEW_PROJECT_NAME)
+                .enterNewName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .isStatusPageSelected();
 
@@ -661,7 +661,6 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(notificationMessage, "Saved");
     }
 
-   // @Ignore
     @Test
     public void testRenameProjectFromDashboard() {
         new HomePage(getDriver())
@@ -671,7 +670,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goHomePage()
                 .clickJobNameDropdown(PROJECT_NAME)
                 .clickRenameInDropdownMenu(new FreestyleProjectDetailsPage(getDriver()))
-                .enterName(NEW_PROJECT_NAME)
+                .enterNewName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .goHomePage();
 
@@ -916,7 +915,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickRename(new FreestyleProjectDetailsPage(getDriver()));
 
         for (String x : unsafeCharacters) {
-            renamePage.enterName(x);
+            renamePage.enterNewName(x);
 
             assertEquals(renamePage.getErrorMessage(), "‘" + x + "’ is an unsafe character");
         }

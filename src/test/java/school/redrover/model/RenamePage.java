@@ -36,13 +36,6 @@ public class RenamePage <ProjectPage extends BaseProjectPage<?>> extends BasePro
         return this;
     }
 
-    public RenamePage<ProjectPage> enterNewName(String name) {
-        inputNewName.clear();
-        inputNewName.sendKeys(name);
-
-        return this;
-    }
-
     public RenamePage<ProjectPage> addCharsToExistingName(String chars) {
         inputNewName.sendKeys(chars);
 
@@ -66,7 +59,7 @@ public class RenamePage <ProjectPage extends BaseProjectPage<?>> extends BasePro
         return getWait5().until(ExpectedConditions.visibilityOf(warningMessage)).getText();
     }
 
-    public RenamePage<ProjectPage> enterName(String newProjectName) {
+    public RenamePage<ProjectPage> enterNewName(String newProjectName) {
         inputNewName.clear();
         inputNewName.sendKeys(newProjectName);
 

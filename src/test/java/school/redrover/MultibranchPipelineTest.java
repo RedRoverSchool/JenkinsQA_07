@@ -1,9 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
+
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -56,7 +55,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String expectedResultName = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage((getDriver())))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
 
@@ -165,36 +164,26 @@ public class MultibranchPipelineTest extends BaseTest {
         HomePage homePage = new HomePage(getDriver())
                 .clickJobNameDropdown(MULTIBRANCH_PIPELINE_NAME)
                 .clickRenameInDropdownMenu(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
+    @Test()
     public void testRenameMultibranchDropdownBreadcrumbs() {
-        getDriver().findElement(By.xpath("//td[3]/a/span")).click();
+        TestUtils.createMultibranchPipeline(this, MULTIBRANCH_PIPELINE_NAME, true);
 
-        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(breadcrumbName).perform();
+        String newName = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .clickProjectBreadcrumbDropDownMenu()
+                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .clickRenameButton()
+                .getProjectName();
 
-        WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
-        actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/"
-                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[3]/a/span")).getText(), MULTIBRANCH_PIPELINE_NAME,
-                MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(newName, MULTIBRANCH_PIPELINE_NEW_NAME, newName + "is not equal" + MULTIBRANCH_PIPELINE_NEW_NAME);
     }
 
     @Test
@@ -276,7 +265,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String error_message = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME + "!")
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME + "!")
                 .clickBlank()
                 .getErrorMessage();
 
@@ -290,7 +279,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
 
@@ -304,7 +293,7 @@ public class MultibranchPipelineTest extends BaseTest {
         boolean newNameInBreadcrumb = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .isItemExistInBreadcrumbBar(MULTIBRANCH_PIPELINE_NEW_NAME);
 
@@ -318,7 +307,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
 
@@ -332,7 +321,7 @@ public class MultibranchPipelineTest extends BaseTest {
         List<String> jobs = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
+                .enterNewName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage()
                 .getJobList();

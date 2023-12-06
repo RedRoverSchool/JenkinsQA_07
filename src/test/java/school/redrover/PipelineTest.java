@@ -58,7 +58,7 @@ public class PipelineTest extends BaseTest {
 
         String currentName = new PipelineDetailsPage(getDriver())
                 .clickRename(new PipelineDetailsPage(getDriver()))
-                .enterName(updatedJobName)
+                .enterNewName(updatedJobName)
                 .clickRenameButton()
                 .goHomePage()
                 .getJobList()
@@ -87,7 +87,7 @@ public class PipelineTest extends BaseTest {
                 .goHomePage()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickRename(new PipelineDetailsPage(getDriver()))
-                .enterName("")
+                .enterNewName("")
                 .clickRenameButtonEmptyName()
                 .getErrorText();
 

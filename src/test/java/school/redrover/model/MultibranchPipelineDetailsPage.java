@@ -85,7 +85,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
         return disabledStatusMessage.getText();
     }
 
-
     public MultibranchPipelineDeletePage clickButtonDelete() {
         getWait2().until(ExpectedConditions.elementToBeClickable(buttonDelete)).click();
         buttonDelete.click();

@@ -1,13 +1,12 @@
 package school.redrover.model.base;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.BuildPage;
-import school.redrover.model.BuildWithParametersPage;
-import school.redrover.model.MovePage;
-import school.redrover.model.RenamePage;
+import school.redrover.model.*;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     private WebElement projectName;
 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameSubmenu;
+    private WebElement renameInMenu;
 
     @FindBy(name = "Submit")
     private WebElement disableButton;
@@ -49,6 +48,14 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
+    @FindBy(xpath = "//div[@id='breadcrumbBar']//li[3]/a")
+    private WebElement breadcrumbBar;
+
+    @FindBy(xpath = "//li[3]/a/button")
+    private WebElement breadcrumbArrow;
+
+
+
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -59,7 +66,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public <ProjectPage extends BaseProjectPage<?>> RenamePage<?> clickRename(ProjectPage projectPage) {
-        renameSubmenu.click();
+        renameInMenu.click();
 
         return new RenamePage<>(getDriver(), projectPage);
     }
@@ -123,5 +130,15 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
 
     public boolean isStatusPageSelected() {
         return statusPageLink.getAttribute("class").contains("active");
+    }
+
+    public BaseProjectPage<?> clickProjectBreadcrumbDropDownMenu(){
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(breadcrumbBar)
+                .moveToElement(breadcrumbArrow)
+                .click()
+                .perform();
+
+        return this;
     }
 }
