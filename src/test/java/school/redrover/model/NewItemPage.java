@@ -101,7 +101,7 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public <T extends BaseConfigurationPage> T clickOk(T page) {
+    public <T extends BaseConfigurationPage<?>> T clickOk(T page) {
         okButton.click();
 
         return page;

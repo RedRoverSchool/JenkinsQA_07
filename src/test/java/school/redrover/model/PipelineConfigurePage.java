@@ -10,7 +10,7 @@ import school.redrover.model.base.BaseConfigurationPage;
 
 import java.util.List;
 
-public class PipelineConfigurePage extends BaseConfigurationPage {
+public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetailsPage> {
 
     @FindBy(xpath = "//label[text()='This project is parameterized']")
     private WebElement projectIsParameterizedCheckbox;
@@ -62,6 +62,11 @@ public class PipelineConfigurePage extends BaseConfigurationPage {
 
     public PipelineConfigurePage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected PipelineDetailsPage createProjectPage() {
+        return new PipelineDetailsPage(getDriver());
     }
 
     public PipelineConfigurePage clickProjectIsParameterized() {

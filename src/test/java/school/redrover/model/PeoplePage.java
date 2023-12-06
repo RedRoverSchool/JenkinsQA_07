@@ -8,6 +8,7 @@ import school.redrover.PeopleTest;
 import school.redrover.model.base.BasePage;
 
     public class PeoplePage extends BasePage {
+
     public PeoplePage(WebDriver driver) {
          super(driver);
     }
@@ -21,12 +22,8 @@ import school.redrover.model.base.BasePage;
     @FindBy(xpath = "//a[@title='Small']")
     private WebElement smallButton;
 
-
     @FindBy(xpath = "//td[@class = 'jenkins-table__cell--tight jenkins-table__icon']")
     private WebElement iconFieldLarge;
-
-    @FindBy(css = "a[href='api/']")
-    private WebElement restApiButton;
 
     public PeoplePage clickLargeIcon() {
         largeButton.click();
@@ -53,14 +50,8 @@ import school.redrover.model.base.BasePage;
 
     public CreatedUserPage clickOnTheCreatedUser(String userName) {
         getDriver().findElement(
-                By.xpath("//tr[@id = 'person-" + userName + "']/td[2]/a")).click();
+                By.xpath("//tr[@id = 'person-" + userName + "']/td/a")).click();
 
         return new CreatedUserPage(getDriver());
-    }
-
-    public RestApiPage goRestApi() {
-        restApiButton.click();
-
-        return new RestApiPage(getDriver());
     }
 }

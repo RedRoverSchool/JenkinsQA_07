@@ -59,7 +59,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .selectMultiConfigurationProject()
                 .clickOk(new MultiConfigurationConfigurePage(getDriver()))
                 .inputDescription(DESCRIPTION)
-                .buttonSubmit()
+                .clickSaveButton()
                 .getDescriptionText();
 
         Assert.assertEquals(description, DESCRIPTION);

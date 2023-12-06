@@ -128,9 +128,10 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
         String newProjectName = new HomePage(getDriver())
-                .clickRenameOrganizationFolderDropdownMenu(PROJECT_NAME, new OrganizationFolderRenamePage(getDriver()))
+                .clickJobNameDropdown(PROJECT_NAME)
+                .clickRenameInDropdownMenu(new OrganizationFolderDetailsPage(getDriver()))
                 .enterNewName(NEW_PROJECT_NAME)
-                .clickRenameButton(new OrganizationFolderDetailsPage(getDriver()))
+                .clickRenameButton()
                 .getProjectName();
 
         Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
@@ -141,9 +142,9 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, false);
 
         String newProjectName = new OrganizationFolderDetailsPage(getDriver())
-                .clickRenameOption(new OrganizationFolderRenamePage(getDriver()))
+                .clickRename(new OrganizationFolderDetailsPage(getDriver()))
                 .enterNewName(NEW_PROJECT_NAME)
-                .clickRenameButton(new OrganizationFolderDetailsPage(getDriver()))
+                .clickRenameButton()
                 .getProjectName();
 
         Assert.assertEquals(newProjectName, NEW_PROJECT_NAME);
@@ -154,7 +155,8 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, true);
 
         String message = new HomePage(getDriver())
-                .clickRenameOrganizationFolderDropdownMenu(PROJECT_NAME, new OrganizationFolderRenamePage(getDriver()))
+                .clickJobNameDropdown(PROJECT_NAME)
+                .clickRenameInDropdownMenu(new OrganizationFolderDetailsPage(getDriver()))
                 .getWarningMessageText();
 
         Assert.assertEquals(message, "The new name is the same as the current name.");
@@ -190,9 +192,9 @@ public class OrganizationFolderTest extends BaseTest {
 
         HomePage cloneFolder = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME,new OrganizationFolderDetailsPage(getDriver()))
-                .clickConfigureSideMenu()
+                .clickConfigure()
                 .clickPeriodicallyCheckbox()
-                .clickSave()
+                .clickSaveButton()
                 .goHomePage()
                 .clickNewItem()
                 .typeItemName(CLONE_NAME)
@@ -222,7 +224,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .typeItemName(PROJECT_NAME)
                 .selectOrganizationFolder()
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
-                .clickSave()
+                .clickSaveButton()
                 .clickDelete()
                 .getJobList();
 
@@ -237,7 +239,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .typeItemName(PROJECT_NAME)
                 .selectOrganizationFolder()
                 .clickOk(new OrganizationFolderConfigurationPage(getDriver()))
-                .clickSave()
+                .clickSaveButton()
                 .clickDelete().getPageTitle();
 
         Assert.assertEquals(pageTitle, "Dashboard [Jenkins]");
