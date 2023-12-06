@@ -676,4 +676,27 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(userId, USER_NAME);
     }
 
+    @Test
+    public void testUser() {
+
+        final String username = "TestUser";
+        final String password = "Nelly123456";
+        final String email = "lucky20@mail.ru";
+
+        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
+        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
+        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
+        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys(username);
+        getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//input[@name='password2']")).sendKeys(password);
+        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(email);
+        getDriver().findElement(By.xpath("//button[@formNoValidate]")).click();
+        getDriver().findElement(By.xpath("//a[@href='user/testuser/']")).click();
+
+        String actualResult = getDriver().findElement(By.xpath(
+                "//div[@id='main-panel']/h1")).getText();
+
+        Assert.assertEquals(actualResult,"TestUser");
+
+    }
 }
