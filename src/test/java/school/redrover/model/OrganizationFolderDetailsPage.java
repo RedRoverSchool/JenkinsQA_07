@@ -7,9 +7,6 @@ import school.redrover.model.base.BaseProjectPage;
 
 public class OrganizationFolderDetailsPage extends BaseProjectPage<OrganizationFolderConfigurationPage> {
 
-    @FindBy(css = "a[href$='configure']")
-    private WebElement configureButtonSideMenu;
-
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
@@ -22,12 +19,6 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage<OrganizationF
 
     @Override
     protected OrganizationFolderConfigurationPage createConfigurationPage() {
-        return new OrganizationFolderConfigurationPage(getDriver());
-    }
-
-    public OrganizationFolderConfigurationPage clickConfigureSideMenu() {
-        configureButtonSideMenu.click();
-
         return new OrganizationFolderConfigurationPage(getDriver());
     }
 

@@ -35,7 +35,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     private WebElement buildIconInBuildHistory;
 
     @FindBy(linkText = "Configure")
-    private WebElement configureSideMenuOption;
+    private WebElement configureSideMenuItem;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'move')]")
     private WebElement moveSideMenuOption;
@@ -98,7 +98,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     protected abstract ProjectConfigurationPage createConfigurationPage();
 
     public ProjectConfigurationPage clickConfigure() {
-        configureSideMenuOption.click();
+        configureSideMenuItem.click();
 
         return createConfigurationPage();
     }

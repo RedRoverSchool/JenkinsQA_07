@@ -18,12 +18,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
     @FindBy(name = "Submit")
     private WebElement enableDisableButton;
 
-    @FindBy(linkText = "Configure")
-    private WebElement configureLink;
-
-    @FindBy(xpath = "//div[5]//span[1]//a[1]//span[1]//*[name()='svg']")
-    private WebElement configureBtn;
-
     @FindBy(className = "warning")
     private WebElement warningMessage;
 
@@ -50,9 +44,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
 
     @FindBy(xpath = "//*[@id=\"tasks\"]/div[6]/span/a/span[2]")
     private WebElement deleteProject;
-
-    @FindBy(xpath = "//a[contains(@href,'configure')]")
-    private WebElement configureButton;
 
     @FindBy(xpath = "//a[contains(@href,'ws')]")
     private WebElement workspaceButton;
@@ -81,22 +72,10 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
         return this;
     }
 
-    public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
-
-        return new FreestyleProjectConfigurePage(getDriver());
-    }
-
     public FreestyleProjectDetailsPage clickEnableDisableButton() {
         enableDisableButton.click();
 
         return this;
-    }
-
-    public FreestyleProjectConfigurePage clickConfigureFromSideMenu() {
-        configureBtn.click();
-
-        return new FreestyleProjectConfigurePage(getDriver());
     }
 
     public boolean isEnabled() {

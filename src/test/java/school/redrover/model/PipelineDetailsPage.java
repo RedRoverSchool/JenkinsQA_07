@@ -24,9 +24,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
 
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'configure')]")
-    private WebElement configureSideMenuOption;
-
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
     private WebElement buildNowSideMenuOption;
 

@@ -188,9 +188,9 @@ public class OrganizationFolderTest extends BaseTest {
 
         HomePage cloneFolder = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME,new OrganizationFolderDetailsPage(getDriver()))
-                .clickConfigureSideMenu()
+                .clickConfigure()
                 .clickPeriodicallyCheckbox()
-                .clickSave()
+                .clickSaveButton()
                 .goHomePage()
                 .clickNewItem()
                 .typeItemName(CLONE_NAME)

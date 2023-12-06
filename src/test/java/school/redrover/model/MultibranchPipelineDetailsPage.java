@@ -23,9 +23,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
-    @FindBy(linkText = "Configure")
-    private WebElement configureLink;
-
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
 

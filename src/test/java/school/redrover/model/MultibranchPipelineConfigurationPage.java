@@ -13,9 +13,6 @@ public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage<
     @FindBy(xpath = "//div[@class ='setting-main']/input")
     private WebElement nameField;
 
-    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
-    private WebElement buttonSubmit;
-
     @FindBy (xpath = "//h1")
     private WebElement error;
 
@@ -45,12 +42,6 @@ public class MultibranchPipelineConfigurationPage extends BaseConfigurationPage<
 
     public MultibranchPipelineConfigurationPage inputName(String name) {
         nameField.sendKeys(name);
-
-        return this;
-    }
-
-    public MultibranchPipelineConfigurationPage buttonSubmit() {
-        buttonSubmit.click();
 
         return this;
     }

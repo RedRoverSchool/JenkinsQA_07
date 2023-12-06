@@ -9,9 +9,6 @@ public class MultiConfigurationConfigurePage extends BaseConfigurationPage<Multi
     @FindBy(name = "description")
     private WebElement inputDescription;
 
-    @FindBy(name = "Submit")
-    private WebElement buttonSubmit;
-
     public MultiConfigurationConfigurePage(WebDriver driver) {
         super(driver);
     }
@@ -25,11 +22,5 @@ public class MultiConfigurationConfigurePage extends BaseConfigurationPage<Multi
         inputDescription.sendKeys(description);
 
         return this;
-    }
-
-    public MultiConfigurationDetailsPage buttonSubmit() {
-        buttonSubmit.click();
-
-        return new MultiConfigurationDetailsPage(getDriver());
     }
 }
