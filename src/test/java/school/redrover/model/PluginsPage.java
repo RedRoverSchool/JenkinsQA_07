@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,6 +20,9 @@ public class PluginsPage extends BasePage<PluginsPage> {
 
     @FindBy(xpath = "//input[@type='search']")
     private WebElement searchField;
+
+    @FindBy(id = "button-update")
+    private WebElement updateButton;
 
     public PluginsPage(WebDriver driver) {
         super(driver);
@@ -46,5 +50,10 @@ public class PluginsPage extends BasePage<PluginsPage> {
             return installedPluginsLinks.stream().anyMatch(text -> text.getText().contains(pluginName));
         }
         return false;
+    }
+
+    public boolean isUpdateButtonClickable() {
+
+        return updateButton.isEnabled();
     }
 }

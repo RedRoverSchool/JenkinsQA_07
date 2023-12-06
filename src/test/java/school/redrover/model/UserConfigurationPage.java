@@ -3,9 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BaseUserPage;
+import school.redrover.model.base.BasePage;
 
-public class UserConfigurationPage extends BaseUserPage<UserConfigurationPage> {
+public class UserConfigurationPage extends BasePage {
 
     @FindBy(name = "_.fullName")
     private WebElement fullName;

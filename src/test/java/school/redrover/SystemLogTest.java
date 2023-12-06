@@ -86,7 +86,6 @@ public class SystemLogTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
-
     public void testDeleteLoggers() {
 
         Boolean emptyLoggersBlock = new HomePage(getDriver())

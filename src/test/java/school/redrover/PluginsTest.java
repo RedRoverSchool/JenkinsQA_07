@@ -32,4 +32,15 @@ public class PluginsTest extends BaseTest {
 
         Assert.assertTrue(pluginNamePresents);
     }
+
+    @Test
+    public void testUpdateButtonNoneClickableByDefault() {
+        boolean updateButtonClickable = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage()
+                .isUpdateButtonClickable();
+
+        Assert.assertFalse(updateButtonClickable);
+    }
+
 }

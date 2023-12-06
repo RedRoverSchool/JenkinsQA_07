@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
@@ -89,10 +90,10 @@ public class UserDatabasePage extends BasePage<UserDatabasePage> {
         return fullName;
     }
 
-    public UserStatusPage clickUserByName(String name) {
+    public CreatedUserPage clickUserByName(String name) {
         getDriver().findElement(By.cssSelector("a[href='user/" + name.toLowerCase() + "/']")).click();
 
-        return new UserStatusPage(getDriver());
+        return new CreatedUserPage(getDriver());
     }
 
 
