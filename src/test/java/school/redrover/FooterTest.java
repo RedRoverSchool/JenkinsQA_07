@@ -84,7 +84,7 @@ public class FooterTest extends BaseTest {
     @Test(dependsOnMethods = "testCheckTippyBox")
     public void testVerifyClickabilityOfRestAPILink() {
         String restApi = new HomePage(getDriver())
-                .goRestApi()
+                .goRestApiPage()
                 .getHeadLineText();
 
         Assert.assertEquals(restApi, REST_API);
@@ -130,7 +130,7 @@ public class FooterTest extends BaseTest {
     public void testRestApiLinkRedirectionBuildHistory() {
         String restApi = new HomePage(getDriver())
                 .clickBuildHistoryButton()
-                .goRestApi()
+                .goRestApiPage()
                 .getHeadLineText();
 
         Assert.assertEquals(restApi, REST_API);
@@ -140,7 +140,7 @@ public class FooterTest extends BaseTest {
     public void testRestApiLinkRedirectionMyView() {
         String restApi = new HomePage(getDriver())
                 .clickMyView()
-                .goRestApi()
+                .goRestApiPage()
                 .getHeadLineText();
 
         Assert.assertEquals(restApi, REST_API);
@@ -150,7 +150,7 @@ public class FooterTest extends BaseTest {
     public void testRestApiLinkRedirectionUserStatus() {
         String restApi = new HomePage(getDriver())
                 .clickUserNameHeader("admin")
-                .clickRestApiButton()
+                .goRestApiPage()
                 .getHeadLineText();
 
         Assert.assertEquals(restApi, REST_API);

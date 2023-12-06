@@ -26,9 +26,6 @@ public class MyViewPage extends BasePage {
     @FindBy(css = ".tab > a")
     private List<WebElement> listOfViews;
 
-    @FindBy(css = "a[href='api/']")
-    private WebElement restApiButton;
-
     public MyViewPage(WebDriver driver) {super(driver);}
 
     public String getActiveViewName() {
@@ -59,11 +56,5 @@ public class MyViewPage extends BasePage {
     public boolean isViewExists(String viewName) {
 
         return listOfViews.stream().anyMatch(element -> element.getText().contains(viewName));
-    }
-
-    public RestApiPage goRestApi() {
-        restApiButton.click();
-
-        return new RestApiPage(getDriver());
     }
 }

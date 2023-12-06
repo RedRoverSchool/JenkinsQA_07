@@ -34,9 +34,6 @@ public class CreatedUserPage extends BasePage {
     @FindBy(xpath = "//*[@id='main-panel']/div[2]")
     private WebElement jenkinsUserIdDisplay;
 
-    @FindBy(xpath = "//a[@href = 'api/']")
-    private WebElement restApiButton;
-
     public CreatedUserPage(WebDriver driver) {
         super(driver);
     }
@@ -77,11 +74,6 @@ public class CreatedUserPage extends BasePage {
 
     public boolean isCreatedUserIdDisplayedCorrectly(String userName){
         return jenkinsUserIdDisplay.getText().contains(userName);
-    }
-
-    public RestApiPage clickRestApiButton(){
-        restApiButton.click();
-        return new RestApiPage(getDriver());
     }
 
     public UserBuildPage clickBuildsButton() {
