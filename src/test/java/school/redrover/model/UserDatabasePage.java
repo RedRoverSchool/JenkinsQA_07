@@ -8,10 +8,12 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
+import static org.testng.Assert.assertFalse;
+
 public class UserDatabasePage extends BasePage {
 
     @FindBy(css = "a[href = 'addUser']")
-    private WebElement createUser;
+    private WebElement addUserButton;
 
     @FindBy(xpath = "(//span[@class='hidden-xs hidden-sm'])[1]")
     private WebElement loginUserName;
@@ -23,6 +25,16 @@ public class UserDatabasePage extends BasePage {
     private List<WebElement> userIDs;
 
 
+    @FindBy(xpath = "//tr/td[5]")
+    private List<WebElement> deleteIcon;
+
+
+    public UserDatabasePage clickDeleteIcon (int n) {
+        deleteIcon.get(n).click();
+        return this;
+    }
+
+
     public UserDatabasePage(WebDriver driver) {
         super(driver);
     }
@@ -30,6 +42,10 @@ public class UserDatabasePage extends BasePage {
     public String getLoginUserName() {
         return loginUserName
                 .getText();
+    }
+
+    public String getUserFullName(String username) {
+        return getDriver().findElement(By.xpath("(//td/a[@href='user/" + username + "/']/following::td[1])")).getText();
     }
 
     public String getUserID(int n) {
@@ -48,8 +64,8 @@ public class UserDatabasePage extends BasePage {
         return doDelete;
     }
 
-    public CreateNewUserPage clickCreateUserButton() {
-        createUser.click();
+    public CreateNewUserPage clickAddUserButton() {
+        addUserButton.click();
 
         return new CreateNewUserPage(getDriver());
     }
@@ -62,9 +78,9 @@ public class UserDatabasePage extends BasePage {
         String fullName = "";
         int trCounter = 1;
 
-        for (WebElement user:users) {
+        for (WebElement user : users) {
             if (user.getText().contains(name)) {
-                fullName = user.findElement(By.xpath("//tbody/tr["+ trCounter +"]/td[3]")).getText();
+                fullName = user.findElement(By.xpath("//tbody/tr[" + trCounter + "]/td[3]")).getText();
                 break;
             } else {
                 trCounter++;
@@ -73,9 +89,23 @@ public class UserDatabasePage extends BasePage {
         return fullName;
     }
 
-    public UserPage clickUserByName(String name) {
-        getDriver().findElement(By.cssSelector("a[href='user/" + name + "/']")).click();
+    public UserStatusPage clickUserByName(String name) {
+        getDriver().findElement(By.cssSelector("a[href='user/" + name.toLowerCase() + "/']")).click();
 
-        return new UserPage(getDriver());
+        return new UserStatusPage(getDriver());
+    }
+
+
+    public boolean listOfUserIDsContainsName(String name) {
+        assertFalse(userIDs.isEmpty(), "List of UserIDs is empty");
+
+        boolean isNewUserIDPresent = false;
+        for (WebElement webElement : userIDs) {
+            if (webElement.getText().contains(name)) {
+                isNewUserIDPresent = true;
+                break;
+            }
+        }
+        return isNewUserIDPresent;
     }
 }

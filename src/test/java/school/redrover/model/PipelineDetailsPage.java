@@ -10,11 +10,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineDetailsPage extends BaseProjectPage {
-
-    public PipelineDetailsPage(WebDriver driver) {
-        super(driver);
-    }
+public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> {
 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
@@ -27,9 +23,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
 
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
-
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'configure')]")
-    private WebElement configureSideMenuOption;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
     private WebElement buildNowSideMenuOption;
@@ -79,6 +72,10 @@ public class PipelineDetailsPage extends BaseProjectPage {
     @FindBy(css = "div#pipeline-box > div")
     private WebElement stageViewAlertText;
 
+    public PipelineDetailsPage(WebDriver driver) {
+        super(driver);
+    }
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -112,12 +109,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
         return permalinks;
     }
 
-    public PipelineConfigurePage clickConfigure() {
-        configureSideMenuOption.click();
-
-        return new PipelineConfigurePage(getDriver());
-    }
-
     public PipelineDetailsPage clickBuildNow() {
         buildNowSideMenuOption.click();
 
@@ -128,6 +119,11 @@ public class PipelineDetailsPage extends BaseProjectPage {
         buildNowSideMenuOption.click();
 
         return new BuildWithParametersPage(getDriver());
+    }
+
+    @Override
+    protected PipelineConfigurePage createConfigurationPage() {
+        return new PipelineConfigurePage(getDriver());
     }
 
     public PipelineDetailsPage clickLogsInStageView() {

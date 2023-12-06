@@ -6,9 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class OrganizationFolderConfigurationPage extends BaseConfigurationPage {
-    @FindBy(name = "Submit")
-    private WebElement buttonSubmit;
+public class OrganizationFolderConfigurationPage extends BaseConfigurationPage<OrganizationFolderDetailsPage> {
 
     @FindBy(xpath = "//section[2]//label")
     private WebElement periodicallyCheckbox;
@@ -17,8 +15,8 @@ public class OrganizationFolderConfigurationPage extends BaseConfigurationPage {
         super(driver);
     }
 
-    public OrganizationFolderDetailsPage clickSave() {
-        buttonSubmit.click();
+    @Override
+    protected OrganizationFolderDetailsPage createProjectPage() {
         return new OrganizationFolderDetailsPage(getDriver());
     }
 

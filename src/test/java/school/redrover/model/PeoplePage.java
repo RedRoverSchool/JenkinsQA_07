@@ -25,6 +25,9 @@ import school.redrover.model.base.BasePage;
     @FindBy(xpath = "//td[@class = 'jenkins-table__cell--tight jenkins-table__icon']")
     private WebElement iconFieldLarge;
 
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
+
     public PeoplePage clickLargeIcon() {
         largeButton.click();
         return this;
@@ -38,19 +41,26 @@ import school.redrover.model.base.BasePage;
         return new int[]{iconField().getSize().getWidth(), iconField().getSize().getHeight()};
     }
 
-        public PeoplePage clickMediumIcon() {
-            mediumButton.click();
-            return this;
-        }
-        public PeoplePage clickSmallIcon() {
-            smallButton.click();
-            return this;
-        }
+    public PeoplePage clickMediumIcon() {
+        mediumButton.click();
+        return this;
+    }
 
-        public CreatedUserPage clickOnTheCreatedUser(String userName) {
-            getDriver().findElement(
-                    By.xpath("//tr[@id = 'person-" + userName + "']/td[2]/a")).click();
+    public PeoplePage clickSmallIcon() {
+        smallButton.click();
+        return this;
+    }
 
-            return new CreatedUserPage(getDriver());
-        }
+    public CreatedUserPage clickOnTheCreatedUser(String userName) {
+        getDriver().findElement(
+                By.xpath("//tr[@id = 'person-" + userName + "']/td[2]/a")).click();
+
+        return new CreatedUserPage(getDriver());
+    }
+
+    public RestApiPage goRestApi() {
+        restApiButton.click();
+
+        return new RestApiPage(getDriver());
+    }
 }

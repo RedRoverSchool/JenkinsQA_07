@@ -386,7 +386,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testHelpDescriptionOfDiscardOldBuildsIsVisible() {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .clickHelpDescriptionOfDiscardOldBuilds()
                 .getAttributeOfHelpDescriptionDiscardOldBuilds();
 
@@ -397,7 +397,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testHelpDescriptionOfDiscardOldBuildsIsClosed() {
         String actualResult = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .clickHelpDescriptionOfDiscardOldBuilds()
                 .clickHelpDescriptionOfDiscardOldBuilds()
                 .getAttributeOfHelpDescriptionDiscardOldBuilds();
@@ -413,7 +413,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickConfigureFromSideMenu()
+                .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
                 .isAddParameterButtonDisplayed();
 
@@ -442,10 +442,11 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
         List<String> buildsList = new FreestyleProjectDetailsPage(getDriver())
-                .clickConfigure(new FreestyleProjectConfigurePage(getDriver()))
+
+                .clickConfigure()
                 .clickDiscardOldBuildsCheckBox()
                 .inputMaxNumberOfBuildsToKeep(String.valueOf(numOfBuildNowClicks))
-                .clickSaveButton(new FreestyleProjectDetailsPage(getDriver()))
+                .clickSaveButton()
                 .clickBuildNowSeveralTimes(new FreestyleProjectDetailsPage(getDriver()), numOfBuildNowClicks + 1)
                 .refreshPage(new FreestyleProjectDetailsPage(getDriver()))
                 .getBuildsInBuildHistoryList();
@@ -457,10 +458,10 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEditDescriptionConfigurePage() {
         String editDescription = new HomePage(getDriver())
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .inputProjectDescription(PROJECT_DESCRIPTION)
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .inputProjectDescription(NEW_PROJECT_DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
@@ -473,7 +474,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testFreestyleProjectAdvancedSettingVisibilityOfHelpDescriptionQuietPeriod() {
         boolean helpMessageDisplay = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .clickAdvancedButton()
                 .clickQuietPeriodHelpIcon()
                 .isQuietPeriodHelpTextDisplayed();
@@ -512,11 +513,11 @@ public class FreestyleProjectTest extends BaseTest {
 
         List<String> upstreamProjectsList = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickConfigure(new FreestyleProjectConfigurePage(getDriver()))
+                .clickConfigure()
                 .clickBuildAfterOtherProjectsAreBuilt()
                 .inputUpstreamProject(upstreamProjectName)
                 .clickAlwaysTrigger()
-                .clickSaveButton(new FreestyleProjectDetailsPage(getDriver()))
+                .clickSaveButton()
                 .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
                 .getUpstreamProjectsList();
 
@@ -687,7 +688,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickConfigure()
                 .clickAddTimestampsToConsoleOutput()
-                .clickSaveButton(new FreestyleProjectDetailsPage(getDriver()))
+                .clickSaveButton()
                 .clickBuildNow(new FreestyleProjectDetailsPage(getDriver()))
                 .waitAndRefresh(new FreestyleProjectDetailsPage(getDriver()))
                 .clickBuildIconInBuildHistory().getTimestampsList();
@@ -799,7 +800,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputMaxNumberOfBuildsToKeep("2")
                 .inputDaysToKeepBuilds("3")
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 300)
                 .getInputDaysToKeepBuildsFieldValue();
 
@@ -820,7 +821,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .inputNumberOfBuilds("4")
                 .selectTimePeriod("day")
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 600)
                 .getNumberOfBuildsFieldValue();
 
@@ -838,11 +839,11 @@ public class FreestyleProjectTest extends BaseTest {
 
         String checkBoxDisplayStyle = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 300)
                 .clickExecuteConcurrentBuildsIfNecessaryCheckBox()
                 .clickSaveButton()
-                .goToConfigureFromSideMenu()
+                .clickConfigure()
                 .scrollPage(0, 300)
                 .getExecuteConcurrentBuildsIfNecessaryCheckBoxValue("display");
 
@@ -929,13 +930,13 @@ public class FreestyleProjectTest extends BaseTest {
         TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
 
         List<String> actualChoiceList = new FreestyleProjectDetailsPage(getDriver())
-                .clickConfigure(new FreestyleProjectConfigurePage(getDriver()))
+                .clickConfigure()
                 .clickThisProjectIsParameterizedCheckbox()
                 .clickAddParameter()
                 .selectParameterType("Choice Parameter")
                 .inputParameterName(choiceName)
                 .setParameterChoices(choices)
-                .clickSaveButton(new FreestyleProjectDetailsPage(getDriver()))
+                .clickSaveButton()
                 .clickBuildWithParameters()
                 .getChoiceParameterOptions();
 

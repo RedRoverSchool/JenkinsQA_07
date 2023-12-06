@@ -20,7 +20,7 @@ public class NewItemPage extends BasePage {
     @FindBy(xpath = "//li[@class = 'hudson_model_FreeStyleProject']")
     private WebElement freeStyleProject;
 
-    @FindBy(xpath = "//span[text()='Pipeline']")
+    @FindBy(xpath = "//li[contains(@class, 'org_jenkinsci_plugins_workflow_job_WorkflowJob')]")
     private WebElement pipeline;
 
     @FindBy(css = "li[class='hudson_matrix_MatrixProject']")
@@ -46,9 +46,6 @@ public class NewItemPage extends BasePage {
 
     @FindBy(css = "div[class='add-item-name']")
     private WebElement inputValidationMessage;
-
-    @FindBy(xpath = "//span[normalize-space()='Pipeline']")
-    private WebElement pipeLineCategory;
 
     @FindBy(xpath = "//input[@id='from']")
     private WebElement fieldCopyFrom;
@@ -99,7 +96,7 @@ public class NewItemPage extends BasePage {
         return this;
     }
 
-    public <T extends BaseConfigurationPage> T clickOk(T page) {
+    public <T extends BaseConfigurationPage<?>> T clickOk(T page) {
         okButton.click();
 
         return page;

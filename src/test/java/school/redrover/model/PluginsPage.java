@@ -47,9 +47,4 @@ public class PluginsPage extends BasePage {
         }
         return false;
     }
-
-    public String getCurrentUrl() {
-
-        return getDriver().getCurrentUrl();
-    }
 }

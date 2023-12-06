@@ -8,10 +8,7 @@ import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class FolderDetailsPage extends BaseProjectPage {
-
-    @FindBy(linkText = "Configure")
-    private WebElement configure;
+public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> {
 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
@@ -50,10 +47,15 @@ public class FolderDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
-    public FolderConfigurationPage clickConfigureFolder() {
-        configure.click();
-
+    @Override
+    protected FolderConfigurationPage createConfigurationPage() {
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public FolderRenamePage clickRename() {
+        renameButton.click();
+
+        return new FolderRenamePage(getDriver());
     }
 
     public FolderDetailsPage clickAddOrEditDescription() {
@@ -90,12 +92,6 @@ public class FolderDetailsPage extends BaseProjectPage {
         newItemButton.click();
 
         return new NewItemPage(getDriver());
-    }
-
-    public FolderConfigurationPage clickConfigureInSideMenu() {
-        configure.click();
-
-        return new FolderConfigurationPage(getDriver());
     }
 
     public MovePage clickMove() {

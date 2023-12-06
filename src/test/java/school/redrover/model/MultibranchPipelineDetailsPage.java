@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BaseProjectPage {
+public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage> {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
@@ -20,8 +20,8 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
-    @FindBy(linkText = "Configure")
-    private WebElement configureLink;
+    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
+    private WebElement renameButton;
 
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
@@ -39,6 +39,19 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
+    @Override
+    protected MultibranchPipelineConfigurationPage createConfigurationPage() {
+        return new MultibranchPipelineConfigurationPage(getDriver());
+    }
+
+    public List<String> getBreadcrumbChain() {
+        List<String> breadcrumb = new ArrayList<>();
+        for (WebElement element : breadcrumbChain) {
+            breadcrumb.add(element.getText());
+        }
+        return breadcrumb;
+    }
+
     public List<String> getTasksText() {
         WebElement parentElement = getDriver().findElement(By.xpath("//div[@id='tasks']"));
         List<WebElement> childElements = parentElement.findElements(By.xpath("./*"));
@@ -54,12 +67,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
     public List<String> getNameOfTasksFromSidebarMenu() {
         return TestUtils.getTextOfWebElements(getWait2().until(
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
-    }
-
-    public MultibranchPipelineConfigurationPage clickConfigure() {
-        configureLink.click();
-
-        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public MultibranchPipelineDetailsPage clickDisable() {

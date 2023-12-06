@@ -87,7 +87,7 @@ public class FolderTest extends BaseTest {
 
         List<String> jobList = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickConfigureFolder()
+                .clickConfigure()
                 .typeDisplayName(expectedFolderDisplayName)
                 .clickSaveButton()
                 .goHomePage()
@@ -303,7 +303,7 @@ public class FolderTest extends BaseTest {
 
         String previewText = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickConfigureFolder()
+                .clickConfigure()
                 .typeDescription(DESCRIPTION_NAME)
                 .clickPreviewDescription()
                 .getFolderDescription();
@@ -323,7 +323,7 @@ public class FolderTest extends BaseTest {
                 .clickAddHealthMetric()
                 .selectChildHealthMetric()
                 .clickSaveButton()
-                .clickConfigureInSideMenu()
+                .clickConfigure()
                 .clickHealthMetrics()
                 .isChildHealthMetricDisplayed();
 
@@ -337,7 +337,7 @@ public class FolderTest extends BaseTest {
 
         String helpText = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
-                .clickConfigureFolder()
+                .clickConfigure()
                 .clickHealthMetrics()
                 .clickHelpButtonRecursive()
                 .getHelpBlockText();
