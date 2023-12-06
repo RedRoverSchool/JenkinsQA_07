@@ -28,6 +28,9 @@ import school.redrover.model.base.BasePage;
     @FindBy(css = "a[href='api/']")
     private WebElement restApiButton;
 
+    @FindBy(xpath = "//a[@class='jenkins-table__link']")
+    private WebElement userID;
+
     public PeoplePage clickLargeIcon() {
         largeButton.click();
         return this;
@@ -62,5 +65,10 @@ import school.redrover.model.base.BasePage;
         restApiButton.click();
 
         return new RestApiPage(getDriver());
+    }
+
+    public UserPage clickOnUserId() {
+        userID.click();
+        return new UserPage(getDriver());
     }
 }
