@@ -93,12 +93,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
         return statusPageLink.getAttribute("class").contains("active");
     }
 
-    public FreestyleProjectRenamePage clickRename() {
-        renamePageLink.click();
-
-        return new FreestyleProjectRenamePage(getDriver());
-    }
-
     public WorkspacePage goToWorkspaceFromSideMenu() {
         workspaceButton.click();
 

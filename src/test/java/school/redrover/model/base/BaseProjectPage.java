@@ -43,6 +43,12 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(id = "description-link")
     protected WebElement addDescription;
 
+    @FindBy(linkText = "Status")
+    private WebElement statusPageLink;
+
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
+    private List<WebElement> breadcrumbChain;
+
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -52,10 +58,10 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return projectName.getText();
     }
 
-    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOption(ProjectRenamePage projectRenamePage) {
+    public <ProjectPage extends BaseProjectPage<?>> RenamePage<?> clickRename(ProjectPage projectPage) {
         renameSubmenu.click();
 
-        return projectRenamePage;
+        return new RenamePage<>(getDriver(), projectPage);
     }
 
     public BaseProjectPage<?> clickDisableButton() {
@@ -113,5 +119,9 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         moveSideMenuOption.click();
 
         return new MovePage(getDriver());
+    }
+
+    public boolean isStatusPageSelected() {
+        return statusPageLink.getAttribute("class").contains("active");
     }
 }

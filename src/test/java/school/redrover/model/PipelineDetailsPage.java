@@ -145,12 +145,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
         return stagesNamesList.stream().map(WebElement::getText).toList();
     }
 
-    public PipelineRenamePage clickRenameInSideMenu() {
-        renameSideMenuOption.click();
-
-        return new PipelineRenamePage(getDriver());
-    }
-
     public boolean isBuildIconDisplayed() {
 
         return getWait2().until(ExpectedConditions.visibilityOf(buildIcon)).isDisplayed();

@@ -42,9 +42,9 @@ public class FolderTest extends BaseTest {
     public void testRename() {
         HomePage homePage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
-                .clickRename()
-                .typeNewName(RENAMED_FOLDER)
-                .clickRename()
+                .clickRename(new FolderDetailsPage(getDriver()))
+                .enterName(RENAMED_FOLDER)
+                .clickRenameButton()
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(RENAMED_FOLDER));
@@ -278,9 +278,10 @@ public class FolderTest extends BaseTest {
 
         String errorMessage = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickRename()
-                .typeNewName(point)
-                .clickRenameWithError(new ErrorPage(getDriver())).getErrorMessage();
+                .clickRename(new FolderDetailsPage(getDriver()))
+                .enterName(point)
+                .clickRenameWithError()
+                .getErrorText();
 
         Assert.assertEquals(errorMessage, "“.” is not an allowed name");
     }
@@ -289,9 +290,10 @@ public class FolderTest extends BaseTest {
     public void testRenameFolderThroughLeftPanelWithEmptyName() {
         String errorMessage = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickRename()
-                .typeNewName("")
-                .clickRenameWithError(new ErrorPage(getDriver())).getErrorMessage();
+                .clickRename(new FolderDetailsPage(getDriver()))
+                .enterName("")
+                .clickRenameWithError()
+                .getErrorText();
 
         Assert.assertEquals(errorMessage, "No name is specified");
     }

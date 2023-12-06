@@ -57,7 +57,7 @@ public class FreestyleProjectTest extends BaseTest {
         final HomePage homePage = new HomePage(getDriver())
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename()
+                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -74,7 +74,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRename()
+                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
                 .clearInputField()
                 .getErrorMessage();
 
@@ -273,7 +273,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRename()
+                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -340,14 +340,14 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test
     public void testCreateWithDuplicateName() {
-        ErrorPage errorPage = new HomePage(getDriver())
+        RenameErrorPage errorPage = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRename()
-                .clickRenameButtonAndRedirectErrorPage();
+                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
+                .clickRenameWithError();
 
-        assertEquals(errorPage.getErrorMessage(), "The new name is the same as the current name.");
+        assertEquals(errorPage.getErrorText(), "The new name is the same as the current name.");
     }
 
     @Test
@@ -357,7 +357,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename()
+                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
                 .clickRenameButtonEmptyName()
                 .getErrorText();
 
@@ -661,7 +661,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(notificationMessage, "Saved");
     }
 
-    @Ignore
+   // @Ignore
     @Test
     public void testRenameProjectFromDashboard() {
         new HomePage(getDriver())
@@ -669,8 +669,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
                 .goHomePage()
-                .clickRenameInDropdownMenu(PROJECT_NAME, new FreestyleProjectRenamePage(getDriver()))
-                .clearInputField()
+                .clickJobNameDropdown(PROJECT_NAME)
+                .clickRenameInDropdownMenu(new FreestyleProjectDetailsPage(getDriver()))
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .goHomePage();
@@ -911,9 +911,9 @@ public class FreestyleProjectTest extends BaseTest {
     public void testRenameUnsafeCharacters() {
         final List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
 
-        FreestyleProjectRenamePage renamePage = new HomePage(getDriver())
+        RenamePage renamePage = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename();
+                .clickRename(new FreestyleProjectDetailsPage(getDriver()));
 
         for (String x : unsafeCharacters) {
             renamePage.enterName(x);

@@ -64,12 +64,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
         return list;
     }
 
-    public MultibranchPipelineRenamePage clickRename() {
-        renameButton.click();
-
-        return new MultibranchPipelineRenamePage(getDriver());
-    }
-
     public List<String> getNameOfTasksFromSidebarMenu() {
         return TestUtils.getTextOfWebElements(getWait2().until(
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
