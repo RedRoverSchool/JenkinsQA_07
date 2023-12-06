@@ -52,12 +52,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
         return new FolderConfigurationPage(getDriver());
     }
 
-    public FolderRenamePage clickRename() {
-        renameButton.click();
-
-        return new FolderRenamePage(getDriver());
-    }
-
     public FolderDetailsPage clickAddOrEditDescription() {
         addDescription.click();
 

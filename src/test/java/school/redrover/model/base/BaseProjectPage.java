@@ -58,7 +58,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return projectName.getText();
     }
 
-    public <ProjectPage extends BaseProjectPage> RenamePage clickRename(ProjectPage projectPage) {
+    public <ProjectPage extends BaseProjectPage<?>> RenamePage<?> clickRename(ProjectPage projectPage) {
         renameSubmenu.click();
 
         return new RenamePage<>(getDriver(), projectPage);

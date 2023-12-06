@@ -6,10 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BaseProjectPage;
 
-public class RenamePage <ProjectPage extends BaseProjectPage> extends BaseProjectPage {
+public class RenamePage <ProjectPage extends BaseProjectPage<?>> extends BaseProjectPage<BaseConfigurationPage<?>> {
 
     @FindBy(name = "newName")
     private WebElement inputNewName;
@@ -86,10 +86,15 @@ public class RenamePage <ProjectPage extends BaseProjectPage> extends BaseProjec
         return new RenameErrorPage(getDriver());
     }
 
-    public RenamePage clickBlank() {
+    public RenamePage<?> clickBlank() {
         Actions actions = new Actions(getDriver());
         actions.moveToElement(inputNewName).moveByOffset(100, 50).click().build().perform();
 
         return this;
+    }
+
+    @Override
+    protected BaseConfigurationPage<?> createConfigurationPage() {
+        return null;
     }
 }
