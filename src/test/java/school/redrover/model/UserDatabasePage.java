@@ -41,7 +41,7 @@ public class UserDatabasePage extends BasePage {
                 .getText();
     }
 
-    public String getUserId(String username) {
+    public String getUserFullName(String username) {
         return getDriver().findElement(By.xpath("(//td/a[@href='user/" + username + "/']/following::td[1])")).getText();
     }
 

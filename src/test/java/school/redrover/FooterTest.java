@@ -1,8 +1,8 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import school.redrover.model.AboutJenkinsPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -106,14 +106,13 @@ public class FooterTest extends BaseTest {
 
     @Test(dependsOnMethods = "testJenkinsVersionListTabBar")
     public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
-        List<WebElement> tabBar = new HomePage(getDriver())
-                .goAboutJenkinsPage()
-                .getTabBarElements();
+        AboutJenkinsPage about = new HomePage(getDriver())
+                .goAboutJenkinsPage();
 
-        for (WebElement webElement : tabBar) {
-            webElement.click();
+        for (int i = 0; i < about.getTabBarElements().size(); i++) {
+            about.getTabBarElements().get(i).click();
 
-            Assert.assertTrue(webElement.isDisplayed());
+            Assert.assertTrue(about.getTabPaneElements().get(i).isDisplayed());
         }
     }
 
