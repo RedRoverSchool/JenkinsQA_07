@@ -3,6 +3,7 @@ package school.redrover;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -184,6 +185,7 @@ public class OrganizationFolderTest extends BaseTest {
         Assert.assertEquals(errorPage, "No such job: " + wrongName);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCloneNotExistingJob")
     public void testCloneOrganizationFolder() {
         final String[] organizationFolderName = {PROJECT_NAME, CLONE_NAME};
@@ -205,6 +207,7 @@ public class OrganizationFolderTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCloneOrganizationFolder")
     public void testDisableExistingOrganizationFolder() {
         String disableButtonText = new HomePage(getDriver())

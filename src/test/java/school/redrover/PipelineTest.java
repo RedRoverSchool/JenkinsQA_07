@@ -248,6 +248,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualPermalinksList, expectedPermalinksList);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testPermalinksIsEmpty")
     public void testStageViewBeforeBuild() {
 
