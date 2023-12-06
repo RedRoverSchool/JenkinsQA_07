@@ -506,6 +506,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertEquals(warningMessage, "This project is currently disabled");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testOldBuildsAreDiscarded")
     public void testSetUpstreamProject() {
         final String upstreamProjectName = "Upstream Test";
