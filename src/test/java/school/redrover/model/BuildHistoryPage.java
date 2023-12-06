@@ -98,6 +98,7 @@ public class BuildHistoryPage extends BasePage {
 
 
     public BuildHistoryPage getBuildDropdownMenu() {
+
         new Actions(getDriver())
                 .moveToElement(buildDropDownMenu)
                 .click()
