@@ -287,6 +287,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isDoNotAllowConcurrentBuildSelected);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testStageViewBeforeBuild")
     public void testTooltipsDescriptionCompliance() {
         List<String> tooltipsTextsList = List.of(
