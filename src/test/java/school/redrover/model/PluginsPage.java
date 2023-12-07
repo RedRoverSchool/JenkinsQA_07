@@ -27,7 +27,7 @@ public class PluginsPage extends BasePage<PluginsPage> {
     private WebElement firstCheckbox;
 
     @FindBy(xpath = "//table[@id='plugins']/thead//button")
-    private WebElement allCheckboxesFromTitle;
+    private WebElement checkboxFromTitle;
 
     @FindBy(xpath = "//table[@id='plugins']//label")
     private List <WebElement> allCheckboxesList;
@@ -70,8 +70,9 @@ public class PluginsPage extends BasePage<PluginsPage> {
 
         return this;
     }
+
     public PluginsPage selectAllCheckboxesFromTitle() {
-        allCheckboxesFromTitle.click();
+        checkboxFromTitle.click();
 
         return this;
     }
