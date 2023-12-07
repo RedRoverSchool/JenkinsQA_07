@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public class BuildHistoryPage extends BasePage {
     @FindBy(xpath = "//a[@class = 'jenkins-table__link jenkins-table__badge model-link inside']")
     private WebElement firstBuildButton;
 
+    @FindBy(xpath = "//a[@href = '/job/FreestyleProject/1/']")
+    private WebElement buildName;
     @FindBy(xpath = "//a[@class = 'jenkins-table__link jenkins-table__badge model-link inside']/button")
     private WebElement buildDropDownMenu;
 
@@ -98,6 +101,12 @@ public class BuildHistoryPage extends BasePage {
 
 
     public BuildHistoryPage getBuildDropdownMenu() {
+        new Actions(getDriver())
+                .moveToElement(buildName)
+                .build()
+                .perform();
+
+        getWait10().until(ExpectedConditions.elementToBeClickable(buildDropDownMenu)).click();
 
         new Actions(getDriver())
                 .moveToElement(buildDropDownMenu)
