@@ -3,15 +3,18 @@ package school.redrover.model;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
+import static org.testng.Assert.assertFalse;
+
 public class UserDatabasePage extends BasePage {
 
     @FindBy(css = "a[href = 'addUser']")
-    private WebElement createUser;
+    private WebElement addUserButton;
 
     @FindBy(xpath = "(//span[@class='hidden-xs hidden-sm'])[1]")
     private WebElement loginUserName;
@@ -21,6 +24,7 @@ public class UserDatabasePage extends BasePage {
 
     @FindBy(xpath = "//a[contains(@class, 'link inside')]")
     private List<WebElement> userIDs;
+
 
     @FindBy(xpath = "//tr/td[5]")
     private List<WebElement> deleteIcon;
@@ -61,8 +65,8 @@ public class UserDatabasePage extends BasePage {
         return doDelete;
     }
 
-    public CreateNewUserPage clickCreateUserButton() {
-        createUser.click();
+    public CreateNewUserPage clickAddUserButton() {
+        addUserButton.click();
 
         return new CreateNewUserPage(getDriver());
     }
@@ -86,9 +90,23 @@ public class UserDatabasePage extends BasePage {
         return fullName;
     }
 
-    public UserStatusPage clickUserByName(String name) {
+    public CreatedUserPage clickUserByName(String name) {
         getDriver().findElement(By.cssSelector("a[href='user/" + name.toLowerCase() + "/']")).click();
 
-        return new UserStatusPage(getDriver());
+        return new CreatedUserPage(getDriver());
+    }
+
+
+    public boolean listOfUserIDsContainsName(String name) {
+        assertFalse(userIDs.isEmpty(), "List of UserIDs is empty");
+
+        boolean isNewUserIDPresent = false;
+        for (WebElement webElement : userIDs) {
+            if (webElement.getText().contains(name)) {
+                isNewUserIDPresent = true;
+                break;
+            }
+        }
+        return isNewUserIDPresent;
     }
 }

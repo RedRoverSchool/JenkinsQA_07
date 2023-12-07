@@ -57,9 +57,9 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, JOB_NAME, false);
 
         String currentName = new PipelineDetailsPage(getDriver())
-                .clickRenameInSideMenu()
-                .enterNewName(updatedJobName)
-                .clickRenameButton(new PipelineDetailsPage(getDriver()))
+                .clickRename(new PipelineDetailsPage(getDriver()))
+                .enterName(updatedJobName)
+                .clickRenameButton()
                 .goHomePage()
                 .getJobList()
                 .toString();
@@ -86,12 +86,12 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
-                .clickRenameInSideMenu()
-                .clearInputName()
-                .clickRenameButton(new ErrorPage(getDriver()))
-                .getErrorFromMainPanel();
+                .clickRename(new PipelineDetailsPage(getDriver()))
+                .enterName("")
+                .clickRenameButtonEmptyName()
+                .getErrorText();
 
-        Assert.assertEquals(errorMessage, "Error" + '\n' + "No name is specified");
+        Assert.assertEquals(errorMessage, "No name is specified");
     }
 
     @Ignore
