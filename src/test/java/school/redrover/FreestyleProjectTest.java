@@ -58,7 +58,7 @@ public class FreestyleProjectTest extends BaseTest {
         final HomePage homePage = new HomePage(getDriver())
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
+                .clickRename()
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -75,7 +75,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
+                .clickRename()
                 .clearInputField()
                 .getErrorMessage();
 
@@ -274,7 +274,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
+                .clickRename()
                 .clearInputField()
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
@@ -345,7 +345,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
+                .clickRename()
                 .clickRenameWithError();
 
         assertEquals(errorPage.getErrorText(), "The new name is the same as the current name.");
@@ -358,7 +358,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename(new FreestyleProjectDetailsPage(getDriver()))
+                .clickRename()
                 .clickRenameButtonEmptyName()
                 .getErrorText();
 
@@ -912,9 +912,9 @@ public class FreestyleProjectTest extends BaseTest {
     public void testRenameUnsafeCharacters() {
         final List<String> unsafeCharacters = List.of("%", "<", ">", "[", "]", "&", "#", "|", "/", "^");
 
-        RenamePage renamePage = new HomePage(getDriver())
+        RenamePage<FreestyleProjectDetailsPage> renamePage = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickRename(new FreestyleProjectDetailsPage(getDriver()));
+                .clickRename();
 
         for (String x : unsafeCharacters) {
             renamePage.enterName(x);

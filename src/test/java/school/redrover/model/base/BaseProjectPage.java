@@ -11,7 +11,7 @@ import school.redrover.model.RenamePage;
 
 import java.util.List;
 
-public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>,Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
+public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>, Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
@@ -58,16 +58,16 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return projectName.getText();
     }
 
-    public <ProjectPage extends BaseProjectPage<?, ?>> RenamePage<?> clickRename(ProjectPage projectPage) {
+    public RenamePage<Self> clickRename() {
         renameSubmenu.click();
 
-        return new RenamePage(getDriver(), projectPage);
+        return new RenamePage<>(getDriver(), (Self)this);
     }
 
-    public BaseProjectPage<?, ?> clickDisableButton() {
+    public Self clickDisableButton() {
         disableButton.click();
 
-        return this;
+        return (Self)this;
     }
 
     public String getDisabledMessageText() {
