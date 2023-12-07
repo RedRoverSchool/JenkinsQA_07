@@ -26,6 +26,12 @@ public class PluginsPage extends BasePage<PluginsPage> {
     @FindBy(xpath = "//table[@id='plugins']//tr[1]//label")
     private WebElement firstCheckbox;
 
+    @FindBy(xpath = "//table[@id='plugins']/thead//button")
+    private WebElement allCheckboxesFromTitle;
+
+    @FindBy(xpath = "//table[@id='plugins']//label")
+    private List <WebElement> allCheckboxesList;
+
     public PluginsPage(WebDriver driver) {
         super(driver);
     }
@@ -59,10 +65,20 @@ public class PluginsPage extends BasePage<PluginsPage> {
         return updateButton.isEnabled();
     }
 
-    public PluginsPage selectedFirstCheckbox() {
+    public PluginsPage selectFirstCheckbox() {
         firstCheckbox.click();
 
         return this;
+    }
+    public PluginsPage selectAllCheckboxesFromTitle() {
+        allCheckboxesFromTitle.click();
+
+        return this;
+    }
+
+    public Boolean getAllCheckboxesList() {
+
+        return allCheckboxesList.stream().allMatch(WebElement::isEnabled);
     }
 
 }
