@@ -356,7 +356,6 @@ public class PipelineTest extends BaseTest {
                 .clickBuildByGreenArrow(JOB_NAME)
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickLastBuildLink()
-                .refreshPage()
                 .clickEditBuildInformationSideMenu()
                 .enterDisplayName(BUILD_NAME)
                 .clickSaveButton()
