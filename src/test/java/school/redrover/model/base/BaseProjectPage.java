@@ -18,7 +18,10 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     private WebElement projectName;
 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameInMenu;
+    private WebElement renameSideMenu;
+
+    @FindBy(xpath = "//*[@class='jenkins-dropdown__item' and contains(@href, 'rename')]")
+    private WebElement renameDropDown;
 
     @FindBy(name = "Submit")
     private WebElement disableButton;
@@ -66,7 +69,13 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public RenamePage<Self> clickRename() {
-        renameInMenu.click();
+        renameSideMenu.click();
+
+        return new RenamePage<>(getDriver(), (Self)this);
+    }
+
+    public RenamePage<Self> clickRenameDropDown() {
+        renameDropDown.click();
 
         return new RenamePage<>(getDriver(), (Self)this);
     }
