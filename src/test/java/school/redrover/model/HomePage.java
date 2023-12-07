@@ -148,7 +148,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    public <ProjectPage extends BaseProjectPage<?>>RenamePage<?> clickRenameInDropdownMenu(ProjectPage projectPage) {
+    public <ProjectPage extends BaseProjectPage<?,?>>RenamePage<?> clickRenameInDropdownMenu(ProjectPage projectPage) {
         renameOptionProjectDropdown.click();
 
         return new RenamePage<>(getDriver(), projectPage);
@@ -232,8 +232,4 @@ public class HomePage extends BasePage<HomePage> {
         return new FolderDetailsPage(getDriver());
 
     }
-
-
-
-
 }

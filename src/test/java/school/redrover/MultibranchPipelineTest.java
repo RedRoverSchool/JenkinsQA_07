@@ -177,7 +177,7 @@ public class MultibranchPipelineTest extends BaseTest {
         String newName = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .clickProjectBreadcrumbDropDownMenu()
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getProjectName();
