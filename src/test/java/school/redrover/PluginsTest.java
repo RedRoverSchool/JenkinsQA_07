@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class PluginsTest extends BaseTest {
@@ -63,6 +64,21 @@ public class PluginsTest extends BaseTest {
                 .areAllCheckboxesSelected();
 
         Assert.assertTrue(areAllCheckboxesSelected);
+    }
+
+    @Test
+    public void testMatchesNumberPluginsForUpdate() {
+        String numberUpdatesPlaginsFromManagePage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getNumberUpdatesPlugins();
+
+        String numberUpdatesPlaginsFromPluginsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage()
+                .getNumberPluginsForUpdates()
+                .toString();
+
+        Assert.assertEquals(numberUpdatesPlaginsFromPluginsPage, numberUpdatesPlaginsFromManagePage);
     }
 
 }

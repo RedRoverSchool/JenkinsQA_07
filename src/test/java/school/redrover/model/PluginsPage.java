@@ -82,4 +82,9 @@ public class PluginsPage extends BasePage<PluginsPage> {
         return allCheckboxesList.stream().allMatch(WebElement::isSelected);
     }
 
+    public Integer getNumberPluginsForUpdates() {
+
+        return allCheckboxesList.size();
+    }
+
 }
