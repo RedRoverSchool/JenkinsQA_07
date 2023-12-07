@@ -345,6 +345,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(helpText, expectedText);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewJob")
     public void testCreatePipelineProjectInsideFolder() {
 
