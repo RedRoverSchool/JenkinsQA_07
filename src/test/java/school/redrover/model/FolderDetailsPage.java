@@ -114,6 +114,7 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
 
         return this;
     }
+
     public NewItemPage clickCreateAJob(){
         newItemButton.click();
         return new  NewItemPage(getDriver());

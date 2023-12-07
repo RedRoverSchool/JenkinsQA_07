@@ -38,7 +38,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     private WebElement moveSideMenuOption;
 
     @FindBy(id = "description-link")
-    protected WebElement addDescription;
+    private WebElement addDescription;
 
     @FindBy(linkText = "Status")
     private WebElement statusPageLink;
@@ -48,7 +48,6 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
 
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
-
 
     public BaseProjectPage(WebDriver driver) {
         super(driver);
