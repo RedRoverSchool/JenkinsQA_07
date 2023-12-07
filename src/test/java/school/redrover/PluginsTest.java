@@ -61,6 +61,7 @@ public class PluginsTest extends BaseTest {
                 .goPluginsPage()
                 .selectAllCheckboxesFromTitle()
                 .getAllCheckboxesList();
+        System.out.println(selectAllCheckboxes);
 
         Assert.assertTrue(selectAllCheckboxes);
     }

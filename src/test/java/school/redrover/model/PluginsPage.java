@@ -29,7 +29,7 @@ public class PluginsPage extends BasePage<PluginsPage> {
     @FindBy(xpath = "//table[@id='plugins']/thead//button")
     private WebElement checkboxFromTitle;
 
-    @FindBy(xpath = "//table[@id='plugins']//label")
+    @FindBy(xpath = "//table[@id='plugins']//input")
     private List <WebElement> allCheckboxesList;
 
     public PluginsPage(WebDriver driver) {
@@ -79,7 +79,7 @@ public class PluginsPage extends BasePage<PluginsPage> {
 
     public Boolean getAllCheckboxesList() {
 
-        return allCheckboxesList.stream().allMatch(WebElement::isEnabled);
+        return allCheckboxesList.stream().allMatch(WebElement::isSelected);
     }
 
 }
