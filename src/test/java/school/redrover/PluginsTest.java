@@ -55,15 +55,14 @@ public class PluginsTest extends BaseTest {
     }
 
     @Test
-    public void testSelectAllCheckboxesFromTitle() {
-        boolean selectAllCheckboxes = new HomePage(getDriver())
+    public void testAllUpdatesPluginsAreSelectedFromTitle() {
+        boolean areAllCheckboxesSelected = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goPluginsPage()
                 .selectAllCheckboxesFromTitle()
-                .getAllCheckboxesList();
-        System.out.println(selectAllCheckboxes);
+                .areAllCheckboxesSelected();
 
-        Assert.assertTrue(selectAllCheckboxes);
+        Assert.assertTrue(areAllCheckboxesSelected);
     }
 
 }

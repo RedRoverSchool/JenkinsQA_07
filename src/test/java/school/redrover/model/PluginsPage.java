@@ -77,7 +77,7 @@ public class PluginsPage extends BasePage<PluginsPage> {
         return this;
     }
 
-    public Boolean getAllCheckboxesList() {
+    public Boolean areAllCheckboxesSelected() {
 
         return allCheckboxesList.stream().allMatch(WebElement::isSelected);
     }
