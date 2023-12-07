@@ -179,6 +179,7 @@ public abstract class BasePage<Self extends BasePage<?>> extends BaseModel {
 
     public RestApiPage goRestApiPage() {
         restApiButton.click();
+
         return new RestApiPage(getDriver());
     }
 }

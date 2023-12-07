@@ -13,9 +13,6 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
     @FindBy(className = "textarea-show-preview")
     private WebElement previewSwitch;
 
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
-
     @FindBy(xpath = "//div[@class = 'textarea-preview']")
     private WebElement descriptionPreview;
 
@@ -66,12 +63,6 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
 
     public String getFolderDescription() {
         return descriptionPreview.getText();
-    }
-
-    public FolderDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return new FolderDetailsPage(getDriver());
     }
 
     public FolderConfigurationPage clickHealthMetricsInSideMenu() {

@@ -28,9 +28,6 @@ public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetails
     @FindBy(name = "parameter.choices")
     private WebElement parameterChoicesField;
 
-    @FindBy(xpath = "//button[@name = 'Submit']")
-    private WebElement saveButton;
-
     @FindBy(xpath = "//div[@class='samples']/select")
     private WebElement pipelineScriptSamplesDropdown;
 
@@ -109,12 +106,6 @@ public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetails
         return this;
     }
 
-    public PipelineDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return new PipelineDetailsPage(getDriver());
-    }
-
     public PipelineConfigurePage selectPipelineScriptSampleByValue(String value) {
         new Select(pipelineScriptSamplesDropdown).selectByValue(value);
 
@@ -177,10 +168,5 @@ public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetails
                 .stream()
                 .map(element -> element.getAttribute("title"))
                 .toList();
-    }
-
-    public PipelineDetailsPage clickSave() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(saveButton)).click();
-        return new PipelineDetailsPage(getDriver());
     }
 }

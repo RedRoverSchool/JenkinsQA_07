@@ -22,17 +22,6 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage<OrganizationF
         return new OrganizationFolderConfigurationPage(getDriver());
     }
 
-    public OrganizationFolderDetailsPage clickDisable() {
-        submitButton.click();
-
-        return this;
-    }
-
-    public String submitButtonText() {
-
-        return submitButton.getText();
-    }
-
     public HomePage clickDelete() {
         buttonDelete.click();
         submitButton.click();

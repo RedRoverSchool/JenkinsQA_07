@@ -216,7 +216,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
         String actualStatusMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickDisable()
+                .clickDisableButton()
                 .getDisableStatusMessage();
 
         Assert.assertTrue(actualStatusMessage.contains("This Multibranch Pipeline is currently disabled"),
@@ -395,7 +395,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String disabledText = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickDisable()
+                .clickDisableButton()
                 .getDisableStatusMessage();
 
         Assert.assertTrue(disabledText.contains("This Multibranch Pipeline is currently disabled"));
@@ -406,7 +406,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String disabledText = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickEnable()
+                .clickEnableButton()
                 .getDisableButtonText();
 
         Assert.assertEquals(disabledText, "Disable Multibranch Pipeline");

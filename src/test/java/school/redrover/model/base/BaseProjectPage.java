@@ -4,10 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.BuildPage;
-import school.redrover.model.BuildWithParametersPage;
-import school.redrover.model.MovePage;
-import school.redrover.model.RenamePage;
+import school.redrover.model.*;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     private WebElement renameSubmenu;
 
     @FindBy(name = "Submit")
-    private WebElement disableButton;
+    private WebElement disableEnableButton;
 
     @FindBy(id = "enable-project")
     private WebElement disableMessage;
@@ -49,6 +46,10 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
+    @FindBy(xpath = "//div[@id = 'description']/div[1]")
+    private WebElement descriptionText;
+
+
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -65,9 +66,37 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public Self clickDisableButton() {
-        disableButton.click();
+        disableEnableButton.click();
 
         return (Self)this;
+    }
+
+    public Self clickEnableButton() {
+        disableEnableButton.click();
+
+        return (Self)this;
+    }
+
+    public Self clickAddOrEditDescription() {
+        addDescription.click();
+
+        return (Self)this;
+    }
+
+    public String getDescriptionText() {
+        return descriptionText.getText();
+    }
+
+    public String getAddDescriptionButtonText() {
+       return addDescription.getText();
+    }
+
+    public String getDisableButtonText() {
+        return disableEnableButton.getText();
+    }
+
+    public String getEnableButtonText() {
+        return disableEnableButton.getText();
     }
 
     public String getDisabledMessageText() {

@@ -37,9 +37,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
     @FindBy(xpath = "//div[@class='textarea-preview']")
     private WebElement descriptionPreview;
 
-    @FindBy(xpath = "//div[@id='description']/div[1]")
-    private WebElement actualFolderDescription;
-
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
@@ -55,12 +52,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
         return new FolderConfigurationPage(getDriver());
     }
 
-    public FolderDetailsPage clickAddOrEditDescription() {
-        addDescription.click();
-
-        return this;
-    }
-
     public FolderDetailsPage typeDescription(String description) {
         descriptionTextArea.clear();
         descriptionTextArea.sendKeys(description);
@@ -74,10 +65,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
         return this;
     }
 
-    public String getActualFolderDescription() {
-        return actualFolderDescription.getText();
-    }
-
     public NewItemPage clickCreateJob() {
         createJob.click();
 
@@ -88,12 +75,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
         newItemButton.click();
 
         return new NewItemPage(getDriver());
-    }
-
-    public MovePage clickMove() {
-        moveJob.click();
-
-        return new MovePage(getDriver());
     }
 
     public List<String> getJobListInsideFolder() {
@@ -110,11 +91,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
         descriptionTextArea.clear();
 
         return this;
-    }
-
-    public String getDescriptionButtonText() {
-
-        return getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
     }
 
     public boolean isJobInJobsList(String jobName) {

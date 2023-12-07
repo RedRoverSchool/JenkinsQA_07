@@ -103,7 +103,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickAddOrEditDescriptionButton()
+                .clickAddOrEditDescription()
                 .insertDescriptionText(PROJECT_DESCRIPTION)
                 .clickSaveButton()
                 .getDescriptionText();
@@ -115,7 +115,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEditDescriptionDetailsPage() {
         String actualNewDescriptionText = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickAddOrEditDescriptionButton()
+                .clickAddOrEditDescription()
                 .deleteDescriptionText()
                 .insertDescriptionText(NEW_PROJECT_DESCRIPTION)
                 .clickSaveButton()
@@ -128,7 +128,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testDeleteTheExistingDescription() {
         String actualEmptyDescriptionInputField = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickAddOrEditDescriptionButton()
+                .clickAddOrEditDescription()
                 .deleteDescriptionText()
                 .clickSaveButton()
                 .getDescriptionText();
@@ -152,7 +152,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
-                .clickEnableDisableButton()
+                .clickEnableButton()
                 .isEnabled();
 
         assertFalse(isEnabled);
@@ -192,7 +192,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .clickEnableDisableButton()
+                .clickEnableButton()
                 .isEnabled();
 
         assertTrue(isEnabled);
@@ -263,7 +263,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickEnableDisableButton()
+                .clickDisableButton()
                 .goHomePage()
                 .isScheduleABuildButtonNotDisplayed(PROJECT_NAME);
 
@@ -371,7 +371,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testDisable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickEnableDisableButton();
+                .clickDisableButton();
 
         assertTrue(detailsPage.isProjectDisabled());
     }
@@ -380,7 +380,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testEnable() {
         FreestyleProjectDetailsPage detailsPage = new HomePage(getDriver())
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickEnableDisableButton();
+                .clickEnableButton();
 
         assertTrue(detailsPage.isEnabled());
     }
@@ -502,7 +502,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickEnableDisableButton()
+                .clickDisableButton()
                 .getWarningMessageWhenDisabled();
 
         assertEquals(warningMessage, "This project is currently disabled");
@@ -882,7 +882,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickEnableDisableButton()
+                .clickDisableButton()
                 .isProjectDisabled();
 
         assertTrue(isMessageVisible, "The warning message is not visible.");

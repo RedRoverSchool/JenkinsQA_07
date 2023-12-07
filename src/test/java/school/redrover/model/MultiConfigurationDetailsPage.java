@@ -7,8 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseProjectPage;
 
 public class MultiConfigurationDetailsPage extends BaseProjectPage<MultiConfigurationConfigurePage, MultiConfigurationDetailsPage> {
-    @FindBy(xpath = "//div[@id='description']/div[1]")
-    private WebElement descriptionText;
 
     @FindBy(name = "description")
     private WebElement inputDescription;
@@ -26,16 +24,6 @@ public class MultiConfigurationDetailsPage extends BaseProjectPage<MultiConfigur
     @Override
     protected MultiConfigurationConfigurePage createConfigurationPage() {
         return new MultiConfigurationConfigurePage(getDriver());
-    }
-
-    public String getDescriptionText() {
-        return descriptionText.getText();
-    }
-
-    public MultiConfigurationDetailsPage buttonEditDescription() {
-        addDescription.click();
-
-        return this;
     }
 
     public MultiConfigurationDetailsPage inputDescription(String description) {
