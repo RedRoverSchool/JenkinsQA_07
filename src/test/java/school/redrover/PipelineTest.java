@@ -13,6 +13,8 @@ import java.util.List;
 public class PipelineTest extends BaseTest {
 
     private static final String JOB_NAME = "NewPipeline";
+    private static final String BUILD_NAME = "PipelineBuildName";
+
 
     @Test
     public void testCreatePipeline() {
@@ -344,5 +346,22 @@ public class PipelineTest extends BaseTest {
                 .getJobList();
 
         Assert.assertTrue(name.contains( JOB_NAME));
+    }
+
+        @Test
+    public void testAddDisplayNameForBuild() {
+        TestUtils.createPipeline(this, JOB_NAME, true);
+
+        String newDisplayedBuildName = new HomePage(getDriver())
+                .clickBuildByGreenArrow(JOB_NAME)
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickLastBuildLink()
+                .refreshPage()
+                .clickEditBuildInformationSideMenu()
+                .enterDisplayName(BUILD_NAME)
+                .clickSaveButton()
+                .getPageTitle();
+
+        Assert.assertTrue(newDisplayedBuildName.contains(BUILD_NAME));
     }
 }

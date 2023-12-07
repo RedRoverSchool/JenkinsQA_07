@@ -60,9 +60,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
     @FindBy(xpath = "//a[contains(@href, 'lastBuild/')]")
     private WebElement lastBuildLink;
 
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
-    private WebElement replayButtonSideMenu;
-
     @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
     private WebElement deletePipelineButton;
 
@@ -174,16 +171,10 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
         return tooltipValue.getAttribute("tooltip");
     }
 
-    public PipelineDetailsPage clickLastBuildLink() {
+    public BuildPage clickLastBuildLink() {
         lastBuildLink.click();
 
-        return new PipelineDetailsPage(getDriver());
-    }
-
-    public ReplayBuildPipelinePage clickReplaySideMenu() {
-        replayButtonSideMenu.click();
-
-        return new ReplayBuildPipelinePage(getDriver());
+        return new BuildPage(getDriver());
     }
 
     public String getLastBuildLinkText() {
