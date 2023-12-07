@@ -252,16 +252,14 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testConfigureAddDescriptionUsingDirectLinkInHeader() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/user/admin']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href = '/user/admin/configure']"))).click();
+        String description = new HomePage(getDriver())
+                .clickUserNameHeader("admin")
+                .clickConfigure()
+                .typeDescription(DESCRIPTION)
+                .clickSaveButton()
+                .getDescriptionText();
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='_.description']"))).clear();
-        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//div[@id = 'description']/div[1]"))).getText(), DESCRIPTION);
+        Assert.assertEquals(description, DESCRIPTION);
     }
 
     @Ignore
