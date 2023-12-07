@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class MovePage extends BasePage {
+public class MovePage extends BasePage<MovePage> {
 
     @FindBy(name = "Submit")
     private WebElement moveButton;
@@ -30,7 +30,7 @@ public class MovePage extends BasePage {
         return this;
     }
 
-    public <ProjectPage extends BasePage> ProjectPage clickMove(ProjectPage projectPage) {
+    public <ProjectPage extends BasePage<?>> ProjectPage clickMove(ProjectPage projectPage) {
         moveButton.click();
 
         return projectPage;

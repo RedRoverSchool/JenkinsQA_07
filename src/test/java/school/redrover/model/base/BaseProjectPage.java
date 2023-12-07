@@ -1,16 +1,18 @@
 package school.redrover.model.base;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.*;
+import school.redrover.model.BuildPage;
+import school.redrover.model.BuildWithParametersPage;
+import school.redrover.model.MovePage;
+import school.redrover.model.RenamePage;
 
 import java.util.List;
 
-public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?>> extends BasePage {
+public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>, Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
@@ -63,16 +65,16 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return projectName.getText();
     }
 
-    public <ProjectPage extends BaseProjectPage<?>> RenamePage<?> clickRename(ProjectPage projectPage) {
+    public RenamePage<Self> clickRename() {
         renameInMenu.click();
 
-        return new RenamePage<>(getDriver(), projectPage);
+        return new RenamePage<>(getDriver(), (Self)this);
     }
 
-    public BaseProjectPage<?> clickDisableButton() {
+    public Self clickDisableButton() {
         disableButton.click();
 
-        return this;
+        return (Self)this;
     }
 
     public String getDisabledMessageText() {
@@ -80,7 +82,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return disableMessage.getText().substring(0, 46);
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
+    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
         buildNowSideMenuOption.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElements(buildLinksInBuildHistory));
 
@@ -93,7 +95,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return new BuildWithParametersPage(getDriver());
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
+    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
         for (int i = 0; i < numOfClicks; i++) {
             clickBuildNow(projectDetailsPage);
         }
@@ -130,7 +132,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return statusPageLink.getAttribute("class").contains("active");
     }
 
-    public BaseProjectPage<?> clickProjectBreadcrumbDropDownMenu(){
+    public BaseProjectPage<?,?> clickProjectBreadcrumbDropDownMenu(){
         Actions actions = new Actions(getDriver());
         actions.moveToElement(breadcrumbBar)
                 .moveToElement(breadcrumbArrow)

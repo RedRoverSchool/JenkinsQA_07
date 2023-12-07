@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class ListViewPage extends BasePage {
+public class ListViewPage extends BasePage<ListViewPage> {
     @FindBy(xpath = "//a[@id = 'description-link']")
     private WebElement addOrEditDescriptionButton;
 

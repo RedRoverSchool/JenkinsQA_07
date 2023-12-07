@@ -8,7 +8,7 @@ import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class BuildPage extends BasePage {
+public class BuildPage extends BasePage<BuildPage> {
     @FindBy(name = "Submit")
     private WebElement clickSubmitCancel;
 
@@ -28,7 +28,7 @@ public class BuildPage extends BasePage {
         return this;
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickButtonDeleteBuild(ProjectDetailsPage projectDetailsPage) {
+    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickButtonDeleteBuild(ProjectDetailsPage projectDetailsPage) {
         clickSubmitCancel.click();
 
         return projectDetailsPage;

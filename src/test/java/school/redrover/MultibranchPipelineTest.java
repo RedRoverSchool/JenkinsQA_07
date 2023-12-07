@@ -53,7 +53,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testRenameMultibranchPipelineFromSidebarOnTheMultibranchPipelinePage() {
         String expectedResultName = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage((getDriver())))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
@@ -68,7 +68,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String dotErrorMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .addCharsToExistingName(".")
                 .clickRenameWithError()
                 .getErrorText();
@@ -83,7 +83,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String lessThanSignErrorMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .addCharsToExistingName(Keys.SHIFT + ",")
                 .clickRenameWithError()
                 .getErrorText();
@@ -99,7 +99,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String twoUnsafeCharsErrorMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .addCharsToExistingName("#" + Keys.SHIFT + ".")
                 .clickRenameWithError()
                 .getErrorText();
@@ -263,7 +263,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testErrorForUnsafeChar() {
         String error_message = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(MULTIBRANCH_PIPELINE_NEW_NAME + "!")
                 .clickBlank()
                 .getErrorMessage();
@@ -277,7 +277,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
@@ -291,7 +291,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         boolean newNameInBreadcrumb = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .isItemExistInBreadcrumbBar(MULTIBRANCH_PIPELINE_NEW_NAME);
@@ -305,7 +305,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String name = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .getHeadLineText();
@@ -319,7 +319,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         List<String> jobs = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .clickRenameButton()
                 .goHomePage()

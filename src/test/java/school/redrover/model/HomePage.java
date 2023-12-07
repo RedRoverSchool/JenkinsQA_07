@@ -12,7 +12,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends BasePage {
+public class HomePage extends BasePage<HomePage> {
 
     @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement setUpAgent;
@@ -72,6 +72,11 @@ public class HomePage extends BasePage {
     public <T extends BaseProjectPage> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
+        return page;
+    }
+
+    public <T extends BaseProjectPage> T clickProjectStatusByName(String name, T page) {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + name + "')]/parent::a")).click();
         return page;
     }
 
@@ -221,4 +226,14 @@ public class HomePage extends BasePage {
     public String getCurrentUserName() {
         return currentUserName.getText();
     }
+
+    public FolderDetailsPage clickFolderName(String folderName ){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+ folderName +"']"))).click();
+        return new FolderDetailsPage(getDriver());
+
+    }
+
+
+
+
 }

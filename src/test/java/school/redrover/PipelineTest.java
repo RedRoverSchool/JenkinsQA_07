@@ -57,7 +57,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, JOB_NAME, false);
 
         String currentName = new PipelineDetailsPage(getDriver())
-                .clickRename(new PipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(updatedJobName)
                 .clickRenameButton()
                 .goHomePage()
@@ -86,7 +86,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
-                .clickRename(new PipelineDetailsPage(getDriver()))
+                .clickRename()
                 .enterName("")
                 .clickRenameButtonEmptyName()
                 .getErrorText();
@@ -279,7 +279,7 @@ public class PipelineTest extends BaseTest {
                 .clickConfigure()
                 .clickDoNotAllowConcurrentBuilds()
                 .goHomePage()
-                .acceptAlert(new HomePage(getDriver()))
+                .acceptAlert()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .isDoNotAllowConcurrentBuildsSelected();

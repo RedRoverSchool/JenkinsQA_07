@@ -9,7 +9,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjectConfigurePage> {
+public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjectConfigurePage, FreestyleProjectDetailsPage> {
 
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
     private WebElement buildNowButton;

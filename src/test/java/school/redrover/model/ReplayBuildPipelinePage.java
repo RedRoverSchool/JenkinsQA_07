@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class ReplayBuildPipelinePage extends BasePage {
+public class ReplayBuildPipelinePage extends BasePage<ReplayBuildPipelinePage> {
 
     @FindBy(xpath = "//button[@name = 'Submit']")
     private WebElement runButton;

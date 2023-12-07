@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage> {
+public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage, MultibranchPipelineDetailsPage> {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;

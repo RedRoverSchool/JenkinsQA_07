@@ -7,7 +7,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class SearchResultQueryPage extends BasePage {
+public class SearchResultQueryPage extends BasePage<SearchResultQueryPage> {
     public SearchResultQueryPage(WebDriver driver) {
         super(driver);
     }

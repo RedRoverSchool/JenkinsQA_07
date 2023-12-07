@@ -8,7 +8,7 @@ import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> {
+public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, FolderDetailsPage> {
 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
@@ -43,6 +43,9 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
+    @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
+    private WebElement newProject;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -72,7 +75,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
     }
 
     public String getActualFolderDescription() {
-
         return actualFolderDescription.getText();
     }
 
@@ -135,6 +137,14 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
         previewHideButton.click();
 
         return this;
+    }
+    public NewItemPage clickCreateAJob(){
+        newItemButton.click();
+        return new  NewItemPage(getDriver());
+    }
+
+    public boolean   isNewCreatedProjectDisplayed(){
+        return  newProject.isDisplayed();
     }
 }
 

@@ -2,21 +2,22 @@ package school.redrover;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
-import school.redrover.model.ManageJenkinsPage;
-import school.redrover.model.NodesListPage;
-import school.redrover.model.SystemLogPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ManageJenkinsTest extends BaseTest {
 
     private static final String TOOLTIP = "Press / on your keyboard to focus";
-
     private static final String PLACEHOLDER = "Search settings";
-
     private static final String SEARCH_SYSTEM = "System";
+    private final static String USER_NAME_CREDENTIAL = "Credentials Provider name";
+    private static final String PROJECT_NAME = "NewFreestyleProject";
 
     @Test
     public void testShortcutTooltipVisibility() {
@@ -273,4 +274,38 @@ public class ManageJenkinsTest extends BaseTest {
                 "Status Information sections titles differ from the expected ones");
     }
 
+    @Test
+    public void testCreateCredentialFromConfigurePage() {
+
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
+
+        boolean credentialsCreated = new HomePage(getDriver())
+                .clickProjectStatusByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickGitRadioButtonWithScroll()
+                .clickAddButton()
+                .clickJenkinsOption()
+                .inputUsername(USER_NAME_CREDENTIAL)
+                .clickAddButtonCredentialsProvider()
+                .checkIfNewCredentialInTheMenu(USER_NAME_CREDENTIAL);
+
+        assertTrue(credentialsCreated);
+    }
+
+    @Test(dependsOnMethods = "testCreateCredentialFromConfigurePage")
+    public void testDeleteCredential() {
+
+        String expectedText = "Global credentials (unrestricted)";
+
+        String actualText = new HomePage(getDriver())
+                .clickPeople()
+                .clickCurrentUserName()
+                .clickCredentials()
+                .clickCredentialsByName(USER_NAME_CREDENTIAL)
+                .clickDeleteButton()
+                .clickYesButton()
+                .getTextMainPanel();
+
+        assertEquals(actualText, expectedText);
+    }
 }

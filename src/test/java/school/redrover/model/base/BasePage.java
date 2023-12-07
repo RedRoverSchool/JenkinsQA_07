@@ -13,7 +13,7 @@ import school.redrover.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BasePage extends BaseModel {
+public abstract class BasePage<Self extends BasePage<?>> extends BaseModel {
 
     @FindBy(tagName = "h1")
     private WebElement heading;
@@ -61,16 +61,16 @@ public abstract class BasePage extends BaseModel {
         return new HomePage(getDriver());
     }
 
-    public <T> T refreshPage(T page) {
+    public Self refreshPage() {
         getDriver().navigate().refresh();
 
-        return page;
+        return (Self)this;
     }
 
-    public <T> T acceptAlert(T page) {
+    public Self acceptAlert() {
         getWait2().until(ExpectedConditions.alertIsPresent()).accept();
 
-        return page;
+        return (Self)this;
     }
 
     public String getHeadLineText() {
@@ -86,27 +86,27 @@ public abstract class BasePage extends BaseModel {
         return page;
     }
 
-    public <T> T getHotKeysFocusSearch(T page) {
+    public Self getHotKeysFocusSearch() {
         new Actions(getDriver())
                 .keyDown(Keys.CONTROL)
                 .sendKeys("k")
                 .keyUp(Keys.CONTROL)
                 .perform();
 
-        return page;
+        return (Self) this;
     }
 
     public WebElement getSearchBoxWebElement() {
         return searchBoxHeader;
     }
 
-    public <T> T waitAndRefresh(T page) {
+    public Self  waitAndRefresh() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("setTimeout(function(){\n" +
                 "    location.reload();\n" +
                 "}, 500);");
 
-        return page;
+        return (Self)this;
     }
 
     public boolean isItemExistInBreadcrumbBar(String item) {
@@ -130,10 +130,10 @@ public abstract class BasePage extends BaseModel {
         return new CreatedUserPage(getDriver());
     }
 
-    public <T> T clickJenkinsVersionButton(T page) {
+    public Self clickJenkinsVersionButton() {
         jenkinsVersionButton.click();
 
-        return page;
+        return (Self)this;
     }
 
     public WebsiteJenkinsPage goGetInvolvedWebsite() {

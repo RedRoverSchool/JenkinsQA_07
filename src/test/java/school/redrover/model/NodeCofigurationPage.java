@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class NodeCofigurationPage extends BasePage {
+public class NodeCofigurationPage extends BasePage<NodeCofigurationPage> {
 
     @FindBy(xpath = "//button[@formnovalidate='formNoValidate']")
     private WebElement saveButton;

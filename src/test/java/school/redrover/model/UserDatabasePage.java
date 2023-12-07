@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertFalse;
 
-public class UserDatabasePage extends BasePage {
+public class UserDatabasePage extends BasePage<UserDatabasePage> {
 
     @FindBy(css = "a[href = 'addUser']")
     private WebElement addUserButton;

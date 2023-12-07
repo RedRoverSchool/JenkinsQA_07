@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class NodeCreatePage extends BasePage {
+public class NodeCreatePage extends BasePage<NodeCreatePage> {
 
     @FindBy(id = "name")
     private WebElement inputName;

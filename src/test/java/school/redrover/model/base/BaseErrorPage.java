@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class BaseErrorPage extends BasePage {
+public abstract class BaseErrorPage<Self extends BaseErrorPage<?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement errorNotification;

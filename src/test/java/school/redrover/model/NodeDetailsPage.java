@@ -1,11 +1,12 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class NodeDetailsPage extends BasePage {
+public class NodeDetailsPage extends BasePage<NodeDetailsPage> {
 
     @FindBy(xpath = "//a[@href='/computer/']")
     private WebElement buildExecutorStatus;
@@ -78,6 +79,10 @@ public class NodeDetailsPage extends BasePage {
         return this;
     }
 
+    public boolean elementIsNotPresent(String xpath) {
+        return getDriver().findElements(By.xpath(xpath)).isEmpty();
+    }
+
     public String switchToAlertAndGetText() {
         return getDriver().switchTo().alert().getText();
     }
@@ -86,12 +91,6 @@ public class NodeDetailsPage extends BasePage {
         getDriver().switchTo().alert().dismiss();
 
         return this;
-    }
-
-    public NodesListPage acceptAlert() {
-        getDriver().switchTo().alert().accept();
-
-        return new NodesListPage(getDriver());
     }
 
     public NodeDetailsPage inputDescription(String description) {
