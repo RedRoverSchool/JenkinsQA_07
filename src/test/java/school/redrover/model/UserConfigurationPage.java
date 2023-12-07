@@ -25,6 +25,9 @@ public class UserConfigurationPage extends BasePage<UserConfigurationPage> {
     @FindBy(xpath = "//div[@class='textarea-preview']")
     private WebElement previewDescriptionTextArea;
 
+    @FindBy(xpath = "//div[@id = 'description']/div[1]")
+    private WebElement descriptionText;
+
     public UserConfigurationPage(WebDriver driver) {
         super(driver);
     }
@@ -62,6 +65,10 @@ public class UserConfigurationPage extends BasePage<UserConfigurationPage> {
 
     public String getPreviewDescriptionText() {
         return previewDescriptionTextArea.getText();
+    }
+
+    public String getDescriptionText() {
+        return  descriptionText.getText();
     }
 }
 

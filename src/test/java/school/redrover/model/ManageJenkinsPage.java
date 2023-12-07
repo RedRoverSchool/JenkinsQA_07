@@ -65,6 +65,9 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     @FindBy(xpath = "//a[@href='about']")
     private WebElement aboutJenkinsSection;
 
+    @FindBy(xpath = "//a[@href='pluginManager']/div/div")
+    private WebElement numberPlugins;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -293,4 +296,10 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
                 .map(WebElement::getText)
                 .toList();
     }
+
+    public String getNumberUpdatesPlugins() {
+
+        return numberPlugins.getText();
+    }
+
 }
