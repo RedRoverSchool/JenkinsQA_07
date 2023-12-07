@@ -5,8 +5,6 @@ import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
-
-import java.sql.SQLOutput;
 import java.util.List;
 
 public class PluginsTest extends BaseTest {
