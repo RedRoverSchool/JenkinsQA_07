@@ -75,8 +75,7 @@ public class PluginsTest extends BaseTest {
 
         String numberUpdatesPlaginsFromPluginsPage = new ManageJenkinsPage(getDriver())
                 .goPluginsPage()
-                .getNumberPluginsForUpdates()
-                .toString();
+                .getNumberPluginsForUpdates();
 
         Assert.assertEquals(numberUpdatesPlaginsFromPluginsPage, numberUpdatesPlaginsFromManagePage);
     }
