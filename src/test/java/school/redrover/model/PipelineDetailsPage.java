@@ -207,7 +207,7 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
         return stageViewAlertText.getText();
     }
 
-    public FolderDetailsPage clickFolderBreadCrumbs(){
+    public FolderDetailsPage  clickFolderBreadCrumbs(){
         folderBreadCrumbs.click();
         return new FolderDetailsPage(getDriver());
     }
