@@ -3,6 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
+import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
 
 import java.sql.SQLOutput;
@@ -72,8 +73,7 @@ public class PluginsTest extends BaseTest {
                 .clickManageJenkins()
                 .getNumberUpdatesPlugins();
 
-        String numberUpdatesPlaginsFromPluginsPage = new HomePage(getDriver())
-                .clickManageJenkins()
+        String numberUpdatesPlaginsFromPluginsPage = new ManageJenkinsPage(getDriver())
                 .goPluginsPage()
                 .getNumberPluginsForUpdates()
                 .toString();
