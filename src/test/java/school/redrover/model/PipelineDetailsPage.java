@@ -10,11 +10,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineDetailsPage extends BaseProjectPage {
-
-    public PipelineDetailsPage(WebDriver driver) {
-        super(driver);
-    }
+public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> {
 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
@@ -27,9 +23,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
 
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
-
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'configure')]")
-    private WebElement configureSideMenuOption;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
     private WebElement buildNowSideMenuOption;
@@ -79,6 +72,17 @@ public class PipelineDetailsPage extends BaseProjectPage {
     @FindBy(css = "div#pipeline-box > div")
     private WebElement stageViewAlertText;
 
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item'][2]//a[@class='model-link']")
+    private WebElement folderBreadCrumbs;
+
+    public PipelineDetailsPage(WebDriver driver) {
+        super(driver);
+    }
+
+
+
+
+
     public PipelineDetailsPage clickAddDescription() {
         addDescription.click();
 
@@ -112,12 +116,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
         return permalinks;
     }
 
-    public PipelineConfigurePage clickConfigure() {
-        configureSideMenuOption.click();
-
-        return new PipelineConfigurePage(getDriver());
-    }
-
     public PipelineDetailsPage clickBuildNow() {
         buildNowSideMenuOption.click();
 
@@ -128,6 +126,11 @@ public class PipelineDetailsPage extends BaseProjectPage {
         buildNowSideMenuOption.click();
 
         return new BuildWithParametersPage(getDriver());
+    }
+
+    @Override
+    protected PipelineConfigurePage createConfigurationPage() {
+        return new PipelineConfigurePage(getDriver());
     }
 
     public PipelineDetailsPage clickLogsInStageView() {
@@ -147,12 +150,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
 
     public List<String> getStagesNames() {
         return stagesNamesList.stream().map(WebElement::getText).toList();
-    }
-
-    public PipelineRenamePage clickRenameInSideMenu() {
-        renameSideMenuOption.click();
-
-        return new PipelineRenamePage(getDriver());
     }
 
     public boolean isBuildIconDisplayed() {
@@ -208,5 +205,10 @@ public class PipelineDetailsPage extends BaseProjectPage {
     public String getStageViewAlertText() {
 
         return stageViewAlertText.getText();
+    }
+
+    public FolderDetailsPage  clickFolderBreadCrumbs(){
+        folderBreadCrumbs.click();
+        return new FolderDetailsPage(getDriver());
     }
 }

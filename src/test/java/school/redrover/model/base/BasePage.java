@@ -48,6 +48,9 @@ public abstract class BasePage extends BaseModel {
     @FindBy(id = "jenkins-home-link")
     private WebElement homeLink;
 
+    @FindBy(xpath = "//a[@href = 'api/']")
+    private WebElement restApiButton;
+
     public BasePage(WebDriver driver) {
         super(driver);
     }
@@ -121,10 +124,10 @@ public abstract class BasePage extends BaseModel {
         return jenkinsVersionButton.getText();
     }
 
-    public UserStatusPage clickUserNameHeader(String userName) {
+    public CreatedUserPage clickUserNameHeader(String userName) {
         getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
 
-        return new UserStatusPage(getDriver());
+        return new CreatedUserPage(getDriver());
     }
 
     public <T> T clickJenkinsVersionButton(T page) {
@@ -164,5 +167,18 @@ public abstract class BasePage extends BaseModel {
         aboutJenkinsButton.click();
 
         return new AboutJenkinsPage(getDriver());
+    }
+
+    public String getCurrentUrl() {
+        return getDriver().getCurrentUrl();
+    }
+
+    public String getPageTitle() {
+        return getDriver().getTitle();
+    }
+
+    public RestApiPage goRestApiPage() {
+        restApiButton.click();
+        return new RestApiPage(getDriver());
     }
 }

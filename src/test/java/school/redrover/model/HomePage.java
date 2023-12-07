@@ -47,9 +47,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
     private WebElement myView;
 
-    @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
-    private WebElement itemNameInTable;
-
     @FindBy(xpath = "//h1")
     private WebElement header;
 
@@ -75,6 +72,11 @@ public class HomePage extends BasePage {
     public <T extends BaseProjectPage> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
+        return page;
+    }
+
+    public <T extends BaseProjectPage> T clickProjectStatusByName(String name, T page) {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + name + "')]/parent::a")).click();
         return page;
     }
 
@@ -137,7 +139,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage clickJobNameDropdown(String name) {
-        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/']"));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(elementToHover).perform();
@@ -146,18 +148,14 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public MultibranchPipelineRenamePage clickRenameDropdownMenu(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name.replace(" ", "%20") + "/confirm-rename']")).click();
+    public <ProjectPage extends BaseProjectPage>RenamePage clickRenameInDropdownMenu(ProjectPage projectPage) {
+        renameOptionProjectDropdown.click();
 
-        return new MultibranchPipelineRenamePage(getDriver());
+        return new RenamePage<>(getDriver(), projectPage);
     }
 
     public boolean isProjectExist(String projectName) {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
-    }
-
-    public String getTitle() {
-        return getDriver().getTitle();
     }
 
     public String getProjectBuildStatusByName(String projectName) {
@@ -175,25 +173,6 @@ public class HomePage extends BasePage {
         getWait5().until(ExpectedConditions.invisibilityOf(runningBuildIndicator));
 
         return this;
-    }
-
-    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOrganizationFolderDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
-        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
-
-        new Actions(getDriver()).moveToElement(projectName).click().perform();
-        renameOptionProjectDropdown.click();
-
-        return projectRenamePage;
-    }
-
-    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
-
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
-
-        return page;
     }
 
     public String getMultibranchPipelineName() {
@@ -215,11 +194,6 @@ public class HomePage extends BasePage {
         getWait2().until(ExpectedConditions.elementToBeClickable(myView)).click();
         return new MyViewPage(getDriver());
     }
-
-    public String getItemNameInTable() {
-        return itemNameInTable.getText();
-    }
-
 
     public NodeDetailsPage clickOnNodeName(String nodeName) {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
@@ -252,4 +226,14 @@ public class HomePage extends BasePage {
     public String getCurrentUserName() {
         return currentUserName.getText();
     }
+
+    public FolderDetailsPage clickFolderName(String folderName ){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+ folderName +"']"))).click();
+        return new FolderDetailsPage(getDriver());
+
+    }
+
+
+
+
 }

@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public abstract class BaseConfigurationPage extends BasePage {
+public abstract class BaseConfigurationPage<ProjectPage extends BaseProjectPage<?>> extends BasePage {
 
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;
@@ -13,9 +13,11 @@ public abstract class BaseConfigurationPage extends BasePage {
         super(driver);
     }
 
-    public <ProjectPage extends BaseProjectPage> ProjectPage clickSaveButton(ProjectPage projectPage) {
+    protected abstract ProjectPage createProjectPage();
+
+    public ProjectPage clickSaveButton() {
         saveButton.click();
 
-        return projectPage;
+        return createProjectPage();
     }
 }

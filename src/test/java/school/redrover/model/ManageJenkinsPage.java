@@ -56,6 +56,15 @@ public class ManageJenkinsPage extends BasePage {
     @FindAll({@FindBy(xpath = "(//div[2]/div[2]/section[3]/div/div/a/dl/dt)")})
     private List<WebElement> securitySectionsList;
 
+    @FindBy(xpath = "//a[@href='systemInfo']")
+    private WebElement systemInfoSection;
+
+    @FindBy(xpath = "//a[@href='load-statistics']")
+    private WebElement loadStatisticsSection;
+
+    @FindBy(xpath = "//a[@href='about']")
+    private WebElement aboutJenkinsSection;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -106,7 +115,7 @@ public class ManageJenkinsPage extends BasePage {
         return shortcutIcon.getAttribute("tooltip");
     }
 
-    public boolean shortcutTooltipIsVisible() {
+    public boolean isShortcutTooltipVisible() {
         boolean shortcutTooltipIsVisible = true;
 
         if (!shortcutIcon.getAttribute("title").isEmpty()) {
@@ -234,5 +243,54 @@ public class ManageJenkinsPage extends BasePage {
 
     public boolean areSecuritySectionsClickable() {
         return securitySectionsList.stream().allMatch(WebElement::isEnabled);
+    }
+
+    public SystemInfoPage clickSystemInfoSection() {
+        systemInfoSection.click();
+
+        return new SystemInfoPage(getDriver());
+    }
+
+    public boolean searchFieldIsVisible() {
+        return searchInput.isDisplayed();
+    }
+
+    public ManageJenkinsPage clickOnSearchField() {
+        searchInput.click();
+
+        return this;
+    }
+
+    public boolean searchResultsAreClickable() {
+
+        return searchResults.get(1).isEnabled();
+    }
+
+    public String pressEnterAfterInput(String inputText) {
+        searchInput.sendKeys(inputText);
+
+        wait.until(ExpectedConditions.visibilityOfAllElements(searchResults));
+
+        searchInput.sendKeys(Keys.ENTER);
+
+        return getCurrentUrl();
+    }
+
+    public LoadStatisticsPage clickLoadStatisticsSection() {
+        loadStatisticsSection.click();
+
+        return new LoadStatisticsPage(getDriver());
+    }
+    public AboutJenkinsPage clickAboutJenkinsSection() {
+        aboutJenkinsSection.click();
+
+        return new AboutJenkinsPage(getDriver());
+    }
+
+    public List<String> getStatusInformationSectionsTitles() {
+        return statusInformationSectionsList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }

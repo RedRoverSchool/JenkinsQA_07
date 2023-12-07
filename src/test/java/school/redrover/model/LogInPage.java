@@ -16,11 +16,14 @@ public class LogInPage extends BasePage {
     @FindBy(name = "Submit")
     private WebElement submitButton;
 
+    @FindBy(css = ".app-sign-in-register__error")
+    private WebElement errorMessage;
+
     public LogInPage(WebDriver driver) {
         super(driver);
     }
 
-    public HomePage inputNewCredentialsAndLogIn(String username, String password) {
+    public HomePage logIn(String username, String password) {
         userNameTextArea.clear();
         userNameTextArea.sendKeys(username);
         passwordTextArea.clear();
@@ -29,4 +32,19 @@ public class LogInPage extends BasePage {
 
         return new HomePage(getDriver());
     }
+
+    public LogInPage logInWithError(String username, String password) {
+        userNameTextArea.clear();
+        userNameTextArea.sendKeys(username);
+        passwordTextArea.clear();
+        passwordTextArea.sendKeys(password);
+        submitButton.click();
+
+        return this;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage.getText();
+    }
+
 }
