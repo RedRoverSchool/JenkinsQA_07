@@ -43,6 +43,9 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
+    @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
+    private WebElement newProject;
+
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
     }
@@ -134,6 +137,14 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
         previewHideButton.click();
 
         return this;
+    }
+    public NewItemPage clickCreateAJob(){
+        newItemButton.click();
+        return new  NewItemPage(getDriver());
+    }
+
+    public boolean   isNewCreatedProjectDisplayed(){
+        return  newProject.isDisplayed();
     }
 }
 

@@ -4,10 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.PeopleTest;
 import school.redrover.model.base.BasePage;
 
-    public class PeoplePage extends BasePage<PeoplePage> {
+public class PeoplePage extends BasePage<PeoplePage> {
 
     @FindBy(xpath = "//li[@tooltip= 'Large' and @class='jenkins-icon-size__items-item' and @title='Large']")
     private WebElement largeButton;
@@ -23,6 +22,12 @@ import school.redrover.model.base.BasePage;
 
     @FindBy(css = "a[href='api/']")
     private WebElement restApiButton;
+
+    @FindBy(xpath = "//a[contains(@href,'/user/')]")
+    private WebElement currentUserName;
+
+    @FindBy(xpath = "//a[@class='jenkins-table__link']")
+    private WebElement userID;
 
     public PeoplePage(WebDriver driver) {
         super(driver);
@@ -56,5 +61,22 @@ import school.redrover.model.base.BasePage;
                 By.xpath("//tr[@id = 'person-" + userName + "']/td/a")).click();
 
         return new CreatedUserPage(getDriver());
+    }
+
+    public RestApiPage goRestApi() {
+        restApiButton.click();
+
+        return new RestApiPage(getDriver());
+    }
+
+    public UserPage clickCurrentUserName() {
+        currentUserName.click();
+        return new UserPage(getDriver());
+    }
+
+    public UserPage clickOnUserId() {
+        userID.click();
+
+        return new UserPage(getDriver());
     }
 }

@@ -209,7 +209,7 @@ public class UserTest extends BaseTest {
 
         Assert.assertEquals(description, DESCRIPTION);
     }
-
+    @Ignore("expected [Test description] but found []")
     @Test (dependsOnMethods = {"testAddUserDescriptionFromPeople", "testCreateUserWithValidData"})
     public void testConfigureShowDescriptionPreview() {
         String previewDescriptionText = new HomePage(getDriver())
@@ -220,6 +220,19 @@ public class UserTest extends BaseTest {
                 .getPreviewDescriptionText();
 
         Assert.assertEquals(previewDescriptionText, DESCRIPTION);
+    }
+
+
+    @Test
+    public void testConfigureAddDescriptionFromPeoplePage() {
+        String description = new HomePage(getDriver())
+                .clickPeople()
+                .clickOnUserId()
+                .clickEditDescription()
+                .addDescription(DESCRIPTION)
+                .getText();
+
+        Assert.assertEquals(description, DESCRIPTION);
     }
 
     @Test

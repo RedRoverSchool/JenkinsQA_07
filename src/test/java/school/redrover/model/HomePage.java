@@ -75,6 +75,11 @@ public class HomePage extends BasePage<HomePage> {
         return page;
     }
 
+    public <T extends BaseProjectPage> T clickProjectStatusByName(String name, T page) {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + name + "')]/parent::a")).click();
+        return page;
+    }
+
     public ManageJenkinsPage clickManageJenkins() {
         goManageJenkinsPage.click();
 
@@ -221,4 +226,14 @@ public class HomePage extends BasePage<HomePage> {
     public String getCurrentUserName() {
         return currentUserName.getText();
     }
+
+    public FolderDetailsPage clickFolderName(String folderName ){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+ folderName +"']"))).click();
+        return new FolderDetailsPage(getDriver());
+
+    }
+
+
+
+
 }
