@@ -49,6 +49,12 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement projectDescriptionInputField;
+
+    @FindBy(xpath = "//button[contains(text(), 'Save')]")
+    private WebElement saveButton;
+
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -151,5 +157,17 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
 
     public boolean isStatusPageSelected() {
         return statusPageLink.getAttribute("class").contains("active");
+    }
+
+    public Self enterDescriptionText(String description) {
+        projectDescriptionInputField.sendKeys(description);
+
+        return (Self)this;
+    }
+
+    public Self clickSaveButton() {
+        saveButton.click();
+
+        return (Self)this;
     }
 }
