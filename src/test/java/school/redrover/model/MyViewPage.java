@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyViewPage extends BasePage {
+public class MyViewPage extends BasePage<MyViewPage> {
 
     @FindBy(xpath = "//span[contains(text(),'New Item')]/parent::a")
     private WebElement newItem;
@@ -25,6 +25,9 @@ public class MyViewPage extends BasePage {
 
     @FindBy(css = ".tab > a")
     private List<WebElement> listOfViews;
+
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
 
     public MyViewPage(WebDriver driver) {super(driver);}
 
@@ -56,5 +59,11 @@ public class MyViewPage extends BasePage {
     public boolean isViewExists(String viewName) {
 
         return listOfViews.stream().anyMatch(element -> element.getText().contains(viewName));
+    }
+
+    public RestApiPage goRestApi() {
+        restApiButton.click();
+
+        return new RestApiPage(getDriver());
     }
 }

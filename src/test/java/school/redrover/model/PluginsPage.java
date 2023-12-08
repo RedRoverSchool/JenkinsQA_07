@@ -9,7 +9,7 @@ import school.redrover.runner.SeleniumUtils;
 
 import java.util.List;
 
-public class PluginsPage extends BasePage {
+public class PluginsPage extends BasePage<PluginsPage> {
 
     @FindBy(xpath = "//a[@href = '/manage/pluginManager/installed']")
     private WebElement installedPlugins;
@@ -19,6 +19,18 @@ public class PluginsPage extends BasePage {
 
     @FindBy(xpath = "//input[@type='search']")
     private WebElement searchField;
+
+    @FindBy(id = "button-update")
+    private WebElement updateButton;
+
+    @FindBy(xpath = "//table[@id='plugins']//tr[1]//label")
+    private WebElement firstCheckbox;
+
+    @FindBy(xpath = "//table[@id='plugins']/thead//button")
+    private WebElement checkboxFromTitle;
+
+    @FindBy(xpath = "//table[@id='plugins']//input")
+    private List <WebElement> allCheckboxesList;
 
     public PluginsPage(WebDriver driver) {
         super(driver);
@@ -48,8 +60,32 @@ public class PluginsPage extends BasePage {
         return false;
     }
 
-    public String getCurrentUrl() {
+    public boolean updateButtonIsEnabled() {
 
-        return getDriver().getCurrentUrl();
+        return updateButton.isEnabled();
     }
+
+    public PluginsPage selectFirstCheckbox() {
+        firstCheckbox.click();
+
+        return this;
+    }
+
+    public PluginsPage selectAllCheckboxesFromTitle() {
+        checkboxFromTitle.click();
+
+        return this;
+    }
+
+    public Boolean areAllCheckboxesSelected() {
+
+        return allCheckboxesList.stream().allMatch(WebElement::isSelected);
+    }
+
+    public String getNumberPluginsForUpdates() {
+        Integer checkbox = allCheckboxesList.size();
+
+        return checkbox.toString();
+    }
+
 }

@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class CreateNewUserPage extends BasePage {
+public class CreateNewUserPage extends BasePage<CreateNewUserPage> {
 
     @FindBy(name = "username")
     private WebElement userName;
@@ -94,7 +94,7 @@ public class CreateNewUserPage extends BasePage {
         return clickSubmit();
     }
 
-    public UserDatabasePage fillUserInformationField(String name, String password,String fullName, String email) {
+    public UserDatabasePage fillUserInformationField(String name, String password, String fullName, String email) {
         inputUserName(name);
         inputPassword(password);
         inputPasswordConfirm(password);

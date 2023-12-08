@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BaseProjectPage {
+public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage, MultibranchPipelineDetailsPage> {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
@@ -23,23 +23,19 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
 
-    @FindBy(linkText = "Configure")
-    private WebElement configureLink;
-
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
-
-    @FindBy(xpath = "//button[contains(text(), 'Disable Multibranch Pipeline')]")
-    private WebElement disableButton;
-
-    @FindBy(xpath = "//button[contains(text(), 'Enable')]")
-    private WebElement enableButton;
 
     @FindBy(id = "enable-project")
     private WebElement disabledStatusMessage;
 
     public MultibranchPipelineDetailsPage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected MultibranchPipelineConfigurationPage createConfigurationPage() {
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public List<String> getBreadcrumbChain() {
@@ -62,33 +58,9 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
         return list;
     }
 
-    public MultibranchPipelineRenamePage clickRename() {
-        renameButton.click();
-
-        return new MultibranchPipelineRenamePage(getDriver());
-    }
-
     public List<String> getNameOfTasksFromSidebarMenu() {
         return TestUtils.getTextOfWebElements(getWait2().until(
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
-    }
-
-    public MultibranchPipelineConfigurationPage clickConfigure() {
-        configureLink.click();
-
-        return new MultibranchPipelineConfigurationPage(getDriver());
-    }
-
-    public MultibranchPipelineDetailsPage clickDisable() {
-        disableButton.click();
-
-        return this;
-    }
-
-    public MultibranchPipelineDetailsPage clickEnable() {
-        enableButton.click();
-
-        return this;
     }
 
     public String getDisableStatusMessage() {
@@ -101,9 +73,5 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage {
         buttonDelete.click();
 
         return new MultibranchPipelineDeletePage(getDriver());
-    }
-
-    public String getDisableButtonText() {
-        return disableButton.getText();
     }
 }

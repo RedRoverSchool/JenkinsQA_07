@@ -5,16 +5,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class FolderConfigurationPage extends BaseConfigurationPage {
+public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetailsPage, FolderConfigurationPage> {
 
     @FindBy(name = "_.description")
     private WebElement descriptionTextField;
 
     @FindBy(className = "textarea-show-preview")
     private WebElement previewSwitch;
-
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
 
     @FindBy(xpath = "//div[@class = 'textarea-preview']")
     private WebElement descriptionPreview;
@@ -47,6 +44,11 @@ public class FolderConfigurationPage extends BaseConfigurationPage {
         super(driver);
     }
 
+    @Override
+    protected FolderDetailsPage createProjectPage() {
+        return new FolderDetailsPage(getDriver());
+    }
+
     public FolderConfigurationPage typeDescription(String description) {
         descriptionTextField.sendKeys(description);
 
@@ -61,12 +63,6 @@ public class FolderConfigurationPage extends BaseConfigurationPage {
 
     public String getFolderDescription() {
         return descriptionPreview.getText();
-    }
-
-    public FolderDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return new FolderDetailsPage(getDriver());
     }
 
     public FolderConfigurationPage clickHealthMetricsInSideMenu() {

@@ -4,25 +4,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseProjectPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectDetailsPage extends BaseProjectPage {
+public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjectConfigurePage, FreestyleProjectDetailsPage> {
 
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
     private WebElement buildNowButton;
 
     @FindBy(name = "Submit")
     private WebElement enableDisableButton;
-
-    @FindBy(linkText = "Configure")
-    private WebElement configureLink;
-
-    @FindBy(xpath = "//div[5]//span[1]//a[1]//span[1]//*[name()='svg']")
-    private WebElement configureBtn;
 
     @FindBy(className = "warning")
     private WebElement warningMessage;
@@ -39,9 +32,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
     @FindBy(css = "ul[class='permalinks-list']")
     private WebElement listPermalinks;
 
-    @FindBy(xpath = "//div[@id = 'description']/div[1]")
-    private WebElement descriptionText;
-
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement projectDescriptionInputField;
 
@@ -50,9 +40,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
 
     @FindBy(xpath = "//*[@id=\"tasks\"]/div[6]/span/a/span[2]")
     private WebElement deleteProject;
-
-    @FindBy(xpath = "//a[contains(@href,'configure')]")
-    private WebElement configureButton;
 
     @FindBy(xpath = "//a[contains(@href,'ws')]")
     private WebElement workspaceButton;
@@ -70,34 +57,15 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
+    @Override
+    protected FreestyleProjectConfigurePage createConfigurationPage() {
+        return new FreestyleProjectConfigurePage(getDriver());
+    }
+
     public FreestyleProjectDetailsPage clickBuildNowButton() {
         buildNowButton.click();
 
         return this;
-    }
-
-    public FreestyleProjectConfigurePage goToConfigureFromSideMenu() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(configureButton)).click();
-
-        return new FreestyleProjectConfigurePage(getDriver());
-    }
-
-    public FreestyleProjectDetailsPage clickEnableDisableButton() {
-        enableDisableButton.click();
-
-        return this;
-    }
-
-    public FreestyleProjectConfigurePage clickConfigure() {
-        configureLink.click();
-
-        return new FreestyleProjectConfigurePage(getDriver());
-    }
-
-    public FreestyleProjectConfigurePage clickConfigureFromSideMenu() {
-        configureBtn.click();
-
-        return new FreestyleProjectConfigurePage(getDriver());
     }
 
     public boolean isEnabled() {
@@ -112,24 +80,10 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         return enableDisableButton.getText();
     }
 
-    public boolean isStatusPageSelected() {
-        return statusPageLink.getAttribute("class").contains("active");
-    }
-
-    public FreestyleProjectRenamePage clickRename() {
-        renamePageLink.click();
-
-        return new FreestyleProjectRenamePage(getDriver());
-    }
-
     public WorkspacePage goToWorkspaceFromSideMenu() {
         workspaceButton.click();
 
         return new WorkspacePage(getDriver());
-    }
-
-    public String getDescriptionText() {
-        return descriptionText.getText();
     }
 
     public FreestyleProjectDetailsPage clickSaveButton() {
@@ -150,12 +104,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
 
     public String getPermalinksText() {
         return listPermalinks.getText();
-    }
-
-    public FreestyleProjectDetailsPage clickAddOrEditDescriptionButton() {
-        addDescription.click();
-
-        return this;
     }
 
     public FreestyleProjectDetailsPage insertDescriptionText(String description) {
@@ -184,10 +132,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage {
         }
 
         return textValue;
-    }
-
-    public String getCurrentUrl() {
-        return getDriver().getCurrentUrl();
     }
 
     public boolean isProjectDisabled() {

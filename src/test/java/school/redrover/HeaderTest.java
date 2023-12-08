@@ -107,8 +107,8 @@ public class HeaderTest extends BaseTest {
     @Test(dependsOnMethods = "testRedirectionToStatusPageFromResultList")
     public void testHotKeysSearchAreaSelection() {
         WebElement searchHotKeys = new HomePage(getDriver())
-                .getHotKeysFocusSearch(new HomePage(getDriver()))
-                .getSearchBox();
+                .getHotKeysFocusSearch()
+                .getSearchBoxWebElement();
 
         Assert.assertTrue(searchHotKeys.equals(getDriver().switchTo().activeElement()));
     }

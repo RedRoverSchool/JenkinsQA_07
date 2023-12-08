@@ -4,14 +4,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.BuildPage;
-import school.redrover.model.BuildWithParametersPage;
-import school.redrover.model.MovePage;
-import school.redrover.model.RenamePage;
+import school.redrover.model.*;
 
 import java.util.List;
 
-public abstract class BaseProjectPage extends BasePage {
+public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>, Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
@@ -20,7 +17,7 @@ public abstract class BaseProjectPage extends BasePage {
     private WebElement renameSubmenu;
 
     @FindBy(name = "Submit")
-    private WebElement disableButton;
+    private WebElement disableEnableButton;
 
     @FindBy(id = "enable-project")
     private WebElement disableMessage;
@@ -35,13 +32,22 @@ public abstract class BaseProjectPage extends BasePage {
     private WebElement buildIconInBuildHistory;
 
     @FindBy(linkText = "Configure")
-    private WebElement configureSideMenuOption;
+    private WebElement configureSideMenuItem;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'move')]")
     private WebElement moveSideMenuOption;
 
     @FindBy(id = "description-link")
-    protected WebElement addDescription;
+    private WebElement addDescription;
+
+    @FindBy(linkText = "Status")
+    private WebElement statusPageLink;
+
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
+    private List<WebElement> breadcrumbChain;
+
+    @FindBy(xpath = "//div[@id = 'description']/div[1]")
+    private WebElement descriptionText;
 
     public BaseProjectPage(WebDriver driver) {
         super(driver);
@@ -52,16 +58,44 @@ public abstract class BaseProjectPage extends BasePage {
         return projectName.getText();
     }
 
-    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOption(ProjectRenamePage projectRenamePage) {
+    public RenamePage<Self> clickRename() {
         renameSubmenu.click();
 
-        return projectRenamePage;
+        return new RenamePage<>(getDriver(), (Self)this);
     }
 
-    public BaseProjectPage clickDisableButton() {
-        disableButton.click();
+    public Self clickDisableButton() {
+        disableEnableButton.click();
 
-        return this;
+        return (Self)this;
+    }
+
+    public Self clickEnableButton() {
+        disableEnableButton.click();
+
+        return (Self)this;
+    }
+
+    public Self clickAddOrEditDescription() {
+        addDescription.click();
+
+        return (Self)this;
+    }
+
+    public String getDescriptionText() {
+        return descriptionText.getText();
+    }
+
+    public String getAddDescriptionButtonText() {
+       return addDescription.getText();
+    }
+
+    public String getDisableButtonText() {
+        return disableEnableButton.getText();
+    }
+
+    public String getEnableButtonText() {
+        return disableEnableButton.getText();
     }
 
     public String getDisabledMessageText() {
@@ -69,7 +103,7 @@ public abstract class BaseProjectPage extends BasePage {
         return disableMessage.getText().substring(0, 46);
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
+    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
         buildNowSideMenuOption.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElements(buildLinksInBuildHistory));
 
@@ -82,7 +116,7 @@ public abstract class BaseProjectPage extends BasePage {
         return new BuildWithParametersPage(getDriver());
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
+    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
         for (int i = 0; i < numOfClicks; i++) {
             clickBuildNow(projectDetailsPage);
         }
@@ -95,10 +129,12 @@ public abstract class BaseProjectPage extends BasePage {
         return buildLinksInBuildHistory.stream().map(WebElement::getText).toList();
     }
 
-    public <ProjectConfigurationPage extends BaseConfigurationPage> ProjectConfigurationPage clickConfigure(ProjectConfigurationPage projectConfigurationPage) {
-        configureSideMenuOption.click();
+    protected abstract ProjectConfigurationPage createConfigurationPage();
 
-        return projectConfigurationPage;
+    public ProjectConfigurationPage clickConfigure() {
+        configureSideMenuItem.click();
+
+        return createConfigurationPage();
     }
 
     public BuildPage clickBuildIconInBuildHistory() {
@@ -111,5 +147,9 @@ public abstract class BaseProjectPage extends BasePage {
         moveSideMenuOption.click();
 
         return new MovePage(getDriver());
+    }
+
+    public boolean isStatusPageSelected() {
+        return statusPageLink.getAttribute("class").contains("active");
     }
 }

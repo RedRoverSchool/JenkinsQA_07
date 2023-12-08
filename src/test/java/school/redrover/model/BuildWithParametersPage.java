@@ -7,7 +7,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class BuildWithParametersPage extends BasePage {
+public class BuildWithParametersPage extends BasePage<BuildWithParametersPage> {
 
     @FindBy(xpath = "//select[@name='value']/option")
     private List<WebElement> choiceParameterOptions;

@@ -7,10 +7,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BaseConfigurationPage;
+import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 
-public class PipelineConfigurePage extends BaseConfigurationPage {
+public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetailsPage, PipelineConfigurePage> {
 
     @FindBy(xpath = "//label[text()='This project is parameterized']")
     private WebElement projectIsParameterizedCheckbox;
@@ -26,9 +27,6 @@ public class PipelineConfigurePage extends BaseConfigurationPage {
 
     @FindBy(name = "parameter.choices")
     private WebElement parameterChoicesField;
-
-    @FindBy(xpath = "//button[@name = 'Submit']")
-    private WebElement saveButton;
 
     @FindBy(xpath = "//div[@class='samples']/select")
     private WebElement pipelineScriptSamplesDropdown;
@@ -62,6 +60,11 @@ public class PipelineConfigurePage extends BaseConfigurationPage {
 
     public PipelineConfigurePage(WebDriver driver) {
         super(driver);
+    }
+
+    @Override
+    protected PipelineDetailsPage createProjectPage() {
+        return new PipelineDetailsPage(getDriver());
     }
 
     public PipelineConfigurePage clickProjectIsParameterized() {
@@ -101,12 +104,6 @@ public class PipelineConfigurePage extends BaseConfigurationPage {
         }
 
         return this;
-    }
-
-    public PipelineDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return new PipelineDetailsPage(getDriver());
     }
 
     public PipelineConfigurePage selectPipelineScriptSampleByValue(String value) {

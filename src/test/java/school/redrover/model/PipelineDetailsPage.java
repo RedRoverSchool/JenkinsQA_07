@@ -10,11 +10,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineDetailsPage extends BaseProjectPage {
-
-    public PipelineDetailsPage(WebDriver driver) {
-        super(driver);
-    }
+public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, PipelineDetailsPage> {
 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
@@ -27,9 +23,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
 
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
-
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'configure')]")
-    private WebElement configureSideMenuOption;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
     private WebElement buildNowSideMenuOption;
@@ -67,9 +60,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
     @FindBy(xpath = "//a[contains(@href, 'lastBuild/')]")
     private WebElement lastBuildLink;
 
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
-    private WebElement replayButtonSideMenu;
-
     @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
     private WebElement deletePipelineButton;
 
@@ -79,10 +69,11 @@ public class PipelineDetailsPage extends BaseProjectPage {
     @FindBy(css = "div#pipeline-box > div")
     private WebElement stageViewAlertText;
 
-    public PipelineDetailsPage clickAddDescription() {
-        addDescription.click();
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item'][2]//a[@class='model-link']")
+    private WebElement folderBreadCrumbs;
 
-        return this;
+    public PipelineDetailsPage(WebDriver driver) {
+        super(driver);
     }
 
     public PipelineDetailsPage inputDescription(String description) {
@@ -98,11 +89,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
         return this;
     }
 
-    public String getDescription() {
-
-        return description.getText();
-    }
-
     public List<String> getPermalinksList() {
         List<String> permalinks = new ArrayList<>();
         for (WebElement permalink : permalinksList) {
@@ -112,22 +98,15 @@ public class PipelineDetailsPage extends BaseProjectPage {
         return permalinks;
     }
 
-    public PipelineConfigurePage clickConfigure() {
-        configureSideMenuOption.click();
-
-        return new PipelineConfigurePage(getDriver());
-    }
-
     public PipelineDetailsPage clickBuildNow() {
         buildNowSideMenuOption.click();
 
         return this;
     }
 
-    public BuildWithParametersPage clickBuildWithParameters() {
-        buildNowSideMenuOption.click();
-
-        return new BuildWithParametersPage(getDriver());
+    @Override
+    protected PipelineConfigurePage createConfigurationPage() {
+        return new PipelineConfigurePage(getDriver());
     }
 
     public PipelineDetailsPage clickLogsInStageView() {
@@ -147,12 +126,6 @@ public class PipelineDetailsPage extends BaseProjectPage {
 
     public List<String> getStagesNames() {
         return stagesNamesList.stream().map(WebElement::getText).toList();
-    }
-
-    public PipelineRenamePage clickRenameInSideMenu() {
-        renameSideMenuOption.click();
-
-        return new PipelineRenamePage(getDriver());
     }
 
     public boolean isBuildIconDisplayed() {
@@ -177,16 +150,10 @@ public class PipelineDetailsPage extends BaseProjectPage {
         return tooltipValue.getAttribute("tooltip");
     }
 
-    public PipelineDetailsPage clickLastBuildLink() {
+    public BuildPage clickLastBuildLink() {
         lastBuildLink.click();
 
-        return new PipelineDetailsPage(getDriver());
-    }
-
-    public ReplayBuildPipelinePage clickReplaySideMenu() {
-        replayButtonSideMenu.click();
-
-        return new ReplayBuildPipelinePage(getDriver());
+        return new BuildPage(getDriver());
     }
 
     public String getLastBuildLinkText() {
@@ -208,5 +175,10 @@ public class PipelineDetailsPage extends BaseProjectPage {
     public String getStageViewAlertText() {
 
         return stageViewAlertText.getText();
+    }
+
+    public FolderDetailsPage  clickFolderBreadCrumbs(){
+        folderBreadCrumbs.click();
+        return new FolderDetailsPage(getDriver());
     }
 }

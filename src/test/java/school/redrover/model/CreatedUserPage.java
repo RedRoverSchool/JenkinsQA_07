@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class CreatedUserPage extends BasePage {
+public class CreatedUserPage extends BasePage<CreatedUserPage> {
 
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;
@@ -19,17 +19,23 @@ public class CreatedUserPage extends BasePage {
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
-    @FindBy(className = "jenkins_ver")
-    private WebElement jenkinsVersionButton;
-
-    @FindBy(css = "a[href='/manage/about']")
-    private WebElement aboutJenkinsButton;
-
     @FindBy(css = "a[href*='my-views']")
     private WebElement myViewsButton;
 
     @FindBy(css = "a[href*='configure']")
     private WebElement configureButton;
+
+    @FindBy(xpath = "//a[@href = '/user/admin/builds']")
+    private WebElement buildsButton;
+
+    @FindBy(css = "a[href$='credentials']")
+    private WebElement credentialsSidePanelButton;
+
+    @FindBy(xpath = "//*[@id='main-panel']/div[2]")
+    private WebElement jenkinsUserIdDisplay;
+
+    @FindBy(xpath = "//a[@href = 'api/']")
+    private WebElement restApiButton;
 
     public CreatedUserPage(WebDriver driver) {
         super(driver);
@@ -57,23 +63,6 @@ public class CreatedUserPage extends BasePage {
         return descriptionText.getText();
     }
 
-    public String getJenkinsVersion() {
-
-        return jenkinsVersionButton.getText();
-    }
-
-    public CreatedUserPage clickVersionJenkins() {
-        jenkinsVersionButton.click();
-
-        return this;
-    }
-
-    public AboutJenkinsPage clickAboutJenkins() {
-        aboutJenkinsButton.click();
-
-        return new AboutJenkinsPage(getDriver());
-    }
-
     public UserViewPage clickUserMyViews() {
         myViewsButton.click();
 
@@ -84,5 +73,25 @@ public class CreatedUserPage extends BasePage {
         configureButton.click();
 
         return new UserConfigurationPage(getDriver());
+    }
+
+    public boolean isCreatedUserIdDisplayedCorrectly(String userName){
+        return jenkinsUserIdDisplay.getText().contains(userName);
+    }
+
+    public RestApiPage clickRestApiButton(){
+        restApiButton.click();
+        return new RestApiPage(getDriver());
+    }
+
+    public UserBuildPage clickBuildsButton() {
+        buildsButton.click();
+        return new UserBuildPage(getDriver());
+    }
+
+    public CredentialsPage goCredentialsPage() {
+        credentialsSidePanelButton.click();
+
+        return new CredentialsPage(getDriver());
     }
 }

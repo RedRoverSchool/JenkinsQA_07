@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 
-public class LogRecordersDetailsPage extends BasePage {
+public class LogRecordersDetailsPage extends BasePage<LogRecordersDetailsPage> {
 
     @FindBy(xpath = "//a[@href = 'configure']")
     private WebElement configureButton;

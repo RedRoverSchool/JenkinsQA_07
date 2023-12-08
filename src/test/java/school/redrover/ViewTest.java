@@ -96,22 +96,6 @@ public class ViewTest extends BaseTest {
     }
 
     @Test
-    public void testCreateNewView3() {
-        String newItemName = "Bob";
-
-        String newItemNameActual = new HomePage(getDriver())
-                .clickMyView()
-                .clickNewItem()
-                .typeItemName(newItemName)
-                .selectItemFolder()
-                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
-                .goHomePage()
-                .getItemNameInTable();
-
-        Assert.assertEquals(newItemNameActual, newItemName);
-    }
-
-    @Test
     public void testDeleteViewOnDashboard() {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
 
@@ -121,7 +105,7 @@ public class ViewTest extends BaseTest {
                 .selectListViewType()
                 .clickCreateButton(new MyViewPage(getDriver()))
                 .clickDeleteView()
-                .acceptAlert(new MyViewPage(getDriver()))
+                .acceptAlert()
                 .isViewExists(VIEW_NAME);
 
         Assert.assertFalse(deleteView);

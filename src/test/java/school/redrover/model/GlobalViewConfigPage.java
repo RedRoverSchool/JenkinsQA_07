@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class GlobalViewConfigPage extends BasePage {
+public class GlobalViewConfigPage extends BasePage<GlobalViewConfigPage> {
 
     @FindBy(xpath = "//input[@name='name']")
     private WebElement inputName;

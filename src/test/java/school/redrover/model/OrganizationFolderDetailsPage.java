@@ -5,10 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BaseProjectPage;
 
-public class OrganizationFolderDetailsPage extends BaseProjectPage {
-
-    @FindBy(css = "a[href$='configure']")
-    private WebElement configureButtonSideMenu;
+public class OrganizationFolderDetailsPage extends BaseProjectPage<OrganizationFolderConfigurationPage, OrganizationFolderDetailsPage> {
 
     @FindBy(name = "Submit")
     private WebElement submitButton;
@@ -20,21 +17,9 @@ public class OrganizationFolderDetailsPage extends BaseProjectPage {
         super(driver);
     }
 
-    public OrganizationFolderConfigurationPage clickConfigureSideMenu() {
-        configureButtonSideMenu.click();
-
+    @Override
+    protected OrganizationFolderConfigurationPage createConfigurationPage() {
         return new OrganizationFolderConfigurationPage(getDriver());
-    }
-
-    public OrganizationFolderDetailsPage clickDisable() {
-        submitButton.click();
-
-        return this;
-    }
-
-    public String submitButtonText() {
-
-        return submitButton.getText();
     }
 
     public HomePage clickDelete() {
