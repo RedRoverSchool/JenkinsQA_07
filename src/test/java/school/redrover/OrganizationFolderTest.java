@@ -246,8 +246,8 @@ public class OrganizationFolderTest extends BaseTest {
     public void testAddProjectDescriptionWhenCreatingProject() {
         String descriptionText = new HomePage(getDriver())
                 .clickNewItem()
-                .createFreestyleProject(PROJECT_NAME)
-                .inputDescription("Project description")
+                .createOrganizationFolder(PROJECT_NAME)
+                .enterDescription("Project description")
                 .clickSaveButton()
                 .getDescriptionText();
 
