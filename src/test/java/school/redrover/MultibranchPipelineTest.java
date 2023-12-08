@@ -172,29 +172,31 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
+    @Test(dependsOnMethods = "testRenameMultibranchDropdownDashboard")
     public void testRenameMultibranchDropdownBreadcrumbs() {
-        getDriver().findElement(By.xpath("//td[3]/a/span")).click();
 
-        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(breadcrumbName).perform();
-
-        WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
-        actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
-
-        getDriver().findElement(By.xpath("//a[@href='/job/"
-                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[3]/a/span")).getText(), MULTIBRANCH_PIPELINE_NAME,
-                MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
+        String actualResult = new HomePage(getDriver())
+                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+                .
+//
+//        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
+//        Actions actions = new Actions(getDriver());
+//        actions.moveToElement(breadcrumbName).perform();
+//
+//        WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
+//        actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
+//
+//        getDriver().findElement(By.xpath("//a[@href='/job/"
+//                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
+//
+//        getDriver().findElement(By.name("newName")).clear();
+//        getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
+//        getDriver().findElement(By.name("Submit")).click();
+//
+//        getDriver().findElement(By.id("jenkins-name-icon")).click();
+//
+//        Assert.assertEquals(getDriver().findElement(By.xpath("//td[3]/a/span")).getText(), MULTIBRANCH_PIPELINE_NAME,
+//                MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
     }
 
     @Test
@@ -216,7 +218,7 @@ public class MultibranchPipelineTest extends BaseTest {
     public void testSeeAAlertAfterDisableMultibranchPipeline() {
         String actualStatusMessage = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickDisable()
+                .clickDisableButton()
                 .getDisableStatusMessage();
 
         Assert.assertTrue(actualStatusMessage.contains("This Multibranch Pipeline is currently disabled"),
@@ -395,7 +397,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String disabledText = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickDisable()
+                .clickDisableButton()
                 .getDisableStatusMessage();
 
         Assert.assertTrue(disabledText.contains("This Multibranch Pipeline is currently disabled"));

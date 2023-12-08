@@ -69,12 +69,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
     }
 
-    public MultibranchPipelineDetailsPage clickDisable() {
-        disableButton.click();
-
-        return this;
-    }
-
     public MultibranchPipelineDetailsPage clickEnable() {
         enableButton.click();
 
