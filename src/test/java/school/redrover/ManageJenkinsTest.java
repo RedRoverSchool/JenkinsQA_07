@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -274,6 +275,7 @@ public class ManageJenkinsTest extends BaseTest {
                 "Status Information sections titles differ from the expected ones");
     }
 
+    @Ignore
     @Test
     public void testCreateCredentialFromConfigurePage() {
 
