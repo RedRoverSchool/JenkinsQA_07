@@ -93,4 +93,26 @@ public class BuildHistoryTest extends BaseTest {
 
         Assert.assertEquals(actualPosition, startPosition);
     }
+
+    @Test ()
+    public void testEditBuildInformation(){
+        String buildHistoryPage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(NAME_FREESTYLE_PROJECT)
+                .selectFreestyleProject()
+                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .clickSaveButton()
+                .clickBuildNowButton()
+                .goHomePage()
+                .clickBuildHistoryButton()
+                .getBuildDropdownMenu()
+                .clickBuildDropDownMenu()
+                .setDisplayName()
+                .setFieldDescription()
+                .clickSaveButton()
+                .getDescriptionOfBuild();
+
+
+        Assert.assertEquals(buildHistoryPage, "Edited description");
+    }
 }
