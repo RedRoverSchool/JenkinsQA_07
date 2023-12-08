@@ -46,7 +46,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
     private List<WebElement> breadcrumbChain;
 
-    @FindBy(id = "view-message")
+    @FindBy(xpath = "//div[@id='description']/div[1]")
     private WebElement descriptionText;
 
     @FindBy(xpath = "//textarea[@name='description']")

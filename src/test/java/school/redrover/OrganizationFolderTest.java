@@ -249,7 +249,7 @@ public class OrganizationFolderTest extends BaseTest {
                 .createOrganizationFolder(PROJECT_NAME)
                 .enterDescription("Project description")
                 .clickSaveButton()
-                .getDescriptionText();
+                .getDescriptionTextOrganizationFolder();
 
         Assert.assertEquals(descriptionText, "Project description");
     }
