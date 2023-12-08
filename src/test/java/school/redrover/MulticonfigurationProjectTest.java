@@ -70,7 +70,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
     public void testAddDescription() {
         String description = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
-                .buttonEditDescription()
+                .clickAddOrEditDescription()
                 .inputDescription(DESCRIPTION)
                 .buttonSaveDescription()
                 .getDescriptionText();
@@ -84,7 +84,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
 
         String description = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
-                .buttonEditDescription()
+                .clickAddOrEditDescription()
                 .clearDescription()
                 .inputDescription(newDescription)
                 .buttonSaveDescription()
@@ -97,7 +97,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
     public void testDeleteDescription() {
         String delete = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
-                .buttonEditDescription()
+                .clickAddOrEditDescription()
                 .clearDescription()
                 .buttonSaveDescription()
                 .getDescriptionText();

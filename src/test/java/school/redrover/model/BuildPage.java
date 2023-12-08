@@ -18,6 +18,12 @@ public class BuildPage extends BasePage<BuildPage> {
     @FindBy(xpath = "//pre[@class='console-output']//span[@class='timestamp']")
     private List<WebElement> timestampsList;
 
+    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
+    private WebElement replayButtonSideMenu;
+
+    @FindBy(xpath = "//*[text()='Edit Build Information']/ancestor::a")
+    private WebElement editBuildInformationSideMenu;
+
     public BuildPage(WebDriver driver) {
         super(driver);
     }
@@ -37,4 +43,17 @@ public class BuildPage extends BasePage<BuildPage> {
     public List<String> getTimestampsList() {
         return timestampsList.stream().map(WebElement::getText).toList();
     }
+
+    public ReplayBuildPipelinePage clickReplaySideMenu() {
+        replayButtonSideMenu.click();
+
+        return new ReplayBuildPipelinePage(getDriver());
+    }
+
+    public BuildEditInformationPage clickEditBuildInformationSideMenu(){
+        editBuildInformationSideMenu.click();
+
+        return new BuildEditInformationPage(getDriver());
+    }
+
 }

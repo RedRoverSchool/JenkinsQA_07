@@ -28,9 +28,6 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage<Freesty
     @FindBy(id = "source-code-management")
     private WebElement sourceCodeManagementSectionHeader;
 
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
-
     @FindBy(xpath = "//button[@data-section-id='source-code-management']")
     private WebElement sourceCodeManagementLink;
 

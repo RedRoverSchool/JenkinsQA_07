@@ -22,7 +22,7 @@ import static org.testng.Assert.*;
 
 public class UserTest extends BaseTest {
 
-    private static final String USER_NAME = "Jane";
+    private static final String USER_NAME = "Username";
     private static final String USER_NAME_2 = "FirstUser";
     private static final String NAME = "ivan";
     private static final String FULL_NAME = "User Full Name";
@@ -161,8 +161,7 @@ public class UserTest extends BaseTest {
                 .clickUsersButton()
                 .clickAddUserButton()
                 .fillUserInformationField(USER_NAME, PASSWORD, EMAIL)
-                .clickDeleteIcon(1);
-
+                .clickDeleteIcon(0);
         Alert alert = getDriver().switchTo().alert();
         alert.accept();
 
@@ -237,17 +236,14 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testConfigureAddDescriptionFromManageJenkinsPage() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = '/manage']"))).click();
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href = 'securityRealm/']"))).click();
-        getWait10().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href = 'user/admin/configure']"))).click();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//textarea[@name='_.description']"))).clear();
-        getDriver().findElement(By.xpath("//textarea[@name='_.description']")).sendKeys(DESCRIPTION);
-        getDriver().findElement(By.name("Submit")).click();
-
-        Assert.assertEquals(
-                getWait2().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//div[@id = 'description']/div[1]"))).getText(), DESCRIPTION);
+        String actualDescription = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickConfigureIcon(0)
+                .typeDescription(DESCRIPTION)
+                .clickSaveButton()
+                .getDescriptionText();
+        Assert.assertEquals(actualDescription, DESCRIPTION);
     }
 
     @Test
@@ -421,13 +417,10 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testVerifyUserCreated() {
-        String password = "qwerty";
-        String confirmPassword = "qwerty";
-        String eMailAddress = "user@mail.com";
         String usersPageTitleActual = "Users";
 
         goToUserCreateFormPage();
-        createUserAllFields(USER_NAME, password, confirmPassword, FULL_NAME, eMailAddress);
+        createUserAllFields(USER_NAME, PASSWORD, PASSWORD, FULL_NAME, EMAIL);
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), usersPageTitleActual);
         Assert.assertTrue(getDriver().findElement(By.id("people")).getText().contains(USER_NAME) && getDriver().findElement(By.id("people")).getText().contains(FULL_NAME));
@@ -591,27 +584,16 @@ public class UserTest extends BaseTest {
     }
 
     @Test
-    public void testUser() {
+    public void testUsernameDisplayedOnUserStatusPage() {
 
-        final String username = "TestUser";
-        final String password = "Nelly123456";
-        final String email = "lucky20@mail.ru";
-
-        getDriver().findElement(By.xpath("//a[@href='/manage']")).click();
-        getDriver().findElement(By.xpath("//a[@href='securityRealm/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-        getDriver().findElement(By.xpath("//input[@name='username']")).sendKeys(username);
-        getDriver().findElement(By.xpath("//input[@name='password1']")).sendKeys(password);
-        getDriver().findElement(By.xpath("//input[@name='password2']")).sendKeys(password);
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(email);
-        getDriver().findElement(By.xpath("//button[@formNoValidate]")).click();
-        getDriver().findElement(By.xpath("//a[@href='user/testuser/']")).click();
-
-        String actualResult = getDriver().findElement(By.xpath(
-                "//div[@id='main-panel']/h1")).getText();
-
-        Assert.assertEquals(actualResult,"TestUser");
-
+        String userName = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickAddUserButton()
+                .fillUserInformationField(USER_NAME, PASSWORD, EMAIL)
+                .clickUserByName(USER_NAME)
+                .getHeadLineText();
+        Assert.assertEquals(userName, USER_NAME);
     }
 
     @Test(dataProvider = "provideInvalidCredentials")

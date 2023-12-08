@@ -60,9 +60,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
     @FindBy(xpath = "//a[contains(@href, 'lastBuild/')]")
     private WebElement lastBuildLink;
 
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
-    private WebElement replayButtonSideMenu;
-
     @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
     private WebElement deletePipelineButton;
 
@@ -79,16 +76,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
         super(driver);
     }
 
-
-
-
-
-    public PipelineDetailsPage clickAddDescription() {
-        addDescription.click();
-
-        return this;
-    }
-
     public PipelineDetailsPage inputDescription(String description) {
         descriptionField.sendKeys(description);
 
@@ -100,11 +87,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
         getWait2().until(ExpectedConditions.visibilityOf(description));
 
         return this;
-    }
-
-    public String getDescription() {
-
-        return description.getText();
     }
 
     public List<String> getPermalinksList() {
@@ -120,12 +102,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
         buildNowSideMenuOption.click();
 
         return this;
-    }
-
-    public BuildWithParametersPage clickBuildWithParameters() {
-        buildNowSideMenuOption.click();
-
-        return new BuildWithParametersPage(getDriver());
     }
 
     @Override
@@ -174,16 +150,10 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
         return tooltipValue.getAttribute("tooltip");
     }
 
-    public PipelineDetailsPage clickLastBuildLink() {
+    public BuildPage clickLastBuildLink() {
         lastBuildLink.click();
 
-        return new PipelineDetailsPage(getDriver());
-    }
-
-    public ReplayBuildPipelinePage clickReplaySideMenu() {
-        replayButtonSideMenu.click();
-
-        return new ReplayBuildPipelinePage(getDriver());
+        return new BuildPage(getDriver());
     }
 
     public String getLastBuildLinkText() {

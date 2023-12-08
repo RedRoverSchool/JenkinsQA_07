@@ -26,13 +26,21 @@ public class UserDatabasePage extends BasePage<UserDatabasePage> {
     private List<WebElement> userIDs;
 
 
-    @FindBy(xpath = "//tr/td[5]")
+    @FindBy(xpath = "//tr/td[5]//a")
     private List<WebElement> deleteIcon;
+
+    @FindBy(xpath = "//tr//td[4]//a")
+    private List<WebElement> configureIcon;
 
 
     public UserDatabasePage clickDeleteIcon (int n) {
         deleteIcon.get(n).click();
         return this;
+    }
+
+    public UserConfigurationPage clickConfigureIcon (int n) {
+        configureIcon.get(n).click();
+        return new UserConfigurationPage(getDriver());
     }
 
 

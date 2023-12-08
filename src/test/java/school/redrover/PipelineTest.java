@@ -13,6 +13,7 @@ import java.util.List;
 public class PipelineTest extends BaseTest {
 
     private static final String JOB_NAME = "NewPipeline";
+    private static final String BUILD_NAME = "PipelineBuildName";
 
     @Test
     public void testCreatePipeline() {
@@ -200,10 +201,10 @@ public class PipelineTest extends BaseTest {
 
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
-                .clickAddDescription()
+                .clickAddOrEditDescription()
                 .inputDescription(description)
                 .clickSaveButton()
-                .getDescription();
+                .getDescriptionText();
 
         Assert.assertEquals(actualDescription, description);
     }
@@ -344,5 +345,21 @@ public class PipelineTest extends BaseTest {
                 .getJobList();
 
         Assert.assertTrue(name.contains( JOB_NAME));
+    }
+
+    @Test
+    public void testAddDisplayNameForBuild() {
+        TestUtils.createPipeline(this, JOB_NAME, true);
+
+        String newDisplayedBuildName = new HomePage(getDriver())
+                .clickBuildByGreenArrowWithWait(JOB_NAME)
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickLastBuildLink()
+                .clickEditBuildInformationSideMenu()
+                .enterDisplayName(BUILD_NAME)
+                .clickSaveButton()
+                .getPageTitle();
+
+        Assert.assertTrue(newDisplayedBuildName.contains(BUILD_NAME));
     }
 }

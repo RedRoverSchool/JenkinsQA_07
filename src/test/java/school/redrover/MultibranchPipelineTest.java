@@ -175,10 +175,10 @@ public class MultibranchPipelineTest extends BaseTest {
     @Test(dependsOnMethods = "testRenameMultibranchDropdownDashboard")
     public void testRenameMultibranchDropdownBreadcrumbs() {
 
-        String actualResult = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .
-//
+//        String actualResult = new HomePage(getDriver())
+//                .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
+//                .
+
 //        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
 //        Actions actions = new Actions(getDriver());
 //        actions.moveToElement(breadcrumbName).perform();
@@ -408,7 +408,7 @@ public class MultibranchPipelineTest extends BaseTest {
 
         String disabledText = new HomePage(getDriver())
                 .clickJobByName(MULTIBRANCH_PIPELINE_NEW_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickEnable()
+                .clickEnableButton()
                 .getDisableButtonText();
 
         Assert.assertEquals(disabledText, "Disable Multibranch Pipeline");

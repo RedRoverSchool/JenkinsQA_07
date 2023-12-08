@@ -10,7 +10,7 @@ public class UserConfigurationPage extends BasePage<UserConfigurationPage> {
     @FindBy(name = "_.fullName")
     private WebElement fullName;
 
-    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
+    @FindBy(name = "Submit")
     private WebElement saveButton;
 
     @FindBy(name = "_.primaryViewName")

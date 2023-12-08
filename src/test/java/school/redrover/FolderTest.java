@@ -218,7 +218,7 @@ public class FolderTest extends BaseTest {
                 .clickAddOrEditDescription()
                 .typeDescription(DESCRIPTION_NAME)
                 .clickSave()
-                .getActualFolderDescription();
+                .getDescriptionText();
 
         Assert.assertEquals(actualDescription, DESCRIPTION_NAME);
     }
@@ -256,7 +256,7 @@ public class FolderTest extends BaseTest {
                 .clickAddOrEditDescription()
                 .typeDescription(newDescriptionText)
                 .clickSave()
-                .getActualFolderDescription();
+                .getDescriptionText();
 
         Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
     }
@@ -269,8 +269,8 @@ public class FolderTest extends BaseTest {
                 .clearDescriptionTextArea()
                 .clickSave();
 
-        Assert.assertTrue(folderDescription.getActualFolderDescription().isEmpty());
-        Assert.assertEquals(folderDescription.getDescriptionButtonText(), "Add description");
+        Assert.assertTrue(folderDescription.getDescriptionText().isEmpty());
+        Assert.assertEquals(folderDescription.getAddDescriptionButtonText(), "Add description");
     }
 
     @Test(dependsOnMethods = {"testCreate", "testRename"})
@@ -353,7 +353,7 @@ public class FolderTest extends BaseTest {
                 .clickFolderName(RENAMED_FOLDER)
                 .clickCreateAJob()
                 .createPipeline(PIPELINE_PROJECT_NAME)
-                .clickSave()
+                .clickSaveButton()
                 .clickFolderBreadCrumbs()
                 .isNewCreatedProjectDisplayed();
 
