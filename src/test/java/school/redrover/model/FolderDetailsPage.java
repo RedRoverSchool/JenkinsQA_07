@@ -13,9 +13,6 @@ public class FolderDetailsPage extends BaseDetailsPage<FolderConfigurationPage, 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
 
-    @FindBy(name = "Submit")
-    private WebElement submitButton;
-
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
 
@@ -55,12 +52,6 @@ public class FolderDetailsPage extends BaseDetailsPage<FolderConfigurationPage, 
     public FolderDetailsPage typeDescription(String description) {
         descriptionTextArea.clear();
         descriptionTextArea.sendKeys(description);
-
-        return this;
-    }
-
-    public FolderDetailsPage clickSave() {
-        submitButton.click();
 
         return this;
     }

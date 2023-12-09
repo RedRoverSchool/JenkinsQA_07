@@ -217,7 +217,7 @@ public class FolderTest extends BaseTest {
                 .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeDescription(DESCRIPTION_NAME)
-                .clickSave()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(actualDescription, DESCRIPTION_NAME);
@@ -255,7 +255,7 @@ public class FolderTest extends BaseTest {
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeDescription(newDescriptionText)
-                .clickSave()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
@@ -267,7 +267,7 @@ public class FolderTest extends BaseTest {
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .clearDescriptionTextArea()
-                .clickSave();
+                .clickSaveDescriptionButton();
 
         Assert.assertTrue(folderDescription.getDescriptionText().isEmpty());
         Assert.assertEquals(folderDescription.getAddDescriptionButtonText(), "Add description");

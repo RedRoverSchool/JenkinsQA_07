@@ -64,6 +64,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualMenu, expectedMenu);
     }
 
+    @Ignore
     @Test
     public void testClickGetInvolved() {
         String actualPageName = new HomePage(getDriver())

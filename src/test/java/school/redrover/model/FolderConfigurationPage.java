@@ -85,13 +85,13 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
     }
 
     public FolderConfigurationPage selectChildHealthMetric() {
-        childHealthMetric.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(childHealthMetric)).click();
 
         return this;
     }
 
     public boolean  isChildHealthMetricDisplayed () {
-        return childHealthMetricSection.isDisplayed();
+        return getWait5().until(ExpectedConditions.visibilityOf(childHealthMetricSection)).isDisplayed();
     }
 
     public FolderConfigurationPage clickHelpButtonRecursive() {
