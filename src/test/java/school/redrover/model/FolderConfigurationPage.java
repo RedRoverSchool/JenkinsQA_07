@@ -79,7 +79,7 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
     }
 
     public FolderConfigurationPage clickAddHealthMetric() {
-        addMetricButton.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(addMetricButton)).click();
 
         return this;
     }

@@ -449,7 +449,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickDiscardOldBuildsCheckBox()
                 .inputMaxNumberOfBuildsToKeep(String.valueOf(numOfBuildNowClicks))
                 .clickSaveButton()
-                .clickBuildNowSeveralTimes(new FreestyleProjectDetailsPage(getDriver()), numOfBuildNowClicks + 1)
+                .clickBuildNowSeveralTimes(numOfBuildNowClicks + 1)
                 .refreshPage()
                 .getBuildsInBuildHistoryList();
 
@@ -691,7 +691,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .clickAddTimestampsToConsoleOutput()
                 .clickSaveButton()
-                .clickBuildNow(new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNow()
                 .waitAndRefresh()
                 .clickBuildIconInBuildHistory().getTimestampsList();
 
@@ -897,7 +897,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String permaLinks = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickBuildNowButton()
+                .clickBuildNow()
                 .refreshPage()
                 .clickPermalinkLastBuild()
                 .clickDeleteBuildSidePanel()

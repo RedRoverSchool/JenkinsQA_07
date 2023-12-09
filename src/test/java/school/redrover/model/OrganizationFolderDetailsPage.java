@@ -3,9 +3,9 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
-public class OrganizationFolderDetailsPage extends BaseProjectPage<OrganizationFolderConfigurationPage, OrganizationFolderDetailsPage> {
+public class OrganizationFolderDetailsPage extends BaseDetailsPage<OrganizationFolderConfigurationPage, OrganizationFolderDetailsPage> {
 
     @FindBy(name = "Submit")
     private WebElement submitButton;
