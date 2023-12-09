@@ -4,17 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.List;
 
-public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, FolderDetailsPage> {
+public class FolderDetailsPage extends BaseDetailsPage<FolderConfigurationPage, FolderDetailsPage> {
 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
-
-    @FindBy(name = "Submit")
-    private WebElement submitButton;
 
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
@@ -55,12 +52,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage, 
     public FolderDetailsPage typeDescription(String description) {
         descriptionTextArea.clear();
         descriptionTextArea.sendKeys(description);
-
-        return this;
-    }
-
-    public FolderDetailsPage clickSave() {
-        submitButton.click();
 
         return this;
     }

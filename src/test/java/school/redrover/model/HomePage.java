@@ -7,7 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,13 +69,13 @@ public class HomePage extends BasePage<HomePage> {
         super(driver);
     }
 
-    public <T extends BaseProjectPage> T clickJobByName(String name, T page) {
+    public <T extends BaseDetailsPage> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
         return page;
     }
 
-    public <T extends BaseProjectPage> T clickProjectStatusByName(String name, T page) {
+    public <T extends BaseDetailsPage> T clickProjectStatusByName(String name, T page) {
         getDriver().findElement(By.xpath("//span[contains(text(),'" + name + "')]/parent::a")).click();
         return page;
     }
@@ -148,7 +148,7 @@ public class HomePage extends BasePage<HomePage> {
         return this;
     }
 
-    public <ProjectPage extends BaseProjectPage>RenamePage clickRenameInDropdownMenu(ProjectPage projectPage) {
+    public <ProjectPage extends BaseDetailsPage>RenamePage clickRenameInDropdownMenu(ProjectPage projectPage) {
         renameOptionProjectDropdown.click();
 
         return new RenamePage<>(getDriver(), projectPage);

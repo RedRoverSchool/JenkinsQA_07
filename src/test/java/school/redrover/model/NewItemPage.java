@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.base.BaseProjectPage;
 
 public class NewItemPage extends BasePage<NewItemPage> {
 
@@ -98,7 +97,7 @@ public class NewItemPage extends BasePage<NewItemPage> {
     }
 
     public <T extends BaseConfigurationPage<?,?>> T clickOk(T page) {
-        okButton.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(okButton)).click();
 
         return page;
     }

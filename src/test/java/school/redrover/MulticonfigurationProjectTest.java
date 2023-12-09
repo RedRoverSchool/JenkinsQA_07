@@ -72,7 +72,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .inputDescription(DESCRIPTION)
-                .buttonSaveDescription()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(description, DESCRIPTION);
@@ -87,7 +87,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .clickAddOrEditDescription()
                 .clearDescription()
                 .inputDescription(newDescription)
-                .buttonSaveDescription()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(description, newDescription);
@@ -99,7 +99,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .clearDescription()
-                .buttonSaveDescription()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(delete, "");

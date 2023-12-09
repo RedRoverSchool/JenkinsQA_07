@@ -8,7 +8,7 @@ import school.redrover.model.*;
 
 import java.util.List;
 
-public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>, Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
+public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>, Self extends BaseDetailsPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
@@ -49,7 +49,10 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
-    public BaseProjectPage(WebDriver driver) {
+    @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary ']")
+    private WebElement saveDescriptionButton;
+
+    public BaseDetailsPage(WebDriver driver) {
         super(driver);
     }
 
@@ -90,24 +93,28 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
        return addDescription.getText();
     }
 
-    public String getDisableButtonText() {
-        return disableEnableButton.getText();
-    }
-
-    public String getEnableButtonText() {
+    public String getDisableEnableButtonText() {
         return disableEnableButton.getText();
     }
 
     public String getDisabledMessageText() {
 
-        return disableMessage.getText().substring(0, 46);
+        return disableMessage.getText().split("\n")[0].trim();
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
+    public boolean isProjectDisabled() {
+        return disableMessage.isEnabled();
+    }
+
+    public boolean isProjectEnabled() {
+        return getDisableEnableButtonText().equals("Disable Project");
+    }
+
+    public Self clickBuildNow() {
         buildNowSideMenuOption.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElements(buildLinksInBuildHistory));
 
-        return projectDetailsPage;
+        return (Self)this;
     }
 
     public BuildWithParametersPage clickBuildWithParameters() {
@@ -116,12 +123,12 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return new BuildWithParametersPage(getDriver());
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
+    public Self clickBuildNowSeveralTimes(int numOfClicks) {
         for (int i = 0; i < numOfClicks; i++) {
-            clickBuildNow(projectDetailsPage);
+            clickBuildNow();
         }
 
-        return projectDetailsPage;
+        return (Self) this;
     }
 
     public List<String> getBuildsInBuildHistoryList() {
@@ -151,5 +158,11 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
 
     public boolean isStatusPageSelected() {
         return statusPageLink.getAttribute("class").contains("active");
+    }
+
+    public Self clickSaveDescriptionButton() {
+        saveDescriptionButton.click();
+
+        return (Self) this;
     }
 }
