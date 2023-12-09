@@ -11,9 +11,6 @@ public class MultiConfigurationDetailsPage extends BaseProjectPage<MultiConfigur
     @FindBy(name = "description")
     private WebElement inputDescription;
 
-    @FindBy(name = "Submit")
-    private WebElement buttonSaveDescription;
-
     @FindBy(css = "a[data-message]")
     private WebElement taskLinkDeleteMultiConfigurationProject;
 
@@ -32,11 +29,6 @@ public class MultiConfigurationDetailsPage extends BaseProjectPage<MultiConfigur
         return this;
     }
 
-    public MultiConfigurationDetailsPage buttonSaveDescription() {
-        buttonSaveDescription.click();
-
-        return this;
-    }
     public MultiConfigurationDetailsPage clearDescription() {
         inputDescription.clear();
 

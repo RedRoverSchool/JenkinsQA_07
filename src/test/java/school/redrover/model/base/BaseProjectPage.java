@@ -49,6 +49,9 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
+    @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary ']")
+    private WebElement saveDescriptionButton;
+
     public BaseProjectPage(WebDriver driver) {
         super(driver);
     }
@@ -90,17 +93,21 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
        return addDescription.getText();
     }
 
-    public String getDisableButtonText() {
-        return disableEnableButton.getText();
-    }
-
-    public String getEnableButtonText() {
+    public String getDisableEnableButtonText() {
         return disableEnableButton.getText();
     }
 
     public String getDisabledMessageText() {
 
-        return disableMessage.getText().substring(0, 46);
+        return disableMessage.getText().split("\n")[0].trim();
+    }
+
+    public boolean isProjectDisabled() {
+        return disableMessage.isEnabled();
+    }
+
+    public boolean isProjectEnabled() {
+        return getDisableEnableButtonText().equals("Disable Project");
     }
 
     public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
@@ -151,5 +158,11 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
 
     public boolean isStatusPageSelected() {
         return statusPageLink.getAttribute("class").contains("active");
+    }
+
+    public Self clickSaveDescriptionButton() {
+        saveDescriptionButton.click();
+
+        return (Self) this;
     }
 }

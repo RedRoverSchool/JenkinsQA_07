@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.DataProvider;
@@ -105,7 +104,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .insertDescriptionText(PROJECT_DESCRIPTION)
-                .clickSaveButton()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         assertEquals(actualDescription, PROJECT_DESCRIPTION);
@@ -118,7 +117,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickAddOrEditDescription()
                 .deleteDescriptionText()
                 .insertDescriptionText(NEW_PROJECT_DESCRIPTION)
-                .clickSaveButton()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         assertEquals(actualNewDescriptionText, NEW_PROJECT_DESCRIPTION);
@@ -130,7 +129,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .deleteDescriptionText()
-                .clickSaveButton()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         assertEquals(actualEmptyDescriptionInputField, "");
@@ -153,7 +152,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
                 .clickEnableButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertFalse(isEnabled);
     }
@@ -168,7 +167,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertFalse(isEnabled);
     }
@@ -180,7 +179,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertFalse(isEnabled);
     }
@@ -193,7 +192,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickDisableEnableToggle()
                 .clickSaveButton()
                 .clickEnableButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertTrue(isEnabled);
     }
@@ -208,7 +207,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertTrue(isEnabled);
     }
@@ -222,7 +221,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .getWarningMessageWhenDisabled();
+                .getDisabledMessageText();
 
         assertEquals(actualWarningMessage, expectedWarningMessage);
     }
@@ -236,7 +235,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .getTextEnableDisableButton();
+                .getDisableEnableButtonText();
 
         assertEquals(actualButtonName, expectedButtonName);
     }
@@ -382,7 +381,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickEnableButton();
 
-        assertTrue(detailsPage.isEnabled());
+        assertTrue(detailsPage.isProjectEnabled());
     }
 
     @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
@@ -503,7 +502,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickDisableButton()
-                .getWarningMessageWhenDisabled();
+                .getDisabledMessageText();
 
         assertEquals(warningMessage, "This project is currently disabled");
     }

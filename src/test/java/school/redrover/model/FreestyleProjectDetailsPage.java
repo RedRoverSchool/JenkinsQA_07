@@ -14,12 +14,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
     private WebElement buildNowButton;
 
-    @FindBy(name = "Submit")
-    private WebElement enableDisableButton;
-
-    @FindBy(className = "warning")
-    private WebElement warningMessage;
-
     @FindBy(linkText = "Status")
     private WebElement statusPageLink;
 
@@ -35,9 +29,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement projectDescriptionInputField;
 
-    @FindBy(xpath = "//button[contains(text(), 'Save')]")
-    private WebElement saveButton;
-
     @FindBy(xpath = "//*[@id=\"tasks\"]/div[6]/span/a/span[2]")
     private WebElement deleteProject;
 
@@ -46,9 +37,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
 
     @FindBy(xpath = "//a//span[2]")
     private List<WebElement> itemsSidePanel;
-
-    @FindBy(className = "warning")
-    private WebElement projectDisabledWarning;
 
     @FindBy(xpath = "//ul[@style='list-style-type: none;']/li/a")
     private List<WebElement> upstreamProjectsList;
@@ -68,28 +56,10 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
         return this;
     }
 
-    public boolean isEnabled() {
-        return getTextEnableDisableButton().equals("Disable Project");
-    }
-
-    public String getWarningMessageWhenDisabled() {
-        return warningMessage.getText().split("\n")[0].trim();
-    }
-
-    public String getTextEnableDisableButton() {
-        return enableDisableButton.getText();
-    }
-
     public WorkspacePage goToWorkspaceFromSideMenu() {
         workspaceButton.click();
 
         return new WorkspacePage(getDriver());
-    }
-
-    public FreestyleProjectDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return this;
     }
 
     public boolean isJobExist() {
@@ -132,10 +102,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
         }
 
         return textValue;
-    }
-
-    public boolean isProjectDisabled() {
-        return projectDisabledWarning.isEnabled();
     }
 
     public List<String> getUpstreamProjectsList() {

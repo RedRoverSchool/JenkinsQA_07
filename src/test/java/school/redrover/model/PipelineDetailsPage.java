@@ -15,12 +15,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
 
-    @FindBy(xpath = "//div[@id = 'description']//button[@name = 'Submit']")
-    private WebElement saveButton;
-
-    @FindBy(xpath = "//div[@id='description']/div")
-    private WebElement description;
-
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
 
@@ -78,13 +72,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
 
     public PipelineDetailsPage inputDescription(String description) {
         descriptionField.sendKeys(description);
-
-        return this;
-    }
-
-    public PipelineDetailsPage clickSaveButton() {
-        saveButton.click();
-        getWait2().until(ExpectedConditions.visibilityOf(description));
 
         return this;
     }
