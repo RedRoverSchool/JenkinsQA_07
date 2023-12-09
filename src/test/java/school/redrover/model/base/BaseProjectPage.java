@@ -170,6 +170,9 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
                 .moveToElement(breadcrumbProjectName)
                 .scrollByAmount(breadcrumbProjectName.getSize().getWidth() / 2,
                         breadcrumbProjectName.getSize().getHeight() / 2)
+                .perform();
+
+        actions
                 .moveToElement(arrowToOpenDropDown)
                 .click(arrowToOpenDropDown)
                 .perform();
