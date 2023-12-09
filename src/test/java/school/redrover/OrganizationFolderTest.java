@@ -210,7 +210,7 @@ public class OrganizationFolderTest extends BaseTest {
         String disableButtonText = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new OrganizationFolderDetailsPage(getDriver()))
                 .clickDisableButton()
-                .getEnableButtonText();
+                .getDisableEnableButtonText();
 
         Assert.assertEquals(disableButtonText, "Enable");
     }
