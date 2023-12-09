@@ -312,7 +312,6 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(previewText, DESCRIPTION_NAME);
     }
 
-    @Ignore
     @Test
     public void testAddChildHealthMetric()  {
 
@@ -331,7 +330,6 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(isChildHealthMetricDisplayed);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testAddChildHealthMetric")
     public void testDisplayingHelpTextButtonRecursive() {
         final String expectedText = "Controls whether items within sub-folders will be considered as contributing to the health of this folder.";
