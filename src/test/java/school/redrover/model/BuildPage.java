@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class BuildPage extends BasePage<BuildPage> {
         return this;
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickButtonDeleteBuild(ProjectDetailsPage projectDetailsPage) {
+    public <ProjectDetailsPage extends BaseDetailsPage<?, ?>> ProjectDetailsPage clickButtonDeleteBuild(ProjectDetailsPage projectDetailsPage) {
         clickSubmitCancel.click();
 
         return projectDetailsPage;

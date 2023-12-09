@@ -6,11 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
-public class RenamePage<ProjectPage extends BaseProjectPage<?, ?>> extends BasePage<RenamePage<?>> {
+public class RenamePage<ProjectPage extends BaseDetailsPage<?, ?>> extends BasePage<RenamePage<?>> {
 
     @FindBy(name = "newName")
     private WebElement inputNewName;

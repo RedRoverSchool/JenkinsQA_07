@@ -49,7 +49,7 @@ public class BuildHistoryTest extends BaseTest {
                 .selectFreestyleProject()
                 .clickOk(new FreestyleProjectConfigurePage(getDriver()))
                 .clickSaveButton()
-                .clickBuildNowButton();
+                .clickBuildNow();
 
         if (dateNow.length() == 5) {
             Assert.assertEquals(getWait10().until(ExpectedConditions
@@ -70,7 +70,7 @@ public class BuildHistoryTest extends BaseTest {
                 .selectFreestyleProject()
                 .clickOk(new FreestyleProjectConfigurePage(getDriver()))
                 .clickSaveButton()
-                .clickBuildNowButton()
+                .clickBuildNow()
                 .goHomePage()
                 .clickBuildHistoryButton()
                 .getTextLastTimeSinceInLineBuild();

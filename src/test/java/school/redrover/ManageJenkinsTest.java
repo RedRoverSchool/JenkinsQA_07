@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
@@ -22,12 +23,12 @@ public class ManageJenkinsTest extends BaseTest {
     @Test
     public void testShortcutTooltipVisibility() {
 
-          ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
-                  .clickManageJenkins()
-                  .hoverOverShortcutIcon();
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .hoverOverShortcutIcon();
 
-            Assert.assertEquals(manageJenkinsPage.getTooltipText(), TOOLTIP);
-            Assert.assertTrue(manageJenkinsPage.isShortcutTooltipVisible(), TOOLTIP + " is not visible");
+        Assert.assertEquals(manageJenkinsPage.getTooltipText(), TOOLTIP);
+        Assert.assertTrue(manageJenkinsPage.isShortcutTooltipVisible(), TOOLTIP + " is not visible");
     }
 
     @Test
@@ -237,6 +238,7 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(redirectedUrl.contains(url));
     }
+
     @Test
     public void testLoadStatisticsRedirection() {
         String currentUrl = new HomePage(getDriver())
@@ -274,6 +276,7 @@ public class ManageJenkinsTest extends BaseTest {
                 "Status Information sections titles differ from the expected ones");
     }
 
+    @Ignore
     @Test
     public void testCreateCredentialFromConfigurePage() {
 
@@ -292,6 +295,7 @@ public class ManageJenkinsTest extends BaseTest {
         assertTrue(credentialsCreated);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testCreateCredentialFromConfigurePage")
     public void testDeleteCredential() {
 

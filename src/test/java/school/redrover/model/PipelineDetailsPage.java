@@ -5,12 +5,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, PipelineDetailsPage> {
+public class PipelineDetailsPage extends BaseDetailsPage<PipelineConfigurePage, PipelineDetailsPage> {
 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
@@ -24,14 +24,8 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
 
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
-    private WebElement buildNowSideMenuOption;
-
     @FindBy(xpath = "//tbody[@class='tobsTable-body']//div[@class='duration']")
     private WebElement buildDurationInStageView;
-
-    @FindBy(xpath = "//span[@class='badge']/a[text()='#1']")
-    private WebElement buildNumInStageView;
 
     @FindBy(xpath = "//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")
     private WebElement logsButtonInStageView;
@@ -41,9 +35,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
 
     @FindBy(xpath = "//th[contains(@class, 'stage-header-name-')]")
     private List<WebElement> stagesNamesList;
-
-    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameSideMenuOption;
 
     @FindBy(xpath = "//div[@class='build-icon']/a")
     private WebElement buildIcon;
@@ -96,12 +87,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
         }
 
         return permalinks;
-    }
-
-    public PipelineDetailsPage clickBuildNow() {
-        buildNowSideMenuOption.click();
-
-        return this;
     }
 
     @Override
@@ -177,7 +162,7 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage, 
         return stageViewAlertText.getText();
     }
 
-    public FolderDetailsPage  clickFolderBreadCrumbs(){
+    public FolderDetailsPage clickFolderBreadCrumbs() {
         folderBreadCrumbs.click();
         return new FolderDetailsPage(getDriver());
     }

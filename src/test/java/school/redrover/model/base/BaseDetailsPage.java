@@ -8,7 +8,7 @@ import school.redrover.model.*;
 
 import java.util.List;
 
-public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>, Self extends BaseProjectPage<?, ?>> extends BasePage<Self> {
+public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfigurationPage<?, ?>, Self extends BaseDetailsPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//h1")
     private WebElement projectName;
@@ -49,7 +49,7 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
 
-    public BaseProjectPage(WebDriver driver) {
+    public BaseDetailsPage(WebDriver driver) {
         super(driver);
     }
 
@@ -103,11 +103,11 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return disableMessage.getText().substring(0, 46);
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNow(ProjectDetailsPage projectDetailsPage) {
+    public Self clickBuildNow() {
         buildNowSideMenuOption.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElements(buildLinksInBuildHistory));
 
-        return projectDetailsPage;
+        return (Self)this;
     }
 
     public BuildWithParametersPage clickBuildWithParameters() {
@@ -116,12 +116,12 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
         return new BuildWithParametersPage(getDriver());
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage<?, ?>> ProjectDetailsPage clickBuildNowSeveralTimes(ProjectDetailsPage projectDetailsPage, int numOfClicks) {
+    public Self clickBuildNowSeveralTimes(int numOfClicks) {
         for (int i = 0; i < numOfClicks; i++) {
-            clickBuildNow(projectDetailsPage);
+            clickBuildNow();
         }
 
-        return projectDetailsPage;
+        return (Self) this;
     }
 
     public List<String> getBuildsInBuildHistoryList() {

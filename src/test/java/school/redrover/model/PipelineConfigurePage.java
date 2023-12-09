@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import school.redrover.model.base.BaseConfigurationPage;
-import school.redrover.model.base.BaseProjectPage;
 
 import java.util.List;
 

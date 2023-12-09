@@ -4,27 +4,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjectConfigurePage, FreestyleProjectDetailsPage> {
-
-    @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
-    private WebElement buildNowButton;
+public class FreestyleProjectDetailsPage extends BaseDetailsPage<FreestyleProjectConfigurePage, FreestyleProjectDetailsPage> {
 
     @FindBy(name = "Submit")
     private WebElement enableDisableButton;
 
     @FindBy(className = "warning")
     private WebElement warningMessage;
-
-    @FindBy(linkText = "Status")
-    private WebElement statusPageLink;
-
-    @FindBy(xpath = "//*[@id='tasks']/div[7]/span/a")
-    private WebElement renamePageLink;
 
     @FindBy(xpath = "//a[@href='lastBuild/']")
     private WebElement lastBuild;
@@ -60,12 +51,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
     @Override
     protected FreestyleProjectConfigurePage createConfigurationPage() {
         return new FreestyleProjectConfigurePage(getDriver());
-    }
-
-    public FreestyleProjectDetailsPage clickBuildNowButton() {
-        buildNowButton.click();
-
-        return this;
     }
 
     public boolean isEnabled() {

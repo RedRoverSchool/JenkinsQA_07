@@ -3,6 +3,7 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 
 public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetailsPage, FolderConfigurationPage> {
@@ -78,7 +79,7 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
     }
 
     public FolderConfigurationPage clickAddHealthMetric() {
-        addMetricButton.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(addMetricButton)).click();
 
         return this;
     }
