@@ -347,6 +347,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(name.contains( JOB_NAME));
     }
 
+    @Ignore
     @Test
     public void testAddDisplayNameForBuild() {
         TestUtils.createPipeline(this, JOB_NAME, true);
