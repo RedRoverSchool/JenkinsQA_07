@@ -91,7 +91,7 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
     }
 
     public boolean  isChildHealthMetricDisplayed () {
-        return childHealthMetricSection.isDisplayed();
+        return getWait5().until(ExpectedConditions.visibilityOf(childHealthMetricSection)).isDisplayed();
     }
 
     public FolderConfigurationPage clickHelpButtonRecursive() {
