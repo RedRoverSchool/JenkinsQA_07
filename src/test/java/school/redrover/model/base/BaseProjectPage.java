@@ -2,6 +2,7 @@ package school.redrover.model.base;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.*;
@@ -48,6 +49,15 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
 
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
+
+    @FindBy(xpath = "//div[@id='breadcrumbBar']//li[3]/a")
+    private WebElement breadcrumbProjectName;
+
+    @FindBy(xpath = "//a[@class='jenkins-dropdown__item'][normalize-space()='Rename']")
+    private WebElement renameInBreadcrumb;
+
+    @FindBy(xpath = "(//div[@id='breadcrumbBar']//button)[2]")
+    private WebElement arrowToOpenDropDown;
 
     public BaseProjectPage(WebDriver driver) {
         super(driver);
@@ -151,5 +161,30 @@ public abstract class BaseProjectPage<ProjectConfigurationPage extends BaseConfi
 
     public boolean isStatusPageSelected() {
         return statusPageLink.getAttribute("class").contains("active");
+    }
+
+    public RenamePage<Self> clickRenameFromBreadcrumb() {
+        Actions actions = new Actions(getDriver());
+
+        actions
+                .moveToElement(breadcrumbProjectName)
+                .scrollByAmount(breadcrumbProjectName.getSize().getWidth() / 2,
+                        breadcrumbProjectName.getSize().getHeight() / 2)
+                .build()
+                .perform();
+
+        actions
+                .moveToElement(arrowToOpenDropDown)
+                .click(arrowToOpenDropDown)
+                .build()
+                .perform();
+
+        actions
+                .moveToElement(renameInBreadcrumb)
+                .click()
+                .build()
+                .perform();
+
+        return new RenamePage<>(getDriver(), (Self) this);
     }
 }
