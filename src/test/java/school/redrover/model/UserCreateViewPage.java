@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class UserCreateViewPage extends BasePage {
+public class UserCreateViewPage extends BasePage<UserCreateViewPage> {
 
     @FindBy(css = "#name")
     private WebElement viewNameTextArea;

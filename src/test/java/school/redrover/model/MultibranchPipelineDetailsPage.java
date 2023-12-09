@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage> {
+public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage, MultibranchPipelineDetailsPage> {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
@@ -25,12 +25,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
 
     @FindBy (xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
-
-    @FindBy(xpath = "//button[contains(text(), 'Disable Multibranch Pipeline')]")
-    private WebElement disableButton;
-
-    @FindBy(xpath = "//button[contains(text(), 'Enable')]")
-    private WebElement enableButton;
 
     @FindBy(id = "enable-project")
     private WebElement disabledStatusMessage;
@@ -69,18 +63,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
     }
 
-    public MultibranchPipelineDetailsPage clickDisable() {
-        disableButton.click();
-
-        return this;
-    }
-
-    public MultibranchPipelineDetailsPage clickEnable() {
-        enableButton.click();
-
-        return this;
-    }
-
     public String getDisableStatusMessage() {
         return disabledStatusMessage.getText();
     }
@@ -91,9 +73,5 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
         buttonDelete.click();
 
         return new MultibranchPipelineDeletePage(getDriver());
-    }
-
-    public String getDisableButtonText() {
-        return disableButton.getText();
     }
 }

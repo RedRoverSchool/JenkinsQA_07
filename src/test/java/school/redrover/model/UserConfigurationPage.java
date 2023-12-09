@@ -5,12 +5,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class UserConfigurationPage extends BasePage {
+public class UserConfigurationPage extends BasePage<UserConfigurationPage> {
 
     @FindBy(name = "_.fullName")
     private WebElement fullName;
 
-    @FindBy(xpath = "//*[@id='bottom-sticker']/div/button[1]")
+    @FindBy(name = "Submit")
     private WebElement saveButton;
 
     @FindBy(name = "_.primaryViewName")
@@ -24,6 +24,9 @@ public class UserConfigurationPage extends BasePage {
 
     @FindBy(xpath = "//div[@class='textarea-preview']")
     private WebElement previewDescriptionTextArea;
+
+    @FindBy(xpath = "//div[@id = 'description']/div[1]")
+    private WebElement descriptionText;
 
     public UserConfigurationPage(WebDriver driver) {
         super(driver);
@@ -62,6 +65,10 @@ public class UserConfigurationPage extends BasePage {
 
     public String getPreviewDescriptionText() {
         return previewDescriptionTextArea.getText();
+    }
+
+    public String getDescriptionText() {
+        return  descriptionText.getText();
     }
 }
 

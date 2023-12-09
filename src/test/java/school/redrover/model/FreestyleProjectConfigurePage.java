@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class FreestyleProjectConfigurePage extends BaseConfigurationPage<FreestyleProjectDetailsPage> {
+public class FreestyleProjectConfigurePage extends BaseConfigurationPage<FreestyleProjectDetailsPage, FreestyleProjectConfigurePage> {
 
     @FindBy(xpath = "//select[@checkdependson='url']")
     private WebElement credentialsOption;
@@ -27,9 +27,6 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage<Freesty
 
     @FindBy(id = "source-code-management")
     private WebElement sourceCodeManagementSectionHeader;
-
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
 
     @FindBy(xpath = "//button[@data-section-id='source-code-management']")
     private WebElement sourceCodeManagementLink;

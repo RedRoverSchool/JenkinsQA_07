@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class UserPage extends BasePage {
+public class UserPage extends BasePage<UserPage> {
 
     @FindBy(xpath = "//a[@href='/manage']")
     private WebElement manageJenkins;

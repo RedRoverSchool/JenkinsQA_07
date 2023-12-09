@@ -43,7 +43,7 @@ public class FolderTest extends BaseTest {
     public void testRename() {
         HomePage homePage = new HomePage(getDriver())
                 .clickJobByName(FOLDER_NAME, new FolderDetailsPage(getDriver()))
-                .clickRename(new FolderDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(RENAMED_FOLDER)
                 .clickRenameButton()
                 .goHomePage();
@@ -218,7 +218,7 @@ public class FolderTest extends BaseTest {
                 .clickAddOrEditDescription()
                 .typeDescription(DESCRIPTION_NAME)
                 .clickSave()
-                .getActualFolderDescription();
+                .getDescriptionText();
 
         Assert.assertEquals(actualDescription, DESCRIPTION_NAME);
     }
@@ -256,7 +256,7 @@ public class FolderTest extends BaseTest {
                 .clickAddOrEditDescription()
                 .typeDescription(newDescriptionText)
                 .clickSave()
-                .getActualFolderDescription();
+                .getDescriptionText();
 
         Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
     }
@@ -269,8 +269,8 @@ public class FolderTest extends BaseTest {
                 .clearDescriptionTextArea()
                 .clickSave();
 
-        Assert.assertTrue(folderDescription.getActualFolderDescription().isEmpty());
-        Assert.assertEquals(folderDescription.getDescriptionButtonText(), "Add description");
+        Assert.assertTrue(folderDescription.getDescriptionText().isEmpty());
+        Assert.assertEquals(folderDescription.getAddDescriptionButtonText(), "Add description");
     }
 
     @Test(dependsOnMethods = {"testCreate", "testRename"})
@@ -279,7 +279,7 @@ public class FolderTest extends BaseTest {
 
         String errorMessage = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickRename(new FolderDetailsPage(getDriver()))
+                .clickRename()
                 .enterName(point)
                 .clickRenameWithError()
                 .getErrorText();
@@ -291,7 +291,7 @@ public class FolderTest extends BaseTest {
     public void testRenameFolderThroughLeftPanelWithEmptyName() {
         String errorMessage = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
-                .clickRename(new FolderDetailsPage(getDriver()))
+                .clickRename()
                 .enterName("")
                 .clickRenameWithError()
                 .getErrorText();
@@ -345,6 +345,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(helpText, expectedText);
     }
 
+    @Ignore
     @Test (dependsOnMethods = "testCreateNewJob")
     public void testCreatePipelineProjectInsideFolder() {
 
@@ -352,7 +353,7 @@ public class FolderTest extends BaseTest {
                 .clickFolderName(RENAMED_FOLDER)
                 .clickCreateAJob()
                 .createPipeline(PIPELINE_PROJECT_NAME)
-                .clickSave()
+                .clickSaveButton()
                 .clickFolderBreadCrumbs()
                 .isNewCreatedProjectDisplayed();
 

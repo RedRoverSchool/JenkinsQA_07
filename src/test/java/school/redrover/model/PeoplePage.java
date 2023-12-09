@@ -4,14 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.PeopleTest;
 import school.redrover.model.base.BasePage;
 
-    public class PeoplePage extends BasePage {
-
-    public PeoplePage(WebDriver driver) {
-         super(driver);
-    }
+public class PeoplePage extends BasePage<PeoplePage> {
 
     @FindBy(xpath = "//li[@tooltip= 'Large' and @class='jenkins-icon-size__items-item' and @title='Large']")
     private WebElement largeButton;
@@ -33,6 +28,10 @@ import school.redrover.model.base.BasePage;
 
     @FindBy(xpath = "//a[@class='jenkins-table__link']")
     private WebElement userID;
+
+    public PeoplePage(WebDriver driver) {
+        super(driver);
+    }
 
     public PeoplePage clickLargeIcon() {
         largeButton.click();

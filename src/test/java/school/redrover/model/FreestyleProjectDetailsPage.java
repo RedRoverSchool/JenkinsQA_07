@@ -9,7 +9,7 @@ import school.redrover.model.base.BaseProjectPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjectConfigurePage> {
+public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjectConfigurePage, FreestyleProjectDetailsPage> {
 
     @FindBy(xpath = "//a[contains(@href, '/build?delay=0sec')]")
     private WebElement buildNowButton;
@@ -31,9 +31,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
 
     @FindBy(css = "ul[class='permalinks-list']")
     private WebElement listPermalinks;
-
-    @FindBy(xpath = "//div[@id = 'description']/div[1]")
-    private WebElement descriptionText;
 
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement projectDescriptionInputField;
@@ -71,12 +68,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
         return this;
     }
 
-    public FreestyleProjectDetailsPage clickEnableDisableButton() {
-        enableDisableButton.click();
-
-        return this;
-    }
-
     public boolean isEnabled() {
         return getTextEnableDisableButton().equals("Disable Project");
     }
@@ -89,18 +80,10 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
         return enableDisableButton.getText();
     }
 
-    public boolean isStatusPageSelected() {
-        return statusPageLink.getAttribute("class").contains("active");
-    }
-
     public WorkspacePage goToWorkspaceFromSideMenu() {
         workspaceButton.click();
 
         return new WorkspacePage(getDriver());
-    }
-
-    public String getDescriptionText() {
-        return descriptionText.getText();
     }
 
     public FreestyleProjectDetailsPage clickSaveButton() {
@@ -121,12 +104,6 @@ public class FreestyleProjectDetailsPage extends BaseProjectPage<FreestyleProjec
 
     public String getPermalinksText() {
         return listPermalinks.getText();
-    }
-
-    public FreestyleProjectDetailsPage clickAddOrEditDescriptionButton() {
-        addDescription.click();
-
-        return this;
     }
 
     public FreestyleProjectDetailsPage insertDescriptionText(String description) {
