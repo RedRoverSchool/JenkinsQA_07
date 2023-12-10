@@ -9,8 +9,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.UserPage;
-import school.redrover.model.*;
+import school.redrover.model.users.UserDatabasePage;
+import school.redrover.model.users.UserPage;
+import school.redrover.model.users.CreateNewUserPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
