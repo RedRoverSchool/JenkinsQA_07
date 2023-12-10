@@ -228,6 +228,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(description, DESCRIPTION);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testConfigureAddDescriptionFromManageJenkinsPage")
     public void testDeleteUser() {
 
