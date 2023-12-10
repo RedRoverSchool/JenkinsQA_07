@@ -302,4 +302,27 @@ public class NodesTest extends BaseTest {
 
         Assert.assertFalse(visibleButton);
     }
+
+    @DataProvider(name = "ValidMemoryUnit")
+    public Object[][] validCredentials() {
+        return new Object[][]{
+                {1, "KB"}, {1, "MB"}, {1, "GB"}, {1, "TB"}
+        };
+    }
+
+    @Test(dataProvider = "ValidMemoryUnit")
+    public void testInputValidMemoryUnitForNode(int size, String unit) {
+        String expectedMemoryUnit  = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goNodesListPage()
+                .clickNodeMonitoringButton()
+                .clearSpaceThresholdPlaceholder()
+                .sendSpaceThreshold(size, unit)
+                .clickSubmitButtonNodeMonitoring()
+                .clickNodeMonitoringButton()
+                .getFreeSpaceThreshold();
+
+        Assert.assertEquals(expectedMemoryUnit, size + unit);
+
+    }
 }

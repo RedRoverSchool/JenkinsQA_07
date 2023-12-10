@@ -5,9 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class NodesListPage extends BasePage {
@@ -20,6 +17,9 @@ public class NodesListPage extends BasePage {
 
     @FindBy(xpath = "//tr/td/a")
     private List<WebElement> nodesList;
+
+    @FindBy(xpath ="//a[@href='configure']" )
+    private WebElement nodeMonitoringButton;
 
     public NodesListPage(WebDriver driver) {
         super(driver);
@@ -53,5 +53,11 @@ public class NodesListPage extends BasePage {
         sortByNameButton.click();
 
         return this;
+    }
+
+    public NodeMonitoringPage clickNodeMonitoringButton(){
+        nodeMonitoringButton.click();
+
+        return new NodeMonitoringPage(getDriver());
     }
 }
