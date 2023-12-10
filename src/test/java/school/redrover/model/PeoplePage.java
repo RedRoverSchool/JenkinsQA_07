@@ -23,9 +23,6 @@ public class PeoplePage extends BasePage<PeoplePage> {
     @FindBy(xpath = "//a[contains(@href,'/user/')]")
     private WebElement currentUserName;
 
-    @FindBy(xpath = "//a[@class='jenkins-table__link']")
-    private WebElement userID;
-
     public PeoplePage(WebDriver driver) {
         super(driver);
     }
@@ -53,7 +50,7 @@ public class PeoplePage extends BasePage<PeoplePage> {
         return this;
     }
 
-    public CreatedUserPage clickOnTheCreatedUser(String userName) {
+    public CreatedUserPage clickOnTheCreatedUserID(String userName) {
         getDriver().findElement(
                 By.xpath("//tr[@id = 'person-" + userName + "']/td/a")).click();
 
@@ -62,12 +59,6 @@ public class PeoplePage extends BasePage<PeoplePage> {
 
     public UserPage clickCurrentUserName() {
         currentUserName.click();
-        return new UserPage(getDriver());
-    }
-
-    public UserPage clickOnUserId() {
-        userID.click();
-
         return new UserPage(getDriver());
     }
 }
