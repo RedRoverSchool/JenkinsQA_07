@@ -170,11 +170,16 @@ public class MultibranchPipelineTest extends BaseTest {
     }
 
     //@Ignore
-    @Test//(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
+
+    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
+    //(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
     public void testRenameMultibranchDropdownBreadcrumbs() {
-        //String namePipelane =
-        WebElement renamePage =  new HomePage(getDriver())
-                .breadCrumbRename(new RenamePage<>(getDriver(), ?))
+        /* String namePipelane = */
+
+
+        MultiConfigurationDetailsPage mult = new HomePage(getDriver())
+              .breadCrumbRename();
+
 
         //getDriver().findElement(By.xpath("//td[3]/a/span")).click();
 
@@ -182,11 +187,11 @@ public class MultibranchPipelineTest extends BaseTest {
 //        Actions actions = new Actions(getDriver());
 //        actions.moveToElement(breadcrumbName).perform();
 
-        WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
-        actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
+//        WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
+//        actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
 
-        getDriver().findElement(By.xpath("//a[@href='/job/"
-                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
+//        getDriver().findElement(By.xpath("//a[@href='/job/"
+//                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
 
         getDriver().findElement(By.name("newName")).clear();
         getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);

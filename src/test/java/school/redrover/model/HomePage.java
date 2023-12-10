@@ -65,6 +65,12 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//a[contains(@href,'user')]")
     private WebElement currentUserName;
 
+    @FindBy(xpath = "//a[contains(@href,'job')]//button[@class='jenkins-menu-dropdown-chevron']")
+    private WebElement chevronDropdownMenuJob;
+
+    @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
+    private WebElement renameLine;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -233,13 +239,12 @@ public class HomePage extends BasePage<HomePage> {
 
     }
 
-    public <ProjectPage extends BaseDetailsPage>RenamePage breadCrumbRename(ProjectPage projectPage) {
-
-       // WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
+    public MultiConfigurationDetailsPage breadCrumbRename() {
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(multibranchPipelineNameOnHomePage).perform();
+        actions.moveToElement(chevronDropdownMenuJob).perform();
+        actions.click(renameLine).perform();
 
-        return new RenamePage<>(getDriver(), projectPage);
+        return new MultiConfigurationDetailsPage(getDriver());
     }
 
 }
