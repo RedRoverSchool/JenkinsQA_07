@@ -673,6 +673,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goHomePage()
                 .clickJobNameDropdown(PROJECT_NAME)
                 .clickRenameInDropdownMenu(new FreestyleProjectDetailsPage(getDriver()))
+           //     .clickRenameInDropdownMenu(new FolderDetailsPage(getDriver()))
                 .enterName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .goHomePage();
