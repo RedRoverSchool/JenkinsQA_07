@@ -233,7 +233,13 @@ public class HomePage extends BasePage<HomePage> {
 
     }
 
+    public <ProjectPage extends BaseDetailsPage>RenamePage breadCrumbRename(ProjectPage projectPage) {
 
+       // WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(multibranchPipelineNameOnHomePage).perform();
 
+        return new RenamePage<>(getDriver(), projectPage);
+    }
 
 }

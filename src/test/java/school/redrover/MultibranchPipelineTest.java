@@ -7,10 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderDetailsPage;
-import school.redrover.model.HomePage;
-import school.redrover.model.MultibranchPipelineConfigurationPage;
-import school.redrover.model.MultibranchPipelineDetailsPage;
+import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -172,14 +169,18 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
+    //@Ignore
+    @Test//(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
     public void testRenameMultibranchDropdownBreadcrumbs() {
-        getDriver().findElement(By.xpath("//td[3]/a/span")).click();
+        //String namePipelane =
+        WebElement renamePage =  new HomePage(getDriver())
+                .breadCrumbRename(new RenamePage<>(getDriver(), ?))
 
-        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(breadcrumbName).perform();
+        //getDriver().findElement(By.xpath("//td[3]/a/span")).click();
+
+//        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
+//        Actions actions = new Actions(getDriver());
+//        actions.moveToElement(breadcrumbName).perform();
 
         WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
         actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
