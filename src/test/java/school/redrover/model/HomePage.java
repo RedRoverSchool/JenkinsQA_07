@@ -7,12 +7,12 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends BasePage {
+public class HomePage extends BasePage<HomePage> {
 
     @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement setUpAgent;
@@ -66,9 +66,14 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public <T extends BaseProjectPage> T clickJobByName(String name, T page) {
+    public <T extends BaseDetailsPage> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
+        return page;
+    }
+
+    public <T extends BaseDetailsPage> T clickProjectStatusByName(String name, T page) {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + name + "')]/parent::a")).click();
         return page;
     }
 
@@ -140,7 +145,7 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public <ProjectPage extends BaseProjectPage>RenamePage clickRenameInDropdownMenu(ProjectPage projectPage) {
+    public <ProjectPage extends BaseDetailsPage>RenamePage clickRenameInDropdownMenu(ProjectPage projectPage) {
         renameOptionProjectDropdown.click();
 
         return new RenamePage<>(getDriver(), projectPage);
@@ -212,4 +217,14 @@ public class HomePage extends BasePage {
     public String getCurrentUserName() {
         return currentUserName.getText();
     }
+
+    public FolderDetailsPage clickFolderName(String folderName ){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+ folderName +"']"))).click();
+        return new FolderDetailsPage(getDriver());
+
+    }
+
+
+
+
 }

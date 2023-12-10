@@ -9,7 +9,7 @@ import school.redrover.model.base.BasePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SystemLogPage extends BasePage {
+public class SystemLogPage extends BasePage<SystemLogPage> {
 
     @FindBy(xpath = "//a[@href = 'new']")
     private WebElement addRecorderButton;

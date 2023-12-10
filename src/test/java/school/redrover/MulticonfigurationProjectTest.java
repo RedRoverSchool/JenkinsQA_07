@@ -1,20 +1,25 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.MultiConfigurationConfigurePage;
 import school.redrover.model.MultiConfigurationDetailsPage;
-import school.redrover.model.NewItemPage;
 import school.redrover.runner.BaseTest;
-
-import java.util.List;
 
 public class MulticonfigurationProjectTest extends BaseTest {
     private static final String DESCRIPTION = "This is a description!!!";
     private static final String PROJECT_NAME = "MultiConfigurationProject123";
+
+    @DataProvider
+    public Object[][] unsafeCharacters() {
+        return new Object[][]{
+                {PROJECT_NAME + "!"}, {PROJECT_NAME + "@"}, {PROJECT_NAME + "#"}, {PROJECT_NAME + "$"},
+                {PROJECT_NAME + "%"}, {PROJECT_NAME + "^"}, {PROJECT_NAME + "&"}, {PROJECT_NAME + "*"},
+        };
+    }
 
     @Test
     public void testCreateWithValidName() {
@@ -26,6 +31,17 @@ public class MulticonfigurationProjectTest extends BaseTest {
                 .goHomePage();
 
         Assert.assertTrue(homePage.getJobList().contains(PROJECT_NAME));
+    }
+
+    @Test(dataProvider = "unsafeCharacters")
+    public void testCreateWithInvalidName(String invalidChar) {
+        String errorMassage = new HomePage(getDriver())
+                .clickNewItem()
+                .typeItemName(invalidChar)
+                .selectMultiConfigurationProject()
+                .getInvalidNameErrorMessage();
+
+        Assert.assertTrue(errorMassage.contains("is an unsafe character"));
     }
 
     @Test
@@ -70,9 +86,9 @@ public class MulticonfigurationProjectTest extends BaseTest {
     public void testAddDescription() {
         String description = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
-                .buttonEditDescription()
+                .clickAddOrEditDescription()
                 .inputDescription(DESCRIPTION)
-                .buttonSaveDescription()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(description, DESCRIPTION);
@@ -84,10 +100,10 @@ public class MulticonfigurationProjectTest extends BaseTest {
 
         String description = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
-                .buttonEditDescription()
+                .clickAddOrEditDescription()
                 .clearDescription()
                 .inputDescription(newDescription)
-                .buttonSaveDescription()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(description, newDescription);
@@ -97,9 +113,9 @@ public class MulticonfigurationProjectTest extends BaseTest {
     public void testDeleteDescription() {
         String delete = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
-                .buttonEditDescription()
+                .clickAddOrEditDescription()
                 .clearDescription()
-                .buttonSaveDescription()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(delete, "");

@@ -5,32 +5,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.WebElement;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 import school.redrover.runner.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchPipelineConfigurationPage> {
+public class MultibranchPipelineDetailsPage extends BaseDetailsPage<MultibranchPipelineConfigurationPage, MultibranchPipelineDetailsPage> {
 
     @FindBy(xpath = "//span[@class='task-link-wrapper ']")
     private List<WebElement> sidebarMenuTasksList;
 
-    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item']")
-    private List<WebElement> breadcrumbChain;
-
-    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameButton;
-
-    @FindBy (xpath = "//a[contains(@href, 'delete')]")
+    @FindBy(xpath = "//a[contains(@href, 'delete')]")
     private WebElement buttonDelete;
-
-    @FindBy(xpath = "//button[contains(text(), 'Disable Multibranch Pipeline')]")
-    private WebElement disableButton;
-
-    @FindBy(xpath = "//button[contains(text(), 'Enable')]")
-    private WebElement enableButton;
 
     @FindBy(id = "enable-project")
     private WebElement disabledStatusMessage;
@@ -42,14 +30,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
     @Override
     protected MultibranchPipelineConfigurationPage createConfigurationPage() {
         return new MultibranchPipelineConfigurationPage(getDriver());
-    }
-
-    public List<String> getBreadcrumbChain() {
-        List<String> breadcrumb = new ArrayList<>();
-        for (WebElement element : breadcrumbChain) {
-            breadcrumb.add(element.getText());
-        }
-        return breadcrumb;
     }
 
     public List<String> getTasksText() {
@@ -69,18 +49,6 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
                 ExpectedConditions.visibilityOfAllElements(sidebarMenuTasksList)));
     }
 
-    public MultibranchPipelineDetailsPage clickDisable() {
-        disableButton.click();
-
-        return this;
-    }
-
-    public MultibranchPipelineDetailsPage clickEnable() {
-        enableButton.click();
-
-        return this;
-    }
-
     public String getDisableStatusMessage() {
         return disabledStatusMessage.getText();
     }
@@ -91,9 +59,5 @@ public class MultibranchPipelineDetailsPage extends BaseProjectPage<MultibranchP
         buttonDelete.click();
 
         return new MultibranchPipelineDeletePage(getDriver());
-    }
-
-    public String getDisableButtonText() {
-        return disableButton.getText();
     }
 }

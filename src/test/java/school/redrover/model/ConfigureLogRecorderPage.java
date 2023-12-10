@@ -11,7 +11,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class ConfigureLogRecorderPage extends BasePage {
+public class ConfigureLogRecorderPage extends BasePage<ConfigureLogRecorderPage> {
 
     @FindBy(xpath = "(//div[@class='setting-main'])[1]/input")
     private WebElement name;

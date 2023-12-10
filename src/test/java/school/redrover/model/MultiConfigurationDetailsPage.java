@@ -4,17 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
-public class MultiConfigurationDetailsPage extends BaseProjectPage<MultiConfigurationConfigurePage> {
-    @FindBy(xpath = "//div[@id='description']/div[1]")
-    private WebElement descriptionText;
+public class MultiConfigurationDetailsPage extends BaseDetailsPage<MultiConfigurationConfigurePage, MultiConfigurationDetailsPage> {
 
     @FindBy(name = "description")
     private WebElement inputDescription;
-
-    @FindBy(name = "Submit")
-    private WebElement buttonSaveDescription;
 
     @FindBy(css = "a[data-message]")
     private WebElement taskLinkDeleteMultiConfigurationProject;
@@ -28,27 +23,12 @@ public class MultiConfigurationDetailsPage extends BaseProjectPage<MultiConfigur
         return new MultiConfigurationConfigurePage(getDriver());
     }
 
-    public String getDescriptionText() {
-        return descriptionText.getText();
-    }
-
-    public MultiConfigurationDetailsPage buttonEditDescription() {
-        addDescription.click();
-
-        return this;
-    }
-
     public MultiConfigurationDetailsPage inputDescription(String description) {
         inputDescription.sendKeys(description);
 
         return this;
     }
 
-    public MultiConfigurationDetailsPage buttonSaveDescription() {
-        buttonSaveDescription.click();
-
-        return this;
-    }
     public MultiConfigurationDetailsPage clearDescription() {
         inputDescription.clear();
 
@@ -59,12 +39,6 @@ public class MultiConfigurationDetailsPage extends BaseProjectPage<MultiConfigur
         taskLinkDeleteMultiConfigurationProject.click();
 
         return this;
-    }
-
-    public HomePage acceptAlert() {
-        getDriver().switchTo().alert().accept();
-
-        return new HomePage(getDriver());
     }
 
     public MultiConfigurationDetailsPage cancelDelete() {

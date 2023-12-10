@@ -140,7 +140,7 @@ public class OrganizationFolderTest extends BaseTest {
         TestUtils.createOrganizationFolder(this, PROJECT_NAME, false);
 
         String newProjectName = new OrganizationFolderDetailsPage(getDriver())
-                .clickRename(new OrganizationFolderDetailsPage(getDriver()))
+                .clickRename()
                 .enterNewName(NEW_PROJECT_NAME)
                 .clickRenameButton()
                 .getProjectName();
@@ -209,8 +209,8 @@ public class OrganizationFolderTest extends BaseTest {
     public void testDisableExistingOrganizationFolder() {
         String disableButtonText = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new OrganizationFolderDetailsPage(getDriver()))
-                .clickDisable()
-                .submitButtonText();
+                .clickDisableButton()
+                .getDisableEnableButtonText();
 
         Assert.assertEquals(disableButtonText, "Enable");
     }

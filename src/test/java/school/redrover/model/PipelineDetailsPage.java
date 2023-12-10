@@ -5,33 +5,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> {
+public class PipelineDetailsPage extends BaseDetailsPage<PipelineConfigurePage, PipelineDetailsPage> {
 
     @FindBy(css = "textarea[name ='description']")
     private WebElement descriptionField;
 
-    @FindBy(xpath = "//div[@id = 'description']//button[@name = 'Submit']")
-    private WebElement saveButton;
-
-    @FindBy(xpath = "//div[@id='description']/div")
-    private WebElement description;
-
     @FindBy(css = ".permalink-item")
     private List<WebElement> permalinksList;
 
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
-    private WebElement buildNowSideMenuOption;
-
     @FindBy(xpath = "//tbody[@class='tobsTable-body']//div[@class='duration']")
     private WebElement buildDurationInStageView;
-
-    @FindBy(xpath = "//span[@class='badge']/a[text()='#1']")
-    private WebElement buildNumInStageView;
 
     @FindBy(xpath = "//div[@class='btn btn-small cbwf-widget cbwf-controller-applied stage-logs']")
     private WebElement logsButtonInStageView;
@@ -41,9 +29,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
 
     @FindBy(xpath = "//th[contains(@class, 'stage-header-name-')]")
     private List<WebElement> stagesNamesList;
-
-    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameSideMenuOption;
 
     @FindBy(xpath = "//div[@class='build-icon']/a")
     private WebElement buildIcon;
@@ -60,9 +45,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
     @FindBy(xpath = "//a[contains(@href, 'lastBuild/')]")
     private WebElement lastBuildLink;
 
-    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
-    private WebElement replayButtonSideMenu;
-
     @FindBy(xpath = "//a[contains(@data-url, '/doDelete')]")
     private WebElement deletePipelineButton;
 
@@ -72,32 +54,17 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
     @FindBy(css = "div#pipeline-box > div")
     private WebElement stageViewAlertText;
 
+    @FindBy(xpath = "//li[@class='jenkins-breadcrumbs__list-item'][2]//a[@class='model-link']")
+    private WebElement folderBreadCrumbs;
+
     public PipelineDetailsPage(WebDriver driver) {
         super(driver);
-    }
-
-    public PipelineDetailsPage clickAddDescription() {
-        addDescription.click();
-
-        return this;
     }
 
     public PipelineDetailsPage inputDescription(String description) {
         descriptionField.sendKeys(description);
 
         return this;
-    }
-
-    public PipelineDetailsPage clickSaveButton() {
-        saveButton.click();
-        getWait2().until(ExpectedConditions.visibilityOf(description));
-
-        return this;
-    }
-
-    public String getDescription() {
-
-        return description.getText();
     }
 
     public List<String> getPermalinksList() {
@@ -107,18 +74,6 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
         }
 
         return permalinks;
-    }
-
-    public PipelineDetailsPage clickBuildNow() {
-        buildNowSideMenuOption.click();
-
-        return this;
-    }
-
-    public BuildWithParametersPage clickBuildWithParameters() {
-        buildNowSideMenuOption.click();
-
-        return new BuildWithParametersPage(getDriver());
     }
 
     @Override
@@ -167,16 +122,10 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
         return tooltipValue.getAttribute("tooltip");
     }
 
-    public PipelineDetailsPage clickLastBuildLink() {
+    public BuildPage clickLastBuildLink() {
         lastBuildLink.click();
 
-        return new PipelineDetailsPage(getDriver());
-    }
-
-    public ReplayBuildPipelinePage clickReplaySideMenu() {
-        replayButtonSideMenu.click();
-
-        return new ReplayBuildPipelinePage(getDriver());
+        return new BuildPage(getDriver());
     }
 
     public String getLastBuildLinkText() {
@@ -198,5 +147,10 @@ public class PipelineDetailsPage extends BaseProjectPage<PipelineConfigurePage> 
     public String getStageViewAlertText() {
 
         return stageViewAlertText.getText();
+    }
+
+    public FolderDetailsPage clickFolderBreadCrumbs() {
+        folderBreadCrumbs.click();
+        return new FolderDetailsPage(getDriver());
     }
 }

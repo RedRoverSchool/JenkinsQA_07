@@ -4,11 +4,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.List;
 
-public class BuildPage extends BasePage {
+public class BuildPage extends BasePage<BuildPage> {
     @FindBy(name = "Submit")
     private WebElement clickSubmitCancel;
 
@@ -17,6 +17,12 @@ public class BuildPage extends BasePage {
 
     @FindBy(xpath = "//pre[@class='console-output']//span[@class='timestamp']")
     private List<WebElement> timestampsList;
+
+    @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'replay')]")
+    private WebElement replayButtonSideMenu;
+
+    @FindBy(xpath = "//*[text()='Edit Build Information']/ancestor::a")
+    private WebElement editBuildInformationSideMenu;
 
     public BuildPage(WebDriver driver) {
         super(driver);
@@ -28,7 +34,7 @@ public class BuildPage extends BasePage {
         return this;
     }
 
-    public <ProjectDetailsPage extends BaseProjectPage> ProjectDetailsPage clickButtonDeleteBuild(ProjectDetailsPage projectDetailsPage) {
+    public <ProjectDetailsPage extends BaseDetailsPage<?, ?>> ProjectDetailsPage clickButtonDeleteBuild(ProjectDetailsPage projectDetailsPage) {
         clickSubmitCancel.click();
 
         return projectDetailsPage;
@@ -37,4 +43,17 @@ public class BuildPage extends BasePage {
     public List<String> getTimestampsList() {
         return timestampsList.stream().map(WebElement::getText).toList();
     }
+
+    public ReplayBuildPipelinePage clickReplaySideMenu() {
+        replayButtonSideMenu.click();
+
+        return new ReplayBuildPipelinePage(getDriver());
+    }
+
+    public BuildEditInformationPage clickEditBuildInformationSideMenu(){
+        editBuildInformationSideMenu.click();
+
+        return new BuildEditInformationPage(getDriver());
+    }
+
 }

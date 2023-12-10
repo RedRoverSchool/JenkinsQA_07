@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class UserPage extends BasePage {
+public class UserPage extends BasePage<UserPage> {
 
     @FindBy(xpath = "//a[@href='/manage']")
     private WebElement manageJenkins;
@@ -20,6 +20,22 @@ public class UserPage extends BasePage {
 
     @FindBy(name = "Submit")
     private WebElement submitNewUser;
+
+    @FindBy(xpath = "//a[contains(@href,'/credentials')]")
+    private WebElement credentials;
+
+    @FindBy(id = "description-link")
+    private WebElement editDescriptionButton;
+
+    @FindBy(name = "description")
+    private WebElement userDescriptionInput;
+
+    @FindBy(name = "Submit")
+    private WebElement saveButton;
+
+    @FindBy(xpath = "//div[@id='description']/div[1]")
+    private WebElement descriptionText;
+
 
     public UserPage(WebDriver driver) { super(driver); }
 
@@ -68,5 +84,30 @@ public class UserPage extends BasePage {
         List<WebElement> userNameList = getDriver().findElements(By.xpath("//tr/td/a"));
 
         return userNameList.stream().map(WebElement::getText).toList();
+    }
+
+
+    public CredentialsPage clickCredentials() {
+        credentials.click();
+
+        return new CredentialsPage(getDriver());
+    }
+
+    public UserPage clickEditDescription() {
+        editDescriptionButton.click();
+
+        return this;
+    }
+
+    public UserPage addDescription(String description) {
+        userDescriptionInput.clear();
+        userDescriptionInput.sendKeys(description);
+        saveButton.click();
+
+        return this;
+    }
+
+    public String getText() {
+        return descriptionText.getText();
     }
 }

@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class RenameErrorPage extends BasePage {
+public class RenameErrorPage extends BasePage<RenameErrorPage> {
     public RenameErrorPage(WebDriver driver) {
         super(driver);
     }

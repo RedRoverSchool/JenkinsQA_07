@@ -105,7 +105,7 @@ public class ViewTest extends BaseTest {
                 .selectListViewType()
                 .clickCreateButton(new MyViewPage(getDriver()))
                 .clickDeleteView()
-                .acceptAlert(new MyViewPage(getDriver()))
+                .acceptAlert()
                 .isViewExists(VIEW_NAME);
 
         Assert.assertFalse(deleteView);

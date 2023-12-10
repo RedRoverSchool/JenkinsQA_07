@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class CreatedUserPage extends BasePage {
+public class CreatedUserPage extends BasePage<CreatedUserPage> {
 
     @FindBy(id = "description-link")
     private WebElement addDescriptionButton;

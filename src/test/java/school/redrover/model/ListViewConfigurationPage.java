@@ -12,7 +12,7 @@ import school.redrover.runner.SeleniumUtils;
 
 import java.util.List;
 
-public class ListViewConfigurationPage extends BasePage {
+public class ListViewConfigurationPage extends BasePage<ListViewConfigurationPage> {
 
     @FindBy(xpath = "//button[@name = 'Submit']")
     private WebElement configurationOKButton;

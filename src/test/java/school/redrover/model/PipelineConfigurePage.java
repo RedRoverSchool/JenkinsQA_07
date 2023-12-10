@@ -10,7 +10,7 @@ import school.redrover.model.base.BaseConfigurationPage;
 
 import java.util.List;
 
-public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetailsPage> {
+public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetailsPage, PipelineConfigurePage> {
 
     @FindBy(xpath = "//label[text()='This project is parameterized']")
     private WebElement projectIsParameterizedCheckbox;
@@ -26,9 +26,6 @@ public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetails
 
     @FindBy(name = "parameter.choices")
     private WebElement parameterChoicesField;
-
-    @FindBy(xpath = "//button[@name = 'Submit']")
-    private WebElement saveButton;
 
     @FindBy(xpath = "//div[@class='samples']/select")
     private WebElement pipelineScriptSamplesDropdown;
@@ -106,12 +103,6 @@ public class PipelineConfigurePage extends BaseConfigurationPage<PipelineDetails
         }
 
         return this;
-    }
-
-    public PipelineDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return new PipelineDetailsPage(getDriver());
     }
 
     public PipelineConfigurePage selectPipelineScriptSampleByValue(String value) {

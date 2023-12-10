@@ -12,8 +12,12 @@ import school.redrover.model.base.BaseConfigurationPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class FreestyleProjectConfigurePage extends BaseConfigurationPage<FreestyleProjectDetailsPage> {
+public class FreestyleProjectConfigurePage extends BaseConfigurationPage<FreestyleProjectDetailsPage, FreestyleProjectConfigurePage> {
+
+    @FindBy(xpath = "//select[@checkdependson='url']")
+    private WebElement credentialsOption;
 
     @FindBy(css = "a[helpurl='/descriptor/jenkins.model.BuildDiscarderProperty/help']")
     private WebElement discardOldBuildsHelpButton;
@@ -23,9 +27,6 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage<Freesty
 
     @FindBy(id = "source-code-management")
     private WebElement sourceCodeManagementSectionHeader;
-
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
 
     @FindBy(xpath = "//button[@data-section-id='source-code-management']")
     private WebElement sourceCodeManagementLink;
@@ -152,6 +153,18 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage<Freesty
 
     @FindBy(name = "parameter.choices")
     private WebElement parameterChoicesTextArea;
+
+    @FindBy(xpath = "//div[@class='credentials-select-control']//span[@class='first-child']/button")
+    private WebElement addButton;
+
+    @FindBy(xpath = "//span[@title= 'Jenkins Credentials Provider']")
+    private WebElement jenkinsOption;
+
+    @FindBy(xpath = "//input[@name = '_.username']")
+    private WebElement usernameCredentialsProvider;
+
+    @FindBy(xpath = "//button[@id = 'credentials-add-submit-button']")
+    private WebElement addButtonCredentialsProvider;
 
     public FreestyleProjectConfigurePage(WebDriver driver) {
         super(driver);
@@ -542,5 +555,35 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage<Freesty
         }
 
         return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAddButton() {
+        addButton.click();
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickJenkinsOption() {
+        jenkinsOption.click();
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage inputUsername(String username) {
+        usernameCredentialsProvider.sendKeys(username);
+        return this;
+    }
+
+    public FreestyleProjectConfigurePage clickAddButtonCredentialsProvider() {
+        addButtonCredentialsProvider.click();
+        return this;
+    }
+
+    public boolean checkIfNewCredentialInTheMenu(String username) {
+
+        Select s = new Select(credentialsOption);
+
+        return s.getOptions()
+                .stream()
+                .map(x -> x.getText().replaceAll("[^a-zA-Z0-9]", " "))
+                .anyMatch(y -> y.contains(username));
     }
 }

@@ -7,7 +7,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class AboutJenkinsPage extends BasePage {
+public class AboutJenkinsPage extends BasePage<AboutJenkinsPage> {
     @FindBy(css = ".app-about-version")
     private WebElement jenkinsVersionText;
 

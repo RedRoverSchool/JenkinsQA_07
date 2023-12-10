@@ -3,18 +3,16 @@ package school.redrover.model;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 
-public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetailsPage> {
+public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetailsPage, FolderConfigurationPage> {
 
     @FindBy(name = "_.description")
     private WebElement descriptionTextField;
 
     @FindBy(className = "textarea-show-preview")
     private WebElement previewSwitch;
-
-    @FindBy(xpath = "//button[@name='Submit']")
-    private WebElement saveButton;
 
     @FindBy(xpath = "//div[@class = 'textarea-preview']")
     private WebElement descriptionPreview;
@@ -68,12 +66,6 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
         return descriptionPreview.getText();
     }
 
-    public FolderDetailsPage clickSaveButton() {
-        saveButton.click();
-
-        return new FolderDetailsPage(getDriver());
-    }
-
     public FolderConfigurationPage clickHealthMetricsInSideMenu() {
         healthMetricsSideMenuOption.click();
 
@@ -87,19 +79,19 @@ public class FolderConfigurationPage extends BaseConfigurationPage<FolderDetails
     }
 
     public FolderConfigurationPage clickAddHealthMetric() {
-        addMetricButton.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(addMetricButton)).click();
 
         return this;
     }
 
     public FolderConfigurationPage selectChildHealthMetric() {
-        childHealthMetric.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(childHealthMetric)).click();
 
         return this;
     }
 
     public boolean  isChildHealthMetricDisplayed () {
-        return childHealthMetricSection.isDisplayed();
+        return getWait5().until(ExpectedConditions.visibilityOf(childHealthMetricSection)).isDisplayed();
     }
 
     public FolderConfigurationPage clickHelpButtonRecursive() {

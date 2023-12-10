@@ -8,7 +8,7 @@ import school.redrover.model.base.BasePage;
 
 import java.util.List;
 
-public class NewViewConfigurePage extends BasePage {
+public class NewViewConfigurePage extends BasePage<NewViewConfigurePage> {
 
     @FindBy(xpath = "//div[@class = 'listview-jobs']/span/span[1]")
     private WebElement firstJobCheckbox;

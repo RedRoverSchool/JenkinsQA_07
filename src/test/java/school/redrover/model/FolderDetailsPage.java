@@ -4,17 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.base.BaseProjectPage;
+import school.redrover.model.base.BaseDetailsPage;
 
 import java.util.List;
 
-public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> {
+public class FolderDetailsPage extends BaseDetailsPage<FolderConfigurationPage, FolderDetailsPage> {
 
     @FindBy(className = "jenkins-input")
     private WebElement descriptionTextArea;
-
-    @FindBy(name = "Submit")
-    private WebElement submitButton;
 
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
@@ -37,11 +34,11 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
     @FindBy(xpath = "//div[@class='textarea-preview']")
     private WebElement descriptionPreview;
 
-    @FindBy(xpath = "//div[@id='description']/div[1]")
-    private WebElement actualFolderDescription;
-
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
     private WebElement renameButton;
+
+    @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
+    private WebElement newProject;
 
     public FolderDetailsPage(WebDriver driver) {
         super(driver);
@@ -52,28 +49,11 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
         return new FolderConfigurationPage(getDriver());
     }
 
-    public FolderDetailsPage clickAddOrEditDescription() {
-        addDescription.click();
-
-        return this;
-    }
-
     public FolderDetailsPage typeDescription(String description) {
         descriptionTextArea.clear();
         descriptionTextArea.sendKeys(description);
 
         return this;
-    }
-
-    public FolderDetailsPage clickSave() {
-        submitButton.click();
-
-        return this;
-    }
-
-    public String getActualFolderDescription() {
-
-        return actualFolderDescription.getText();
     }
 
     public NewItemPage clickCreateJob() {
@@ -86,12 +66,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
         newItemButton.click();
 
         return new NewItemPage(getDriver());
-    }
-
-    public MovePage clickMove() {
-        moveJob.click();
-
-        return new MovePage(getDriver());
     }
 
     public List<String> getJobListInsideFolder() {
@@ -108,11 +82,6 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
         descriptionTextArea.clear();
 
         return this;
-    }
-
-    public String getDescriptionButtonText() {
-
-        return getDriver().findElement(By.xpath("//div[@id='description']/div[2]")).getText();
     }
 
     public boolean isJobInJobsList(String jobName) {
@@ -135,6 +104,15 @@ public class FolderDetailsPage extends BaseProjectPage<FolderConfigurationPage> 
         previewHideButton.click();
 
         return this;
+    }
+
+    public NewItemPage clickCreateAJob(){
+        newItemButton.click();
+        return new  NewItemPage(getDriver());
+    }
+
+    public boolean   isNewCreatedProjectDisplayed(){
+        return  newProject.isDisplayed();
     }
 }
 
