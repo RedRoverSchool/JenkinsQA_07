@@ -169,38 +169,18 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    //@Ignore
-
     @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
-    //(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
     public void testRenameMultibranchDropdownBreadcrumbs() {
-        /* String namePipelane = */
 
+    String nameMultibranch = new HomePage(getDriver())
+              .breadCrumbRename(new MultibranchPipelineDetailsPage(getDriver()))
+              .clearInputField()
+              .enterName("Vasya")
+              .clickRenameButton()
+              .getProjectName();
 
-        MultiConfigurationDetailsPage mult = new HomePage(getDriver())
-              .breadCrumbRename();
-
-
-        //getDriver().findElement(By.xpath("//td[3]/a/span")).click();
-
-//        WebElement breadcrumbName = getDriver().findElement(By.xpath("//div[@id='breadcrumbBar']//li[3]/a"));
-//        Actions actions = new Actions(getDriver());
-//        actions.moveToElement(breadcrumbName).perform();
-
-//        WebElement breadcrumbArrow = getDriver().findElement(By.xpath("//li[3]/a/button"));
-//        actions.sendKeys(breadcrumbArrow, Keys.ENTER).perform();
-
-//        getDriver().findElement(By.xpath("//a[@href='/job/"
-//                + MULTIBRANCH_PIPELINE_NEW_NAME + "/confirm-rename']")).click();
-
-        getDriver().findElement(By.name("newName")).clear();
-        getDriver().findElement(By.name("newName")).sendKeys(MULTIBRANCH_PIPELINE_NAME);
-        getDriver().findElement(By.name("Submit")).click();
-
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-
-        Assert.assertEquals(getDriver().findElement(By.xpath("//td[3]/a/span")).getText(), MULTIBRANCH_PIPELINE_NAME,
-                MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal" + MULTIBRANCH_PIPELINE_NAME);
+        Assert.assertEquals(nameMultibranch, "Vasya",
+                MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal Vasya");
     }
 
     @Test

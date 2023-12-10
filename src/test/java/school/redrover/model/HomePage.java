@@ -239,12 +239,11 @@ public class HomePage extends BasePage<HomePage> {
 
     }
 
-    public MultiConfigurationDetailsPage breadCrumbRename() {
+    public <ProjectPage extends BaseDetailsPage>RenamePage breadCrumbRename(ProjectPage projectPage) {
         Actions actions = new Actions(getDriver());
-        actions.moveToElement(chevronDropdownMenuJob).perform();
+        actions.click(chevronDropdownMenuJob).perform();
         actions.click(renameLine).perform();
 
-        return new MultiConfigurationDetailsPage(getDriver());
+        return new RenamePage<>(getDriver(), projectPage );
     }
-
 }
