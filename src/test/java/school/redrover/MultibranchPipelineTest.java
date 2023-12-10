@@ -28,15 +28,6 @@ public class MultibranchPipelineTest extends BaseTest {
     private final List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
             "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
-    private List<String> getTextOfWebElements(List<WebElement> elements) {
-        List<String> textOfWebElements = new ArrayList<>();
-
-        for (WebElement element : elements) {
-            textOfWebElements.add(element.getText());
-        }
-        return textOfWebElements;
-    }
-
     @Test
     public void testMultibranchPipelineCreationWithCreateAJob() {
 

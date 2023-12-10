@@ -24,7 +24,6 @@ public class UserTest extends BaseTest {
 
     private static final String USER_NAME = "Username";
     private static final String USER_NAME_2 = "FirstUser";
-    private static final String NAME = "ivan";
     private static final String FULL_NAME = "User Full Name";
     private static final String PASSWORD = "12345";
     private static final String DESCRIPTION = "Test description";
@@ -275,7 +274,7 @@ public class UserTest extends BaseTest {
             usernames.add(w.getAttribute("href").substring(48).replace("/", ""));
         }
 
-        assertFalse(usernames.contains(NAME));
+        assertFalse(usernames.contains(USER_NAME));
     }
 
     @Test
@@ -407,10 +406,8 @@ public class UserTest extends BaseTest {
 
     @Test
     public void testUserRecordContainUserIdButton() {
-        UserPage createdUserPage = new UserPage(getDriver())
-                .createUserSuccess("Test");
-
         boolean userId = new UserPage(getDriver())
+                .createUserSuccess("Test")
                 .userIdIsClickable();
         Assert.assertTrue(userId, "Button should be enabled and displayed");
     }

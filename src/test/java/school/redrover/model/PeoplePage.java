@@ -20,9 +20,6 @@ public class PeoplePage extends BasePage<PeoplePage> {
     @FindBy(xpath = "//td[@class = 'jenkins-table__cell--tight jenkins-table__icon']")
     private WebElement iconFieldLarge;
 
-    @FindBy(css = "a[href='api/']")
-    private WebElement restApiButton;
-
     @FindBy(xpath = "//a[contains(@href,'/user/')]")
     private WebElement currentUserName;
 
@@ -61,12 +58,6 @@ public class PeoplePage extends BasePage<PeoplePage> {
                 By.xpath("//tr[@id = 'person-" + userName + "']/td/a")).click();
 
         return new CreatedUserPage(getDriver());
-    }
-
-    public RestApiPage goRestApi() {
-        restApiButton.click();
-
-        return new RestApiPage(getDriver());
     }
 
     public UserPage clickCurrentUserName() {
