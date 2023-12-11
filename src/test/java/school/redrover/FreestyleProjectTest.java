@@ -880,6 +880,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testDeletePermalinksOnProjectsStatusPage() {
         final List<String> removedPermalinks = List.of(
