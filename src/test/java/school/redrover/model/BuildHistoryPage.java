@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.TestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
@@ -92,8 +93,9 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
     }
 
     public List<String> getIconLegendList() {
+        List<WebElement> elementList = getDriver().findElements(By.xpath("//dl[@class='app-icon-legend']//dd"));
+        //System.out.println("getIconLegendList = " + elementList.stream().map(WebElement::getText).toList());
 
-        return TestUtils.getTextOfWebElements(getWait2().until(
-                ExpectedConditions.visibilityOfAllElements(listIconLegend)));
+        return elementList.stream().map(WebElement::getText).toList();
     }
 }

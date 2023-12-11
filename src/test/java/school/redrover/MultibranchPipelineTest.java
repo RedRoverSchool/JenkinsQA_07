@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.SourceType;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -25,20 +26,11 @@ public class MultibranchPipelineTest extends BaseTest {
     private final List<String> requiredNamesOfTasks = List.of("Status", "Configure", "Scan Multibranch Pipeline Log", "Multibranch Pipeline Events",
             "Delete Multibranch Pipeline", "People", "Build History", "Rename", "Pipeline Syntax", "Credentials");
 
-    private List<String> getTextOfWebElements(List<WebElement> elements) {
-        List<String> textOfWebElements = new ArrayList<>();
-
-        for (WebElement element : elements) {
-            textOfWebElements.add(element.getText());
-        }
-        return textOfWebElements;
-    }
-
     @Test
     public void testMultibranchPipelineCreationWithCreateAJob() {
 
         String multibranchBreadcrumbName = new HomePage(getDriver())
-                .clickCreateAJob()
+                .clickNewItem()
                 .typeItemName(MULTIBRANCH_PIPELINE_NAME)
                 .selectMultibranchPipeline()
                 .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
@@ -169,15 +161,15 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(homePage.getJobList().contains(MULTIBRANCH_PIPELINE_NEW_NAME));
     }
 
-    @Test(dependsOnMethods = "testCreateMultiConfigurationPipeline")
+    @Test(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob", "testRenameMultibranchDropdownDashboard"})
     public void testRenameMultibranchDropdownBreadcrumbs() {
 
-    String nameMultibranch = new HomePage(getDriver())
-              .breadCrumbRename(new MultibranchPipelineDetailsPage(getDriver()))
-              .clearInputField()
-              .enterName("Vasya")
-              .clickRenameButton()
-              .getProjectName();
+        String nameMultibranch = new HomePage(getDriver())
+                .breadCrumbRename(new MultibranchPipelineDetailsPage(getDriver()))
+                .clearInputField()
+                .enterName("Vasya")
+                .clickRenameButton()
+                .getProjectName();
 
         Assert.assertEquals(nameMultibranch, "Vasya",
                 MULTIBRANCH_PIPELINE_NEW_NAME + "is not equal Vasya");
@@ -218,10 +210,15 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(nameDisplayed);
     }
 
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test//(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
     public void testMultibranchCreationFromExisting() {
 
         boolean homePage = new HomePage(getDriver())
+                .clickCreateAJob()
+                .typeItemName(MULTIBRANCH_PIPELINE_NAME)
+                .selectMultibranchPipeline()
+                .clickOk(new MultibranchPipelineConfigurationPage(getDriver()))
+                .goHomePage()
                 .clickNewItem()
                 .typeItemName(MULTIBRANCH_PIPELINE_NEW_NAME)
                 .populateFieldCopyFrom(MULTIBRANCH_PIPELINE_NAME)
@@ -233,7 +230,7 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertTrue(homePage);
     }
 
-    @Test (dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test (dependsOnMethods = "testCreateMultiConfigurationPipeline")
     public void testMultibranchCreationFromNonExisting() {
 
         String error = new HomePage(getDriver())
@@ -246,27 +243,13 @@ public class MultibranchPipelineTest extends BaseTest {
         Assert.assertEquals(error, "Error");
     }
     @Ignore("expected [MultibranchPipeline] but found [Search for 'MultibranchPipeline']")
-    @Test(dependsOnMethods = "testMultibranchPipelineCreationWithCreateAJob")
+    @Test(dependsOnMethods = {"testMultibranchPipelineCreationWithCreateAJob"})
     public void testFindByQuickSearch() {
         String multibranchPipelineDetailsPage = new HomePage(getDriver())
                 .goSearchBox(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
                 .getHeadLineText();
 
         Assert.assertEquals(multibranchPipelineDetailsPage, MULTIBRANCH_PIPELINE_NAME);
-    }
-
-
-    @Ignore
-    @Test(dependsOnMethods = "testFindByQuickSearch")
-    public void testErrorForUnsafeChar() {
-        String error_message = new HomePage(getDriver())
-                .clickJobByName(MULTIBRANCH_PIPELINE_NAME, new MultibranchPipelineDetailsPage(getDriver()))
-                .clickRename()
-                .enterName(MULTIBRANCH_PIPELINE_NEW_NAME + "!")
-                .clickBlank()
-                .getErrorMessage();
-
-        Assert.assertEquals(error_message, "‘!’ is an unsafe character");
     }
 
     @Test
@@ -386,7 +369,6 @@ public class MultibranchPipelineTest extends BaseTest {
 
         Assert.assertTrue(disabledText.contains("This Multibranch Pipeline is currently disabled"));
     }
-
     @Test(dependsOnMethods = "testDisable")
     public void testEnable() {
 

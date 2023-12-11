@@ -1,6 +1,8 @@
 package school.redrover;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.hc.core5.http.io.SessionOutputBuffer;
+import org.openqa.selenium.AcceptedW3CCapabilityKeys;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -97,13 +99,12 @@ public class BuildHistoryTest extends BaseTest {
     }
 
     @Test
-    public void testCountsIconLegendStatus() throws InterruptedException{
+    public void testCountsIconLegendStatus() {
         List<String> summaIconLegendStatus = new HomePage(getDriver())
                 .clickBuildHistory()
                 .clickIconLegendButton()
                 .getIconLegendList();
 
-        System.out.println("I want to see result " + summaIconLegendStatus);
-        Thread.sleep(1000);
+        Assert.assertEquals(summaIconLegendStatus.get(16) , "Project health is 20% or less");
     }
 }
