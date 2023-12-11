@@ -5,6 +5,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.errors.ErrorPage;
+import school.redrover.model.jobs.configs.FolderConfigurationPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
+import school.redrover.model.jobs.details.PipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -217,7 +222,7 @@ public class FolderTest extends BaseTest {
                 .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeDescription(DESCRIPTION_NAME)
-                .clickSave()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(actualDescription, DESCRIPTION_NAME);
@@ -255,7 +260,7 @@ public class FolderTest extends BaseTest {
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeDescription(newDescriptionText)
-                .clickSave()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(actualUpdatedDescription, newDescriptionText);
@@ -267,7 +272,7 @@ public class FolderTest extends BaseTest {
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .clearDescriptionTextArea()
-                .clickSave();
+                .clickSaveDescriptionButton();
 
         Assert.assertTrue(folderDescription.getDescriptionText().isEmpty());
         Assert.assertEquals(folderDescription.getAddDescriptionButtonText(), "Add description");
@@ -311,7 +316,6 @@ public class FolderTest extends BaseTest {
 
         Assert.assertEquals(previewText, DESCRIPTION_NAME);
     }
-
 
     @Ignore
     @Test

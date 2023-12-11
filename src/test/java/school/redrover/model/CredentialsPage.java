@@ -6,9 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
-public class CredentialsPage extends BasePage<CredentialsPage> {
-    @FindBy(css = "a[href='api/']")
-    private WebElement restApiButton;
+public class CredentialsPage extends BasePage {
 
     @FindBy(xpath = "//span[contains(text(), 'Delete')]/ancestor::a")
     private WebElement deleteButton;

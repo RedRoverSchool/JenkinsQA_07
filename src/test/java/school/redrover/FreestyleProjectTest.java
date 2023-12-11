@@ -1,13 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.errors.RenameErrorPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
+import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -105,7 +106,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .insertDescriptionText(PROJECT_DESCRIPTION)
-                .clickSaveButton()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         assertEquals(actualDescription, PROJECT_DESCRIPTION);
@@ -118,7 +119,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickAddOrEditDescription()
                 .deleteDescriptionText()
                 .insertDescriptionText(NEW_PROJECT_DESCRIPTION)
-                .clickSaveButton()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         assertEquals(actualNewDescriptionText, NEW_PROJECT_DESCRIPTION);
@@ -130,7 +131,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .deleteDescriptionText()
-                .clickSaveButton()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         assertEquals(actualEmptyDescriptionInputField, "");
@@ -153,7 +154,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickSaveButton()
                 .clickEnableButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertFalse(isEnabled);
     }
@@ -168,7 +169,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertFalse(isEnabled);
     }
@@ -180,7 +181,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertFalse(isEnabled);
     }
@@ -193,7 +194,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickDisableEnableToggle()
                 .clickSaveButton()
                 .clickEnableButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertTrue(isEnabled);
     }
@@ -208,7 +209,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .isEnabled();
+                .isProjectEnabled();
 
         assertTrue(isEnabled);
     }
@@ -222,7 +223,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .getWarningMessageWhenDisabled();
+                .getDisabledMessageText();
 
         assertEquals(actualWarningMessage, expectedWarningMessage);
     }
@@ -236,7 +237,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .createFreestyleProject(PROJECT_NAME)
                 .clickDisableEnableToggle()
                 .clickSaveButton()
-                .getTextEnableDisableButton();
+                .getDisableEnableButtonText();
 
         assertEquals(actualButtonName, expectedButtonName);
     }
@@ -382,7 +383,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobByName(NEW_PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickEnableButton();
 
-        assertTrue(detailsPage.isEnabled());
+        assertTrue(detailsPage.isProjectEnabled());
     }
 
     @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
@@ -450,7 +451,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickDiscardOldBuildsCheckBox()
                 .inputMaxNumberOfBuildsToKeep(String.valueOf(numOfBuildNowClicks))
                 .clickSaveButton()
-                .clickBuildNowSeveralTimes(new FreestyleProjectDetailsPage(getDriver()), numOfBuildNowClicks + 1)
+                .clickBuildNowSeveralTimes(numOfBuildNowClicks + 1)
                 .refreshPage()
                 .getBuildsInBuildHistoryList();
 
@@ -503,7 +504,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .goHomePage()
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
                 .clickDisableButton()
-                .getWarningMessageWhenDisabled();
+                .getDisabledMessageText();
 
         assertEquals(warningMessage, "This project is currently disabled");
     }
@@ -692,7 +693,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickConfigure()
                 .clickAddTimestampsToConsoleOutput()
                 .clickSaveButton()
-                .clickBuildNow(new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNow()
                 .waitAndRefresh()
                 .clickBuildIconInBuildHistory().getTimestampsList();
 
@@ -764,32 +765,23 @@ public class FreestyleProjectTest extends BaseTest {
                 , expectedResult);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testPermalinksListOnStatusPage() {
-        final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
-                "Last completed build"};
+        final String[] buildSuccessfulPermalinks = {
+                "Last build",
+                "Last stable build",
+                "Last successful build",
+                "Last completed build"
+        };
 
-        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
+        String permaLinks = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNow()
+                .refreshPage()
+                .getPermalinksText();
 
-        for (int i = 0; i < 4; i++) {
-            getWait2().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Build Now"))).click();
-        }
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//td[@class='build-row-cell']")));
-
-        getDriver().navigate().refresh();
-
-        List<WebElement> permalinks = getDriver().findElements(
-                By.xpath("//ul[@class='permalinks-list']/li"));
-
-        ArrayList<String> permalinksTexts = new ArrayList<>();
-
-        assertEquals(permalinks.size(), 4);
-
-        for (int i = 0; i < permalinks.size(); i++) {
-            permalinksTexts.add(permalinks.get(i).getText());
-            assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
+        for (String x : buildSuccessfulPermalinks) {
+            assertTrue(permaLinks.contains(x));
         }
     }
 
@@ -898,7 +890,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         String permaLinks = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
-                .clickBuildNowButton()
+                .clickBuildNow()
                 .refreshPage()
                 .clickPermalinkLastBuild()
                 .clickDeleteBuildSidePanel()

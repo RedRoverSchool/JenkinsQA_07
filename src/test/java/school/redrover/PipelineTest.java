@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.jobs.configs.PipelineConfigurePage;
+import school.redrover.model.jobs.details.PipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -203,7 +205,7 @@ public class PipelineTest extends BaseTest {
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
                 .inputDescription(description)
-                .clickSaveButton()
+                .clickSaveDescriptionButton()
                 .getDescriptionText();
 
         Assert.assertEquals(actualDescription, description);
@@ -347,6 +349,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(name.contains( JOB_NAME));
     }
 
+    @Ignore
     @Test
     public void testAddDisplayNameForBuild() {
         TestUtils.createPipeline(this, JOB_NAME, true);

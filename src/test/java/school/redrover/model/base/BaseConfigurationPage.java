@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.FreestyleProjectConfigurePage;
 
-public abstract class BaseConfigurationPage<ProjectPage extends BaseProjectPage<?, ?>,Self extends BaseConfigurationPage<?, ?>> extends BasePage<Self> {
+public abstract class BaseConfigurationPage<ProjectPage extends BaseDetailsPage<?, ?>,Self extends BaseConfigurationPage<?, ?>> extends BasePage<Self> {
 
     @FindBy(xpath = "//button[@name='Submit']")
     private WebElement saveButton;

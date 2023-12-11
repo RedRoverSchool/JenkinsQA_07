@@ -5,6 +5,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.errors.AngryErrorPage;
+import school.redrover.model.errors.ErrorPage;
+import school.redrover.model.jobs.configs.OrganizationFolderConfigurationPage;
+import school.redrover.model.jobs.details.OrganizationFolderDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -210,7 +214,7 @@ public class OrganizationFolderTest extends BaseTest {
         String disableButtonText = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new OrganizationFolderDetailsPage(getDriver()))
                 .clickDisableButton()
-                .getEnableButtonText();
+                .getDisableEnableButtonText();
 
         Assert.assertEquals(disableButtonText, "Enable");
     }
