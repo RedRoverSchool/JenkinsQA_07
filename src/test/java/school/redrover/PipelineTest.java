@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.jobs.configs.PipelineConfigurePage;
+import school.redrover.model.jobs.details.PipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class PipelineTest extends BaseTest {
 
     private static final String JOB_NAME = "NewPipeline";
+    private static final String BUILD_NAME = "PipelineBuildName";
 
     @Test
     public void testCreatePipeline() {
@@ -57,13 +60,14 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, JOB_NAME, false);
 
         String currentName = new PipelineDetailsPage(getDriver())
-                .clickRenameInSideMenu()
-                .enterNewName(updatedJobName)
-                .clickRenameButton(new PipelineDetailsPage(getDriver()))
+                .clickRename()
+                .enterName(updatedJobName)
+                .clickRenameButton()
                 .goHomePage()
-                .getJobDisplayName();
+                .getJobList()
+                .toString();
 
-        Assert.assertEquals(currentName, updatedJobName);
+        Assert.assertTrue(currentName.contains(updatedJobName));
     }
 
     @Test
@@ -85,29 +89,16 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .goHomePage()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
-                .clickRenameInSideMenu()
-                .clearInputName()
-                .clickRenameButton(new ErrorPage(getDriver()))
-                .getErrorFromMainPanel();
+                .clickRename()
+                .enterName("")
+                .clickRenameButtonEmptyName()
+                .getErrorText();
 
-        Assert.assertEquals(errorMessage, "Error" + '\n' + "No name is specified");
-    }
-
-    @Test
-    public void testCreatePipelineProject() {
-        List<String> jobList = new HomePage(getDriver())
-                .clickNewItem()
-                .typeItemName(JOB_NAME)
-                .selectPipelineProject()
-                .clickOk(new PipelineConfigurationPage(getDriver()))
-                .goHomePage()
-                .getJobList();
-
-        Assert.assertTrue(jobList.contains(JOB_NAME));
+        Assert.assertEquals(errorMessage, "No name is specified");
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testCreatePipeline")
+    @Test(dependsOnMethods = "testTooltipsDescriptionCompliance")
     public void testOpenLogsFromStageView() {
         String stageLogsText = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -115,7 +106,8 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineScriptSampleByValue("hello")
                 .clickSaveButton()
                 .clickBuildNow()
-                .clickLogsInStageView().getStageLogsModalText();
+                .clickLogsInStageView()
+                .getStageLogsModalText();
 
         Assert.assertEquals(stageLogsText, "Hello World");
     }
@@ -191,7 +183,7 @@ public class PipelineTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(JOB_NAME)
                 .selectPipelineProject()
-                .clickOk(new PipelineConfigurationPage(getDriver()))
+                .clickOk(new PipelineConfigurePage(getDriver()))
                 .clickProjectIsParameterized()
                 .clickAddParameter()
                 .selectChoiceParameter().setParameterName("parameterName")
@@ -203,17 +195,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(buildParameters, parameterChoices);
     }
 
-    @Test(dependsOnMethods = "testDescriptionDisplays")
-    public void testDelete() {
-        boolean isPipelineExist = new HomePage(getDriver())
-                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
-                .deleteFromSideMenu()
-                .isProjectExist(JOB_NAME);
-
-        Assert.assertFalse(isPipelineExist);
-
-    }
-
     @Test
     public void testDescriptionDisplays() {
         final String description = "Description of the Pipeline";
@@ -222,16 +203,25 @@ public class PipelineTest extends BaseTest {
 
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
-                .clickAddDescription()
+                .clickAddOrEditDescription()
                 .inputDescription(description)
-                .clickSaveButton()
-                .getDescription();
+                .clickSaveDescriptionButton()
+                .getDescriptionText();
 
         Assert.assertEquals(actualDescription, description);
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testDescriptionDisplays")
+    public void testDelete() {
+        boolean isPipelineExist = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .deleteFromSideMenu()
+                .isProjectExist(JOB_NAME);
+
+        Assert.assertFalse(isPipelineExist);
+    }
+
+    @Test(dependsOnMethods = "testCreatePipeline")
     public void testPermalinksIsEmpty() {
         boolean isPermalinksEmpty = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -240,7 +230,6 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isPermalinksEmpty);
     }
 
-    @Ignore
     @Test
     public void testPermalinksContainBuildInformation() {
         final List<String> expectedPermalinksList = List.of(
@@ -253,7 +242,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
         List<String> actualPermalinksList = new HomePage(getDriver())
-                .clickBuildByGreenArrow(JOB_NAME)
+                .clickBuildByGreenArrowWithWait(JOB_NAME)
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .getPermalinksList();
 
@@ -261,9 +250,8 @@ public class PipelineTest extends BaseTest {
         Assert.assertEquals(actualPermalinksList, expectedPermalinksList);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testPermalinksIsEmpty")
     public void testStageViewBeforeBuild() {
-        TestUtils.createPipeline(this, JOB_NAME, true);
 
         String stageViewText = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
@@ -294,7 +282,7 @@ public class PipelineTest extends BaseTest {
                 .clickConfigure()
                 .clickDoNotAllowConcurrentBuilds()
                 .goHomePage()
-                .acceptAlert(new HomePage(getDriver()))
+                .acceptAlert()
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure()
                 .isDoNotAllowConcurrentBuildsSelected();
@@ -302,7 +290,7 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(isDoNotAllowConcurrentBuildSelected);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testStageViewBeforeBuild")
     public void testTooltipsDescriptionCompliance() {
         List<String> tooltipsTextsList = List.of(
                 "Help for feature: Discard old builds",
@@ -318,9 +306,7 @@ public class PipelineTest extends BaseTest {
                 "Help for feature: Trigger builds remotely (e.g., from scripts)"
         );
 
-        TestUtils.createPipeline(this, JOB_NAME, true);
-
-        PipelineConfigurationPage pipelineConfigurationPage = new HomePage(getDriver())
+        PipelineConfigurePage pipelineConfigurationPage = new HomePage(getDriver())
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
                 .clickConfigure();
 
@@ -341,5 +327,42 @@ public class PipelineTest extends BaseTest {
                 .getLastBuildLinkText();
 
         Assert.assertTrue(lastBuildLink.contains("Last build (#2)"));
+    }
+
+    @Test
+    public void testMovePipelineToFolder() {
+        String folderName = "Folder";
+
+        TestUtils.createFolder(this, folderName , true);
+        TestUtils.createPipeline(this, JOB_NAME, true);
+
+        List<String> name = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickMove()
+                .clickArrowDropDownMenu()
+                .clickFolderByName(folderName)
+                .clickMove(new PipelineDetailsPage(getDriver()))
+                .goHomePage()
+                .clickJobNameDropdown(folderName)
+                .getJobList();
+
+        Assert.assertTrue(name.contains( JOB_NAME));
+    }
+
+    @Ignore
+    @Test
+    public void testAddDisplayNameForBuild() {
+        TestUtils.createPipeline(this, JOB_NAME, true);
+
+        String newDisplayedBuildName = new HomePage(getDriver())
+                .clickBuildByGreenArrowWithWait(JOB_NAME)
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickLastBuildLink()
+                .clickEditBuildInformationSideMenu()
+                .enterDisplayName(BUILD_NAME)
+                .clickSaveButton()
+                .getPageTitle();
+
+        Assert.assertTrue(newDisplayedBuildName.contains(BUILD_NAME));
     }
 }

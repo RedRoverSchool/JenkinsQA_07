@@ -1,125 +1,115 @@
 package school.redrover;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
+import school.redrover.model.HomePage;
+import school.redrover.model.SearchResultQueryPage;
 import school.redrover.runner.BaseTest;
 import java.util.List;
 
-import static org.testng.Assert.assertTrue;
-
 public class HeaderTest extends BaseTest {
-    @Ignore
+
+    private static final String HOME_PAGE_HEAD_LINE_TEXT = "Welcome to Jenkins!";
+    private static final String PROJECT_NAME = "Test project";
+
     @Test
-    public void testReturningBackToMainPageFromMainMenuPages() {
+    public void testComeHomePageFromNewItemPage() {
+        String homePageHeadLineText = new HomePage(getDriver())
+                .clickNewItem()
+                .goHomePage()
+                .getHeadLineText();
 
-        List<By> mainPageMenuItems = List.of(
-            By.xpath("//a[@href='/view/all/newJob']"),
-            By.xpath("//a[@href='/asynchPeople/']"),
-            By.xpath("//a[@href='/view/all/builds']"),
-            By.xpath("//a[@href='/manage']"),
-            By.xpath("//a[@href='/me/my-views']"));
+        Assert.assertEquals(homePageHeadLineText, HOME_PAGE_HEAD_LINE_TEXT);
+    }
 
-        for (By locator : mainPageMenuItems) {
-            getDriver().findElement(locator).click();
-            getDriver().findElement(By.id("jenkins-home-link")).click();
+    @Test(dependsOnMethods = "testComeHomePageFromNewItemPage")
+    public void testComeHomePageFromPeoplePage() {
+        String homePageHeadLineText = new HomePage(getDriver())
+                .clickPeople()
+                .goHomePage()
+                .getHeadLineText();
 
-            Assert.assertEquals(getDriver().getTitle(), "Dashboard [Jenkins]");
+        Assert.assertEquals(homePageHeadLineText, HOME_PAGE_HEAD_LINE_TEXT);
+    }
+
+    @Test(dependsOnMethods = "testComeHomePageFromPeoplePage")
+    public void testComeHomePageFromBuildHistoryPage() {
+        String homePageHeadlineText = new HomePage(getDriver())
+                .clickBuildHistoryButton()
+                .goHomePage()
+                .getHeadLineText();
+
+        Assert.assertEquals(homePageHeadlineText, HOME_PAGE_HEAD_LINE_TEXT);
+    }
+
+    @Test(dependsOnMethods = "testComeHomePageFromBuildHistoryPage")
+    public void testComeHomePageFromManageJenkinsPage() {
+        String homePageHeadLineText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goHomePage()
+                .getHeadLineText();
+
+        Assert.assertEquals(homePageHeadLineText, HOME_PAGE_HEAD_LINE_TEXT);
+    }
+
+    @Test(dependsOnMethods = "testComeHomePageFromManageJenkinsPage")
+    public void testComeHomePageFromMyViewsPage() {
+        String homePageHeadLineText = new HomePage(getDriver())
+                .clickMyView()
+                .goHomePage()
+                .getHeadLineText();
+
+        Assert.assertEquals(homePageHeadLineText, HOME_PAGE_HEAD_LINE_TEXT);
+    }
+
+    @Test(dependsOnMethods = "testComeHomePageFromMyViewsPage")
+    public void testExactMatchSearchFunctionality() {
+        String header = new HomePage(getDriver()).clickNewItem()
+                .createFreestyleProject(PROJECT_NAME)
+                .goSearchBox(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .getHeadLineText();
+
+        Assert.assertEquals(header, "Project " + PROJECT_NAME);
+    }
+
+    @Test(dependsOnMethods = "testExactMatchSearchFunctionality")
+    public void testPartialMatchSearchFunctionality() {
+        final String searchingRequest = PROJECT_NAME.substring(0, 5);
+
+        List<String> resultSearch = new HomePage(getDriver())
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME + "1")
+                .goHomePage()
+                .clickNewItem()
+                .createFreestyleProject(PROJECT_NAME + "2")
+                .goSearchBox(searchingRequest, new SearchResultQueryPage(getDriver()))
+                .getSearchResultQueryText();
+
+        for (String x : resultSearch) {
+            Assert.assertTrue(x.contains(searchingRequest));
         }
     }
-    private void goToJenkinsHomePage() {
-        getDriver().findElement(By.id("jenkins-name-icon")).click();
-    }
 
-    private void createFreeStyleProject(String projectName) {
-        goToJenkinsHomePage();
-        getDriver().findElement(By.linkText("New Item")).click();
-        getDriver().findElement(By.className("hudson_model_FreeStyleProject")).click();
-        getDriver().findElement(By.id("name")).sendKeys(projectName);
-        getDriver().findElement(By.id("ok-button")).click();
-    }
-
-    @Test
-    public void testExactMatchSearchFunctionality() {
-        final String itemName = "Test project";
-        createFreeStyleProject(itemName);
-
-        getDriver().findElement(By.name("q")).click();
-        getDriver().findElement(By.name("q")).sendKeys(itemName);
-        new Actions(getDriver()).sendKeys(Keys.ENTER).perform();
-
-        String title = getDriver().getTitle();
-        boolean isStatusPageSelected = getDriver()
-                .findElement(By.linkText("Status"))
-                .getAttribute("class")
-                .contains("active");
-
-        assertTrue(title.contains(itemName));
-        assertTrue(isStatusPageSelected);
-    }
-
-    @Test
-    public void testPartialMatchSearchFunctionality() {
-        final String itemName1 = "Test project1";
-        final String itemName2 = "Test project2";
-        final String itemName3 = "Test project3";
-        final String searchingRequest = itemName1.substring(0, 5);
-        createFreeStyleProject(itemName1);
-        createFreeStyleProject(itemName2);
-        createFreeStyleProject(itemName3);
-
-        getDriver().findElement(By.name("q")).click();
-        getDriver().findElement(By.name("q")).sendKeys(searchingRequest);
-        new Actions(getDriver()).sendKeys(Keys.ENTER).perform();
-
-        boolean isResultMatchQuery = getDriver()
-                .findElements(By.xpath("//div[@id='main-panel']//li"))
-                .stream()
-                .map(WebElement::getText)
-                .allMatch(x -> x.contains(searchingRequest));
-        assertTrue(isResultMatchQuery);
-    }
-
-    @Test
+    @Test(dependsOnMethods = "testPartialMatchSearchFunctionality")
     public void testRedirectionToStatusPageFromResultList() {
-        final String itemName = "Test project";
-        final String searchRequest = itemName.substring(0, 5);
-        createFreeStyleProject(itemName);
+        final String searchingRequest = PROJECT_NAME.substring(0, 5);
 
-        getDriver().findElement(By.name("q")).click();
-        getDriver().findElement(By.name("q")).sendKeys(searchRequest);
-        new Actions(getDriver()).sendKeys(Keys.ENTER).perform();
-        getDriver().findElement(By.linkText(itemName)).click();
+        String statusPage = new HomePage(getDriver())
+                .goSearchBox(searchingRequest, new SearchResultQueryPage(getDriver()))
+                .clickSearchResultQuery(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .getHeadLineText();
 
-        String title = getDriver().getTitle();
-        boolean isStatusPageSelected = getDriver()
-                .findElement(By.linkText("Status"))
-                .getAttribute("class")
-                .contains("active");
-
-        assertTrue(title.contains(itemName));
-        assertTrue(isStatusPageSelected);
+        Assert.assertEquals(statusPage, "Project " + PROJECT_NAME);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testRedirectionToStatusPageFromResultList")
     public void testHotKeysSearchAreaSelection() {
-        new Actions(getDriver())
-                .keyDown(Keys.CONTROL)
-                .sendKeys("k")
-                .keyUp(Keys.CONTROL)
-                .perform();
+        WebElement searchHotKeys = new HomePage(getDriver())
+                .getHotKeysFocusSearch()
+                .getSearchBoxWebElement();
 
-        boolean isFocused = (Boolean) ((JavascriptExecutor) getDriver()).executeScript(
-                "return document.activeElement === arguments[0]", getDriver().findElement(By.name("q")));
-        assertTrue(isFocused);
+        Assert.assertTrue(searchHotKeys.equals(getDriver().switchTo().activeElement()));
     }
-
-
-
 }

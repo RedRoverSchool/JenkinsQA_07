@@ -6,9 +6,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.BuildHistoryPage;
-import school.redrover.model.FreestyleProjectConfigurePage;
-import school.redrover.model.FreestyleProjectDetailsPage;
+import school.redrover.model.builds.BuildHistoryPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
+import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -49,7 +49,7 @@ public class BuildHistoryTest extends BaseTest {
                 .selectFreestyleProject()
                 .clickOk(new FreestyleProjectConfigurePage(getDriver()))
                 .clickSaveButton()
-                .clickBuildNowButton();
+                .clickBuildNow();
 
         if (dateNow.length() == 5) {
             Assert.assertEquals(getWait10().until(ExpectedConditions
@@ -70,7 +70,7 @@ public class BuildHistoryTest extends BaseTest {
                 .selectFreestyleProject()
                 .clickOk(new FreestyleProjectConfigurePage(getDriver()))
                 .clickSaveButton()
-                .clickBuildNowButton()
+                .clickBuildNow()
                 .goHomePage()
                 .clickBuildHistoryButton()
                 .getTextLastTimeSinceInLineBuild();

@@ -1,8 +1,15 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.errors.AngryErrorPage;
+import school.redrover.model.errors.ErrorPage;
+import school.redrover.model.nodes.BuiltInNodeConfigurationPage;
+import school.redrover.model.nodes.NodeCofigurationPage;
+import school.redrover.model.nodes.NodeDetailsPage;
+import school.redrover.model.nodes.NodesListPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -11,6 +18,13 @@ public class NodesTest extends BaseTest {
 
     private static final String NODE_NAME = "NewNode";
     private static final String NEW_NODE_NAME = "newNodeName";
+
+    @DataProvider(name = "invalidCharacters")
+    public Object[][] invalidCredentials() {
+        return new Object[][]{
+                {"!"}, {"@"}, {"#"}, {"$"}, {"%"}, {"^"}, {"&"}, {"*"}, {"?"}, {"|"}, {"/"}, {"["}
+        };
+    }
 
     @Test
     public void testCreateNewNodeWithValidNameFromMainPanel() {
@@ -25,17 +39,16 @@ public class NodesTest extends BaseTest {
         Assert.assertTrue(nodeList.contains(NODE_NAME));
     }
 
-    @Test
-    public void testCreateNewNodeWithInvalidNameFromMainPanel() {
-        final String NODE_NAME = "!";
+    @Test(dataProvider = "invalidCharacters")
+    public void testCreateNewNodeWithInvalidNameFromMainPanel(String name) {
 
         String errorMessage = new HomePage(getDriver())
                 .clickSetUpAnAgent()
-                .sendNodeName(NODE_NAME)
+                .sendNodeName(name)
                 .SelectPermanentAgentRadioButton()
                 .getErrorMessage();
 
-        Assert.assertEquals(errorMessage, "‘!’ is an unsafe character");
+        Assert.assertEquals(errorMessage, "‘" + name + "’ is an unsafe character");
     }
 
     @Test
@@ -117,19 +130,18 @@ public class NodesTest extends BaseTest {
         Assert.assertEquals(offlineReasonMessage,"Updated Offline Reason Message");
     }
 
-    @Test(dependsOnMethods = "testRenameNodeWithValidName")
-    public void testRenameWithIncorrectName() {
-        final String incorrectNodeName = "@";
+    @Test(dependsOnMethods = "testRenameNodeWithValidName", dataProvider = "invalidCharacters")
+    public void testRenameWithIncorrectName(String name) {
 
         String errorText = new HomePage(getDriver())
                 .goNodesListPage()
                 .clickNodeByName(NEW_NODE_NAME)
                 .clickConfigure(new NodeCofigurationPage(getDriver()))
-                .clearAndInputNewName(incorrectNodeName)
+                .clearAndInputNewName(name)
                 .saveButtonClick(new ErrorPage(getDriver()))
                 .getErrorFromMainPanel();
 
-        Assert.assertEquals(errorText, "Error\n‘" + incorrectNodeName + "’ is an unsafe character");
+        Assert.assertEquals(errorText, "Error\n‘" + name + "’ is an unsafe character");
     }
 
     @Test(dependsOnMethods = "testRenameWithIncorrectName")
@@ -218,32 +230,16 @@ public class NodesTest extends BaseTest {
                         " a consistent current working directory. Using an absolute path is highly recommended.");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewNodeWithValidNameFromManageJenkinsPage")
     public void testSortNodesInReverseOrder() {
-        final List<String> nodes = List.of("Agent1", "Agent2", "Agent3", "Built-In Node");
+        final List<String> expectedSortedNodes = List.of("NewNode", "Built-In Node");
 
-        List<String> actualNodes = new HomePage(getDriver())
+        List<String> actualSortedNodes = new HomePage(getDriver())
                 .goNodesListPage()
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(0))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(1))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickNewNodeButton()
-                .sendNodeName(nodes.get(2))
-                .SelectPermanentAgentRadioButton()
-                .clickCreateButton()
-                .saveButtonClick(new NodesListPage(getDriver()))
-                .clickSortByNameButton()
                 .clickSortByNameButton()
                 .getNodeList();
 
-        Assert.assertEquals(nodes, actualNodes);
+        Assert.assertEquals(actualSortedNodes, expectedSortedNodes);
     }
 
     @Test

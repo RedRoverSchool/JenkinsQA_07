@@ -67,8 +67,8 @@ public class SystemLogTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger"})
-
     public void testClearCustomLog() {
+
         String getTextNoLogsAvailable = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
@@ -86,18 +86,17 @@ public class SystemLogTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCreateCustomLogRecorder", "testAddNewLogger", "testClearCustomLog"})
-
     public void testDeleteLoggers() {
 
-        Boolean emptyLoggers = new HomePage(getDriver())
+        Boolean emptyLoggersBlock = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goSystemLogPage()
                 .clickGearIcon(SYSLOG_NAME)
                 .clickDeleteLogger()
                 .clickSave()
                 .clickConfigure()
-                .getEmptyLoggersList();
+                .areLoggersBlockNoneVisible();
 
-        Assert.assertTrue(emptyLoggers);
+        Assert.assertTrue(emptyLoggersBlock);
     }
 }

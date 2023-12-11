@@ -1,21 +1,31 @@
 package school.redrover.model;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseDetailsPage;
+import school.redrover.model.builds.BuildHistoryPage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
+import school.redrover.model.nodes.NodeCreatePage;
+import school.redrover.model.nodes.NodeDetailsPage;
+import school.redrover.model.nodes.NodesListPage;
+import school.redrover.model.views.MyViewPage;
+import school.redrover.model.views.NewViewPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends BasePage {
+public class HomePage extends BasePage<HomePage> {
 
     @FindBy(xpath = "//a[@href='computer/new']")
     private WebElement setUpAgent;
 
     @FindBy(xpath = "//span[contains(text(),'Build History')]/parent::a")
-    public WebElement buildHistoryButton;
+    private WebElement buildHistoryButton;
 
     @FindBy(xpath = "//div[@id='main-panel']//a[@href='newJob']")
     private WebElement createJob;
@@ -29,9 +39,6 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/view/all/newJob']")
     private WebElement newItemButton;
 
-    @FindBy(xpath = "//a[contains(@class,'jenkins-table__link')]")
-    private WebElement jobName;
-
     @FindBy(xpath = "//div[@class = 'jenkins-table__cell__button-wrapper']/a[contains(@aria-describedby,'tippy')]")
     private WebElement runningBuildIndicator;
 
@@ -41,17 +48,11 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href='/asynchPeople/']")
     private WebElement buttonPeople;
 
-    @FindBy(className = "jenkins_ver")
-    private WebElement jenkinsVersionButton;
-
     @FindBy(xpath = "//td[@class='pane pane-grow']")
     private WebElement buildQueueSection;
 
     @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
     private WebElement myView;
-
-    @FindBy(xpath = "//table[@id='projectstatus']//td[3]/a")
-    private WebElement itemNameInTable;
 
     @FindBy(xpath = "//h1")
     private WebElement header;
@@ -59,31 +60,27 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
 
-    @FindBy(css = "a[href='/manage/about']")
-    private WebElement aboutJenkinsButton;
+    @FindBy(className = "addTab")
+    private WebElement newViewButton;
 
-    @FindBy(className = "tippy-content")
-    private WebElement jenkinsVersionTippyBox;
+    @FindBy(xpath = "//span[contains(text(), 'log out')]")
+    private WebElement logOutButton;
 
-    @FindBy(css = "a[href='https://www.jenkins.io/participate/']")
-    private WebElement getInvolved;
-
-    @FindBy(css = "a[href='https://www.jenkins.io/']")
-    private WebElement websiteJenkins;
-
-    @FindBy(css = "a[href='api/']")
-    private WebElement restApiButton;
-
-    @FindBy(xpath = "//div[@class='tippy-box']//div//a")
-    private WebElement tippyBox;
+    @FindBy(xpath = "//a[contains(@href,'user')]")
+    private WebElement currentUserName;
 
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
-    public <T> T clickJobByName(String name, T page) {
+    public <T extends BaseDetailsPage> T clickJobByName(String name, T page) {
         getDriver().findElement(By.xpath("//td/a[@href='job/" + name.replace(" ", "%20") + "/']")).click();
 
+        return page;
+    }
+
+    public <T extends BaseDetailsPage> T clickProjectStatusByName(String name, T page) {
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + name + "')]/parent::a")).click();
         return page;
     }
 
@@ -95,9 +92,8 @@ public class HomePage extends BasePage {
 
     public List<String> getJobList() {
         List<WebElement> elementList = getDriver().findElements(By.xpath("//tr/td/a[contains(@class, 'jenkins-table__link')]/span[1]"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
 
-        return resultList;
+        return elementList.stream().map(WebElement::getText).toList();
     }
 
     public NewItemPage clickNewItem() {
@@ -116,12 +112,6 @@ public class HomePage extends BasePage {
         buildHistoryButton.click();
 
         return new BuildHistoryPage(getDriver());
-    }
-
-    public NewViewPage clickNewViewButton() {
-        getDriver().findElement(By.xpath("//a[@tooltip='New View']")).click();
-
-        return new NewViewPage(getDriver());
     }
 
     public NewItemPage clickCreateAJob() {
@@ -152,8 +142,8 @@ public class HomePage extends BasePage {
         return new NodesListPage(getDriver());
     }
 
-    public HomePage clickJobName(String name) {
-        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name + "/']"));
+    public HomePage clickJobNameDropdown(String name) {
+        WebElement elementToHover = getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/']"));
 
         Actions actions = new Actions(getDriver());
         actions.moveToElement(elementToHover).perform();
@@ -162,37 +152,18 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public MultibranchPipelineRenamePage clickRenameDropdownMenu(String name) {
-        getDriver().findElement(By.xpath("//a[@href='/job/" + name.replace(" ", "%20") + "/confirm-rename']")).click();
+    public <ProjectPage extends BaseDetailsPage>RenamePage clickRenameInDropdownMenu(ProjectPage projectPage) {
+        renameOptionProjectDropdown.click();
 
-        return new MultibranchPipelineRenamePage(getDriver());
+        return new RenamePage<>(getDriver(), projectPage);
     }
 
     public boolean isProjectExist(String projectName) {
         return !getDriver().findElements(By.id("job_" + projectName)).isEmpty();
     }
 
-    public String getJobDisplayName() {
-        return jobName.getText();
-    }
-
-    public String getTitle() {
-        return getDriver().getTitle();
-    }
-
-
     public String getProjectBuildStatusByName(String projectName) {
         return getDriver().findElement(By.id("job_" + projectName)).findElement(By.className("svg-icon")).getAttribute("tooltip");
-    }
-
-    public String getHeadLineText() {
-        return getDriver().findElement(By.xpath("//div[@class='empty-state-block']/h1")).getText();
-    }
-
-    public <T> T clickAnyJobCreated(T page) {
-        getDriver().findElement(By.xpath("//a[@class = 'jenkins-table__link model-link inside']")).click();
-
-        return page;
     }
 
     public HomePage clickBuildByGreenArrow(String name) {
@@ -201,46 +172,22 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    public <ProjectRenamePage extends RenamePage> ProjectRenamePage clickRenameOrganizationFolderDropdownMenu(String jobName, ProjectRenamePage projectRenamePage) {
-        WebElement projectName = getDriver().findElement(By.xpath("//span[text()='" + jobName + "']"));
+    public HomePage clickBuildByGreenArrowWithWait(String name) {
+        getDriver().findElement(By.xpath("//a[@href='job/" + name.replace(" ", "%20") + "/build?delay=0sec']")).click();
+        getWait5().until(ExpectedConditions.invisibilityOf(runningBuildIndicator));
 
-        new Actions(getDriver()).moveToElement(projectName).click().perform();
-
-        renameOptionProjectDropdown.click();
-
-        return projectRenamePage;
+        return this;
     }
 
-    public <T> T clickRenameInDropdownMenu(String jobName, T page) {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'" + jobName + "')]"))).perform();
+    public String getMultibranchPipelineName() {
 
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button")));
-
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.xpath("//a[@href='job/" + jobName.replace(" ", "%20") + "/']/button"))).click().perform();
-
-        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + jobName.replace(" ", "%20") + "/confirm-rename']"))).click();
-
-        return page;
-    }
-
-    public String multibranchPipelineName() {
         return multibranchPipelineNameOnHomePage.getText();
-    }
-
-    public FreestyleProjectDetailsPage clickOnJob() {
-        getWait10().until(ExpectedConditions.elementToBeClickable(jobName)).click();
-
-        return new FreestyleProjectDetailsPage(getDriver());
     }
 
     public PeoplePage clickPeople() {
         buttonPeople.click();
 
         return new PeoplePage(getDriver());
-    }
-
-    public String getVersion() {
-        return jenkinsVersionButton.getText();
     }
 
     public boolean isJobInBuildQueue(String jobName) {
@@ -252,79 +199,39 @@ public class HomePage extends BasePage {
         return new MyViewPage(getDriver());
     }
 
-    public String getItemNameInTable() {
-        return itemNameInTable.getText();
-    }
-
-    public String getHeaderText() {
-        return header.getText();
-    }
-
     public NodeDetailsPage clickOnNodeName(String nodeName) {
         getDriver().findElement(By.xpath("//span[text()='" + nodeName + "']")).click();
 
         return new NodeDetailsPage(getDriver());
     }
 
-    public boolean isScheduleABuildButtonNotDisplayed(String jobName){
-       return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
+    public boolean isScheduleABuildButtonNotDisplayed(String jobName) {
+        return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
     }
 
-    public HomePage clickJenkinsVersion() {
-        jenkinsVersionButton.click();
+    public NewViewPage clickNewViewButton() {
+        newViewButton.click();
 
-        return this;
+        return new NewViewPage(getDriver());
     }
 
-    public AboutJenkinsPage clickAboutJenkins() {
-        aboutJenkinsButton.click();
+    public LogInPage clickLogOut() {
+        logOutButton.click();
 
-        return new AboutJenkinsPage(getDriver());
+        return new LogInPage(getDriver());
     }
 
-    public WebsiteJenkinsIOPage clickGetInvolved() {
-        getInvolved.click();
-
-        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
-        getDriver().switchTo().window(tab.get(1));
-
-        return new WebsiteJenkinsIOPage(getDriver());
+    public String getCurrentUserName() {
+        return currentUserName.getText();
     }
 
-    public WebsiteJenkinsIOPage clickWebsite() {
-        websiteJenkins.click();
+    public FolderDetailsPage clickFolderName(String folderName ){
+        getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+ folderName +"']"))).click();
+        return new FolderDetailsPage(getDriver());
 
-        ArrayList<String> tab = new ArrayList<>(getDriver().getWindowHandles());
-        getDriver().switchTo().window(tab.get(1));
-
-        return new WebsiteJenkinsIOPage(getDriver());
     }
 
-    public CreatedUserPage clickUserNameHeader(String userName) {
-        getDriver().findElement(By.xpath("//a[@href='/user/" + userName + "']")).click();
 
-        return new CreatedUserPage(getDriver());
-    }
 
-    public List<String> getVersionJenkinsTippyBoxText() {
-        getWait10().until(ExpectedConditions.visibilityOf(tippyBox));
 
-        List<WebElement> elementList = getDriver().findElements(By.xpath("//div[@class='tippy-box']//div//a"));
-        List<String> resultList = elementList.stream().map(WebElement::getText).toList();
-
-        return resultList;
-    }
-
-    public AboutJenkinsPage moveAboutJenkinsPage() {
-        jenkinsVersionButton.click();
-        aboutJenkinsButton.click();
-
-        return new AboutJenkinsPage(getDriver());
-    }
-
-    public RestAPIPage clickRestApiButton() {
-        restApiButton.click();
-
-        return new RestAPIPage(getDriver());
-    }
 }

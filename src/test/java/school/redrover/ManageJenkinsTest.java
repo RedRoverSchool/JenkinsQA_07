@@ -1,31 +1,36 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.HomePage;
-import school.redrover.model.ManageJenkinsPage;
-import school.redrover.model.NodesListPage;
+import school.redrover.model.*;
+import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
+import school.redrover.model.nodes.NodesListPage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ManageJenkinsTest extends BaseTest {
 
     private static final String TOOLTIP = "Press / on your keyboard to focus";
-
     private static final String PLACEHOLDER = "Search settings";
-
     private static final String SEARCH_SYSTEM = "System";
+    private final static String USER_NAME_CREDENTIAL = "Credentials Provider name";
+    private static final String PROJECT_NAME = "NewFreestyleProject";
 
     @Test
     public void testShortcutTooltipVisibility() {
 
-          ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
-                  .clickManageJenkins()
-                  .hoverOverShortcutIcon();
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .hoverOverShortcutIcon();
 
-            Assert.assertEquals(manageJenkinsPage.getTooltipText(), TOOLTIP);
-            Assert.assertTrue(manageJenkinsPage.shortcutTooltipIsVisible(), TOOLTIP + " is not visible");
+        Assert.assertEquals(manageJenkinsPage.getTooltipText(), TOOLTIP);
+        Assert.assertTrue(manageJenkinsPage.isShortcutTooltipVisible(), TOOLTIP + " is not visible");
     }
 
     @Test
@@ -171,5 +176,142 @@ public class ManageJenkinsTest extends BaseTest {
                 .clickManageJenkins();
 
         Assert.assertTrue(manageJenkinsPage.areSecuritySectionsClickable());
+    }
+
+    @Test
+    public void testRedirectionPluginsPage() {
+        String urlText = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage()
+                .getCurrentUrl();
+
+        Assert.assertTrue(urlText.contains("pluginManager/"));
+    }
+
+    @Test
+    public void testSystemInfoPageRedirection() {
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickSystemInfoSection()
+                .getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("systemInfo"), currentUrl + " doesn't contain expected text");
+    }
+
+    @Test
+    public void testSystemLogPageRedirection() {
+        SystemLogPage systemLogPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goSystemLogPage();
+
+        Assert.assertTrue(systemLogPage.getPageTitle().contains("Log Recorders"));
+        Assert.assertTrue(systemLogPage.getCurrentUrl().contains("log"));
+    }
+
+    @Test
+    public void testVisibilityOfSearchField() {
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins();
+
+        Assert.assertTrue(manageJenkinsPage.searchFieldIsVisible());
+    }
+
+    @Test
+    public void testSearchFieldByClick() {
+        final String inputText = "sys";
+
+        boolean searchResultIsClickable = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickOnSearchField()
+                .typeSearchInputField(inputText)
+                .searchResultsAreClickable();
+
+        Assert.assertTrue(searchResultIsClickable);
+    }
+
+    @Test
+    public void testDefaultRedirectionByEnter() {
+        final String inputText = "u";
+        final String url = "/manage/pluginManager/";
+
+        String redirectedUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .pressEnterAfterInput(inputText);
+
+        Assert.assertTrue(redirectedUrl.contains(url));
+    }
+
+    @Test
+    public void testLoadStatisticsRedirection() {
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickLoadStatisticsSection()
+                .getCurrentUrl();
+
+        Assert.assertTrue(currentUrl.contains("load-statistics"));
+    }
+
+    @Test
+    public void testAboutJenkinsRedirection() {
+        String pageTitle = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickAboutJenkinsSection()
+                .getPageTitle();
+
+        Assert.assertTrue(pageTitle.contains("About Jenkins"));
+    }
+
+    @Test
+    public void testStatusInformationSectionsTitles() {
+        List<String> expectedStatusInformationSectionsList = List.of(
+                "System Information",
+                "System Log",
+                "Load Statistics",
+                "About Jenkins"
+        );
+
+        List<String> statusInformationSectionsList = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getStatusInformationSectionsTitles();
+
+        Assert.assertEquals(statusInformationSectionsList, expectedStatusInformationSectionsList,
+                "Status Information sections titles differ from the expected ones");
+    }
+
+    @Ignore
+    @Test
+    public void testCreateCredentialFromConfigurePage() {
+
+        TestUtils.createFreestyleProject(this, PROJECT_NAME, true);
+
+        boolean credentialsCreated = new HomePage(getDriver())
+                .clickProjectStatusByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickConfigure()
+                .clickGitRadioButtonWithScroll()
+                .clickAddButton()
+                .clickJenkinsOption()
+                .inputUsername(USER_NAME_CREDENTIAL)
+                .clickAddButtonCredentialsProvider()
+                .checkIfNewCredentialInTheMenu(USER_NAME_CREDENTIAL);
+
+        assertTrue(credentialsCreated);
+    }
+
+    @Ignore
+    @Test(dependsOnMethods = "testCreateCredentialFromConfigurePage")
+    public void testDeleteCredential() {
+
+        String expectedText = "Global credentials (unrestricted)";
+
+        String actualText = new HomePage(getDriver())
+                .clickPeople()
+                .clickCurrentUserName()
+                .clickCredentials()
+                .clickCredentialsByName(USER_NAME_CREDENTIAL)
+                .clickDeleteButton()
+                .clickYesButton()
+                .getTextMainPanel();
+
+        assertEquals(actualText, expectedText);
     }
 }

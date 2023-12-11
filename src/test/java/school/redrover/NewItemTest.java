@@ -2,8 +2,8 @@ package school.redrover;
 
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.ErrorPage;
-import school.redrover.model.FreestyleProjectConfigurePage;
+import school.redrover.model.errors.ErrorPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 
@@ -64,7 +64,7 @@ public class NewItemTest extends BaseTest {
                 .clickNewItem()
                 .typeItemName(secondProject)
                 .enterExistentItemNameToClone(nonExistentProject)
-                .clickOk(new ErrorPage(getDriver()))
+                .clickOkWithError(new ErrorPage(getDriver()))
                 .getErrorFromMainPanel();
 
         assertEquals(errorMessage, ("Error\n" + "No such job: " + nonExistentProject));
