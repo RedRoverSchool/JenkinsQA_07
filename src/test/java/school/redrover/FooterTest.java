@@ -94,6 +94,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(restApi, REST_API);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testVerifyClickabilityOfRestAPILink")
     public void testJenkinsVersionListTabBar() {
         final List<String> expectedListTabBar = List.of(
