@@ -221,7 +221,7 @@ public class FolderTest extends BaseTest {
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(DESCRIPTION_NAME)
+                .inputDescription(DESCRIPTION_NAME)
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
 
@@ -233,9 +233,9 @@ public class FolderTest extends BaseTest {
         String previewDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(DESCRIPTION_NAME)
-                .clickPreview()
-                .getDescriptionPreview();
+                .inputDescription(DESCRIPTION_NAME)
+                .clickDescriptionPreview()
+                .getDescriptionPreviewText();
 
         Assert.assertEquals(previewDescription, DESCRIPTION_NAME);
     }
@@ -245,9 +245,9 @@ public class FolderTest extends BaseTest {
         String previewDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .clickPreview()
-                .clickHidePreview()
-                .getDescriptionPreview();
+                .clickDescriptionPreview()
+                .clickHideDescriptionPreview()
+                .getDescriptionPreviewText();
 
         Assert.assertTrue(previewDescription.isEmpty());
     }
@@ -259,7 +259,7 @@ public class FolderTest extends BaseTest {
         String actualUpdatedDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(newDescriptionText)
+                .inputDescription(newDescriptionText)
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
 
