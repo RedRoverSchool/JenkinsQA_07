@@ -16,9 +16,6 @@ public class FolderDetailsPage extends BaseDetailsPage<FolderConfigurationPage, 
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
 
-    @FindBy(xpath = "//a[contains(@href,'move')]")
-    private WebElement moveJob;
-
     @FindBy(xpath = "//a[@class='content-block__link']")
     private WebElement createJob;
 
@@ -33,9 +30,6 @@ public class FolderDetailsPage extends BaseDetailsPage<FolderConfigurationPage, 
 
     @FindBy(xpath = "//div[@class='textarea-preview']")
     private WebElement descriptionPreview;
-
-    @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameButton;
 
     @FindBy(xpath = "//a[contains(@class, 'jenkins-table__link')]")
     private WebElement newProject;
