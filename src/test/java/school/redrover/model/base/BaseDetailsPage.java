@@ -57,7 +57,6 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
 
-    public BaseProjectPage(WebDriver driver) {
     @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary ']")
     private WebElement saveDescriptionButton;
 
