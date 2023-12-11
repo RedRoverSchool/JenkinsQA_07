@@ -9,14 +9,16 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.UserPage;
-import school.redrover.model.*;
+import school.redrover.model.users.UserDatabasePage;
+import school.redrover.model.users.UserPage;
+import school.redrover.model.users.CreateNewUserPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.testng.Assert.*;
 
@@ -29,22 +31,8 @@ public class UserTest extends BaseTest {
     private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
 
-    private void createUserNoFullName(String userName, String password, String email) {
-        getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
-
-        getDriver().findElement(By.xpath("//dt[contains(text(),'Users')]")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-
-        getDriver().findElement(By.name("username")).sendKeys(userName);
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(password);
-        getDriver().findElement(By.name("email")).sendKeys(email);
-        getDriver().findElement(By.name("Submit")).click();
-    }
-
     private void goToUsersPage() {
-       new HomePage(getDriver())
+        new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersButton();
     }
@@ -192,7 +180,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(description, DESCRIPTION);
     }
 
-    @Test (dependsOnMethods = {"testAddUserDescriptionFromPeople", "testCreateUserWithValidData"})
+    @Test(dependsOnMethods = {"testAddUserDescriptionFromPeople", "testCreateUserWithValidData"})
     public void testConfigureShowDescriptionPreview() {
         String previewDescriptionText = new HomePage(getDriver())
                 .clickPeople()
@@ -378,8 +366,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(breadcrumbTrailLastSectionText, "Configure");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testVerifyUserCreated")
+    @Test(dependsOnMethods = "testCreateUserWithValidData")
     public void testVerifyHelpTooltips() {
         List<String> expectedListOfHelpIconsTooltipsText = List.of(
                 "Help for feature: Full Name",
@@ -389,17 +376,13 @@ public class UserTest extends BaseTest {
                 "Help",
                 "Help for feature: Time Zone");
 
-        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/user/" + USER_NAME.toLowerCase() + "/']")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
-        getWait5();
+        List<String> actualTooltipText = new HomePage(getDriver())
+                .clickPeople()
+                .clickOnTheCreatedUserID(USER_NAME)
+                .clickConfigure()
+                .getTooltipTitleText();
 
-        List<WebElement> helpIconsTooltips = getDriver().findElements(By.xpath("//a[@class='jenkins-help-button']"));
-        List<String> actualListOfHelpIconsTooltipsText = new ArrayList<>();
-        for (int i = 0; i < helpIconsTooltips.size(); i++) {
-            actualListOfHelpIconsTooltipsText.add(helpIconsTooltips.get(i).getAttribute("tooltip"));
-            Assert.assertEquals(actualListOfHelpIconsTooltipsText.get(i), expectedListOfHelpIconsTooltipsText.get(i));
-        }
+        Assert.assertEquals(actualTooltipText, expectedListOfHelpIconsTooltipsText);
     }
 
     @Test
@@ -411,15 +394,22 @@ public class UserTest extends BaseTest {
                 "Sign in to Jenkins");
     }
 
-    @Ignore
     @Test
     public void testVerifyScreenAfterCreateUser() {
-        String password = "1234567";
-        String email = "test@gmail.com";
-        createUserNoFullName(USER_NAME, password, email);
+        String screenNameText = "Jenkins’ own user database";
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/securityRealm/']")).getText(),
-                "Jenkins’ own user database");
+        String screenTextAfterCreation = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickAddUserButton()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputEmail(EMAIL)
+                .clickSubmit()
+                .getScreenNameText();
+
+        Assert.assertEquals(screenTextAfterCreation, screenNameText);
     }
 
     @Test

@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.users.CreatedUserPage;
+import school.redrover.model.users.UserPage;
 
 public class PeoplePage extends BasePage<PeoplePage> {
 
