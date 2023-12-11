@@ -1,5 +1,6 @@
 package school.redrover.model.base;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -53,6 +54,9 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
 
     @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary ']")
     private WebElement saveDescriptionButton;
+
+    @FindBy(xpath = "//a[@href='lastBuild/']")
+    private WebElement lastBuildPermalink;
 
     public BaseDetailsPage(WebDriver driver) {
         super(driver);
@@ -126,7 +130,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public Self clickBuildNowSeveralTimes(int numOfClicks) {
-        for (int i = 0; i < numOfClicks; i++) {
+        for (int i = 1; i <= numOfClicks; i++) {
             clickBuildNow();
         }
 
@@ -164,6 +168,22 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
 
     public Self clickSaveDescriptionButton() {
         saveDescriptionButton.click();
+
+        return (Self) this;
+    }
+
+    public BuildPage clickLastBuild() {
+        lastBuildPermalink.click();
+
+        return new BuildPage(getDriver());
+    }
+
+    public Self clickBuildNowSeveralTimesAndWait(int numOfClicks, String projectName) {
+        for (int i = 1; i <= numOfClicks; i++) {
+            clickBuildNow();
+            getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/job/" + projectName + "/" + i + "/']")));
+        }
+        getDriver().navigate().refresh();
 
         return (Self) this;
     }

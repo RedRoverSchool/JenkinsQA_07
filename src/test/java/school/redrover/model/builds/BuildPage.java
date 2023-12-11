@@ -24,6 +24,15 @@ public class BuildPage extends BasePage<BuildPage> {
     @FindBy(xpath = "//*[text()='Edit Build Information']/ancestor::a")
     private WebElement editBuildInformationSideMenu;
 
+    @FindBy(xpath = "//span[text()='Previous Build']/..")
+    private WebElement previousBuildButton;
+
+    @FindBy(xpath = "//span[text()='Next Build']")
+    private WebElement nextBuildButton;
+
+    @FindBy(xpath = "//h1/span[2]")
+    private WebElement buildTitle;
+
     public BuildPage(WebDriver driver) {
         super(driver);
     }
@@ -56,4 +65,19 @@ public class BuildPage extends BasePage<BuildPage> {
         return new BuildEditInformationPage(getDriver());
     }
 
+    public BuildPage clickPreviousBuild() {
+        previousBuildButton.click();
+
+        return new BuildPage(getDriver());
+    }
+
+    public BuildPage clickNextBuild() {
+        nextBuildButton.click();
+
+        return new BuildPage(getDriver());
+    }
+
+    public String getBuildTitle() {
+        return buildTitle.getText();
+    }
 }
