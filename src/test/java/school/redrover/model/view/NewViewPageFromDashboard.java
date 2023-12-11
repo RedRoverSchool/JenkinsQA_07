@@ -1,7 +1,7 @@
 package school.redrover.model.view;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import school.redrover.model.base.BaseNewViewPage;
 import school.redrover.model.base.BaseViewConfigPage;
 
@@ -37,5 +37,4 @@ public class NewViewPageFromDashboard <ViewConfPage extends BaseViewConfigPage> 
 
         return viewConfPage;
     }
-
 }
