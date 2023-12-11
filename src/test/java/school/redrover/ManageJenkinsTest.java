@@ -314,4 +314,52 @@ public class ManageJenkinsTest extends BaseTest {
 
         assertEquals(actualText, expectedText);
     }
+
+    @Test
+    public void testSecurityPageRedirection() {
+        SecurityPage securityPage = new SecurityPage(getDriver());
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickSecuritySection()
+                .getCurrentUrl();
+
+        Assert.assertTrue(securityPage.getPageTitle().contains("Security"));
+        Assert.assertTrue(securityPage.getCurrentUrl().contains("configureSecurity"));
+    }
+
+    @Test
+    public void testCredentialsPageRedirection() {
+        CredentialsPage credentialsPage = new CredentialsPage(getDriver());
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickCredentialsSection()
+                .getCurrentUrl();
+
+        Assert.assertTrue(credentialsPage.getPageTitle().contains("Credentials"));
+        Assert.assertTrue(credentialsPage.getCurrentUrl().contains("credentials"));
+    }
+
+    @Test
+    public void testCredentialProvidersPageRedirection() {
+        CredentialProvidersPage credentialsProvidersPage = new CredentialProvidersPage(getDriver());
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickCredentialProvidersSection()
+                .getCurrentUrl();
+
+        Assert.assertTrue(credentialsProvidersPage.getPageTitle().contains("Credential Providers"));
+        Assert.assertTrue(credentialsProvidersPage.getCurrentUrl().contains("configureCredentials"));
+    }
+
+    @Test
+    public void testUsersPageRedirection() {
+        UsersPage usersPage = new UsersPage(getDriver());
+        String currentUrl = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersSection()
+                .getCurrentUrl();
+
+        Assert.assertTrue(usersPage.getPageTitle().contains("Users"));
+        Assert.assertTrue(usersPage.getCurrentUrl().contains("securityRealm"));
+    }
 }
