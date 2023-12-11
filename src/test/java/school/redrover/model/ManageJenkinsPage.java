@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.nodes.NodesListPage;
+import school.redrover.model.users.UserDatabasePage;
 
 import java.time.Duration;
 import java.util.List;

@@ -5,8 +5,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
-import school.redrover.model.MultiConfigurationConfigurePage;
-import school.redrover.model.MultiConfigurationDetailsPage;
+import school.redrover.model.jobs.configs.MultiConfigurationConfigurePage;
+import school.redrover.model.jobs.details.MultiConfigurationDetailsPage;
 import school.redrover.runner.BaseTest;
 
 public class MulticonfigurationProjectTest extends BaseTest {

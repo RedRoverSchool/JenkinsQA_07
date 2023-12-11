@@ -8,6 +8,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.model.base.BaseDetailsPage;
+import school.redrover.model.builds.BuildHistoryPage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
+import school.redrover.model.nodes.NodeCreatePage;
+import school.redrover.model.nodes.NodeDetailsPage;
+import school.redrover.model.nodes.NodesListPage;
+import school.redrover.model.views.MyViewPage;
+import school.redrover.model.views.NewViewPage;
 
 import java.util.ArrayList;
 import java.util.List;

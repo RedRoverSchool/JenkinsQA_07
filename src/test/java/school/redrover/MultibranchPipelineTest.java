@@ -7,14 +7,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.FolderDetailsPage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
 import school.redrover.model.HomePage;
-import school.redrover.model.MultibranchPipelineConfigurationPage;
-import school.redrover.model.MultibranchPipelineDetailsPage;
+import school.redrover.model.jobs.configs.MultibranchPipelineConfigurationPage;
+import school.redrover.model.jobs.details.MultibranchPipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MultibranchPipelineTest extends BaseTest {
