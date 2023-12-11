@@ -3,6 +3,7 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.view.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 import java.util.List;
@@ -21,31 +22,31 @@ public class ViewTest extends BaseTest {
     private static final String NO_ASSOCIATED_JOBS_FOR_THE_VIEW_MESSAGE = "This view has no jobs associated with it. " +
             "You can either add some existing jobs to this view or create a new job in this view.";
 
-    private void createListViewWithoutAssociatedJob(String newListViewName) {
+    private void createListViewWithoutAssociatedJob() {
         new HomePage(getDriver())
                 .clickNewViewButton()
-                .typeNewViewName(newListViewName)
+                .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
-                .clickCreateButton(new NewViewConfigurePage(getDriver()))
+                .clickCreateButton()
                 .goHomePage();
     }
 
-    private void createListViewWithAssociatedJob(String newListViewName) {
+    private void createListViewWithAssociatedJob() {
         new HomePage(getDriver())
                 .clickNewViewButton()
-                .typeNewViewName(newListViewName)
+                .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
-                .clickCreateButton(new NewViewConfigurePage(getDriver()))
+                .clickCreateButton()
                 .checkFirstJobCheckbox()
-                .clickOKButton(new ListViewPage(getDriver()))
+                .clickOKButton()
                 .goHomePage();
     }
 
-    private void addNewDescriptionForTheView(String listViewName, String newDescriptionForTheView) {
+    private void addNewDescriptionForTheView() {
         new HomePage(getDriver())
-                .clickViewByName(listViewName, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeNewDescription(newDescriptionForTheView)
+                .typeNewDescription(NEW_DESCRIPTION_FOR_THE_VIEW)
                 .clickSaveDescription()
                 .goHomePage();
     }
@@ -55,15 +56,15 @@ public class ViewTest extends BaseTest {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
 
         String view = new HomePage(getDriver())
-                .clickMyView()
+                .clickMyViews()
                 .clickNewViewButton()
                 .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
-                .clickCreateButton(new NewViewConfigurePage(getDriver()))
-                .clickOKButton(new MyViewPage(getDriver()))
-                .getMyViewName();
+                .clickCreateButton()
+                .clickOKButton()
+                .getActiveViewName();
 
-        Assert.assertEquals(view, VIEW_NAME);
+        Assert.assertEquals(view,VIEW_NAME);
     }
 
     @Test(dependsOnMethods = "testCreateNewListView")
@@ -71,10 +72,10 @@ public class ViewTest extends BaseTest {
         final String renamedViewName = "Renamed View Name";
 
         HomePage homePage = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new GlobalViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickEditView()
                 .typeNewName(renamedViewName)
-                .clickSubmit()
+                .clickOKButton()
                 .goHomePage();
 
         Assert.assertTrue(homePage.getViewsList().contains(renamedViewName));
@@ -88,7 +89,7 @@ public class ViewTest extends BaseTest {
                 .clickNewViewButton()
                 .typeNewViewName(VIEW_NAME)
                 .selectMyViewType()
-                .clickCreateButton(new MyViewPage(getDriver()))
+                .clickCreateButton()
                 .goHomePage()
                 .getViewsList();
 
@@ -103,10 +104,10 @@ public class ViewTest extends BaseTest {
                 .clickNewViewButton()
                 .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
-                .clickCreateButton(new MyViewPage(getDriver()))
+                .clickCreateButton()
                 .clickDeleteView()
                 .acceptAlert()
-                .isViewExists(VIEW_NAME);
+                .isViewExist(VIEW_NAME);
 
         Assert.assertFalse(deleteView);
     }
@@ -116,11 +117,11 @@ public class ViewTest extends BaseTest {
         TestUtils.createFolder(this, JOB_NAME_2, true);
 
         boolean viewInBreadcrumbBar = new HomePage(getDriver())
-                .clickMyView()
+                .clickMyViews()
                 .clickNewViewButton()
                 .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
-                .clickCreateButton(new NewViewPage(getDriver()))
+                .clickCreateButton()
                 .isItemExistInBreadcrumbBar(VIEW_NAME);
 
         Assert.assertTrue(viewInBreadcrumbBar);
@@ -129,10 +130,10 @@ public class ViewTest extends BaseTest {
     @Test
     public void testAddingDescriptionForTheView() {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
-        createListViewWithoutAssociatedJob(VIEW_NAME);
+        createListViewWithoutAssociatedJob();
 
         String description = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeNewDescription(NEW_DESCRIPTION_FOR_THE_VIEW)
                 .clickSaveDescription()
@@ -144,10 +145,10 @@ public class ViewTest extends BaseTest {
     @Test
     public void testEditingDescriptionForTheView() {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
-        createListViewWithoutAssociatedJob(VIEW_NAME);
+        createListViewWithoutAssociatedJob();
 
         String description = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickAddOrEditDescription()
                 .typeNewDescription(EDITED_DESCRIPTION_FOR_THE_VIEW)
                 .clickSaveDescription()
@@ -159,11 +160,11 @@ public class ViewTest extends BaseTest {
     @Test
     public void testDeletingDescriptionForTheView() {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
-        createListViewWithoutAssociatedJob(VIEW_NAME);
-        addNewDescriptionForTheView(VIEW_NAME, NEW_DESCRIPTION_FOR_THE_VIEW);
+        createListViewWithoutAssociatedJob();
+        addNewDescriptionForTheView();
 
         String description = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickAddOrEditDescription()
                 .clearDescriptionField()
                 .clickSaveDescription()
@@ -175,10 +176,10 @@ public class ViewTest extends BaseTest {
     @Test
     public void testNoJobsShownForTheViewWithoutAssociatedJob() {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
-        createListViewWithoutAssociatedJob(VIEW_NAME);
+        createListViewWithoutAssociatedJob();
 
         String mainPanelText = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .getMainPanelText();
 
         Assert.assertTrue(mainPanelText.contains(NO_ASSOCIATED_JOBS_FOR_THE_VIEW_MESSAGE));
@@ -187,10 +188,10 @@ public class ViewTest extends BaseTest {
     @Test
     public void testProjectCouldBeAddedToTheView() {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
-        createListViewWithoutAssociatedJob(VIEW_NAME);
+        createListViewWithoutAssociatedJob();
 
         List<String> jobList = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickEditView()
                 .checkSelectedJobCheckbox(JOB_NAME)
                 .clickOKButton()
@@ -202,10 +203,10 @@ public class ViewTest extends BaseTest {
     @Test
     public void testAssociatedJobIsShownOnTheViewDashboard() {
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
-        createListViewWithAssociatedJob(VIEW_NAME);
+        createListViewWithAssociatedJob();
 
         List<String> jobList = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .getJobList();
 
         Assert.assertTrue(jobList.contains(JOB_NAME));
@@ -216,10 +217,10 @@ public class ViewTest extends BaseTest {
         final String newColumnName = "Git Branches";
 
         TestUtils.createFreestyleProject(this, JOB_NAME, true);
-        createListViewWithAssociatedJob(VIEW_NAME);
+        createListViewWithAssociatedJob();
 
         List<String> columnNamesList = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickEditView()
                 .addColumn(newColumnName)
                 .clickOKButton()
@@ -233,7 +234,7 @@ public class ViewTest extends BaseTest {
         final String deletedColumnName = "Last Duration";
 
         List<String> columnNamesList = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickEditView()
                 .deleteColumn("Last Duration")
                 .clickOKButton()
@@ -247,7 +248,7 @@ public class ViewTest extends BaseTest {
 
         final String reorderedColumnName = "Name";
         List<String> columnNamesList = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickEditView()
                 .moveColumnToFirstPosition(reorderedColumnName)
                 .clickOKButton()
@@ -259,25 +260,24 @@ public class ViewTest extends BaseTest {
 
     @Test
     public void testCreateListViewWithoutJobs() {
-        boolean isListViewCreated = new HomePage(getDriver())
+        List<String> viewsList = new HomePage(getDriver())
                 .clickNewItem()
                 .createFreestyleProject(JOB_NAME)
                 .goHomePage()
                 .clickNewViewButton()
                 .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
-                .clickCreateButton(new NewViewConfigurePage(getDriver()))
+                .clickCreateButton()
                 .goHomePage()
-                .getViewsList()
-                .contains(VIEW_NAME);
+                .getViewsList();
 
-        Assert.assertTrue(isListViewCreated);
+        Assert.assertTrue(viewsList.contains(VIEW_NAME));
     }
 
     @Test(dependsOnMethods = "testCreateListViewWithoutJobs")
     public void testRenameListView() {
         List<String> viewsList = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME, new ViewPage(getDriver()))
                 .clickEditView()
                 .typeNewName(VIEW_NAME_1)
                 .clickOKButton()
@@ -290,13 +290,13 @@ public class ViewTest extends BaseTest {
     @Test(dependsOnMethods = "testRenameListView")
     public void testJobCanBeAddedFromMainPanel() {
         boolean noJobsMessage = new HomePage(getDriver())
-                .clickViewByName(VIEW_NAME_1, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME_1, new ViewPage(getDriver()))
                 .getMainPanelText()
                 .contains(NO_ASSOCIATED_JOBS_FOR_THE_VIEW_MESSAGE);
 
         Assert.assertTrue(noJobsMessage);
 
-        List<String> jobList = new ListViewPage(getDriver())
+        List<String> jobList = new ViewPage(getDriver())
                 .clickAddJobsFromMainPanel()
                 .checkFirstJobCheckboxWithJavaExecutor()
                 .clickOKButton()
@@ -311,7 +311,7 @@ public class ViewTest extends BaseTest {
                 .clickNewItem()
                 .createFreestyleProject(JOB_NAME_1)
                 .goHomePage()
-                .clickViewByName(VIEW_NAME_1, new ListViewPage(getDriver()))
+                .clickViewByName(VIEW_NAME_1, new ViewPage(getDriver()))
                 .clickEditView()
                 .checkJobsCheckboxesWithJavaExecutor()
                 .clickOKButton()
@@ -327,13 +327,13 @@ public class ViewTest extends BaseTest {
         TestUtils.createFreestyleProject(this, UUID.randomUUID().toString(), true);
 
         String nameViewNameActual = new HomePage(getDriver())
-                .clickMyView()
+                .clickMyViews()
                 .clickNewViewButton()
                 .typeNewViewName(VIEW_NAME)
                 .clickIncludeGlobalViewTypeRadioBTN()
-                .clickCreateButton(new NewViewConfigurePage(getDriver()))
-                .clickOKButton(new MyViewPage(getDriver()))
-                .getMyViewName();
+                .clickCreateButton()
+                .clickOkButton()
+                .getActiveViewName();
 
         Assert.assertEquals(nameViewNameActual, VIEW_NAME);
     }
@@ -347,9 +347,9 @@ public class ViewTest extends BaseTest {
                 .clickNewViewButton()
                 .typeNewViewName(VIEW_NAME)
                 .selectListViewType()
-                .clickCreateButton(new NewViewConfigurePage(getDriver()))
+                .clickCreateButton()
                 .clickCheckboxByTitle(JOB_NAME_3)
-                .clickOKButton(new MyViewPage(getDriver()))
+                .clickOKButton()
                 .getActiveViewName();
 
         Assert.assertEquals(VIEW_NAME, expectedListViewName);

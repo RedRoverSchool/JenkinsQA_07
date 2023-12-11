@@ -51,7 +51,7 @@ public class BreadcrumbTest extends BaseTest {
 	@Test(dependsOnMethods = "testReturnHomePageFromManageJenkins")
 	public void testReturnHomePageFromMyViews() {
 		String homePage = new HomePage(getDriver())
-				.clickMyView()
+				.clickMyViews()
 				.clickDashboardBreadCrumb()
 				.getHeadLineText();
 

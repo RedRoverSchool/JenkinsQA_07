@@ -1,14 +1,15 @@
-package school.redrover.model;
+package school.redrover.model.view;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseViewConfigPage;
 
 import java.util.List;
 
-public class ListViewPage extends BasePage<ListViewPage> {
+public class ViewPage extends BasePage<ViewPage> {
     @FindBy(xpath = "//a[@id = 'description-link']")
     private WebElement addOrEditDescriptionButton;
 
@@ -33,30 +34,36 @@ public class ListViewPage extends BasePage<ListViewPage> {
     @FindBy(xpath = "//table[@id='projectstatus']/thead/tr/th/a")
     private List<WebElement> columnNames;
 
-    public ListViewPage(WebDriver driver) {
+    @FindBy(xpath = "//div[@class='tab active']")
+    private WebElement activeViewTab;
+
+    @FindBy(xpath = "//span[text()='Delete View']")
+    private WebElement deleteView;
+
+    public ViewPage(WebDriver driver) {
         super(driver);
     }
 
-    public ListViewPage clickAddOrEditDescription() {
+    public ViewPage clickAddOrEditDescription() {
         addOrEditDescriptionButton.click();
 
         return this;
     }
 
-    public ListViewPage typeNewDescription(String newDescriptionForTheView) {
+    public ViewPage typeNewDescription(String newDescriptionForTheView) {
         descriptionField.clear();
         descriptionField.sendKeys(newDescriptionForTheView);
 
         return this;
     }
 
-    public ListViewPage clearDescriptionField() {
+    public ViewPage clearDescriptionField() {
         descriptionField.clear();
 
         return this;
     }
 
-    public ListViewPage clickSaveDescription() {
+    public ViewPage clickSaveDescription() {
         saveDescriptionButton.click();
 
         return this;
@@ -77,16 +84,16 @@ public class ListViewPage extends BasePage<ListViewPage> {
         return resultList;
     }
 
-    public ListViewConfigurationPage clickEditView() {
+    public ListViewConfigPage clickEditView() {
         editViewLink.click();
 
-        return new ListViewConfigurationPage(getDriver());
+        return new ListViewConfigPage(getDriver());
     }
 
-    public ListViewConfigurationPage clickAddJobsFromMainPanel() {
+    public ListViewConfigPage clickAddJobsFromMainPanel() {
         addJobsLinkFromMainPanel.click();
 
-        return new ListViewConfigurationPage(getDriver());
+        return new ListViewConfigPage(getDriver());
     }
 
     public List<String> getColumnNamesList() {
@@ -94,4 +101,14 @@ public class ListViewPage extends BasePage<ListViewPage> {
         return columnNames.stream().map(WebElement::getText).toList();
     }
 
+    public String getActiveViewName() {
+
+        return activeViewTab.getText();
+    }
+
+    public ViewPage clickDeleteView() {
+        deleteView.click();
+
+        return this;
+    }
 }

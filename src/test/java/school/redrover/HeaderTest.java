@@ -57,7 +57,7 @@ public class HeaderTest extends BaseTest {
     @Test(dependsOnMethods = "testComeHomePageFromManageJenkinsPage")
     public void testComeHomePageFromMyViewsPage() {
         String homePageHeadLineText = new HomePage(getDriver())
-                .clickMyView()
+                .clickMyViews()
                 .goHomePage()
                 .getHeadLineText();
 

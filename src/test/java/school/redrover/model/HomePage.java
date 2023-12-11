@@ -8,6 +8,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.model.base.BaseDetailsPage;
+import school.redrover.model.base.BaseViewConfigPage;
+import school.redrover.model.view.MyViewsPage;
+import school.redrover.model.view.NewViewPageFromDashboard;
+import school.redrover.model.view.ViewPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement buildQueueSection;
 
     @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
-    private WebElement myView;
+    private WebElement myViewsButton;
 
     @FindBy(xpath = "//h1")
     private WebElement header;
@@ -64,6 +68,9 @@ public class HomePage extends BasePage<HomePage> {
 
     @FindBy(xpath = "//a[contains(@href,'user')]")
     private WebElement currentUserName;
+
+    @FindBy(css = ".tab > a")
+    private List<WebElement> listOfViews;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -190,9 +197,9 @@ public class HomePage extends BasePage<HomePage> {
         return getWait10().until(ExpectedConditions.visibilityOf(buildQueueSection)).getText().contains(jobName);
     }
 
-    public MyViewPage clickMyView() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(myView)).click();
-        return new MyViewPage(getDriver());
+    public MyViewsPage clickMyViews() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(myViewsButton)).click();
+        return new MyViewsPage(getDriver());
     }
 
     public NodeDetailsPage clickOnNodeName(String nodeName) {
@@ -211,10 +218,11 @@ public class HomePage extends BasePage<HomePage> {
         return new RestApiPage(getDriver());
     }
 
-    public NewViewPage clickNewViewButton() {
+    public NewViewPageFromDashboard<?> clickNewViewButton() {
         newViewButton.click();
 
-        return new NewViewPage(getDriver());
+        return new NewViewPageFromDashboard<>(getDriver(), new BaseViewConfigPage(getDriver()) {
+        });
     }
 
     public LogInPage clickLogOut() {
@@ -231,6 +239,11 @@ public class HomePage extends BasePage<HomePage> {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='"+ folderName +"']"))).click();
         return new FolderDetailsPage(getDriver());
 
+    }
+
+    public boolean isViewExist(String viewName) {
+
+        return listOfViews.stream().anyMatch(element -> element.getText().contains(viewName));
     }
 
 

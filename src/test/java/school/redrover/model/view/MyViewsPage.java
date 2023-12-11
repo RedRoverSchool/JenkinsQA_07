@@ -1,15 +1,18 @@
-package school.redrover.model;
+package school.redrover.model.view;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import school.redrover.model.NewItemPage;
+import school.redrover.model.RestApiPage;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.base.BaseViewConfigPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MyViewPage extends BasePage<MyViewPage> {
+public class MyViewsPage extends BasePage<MyViewsPage> {
 
     @FindBy(xpath = "//span[contains(text(),'New Item')]/parent::a")
     private WebElement newItem;
@@ -29,7 +32,7 @@ public class MyViewPage extends BasePage<MyViewPage> {
     @FindBy(css = "a[href='api/']")
     private WebElement restApiButton;
 
-    public MyViewPage(WebDriver driver) {super(driver);}
+    public MyViewsPage(WebDriver driver) {super(driver);}
 
     public String getActiveViewName() {
 
@@ -41,17 +44,18 @@ public class MyViewPage extends BasePage<MyViewPage> {
         return new NewItemPage(getDriver());
     }
 
-    public NewViewPage clickNewViewButton() {
+    public NewViewPageFromMyViewsPage<?> clickNewViewButton() {
         newViewButton.click();
-        return new NewViewPage(getDriver());
+        return new NewViewPageFromMyViewsPage<>(getDriver(), new BaseViewConfigPage(getDriver()) {
+        });
     }
 
     public String getMyViewName(){
         return myViewName.getText();
     }
 
-    public MyViewPage clickDeleteView(){
-        deleteView.click();
+    public MyViewsPage acceptAlert() {
+        getWait2().until(ExpectedConditions.alertIsPresent()).accept();
 
         return this;
     }
