@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class UserConfigurationPage extends BasePage<UserConfigurationPage> {
 
     @FindBy(name = "_.fullName")
@@ -27,6 +29,9 @@ public class UserConfigurationPage extends BasePage<UserConfigurationPage> {
 
     @FindBy(xpath = "//div[@id = 'description']/div[1]")
     private WebElement descriptionText;
+
+    @FindBy(xpath = "//*[@tooltip]")
+    private List<WebElement> allTooltipsList;
 
     public UserConfigurationPage(WebDriver driver) {
         super(driver);
@@ -68,7 +73,15 @@ public class UserConfigurationPage extends BasePage<UserConfigurationPage> {
     }
 
     public String getDescriptionText() {
-        return  descriptionText.getText();
+        return descriptionText.getText();
+    }
+
+    public List<String> getTooltipTitleText() {
+
+        return allTooltipsList
+                .stream()
+                .map(tooltip -> tooltip.getAttribute("tooltip"))
+                .toList();
     }
 }
 

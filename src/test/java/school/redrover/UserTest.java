@@ -44,7 +44,7 @@ public class UserTest extends BaseTest {
     }
 
     private void goToUsersPage() {
-       new HomePage(getDriver())
+        new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersButton();
     }
@@ -192,7 +192,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(description, DESCRIPTION);
     }
 
-    @Test (dependsOnMethods = {"testAddUserDescriptionFromPeople", "testCreateUserWithValidData"})
+    @Test(dependsOnMethods = {"testAddUserDescriptionFromPeople", "testCreateUserWithValidData"})
     public void testConfigureShowDescriptionPreview() {
         String previewDescriptionText = new HomePage(getDriver())
                 .clickPeople()
@@ -378,8 +378,7 @@ public class UserTest extends BaseTest {
         Assert.assertEquals(breadcrumbTrailLastSectionText, "Configure");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testVerifyUserCreated")
+    @Test(dependsOnMethods = "testCreateUserWithValidData")
     public void testVerifyHelpTooltips() {
         List<String> expectedListOfHelpIconsTooltipsText = List.of(
                 "Help for feature: Full Name",
@@ -389,17 +388,13 @@ public class UserTest extends BaseTest {
                 "Help",
                 "Help for feature: Time Zone");
 
-        getDriver().findElement(By.xpath("//a[@href='/asynchPeople/']")).click();
-        getDriver().findElement(By.xpath("//a[@href='/user/" + USER_NAME.toLowerCase() + "/']")).click();
-        getDriver().findElement(By.xpath("//a[contains(@href, '/configure')]")).click();
-        getWait5();
+        List<String> actualTooltipText = new HomePage(getDriver())
+                .clickPeople()
+                .clickOnTheCreatedUserID(USER_NAME)
+                .clickConfigure()
+                .getTooltipTitleText();
 
-        List<WebElement> helpIconsTooltips = getDriver().findElements(By.xpath("//a[@class='jenkins-help-button']"));
-        List<String> actualListOfHelpIconsTooltipsText = new ArrayList<>();
-        for (int i = 0; i < helpIconsTooltips.size(); i++) {
-            actualListOfHelpIconsTooltipsText.add(helpIconsTooltips.get(i).getAttribute("tooltip"));
-            Assert.assertEquals(actualListOfHelpIconsTooltipsText.get(i), expectedListOfHelpIconsTooltipsText.get(i));
-        }
+        Assert.assertEquals(actualTooltipText, expectedListOfHelpIconsTooltipsText);
     }
 
     @Test
