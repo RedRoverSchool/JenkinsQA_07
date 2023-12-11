@@ -31,13 +31,16 @@ public class UserDatabasePage extends BasePage<UserDatabasePage> {
     @FindBy(xpath = "//tr//td[4]//a")
     private List<WebElement> configureIcon;
 
+    @FindBy(xpath = "//a[@href='/securityRealm/']")
+    private WebElement screenName;
 
-    public UserDatabasePage clickDeleteIcon (int n) {
+
+    public UserDatabasePage clickDeleteIcon(int n) {
         deleteIcon.get(n).click();
         return this;
     }
 
-    public UserConfigurationPage clickConfigureIcon (int n) {
+    public UserConfigurationPage clickConfigureIcon(int n) {
         configureIcon.get(n).click();
         return new UserConfigurationPage(getDriver());
     }
@@ -115,5 +118,9 @@ public class UserDatabasePage extends BasePage<UserDatabasePage> {
             }
         }
         return isNewUserIDPresent;
+    }
+
+    public String getScreenNameText() {
+        return screenName.getText();
     }
 }
