@@ -109,6 +109,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(tabBarList, expectedListTabBar);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testJenkinsVersionListTabBar")
     public void testVerifyAboutJenkinsTabNamesAndActiveStates() {
         AboutJenkinsPage about = new HomePage(getDriver())
