@@ -6,14 +6,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.BuildHistoryPage;
-import school.redrover.model.FreestyleProjectConfigurePage;
-import school.redrover.model.FreestyleProjectDetailsPage;
+import school.redrover.model.builds.BuildHistoryPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
+import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
+import school.redrover.runner.TestUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class BuildHistoryTest extends BaseTest {
@@ -92,5 +94,22 @@ public class BuildHistoryTest extends BaseTest {
                 .getPointLocation();
 
         Assert.assertEquals(actualPosition, startPosition);
+    }
+
+    @Test
+    public void testNavigationToPreviousBuild() {
+        TestUtils.createFreestyleProject(this, NAME_FREESTYLE_PROJECT, true);
+
+        List<String> builds = new HomePage(getDriver())
+                .clickJobByName(NAME_FREESTYLE_PROJECT, new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNowSeveralTimesAndWait(2, NAME_FREESTYLE_PROJECT)
+                .getBuildsInBuildHistoryList();
+
+        String previousBuildTitle = new FreestyleProjectDetailsPage(getDriver())
+                .clickLastBuild()
+                .clickPreviousBuild()
+                .getBuildTitle();
+
+        Assert.assertTrue(previousBuildTitle.contains(builds.get(1)));
     }
 }

@@ -2,8 +2,8 @@ package school.redrover;
 
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import school.redrover.model.ErrorPage;
-import school.redrover.model.FreestyleProjectConfigurePage;
+import school.redrover.model.errors.ErrorPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
 import school.redrover.model.HomePage;
 import school.redrover.runner.BaseTest;
 

@@ -99,7 +99,7 @@ public final class ProjectUtils {
         return properties.getProperty(PROP_ADMIN_PAS);
     }
 
-    static void get(WebDriver driver) {
+    public static void get(WebDriver driver) {
         driver.get(getUrl());
     }
 
