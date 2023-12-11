@@ -3,7 +3,6 @@ package school.redrover.model.base;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import school.redrover.model.FreestyleProjectConfigurePage;
 
 public abstract class BaseConfigurationPage<ProjectPage extends BaseDetailsPage<?, ?>,Self extends BaseConfigurationPage<?, ?>> extends BasePage<Self> {
 
