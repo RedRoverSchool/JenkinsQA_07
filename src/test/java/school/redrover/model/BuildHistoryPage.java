@@ -1,11 +1,14 @@
 package school.redrover.model;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
+import school.redrover.runner.TestUtils;
 
 import java.util.List;
 
@@ -31,6 +34,9 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
 
     @FindBy(css = "a[href='api/']")
     private WebElement restApiButton;
+
+    @FindBy(xpath = "//dl[@class='app-icon-legend']//dd")
+    private WebElement listIconLegend;
 
     public BuildHistoryPage(WebDriver driver) {
         super(driver);
@@ -83,5 +89,11 @@ public class BuildHistoryPage extends BasePage<BuildHistoryPage> {
         restApiButton.click();
 
         return new RestApiPage(getDriver());
+    }
+
+    public List<String> getIconLegendList() {
+
+        return TestUtils.getTextOfWebElements(getWait2().until(
+                ExpectedConditions.visibilityOfAllElements(listIconLegend)));
     }
 }

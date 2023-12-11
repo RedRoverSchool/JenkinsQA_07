@@ -1,5 +1,6 @@
 package school.redrover;
 
+import org.apache.hc.core5.http.io.SessionOutputBuffer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,6 +15,7 @@ import school.redrover.runner.BaseTest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class BuildHistoryTest extends BaseTest {
@@ -92,5 +94,16 @@ public class BuildHistoryTest extends BaseTest {
                 .getPointLocation();
 
         Assert.assertEquals(actualPosition, startPosition);
+    }
+
+    @Test
+    public void testCountsIconLegendStatus() throws InterruptedException{
+        List<String> summaIconLegendStatus = new HomePage(getDriver())
+                .clickBuildHistory()
+                .clickIconLegendButton()
+                .getIconLegendList();
+
+        System.out.println("I want to see result " + summaIconLegendStatus);
+        Thread.sleep(1000);
     }
 }

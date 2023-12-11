@@ -71,6 +71,9 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(xpath = "//a[contains(@href, 'confirm-rename')]")
     private WebElement renameLine;
 
+    @FindBy(xpath = "//a[@href='/view/all/builds']")
+    private WebElement BuildHistory;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -245,5 +248,10 @@ public class HomePage extends BasePage<HomePage> {
         actions.click(renameLine).perform();
 
         return new RenamePage<>(getDriver(), projectPage );
+    }
+
+    public BuildHistoryPage clickBuildHistory() {
+        BuildHistory.click();
+        return new BuildHistoryPage(getDriver());
     }
 }
