@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.testng.Assert.*;
 
@@ -29,20 +30,6 @@ public class UserTest extends BaseTest {
     private static final String PASSWORD = "12345";
     private static final String DESCRIPTION = "Test description";
     private static final String EMAIL = "asd@gmail.com";
-
-    private void createUserNoFullName(String userName, String password, String email) {
-        getDriver().findElement(By.xpath("//a[contains(@href,'manage')]")).click();
-
-        getDriver().findElement(By.xpath("//dt[contains(text(),'Users')]")).click();
-
-        getDriver().findElement(By.xpath("//a[@href='addUser']")).click();
-
-        getDriver().findElement(By.name("username")).sendKeys(userName);
-        getDriver().findElement(By.name("password1")).sendKeys(password);
-        getDriver().findElement(By.name("password2")).sendKeys(password);
-        getDriver().findElement(By.name("email")).sendKeys(email);
-        getDriver().findElement(By.name("Submit")).click();
-    }
 
     private void goToUsersPage() {
         new HomePage(getDriver())
@@ -407,15 +394,22 @@ public class UserTest extends BaseTest {
                 "Sign in to Jenkins");
     }
 
-    @Ignore
     @Test
     public void testVerifyScreenAfterCreateUser() {
-        String password = "1234567";
-        String email = "test@gmail.com";
-        createUserNoFullName(USER_NAME, password, email);
+        String screenNameText = "Jenkins’ own user database";
 
-        Assert.assertEquals(getDriver().findElement(By.xpath("//a[@href='/securityRealm/']")).getText(),
-                "Jenkins’ own user database");
+        String screenTextAfterCreation = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton()
+                .clickAddUserButton()
+                .inputUserName(USER_NAME)
+                .inputPassword(PASSWORD)
+                .inputPasswordConfirm(PASSWORD)
+                .inputEmail(EMAIL)
+                .clickSubmit()
+                .getScreenNameText();
+
+        Assert.assertEquals(screenTextAfterCreation, screenNameText);
     }
 
     @Test
