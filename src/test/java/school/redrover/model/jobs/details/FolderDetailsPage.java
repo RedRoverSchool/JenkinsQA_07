@@ -12,11 +12,11 @@ import java.util.List;
 
 public class FolderDetailsPage extends BaseDetailsPage<FolderConfigurationPage, FolderDetailsPage> {
 
+    @FindBy(className = "jenkins-input")
+    private WebElement descriptionTextArea;
+
     @FindBy(xpath = "//a[contains(@href, '/newJob')]")
     private WebElement newItemButton;
-
-    @FindBy(xpath = "//a[contains(@href,'move')]")
-    private WebElement moveJob;
 
     @FindBy(xpath = "//a[@class='content-block__link']")
     private WebElement createJob;
