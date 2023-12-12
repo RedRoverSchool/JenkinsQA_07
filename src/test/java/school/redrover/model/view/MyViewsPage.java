@@ -65,9 +65,4 @@ public class MyViewsPage extends BasePage<MyViewsPage> {
         return listOfViews.stream().anyMatch(element -> element.getText().contains(viewName));
     }
 
-    public RestApiPage goRestApi() {
-        restApiButton.click();
-
-        return new RestApiPage(getDriver());
-    }
 }
