@@ -3,7 +3,7 @@ package school.redrover;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import school.redrover.model.FreestyleProjectDetailsPage;
+import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
 import school.redrover.model.HomePage;
 import school.redrover.model.SearchResultQueryPage;
 import school.redrover.runner.BaseTest;

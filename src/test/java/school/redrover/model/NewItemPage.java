@@ -8,6 +8,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.jobs.configs.FolderConfigurationPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
+import school.redrover.model.jobs.configs.OrganizationFolderConfigurationPage;
+import school.redrover.model.jobs.configs.PipelineConfigurePage;
 
 public class NewItemPage extends BasePage<NewItemPage> {
 

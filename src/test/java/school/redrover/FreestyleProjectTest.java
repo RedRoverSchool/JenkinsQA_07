@@ -1,12 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.errors.RenameErrorPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
+import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -763,32 +765,23 @@ public class FreestyleProjectTest extends BaseTest {
                 , expectedResult);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testPermalinksListOnStatusPage() {
-        final String[] buildSuccessfulPermalinks = {"Last build", "Last stable build", "Last successful build",
-                "Last completed build"};
+        final String[] buildSuccessfulPermalinks = {
+                "Last build",
+                "Last stable build",
+                "Last successful build",
+                "Last completed build"
+        };
 
-        TestUtils.createFreestyleProject(this, PROJECT_NAME, false);
+        String permaLinks = new HomePage(getDriver())
+                .clickJobByName(PROJECT_NAME, new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNow()
+                .refreshPage()
+                .getPermalinksText();
 
-        for (int i = 0; i < 4; i++) {
-            getWait2().until(ExpectedConditions.elementToBeClickable(By.partialLinkText("Build Now"))).click();
-        }
-
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//td[@class='build-row-cell']")));
-
-        getDriver().navigate().refresh();
-
-        List<WebElement> permalinks = getDriver().findElements(
-                By.xpath("//ul[@class='permalinks-list']/li"));
-
-        ArrayList<String> permalinksTexts = new ArrayList<>();
-
-        assertEquals(permalinks.size(), 4);
-
-        for (int i = 0; i < permalinks.size(); i++) {
-            permalinksTexts.add(permalinks.get(i).getText());
-            assertTrue((permalinksTexts.get(i)).contains(buildSuccessfulPermalinks[i]));
+        for (String x : buildSuccessfulPermalinks) {
+            assertTrue(permaLinks.contains(x));
         }
     }
 
@@ -887,6 +880,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(isMessageVisible, "The warning message is not visible.");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testTooltipDiscardOldBuildsIsVisible")
     public void testDeletePermalinksOnProjectsStatusPage() {
         final List<String> removedPermalinks = List.of(

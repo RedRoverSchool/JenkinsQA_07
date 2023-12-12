@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.jobs.configs.PipelineConfigurePage;
+import school.redrover.model.jobs.details.PipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
