@@ -5,6 +5,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
+import school.redrover.model.errors.ErrorPage;
+import school.redrover.model.jobs.configs.FolderConfigurationPage;
+import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
+import school.redrover.model.jobs.details.PipelineDetailsPage;
 import school.redrover.runner.BaseTest;
 
 import java.util.List;
@@ -13,7 +18,7 @@ public class FolderTest extends BaseTest {
     private static final String FOLDER_NAME = "FolderName";
     private static final String NAME_FOR_BOUNDARY_VALUES = "A";
     private static final String RENAMED_FOLDER = "RenamedFolder";
-    private static final String NESTED_FOLDER = "Nested";
+    private static final String NESTED_FOLDER = "NestedFolder";
     private static final String JOB_NAME = "New Job";
     private static final String PIPELINE_PROJECT_NAME = "New pipeline project";
     private static final String DESCRIPTION_NAME = "Description Name";
@@ -56,15 +61,12 @@ public class FolderTest extends BaseTest {
         boolean isJobCreated = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickCreateJob()
-                .typeItemName(JOB_NAME)
-                .selectFreestyleProject()
-                .clickOk(new FreestyleProjectConfigurePage(getDriver()))
+                .createFreestyleProject(JOB_NAME)
                 .clickSaveButton()
                 .isJobExist();
 
         Assert.assertTrue(isJobCreated);
     }
-
 
     @Test(dependsOnMethods = "testCreateNewJob")
     public void testMoveFolderToFolder() {
@@ -216,7 +218,7 @@ public class FolderTest extends BaseTest {
         String actualDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER,new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(DESCRIPTION_NAME)
+                .inputDescription(DESCRIPTION_NAME)
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
 
@@ -228,9 +230,9 @@ public class FolderTest extends BaseTest {
         String previewDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(DESCRIPTION_NAME)
-                .clickPreview()
-                .getDescriptionPreview();
+                .inputDescription(DESCRIPTION_NAME)
+                .clickDescriptionPreview()
+                .getDescriptionPreviewText();
 
         Assert.assertEquals(previewDescription, DESCRIPTION_NAME);
     }
@@ -240,9 +242,9 @@ public class FolderTest extends BaseTest {
         String previewDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .clickPreview()
-                .clickHidePreview()
-                .getDescriptionPreview();
+                .clickDescriptionPreview()
+                .clickHideDescriptionPreview()
+                .getDescriptionPreviewText();
 
         Assert.assertTrue(previewDescription.isEmpty());
     }
@@ -254,7 +256,7 @@ public class FolderTest extends BaseTest {
         String actualUpdatedDescription = new HomePage(getDriver())
                 .clickJobByName(RENAMED_FOLDER, new FolderDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .typeDescription(newDescriptionText)
+                .inputDescription(newDescriptionText)
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
 

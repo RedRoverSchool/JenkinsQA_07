@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.HomePage;
 import school.redrover.model.ManageJenkinsPage;
+import school.redrover.model.PluginsPage;
 import school.redrover.runner.BaseTest;
 import java.util.List;
 
@@ -76,6 +77,19 @@ public class PluginsTest extends BaseTest {
                 .getNumberPluginsForUpdates();
 
         Assert.assertEquals(numberUpdatesPlaginsFromPluginsPage, numberUpdatesPlaginsFromManagePage);
+    }
+
+    @Test
+    public void testSortingPluginsForUpdateByDefault() {
+        List<String> updatesPluginsList = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage()
+                .getUpdatesPluginsList();
+
+        List<String> sortedUpdatesPlaginsList = new PluginsPage(getDriver())
+                .getSortedUpdatesPluginsList();
+
+       Assert.assertEquals(sortedUpdatesPlaginsList, updatesPluginsList);
     }
 
 }

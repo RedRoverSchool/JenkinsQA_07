@@ -12,6 +12,11 @@ import school.redrover.model.base.BaseViewConfigPage;
 import school.redrover.model.view.MyViewsPage;
 import school.redrover.model.view.NewViewPageFromDashboard;
 import school.redrover.model.view.ViewPage;
+import school.redrover.model.builds.BuildHistoryPage;
+import school.redrover.model.jobs.details.FolderDetailsPage;
+import school.redrover.model.nodes.NodeCreatePage;
+import school.redrover.model.nodes.NodeDetailsPage;
+import school.redrover.model.nodes.NodesListPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +61,6 @@ public class HomePage extends BasePage<HomePage> {
 
     @FindBy(xpath = "//a[@href = '/manage']")
     private WebElement goManageJenkinsPage;
-
-    @FindBy(css = "a[href='api/']")
-    private WebElement restApiButton;
 
     @FindBy(className = "addTab")
     private WebElement newViewButton;

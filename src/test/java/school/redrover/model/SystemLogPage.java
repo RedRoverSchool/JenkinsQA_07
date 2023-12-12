@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
+import school.redrover.model.logrecorders.ConfigureLogRecorderPage;
+import school.redrover.model.logrecorders.NewLogRecorderPage;
 
 import java.util.ArrayList;
 import java.util.List;
