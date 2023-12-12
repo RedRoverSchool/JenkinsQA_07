@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
 import school.redrover.model.nodes.NodesListPage;
+import school.redrover.model.users.UserDatabasePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -313,5 +314,45 @@ public class ManageJenkinsTest extends BaseTest {
                 .getTextMainPanel();
 
         assertEquals(actualText, expectedText);
+    }
+
+    @Test
+    public void testSecurityPageRedirection() {
+        SecurityPage securityPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickSecuritySection();
+
+        Assert.assertTrue(securityPage.getPageTitle().contains("Security"));
+        Assert.assertTrue(securityPage.getCurrentUrl().contains("configureSecurity"));
+    }
+
+    @Test
+    public void testCredentialsPageRedirection() {
+        CredentialsPage credentialsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickCredentialsSection();
+
+        Assert.assertTrue(credentialsPage.getPageTitle().contains("Credentials"));
+        Assert.assertTrue(credentialsPage.getCurrentUrl().contains("credentials"));
+    }
+
+    @Test
+    public void testCredentialProvidersPageRedirection() {
+        CredentialProvidersPage credentialsProvidersPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickCredentialProvidersSection();
+
+        Assert.assertTrue(credentialsProvidersPage.getPageTitle().contains("Credential Providers"));
+        Assert.assertTrue(credentialsProvidersPage.getCurrentUrl().contains("configureCredentials"));
+    }
+
+    @Test
+    public void testUserDatabasePageRedirection() {
+        UserDatabasePage usersPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickUsersButton();
+
+        Assert.assertTrue(usersPage.getPageTitle().contains("Users"));
+        Assert.assertTrue(usersPage.getCurrentUrl().contains("securityRealm"));
     }
 }
