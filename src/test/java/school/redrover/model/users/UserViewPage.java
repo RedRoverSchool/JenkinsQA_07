@@ -1,10 +1,9 @@
-package school.redrover.model.views;
+package school.redrover.model.users;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.users.UserCreateViewPage;
 
 public class UserViewPage extends BasePage<UserViewPage> {
 
