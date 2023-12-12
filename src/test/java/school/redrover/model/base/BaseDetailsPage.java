@@ -55,9 +55,6 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//div[@id='description']/div[1]")
     private WebElement descriptionText;
 
-    @FindBy(xpath = "//textarea[@name='description']")
-    private WebElement projectDescriptionInputField;
-
     @FindBy(xpath = "//button[contains(text(), 'Save')]")
     private WebElement saveButton;
 
@@ -232,12 +229,6 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
 
     public Self clickHideDescriptionPreview() {
         hidePreviewButton.click();
-
-        return (Self)this;
-    }
-
-    public Self enterDescriptionText(String description) {
-        projectDescriptionInputField.sendKeys(description);
 
         return (Self)this;
     }
