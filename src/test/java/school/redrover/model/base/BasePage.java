@@ -1,12 +1,15 @@
 package school.redrover.model.base;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 import school.redrover.model.*;
-import school.redrover.model.jobs.details.MultiConfigurationDetailsPage;
 import school.redrover.model.users.CreatedUserPage;
 
 import java.util.ArrayList;

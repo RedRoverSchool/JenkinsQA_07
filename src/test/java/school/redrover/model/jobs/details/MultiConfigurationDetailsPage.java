@@ -26,9 +26,4 @@ public class MultiConfigurationDetailsPage extends BaseDetailsPage<MultiConfigur
 
         return this;
     }
-
-    public String getProjectHeadLineText() {
-
-        return getDriver().findElement(By.tagName("h1")).getText();
-    }
 }
