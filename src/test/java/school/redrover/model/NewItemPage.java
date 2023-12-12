@@ -8,10 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigurationPage;
 import school.redrover.model.base.BasePage;
-import school.redrover.model.jobs.configs.FolderConfigurationPage;
-import school.redrover.model.jobs.configs.FreestyleProjectConfigurePage;
-import school.redrover.model.jobs.configs.OrganizationFolderConfigurationPage;
-import school.redrover.model.jobs.configs.PipelineConfigurePage;
+import school.redrover.model.jobs.configs.*;
 
 public class NewItemPage extends BasePage<NewItemPage> {
 
@@ -175,6 +172,14 @@ public class NewItemPage extends BasePage<NewItemPage> {
         okButton.click();
 
         return new FolderConfigurationPage(getDriver());
+    }
+
+    public MultibranchPipelineConfigurationPage createMultibranchPipeline(String projectName) {
+        inputName.sendKeys(projectName);
+        multibranchPipeline.click();
+        okButton.click();
+
+        return new MultibranchPipelineConfigurationPage(getDriver());
     }
 
     public NewItemPage populateFieldCopyFrom(String multibranchPipelineName) {
