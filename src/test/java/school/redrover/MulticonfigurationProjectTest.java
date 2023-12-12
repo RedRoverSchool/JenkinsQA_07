@@ -126,8 +126,8 @@ public class MulticonfigurationProjectTest extends BaseTest {
         String page = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
                 .taskLinkDeleteMultiConfigurationProject()
-                .cancelDelete()
-                .getProjectHeadLineText();
+                .dismissAlert()
+                .getHeadLineText();
 
         Assert.assertEquals(page, "Project " + PROJECT_NAME);
     }

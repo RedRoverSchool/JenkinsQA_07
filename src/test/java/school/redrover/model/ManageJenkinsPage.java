@@ -70,6 +70,15 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     @FindBy(xpath = "//a[@href='pluginManager']/div/div")
     private WebElement numberPlugins;
 
+    @FindBy(xpath = "//a[@href='configureSecurity']")
+    private WebElement securitySection;
+
+    @FindBy(xpath = "//a[@href='credentials']")
+    private WebElement credentialsSection;
+
+    @FindBy(xpath = "//a[@href='configureCredentials']")
+    private WebElement credentialProvidersSection;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -304,4 +313,21 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return numberPlugins.getText();
     }
 
+    public SecurityPage clickSecuritySection() {
+        securitySection.click();
+
+        return new SecurityPage(getDriver());
+    }
+
+    public CredentialsPage clickCredentialsSection() {
+        credentialsSection.click();
+
+        return new CredentialsPage(getDriver());
+    }
+
+    public CredentialProvidersPage clickCredentialProvidersSection() {
+        credentialProvidersSection.click();
+
+        return new CredentialProvidersPage(getDriver());
+    }
 }
