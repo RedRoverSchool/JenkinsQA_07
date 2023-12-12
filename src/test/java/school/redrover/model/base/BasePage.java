@@ -15,8 +15,6 @@ import school.redrover.model.users.CreatedUserPage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.AssertJUnit.fail;
-
 public abstract class BasePage<Self extends BasePage<?>> extends BaseModel {
 
     @FindBy(tagName = "h1")
