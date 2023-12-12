@@ -24,7 +24,7 @@ public class FreestyleProjectDetailsPage extends BaseDetailsPage<FreestyleProjec
     @FindBy(xpath = "//textarea[@name='description']")
     private WebElement projectDescriptionInputField;
 
-    @FindBy(xpath = "//*[@id=\"tasks\"]/div[6]/span/a/span[2]")
+    @FindBy(xpath = "//*[@id='tasks']/div[6]/span/a/span[2]")
     private WebElement deleteProject;
 
     @FindBy(xpath = "//a[contains(@href,'ws')]")

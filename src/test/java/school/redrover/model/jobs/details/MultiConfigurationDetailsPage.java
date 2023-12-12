@@ -9,9 +9,6 @@ import school.redrover.model.base.BaseDetailsPage;
 
 public class MultiConfigurationDetailsPage extends BaseDetailsPage<MultiConfigurationConfigurePage, MultiConfigurationDetailsPage> {
 
-    @FindBy(name = "description")
-    private WebElement inputDescription;
-
     @FindBy(css = "a[data-message]")
     private WebElement taskLinkDeleteMultiConfigurationProject;
 
@@ -22,18 +19,6 @@ public class MultiConfigurationDetailsPage extends BaseDetailsPage<MultiConfigur
     @Override
     protected MultiConfigurationConfigurePage createConfigurationPage() {
         return new MultiConfigurationConfigurePage(getDriver());
-    }
-
-    public MultiConfigurationDetailsPage inputDescription(String description) {
-        inputDescription.sendKeys(description);
-
-        return this;
-    }
-
-    public MultiConfigurationDetailsPage clearDescription() {
-        inputDescription.clear();
-
-        return this;
     }
 
     public MultiConfigurationDetailsPage taskLinkDeleteMultiConfigurationProject() {
