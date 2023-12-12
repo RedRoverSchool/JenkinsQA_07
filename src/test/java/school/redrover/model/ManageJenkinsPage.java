@@ -79,9 +79,6 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     @FindBy(xpath = "//a[@href='configureCredentials']")
     private WebElement credentialProvidersSection;
 
-    @FindBy(xpath = "//a[@href='securityRealm/']")
-    private WebElement usersSection;
-
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -334,9 +331,9 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         return new CredentialProvidersPage(getDriver());
     }
 
-    public UsersPage clickUsersSection() {
-        usersSection.click();
+    public UserDatabasePage clickUsersSection() {
+        userSection.click();
 
-        return new UsersPage(getDriver());
+        return new UserDatabasePage(getDriver());
     }
 }

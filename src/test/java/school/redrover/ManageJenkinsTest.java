@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.model.jobs.details.FreestyleProjectDetailsPage;
 import school.redrover.model.nodes.NodesListPage;
+import school.redrover.model.users.UserDatabasePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
@@ -352,8 +353,8 @@ public class ManageJenkinsTest extends BaseTest {
     }
 
     @Test
-    public void testUsersPageRedirection() {
-        UsersPage usersPage = new UsersPage(getDriver());
+    public void testUserDatabasePageRedirection() {
+        UserDatabasePage usersPage = new UserDatabasePage(getDriver());
         String currentUrl = new HomePage(getDriver())
                 .clickManageJenkins()
                 .clickUsersSection()
