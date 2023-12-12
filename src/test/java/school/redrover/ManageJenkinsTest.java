@@ -355,4 +355,16 @@ public class ManageJenkinsTest extends BaseTest {
         Assert.assertTrue(usersPage.getPageTitle().contains("Users"));
         Assert.assertTrue(usersPage.getCurrentUrl().contains("securityRealm"));
     }
+
+    @Test
+    public void testReloadConfigurationAlertDisappearance() {
+
+        ManageJenkinsPage manageJenkinsPage = new HomePage(getDriver())
+                .clickManageJenkins()
+                .clickReloadConfiguration()
+                .dismissAlert();
+
+        Assert.assertTrue(manageJenkinsPage.isAlertNotPresent());
+        Assert.assertEquals(manageJenkinsPage.getHeadLineText(), "Manage Jenkins");
+    }
 }

@@ -87,12 +87,6 @@ public class NodeDetailsPage extends BasePage<NodeDetailsPage> {
         return getDriver().switchTo().alert().getText();
     }
 
-    public NodeDetailsPage dismissAlert() {
-        getDriver().switchTo().alert().dismiss();
-
-        return this;
-    }
-
     public NodeDetailsPage inputDescription(String description) {
         descriptionButton.click();
         descriptionField.clear();
