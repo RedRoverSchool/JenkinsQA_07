@@ -12,6 +12,9 @@ public class BuildEditInformationPage extends BasePage<BuildEditInformationPage>
     @FindBy(xpath = "//input[@name='displayName']")
     private WebElement displayNameArea;
 
+    @FindBy(xpath = "//textarea[@name='description']")
+    private WebElement descriptionTextArea;
+
     public BuildEditInformationPage(WebDriver driver) {
         super(driver);
     }
@@ -24,6 +27,13 @@ public class BuildEditInformationPage extends BasePage<BuildEditInformationPage>
 
     public BuildEditInformationPage enterDisplayName(String buildDisplayName) {
         displayNameArea.sendKeys(buildDisplayName);
+
+        return new BuildEditInformationPage(getDriver());
+    }
+
+    public BuildEditInformationPage addDescriptionForBuild(String descriptionText){
+        descriptionTextArea.clear();
+        descriptionTextArea.sendKeys(descriptionText);
 
         return new BuildEditInformationPage(getDriver());
     }

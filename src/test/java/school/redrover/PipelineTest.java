@@ -17,6 +17,8 @@ public class PipelineTest extends BaseTest {
     private static final String JOB_NAME = "NewPipeline";
     private static final String BUILD_NAME = "PipelineBuildName";
 
+    private static final String DESCRIPTION = "Pipeline build description";
+
     @Test
     public void testCreatePipeline() {
         boolean pipeLineCreated = new HomePage(getDriver())
@@ -349,14 +351,14 @@ public class PipelineTest extends BaseTest {
         Assert.assertTrue(name.contains( JOB_NAME));
     }
 
-    @Ignore
     @Test
     public void testAddDisplayNameForBuild() {
         TestUtils.createPipeline(this, JOB_NAME, true);
 
         String newDisplayedBuildName = new HomePage(getDriver())
-                .clickBuildByGreenArrowWithWait(JOB_NAME)
                 .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickBuildNow()
+                .refreshPage()
                 .clickLastBuildLink()
                 .clickEditBuildInformationSideMenu()
                 .enterDisplayName(BUILD_NAME)
@@ -364,5 +366,22 @@ public class PipelineTest extends BaseTest {
                 .getPageTitle();
 
         Assert.assertTrue(newDisplayedBuildName.contains(BUILD_NAME));
+    }
+
+    @Test
+    public void testAddDescriptionForBuild() {
+        TestUtils.createPipeline(this, JOB_NAME, true);
+
+        String descriptionBuildText = new HomePage(getDriver())
+                .clickJobByName(JOB_NAME, new PipelineDetailsPage(getDriver()))
+                .clickBuildNow()
+                .refreshPage()
+                .clickLastBuildLink()
+                .clickEditBuildInformationSideMenu()
+                .addDescriptionForBuild(DESCRIPTION)
+                .clickSaveButton()
+                .getBuildDescription();
+
+        Assert.assertEquals(descriptionBuildText, DESCRIPTION);
     }
 }

@@ -80,4 +80,11 @@ public class BuildPage extends BasePage<BuildPage> {
     public String getBuildTitle() {
         return buildTitle.getText();
     }
+
+    @FindBy(xpath = "//*[@id='description']/div[1]")
+    private WebElement buildDescription;
+
+    public String getBuildDescription() {
+        return buildDescription.getText();
+    }
 }
