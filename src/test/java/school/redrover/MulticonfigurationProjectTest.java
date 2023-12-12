@@ -101,7 +101,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
         String description = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .clearDescription()
+                .clearDescriptionTextArea()
                 .inputDescription(newDescription)
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
@@ -114,7 +114,7 @@ public class MulticonfigurationProjectTest extends BaseTest {
         String delete = new HomePage(getDriver())
                 .clickJobByName(PROJECT_NAME, new MultiConfigurationDetailsPage(getDriver()))
                 .clickAddOrEditDescription()
-                .clearDescription()
+                .clearDescriptionTextArea()
                 .clickSaveDescriptionButton()
                 .getDescriptionText();
 

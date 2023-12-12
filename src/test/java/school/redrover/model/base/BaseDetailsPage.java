@@ -17,7 +17,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     private WebElement projectName;
 
     @FindBy(xpath = "//a[contains(@href, '/confirm-rename')]")
-    private WebElement renameSubmenu;
+    private WebElement renameSideMenuItem;
 
     @FindBy(name = "Submit")
     private WebElement disableEnableButton;
@@ -26,7 +26,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     private WebElement disableMessage;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'build')]")
-    private WebElement buildNowSideMenuOption;
+    private WebElement buildNowSideMenuItem;
 
     @FindBy(xpath = "//a[@class='model-link inside build-link display-name']")
     private List<WebElement> buildLinksInBuildHistory;
@@ -38,10 +38,13 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     private WebElement configureSideMenuItem;
 
     @FindBy(xpath = "//a[@class='task-link ' and contains(@href, 'move')]")
-    private WebElement moveSideMenuOption;
+    private WebElement moveSideMenuItem;
 
     @FindBy(id = "description-link")
-    private WebElement addDescription;
+    private WebElement addDescriptionButton;
+
+    @FindBy(name = "description")
+    private WebElement descriptionTextArea;
 
     @FindBy(linkText = "Status")
     private WebElement statusPageLink;
@@ -61,6 +64,15 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     @FindBy(xpath = "//button[@class='jenkins-button jenkins-button--primary ']")
     private WebElement saveDescriptionButton;
 
+    @FindBy(className = "textarea-show-preview")
+    private WebElement previewButton;
+
+    @FindBy(className = "textarea-hide-preview")
+    private WebElement hidePreviewButton;
+
+    @FindBy(xpath = "//div[@class='textarea-preview']")
+    private WebElement descriptionPreview;
+
     @FindBy(xpath = "//a[@href='lastBuild/']")
     private WebElement lastBuildPermalink;
 
@@ -74,7 +86,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public RenamePage<Self> clickRename() {
-        renameSubmenu.click();
+        renameSideMenuItem.click();
 
         return new RenamePage<>(getDriver(), (Self)this);
     }
@@ -92,7 +104,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public Self clickAddOrEditDescription() {
-        addDescription.click();
+        addDescriptionButton.click();
 
         return (Self)this;
     }
@@ -102,7 +114,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public String getAddDescriptionButtonText() {
-       return addDescription.getText();
+       return addDescriptionButton.getText();
     }
 
     public String getDisableEnableButtonText() {
@@ -123,14 +135,14 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public Self clickBuildNow() {
-        buildNowSideMenuOption.click();
+        buildNowSideMenuItem.click();
         getWait5().until(ExpectedConditions.visibilityOfAllElements(buildLinksInBuildHistory));
 
         return (Self)this;
     }
 
     public BuildWithParametersPage clickBuildWithParameters() {
-        buildNowSideMenuOption.click();
+        buildNowSideMenuItem.click();
 
         return new BuildWithParametersPage(getDriver());
     }
@@ -163,7 +175,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public MovePage clickMove() {
-        moveSideMenuOption.click();
+        moveSideMenuItem.click();
 
         return new MovePage(getDriver());
     }
@@ -192,6 +204,36 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
         getDriver().navigate().refresh();
 
         return (Self) this;
+    }
+
+    public Self inputDescription(String description) {
+        descriptionTextArea.clear();
+        descriptionTextArea.sendKeys(description);
+
+        return (Self)this;
+    }
+
+    public Self clearDescriptionTextArea() {
+        descriptionTextArea.clear();
+
+        return (Self)this;
+    }
+
+    public Self clickDescriptionPreview() {
+        previewButton.click();
+
+        return (Self)this;
+    }
+
+    public String getDescriptionPreviewText() {
+
+        return descriptionPreview.getText();
+    }
+
+    public Self clickHideDescriptionPreview() {
+        hidePreviewButton.click();
+
+        return (Self)this;
     }
 
     public Self enterDescriptionText(String description) {
