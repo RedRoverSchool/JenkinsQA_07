@@ -318,11 +318,9 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testSecurityPageRedirection() {
-        SecurityPage securityPage = new SecurityPage(getDriver());
-        String currentUrl = new HomePage(getDriver())
+        SecurityPage securityPage = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickSecuritySection()
-                .getCurrentUrl();
+                .clickSecuritySection();
 
         Assert.assertTrue(securityPage.getPageTitle().contains("Security"));
         Assert.assertTrue(securityPage.getCurrentUrl().contains("configureSecurity"));
@@ -330,11 +328,9 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testCredentialsPageRedirection() {
-        CredentialsPage credentialsPage = new CredentialsPage(getDriver());
-        String currentUrl = new HomePage(getDriver())
+        CredentialsPage credentialsPage = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickCredentialsSection()
-                .getCurrentUrl();
+                .clickCredentialsSection();
 
         Assert.assertTrue(credentialsPage.getPageTitle().contains("Credentials"));
         Assert.assertTrue(credentialsPage.getCurrentUrl().contains("credentials"));
@@ -342,11 +338,9 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testCredentialProvidersPageRedirection() {
-        CredentialProvidersPage credentialsProvidersPage = new CredentialProvidersPage(getDriver());
-        String currentUrl = new HomePage(getDriver())
+        CredentialProvidersPage credentialsProvidersPage = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickCredentialProvidersSection()
-                .getCurrentUrl();
+                .clickCredentialProvidersSection();
 
         Assert.assertTrue(credentialsProvidersPage.getPageTitle().contains("Credential Providers"));
         Assert.assertTrue(credentialsProvidersPage.getCurrentUrl().contains("configureCredentials"));
@@ -354,11 +348,9 @@ public class ManageJenkinsTest extends BaseTest {
 
     @Test
     public void testUserDatabasePageRedirection() {
-        UserDatabasePage usersPage = new UserDatabasePage(getDriver());
-        String currentUrl = new HomePage(getDriver())
+        UserDatabasePage usersPage = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickUsersButton()
-                .getCurrentUrl();
+                .clickUsersButton();
 
         Assert.assertTrue(usersPage.getPageTitle().contains("Users"));
         Assert.assertTrue(usersPage.getCurrentUrl().contains("securityRealm"));
