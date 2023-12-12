@@ -1,18 +1,18 @@
 package school.redrover.model.base;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import school.redrover.model.*;
+import school.redrover.model.jobs.details.MultiConfigurationDetailsPage;
 import school.redrover.model.users.CreatedUserPage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.testng.AssertJUnit.fail;
 
 public abstract class BasePage<Self extends BasePage<?>> extends BaseModel {
 
@@ -101,7 +101,7 @@ public abstract class BasePage<Self extends BasePage<?>> extends BaseModel {
         return searchBoxHeader;
     }
 
-    public Self  waitAndRefresh() {
+    public Self waitAndRefresh() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("setTimeout(function(){\n" +
                 "    location.reload();\n" +
@@ -182,5 +182,20 @@ public abstract class BasePage<Self extends BasePage<?>> extends BaseModel {
         restApiButton.click();
 
         return new RestApiPage(getDriver());
+    }
+
+    public Self dismissAlert() {
+        getDriver().switchTo().alert().dismiss();
+
+        return (Self) this;
+    }
+
+    public boolean isAlertNotPresent() {
+        try {
+            getDriver().switchTo().alert();
+            return false;
+        } catch (NoAlertPresentException e) {
+            return true;
+        }
     }
 }
