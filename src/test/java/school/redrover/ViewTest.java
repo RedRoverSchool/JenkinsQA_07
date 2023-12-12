@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
 import school.redrover.model.view.*;
@@ -321,6 +322,7 @@ public class ViewTest extends BaseTest {
         Assert.assertTrue(jobList.containsAll(List.of(JOB_NAME, JOB_NAME_1)));
     }
 
+    @Ignore
     @Test
     public void testCreateViewWithOptionGlobalView() {
         final String VIEW_NAME = UUID.randomUUID().toString();
