@@ -225,7 +225,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     }
 
     public Self clickHideDescriptionPreview() {
-        hidePreviewButton.click();
+        getWait10().until(ExpectedConditions.visibilityOf(descriptionPreview)).click();
 
         return (Self)this;
     }
