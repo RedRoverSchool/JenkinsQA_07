@@ -132,7 +132,7 @@ public abstract class BasePage<Self extends BasePage<?>> extends BaseModel {
     }
 
     public Self clickJenkinsVersionButton() {
-        jenkinsVersionButton.click();
+        getWait10().until(ExpectedConditions.elementToBeClickable(jenkinsVersionButton)).click();
 
         return (Self)this;
     }
