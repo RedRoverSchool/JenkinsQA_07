@@ -68,28 +68,42 @@ public class PluginsTest extends BaseTest {
 
     @Test
     public void testMatchesNumberPluginsForUpdate() {
-        String numberUpdatesPlaginsFromManagePage = new HomePage(getDriver())
+        String numberUpdatesPluginsFromManagePage = new HomePage(getDriver())
                 .clickManageJenkins()
                 .getNumberUpdatesPlugins();
 
-        String numberUpdatesPlaginsFromPluginsPage = new ManageJenkinsPage(getDriver())
+        String numberUpdatesPluginsFromPluginsPage = new ManageJenkinsPage(getDriver())
                 .goPluginsPage()
                 .getNumberPluginsForUpdates();
 
-        Assert.assertEquals(numberUpdatesPlaginsFromPluginsPage, numberUpdatesPlaginsFromManagePage);
+        Assert.assertEquals(numberUpdatesPluginsFromPluginsPage, numberUpdatesPluginsFromManagePage);
     }
 
     @Test
-    public void testSortingPluginsForUpdateByDefault() {
+    public void testSortingPluginsForUpdateInAscendingOrderByDefault() {
         List<String> updatesPluginsList = new HomePage(getDriver())
                 .clickManageJenkins()
                 .goPluginsPage()
                 .getUpdatesPluginsList();
 
-        List<String> sortedUpdatesPlaginsList = new PluginsPage(getDriver())
-                .getSortedUpdatesPluginsList();
+        List<String> sortedUpdatesPluginsList = new PluginsPage(getDriver())
+                .getSortedUpdatesPluginsListInAscendingOrder();
 
-       Assert.assertEquals(sortedUpdatesPlaginsList, updatesPluginsList);
+       Assert.assertEquals(sortedUpdatesPluginsList, updatesPluginsList);
+    }
+
+    @Test
+    public void testSortingPluginsForUpdateInDescendingOrder() {
+        List<String> updatesPluginsList = new HomePage(getDriver())
+                .clickManageJenkins()
+                .goPluginsPage()
+                .sortingByNameFromTitle()
+                .getUpdatesPluginsList();
+
+        List<String> sortedUpdatesPlaginsList = new PluginsPage(getDriver())
+                .getSortedUpdatesPluginsListInDescendingOrder();
+
+        Assert.assertEquals(sortedUpdatesPlaginsList, updatesPluginsList);
     }
 
 }

@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.runner.SeleniumUtils;
+
+import java.util.Comparator;
 import java.util.List;
 
 public class PluginsPage extends BasePage<PluginsPage> {
@@ -103,20 +105,28 @@ public class PluginsPage extends BasePage<PluginsPage> {
     }
 
 
-    public List<String> getSortedUpdatesPluginsList () {
-        List<String> sortedUpdatesPluginsList = allUpdatesList.stream()
+    public List<String> getSortedUpdatesPluginsListInAscendingOrder () {
+
+        return allUpdatesList.stream()
                 .map(WebElement::getText)
                 .map(String::toLowerCase)
                 .sorted()
                 .toList();
-
-        return sortedUpdatesPluginsList;
     }
 
     public PluginsPage sortingByNameFromTitle() {
         sortByName.click();
 
         return this;
+    }
+
+    public List<String> getSortedUpdatesPluginsListInDescendingOrder () {
+
+        return allUpdatesList.stream()
+                .map(WebElement::getText)
+                .map(String::toLowerCase)
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 
 }
