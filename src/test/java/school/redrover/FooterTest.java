@@ -142,7 +142,7 @@ public class FooterTest extends BaseTest {
     public void testRestApiLinkRedirectionMyView() {
         String restApi = new HomePage(getDriver())
                 .clickMyViews()
-                .goRestApi()
+                .goRestApiPage()
                 .getHeadLineText();
 
         Assert.assertEquals(restApi, REST_API);

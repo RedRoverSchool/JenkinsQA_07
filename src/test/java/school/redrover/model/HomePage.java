@@ -74,6 +74,9 @@ public class HomePage extends BasePage<HomePage> {
     @FindBy(css = ".tab > a")
     private List<WebElement> listOfViews;
 
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -214,12 +217,6 @@ public class HomePage extends BasePage<HomePage> {
         return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
     }
 
-    public RestApiPage goRestApi() {
-        restApiButton.click();
-
-        return new RestApiPage(getDriver());
-    }
-
     public NewViewPageFromDashboard<?> clickNewViewButton() {
         newViewButton.click();
 
@@ -247,8 +244,4 @@ public class HomePage extends BasePage<HomePage> {
 
         return listOfViews.stream().anyMatch(element -> element.getText().contains(viewName));
     }
-
-
-
-
 }
