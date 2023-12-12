@@ -357,7 +357,7 @@ public class ManageJenkinsTest extends BaseTest {
         UserDatabasePage usersPage = new UserDatabasePage(getDriver());
         String currentUrl = new HomePage(getDriver())
                 .clickManageJenkins()
-                .clickUsersSection()
+                .clickUsersButton()
                 .getCurrentUrl();
 
         Assert.assertTrue(usersPage.getPageTitle().contains("Users"));

@@ -330,10 +330,4 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
 
         return new CredentialProvidersPage(getDriver());
     }
-
-    public UserDatabasePage clickUsersSection() {
-        userSection.click();
-
-        return new UserDatabasePage(getDriver());
-    }
 }
