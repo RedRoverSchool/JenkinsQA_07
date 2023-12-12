@@ -8,8 +8,8 @@ import school.redrover.model.view.*;
 
 public abstract class BaseViewConfigPage extends BasePage<BaseViewConfigPage>{
 
-    @FindBy(xpath = "//button[text() = 'OK']")
-    private WebElement okButton;
+    @FindBy(name = "Submit")
+    protected WebElement createButton;
 
     @FindBy(xpath = "//span[text()='Delete View']")
     private WebElement deleteView;
@@ -19,7 +19,7 @@ public abstract class BaseViewConfigPage extends BasePage<BaseViewConfigPage>{
     }
 
     public ViewPage clickOkButton() {
-        okButton.click();
+        createButton.click();
 
         return new ViewPage(getDriver());
     }

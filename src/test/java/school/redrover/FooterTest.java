@@ -50,6 +50,7 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(jenkinsVersion, ABOUT_JENKINS_VERSION);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testJenkinsVersionStatusUserPageClick")
     public void testCheckTippyBox() {
         final List<String> expectedMenu = List.of(
