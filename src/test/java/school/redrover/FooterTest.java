@@ -83,7 +83,6 @@ public class FooterTest extends BaseTest {
         Assert.assertEquals(actualPageName, "Jenkins");
     }
 
-    @Ignore
     @Test(dependsOnMethods = "testCheckTippyBox")
     public void testVerifyClickabilityOfRestAPILink() {
         String restApi = new HomePage(getDriver())
