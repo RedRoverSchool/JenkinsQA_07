@@ -221,7 +221,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
 
     public String getDescriptionPreviewText() {
 
-        return descriptionPreview.getText();
+        return getWait10().until(ExpectedConditions.visibilityOf(descriptionPreview)).getText();
     }
 
     public Self clickHideDescriptionPreview() {
