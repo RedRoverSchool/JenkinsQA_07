@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import school.redrover.model.base.BasePage;
 import school.redrover.model.base.BaseDetailsPage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BuildPage extends BasePage<BuildPage> {
@@ -32,6 +33,12 @@ public class BuildPage extends BasePage<BuildPage> {
 
     @FindBy(xpath = "//h1/span[2]")
     private WebElement buildTitle;
+
+    @FindBy(className = "task")
+    private List<WebElement>  sideMenuButtonsList;
+
+    @FindBy(xpath = "//*[@id='description']/div[1]")
+    private WebElement buildDescription;
 
     public BuildPage(WebDriver driver) {
         super(driver);
@@ -81,10 +88,11 @@ public class BuildPage extends BasePage<BuildPage> {
         return buildTitle.getText();
     }
 
-    @FindBy(xpath = "//*[@id='description']/div[1]")
-    private WebElement buildDescription;
-
     public String getBuildDescription() {
         return buildDescription.getText();
+    }
+
+    public List<String> getSideMenuButtonsList() {
+        return sideMenuButtonsList.stream().map(webElement -> webElement.getText()).toList();
     }
 }
