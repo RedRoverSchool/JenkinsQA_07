@@ -112,4 +112,20 @@ public class BuildHistoryTest extends BaseTest {
 
         Assert.assertTrue(previousBuildTitle.contains(builds.get(1)));
     }
+
+    @Test
+    public void testVisibilityNavigationButtonsOnBuildPage() {
+        TestUtils.createFreestyleProject(this, NAME_FREESTYLE_PROJECT, true);
+
+        List<String> sideMenuList = new HomePage(getDriver())
+                .clickJobByName(NAME_FREESTYLE_PROJECT, new FreestyleProjectDetailsPage(getDriver()))
+                .clickBuildNowSeveralTimesAndWait(3, NAME_FREESTYLE_PROJECT)
+                .clickLastBuild()
+                .clickPreviousBuild()
+                .getSideMenuButtonsList();
+
+        System.out.println(sideMenuList);
+
+        Assert.assertTrue(sideMenuList.containsAll(List.of("Previous Build", "Next Build")));
+    }
 }

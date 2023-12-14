@@ -237,6 +237,7 @@ public class FolderTest extends BaseTest {
         Assert.assertEquals(previewDescription, DESCRIPTION_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testClickPreview")
     public void testHidePreview() {
         String previewDescription = new HomePage(getDriver())

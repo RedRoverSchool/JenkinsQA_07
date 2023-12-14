@@ -8,13 +8,15 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BasePage;
 import school.redrover.model.base.BaseDetailsPage;
+import school.redrover.model.base.BaseViewConfigPage;
+import school.redrover.model.view.MyViewsPage;
+import school.redrover.model.view.NewViewPageFromDashboard;
+import school.redrover.model.view.ViewPage;
 import school.redrover.model.builds.BuildHistoryPage;
 import school.redrover.model.jobs.details.FolderDetailsPage;
 import school.redrover.model.nodes.NodeCreatePage;
 import school.redrover.model.nodes.NodeDetailsPage;
 import school.redrover.model.nodes.NodesListPage;
-import school.redrover.model.views.MyViewPage;
-import school.redrover.model.views.NewViewPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class HomePage extends BasePage<HomePage> {
     private WebElement buildQueueSection;
 
     @FindBy(xpath = "//span[contains(text(),'My Views')]/parent::a")
-    private WebElement myView;
+    private WebElement myViewsButton;
 
     @FindBy(xpath = "//h1")
     private WebElement header;
@@ -68,6 +70,12 @@ public class HomePage extends BasePage<HomePage> {
 
     @FindBy(xpath = "//a[contains(@href,'user')]")
     private WebElement currentUserName;
+
+    @FindBy(css = ".tab > a")
+    private List<WebElement> listOfViews;
+
+    @FindBy(css = "a[href='api/']")
+    private WebElement restApiButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -194,9 +202,9 @@ public class HomePage extends BasePage<HomePage> {
         return getWait10().until(ExpectedConditions.visibilityOf(buildQueueSection)).getText().contains(jobName);
     }
 
-    public MyViewPage clickMyView() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(myView)).click();
-        return new MyViewPage(getDriver());
+    public MyViewsPage clickMyViews() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(myViewsButton)).click();
+        return new MyViewsPage(getDriver());
     }
 
     public NodeDetailsPage clickOnNodeName(String nodeName) {
@@ -209,10 +217,11 @@ public class HomePage extends BasePage<HomePage> {
         return getDriver().findElements(By.xpath("//*[@id='job_" + jobName.replace(" ", "%20") + "']//*[@class='jenkins-table__cell--tight']//a")).isEmpty();
     }
 
-    public NewViewPage clickNewViewButton() {
+    public NewViewPageFromDashboard<?> clickNewViewButton() {
         newViewButton.click();
 
-        return new NewViewPage(getDriver());
+        return new NewViewPageFromDashboard<>(getDriver(), new BaseViewConfigPage(getDriver()) {
+        });
     }
 
     public LogInPage clickLogOut() {
@@ -231,7 +240,8 @@ public class HomePage extends BasePage<HomePage> {
 
     }
 
+    public boolean isViewExist(String viewName) {
 
-
-
+        return listOfViews.stream().anyMatch(element -> element.getText().contains(viewName));
+    }
 }

@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import school.redrover.model.CredentialsPage;
-import school.redrover.model.views.UserViewPage;
 import school.redrover.model.base.BasePage;
 
 public class CreatedUserPage extends BasePage<CreatedUserPage> {

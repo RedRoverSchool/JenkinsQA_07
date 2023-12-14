@@ -145,7 +145,7 @@ public class FooterTest extends BaseTest {
     @Test(dependsOnMethods = "testRestApiLinkRedirectionBuildHistory")
     public void testRestApiLinkRedirectionMyView() {
         String restApi = new HomePage(getDriver())
-                .clickMyView()
+                .clickMyViews()
                 .goRestApiPage()
                 .getHeadLineText();
 
