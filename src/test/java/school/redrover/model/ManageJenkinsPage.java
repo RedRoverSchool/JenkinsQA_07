@@ -79,6 +79,9 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
     @FindBy(xpath = "//a[@href='configureCredentials']")
     private WebElement credentialProvidersSection;
 
+    @FindBy(xpath = "(//div[@class='jenkins-section__items'])[3]//dd[1]")
+    private List<WebElement> statusInformationSectionsDecriptionsList;
+
     public ManageJenkinsPage(WebDriver driver) {
         super(driver);
     }
@@ -329,5 +332,12 @@ public class ManageJenkinsPage extends BasePage<ManageJenkinsPage> {
         credentialProvidersSection.click();
 
         return new CredentialProvidersPage(getDriver());
+    }
+
+    public List<String> getStatusInformationSectionsDescriptions() {
+        return statusInformationSectionsDecriptionsList
+                .stream()
+                .map(WebElement::getText)
+                .toList();
     }
 }

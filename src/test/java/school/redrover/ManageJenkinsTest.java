@@ -1,6 +1,7 @@
 package school.redrover;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
@@ -10,6 +11,7 @@ import school.redrover.model.users.UserDatabasePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -366,5 +368,22 @@ public class ManageJenkinsTest extends BaseTest {
 
         Assert.assertTrue(manageJenkinsPage.isAlertNotPresent());
         Assert.assertEquals(manageJenkinsPage.getHeadLineText(), "Manage Jenkins");
+    }
+
+    @Test
+    public void testStatusInformationSectionsDescriptions() {
+        List<String> expectedStatusInformationSectionsDescriptions = List.of(
+                "Displays various environmental information to assist trouble-shooting.",
+                "System log captures output from java.util.logging output related to Jenkins.",
+                "Check your resource utilization and see if you need more computers for your builds.",
+                "See the version and license information."
+        );
+
+        List<String> actualStatusInformationSectionsDescriptions = new HomePage(getDriver())
+                .clickManageJenkins()
+                .getStatusInformationSectionsDescriptions();
+
+        Assert.assertEquals(actualStatusInformationSectionsDescriptions, expectedStatusInformationSectionsDescriptions,
+                "Status Information sections descriptions differ from the expected ones");
     }
 }
