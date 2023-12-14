@@ -1,7 +1,6 @@
 package school.redrover;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.*;
@@ -11,7 +10,6 @@ import school.redrover.model.users.UserDatabasePage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
