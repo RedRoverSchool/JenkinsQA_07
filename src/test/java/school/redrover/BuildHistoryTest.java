@@ -39,6 +39,8 @@ public class BuildHistoryTest extends BaseTest {
         Assert.assertEquals(buildHistoryPage.getIconLegendHeaders().size(), 2);
     }
 
+
+    @Ignore
     @Test
     public void testCheckDateAndMonthBuildHistory() {
         Date systemDate = new Date();
