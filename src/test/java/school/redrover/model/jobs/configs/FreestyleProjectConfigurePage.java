@@ -558,26 +558,28 @@ public class FreestyleProjectConfigurePage extends BaseConfigurationPage<Freesty
     }
 
     public FreestyleProjectConfigurePage clickAddButton() {
-        addButton.click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(addButton)).click();
         return this;
     }
 
     public FreestyleProjectConfigurePage clickJenkinsOption() {
-        jenkinsOption.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(jenkinsOption)).click();
         return this;
     }
 
     public FreestyleProjectConfigurePage inputUsername(String username) {
-        usernameCredentialsProvider.sendKeys(username);
+        getWait2().until(ExpectedConditions.visibilityOf(usernameCredentialsProvider)).sendKeys(username);
         return this;
     }
 
     public FreestyleProjectConfigurePage clickAddButtonCredentialsProvider() {
-        addButtonCredentialsProvider.click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(addButtonCredentialsProvider)).click();
         return this;
     }
 
     public boolean checkIfNewCredentialInTheMenu(String username) {
+
+        getWait2().until(ExpectedConditions.elementToBeClickable(credentialsOption));
 
         Select s = new Select(credentialsOption);
 

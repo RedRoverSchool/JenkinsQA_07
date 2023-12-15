@@ -160,7 +160,7 @@ public abstract class BaseDetailsPage<ProjectConfigurationPage extends BaseConfi
     protected abstract ProjectConfigurationPage createConfigurationPage();
 
     public ProjectConfigurationPage clickConfigure() {
-        configureSideMenuItem.click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(configureSideMenuItem)).click();
 
         return createConfigurationPage();
     }
