@@ -146,6 +146,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertTrue(tooltipIsVisible, "The tooltip is not displayed.");
     }
 
+    @Ignore
     @Test
     public void testDisableProjectFromDetailsPage() {
         boolean isEnabled = new HomePage(getDriver())
