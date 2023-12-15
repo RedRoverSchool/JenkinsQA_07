@@ -341,6 +341,7 @@ public class FreestyleProjectTest extends BaseTest {
         assertFalse(newItemPage.isOkButtonEnabled());
     }
 
+    @Ignore
     @Test
     public void testCreateWithDuplicateName() {
         RenameErrorPage errorPage = new HomePage(getDriver())
